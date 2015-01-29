@@ -1,0 +1,67 @@
+{
+  "name": "rc-select",
+  "version": "0.5.0",
+  "description": "select ui component for react",
+  "keywords": [
+    "react",
+    "react-component",
+    "react-select",
+    "select"
+  ],
+  "homepage": "http://github.com/react-component/select",
+  "author": "hualei5280@gmail.com",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:react-component/select.git"
+  },
+  "bugs": {
+    "url": "http://github.com/react-component/select/issues"
+  },
+  "licenses": "MIT",
+  "spm": {},
+  "config":{
+    "port":8003
+  },
+  "scripts": {
+    "less": "rc-tools run less",
+    "history": "rc-tools run history",
+    "start": "node --harmony node_modules/.bin/rc-server",
+    "publish": "rc-tools run tag && spm publish && spm doc publish",
+    "lint": "rc-tools run lint",
+    "test": "",
+    "saucelabs": "rc-tools run saucelabs",
+    "browser-test": "rc-tools run browser-test",
+    "browser-test-cover": "rc-tools run browser-test-cover"
+  },
+  "devDependencies": {
+    "precommit-hook": "^1.0.7",
+    "rc-server": "^1.5.4",
+    "rc-tools": "^1.1.3",
+    "expect.js": "~0.3.1",
+    "modulex": "^1.7.4",
+    "react": "~0.12.1"
+  },
+  "precommit": [
+    "lint",
+    "less"
+  ],
+  "browserify-shim": {
+    "react": "global:React",
+    "jquery": "global:jQuery"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "browserify-jsx"
+      ],
+      [
+        "browserify-shim"
+      ]
+    ]
+  },
+  "dependencies": {
+    "rc-menu": "2.x",
+    "browserify-shim": "^3.8.0",
+    "browserify-jsx": "^0.1.0"
+  }
+}
