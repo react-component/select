@@ -41,7 +41,8 @@ function handleDeselect(selectedKey, obj) {
 }
 
 var c1 = (
-  <Select value="disabled" className="forTest" onSelect={handleSelect} onDeselect={handleDeselect}>
+  <Select value="disabled" className="forTest" allowClear
+      onSelect={handleSelect} onDeselect={handleDeselect}>
     <Option value="jack" className="forTest"><b style={style}>jack</b></Option>
     <Option value="lucy">lucy</Option>
     <Option value="disabled" disabled>disabled</Option>
@@ -55,7 +56,7 @@ for(var i = 10; i < 36; i++){
   children.push(<Option value={i.toString(36) + i}>{i.toString(36) + i}</Option>);
 }
 var c2 = (
-  <Select multiple value={['name2', 'name3']}>
+  <Select multiple value={['name2', 'name3']} maximumSelectionLength="3" allowClear>
     {children}
   </Select>
 );

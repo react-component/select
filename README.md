@@ -91,7 +91,25 @@ React.render(c, container);
           <td>String | Array</td>
           <td></td>
           <td>specify the default selected item(s)</td>
-        </tr>        
+        </tr> 
+        <tr>
+          <td>multiple</td>
+          <td></td>
+          <td>false</td>
+          <td>can select more than one option </td>
+        </tr>           
+        <tr>
+          <td>allowClear</td>
+          <td></td>
+          <td>false</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td> maximumSelectionLength </td>
+          <td></td>
+          <td></td>
+          <td>Select multi-value select boxes can set restrictions regarding the maximum number of options selected</td>
+        </tr>                  
         <tr>
             <td>onSelect</td>
             <td>function(key:String,child:ReactComponent)</td>
