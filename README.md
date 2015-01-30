@@ -49,6 +49,7 @@ select ui component for react
 
 ## Usage
 
+### basic use
 ```js
 var React = require('react'); 
 var Select = require('../');
@@ -63,6 +64,7 @@ var c = (
 );
 React.render(c, container);
 ```
+
 
 ## API
 
@@ -84,6 +86,25 @@ React.render(c, container);
           <td></td>
           <td>additional css class of root dom node</td>
         </tr>
+        <tr>
+          <td>value</td>
+          <td>String | Array</td>
+          <td></td>
+          <td>specify the default selected item(s)</td>
+        </tr>        
+        <tr>
+            <td>onSelect</td>
+            <td>function(key:String,child:ReactComponent)</td>
+            <th></th>
+            <td>called when select an option</td>
+        </tr>
+        <tr>
+            <td>onDeselect</td>
+            <td>function(key:String,child:ReactComponent)</td>
+            <th></th>
+            <td>called when deselect an option (for mutiple select)</td>
+        </tr>
+        </tr>        
     </tbody>
 </table>
 
@@ -106,10 +127,44 @@ React.render(c, container);
           <td>additional css class of root dom node</td>
         </tr>
         <tr>
-            <td>onSelect</td>
-            <td>Function(key:String)</td>
-            <th></th>
-            <td>function called with selected menu item's key as param</td>
+            <td>disabled</td>
+            <td>Boolean</td>
+            <th>false</th>
+            <td>no effect for click or keydown for this item</td>
+        </tr>        
+        <tr>
+          <td>value</td>
+          <td>String</td>
+          <td></td>
+          <td>search by this attribute</td>
+        </tr>
+    </tbody>
+</table>
+
+
+### Combobox props (autocomplete)
+
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th style="width: 100px;">name</th>
+        <th style="width: 50px;">type</th>
+        <th style="width: 50px;">default</th>
+        <th>description</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>className</td>
+          <td>String</td>
+          <td></td>
+          <td>additional css class of root dom node</td>
+        </tr>
+        <tr>
+          <td>value</td>
+          <td>String</td>
+          <td></td>
+          <td>default value in input control</td>
         </tr>
     </tbody>
 </table>
