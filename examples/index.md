@@ -18,7 +18,7 @@
   <h3>multiple select（scroll the menu）</h3>
   <div id="ex2"></div>
   
-  <h3>combobox select</h3>
+  <h3>combobox (autocomplete)</h3>
   <div id="ex3"></div>
 </div>
 ````
