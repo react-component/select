@@ -18,7 +18,13 @@
     "url": "http://github.com/react-component/select/issues"
   },
   "licenses": "MIT",
-  "spm": {},
+  "spm": {
+    "buildArgs": "--global react:window.React",
+    "dependencies": {
+      "react": "*",
+      "rc-menu": "2.x"
+    }
+  },
   "config":{
     "port":8003
   },
