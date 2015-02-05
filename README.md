@@ -29,8 +29,7 @@ select ui component for react
 
 ## Screenshots
 
-<img src="" width="288"/>
-
+<img src="https://tfsimg.alipay.com/images/T1CUBeXa0kXXXXXXXX.png" />
 
 ## Feature
 

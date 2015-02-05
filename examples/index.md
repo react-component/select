@@ -56,7 +56,7 @@ for(var i = 10; i < 36; i++){
   children.push(<Option value={i.toString(36) + i}>{i.toString(36) + i}</Option>);
 }
 var c2 = (
-  <Select multiple value={['name2', 'name3']} maximumSelectionLength="3" allowClear>
+  <Select multiple value={['name2', 'name3']} maximumSelectionLength="3" >
     {children}
   </Select>
 );
