@@ -90,6 +90,7 @@ describe('Select', function () {
         </Select>,
         div);
       instance.refs.selection.getDOMNode().focus();
+      Simulate.click(instance.refs.selection.getDOMNode());
       instance.setState({
         open: true
       }, function () {
@@ -100,7 +101,7 @@ describe('Select', function () {
     });
 
     afterEach(function () {
-      React.unmountComponentAtNode(div);
+      //React.unmountComponentAtNode(div);
     });
 
     it('should close on blur', function (done) {
