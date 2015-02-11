@@ -9,7 +9,10 @@
     "select"
   ],
   "homepage": "http://github.com/react-component/select",
-  "author": "hualei5280@gmail.com",
+  "maintainers": [
+    "hualei5280@gmail.com",
+    "yiminghe@gmail.com"
+  ],
   "repository": {
     "type": "git",
     "url": "git@github.com:react-component/select.git"
