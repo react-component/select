@@ -78,9 +78,6 @@ describe('Select', function () {
 
   describe('when open', function () {
     var div;
-    var a = document.createElement('a');
-    a.href = '#';
-    document.body.append(a);
 
     beforeEach(function (done) {
       div = document.createElement('div');
@@ -96,7 +93,9 @@ describe('Select', function () {
       instance.setState({
         open: true
       }, function () {
-        done()
+        setTimeout(function () {
+          done();
+        }, 500);
       });
     });
 
@@ -107,8 +106,6 @@ describe('Select', function () {
     it('should close on blur', function (done) {
       expect(instance.getDOMNode().className.match(/\brc-select-open\b/)).to.be.ok();
       div.focus();
-      a.focus();
-      a.click();
       setTimeout(function () {
         expect(instance.getDOMNode().className.match(/\brc-select-open\b/)).not.to.be.ok();
         done();
