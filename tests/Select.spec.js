@@ -18,7 +18,7 @@ describe('Select', function () {
         <Option value="2" disabled>2</Option>
       </Select>
     );
-    expect(instance.getDOMNode().classList.contains('forTest')).to.be(true);
+    expect(instance.getDOMNode().className.indexOf('forTest') !== -1).to.be(true);
   });
 
   it('should default select the right option', function (done) {
