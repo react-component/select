@@ -1,18 +1,18 @@
 
-.select-container{
+.rc-select {
   box-sizing: border-box;
   //display: inline-block;
   display: block;
   margin: 0;
   position: relative;
   vertical-align: middle;
-  > ul > li > a{
+  > ul > li > a {
     padding: 0;
     background-color: #fff;
   }
 
   // arrow
-  .select-arrow {
+  .rc-select-arrow {
     height: 26px;
     position: absolute;
     top: 1px;
@@ -32,7 +32,7 @@
     }
   }
 
-  .select-selection--single{
+  .rc-select-selection--single {
     box-sizing: border-box;
     cursor: pointer;
     display: block;
@@ -44,7 +44,7 @@
     border: 1px solid #aaa;
     border-radius: 4px;
 
-    .select-selection__rendered{
+    .rc-select-selection__rendered {
       display: block;
       overflow: hidden;
       padding-left: 8px;
@@ -55,14 +55,14 @@
       line-height: 28px;
     }
 
-    .select-selection__clear {
+    .rc-select-selection__clear {
       cursor: pointer;
       float: right;
       font-weight: bold;
     }
   }
 
-  .select-selection--multiple {
+  .rc-select-selection--multiple {
     box-sizing: border-box;
     display: block;
     min-height: 32px;
@@ -74,14 +74,14 @@
     border-radius: 4px;
     cursor: text;
 
-    .select-selection__rendered {
+    .rc-select-selection__rendered {
       display: inline-block;
       overflow: hidden;
       padding-left: 8px;
       text-overflow: ellipsis;
     }
 
-    .select-selection__clear {
+    .rc-select-selection__clear {
       cursor: pointer;
       float: right;
       font-weight: bold;
@@ -89,7 +89,7 @@
       margin-right: 10px;
     }
 
-    .select-selection__choice {
+    .rc-select-selection__choice {
       background-color: #e4e4e4;
       border: 1px solid #aaa;
       border-radius: 4px;
@@ -100,7 +100,7 @@
       padding: 0 5px;
     }
 
-    .select-selection__choice__remove {
+    .rc-select-selection__choice__remove {
       color: #999;
       cursor: pointer;
       display: inline-block;
@@ -112,10 +112,10 @@
     }
   }
 
-  .select-search--inline {
+  .rc-select-search--inline {
     float: left;
 
-    .select-search__field {
+    .rc-select-search__field {
       border: none;
       font-size: 100%;
       margin-top: 5px;
@@ -125,44 +125,81 @@
   }
 }
 
-.select-dropdown {
+.rc-select-dropdown {
   display: none;
   background-color: white;
-//  border: 1px solid #aaa;
+  border: 1px solid #aaa;
   border-radius: 4px;
   box-sizing: border-box;
   width: 100%;
   z-index: 100;
-
-  .select-menu{
-//    border: none;
-  }
-  .select-menu-item[aria-selected=true]{
+  border-top: none;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  position: absolute;
+  top: 100%;
+  marin-top: -1px;
+  .rc-select-menu-item[aria-selected=true] {
     background-color: #ddd;
   }
 }
 
-.select-search--dropdown {
+.rc-select-search--dropdown {
   display: block;
   padding: 4px;
-  .select-search__field {
+  .rc-select-search__field {
     padding: 4px;
     width: 100%;
+    box-sizing: border-box;
     border: 1px solid #aaa;
   }
-  &.select-search--hide {
+  &.rc-select-search--hide {
     display: none;
   }
 }
 
-
-
-.select-open{
-  .select-arrow b {
+.rc-select-open {
+  .rc-select-arrow b {
     border-color: transparent transparent #888 transparent;
     border-width: 0 4px 5px 4px;
   }
-  .select-dropdown{
+  .rc-select-dropdown {
     display: block;
+  }
+
+  .rc-select-selection {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+.rc-select-menu {
+  outline: none;
+  margin-bottom: 0;
+  padding-left: 0; // Override default ul/ol
+  list-style: none;
+  z-index: 99999;
+
+  .rc-select-menu-item-active, .rc-select-menu-submenu-active {
+    background-color: #8EC8F9 !important;
+  }
+
+  > li {
+    position: relative;
+    display: block;
+    padding: 15px 20px;
+    white-space: nowrap;
+
+    // Disabled state sets text to gray and nukes hover/tab effects
+    &.rc-select-menu-item-disabled, &.rc-select-menu-submenu-disabled {
+      color: #777;
+    }
+  }
+  .rc-select-menu-item-divider {
+    padding: 0;
+    height: 1px;
+    margin: 9px 0;
+    overflow: hidden;
+    background-color: #e5e5e5;
   }
 }

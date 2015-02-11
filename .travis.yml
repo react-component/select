@@ -15,5 +15,5 @@ script:
 - npm run saucelabs
 env:
   global:
-  - secure: WeXiz+R/y4JYq7/Ub2y12R3HtxPKoAWjO4mS4uLvvzkqUmHvmPw5qy6k5ennXDlSa/hq7QXFdgoUoAW/n/GQIF4Zg4Rt91O8uvUs+SJ7amcIY9Ll2AdRg3XqV9LsaUYXT0gTcb1gcpcSTLY5UOhFyXn47A4+mdxrCH8j5DYqEFw=
-  - secure: okM6j9WLfOtWctOhm1FqCaePwkoO/PI65dsvXK40XkiymuzcdQiYh/ehlkMgm2kjE8lRCRtzSCdmIEwAUTEBMwUq453Y1dvZxwpoNDodoO8c76BAO9waCURz+3DQKXfRAL9pfDayHx9si/NlLjwhrr9CfyyHt3UYdyqBH5+Zhkw=
+  - secure: Uf3gHWC2QEnOtIeDTWnWwxyQCXUAZYegkx0GAD9PK9CBEBJfezQM3VphGoOlguBMK8n5u4BFiJfOAPOsadpQiYeG6Qu07U0/3BkNT9Q9f5uOIC0Di3YaoqS1uGHJZey/molbIEcbuAo5YNIBvKZmJiBHduJ5ni+StnETehYkTjU=
+  - secure: icXxTaCvXlzEQ/e/Ih2VhgPrw64okBagFad88mKuI+XpR8Sx/u5bNOaltBIB0rgPA439IFezda9i5DnlBacJIT6zLjHxDtdxElZ5fnBZPYwk9BU6JNtxHtfrLcQsFhUVwsJMuAtKYBAmdzGqhNzYvnBwgmZDTUTTEYtgn6huaxY=

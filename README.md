@@ -38,9 +38,7 @@ select ui component for react
 ### Keyboard
 
 * Open select (focus input || focus and click)
-* Previous item (PageUp)
-* Next item (PageDown)
-
+* KeyDown/KeyUp/Enter to navigate menu
 
 ## install
 
@@ -87,7 +85,7 @@ React.render(c, container);
         </tr>
         <tr>
           <td>value</td>
-          <td>String | Array</td>
+          <td>String | Array<String></td>
           <td></td>
           <td>specify the default selected item(s)</td>
         </tr> 
@@ -100,28 +98,21 @@ React.render(c, container);
         <tr>
           <td>allowClear</td>
           <td></td>
+          <td>true</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>combobox</td>
+          <td></td>
           <td>false</td>
-          <td></td>
+          <td>enable combobox mode(can not set multiple at the same time)</td>
         </tr>
         <tr>
-          <td> maximumSelectionLength </td>
-          <td></td>
-          <td></td>
-          <td>Select multi-value select boxes can set restrictions regarding the maximum number of options selected</td>
-        </tr>                  
-        <tr>
-            <td>onSelect</td>
-            <td>function(key:String,child:ReactComponent)</td>
+            <td>onChange</td>
+            <td>function(value)</td>
             <th></th>
-            <td>called when select an option</td>
+            <td>called when select an option or input value change(combobox)</td>
         </tr>
-        <tr>
-            <td>onDeselect</td>
-            <td>function(key:String,child:ReactComponent)</td>
-            <th></th>
-            <td>called when deselect an option (for mutiple select)</td>
-        </tr>
-        </tr>        
     </tbody>
 </table>
 
@@ -157,35 +148,6 @@ React.render(c, container);
         </tr>
     </tbody>
 </table>
-
-
-### Combobox props (autocomplete)
-
-<table class="table table-bordered table-striped">
-    <thead>
-    <tr>
-        <th style="width: 100px;">name</th>
-        <th style="width: 50px;">type</th>
-        <th style="width: 50px;">default</th>
-        <th>description</th>
-    </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>className</td>
-          <td>String</td>
-          <td></td>
-          <td>additional css class of root dom node</td>
-        </tr>
-        <tr>
-          <td>value</td>
-          <td>String</td>
-          <td></td>
-          <td>default value in input control</td>
-        </tr>
-    </tbody>
-</table>
-
 
 online docs: http://spmjs.io/docs/rc-select/
 

@@ -1,6 +1,6 @@
 {
   "name": "rc-select",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "select ui component for react",
   "keywords": [
     "react",
@@ -22,11 +22,12 @@
     "buildArgs": "--global react:window.React",
     "dependencies": {
       "react": "*",
+      "rc-util": "^1.0.0",
       "rc-menu": "2.x"
     }
   },
-  "config":{
-    "port":8003
+  "config": {
+    "port": 8003
   },
   "scripts": {
     "less": "rc-tools run less",
@@ -66,8 +67,9 @@
     ]
   },
   "dependencies": {
-    "rc-menu": "2.x",
+    "browserify-jsx": "^0.1.0",
     "browserify-shim": "^3.8.0",
-    "browserify-jsx": "^0.1.0"
+    "rc-menu": "2.x",
+    "rc-util": "^1.0.0"
   }
 }
