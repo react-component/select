@@ -149,8 +149,6 @@ React.render(c, container);
     </tbody>
 </table>
 
-online docs: http://spmjs.io/docs/rc-select/
-
 ## Development
 
 ```
@@ -160,9 +158,9 @@ npm start
 
 ## Example
 
-http://localhost:8003/examples/index.md
+http://localhost:8003/examples/
 
-online example: http://spmjs.io/docs/rc-select/examples/
+online example: http://react-component.github.io/select/build/examples/
 
 ## Test Case
 
