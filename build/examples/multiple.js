@@ -17,8 +17,8 @@ webpackJsonp([1],[
   \******************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(/*! react */ 5);
-	var Select = __webpack_require__(/*! rc-select */ 4);
+	var React = __webpack_require__(/*! react */ 4);
+	var Select = __webpack_require__(/*! rc-select */ 5);
 	var Option = Select.Option;
 	__webpack_require__(/*! ./examples.css */ 6);
 	__webpack_require__(/*! rc-menu/assets/index.css */ 10);
