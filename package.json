@@ -57,6 +57,10 @@
     "url-loader": "^0.5.5",
     "webpack": "~1.5.3"
   },
+  "dependencies": {
+    "rc-util": "^1.0.0",
+    "rc-menu": "2.x"
+  },
   "precommit": [
     "lint",
     "less"
