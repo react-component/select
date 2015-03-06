@@ -79,6 +79,8 @@ describe('Select', function () {
   describe('when open', function () {
     var div;
 
+    this.timeout(400000);
+
     beforeEach(function (done) {
       div = document.createElement('div');
       div.tabIndex = 0;
@@ -91,17 +93,18 @@ describe('Select', function () {
         div);
       instance.refs.selection.getDOMNode().focus();
       Simulate.click(instance.refs.selection.getDOMNode());
-      instance.setState({
-        open: true
-      }, function () {
-        setTimeout(function () {
+      instance.refs.input.getDOMNode().focus();
+      setTimeout(function () {
+        instance.setState({
+          open: true
+        }, function () {
           done();
-        }, 500);
-      });
+        });
+      }, 100);
     });
 
     afterEach(function () {
-      //React.unmountComponentAtNode(div);
+      React.unmountComponentAtNode(div);
     });
 
     it('should close on blur', function (done) {
@@ -110,7 +113,7 @@ describe('Select', function () {
       setTimeout(function () {
         expect(instance.getDOMNode().className.match(/\brc-select-open\b/)).not.to.be.ok();
         done();
-      }, 500);
+      }, 100);
     });
   });
 
