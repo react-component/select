@@ -10,9 +10,9 @@ select ui component for react
 [![gemnasium deps][gemnasium-image]][gemnasium-url]
 [![node version][node-image]][node-url]
 [![npm download][download-image]][download-url]
-[![Sauce Test Status](https://saucelabs.com/buildstatus/rc-select)](https://saucelabs.com/u/rc-select)
+[![Sauce Test Status](https://saucelabs.com/buildstatus/rc_select)](https://saucelabs.com/u/rc_select)
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/rc-select.svg)](https://saucelabs.com/u/rc-select)
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/rc_select.svg)](https://saucelabs.com/u/rc_select)
 
 [npm-image]: http://img.shields.io/npm/v/rc-select.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/rc-select

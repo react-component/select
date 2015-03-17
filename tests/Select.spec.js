@@ -18,7 +18,7 @@ describe('Select', function () {
         <Option value="2" disabled>2</Option>
       </Select>
     );
-    expect(instance.getDOMNode().className.indexOf('forTest') !== -1).to.be(true);
+    expect(React.findDOMNode(instance).className.indexOf('forTest') !== -1).to.be(true);
   });
 
   it('should default select the right option', function (done) {
@@ -31,8 +31,8 @@ describe('Select', function () {
     instance.setState({
       open: true
     }, function () {
-      expect(instance.refs.menu.refs['1'].props.selected).to.be(false);
-      expect(instance.refs.menu.refs['2'].props.selected).to.be(true);
+      expect(instance.refs.menu.instances['1'].props.selected).to.be(false);
+      expect(instance.refs.menu.instances['2'].props.selected).to.be(true);
       done();
     });
   });
@@ -48,9 +48,9 @@ describe('Select', function () {
     instance.setState({
       open: true
     }, function () {
-      expect(instance.refs.menu.refs['1'].props.selected).to.be(true);
-      expect(instance.refs.menu.refs['2'].props.selected).to.be(true);
-      expect(instance.refs.menu.refs['3'].props.selected).to.be(false);
+      expect(instance.refs.menu.instances['1'].props.selected).to.be(true);
+      expect(instance.refs.menu.instances['2'].props.selected).to.be(true);
+      expect(instance.refs.menu.instances['3'].props.selected).to.be(false);
       done();
     });
   });
@@ -72,7 +72,7 @@ describe('Select', function () {
         <Option value="2">2</Option>
       </Select>
     );
-    expect(!!instance.refs.selection.getDOMNode().getAttribute('tabindex')).to.be(false);
+    expect(!!React.findDOMNode(instance.refs.selection).getAttribute('tabindex')).to.be(false);
   });
 
 
@@ -91,9 +91,9 @@ describe('Select', function () {
           <Option value="2">2</Option>
         </Select>,
         div);
-      instance.refs.selection.getDOMNode().focus();
-      Simulate.click(instance.refs.selection.getDOMNode());
-      instance.refs.input.getDOMNode().focus();
+      React.findDOMNode(instance.refs.selection).focus();
+      Simulate.click(React.findDOMNode(instance.refs.selection));
+      React.findDOMNode(instance.refs.input).focus();
       setTimeout(function () {
         instance.setState({
           open: true
@@ -108,10 +108,10 @@ describe('Select', function () {
     });
 
     it('should close on blur', function (done) {
-      expect(instance.getDOMNode().className.match(/\brc-select-open\b/)).to.be.ok();
+      expect(React.findDOMNode(instance).className.match(/\brc-select-open\b/)).to.be.ok();
       div.focus();
       setTimeout(function () {
-        expect(instance.getDOMNode().className.match(/\brc-select-open\b/)).not.to.be.ok();
+        expect(React.findDOMNode(instance).className.match(/\brc-select-open\b/)).not.to.be.ok();
         done();
       }, 100);
     });
