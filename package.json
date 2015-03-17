@@ -37,7 +37,7 @@
     "gh-pages": "rc-tools run gh-pages",
     "history": "rc-tools run history",
     "start": "node --harmony node_modules/.bin/rc-server",
-    "publish": "rc-tools run tag && spm publish && spm doc publish",
+    "publish": "rc-tools run tag && spm publish",
     "lint": "rc-tools run lint",
     "test": "",
     "saucelabs": "rc-tools run saucelabs",
