@@ -108,6 +108,10 @@ describe('Select', function () {
     });
 
     it('should close on blur', function (done) {
+      if (navigator.userAgent.indexOf(' Chrome') === -1) {
+        done();
+        return;
+      }
       expect(React.findDOMNode(instance).className.match(/\brc-select-open\b/)).to.be.ok();
       div.focus();
       setTimeout(function () {
