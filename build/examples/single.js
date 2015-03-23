@@ -1,30 +1,25 @@
-webpackJsonp([2],[
+webpackJsonp([0],[
 /* 0 */
-/*!********************!*\
-  !*** multi single ***!
-  \********************/
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(/*! ./examples/single.js */1);
+	module.exports = __webpack_require__(3);
 
 
 /***/ },
-/* 1 */
-/*!****************************!*\
-  !*** ./examples/single.js ***!
-  \****************************/
+/* 1 */,
+/* 2 */,
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(/*! react */ 4);
-	var Select = __webpack_require__(/*! rc-select */ 5);
+	var React = __webpack_require__(5);
+	var Select = __webpack_require__(6);
 	var Option = Select.Option;
-	__webpack_require__(/*! ./examples.css */ 6);
-	__webpack_require__(/*! rc-menu/assets/index.css */ 10);
-	__webpack_require__(/*! rc-select/assets/index.css */ 8);
+	__webpack_require__(9);
+	__webpack_require__(7);
 	function handleChange(value) {
 	  console.log('selected ' + value);
 	}
-	
+
 	var c1 = (
 	  React.createElement("div", null, 
 	    React.createElement("h1", null, "Single Select"), 
@@ -42,10 +37,9 @@ webpackJsonp([2],[
 	    )
 	  )
 	);
-	
+
 	React.render(c1, document.getElementById('__react-content'));
 
 
 /***/ }
 ]);
-//# sourceMappingURL=single.js.map

@@ -1,27 +1,19 @@
-webpackJsonp([0],[
+webpackJsonp([2],[
 /* 0 */
-/*!**********************!*\
-  !*** multi combobox ***!
-  \**********************/
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(/*! ./examples/combobox.js */2);
+	module.exports = __webpack_require__(1);
 
 
 /***/ },
-/* 1 */,
-/* 2 */
-/*!******************************!*\
-  !*** ./examples/combobox.js ***!
-  \******************************/
+/* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(/*! react */ 4);
-	var Select = __webpack_require__(/*! ../ */ 5);
+	var React = __webpack_require__(5);
+	var Select = __webpack_require__(6);
 	var Option = Select.Option;
-	__webpack_require__(/*! ./examples.css */ 6);
-	__webpack_require__(/*! rc-menu/assets/index.css */ 10);
-	__webpack_require__(/*! rc-select/assets/index.css */ 8);
+	__webpack_require__(9);
+	__webpack_require__(7);
 	var style = {
 	  color: 'red'
 	};
@@ -40,10 +32,9 @@ webpackJsonp([0],[
 	    )
 	  )
 	);
-	
+
 	React.render(c3, document.getElementById('__react-content'));
 
 
 /***/ }
 ]);
-//# sourceMappingURL=combobox.js.map

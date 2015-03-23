@@ -179,7 +179,7 @@
 <body>
 <div id="__react-content"></div>
 <script src="common.js?nowrap"></script>
-<script src="multiple.js?nowrap"></script>
+<script src="tags.js?nowrap"></script>
 <div class="highlight">
 <pre>
 <span class="hljs-reserved">var</span> React = <span class="hljs-built_in">require</span>(<span class="hljs-string">'react'</span>);
@@ -200,12 +200,12 @@
 
 <span class="hljs-reserved">var</span> c2 = (
   &lt;div&gt;
-    &lt;h1&gt;multiple select（scroll the menu）&lt;/h1&gt;
+    &lt;h1&gt;tags select（scroll the menu）&lt;/h1&gt;
     &lt;div style={{<span class="hljs-attribute">width</span>: <span class="hljs-number">300</span>}}&gt;
       &lt;style&gt;
       {style}
       &lt;/style&gt;
-      &lt;Select multiple value={[<span class="hljs-string">'name2'</span>, <span class="hljs-string">'name3'</span>]} onChange={handleChange}&gt;
+      &lt;Select tags value={[<span class="hljs-string">'name2'</span>, <span class="hljs-string">'name3'</span>]} onChange={handleChange}&gt;
     {children}
       &lt;/Select&gt;
     &lt;/div&gt;

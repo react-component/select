@@ -22,48 +22,48 @@
 /******/ 			return __webpack_require__(0);
 /******/ 		}
 /******/ 	};
-/******/
+
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-/******/
+
 /******/ 	// object to store loaded and loading chunks
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		3:0
+/******/ 		4:0
 /******/ 	};
-/******/
+
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-/******/
+
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-/******/
+
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			exports: {},
 /******/ 			id: moduleId,
 /******/ 			loaded: false
 /******/ 		};
-/******/
+
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
+
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-/******/
+
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
+
 /******/ 	// This file contains only the entry chunk.
 /******/ 	// The chunk loading function for additional chunks
 /******/ 	__webpack_require__.e = function requireEnsure(chunkId, callback) {
 /******/ 		// "0" is the signal for "already loaded"
 /******/ 		if(installedChunks[chunkId] === 0)
 /******/ 			return callback.call(null, __webpack_require__);
-/******/
+
 /******/ 		// an array means "currently loading".
 /******/ 		if(installedChunks[chunkId] !== undefined) {
 /******/ 			installedChunks[chunkId].push(callback);
@@ -75,17 +75,17 @@
 /******/ 			script.type = 'text/javascript';
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"combobox","1":"multiple","2":"single"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"single","1":"tags","2":"combobox","3":"multiple"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
-/******/
+
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-/******/
+
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-/******/
+
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
 /******/ })
@@ -95,118 +95,68 @@
 /* 1 */,
 /* 2 */,
 /* 3 */,
-/* 4 */
-/*!************************!*\
-  !*** external "React" ***!
-  \************************/
+/* 4 */,
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = React;
 
 /***/ },
-/* 5 */
-/*!******************!*\
-  !*** ./index.js ***!
-  \******************/
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
-	var Select = __webpack_require__(/*! ./lib/Select */ 12);
-	Select.Option = __webpack_require__(/*! ./lib/Option */ 13);
+	var Select = __webpack_require__(11);
+	Select.Option = __webpack_require__(12);
 	module.exports = Select;
 
 
 /***/ },
-/* 6 */
-/*!*******************************!*\
-  !*** ./examples/examples.css ***!
-  \*******************************/
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
+
 	// load the styles
-	var content = __webpack_require__(/*! !./~/css-loader!./examples/examples.css */ 7);
+	var content = __webpack_require__(8);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(/*! ./~/style-loader/addStyles.js */ 14)(content, {});
+	var update = __webpack_require__(13)(content, {});
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
-		module.hot.accept("!!/Users/yiminghe/code/react-components/select/node_modules/css-loader/index.js!/Users/yiminghe/code/react-components/select/examples/examples.css", function() {
-			var newContent = require("!!/Users/yiminghe/code/react-components/select/node_modules/css-loader/index.js!/Users/yiminghe/code/react-components/select/examples/examples.css");
+		module.hot.accept("!!/Users/yiminghe/code/react-components/select/node_modules/rc-tools/node_modules/css-loader/index.js!/Users/yiminghe/code/react-components/select/assets/index.css", function() {
+			var newContent = require("!!/Users/yiminghe/code/react-components/select/node_modules/rc-tools/node_modules/css-loader/index.js!/Users/yiminghe/code/react-components/select/assets/index.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
 		// When the module is disposed, remove the <style> tags
 		module.hot.dispose(function() { update(); });
 	}
-
-/***/ },
-/* 7 */
-/*!**********************************************!*\
-  !*** ./~/css-loader!./examples/examples.css ***!
-  \**********************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(/*! ./~/css-loader/cssToString.js */ 15)();
-	exports.push([module.id, ".wrapper{\n  width: 300px;\n  margin: 10px 20px;\n}\nul{\n  list-style: none;\n  margin: 0;\n  padding: 0;\n}\ninput[type=\"search\"] {\n  -webkit-appearance: none;\n}\ninput[type=\"search\"]::-webkit-search-decoration,\ninput[type=\"search\"]::-webkit-search-cancel-button,\ninput[type=\"search\"]::-webkit-search-results-button,\ninput[type=\"search\"]::-webkit-search-results-decoration {\n  display: none;\n}\n", ""]);
 
 /***/ },
 /* 8 */
-/*!**************************!*\
-  !*** ./assets/index.css ***!
-  \**************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(/*! !./~/css-loader!./assets/index.css */ 9);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(/*! ./~/style-loader/addStyles.js */ 14)(content, {});
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		module.hot.accept("!!/Users/yiminghe/code/react-components/select/node_modules/css-loader/index.js!/Users/yiminghe/code/react-components/select/assets/index.css", function() {
-			var newContent = require("!!/Users/yiminghe/code/react-components/select/node_modules/css-loader/index.js!/Users/yiminghe/code/react-components/select/assets/index.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
+	exports = module.exports = __webpack_require__(14)();
+	exports.push([module.id, ".rc-select {\n  box-sizing: border-box;\n  display: block;\n  margin: 0;\n  position: relative;\n  vertical-align: middle;\n}\n.rc-select ul,\n.rc-select li {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n.rc-select > ul > li > a {\n  padding: 0;\n  background-color: #fff;\n}\n.rc-select .rc-select-arrow {\n  height: 26px;\n  position: absolute;\n  top: 1px;\n  right: 1px;\n  width: 20px;\n}\n.rc-select .rc-select-arrow b {\n  border-color: #888 transparent transparent transparent;\n  border-style: solid;\n  border-width: 5px 4px 0 4px;\n  height: 0;\n  left: 50%;\n  margin-left: -4px;\n  margin-top: -2px;\n  position: absolute;\n  top: 50%;\n  width: 0;\n}\n.rc-select .rc-select-selection--single {\n  box-sizing: border-box;\n  cursor: pointer;\n  display: block;\n  height: 28px;\n  -moz-user-select: none;\n   -ms-user-select: none;\n       user-select: none;\n  -webkit-user-select: none;\n  background-color: #fff;\n  border: 1px solid #aaa;\n  border-radius: 4px;\n}\n.rc-select .rc-select-selection--single .rc-select-selection__rendered {\n  display: block;\n  overflow: hidden;\n  padding-left: 8px;\n  padding-right: 20px;\n  text-overflow: ellipsis;\n  color: #444;\n  line-height: 28px;\n}\n.rc-select .rc-select-selection--single .rc-select-selection__clear {\n  cursor: pointer;\n  float: right;\n  font-weight: bold;\n}\n.rc-select .rc-select-selection--multiple {\n  box-sizing: border-box;\n  display: block;\n  min-height: 32px;\n  -moz-user-select: none;\n   -ms-user-select: none;\n       user-select: none;\n  -webkit-user-select: none;\n  background-color: white;\n  border: 1px solid #aaa;\n  border-radius: 4px;\n  cursor: text;\n}\n.rc-select .rc-select-selection--multiple .rc-select-selection__rendered {\n  display: inline-block;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  padding-left: 8px;\n}\n.rc-select .rc-select-selection--multiple .rc-select-selection__clear {\n  cursor: pointer;\n  float: right;\n  font-weight: bold;\n  margin-top: 5px;\n  margin-right: 10px;\n}\n.rc-select .rc-select-selection--multiple .rc-select-selection__choice {\n  background-color: #e4e4e4;\n  border: 1px solid #aaa;\n  border-radius: 4px;\n  cursor: default;\n  float: left;\n  margin-right: 5px;\n  margin-top: 5px;\n  padding: 0 5px;\n}\n.rc-select .rc-select-selection--multiple .rc-select-selection__choice__remove {\n  color: #999;\n  cursor: pointer;\n  display: inline-block;\n  font-weight: bold;\n  margin-right: 2px;\n}\n.rc-select .rc-select-selection--multiple .rc-select-selection__choice__remove:hover {\n  color: #333;\n}\n.rc-select .rc-select-search--inline {\n  float: left;\n}\n.rc-select .rc-select-search--inline .rc-select-search__field {\n  border: none;\n  font-size: 100%;\n  margin-top: 5px;\n  background: transparent;\n  outline: 0;\n}\n.rc-select-dropdown {\n  display: none;\n  background-color: white;\n  border: 1px solid #aaa;\n  border-radius: 4px;\n  box-sizing: border-box;\n  width: 100%;\n  z-index: 100;\n  border-top: none;\n  border-top-left-radius: 0;\n  border-top-right-radius: 0;\n  position: absolute;\n  top: 100%;\n  marin-top: -1px;\n}\n.rc-select-dropdown .rc-select-menu-item[aria-selected=true] {\n  background-color: #ddd;\n}\n.rc-select-search--dropdown {\n  display: block;\n  padding: 4px;\n}\n.rc-select-search--dropdown .rc-select-search__field {\n  padding: 4px;\n  width: 100%;\n  box-sizing: border-box;\n  border: 1px solid #aaa;\n}\n.rc-select-search--dropdown.rc-select-search--hide {\n  display: none;\n}\n.rc-select-open .rc-select-arrow b {\n  border-color: transparent transparent #888 transparent;\n  border-width: 0 4px 5px 4px;\n}\n.rc-select-open .rc-select-dropdown {\n  display: block;\n}\n.rc-select-open .rc-select-selection {\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.rc-select-menu {\n  outline: none;\n  margin-bottom: 0;\n  padding-left: 0;\n  list-style: none;\n  z-index: 99999;\n}\n.rc-select-menu .rc-select-menu-item-active,\n.rc-select-menu .rc-select-menu-submenu-active {\n  background-color: #8EC8F9 !important;\n}\n.rc-select-menu > li {\n  position: relative;\n  display: block;\n  padding: 15px 20px;\n  white-space: nowrap;\n}\n.rc-select-menu > li.rc-select-menu-item-disabled,\n.rc-select-menu > li.rc-select-menu-submenu-disabled {\n  color: #777;\n}\n.rc-select-menu .rc-select-menu-item-divider {\n  padding: 0;\n  height: 1px;\n  margin: 9px 0;\n  overflow: hidden;\n  background-color: #e5e5e5;\n}\n", ""]);
 
 /***/ },
 /* 9 */
-/*!*****************************************!*\
-  !*** ./~/css-loader!./assets/index.css ***!
-  \*****************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(/*! ./~/css-loader/cssToString.js */ 15)();
-	exports.push([module.id, ".rc-select {\n  box-sizing: border-box;\n  display: block;\n  margin: 0;\n  position: relative;\n  vertical-align: middle;\n}\n.rc-select > ul > li > a {\n  padding: 0;\n  background-color: #fff;\n}\n.rc-select .rc-select-arrow {\n  height: 26px;\n  position: absolute;\n  top: 1px;\n  right: 1px;\n  width: 20px;\n}\n.rc-select .rc-select-arrow b {\n  border-color: #888 transparent transparent transparent;\n  border-style: solid;\n  border-width: 5px 4px 0 4px;\n  height: 0;\n  left: 50%;\n  margin-left: -4px;\n  margin-top: -2px;\n  position: absolute;\n  top: 50%;\n  width: 0;\n}\n.rc-select .rc-select-selection--single {\n  box-sizing: border-box;\n  cursor: pointer;\n  display: block;\n  height: 28px;\n  -moz-user-select: none;\n   -ms-user-select: none;\n       user-select: none;\n  -webkit-user-select: none;\n  background-color: #fff;\n  border: 1px solid #aaa;\n  border-radius: 4px;\n}\n.rc-select .rc-select-selection--single .rc-select-selection__rendered {\n  display: block;\n  overflow: hidden;\n  padding-left: 8px;\n  padding-right: 20px;\n  text-overflow: ellipsis;\n  color: #444;\n  line-height: 28px;\n}\n.rc-select .rc-select-selection--single .rc-select-selection__clear {\n  cursor: pointer;\n  float: right;\n  font-weight: bold;\n}\n.rc-select .rc-select-selection--multiple {\n  box-sizing: border-box;\n  display: block;\n  min-height: 32px;\n  -moz-user-select: none;\n   -ms-user-select: none;\n       user-select: none;\n  -webkit-user-select: none;\n  background-color: white;\n  border: 1px solid #aaa;\n  border-radius: 4px;\n  cursor: text;\n}\n.rc-select .rc-select-selection--multiple .rc-select-selection__rendered {\n  display: inline-block;\n  overflow: hidden;\n  padding-left: 8px;\n  text-overflow: ellipsis;\n}\n.rc-select .rc-select-selection--multiple .rc-select-selection__clear {\n  cursor: pointer;\n  float: right;\n  font-weight: bold;\n  margin-top: 5px;\n  margin-right: 10px;\n}\n.rc-select .rc-select-selection--multiple .rc-select-selection__choice {\n  background-color: #e4e4e4;\n  border: 1px solid #aaa;\n  border-radius: 4px;\n  cursor: default;\n  float: left;\n  margin-right: 5px;\n  margin-top: 5px;\n  padding: 0 5px;\n}\n.rc-select .rc-select-selection--multiple .rc-select-selection__choice__remove {\n  color: #999;\n  cursor: pointer;\n  display: inline-block;\n  font-weight: bold;\n  margin-right: 2px;\n}\n.rc-select .rc-select-selection--multiple .rc-select-selection__choice__remove:hover {\n  color: #333;\n}\n.rc-select .rc-select-search--inline {\n  float: left;\n}\n.rc-select .rc-select-search--inline .rc-select-search__field {\n  border: none;\n  font-size: 100%;\n  margin-top: 5px;\n  background: transparent;\n  outline: 0;\n}\n.rc-select-dropdown {\n  display: none;\n  background-color: white;\n  border: 1px solid #aaa;\n  border-radius: 4px;\n  box-sizing: border-box;\n  width: 100%;\n  z-index: 100;\n  border-top: none;\n  border-top-left-radius: 0;\n  border-top-right-radius: 0;\n  position: absolute;\n  top: 100%;\n  marin-top: -1px;\n}\n.rc-select-dropdown .rc-select-menu-item[aria-selected=true] {\n  background-color: #ddd;\n}\n.rc-select-search--dropdown {\n  display: block;\n  padding: 4px;\n}\n.rc-select-search--dropdown .rc-select-search__field {\n  padding: 4px;\n  width: 100%;\n  box-sizing: border-box;\n  border: 1px solid #aaa;\n}\n.rc-select-search--dropdown.rc-select-search--hide {\n  display: none;\n}\n.rc-select-open .rc-select-arrow b {\n  border-color: transparent transparent #888 transparent;\n  border-width: 0 4px 5px 4px;\n}\n.rc-select-open .rc-select-dropdown {\n  display: block;\n}\n.rc-select-open .rc-select-selection {\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.rc-select-menu {\n  outline: none;\n  margin-bottom: 0;\n  padding-left: 0;\n  list-style: none;\n  z-index: 99999;\n}\n.rc-select-menu .rc-select-menu-item-active,\n.rc-select-menu .rc-select-menu-submenu-active {\n  background-color: #8EC8F9 !important;\n}\n.rc-select-menu > li {\n  position: relative;\n  display: block;\n  padding: 15px 20px;\n  white-space: nowrap;\n}\n.rc-select-menu > li.rc-select-menu-item-disabled,\n.rc-select-menu > li.rc-select-menu-submenu-disabled {\n  color: #777;\n}\n.rc-select-menu .rc-select-menu-item-divider {\n  padding: 0;\n  height: 1px;\n  margin: 9px 0;\n  overflow: hidden;\n  background-color: #e5e5e5;\n}\n", ""]);
-
-/***/ },
-/* 10 */
-/*!************************************!*\
-  !*** ./~/rc-menu/assets/index.css ***!
-  \************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
+
 	// load the styles
-	var content = __webpack_require__(/*! !./~/css-loader!./~/rc-menu/assets/index.css */ 11);
+	var content = __webpack_require__(10);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(/*! ./~/style-loader/addStyles.js */ 14)(content, {});
+	var update = __webpack_require__(13)(content, {});
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
-		module.hot.accept("!!/Users/yiminghe/code/react-components/select/node_modules/css-loader/index.js!/Users/yiminghe/code/react-components/select/node_modules/rc-menu/assets/index.css", function() {
-			var newContent = require("!!/Users/yiminghe/code/react-components/select/node_modules/css-loader/index.js!/Users/yiminghe/code/react-components/select/node_modules/rc-menu/assets/index.css");
+		module.hot.accept("!!/Users/yiminghe/code/react-components/select/node_modules/rc-tools/node_modules/css-loader/index.js!/Users/yiminghe/code/react-components/select/node_modules/rc-menu/assets/index.css", function() {
+			var newContent = require("!!/Users/yiminghe/code/react-components/select/node_modules/rc-tools/node_modules/css-loader/index.js!/Users/yiminghe/code/react-components/select/node_modules/rc-menu/assets/index.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -215,60 +165,58 @@
 	}
 
 /***/ },
-/* 11 */
-/*!***************************************************!*\
-  !*** ./~/css-loader!./~/rc-menu/assets/index.css ***!
-  \***************************************************/
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(/*! ./~/css-loader/cssToString.js */ 15)();
-	exports.push([module.id, ".rc-menu{outline:none;margin-bottom:0;padding-left:0;list-style:none;z-index:99999;border:1px solid rgba(0,0,0,0.15);border-radius:3px}.rc-menu .rc-menu-item-active,.rc-menu .rc-menu-submenu-active{background-color:#8EC8F9 !important}.rc-menu .rc-menu-item-selected{background-color:#008080}.rc-menu .rc-menu-submenu-title{padding:15px 20px}.rc-menu>li.rc-menu-submenu{padding:0}.rc-menu>li{position:relative;display:block;padding:15px 20px;white-space:nowrap}.rc-menu>li.rc-menu-item-disabled,.rc-menu>li.rc-menu-submenu-disabled{color:#777}.rc-menu .rc-menu-item-divider{padding:0;height:1px;margin:9px 0;overflow:hidden;background-color:#e5e5e5}.rc-menu-submenu{position:relative}.rc-menu-submenu>.rc-menu{display:none;position:absolute;top:0;left:100%;min-width:160px;background-color:#fff}.rc-menu-submenu-open>.rc-menu{display:block}", ""]);
+	exports = module.exports = __webpack_require__(14)();
+	exports.push([module.id, ".rc-menu {\n  outline: none;\n  margin-bottom: 0;\n  padding-left: 0;\n  list-style: none;\n  z-index: 99999;\n  border: 1px solid rgba(0, 0, 0, 0.15);\n  border-radius: 3px;\n}\n.rc-menu .rc-menu-item-active,\n.rc-menu .rc-menu-submenu-active {\n  background-color: #8EC8F9 !important;\n}\n.rc-menu .rc-menu-item-selected {\n  background-color: #008080;\n}\n.rc-menu .rc-menu-submenu-title {\n  padding: 15px 20px;\n}\n.rc-menu > li.rc-menu-submenu {\n  padding: 0;\n}\n.rc-menu > li {\n  position: relative;\n  display: block;\n  padding: 15px 20px;\n  white-space: nowrap;\n}\n.rc-menu > li.rc-menu-item-disabled,\n.rc-menu > li.rc-menu-submenu-disabled {\n  color: #777;\n}\n.rc-menu .rc-menu-item-divider {\n  padding: 0;\n  height: 1px;\n  margin: 9px 0;\n  overflow: hidden;\n  background-color: #e5e5e5;\n}\n.rc-menu-submenu {\n  position: relative;\n}\n.rc-menu-submenu > .rc-menu {\n  display: none;\n  position: absolute;\n  top: 0;\n  left: 100%;\n  min-width: 160px;\n  background-color: #fff;\n}\n.rc-menu-submenu-open > .rc-menu {\n  display: block;\n}\n", ""]);
 
 /***/ },
-/* 12 */
-/*!***********************!*\
-  !*** ./lib/Select.js ***!
-  \***********************/
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */
-	
+
 	/**
-	 *Select
+	 * Select
 	 */
-	var React = __webpack_require__(/*! react */ 4);
-	var rcUtil = __webpack_require__(/*! rc-util */ 17);
+	var React = __webpack_require__(5);
+	var rcUtil = __webpack_require__(16);
 	var joinClasses = rcUtil.joinClasses;
 	var classSet = rcUtil.classSet;
 	var KeyCode = rcUtil.KeyCode;
-	var Menu = __webpack_require__(/*! rc-menu */ 16);
+	var Menu = __webpack_require__(15);
 	var MenuItem = Menu.Item;
-	
+
+	function isMultipleOrTags(props) {
+	  return props.multiple || props.tags;
+	}
+
 	function noop() {
 	}
-	
-	function getKeyFromOptionChild(child) {
+
+	function getValueFromOptionChild(child) {
 	  var optionProps = child.props;
 	  var children = optionProps.children;
-	  var ret = child.key || undefined;
-	  if (!ret) {
+	  var ret;
+	  if (optionProps.value !== undefined) {
 	    if (typeof optionProps.value === 'string') {
 	      ret = optionProps.value;
-	    } else if (React.isValidElement(children)) {
-	      if (typeof children.props.children === 'string') {
-	        ret = children.props.children;
-	      }
 	    }
+	  } else if (typeof children === 'string') {
+	    ret = children;
 	  }
 	  if (!ret && !child.props.disabled) {
-	    throw new Error('please set key on Option element!');
+	    throw new Error('must set value string on Option element!');
 	  }
+
 	  return ret;
 	}
-	
+
 	function getPropsFromOption(child) {
 	  var ret = {
-	    key: getKeyFromOptionChild(child)
+	    key: getValueFromOptionChild(child),
+	    value: getValueFromOptionChild(child)
 	  };
 	  var optionProps = child.props;
 	  for (var i in optionProps) {
@@ -278,7 +226,7 @@
 	  }
 	  return ret;
 	}
-	
+
 	function normValue(value) {
 	  if (value === undefined) {
 	    value = [];
@@ -287,59 +235,82 @@
 	  }
 	  return value;
 	}
-	
-	var Select = React.createClass({displayName: "Select",
-	  propTypes: {
-	    multiple: React.PropTypes.bool,
-	    onChange: React.PropTypes.func
-	  },
-	
-	  getDefaultProps: function () {
-	    return {
-	      prefixCls: 'rc-select',
-	      allowClear: true,
-	      onChange: noop,
-	      notFoundContent: 'Not Found'
-	    };
-	  },
-	
-	  getInitialState: function () {
-	    return {
-	      value: normValue(this.props.value),
+
+	var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____Class0.hasOwnProperty(____Class0____Key)){Select[____Class0____Key]=____Class0[____Class0____Key];}}var ____SuperProtoOf____Class0=____Class0===null?null:____Class0.prototype;Select.prototype=Object.create(____SuperProtoOf____Class0);Select.prototype.constructor=Select;Select.__superConstructor__=____Class0;
+	  function Select(props) {"use strict";
+	    ____Class0.call(this,props);
+	    this.state = {
+	      value: normValue(props.value),
 	      inputValue: ''
 	    };
-	  },
-	
-	  componentWillReceiveProps: function (nextProps) {
+	    ['handleClick',
+	      'handleKeyDown',
+	      'handleInputKeyDown',
+	      'handleInputChange',
+	      'handleFocus',
+	      'handleBlur',
+	      'handleClearSelection',
+	      'handleMenuSelect',
+	      'handleMenuDeselect'].forEach(function(m) {
+	        this[m] = this[m].bind(this);
+	      }.bind(this));
+	  }
+
+	  Object.defineProperty(Select.prototype,"componentWillReceiveProps",{writable:true,configurable:true,value:function(nextProps) {"use strict";
 	    this.setState({
 	      value: normValue(nextProps.value)
 	    });
-	  },
-	
-	  _getFilterList: function (searchText) {
+	  }});
+
+	  Object.defineProperty(Select.prototype,"renderFilterOptions",{writable:true,configurable:true,value:function() {"use strict";
+	    var inputValue = this.state.inputValue;
 	    var sel = [];
-	    React.Children.forEach(this.props.children, function (child) {
-	      if (!searchText || !child.props.disabled && getKeyFromOptionChild(child).indexOf(searchText) > -1) {
+	    var props = this.props;
+	    var childrenKeys = [];
+	    React.Children.forEach(props.children, function(child) {
+	      if (!inputValue || !child.props.disabled && getValueFromOptionChild(child).indexOf(inputValue) > -1) {
 	        sel.push(child);
 	      }
-	    });
-	    return sel;
-	  },
-	
-	  setOpenState: function (open) {
-	    var self = this;
-	    this.setState({
-	      open: open
-	    }, function () {
-	      if (open || self.props.multiple || self.props.combobox) {
-	        self.refs.input.getDOMNode().focus();
-	      } else {
-	        self.refs.selection.getDOMNode().focus();
+	      if (!child.props.disabled) {
+	        childrenKeys.push(getValueFromOptionChild(child));
 	      }
 	    });
-	  },
-	
-	  handleInputChange: function (e) {
+	    if (props.tags) {
+	      var value = this.state.value || [];
+	      value = value.filter(function(v) {
+	        return childrenKeys.indexOf(v) === -1 && (!inputValue || v.indexOf(inputValue) > -1);
+	      });
+	      sel = sel.concat(value.map(function(v) {
+	        return React.createElement(MenuItem, {value: v}, v);
+	      }));
+	      if (inputValue) {
+	        var notFindInputItem = sel.every(function(s) {
+	          return getValueFromOptionChild(s) !== inputValue;
+	        });
+	        if (notFindInputItem) {
+	          sel.unshift(React.createElement(MenuItem, {value: inputValue}, inputValue));
+	        }
+	      }
+	    }
+	    if (!sel.length) {
+	      sel = React.createElement(MenuItem, {disabled: true, value: "NOT_FOUND"}, props.notFoundContent);
+	    }
+	    return sel;
+	  }});
+
+	  Object.defineProperty(Select.prototype,"setOpenState",{writable:true,configurable:true,value:function(open) {"use strict";
+	    this.setState({
+	      open: open
+	    }, function() {
+	      if (open || isMultipleOrTags(this.props) || this.props.combobox) {
+	        this.refs.input.getDOMNode().focus();
+	      } else {
+	        this.refs.selection.getDOMNode().focus();
+	      }
+	    }.bind(this));
+	  }});
+
+	  Object.defineProperty(Select.prototype,"handleInputChange",{writable:true,configurable:true,value:function(e) {"use strict";
 	    var val = e.target.value;
 	    this.setState({
 	      inputValue: val,
@@ -351,22 +322,22 @@
 	      });
 	      this.props.onChange(val);
 	    }
-	  },
-	
-	  handleClick: function () {
+	  }});
+
+	  Object.defineProperty(Select.prototype,"handleClick",{writable:true,configurable:true,value:function() {"use strict";
 	    this.setOpenState(!this.state.open);
-	  },
-	
+	  }});
+
 	  // combobox ignore
-	  handleKeyDown: function (e) {
+	  Object.defineProperty(Select.prototype,"handleKeyDown",{writable:true,configurable:true,value:function(e) {"use strict";
 	    var keyCode = e.keyCode;
 	    if (keyCode === KeyCode.ENTER || e.keyCode === KeyCode.DOWN) {
 	      this.handleClick(e);
 	      e.preventDefault();
 	    }
-	  },
-	
-	  handleInputKeyDown: function (e) {
+	  }});
+
+	  Object.defineProperty(Select.prototype,"handleInputKeyDown",{writable:true,configurable:true,value:function(e) {"use strict";
 	    if (e.keyCode === KeyCode.DOWN) {
 	      if (!this.state.open) {
 	        this.setState({
@@ -390,11 +361,11 @@
 	        e.stopPropagation();
 	      }
 	    }
-	  },
-	
-	  handleMenuSelect: function (key, item) {
+	  }});
+
+	  Object.defineProperty(Select.prototype,"handleMenuSelect",{writable:true,configurable:true,value:function(key, item) {"use strict";
 	    var value;
-	    if (this.props.multiple) {
+	    if (isMultipleOrTags(this.props)) {
 	      value = this.state.value.concat();
 	      value.push(item.props.value);
 	    } else {
@@ -404,7 +375,7 @@
 	      }
 	      value = [item.props.value];
 	    }
-	    this.props.onChange(this.props.multiple ? value : value[0]);
+	    this.props.onChange(isMultipleOrTags(this.props) ? value : value[0]);
 	    this.setState({
 	      value: value,
 	      inputValue: ''
@@ -415,122 +386,67 @@
 	        inputValue: value[0]
 	      });
 	    }
-	  },
-	
-	  handleMenuDeselect: function (key, item) {
-	    this.removeSelected(item.props.value);
-	    this.setOpenState(false);
-	  },
-	
-	  handleBlur: function () {
-	    //return;
-	    var self = this;
-	    if (this._blurTimer) {
-	      clearTimeout(this._blurTimer);
+	  }});
+
+	  Object.defineProperty(Select.prototype,"handleMenuDeselect",{writable:true,configurable:true,value:function(key, item, e) {"use strict";
+	    if (e.type === 'click') {
+	      this.removeSelected(item.props.value);
 	    }
-	    this._blurTimer = setTimeout(function () {
-	      self.setState({
+	    this.setState({
+	      inputValue: ''
+	    });
+	    this.setOpenState(false);
+	  }});
+
+	  Object.defineProperty(Select.prototype,"handleBlur",{writable:true,configurable:true,value:function() {"use strict";
+	    if (this.$Select_blurTimer) {
+	      clearTimeout(this.$Select_blurTimer);
+	    }
+	    this.$Select_blurTimer = setTimeout(function()  {
+	      this.setState({
 	        open: false
 	      });
-	    }, 100);
-	  },
-	
-	  handleFocus: function () {
-	    if (this._blurTimer) {
-	      clearTimeout(this._blurTimer);
+	    }.bind(this), 100);
+	  }});
+
+	  Object.defineProperty(Select.prototype,"handleFocus",{writable:true,configurable:true,value:function() {"use strict";
+	    if (this.$Select_blurTimer) {
+	      clearTimeout(this.$Select_blurTimer);
 	    }
-	  },
-	
-	  removeSelected: function (value) {
-	    value = this.state.value.filter(function (v) {
+	  }});
+
+	  Object.defineProperty(Select.prototype,"removeSelected",{writable:true,configurable:true,value:function(value) {"use strict";
+	    value = this.state.value.filter(function(v) {
 	      return v !== value;
 	    });
-	    this.props.onChange(this.props.multiple ? value : value[0]);
+	    this.props.onChange(isMultipleOrTags(this.props) ? value : value[0]);
 	    this.setState({
 	      value: value
 	    });
-	  },
-	
-	  handleClearSelection: function (e) {
+	  }});
+
+	  Object.defineProperty(Select.prototype,"handleClearSelection",{writable:true,configurable:true,value:function(e) {"use strict";
 	    e.stopPropagation();
 	    if (this.state.value.length) {
-	      this.props.onChange(this.props.multiple ? [] : undefined);
+	      this.props.onChange(isMultipleOrTags(this.props) ? [] : undefined);
 	      this.setState({
 	        value: [],
 	        inputValue: ''
 	      });
 	    }
 	    this.setOpenState(false);
-	  },
-	
-	  render: function () {
-	    var props = this.props;
-	    var multiple = props.multiple;
-	    var prefixCls = props.prefixCls;
-	
-	    var input = (
-	      React.createElement("input", {ref: "input", 
-	        onChange: this.handleInputChange, 
-	        onKeyDown: this.handleInputKeyDown, 
-	        value: this.state.inputValue, 
-	        className: prefixCls + '-search__field', 
-	        role: "textbox"})
-	    );
-	
-	    var children = this._getFilterList(this.state.inputValue);
-	    if (!children.length) {
-	      children = React.createElement(MenuItem, {disabled: true}, props.notFoundContent);
-	    }
-	
-	    var ctrlNode = this.getTopControlNode(input);
-	    var dropDown;
-	    if (this.state.open) {
-	      // single and not combobox, input is inside dropdown
-	      dropDown = React.createElement("span", {className: joinClasses(prefixCls + '-dropdown', prefixCls + '-dropdown--below'), tabIndex: "-1"}, 
-	      multiple || props.combobox ? null : React.createElement("span", {className: joinClasses(prefixCls + '-search', prefixCls + '-search--dropdown')}, input), 
-	        this.renderMenu(children)
-	      );
-	    }
-	
-	    var extraSelectionProps = {};
-	    if (!props.combobox) {
-	      extraSelectionProps = {
-	        onKeyDown: this.handleKeyDown,
-	        tabIndex: 0
-	      };
-	    }
-	
-	    return this.renderRoot([
-	      React.createElement("span", React.__spread({ref: "selection", 
-	        className: joinClasses(prefixCls + '-selection',
-	          prefixCls + '-selection--' + (multiple ? 'multiple' : 'single')), 
-	        role: "combobox", 
-	        "aria-autocomplete": "list", 
-	        onClick: this.handleClick, 
-	        "aria-haspopup": "true", 
-	        "aria-expanded": this.state.open}, 
-	      extraSelectionProps
-	      ), 
-	        ctrlNode, 
-	        multiple ? null :
-	          React.createElement("span", {className: prefixCls + '-arrow'}, 
-	            React.createElement("b", null)
-	          )
-	      ),
-	      dropDown
-	    ]);
-	  },
-	
-	  renderMenu: function (children) {
+	  }});
+
+	  Object.defineProperty(Select.prototype,"renderMenu",{writable:true,configurable:true,value:function(children) {"use strict";
 	    var props = this.props;
 	    var menuProps = {};
-	    if (props.multiple) {
+	    if (isMultipleOrTags(props)) {
 	      menuProps.onDeselect = this.handleMenuDeselect;
 	    }
 	    var value = this.state.value;
 	    var menuItems = React.Children.map(children, this.renderOption);
 	    var selectedKeys = [];
-	    React.Children.forEach(menuItems, function (item) {
+	    React.Children.forEach(menuItems, function(item)  {
 	      if (value.indexOf(item.props.value) !== -1) {
 	        selectedKeys.push(item.key);
 	      }
@@ -544,17 +460,16 @@
 	      onSelect: this.handleMenuSelect, 
 	      activeFirst: true, 
 	      activeKey: activeKey, 
-	      multiple: props.multiple, 
+	      multiple: isMultipleOrTags(props), 
 	      focusable: false}, 
 	      menuProps, 
 	      {selectedKeys: selectedKeys, 
 	      prefixCls: props.prefixCls + '-menu'}), 
 	          menuItems
 	    );
-	  },
-	
-	  getTopControlNode: function (input) {
-	    var self = this;
+	  }});
+
+	  Object.defineProperty(Select.prototype,"renderTopControlNode",{writable:true,configurable:true,value:function(input) {"use strict";
 	    var value = this.state.value;
 	    var prefixCls = this.props.prefixCls;
 	    var allowClear = this.props.allowClear;
@@ -562,35 +477,35 @@
 	      onClick: this.handleClearSelection}, "×");
 	    var props = this.props;
 	    // single and not combobox, input is inside dropdown
-	    if (!props.combobox && !props.multiple) {
+	    if (!props.combobox && !isMultipleOrTags(props)) {
 	      return React.createElement("span", {className: prefixCls + '-selection__rendered'}, 
 	          value[0], 
 	          allowClear ? clear : null
 	      );
 	    }
 	    var selectedValueNodes;
-	    if (props.multiple) {
-	      selectedValueNodes = value.map(function (v) {
+	    if (isMultipleOrTags(props)) {
+	      selectedValueNodes = value.map(function(v)  {
 	        return (
 	          React.createElement("li", {className: prefixCls + '-selection__choice'}, 
 	            React.createElement("span", {className: prefixCls + '-selection__choice__remove', 
-	              onClick: self.removeSelected.bind(self, v)
+	              onClick: this.removeSelected.bind(this, v)
 	            }, "×"), 
 	           v
 	          )
 	        );
-	      });
+	      }.bind(this));
 	    }
 	    return (
 	      React.createElement("ul", {className: prefixCls + '-selection__rendered'}, 
 	          selectedValueNodes, 
-	          allowClear && !props.multiple ? clear : null, 
+	          allowClear && !isMultipleOrTags(props) ? clear : null, 
 	        React.createElement("li", {className: joinClasses(prefixCls + '-search', prefixCls + '-search--inline')}, input)
 	      )
 	    );
-	  },
-	
-	  renderRoot: function (children) {
+	  }});
+
+	  Object.defineProperty(Select.prototype,"renderRoot",{writable:true,configurable:true,value:function(children) {"use strict";
 	    var props = this.props;
 	    var prefixCls = props.prefixCls;
 	    var rootCls = {};
@@ -605,45 +520,107 @@
 	        children
 	      )
 	    );
-	  },
-	
-	  renderOption: function (child) {
+	  }});
+
+	  Object.defineProperty(Select.prototype,"renderOption",{writable:true,configurable:true,value:function(child) {"use strict";
 	    var props = getPropsFromOption(child);
 	    return React.createElement(MenuItem, React.__spread({},  props), child.props.children);
-	  }
-	});
+	  }});
+
+	  Object.defineProperty(Select.prototype,"render",{writable:true,configurable:true,value:function() {"use strict";
+	    var props = this.props;
+	    var multiple = isMultipleOrTags(props);
+	    var state = this.state;
+	    var prefixCls = props.prefixCls;
+
+	    var input = (
+	      React.createElement("input", {ref: "input", 
+	        onChange: this.handleInputChange, 
+	        onKeyDown: this.handleInputKeyDown, 
+	        value: state.inputValue, 
+	        className: prefixCls + '-search__field', 
+	        role: "textbox"})
+	    );
+
+	    var children = this.renderFilterOptions();
+	    var ctrlNode = this.renderTopControlNode(input);
+	    var dropDown;
+	    if (state.open) {
+	      // single and not combobox, input is inside dropdown
+	      dropDown = React.createElement("span", {key: "dropdown", className: joinClasses(prefixCls + '-dropdown', prefixCls + '-dropdown--below'), tabIndex: "-1"}, 
+	      multiple || props.combobox ? null : React.createElement("span", {className: joinClasses(prefixCls + '-search', prefixCls + '-search--dropdown')}, input), 
+	        this.renderMenu(children)
+	      );
+	    }
+
+	    var extraSelectionProps = {};
+	    if (!props.combobox) {
+	      extraSelectionProps = {
+	        onKeyDown: this.handleKeyDown,
+	        tabIndex: 0
+	      };
+	    }
+
+	    return this.renderRoot([
+	      React.createElement("span", React.__spread({ref: "selection", 
+	        key: "selection", 
+	        className: joinClasses(prefixCls + '-selection',
+	          prefixCls + '-selection--' + (multiple ? 'multiple' : 'single')), 
+	        role: "combobox", 
+	        "aria-autocomplete": "list", 
+	        onClick: this.handleClick, 
+	        "aria-haspopup": "true", 
+	        "aria-expanded": state.open}, 
+	      extraSelectionProps
+	      ), 
+	        ctrlNode, 
+	        multiple ? null :
+	          React.createElement("span", {key: "arrow", className: prefixCls + '-arrow'}, 
+	            React.createElement("b", null)
+	          )
+	      ),
+	      dropDown
+	    ]);
+	  }});
+
+
+	Select.propTypes = {
+	  multiple: React.PropTypes.bool,
+	  tags: React.PropTypes.bool,
+	  onChange: React.PropTypes.func
+	};
+
+	Select.defaultProps = {
+	  prefixCls: 'rc-select',
+	  allowClear: true,
+	  onChange: noop,
+	  notFoundContent: 'Not Found'
+	};
+
 	module.exports = Select;
 
 
 /***/ },
-/* 13 */
-/*!***********************!*\
-  !*** ./lib/Option.js ***!
-  \***********************/
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */
-	
+
 	/**
-	* Option
-	*/
+	 * Option
+	 */
 	/*jshint -W079 */
-	var React = __webpack_require__(/*! react */ 4);
-	
-	var Option = React.createClass({displayName: "Option",
-	  propTypes: {
-	  },
-	  render: function () {
-	  }
-	});
-	
+	var React = __webpack_require__(5);
+
+	var ____Class1=React.Component;for(var ____Class1____Key in ____Class1){if(____Class1.hasOwnProperty(____Class1____Key)){Option[____Class1____Key]=____Class1[____Class1____Key];}}var ____SuperProtoOf____Class1=____Class1===null?null:____Class1.prototype;Option.prototype=Object.create(____SuperProtoOf____Class1);Option.prototype.constructor=Option;Option.__superConstructor__=____Class1;function Option(){"use strict";if(____Class1!==null){____Class1.apply(this,arguments);}}
+
+
+
 	module.exports = Option;
 
+
 /***/ },
-/* 14 */
-/*!*************************************!*\
-  !*** ./~/style-loader/addStyles.js ***!
-  \*************************************/
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -666,20 +643,20 @@
 		}),
 		singletonElement = null,
 		singletonCounter = 0;
-	
+
 	module.exports = function(list, options) {
-		if(true) {
+		if(false) {
 			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
 		}
-	
+
 		options = options || {};
 		// Force single-tag solution on IE9, which has a hard limit on the # of <style>
 		// tags it will allow on a page
 		if (typeof options.singleton === "undefined") options.singleton = isIE9();
-	
+
 		var styles = listToStyles(list);
 		addStylesToDom(styles, options);
-	
+
 		return function update(newList) {
 			var mayRemove = [];
 			for(var i = 0; i < styles.length; i++) {
@@ -702,7 +679,7 @@
 			}
 		};
 	}
-	
+
 	function addStylesToDom(styles, options) {
 		for(var i = 0; i < styles.length; i++) {
 			var item = styles[i];
@@ -724,7 +701,7 @@
 			}
 		}
 	}
-	
+
 	function listToStyles(list) {
 		var styles = [];
 		var newStyles = {};
@@ -742,7 +719,7 @@
 		}
 		return styles;
 	}
-	
+
 	function createStyleElement() {
 		var styleElement = document.createElement("style");
 		var head = getHeadElement();
@@ -750,10 +727,10 @@
 		head.appendChild(styleElement);
 		return styleElement;
 	}
-	
+
 	function addStyle(obj, options) {
 		var styleElement, update, remove;
-	
+
 		if (options.singleton) {
 			var styleIndex = singletonCounter++;
 			styleElement = singletonElement || (singletonElement = createStyleElement());
@@ -766,9 +743,9 @@
 				styleElement.parentNode.removeChild(styleElement);
 			};
 		}
-	
+
 		update(obj);
-	
+
 		return function updateStyle(newObj) {
 			if(newObj) {
 				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
@@ -779,7 +756,7 @@
 			}
 		};
 	}
-	
+
 	function replaceText(source, id, replacement) {
 		var boundaries = ["/** >>" + id + " **/", "/** " + id + "<< **/"];
 		var start = source.lastIndexOf(boundaries[0]);
@@ -793,10 +770,10 @@
 			return source + wrappedReplacement;
 		}
 	}
-	
+
 	function applyToSingletonTag(styleElement, index, remove, obj) {
 		var css = remove ? "" : obj.css;
-	
+
 		if(styleElement.styleSheet) {
 			styleElement.styleSheet.cssText = replaceText(styleElement.styleSheet.cssText, index, css);
 		} else {
@@ -810,23 +787,23 @@
 			}
 		}
 	}
-	
+
 	function applyToTag(styleElement, obj) {
 		var css = obj.css;
 		var media = obj.media;
 		var sourceMap = obj.sourceMap;
-	
+
 		if(sourceMap && typeof btoa === "function") {
 			try {
 				css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(JSON.stringify(sourceMap)) + " */";
 				css = "@import url(\"data:text/css;base64," + btoa(css) + "\")";
 			} catch(e) {}
 		}
-	
+
 		if(media) {
 			styleElement.setAttribute("media", media)
 		}
-	
+
 		if(styleElement.styleSheet) {
 			styleElement.styleSheet.cssText = css;
 		} else {
@@ -839,10 +816,7 @@
 
 
 /***/ },
-/* 15 */
-/*!*************************************!*\
-  !*** ./~/css-loader/cssToString.js ***!
-  \*************************************/
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function() {
@@ -863,168 +837,148 @@
 	}
 
 /***/ },
-/* 16 */
-/*!****************************!*\
-  !*** ./~/rc-menu/index.js ***!
-  \****************************/
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Menu = __webpack_require__(/*! ./lib/Menu */ 18);
-	Menu.SubMenu = __webpack_require__(/*! ./lib/SubMenu */ 19);
-	Menu.Item = __webpack_require__(/*! ./lib/MenuItem */ 20);
+	var Menu = __webpack_require__(17);
+	Menu.SubMenu = __webpack_require__(18);
+	Menu.Item = __webpack_require__(19);
 	module.exports = Menu;
 
 
 /***/ },
-/* 17 */
-/*!****************************!*\
-  !*** ./~/rc-util/index.js ***!
-  \****************************/
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
-	  guid: __webpack_require__(/*! ./lib/guid */ 21),
-	  classSet: __webpack_require__(/*! ./lib/classSet */ 22),
-	  joinClasses: __webpack_require__(/*! ./lib/joinClasses */ 23),
-	  KeyCode: __webpack_require__(/*! ./lib/KeyCode */ 24),
-	  PureRenderMixin: __webpack_require__(/*! ./lib/PureRenderMixin */ 25),
-	  shallowEqual: __webpack_require__(/*! ./lib/shallowEqual */ 26),
-	  createChainedFunction: __webpack_require__(/*! ./lib/createChainedFunction */ 27),
-	  cloneWithProps: __webpack_require__(/*! ./lib/cloneWithProps */ 28),
+	  guid: __webpack_require__(20),
+	  classSet: __webpack_require__(21),
+	  joinClasses: __webpack_require__(22),
+	  KeyCode: __webpack_require__(23),
+	  PureRenderMixin: __webpack_require__(24),
+	  shallowEqual: __webpack_require__(25),
+	  createChainedFunction: __webpack_require__(26),
 	  Dom: {
-	    addEventListener: __webpack_require__(/*! ./lib/Dom/addEventListener */ 29),
-	    contains: __webpack_require__(/*! ./lib/Dom/contains */ 30)
+	    addEventListener: __webpack_require__(27),
+	    contains: __webpack_require__(28)
 	  },
 	  Children: {
-	    toArray: __webpack_require__(/*! ./lib/Children/toArray */ 31)
+	    toArray: __webpack_require__(29)
 	  }
 	};
 
 
 /***/ },
-/* 18 */
-/*!*******************************!*\
-  !*** ./~/rc-menu/lib/Menu.js ***!
-  \*******************************/
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */
-	
-	var React = __webpack_require__(/*! react */ 4);
-	var joinClasses = __webpack_require__(/*! ./utils/joinClasses */ 32);
-	var classSet = __webpack_require__(/*! ./utils/classSet */ 33);
-	var cloneWithProps = __webpack_require__(/*! ./utils/cloneWithProps */ 34);
-	var createChainedFunction = __webpack_require__(/*! ./utils/createChainedFunction */ 35);
-	var assign = __webpack_require__(/*! ./utils/Object.assign */ 36);
-	var util = __webpack_require__(/*! ./utils/util */ 37);
-	var KeyCode = util.KeyCode;
-	var scrollIntoView = __webpack_require__(/*! dom-scroll-into-view */ 39);
-	
+
+	var React = __webpack_require__(5);
+	var rcUtil = __webpack_require__(16);
+	var joinClasses = rcUtil.joinClasses;
+	var classSet = rcUtil.classSet;
+	var createChainedFunction = rcUtil.createChainedFunction;
+	var assign = __webpack_require__(31);
+	var KeyCode = rcUtil.KeyCode;
+	var scrollIntoView = __webpack_require__(32);
+
 	function getActiveKey(props) {
 	  var activeKey = props.activeKey;
 	  var children = props.children;
-	  React.Children.forEach(children, function (c) {
-	    // make key persistent
-	    // menu setState => menu render => menu's generated newChildren does not cause children key change x=>x item mount and unmount
-	    c.props.eventKey = c.props.eventKey || c.key || util.guid();
+	  React.Children.forEach(children, function(c)  {
+	    if (!c.key && !c.props.disabled) {
+	      throw new Error('MenuItem must have key!');
+	    }
 	  });
 	  if (activeKey) {
 	    return activeKey;
 	  }
-	  React.Children.forEach(children, function (c) {
+	  React.Children.forEach(children, function(c) {
 	    if (c.props.active) {
-	      activeKey = c.props.eventKey;
+	      activeKey = c.key;
 	    }
 	  });
 	  if (!activeKey && props.activeFirst) {
-	    React.Children.forEach(children, function (c) {
+	    React.Children.forEach(children, function(c) {
 	      if (!activeKey && !c.props.disabled) {
-	        activeKey = c.props.eventKey;
+	        activeKey = c.key;
 	      }
 	    });
 	    return activeKey;
 	  }
 	  return activeKey;
 	}
-	
-	var Menu = React.createClass({displayName: "Menu",
-	  propTypes: {
-	    focusable: React.PropTypes.bool,
-	    multiple: React.PropTypes.bool,
-	    onSelect: React.PropTypes.func,
-	    onDeselect: React.PropTypes.func,
-	    activeFirst: React.PropTypes.bool,
-	    activeKey: React.PropTypes.string,
-	    selectedKeys: React.PropTypes.arrayOf(React.PropTypes.string)
-	  },
-	
-	  getDefaultProps: function () {
-	    return {
-	      prefixCls: 'rc-menu',
-	      focusable: true
+
+	function saveRef(name, c) {
+	  this.instances = this.instances || {};
+	  this.instances[name] = c;
+	}
+
+	var ____Class3=React.Component;for(var ____Class3____Key in ____Class3){if(____Class3.hasOwnProperty(____Class3____Key)){Menu[____Class3____Key]=____Class3[____Class3____Key];}}var ____SuperProtoOf____Class3=____Class3===null?null:____Class3.prototype;Menu.prototype=Object.create(____SuperProtoOf____Class3);Menu.prototype.constructor=Menu;Menu.__superConstructor__=____Class3;
+	  function Menu(props) {"use strict";
+	    ____Class3.call(this,props);
+	    this.state = {
+	      activeKey: getActiveKey.call(this, props),
+	      selectedKeys: props.selectedKeys || []
 	    };
-	  },
-	
-	  getInitialState: function () {
-	    return {
-	      activeKey: getActiveKey(this.props),
-	      selectedKeys: this.props.selectedKeys || []
-	    };
-	  },
-	
-	  componentWillReceiveProps: function (nextProps) {
+
+	    ['handleItemHover', 'handleDeselect', 'handleSelect', 'handleKeyDown', 'handleDestroy'].forEach(function(m) {
+	      this[m] = this[m].bind(this);
+	    }.bind(this));
+	  }
+
+	  Object.defineProperty(Menu.prototype,"componentWillReceiveProps",{writable:true,configurable:true,value:function(nextProps) {"use strict";
 	    this.setState({
-	      activeKey: getActiveKey(nextProps),
+	      activeKey: getActiveKey.call(this, nextProps),
 	      selectedKeys: nextProps.selectedKeys || []
 	    });
-	  },
-	
-	  getChildrenComponents: function () {
+	  }});
+
+	  Object.defineProperty(Menu.prototype,"getChildrenComponents",{writable:true,configurable:true,value:function() {"use strict";
 	    var ret = [];
-	    var self = this;
-	    this.newChildren.forEach(function (c) {
-	      ret.push(self.refs[c.ref]);
-	    });
+	    this.newChildren.forEach(function(c) {
+	      ret.push(this.instances[c.key]);
+	    }.bind(this));
 	    return ret;
-	  },
-	
+	  }});
+
 	  // all keyboard events callbacks run from here at first
-	  handleKeyDown: function (e) {
+	  Object.defineProperty(Menu.prototype,"handleKeyDown",{writable:true,configurable:true,value:function(e) {"use strict";
 	    var keyCode = e.keyCode;
 	    var handled;
-	    var self = this;
-	    this.newChildren.forEach(function (c) {
-	      var obj = self.refs[c.ref];
+	    this.newChildren.forEach(function(c) {
+	      var obj = this.instances[c.key];
 	      if (c.props.active) {
 	        handled = obj.handleKeyDown(e);
 	      }
-	    });
+	    }.bind(this));
 	    if (handled) {
 	      return true;
 	    }
 	    var activeKey;
 	    switch (keyCode) {
 	      case KeyCode.UP: //up
-	        activeKey = self.step(-1);
+	        activeKey = this.step(-1);
 	        break;
 	      case KeyCode.DOWN: //down
-	        activeKey = self.step(1);
+	        activeKey = this.step(1);
 	        break;
 	    }
 	    if (activeKey) {
 	      e.preventDefault();
 	      this.setState({
 	        activeKey: activeKey
-	      }, function () {
-	        scrollIntoView(self.refs[activeKey].getDOMNode(), self.getDOMNode(), {
+	      }, function() {
+	        scrollIntoView(React.findDOMNode(this.instances[activeKey]), React.findDOMNode(this), {
 	          onlyScrollIfNeeded: true
 	        });
-	      });
+	      }.bind(this));
 	      return true;
 	    }
-	  },
-	
-	  step: function (direction) {
+	  }});
+
+	  Object.defineProperty(Menu.prototype,"step",{writable:true,configurable:true,value:function(direction) {"use strict";
 	    var children = this.newChildren;
 	    var activeKey = this.state.activeKey;
 	    var len = children.length;
@@ -1033,7 +987,7 @@
 	    }
 	    // find current activeIndex
 	    var activeIndex = -1;
-	    children.every(function (c, i) {
+	    children.every(function(c, i) {
 	      if (c.key === activeKey) {
 	        activeIndex = i;
 	        return false;
@@ -1055,41 +1009,15 @@
 	        return key;
 	      }
 	    }
-	  },
-	
-	  handleItemHover: function (key) {
+	  }});
+
+	  Object.defineProperty(Menu.prototype,"handleItemHover",{writable:true,configurable:true,value:function(key) {"use strict";
 	    this.setState({
 	      activeKey: key
 	    });
-	  },
-	
-	  render: function () {
-	    var props = this.props;
-	    var classes = {};
-	    classes[props.prefixCls] = true;
-	    var domProps = {
-	      className: joinClasses(props.className, classSet(classes)),
-	      role: "menu",
-	      "aria-activedescendant": ""
-	    };
-	    if (props.id) {
-	      domProps.id = props.id;
-	    }
-	    if (props.focusable) {
-	      domProps.tabIndex = '0';
-	      domProps.onKeyDown = this.handleKeyDown;
-	    }
-	
-	    this.newChildren = util.toArray(props.children).map(this.renderMenuItem, this);
-	    return (
-	      React.createElement("ul", React.__spread({}, 
-	        domProps), 
-	      this.newChildren
-	      )
-	    );
-	  },
-	
-	  handleSelect: function (key, child) {
+	  }});
+
+	  Object.defineProperty(Menu.prototype,"handleSelect",{writable:true,configurable:true,value:function(key, child, e) {"use strict";
 	    var props = this.props;
 	    // not from submenu
 	    if (!props.sub) {
@@ -1098,7 +1026,7 @@
 	        if (selectedDescendant) {
 	          if (selectedDescendant !== child) {
 	            var selectedDescendantProps = selectedDescendant.props;
-	            selectedDescendantProps.onDeselect(selectedDescendantProps.eventKey, selectedDescendant);
+	            selectedDescendantProps.onDeselect(selectedDescendantProps.eventKey, selectedDescendant, e);
 	          }
 	        }
 	        this.selectedDescendant = child;
@@ -1118,11 +1046,11 @@
 	      });
 	    }
 	    if (props.onSelect) {
-	      props.onSelect(key, child);
+	      props.onSelect(key, child, e);
 	    }
-	  },
-	
-	  handleDeselect: function (key, child) {
+	  }});
+
+	  Object.defineProperty(Menu.prototype,"handleDeselect",{writable:true,configurable:true,value:function(key, child, e) {"use strict";
 	    var state = this.state;
 	    var selectedKeys = state.selectedKeys;
 	    // my children
@@ -1136,11 +1064,11 @@
 	      }
 	    }
 	    if (this.props.onDeselect) {
-	      this.props.onDeselect(key, child);
+	      this.props.onDeselect(key, child, e);
 	    }
-	  },
-	
-	  handleDestroy: function (key) {
+	  }});
+
+	  Object.defineProperty(Menu.prototype,"handleDestroy",{writable:true,configurable:true,value:function(key) {"use strict";
 	    var state = this.state;
 	    var selectedKeys = state.selectedKeys;
 	    var index = selectedKeys.indexOf(key);
@@ -1150,20 +1078,20 @@
 	        selectedKeys: state.selectedKeys
 	      });
 	    }
-	  },
-	
-	  renderMenuItem: function (child) {
-	    var key = child.props.eventKey;
+	  }});
+
+	  Object.defineProperty(Menu.prototype,"renderMenuItem",{writable:true,configurable:true,value:function(child) {"use strict";
+	    var key = child.key;
 	    var state = this.state;
 	    var props = this.props;
 	    var baseProps = {
 	      rootPrefixCls: props.prefixCls,
-	      ref: key,
-	      key: key
+	      ref: createChainedFunction(child.ref, saveRef.bind(this, key)),
+	      eventKey: key
 	    };
 	    var childProps = child.props;
 	    if (childProps.disabled) {
-	      return cloneWithProps(child, baseProps);
+	      return React.cloneElement(child, baseProps);
 	    }
 	    var newProps = {
 	      onHover: this.handleItemHover,
@@ -1175,77 +1103,119 @@
 	      onSelect: createChainedFunction(childProps.onSelect, this.handleSelect)
 	    };
 	    assign(newProps, baseProps);
-	    return cloneWithProps(child, newProps);
-	  }
-	});
-	
+	    return React.cloneElement(child, newProps);
+	  }});
+
+	  Object.defineProperty(Menu.prototype,"render",{writable:true,configurable:true,value:function() {"use strict";
+	    var props = this.props;
+	    var classes = {};
+	    classes[props.prefixCls] = true;
+	    var domProps = {
+	      className: joinClasses(props.className, classSet(classes)),
+	      role: "menu",
+	      "aria-activedescendant": ""
+	    };
+	    if (props.id) {
+	      domProps.id = props.id;
+	    }
+	    if (props.focusable) {
+	      domProps.tabIndex = '0';
+	      domProps.onKeyDown = this.handleKeyDown;
+	    }
+
+	    this.newChildren = rcUtil.Children.toArray(props.children).map(this.renderMenuItem, this);
+	    return (
+	      React.createElement("ul", React.__spread({}, 
+	        domProps), 
+	      this.newChildren
+	      )
+	    );
+	  }});
+
+
+	Menu.propTypes = {
+	  focusable: React.PropTypes.bool,
+	  multiple: React.PropTypes.bool,
+	  onSelect: React.PropTypes.func,
+	  onDeselect: React.PropTypes.func,
+	  activeFirst: React.PropTypes.bool,
+	  activeKey: React.PropTypes.string,
+	  selectedKeys: React.PropTypes.arrayOf(React.PropTypes.string)
+	};
+
+	Menu.defaultProps = {
+	  prefixCls: 'rc-menu',
+	  focusable: true
+	};
+
 	module.exports = Menu;
 
 
 /***/ },
-/* 19 */
-/*!**********************************!*\
-  !*** ./~/rc-menu/lib/SubMenu.js ***!
-  \**********************************/
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */
-	
-	var React = __webpack_require__(/*! react */ 4);
-	var joinClasses = __webpack_require__(/*! ./utils/joinClasses */ 32);
-	var classSet = __webpack_require__(/*! ./utils/classSet */ 33);
-	var cloneWithProps = __webpack_require__(/*! ./utils/cloneWithProps */ 34);
-	var util = __webpack_require__(/*! ./utils/util */ 37);
-	var KeyCode = util.KeyCode;
-	var Menu = __webpack_require__(/*! ./Menu */ 18);
-	
+
+	var React = __webpack_require__(5);
+	var rcUtil = __webpack_require__(16);
+	var joinClasses = rcUtil.joinClasses;
+	var classSet = rcUtil.classSet;
+	var guid = rcUtil.guid;
+	var KeyCode = rcUtil.KeyCode;
+	var Menu = __webpack_require__(17);
+	var createChainedFunction = rcUtil.createChainedFunction;
+
 	var SubMenu = React.createClass({displayName: "SubMenu",
 	  propTypes: {
 	    openOnHover: React.PropTypes.bool,
 	    title: React.PropTypes.node,
 	    onClick: React.PropTypes.func
 	  },
-	
-	  mixins: [__webpack_require__(/*! ./SubMenuStateMixin */ 38)],
-	
-	  getInitialState: function () {
+
+	  mixins: [__webpack_require__(30)],
+
+	  getInitialState:function() {
 	    return {
 	      activeFirst: false
 	    };
 	  },
-	
-	  _getPrefixCls: function () {
+
+	  saveMenuInstance:function(c) {
+	    this.menuInstance = c;
+	  },
+
+	  _getPrefixCls:function() {
 	    return this.props.rootPrefixCls + '-submenu';
 	  },
-	
-	  _getActiveClassName: function () {
+
+	  _getActiveClassName:function() {
 	    return this.props.activeClassName || this.props.rootPrefixCls + '-submenu-active';
 	  },
-	
-	  _getDisabledClassName: function () {
+
+	  _getDisabledClassName:function() {
 	    return this.props.disabledClassName || this.props.rootPrefixCls + '-submenu-disabled';
 	  },
-	
-	  componentWillReceiveProps: function (nextProps) {
+
+	  componentWillReceiveProps:function(nextProps) {
 	    if (!nextProps.active) {
 	      this.setOpenState(false);
 	    }
 	  },
-	
-	  getDefaultProps: function () {
+
+	  getDefaultProps:function() {
 	    return {
 	      openOnHover: true,
-	      onMouseEnter: function () {
+	      onMouseEnter:function() {
 	      },
 	      title: ''
 	    };
 	  },
-	
-	  handleKeyDown: function (e) {
+
+	  handleKeyDown:function(e) {
 	    var keyCode = e.keyCode;
-	    var menu = this.refs[this.nameRef];
-	    var self = this;
-	
+	    var menu = this.menuInstance;
+
 	    if (keyCode === KeyCode.ENTER) {
 	      this.handleClick(e);
 	      this.setState({
@@ -1253,7 +1223,7 @@
 	      });
 	      return true;
 	    }
-	
+
 	    if (keyCode === KeyCode.RIGHT) {
 	      if (this.state.open) {
 	        menu.handleKeyDown(e);
@@ -1278,13 +1248,13 @@
 	      }
 	      return handled;
 	    }
-	
+
 	    if (this.state.open && (keyCode === KeyCode.UP || keyCode === KeyCode.DOWN)) {
 	      return menu.handleKeyDown(e);
 	    }
 	  },
-	
-	  handleMouseEnter: function () {
+
+	  handleMouseEnter:function() {
 	    var props = this.props;
 	    props.onHover(props.eventKey);
 	    if (props.openOnHover) {
@@ -1294,36 +1264,36 @@
 	      });
 	    }
 	  },
-	
-	  handleMouseLeave: function () {
+
+	  handleMouseLeave:function() {
 	    if (!this.state.open) {
 	      this.props.onHover(null);
 	    }
 	  },
-	
-	  handleClick: function () {
+
+	  handleClick:function() {
 	    this.setOpenState(true);
 	    this.setState({
 	      activeFirst: false
 	    });
 	  },
-	
-	  handleSelect: function (childKey, child) {
-	    this.props.onSelect(childKey, child);
+
+	  handleSelect:function(childKey, child, e) {
+	    this.props.onSelect(childKey, child, e);
 	  },
-	
-	  handleDeselect: function (childKey, child) {
-	    this.props.onDeselect(childKey, child);
+
+	  handleDeselect:function(childKey, child, e) {
+	    this.props.onDeselect(childKey, child, e);
 	  },
-	
-	  render: function () {
+
+	  render:function() {
 	    var props = this.props;
 	    var classes = {};
 	    var prefixCls = this._getPrefixCls();
 	    classes[this._getOpenClassName()] = this.state.open;
 	    classes[this._getActiveClassName()] = props.active;
 	    classes[this._getDisabledClassName()] = props.disabled;
-	    this._menuId = this._menuId || util.guid();
+	    this._menuId = this._menuId || guid();
 	    classes[prefixCls] = true;
 	    var clickEvents = {};
 	    var mouseEvents = {};
@@ -1356,13 +1326,12 @@
 	      )
 	    );
 	  },
-	  renderChildren: function (children) {
+	  renderChildren:function(children) {
 	    if (!this.state.open) {
 	      // prevent destroy
 	      return this._cacheMenu || null;
 	    }
 	    var childrenCount = React.Children.count(children);
-	    this.nameRef = this.nameRef || util.guid();
 	    var baseProps = {
 	      sub: true,
 	      focusable: false,
@@ -1371,115 +1340,107 @@
 	      activeFirst: this.state.activeFirst,
 	      multiple: this.props.multiple,
 	      id: this._menuId,
-	      ref: this.nameRef
+	      ref: this.saveMenuInstance
 	    };
-	    if (this._cacheMenu) {
-	      baseProps.selectedKeys = this.refs[this.nameRef].state.selectedKeys;
+	    if (this.menuInstance) {
+	      baseProps.selectedKeys = this.menuInstance.state.selectedKeys;
 	    }
-	    if (childrenCount == 1 && children.type === Menu.type) {
+	    if (childrenCount === 1 && children.type === Menu) {
 	      var menu = children;
-	      this.nameRef = menu.ref || this.nameRef;
-	      baseProps.nameRef = this.nameRef;
-	      this._cacheMenu = cloneWithProps(menu, baseProps);
+	      baseProps.ref = createChainedFunction(menu.ref, this.saveMenuInstance);
+	      this._cacheMenu = React.cloneElement(menu, baseProps);
 	    } else {
 	      this._cacheMenu = React.createElement(Menu, React.__spread({},  baseProps), children);
 	    }
 	    return this._cacheMenu;
 	  }
 	});
-	
+
 	module.exports = SubMenu;
 
 
 /***/ },
-/* 20 */
-/*!***********************************!*\
-  !*** ./~/rc-menu/lib/MenuItem.js ***!
-  \***********************************/
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */
-	
-	var React = __webpack_require__(/*! react */ 4);
-	var joinClasses = __webpack_require__(/*! ./utils/joinClasses */ 32);
-	var classSet = __webpack_require__(/*! ./utils/classSet */ 33);
-	var util = __webpack_require__(/*! ./utils/util */ 37);
-	var KeyCode = util.KeyCode;
-	
-	var MenuItem = React.createClass({displayName: "MenuItem",
-	  propTypes: {
-	    active: React.PropTypes.bool,
-	    selected: React.PropTypes.bool,
-	    disabled: React.PropTypes.bool,
-	    title: React.PropTypes.string,
-	    onSelect: React.PropTypes.func,
-	    onDeselect: React.PropTypes.func,
-	    onHover: React.PropTypes.func,
-	    onDestroy: React.PropTypes.func
-	  },
-	
-	  _getActiveClassName: function () {
+
+	var React = __webpack_require__(5);
+	var rcUtil = __webpack_require__(16);
+	var joinClasses = rcUtil.joinClasses;
+	var classSet = rcUtil.classSet;
+	var KeyCode = rcUtil.KeyCode;
+
+	var ____Class2=React.Component;for(var ____Class2____Key in ____Class2){if(____Class2.hasOwnProperty(____Class2____Key)){MenuItem[____Class2____Key]=____Class2[____Class2____Key];}}var ____SuperProtoOf____Class2=____Class2===null?null:____Class2.prototype;MenuItem.prototype=Object.create(____SuperProtoOf____Class2);MenuItem.prototype.constructor=MenuItem;MenuItem.__superConstructor__=____Class2;
+	  function MenuItem(props) {"use strict";
+	    ____Class2.call(this,props);
+	    ['handleKeyDown', 'handleMouseLeave', 'handleMouseEnter', 'handleClick'].forEach(function(m) {
+	      this[m] = this[m].bind(this);
+	    }.bind(this));
+	  }
+
+	  Object.defineProperty(MenuItem.prototype,"$MenuItem_getActiveClassName",{writable:true,configurable:true,value:function() {"use strict";
 	    return this.props.activeClassName || this.props.rootPrefixCls + '-item-active';
-	  },
-	
-	  _getSelectedClassName: function () {
+	  }});
+
+	  Object.defineProperty(MenuItem.prototype,"$MenuItem_getSelectedClassName",{writable:true,configurable:true,value:function() {"use strict";
 	    return this.props.activeClassName || this.props.rootPrefixCls + '-item-selected';
-	  },
-	
-	  _getPrefixCls: function () {
+	  }});
+
+	  Object.defineProperty(MenuItem.prototype,"$MenuItem_getPrefixCls",{writable:true,configurable:true,value:function() {"use strict";
 	    return this.props.rootPrefixCls + '-item';
-	  },
-	
-	  _getDisabledClassName: function () {
+	  }});
+
+	  Object.defineProperty(MenuItem.prototype,"$MenuItem_getDisabledClassName",{writable:true,configurable:true,value:function() {"use strict";
 	    return this.props.disabledClassName || this.props.rootPrefixCls + '-item-disabled';
-	  },
-	
-	  getDefaultProps: function () {
-	    return {
-	      onSelect: function () {
-	      },
-	      onMouseEnter: function () {
-	      }
-	    };
-	  },
-	
-	  handleKeyDown: function (e) {
+	  }});
+
+	  Object.defineProperty(MenuItem.prototype,"handleKeyDown",{writable:true,configurable:true,value:function(e) {"use strict";
 	    var keyCode = e.keyCode;
 	    if (keyCode === KeyCode.ENTER) {
 	      this.handleClick(e);
 	      return true;
 	    }
-	  },
-	
-	  handleMouseLeave: function () {
+	  }});
+
+	  Object.defineProperty(MenuItem.prototype,"handleMouseLeave",{writable:true,configurable:true,value:function() {"use strict";
 	    this.props.onHover(null);
-	  },
-	
-	  handleMouseEnter: function () {
+	  }});
+
+	  Object.defineProperty(MenuItem.prototype,"handleMouseEnter",{writable:true,configurable:true,value:function() {"use strict";
 	    var props = this.props;
 	    props.onHover(props.eventKey);
-	  },
-	
-	  handleClick: function () {
+	  }});
+
+	  Object.defineProperty(MenuItem.prototype,"handleClick",{writable:true,configurable:true,value:function(e) {"use strict";
 	    var props = this.props;
 	    if (props.multiple) {
 	      if (props.selected) {
-	        props.onDeselect(props.eventKey, this);
+	        props.onDeselect(props.eventKey, this, e);
 	      } else {
-	        props.onSelect(props.eventKey, this);
+	        props.onSelect(props.eventKey, this,e);
 	      }
 	    } else {
-	      props.onSelect(props.eventKey, this);
+	      if (!props.selected) {
+	        props.onSelect(props.eventKey, this,e);
+	      }
 	    }
-	  },
-	
-	  render: function () {
+	  }});
+
+	  Object.defineProperty(MenuItem.prototype,"componentWillUnmount",{writable:true,configurable:true,value:function() {"use strict";
+	    var props = this.props;
+	    if (props.onDestroy) {
+	      props.onDestroy(props.eventKey);
+	    }
+	  }});
+
+	  Object.defineProperty(MenuItem.prototype,"render",{writable:true,configurable:true,value:function() {"use strict";
 	    var props = this.props;
 	    var classes = {};
-	    classes[this._getActiveClassName()] = props.active;
-	    classes[this._getSelectedClassName()] = props.selected;
-	    classes[this._getDisabledClassName()] = props.disabled;
-	    classes[this._getPrefixCls()] = true;
+	    classes[this.$MenuItem_getActiveClassName()] = !props.disabled && props.active;
+	    classes[this.$MenuItem_getSelectedClassName()] = props.selected;
+	    classes[this.$MenuItem_getDisabledClassName()] = props.disabled;
+	    classes[this.$MenuItem_getPrefixCls()] = true;
 	    var attrs = {
 	      title: props.title,
 	      className: joinClasses(props.className, classSet(classes)),
@@ -1502,24 +1463,31 @@
 	      props.children
 	      )
 	    );
+	  }});
+
+
+	MenuItem.propTypes = {
+	  active: React.PropTypes.bool,
+	  selected: React.PropTypes.bool,
+	  disabled: React.PropTypes.bool,
+	  title: React.PropTypes.string,
+	  onSelect: React.PropTypes.func,
+	  onDeselect: React.PropTypes.func,
+	  onHover: React.PropTypes.func,
+	  onDestroy: React.PropTypes.func
+	};
+
+	MenuItem.defaultProps = {
+	  onSelect:function() {
 	  },
-	
-	  componentWillUnmount: function () {
-	    var props = this.props;
-	    if (props.onDestroy) {
-	      props.onDestroy(props.eventKey);
-	    }
+	  onMouseEnter:function() {
 	  }
-	});
-	
+	};
 	module.exports = MenuItem;
 
 
 /***/ },
-/* 21 */
-/*!*******************************!*\
-  !*** ./~/rc-util/lib/guid.js ***!
-  \*******************************/
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var seed = 0;
@@ -1529,10 +1497,7 @@
 
 
 /***/ },
-/* 22 */
-/*!***********************************!*\
-  !*** ./~/rc-util/lib/classSet.js ***!
-  \***********************************/
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1547,7 +1512,7 @@
 	 * An additional grant of patent rights can be found here:
 	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
 	 */
-	
+
 	/**
 	 * This function is used to mark string literals representing CSS class names
 	 * so that they can be transformed statically. This allows for modularization
@@ -1572,15 +1537,12 @@
 	    return Array.prototype.join.call(arguments, ' ');
 	  }
 	}
-	
+
 	module.exports = cx;
 
 
 /***/ },
-/* 23 */
-/*!**************************************!*\
-  !*** ./~/rc-util/lib/joinClasses.js ***!
-  \**************************************/
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1595,9 +1557,9 @@
 	 * An additional grant of patent rights can be found here:
 	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
 	 */
-	
+
 	"use strict";
-	
+
 	/**
 	 * Combines multiple className strings into one.
 	 * http://jsperf.com/joinclasses-args-vs-array
@@ -1605,7 +1567,8 @@
 	 * @param {...?string} classes
 	 * @return {string}
 	 */
-	function joinClasses(className/*, ... */) {
+
+	function joinClasses(className /*, ... */ ) {
 	  if (!className) {
 	    className = '';
 	  }
@@ -1621,15 +1584,12 @@
 	  }
 	  return className;
 	}
-	
+
 	module.exports = joinClasses;
 
 
 /***/ },
-/* 24 */
-/*!**********************************!*\
-  !*** ./~/rc-util/lib/KeyCode.js ***!
-  \**********************************/
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1637,7 +1597,7 @@
 	 * some key-codes definition and utils from closure-library
 	 * @author yiminghe@gmail.com
 	 */
-	
+
 	var KeyCode = {
 	  /**
 	   * MAC_ENTER
@@ -2060,7 +2020,7 @@
 	   */
 	  WIN_IME: 229
 	};
-	
+
 	/*
 	 whether text and modified key is entered at the same time.
 	 */
@@ -2071,7 +2031,7 @@
 	    keyCode >= KeyCode.F1 && keyCode <= KeyCode.F12) {
 	    return false;
 	  }
-	
+
 	  // The following keys are quite harmless, even in combination with
 	  // CTRL, ALT or SHIFT.
 	  switch (keyCode) {
@@ -2103,7 +2063,7 @@
 	      return true;
 	  }
 	};
-	
+
 	/*
 	 whether character is entered.
 	 */
@@ -2112,22 +2072,22 @@
 	    keyCode <= KeyCode.NINE) {
 	    return true;
 	  }
-	
+
 	  if (keyCode >= KeyCode.NUM_ZERO &&
 	    keyCode <= KeyCode.NUM_MULTIPLY) {
 	    return true;
 	  }
-	
+
 	  if (keyCode >= KeyCode.A &&
 	    keyCode <= KeyCode.Z) {
 	    return true;
 	  }
-	
+
 	  // Safari sends zero key code for non-latin characters.
 	  if (window.navigation.userAgent.indexOf('WebKit') !== -1 && keyCode === 0) {
 	    return true;
 	  }
-	
+
 	  switch (keyCode) {
 	    case KeyCode.SPACE:
 	    case KeyCode.QUESTION_MARK:
@@ -2151,15 +2111,12 @@
 	      return false;
 	  }
 	};
-	
+
 	module.exports = KeyCode;
 
 
 /***/ },
-/* 25 */
-/*!******************************************!*\
-  !*** ./~/rc-util/lib/PureRenderMixin.js ***!
-  \******************************************/
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2172,11 +2129,11 @@
 	 *
 	* @providesModule ReactComponentWithPureRenderMixin
 	*/
-	
+
 	"use strict";
-	
-	var shallowEqual = __webpack_require__(/*! ./shallowEqual */ 26);
-	
+
+	var shallowEqual = __webpack_require__(25);
+
 	/**
 	 * If your React component's render function is "pure", e.g. it will render the
 	 * same result given the same props and state, provide this Mixin for a
@@ -2207,15 +2164,12 @@
 	           !shallowEqual(this.state, nextState);
 	  }
 	};
-	
+
 	module.exports = ReactComponentWithPureRenderMixin;
 
 
 /***/ },
-/* 26 */
-/*!***************************************!*\
-  !*** ./~/rc-util/lib/shallowEqual.js ***!
-  \***************************************/
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2228,9 +2182,9 @@
 	 *
 	 * @providesModule shallowEqual
 	 */
-	
+
 	"use strict";
-	
+
 	/**
 	 * Performs equality by iterating through keys on an object and returning
 	 * false when any key has values which are not strictly equal between
@@ -2258,15 +2212,12 @@
 	  }
 	  return true;
 	}
-	
+
 	module.exports = shallowEqual;
 
 
 /***/ },
-/* 27 */
-/*!************************************************!*\
-  !*** ./~/rc-util/lib/createChainedFunction.js ***!
-  \************************************************/
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2275,182 +2226,25 @@
 	 * Will only create a new function if needed,
 	 * otherwise will pass back existing functions or null.
 	 *
-	 * @param {function} one
-	 * @param {function} two
 	 * @returns {function|null}
 	 */
-	function createChainedFunction(one, two) {
-	  var hasOne = typeof one === 'function';
-	  var hasTwo = typeof two === 'function';
-	
-	  if (!hasOne && !hasTwo) { return null; }
-	  if (!hasOne) { return two; }
-	  if (!hasTwo) { return one; }
-	
+	function createChainedFunction() {
+	  var args = arguments;
+
 	  return function chainedFunction() {
-	    one.apply(this, arguments);
-	    two.apply(this, arguments);
+	    for (var i = 0; i < args.length; i++) {
+	      if (args[i] && args[i].apply) {
+	        args[i].apply(this, arguments);
+	      }
+	    }
 	  };
 	}
-	
+
 	module.exports = createChainedFunction;
 
-/***/ },
-/* 28 */
-/*!*****************************************!*\
-  !*** ./~/rc-util/lib/cloneWithProps.js ***!
-  \*****************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains modified versions of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/utils/cloneWithProps.js
-	 * https://github.com/facebook/react/blob/v0.12.0/src/core/ReactPropTransferer.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 *
-	 * TODO: This should be replaced as soon as cloneWithProps is available via
-	 *  the core React package or a separate package.
-	 *  @see https://github.com/facebook/react/issues/1906
-	 */
-	
-	var React = __webpack_require__(/*! react */ 4);
-	var joinClasses = __webpack_require__(/*! ./joinClasses */ 23);
-	var assign = __webpack_require__(/*! object-assign */ 40);
-	
-	/**
-	 * Creates a transfer strategy that will merge prop values using the supplied
-	 * `mergeStrategy`. If a prop was previously unset, this just sets it.
-	 *
-	 * @param {function} mergeStrategy
-	 * @return {function}
-	 */
-	function createTransferStrategy(mergeStrategy) {
-	  return function(props, key, value) {
-	    if (!props.hasOwnProperty(key)) {
-	      props[key] = value;
-	    } else {
-	      props[key] = mergeStrategy(props[key], value);
-	    }
-	  };
-	}
-	
-	var transferStrategyMerge = createTransferStrategy(function(a, b) {
-	  // `merge` overrides the first object's (`props[key]` above) keys using the
-	  // second object's (`value`) keys. An object's style's existing `propA` would
-	  // get overridden. Flip the order here.
-	  return assign({}, b, a);
-	});
-	
-	function emptyFunction() {}
-	
-	/**
-	 * Transfer strategies dictate how props are transferred by `transferPropsTo`.
-	 * NOTE: if you add any more exceptions to this list you should be sure to
-	 * update `cloneWithProps()` accordingly.
-	 */
-	var TransferStrategies = {
-	  /**
-	   * Never transfer `children`.
-	   */
-	  children: emptyFunction,
-	  /**
-	   * Transfer the `className` prop by merging them.
-	   */
-	  className: createTransferStrategy(joinClasses),
-	  /**
-	   * Transfer the `style` prop (which is an object) by merging them.
-	   */
-	  style: transferStrategyMerge
-	};
-	
-	/**
-	 * Mutates the first argument by transferring the properties from the second
-	 * argument.
-	 *
-	 * @param {object} props
-	 * @param {object} newProps
-	 * @return {object}
-	 */
-	function transferInto(props, newProps) {
-	  for (var thisKey in newProps) {
-	    if (!newProps.hasOwnProperty(thisKey)) {
-	      continue;
-	    }
-	
-	    var transferStrategy = TransferStrategies[thisKey];
-	
-	    if (transferStrategy && TransferStrategies.hasOwnProperty(thisKey)) {
-	      transferStrategy(props, thisKey, newProps[thisKey]);
-	    } else if (!props.hasOwnProperty(thisKey)) {
-	      props[thisKey] = newProps[thisKey];
-	    }
-	  }
-	  return props;
-	}
-	
-	/**
-	 * Merge two props objects using TransferStrategies.
-	 *
-	 * @param {object} oldProps original props (they take precedence)
-	 * @param {object} newProps new props to merge in
-	 * @return {object} a new object containing both sets of props merged.
-	 */
-	function mergeProps(oldProps, newProps) {
-	  return transferInto(assign({}, oldProps), newProps);
-	}
-	
-	var ReactPropTransferer = {
-	  mergeProps: mergeProps
-	};
-	
-	var CHILDREN_PROP = 'children';
-	
-	/**
-	 * Sometimes you want to change the props of a child passed to you. Usually
-	 * this is to add a CSS class.
-	 *
-	 * @param {object} child child component you'd like to clone
-	 * @param {object} props props you'd like to modify. They will be merged
-	 * as if you used `transferPropsTo()`.
-	 * @return {object} a clone of child with props merged in.
-	 */
-	function cloneWithProps(child, props) {
-	  var newProps = ReactPropTransferer.mergeProps(props, child.props);
-	
-	  // Use `child.props.children` if it is provided.
-	  if (!newProps.hasOwnProperty(CHILDREN_PROP) &&
-	    child.props.hasOwnProperty(CHILDREN_PROP)) {
-	    newProps.children = child.props.children;
-	  }
-	
-	  if (React.version.substr(0, 4) === '0.12') {
-	    var mockLegacyFactory = function() {};
-	    mockLegacyFactory.isReactLegacyFactory = true;
-	    mockLegacyFactory.type = child.type;
-	
-	    return React.createElement(mockLegacyFactory, newProps);
-	  }
-	
-	  // The current API doesn't retain _owner and _context, which is why this
-	  // doesn't use ReactElement.cloneAndReplaceProps.
-	  return React.createElement(child.type, newProps);
-	}
-	
-	module.exports = cloneWithProps;
-
 
 /***/ },
-/* 29 */
-/*!***********************************************!*\
-  !*** ./~/rc-util/lib/Dom/addEventListener.js ***!
-  \***********************************************/
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (target, eventType, callback) {
@@ -2473,10 +2267,7 @@
 
 
 /***/ },
-/* 30 */
-/*!***************************************!*\
-  !*** ./~/rc-util/lib/Dom/contains.js ***!
-  \***************************************/
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (root, node) {
@@ -2486,20 +2277,17 @@
 	    }
 	    node = node.parentNode;
 	  }
-	
+
 	  return false;
 	};
 
 
 /***/ },
-/* 31 */
-/*!*******************************************!*\
-  !*** ./~/rc-util/lib/Children/toArray.js ***!
-  \*******************************************/
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(/*! react */ 4);
-	
+	var React = __webpack_require__(5);
+
 	module.exports = function (children) {
 	  var ret = [];
 	  React.Children.forEach(children, function (c) {
@@ -2510,546 +2298,134 @@
 
 
 /***/ },
-/* 32 */
-/*!********************************************!*\
-  !*** ./~/rc-menu/lib/utils/joinClasses.js ***!
-  \********************************************/
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains an unmodified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/utils/joinClasses.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 */
-	
-	"use strict";
-	
-	/**
-	 * Combines multiple className strings into one.
-	 * http://jsperf.com/joinclasses-args-vs-array
-	 *
-	 * @param {...?string} classes
-	 * @return {string}
-	 */
-	function joinClasses(className/*, ... */) {
-	  if (!className) {
-	    className = '';
-	  }
-	  var nextClass;
-	  var argLength = arguments.length;
-	  if (argLength > 1) {
-	    for (var ii = 1; ii < argLength; ii++) {
-	      nextClass = arguments[ii];
-	      if (nextClass) {
-	        className = (className ? className + ' ' : '') + nextClass;
-	      }
-	    }
-	  }
-	  return className;
-	}
-	
-	module.exports = joinClasses;
+	var rcUtil = __webpack_require__(16);
+	var KeyCode = rcUtil.KeyCode;
+	var React = __webpack_require__(5);
 
-
-/***/ },
-/* 33 */
-/*!*****************************************!*\
-  !*** ./~/rc-menu/lib/utils/classSet.js ***!
-  \*****************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains an unmodified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/cx.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 */
-	
-	/**
-	 * This function is used to mark string literals representing CSS class names
-	 * so that they can be transformed statically. This allows for modularization
-	 * and minification of CSS class names.
-	 *
-	 * In static_upstream, this function is actually implemented, but it should
-	 * eventually be replaced with something more descriptive, and the transform
-	 * that is used in the main stack should be ported for use elsewhere.
-	 *
-	 * @param string|object className to modularize, or an object of key/values.
-	 *                      In the object case, the values are conditions that
-	 *                      determine if the className keys should be included.
-	 * @param [string ...]  Variable list of classNames in the string case.
-	 * @return string       Renderable space-separated CSS className.
-	 */
-	function cx(classNames) {
-	  if (typeof classNames === 'object') {
-	    return Object.keys(classNames).filter(function(className) {
-	      return classNames[className];
-	    }).join(' ');
-	  } else {
-	    return Array.prototype.join.call(arguments, ' ');
-	  }
-	}
-	
-	module.exports = cx;
-
-
-/***/ },
-/* 34 */
-/*!***********************************************!*\
-  !*** ./~/rc-menu/lib/utils/cloneWithProps.js ***!
-  \***********************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains modified versions of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/utils/cloneWithProps.js
-	 * https://github.com/facebook/react/blob/v0.12.0/src/core/ReactPropTransferer.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 *
-	 * TODO: This should be replaced as soon as cloneWithProps is available via
-	 *  the core React package or a separate package.
-	 *  @see https://github.com/facebook/react/issues/1906
-	 */
-	
-	var React = __webpack_require__(/*! react */ 4);
-	var joinClasses = __webpack_require__(/*! ./joinClasses */ 32);
-	var assign = __webpack_require__(/*! ./Object.assign */ 36);
-	
-	/**
-	 * Creates a transfer strategy that will merge prop values using the supplied
-	 * `mergeStrategy`. If a prop was previously unset, this just sets it.
-	 *
-	 * @param {function} mergeStrategy
-	 * @return {function}
-	 */
-	function createTransferStrategy(mergeStrategy) {
-	  return function(props, key, value) {
-	    if (!props.hasOwnProperty(key)) {
-	      props[key] = value;
-	    } else {
-	      props[key] = mergeStrategy(props[key], value);
-	    }
-	  };
-	}
-	
-	var transferStrategyMerge = createTransferStrategy(function(a, b) {
-	  // `merge` overrides the first object's (`props[key]` above) keys using the
-	  // second object's (`value`) keys. An object's style's existing `propA` would
-	  // get overridden. Flip the order here.
-	  return assign({}, b, a);
-	});
-	
-	function emptyFunction() {}
-	
-	/**
-	 * Transfer strategies dictate how props are transferred by `transferPropsTo`.
-	 * NOTE: if you add any more exceptions to this list you should be sure to
-	 * update `cloneWithProps()` accordingly.
-	 */
-	var TransferStrategies = {
-	  /**
-	   * Never transfer `children`.
-	   */
-	  children: emptyFunction,
-	  /**
-	   * Transfer the `className` prop by merging them.
-	   */
-	  className: createTransferStrategy(joinClasses),
-	  /**
-	   * Transfer the `style` prop (which is an object) by merging them.
-	   */
-	  style: transferStrategyMerge
-	};
-	
-	/**
-	 * Mutates the first argument by transferring the properties from the second
-	 * argument.
-	 *
-	 * @param {object} props
-	 * @param {object} newProps
-	 * @return {object}
-	 */
-	function transferInto(props, newProps) {
-	  for (var thisKey in newProps) {
-	    if (!newProps.hasOwnProperty(thisKey)) {
-	      continue;
-	    }
-	
-	    var transferStrategy = TransferStrategies[thisKey];
-	
-	    if (transferStrategy && TransferStrategies.hasOwnProperty(thisKey)) {
-	      transferStrategy(props, thisKey, newProps[thisKey]);
-	    } else if (!props.hasOwnProperty(thisKey)) {
-	      props[thisKey] = newProps[thisKey];
-	    }
-	  }
-	  return props;
-	}
-	
-	/**
-	 * Merge two props objects using TransferStrategies.
-	 *
-	 * @param {object} oldProps original props (they take precedence)
-	 * @param {object} newProps new props to merge in
-	 * @return {object} a new object containing both sets of props merged.
-	 */
-	function mergeProps(oldProps, newProps) {
-	  return transferInto(assign({}, oldProps), newProps);
-	}
-	
-	var ReactPropTransferer = {
-	  mergeProps: mergeProps
-	};
-	
-	var CHILDREN_PROP = 'children';
-	
-	/**
-	 * Sometimes you want to change the props of a child passed to you. Usually
-	 * this is to add a CSS class.
-	 *
-	 * @param {object} child child component you'd like to clone
-	 * @param {object} props props you'd like to modify. They will be merged
-	 * as if you used `transferPropsTo()`.
-	 * @return {object} a clone of child with props merged in.
-	 */
-	function cloneWithProps(child, props) {
-	  var newProps = ReactPropTransferer.mergeProps(props, child.props);
-	
-	  // Use `child.props.children` if it is provided.
-	  if (!newProps.hasOwnProperty(CHILDREN_PROP) &&
-	    child.props.hasOwnProperty(CHILDREN_PROP)) {
-	    newProps.children = child.props.children;
-	  }
-	
-	  if (React.version.substr(0, 4) === '0.12') {
-	    var mockLegacyFactory = function() {};
-	    mockLegacyFactory.isReactLegacyFactory = true;
-	    mockLegacyFactory.type = child.type;
-	
-	    return React.createElement(mockLegacyFactory, newProps);
-	  }
-	
-	  // The current API doesn't retain _owner and _context, which is why this
-	  // doesn't use ReactElement.cloneAndReplaceProps.
-	  return React.createElement(child.type, newProps);
-	}
-	
-	module.exports = cloneWithProps;
-
-
-/***/ },
-/* 35 */
-/*!******************************************************!*\
-  !*** ./~/rc-menu/lib/utils/createChainedFunction.js ***!
-  \******************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Safe chained function
-	 *
-	 * Will only create a new function if needed,
-	 * otherwise will pass back existing functions or null.
-	 *
-	 * @param {function} one
-	 * @param {function} two
-	 * @returns {function|null}
-	 */
-	function createChainedFunction(one, two) {
-	  var hasOne = typeof one === 'function';
-	  var hasTwo = typeof two === 'function';
-	
-	  if (!hasOne && !hasTwo) { return null; }
-	  if (!hasOne) { return two; }
-	  if (!hasTwo) { return one; }
-	
-	  return function chainedFunction() {
-	    one.apply(this, arguments);
-	    two.apply(this, arguments);
-	  };
-	}
-	
-	module.exports = createChainedFunction;
-
-/***/ },
-/* 36 */
-/*!**********************************************!*\
-  !*** ./~/rc-menu/lib/utils/Object.assign.js ***!
-  \**********************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This file contains an unmodified version of:
-	 * https://github.com/facebook/react/blob/v0.12.0/src/vendor/stubs/Object.assign.js
-	 *
-	 * This source code is licensed under the BSD-style license found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/LICENSE
-	 * An additional grant of patent rights can be found here:
-	 * https://github.com/facebook/react/blob/v0.12.0/PATENTS
-	 */
-	
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign
-	
-	//function assign(target, sources) {
-	function assign(target) {
-	  if (target == null) {
-	    throw new TypeError('Object.assign target cannot be null or undefined');
-	  }
-	
-	  var to = Object(target);
-	  var hasOwnProperty = Object.prototype.hasOwnProperty;
-	
-	  for (var nextIndex = 1; nextIndex < arguments.length; nextIndex++) {
-	    var nextSource = arguments[nextIndex];
-	    if (nextSource == null) {
-	      continue;
-	    }
-	
-	    var from = Object(nextSource);
-	
-	    // We don't currently support accessors nor proxies. Therefore this
-	    // copy cannot throw. If we ever supported this then we must handle
-	    // exceptions and side-effects. We don't support symbols so they won't
-	    // be transferred.
-	
-	    for (var key in from) {
-	      if (hasOwnProperty.call(from, key)) {
-	        to[key] = from[key];
-	      }
-	    }
-	  }
-	
-	  return to;
-	}
-	
-	module.exports = assign;
-
-
-/***/ },
-/* 37 */
-/*!*************************************!*\
-  !*** ./~/rc-menu/lib/utils/util.js ***!
-  \*************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var seed = 0;
-	var React = __webpack_require__(/*! react */ 4);
-	
-	module.exports = {
-	  contains: function (root, node) {
-	    while (node) {
-	      if (node === root) {
-	        return true;
-	      }
-	      node = node.parentNode;
-	    }
-	
-	    return false;
-	  },
-	
-	  addEventListener: function (target, eventType, callback) {
-	    if (target.addEventListener) {
-	      target.addEventListener(eventType, callback, false);
-	      return {
-	        remove: function () {
-	          target.removeEventListener(eventType, callback, false);
-	        }
-	      };
-	    } else if (target.attachEvent) {
-	      target.attachEvent('on' + eventType, callback);
-	      return {
-	        remove: function () {
-	          target.detachEvent('on' + eventType, callback);
-	        }
-	      };
-	    }
-	  },
-	
-	  guid: function () {
-	    return Date.now() + '_' + (seed++);
-	  },
-	
-	  toArray: function (children) {
-	    var ret = [];
-	    React.Children.forEach(children, function (c) {
-	      ret.push(c);
-	    });
-	    return ret;
-	  },
-	
-	  KeyCode: {
-	    ENTER: 13,
-	    ESC: 27,
-	    LEFT: 37,
-	    UP: 38,
-	    RIGHT: 39,
-	    DOWN: 40
-	  }
-	};
-
-
-/***/ },
-/* 38 */
-/*!********************************************!*\
-  !*** ./~/rc-menu/lib/SubMenuStateMixin.js ***!
-  \********************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var util = __webpack_require__(/*! ./utils/util */ 37);
-	var KeyCode = util.KeyCode;
-	
 	var SubMenuStateMixin = {
-	  getInitialState: function () {
+	  getInitialState:function() {
 	    return {
 	      open: this.props.open || false
 	    };
 	  },
-	
-	  _getOpenClassName: function () {
+
+	  _getOpenClassName:function() {
 	    return this.props.openClassName || this.props.rootPrefixCls + '-submenu-open';
 	  },
-	
-	  setOpenState: function (newState, onStateChangeComplete) {
+
+	  setOpenState:function(newState, onStateChangeComplete) {
 	    if (newState) {
 	      this.bindRootCloseHandlers();
 	    } else {
 	      this.unbindRootCloseHandlers();
 	    }
-	
+
 	    this.setState({
 	      open: newState
 	    }, onStateChangeComplete);
 	  },
-	
-	  handleDocumentKeyUp: function (e) {
+
+	  handleDocumentKeyUp:function(e) {
 	    if (e.keyCode === KeyCode.ESC) {
 	      this.setOpenState(false);
 	    }
 	  },
-	
-	  handleDocumentClick: function (e) {
+
+	  handleDocumentClick:function(e) {
 	    // If the click originated from within this component
 	    // don't do anything.
-	    if (util.contains(this.getDOMNode(), e.target)) {
+	    if (rcUtil.Dom.contains(React.findDOMNode(this), e.target)) {
 	      return;
 	    }
 	    // de active menu cause sub menu hide its menu
 	    this.props.onHover(null);
 	  },
-	
-	  bindRootCloseHandlers: function () {
-	    this._onDocumentClickListener = util.addEventListener(document, 'click', this.handleDocumentClick);
-	    this._onDocumentKeyupListener = util.addEventListener(document, 'keyup', this.handleDocumentKeyUp);
+
+	  bindRootCloseHandlers:function() {
+	    this._onDocumentClickListener = rcUtil.Dom.addEventListener(document, 'click', this.handleDocumentClick);
+	    this._onDocumentKeyupListener = rcUtil.Dom.addEventListener(document, 'keyup', this.handleDocumentKeyUp);
 	  },
-	
-	  unbindRootCloseHandlers: function () {
+
+	  unbindRootCloseHandlers:function() {
 	    if (this._onDocumentClickListener) {
 	      this._onDocumentClickListener.remove();
 	    }
-	
+
 	    if (this._onDocumentKeyupListener) {
 	      this._onDocumentKeyupListener.remove();
 	    }
 	  },
-	
-	  componentWillUnmount: function () {
+
+	  componentWillUnmount:function() {
 	    this.unbindRootCloseHandlers();
 	  }
 	};
-	
+
 	module.exports = SubMenuStateMixin;
 
 
 /***/ },
-/* 39 */
-/*!***************************************************!*\
-  !*** ./~/rc-menu/~/dom-scroll-into-view/index.js ***!
-  \***************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(/*! ./lib/dom-scroll-into-view */ 41);
-
-
-/***/ },
-/* 40 */
-/*!********************************************!*\
-  !*** ./~/rc-util/~/object-assign/index.js ***!
-  \********************************************/
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
+
 	function ToObject(val) {
 		if (val == null) {
 			throw new TypeError('Object.assign cannot be called with null or undefined');
 		}
-	
+
 		return Object(val);
 	}
-	
+
 	module.exports = Object.assign || function (target, source) {
 		var from;
 		var keys;
 		var to = ToObject(target);
-	
+
 		for (var s = 1; s < arguments.length; s++) {
 			from = arguments[s];
 			keys = Object.keys(Object(from));
-	
+
 			for (var i = 0; i < keys.length; i++) {
 				to[keys[i]] = from[keys[i]];
 			}
 		}
-	
+
 		return to;
 	};
 
 
 /***/ },
-/* 41 */
-/*!**********************************************************************!*\
-  !*** ./~/rc-menu/~/dom-scroll-into-view/lib/dom-scroll-into-view.js ***!
-  \**********************************************************************/
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var util = __webpack_require__(/*! ./util */ 42);
-	
+	module.exports = __webpack_require__(33);
+
+
+/***/ },
+/* 33 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var util = __webpack_require__(34);
+
 	function scrollIntoView(elem, container, config) {
 	  config = config || {};
 	  // document 归一化到 window
 	  if (container.nodeType === 9) {
 	    container = util.getWindow(container);
 	  }
-	
+
 	  var allowHorizontalScroll = config.allowHorizontalScroll;
 	  var onlyScrollIfNeeded = config.onlyScrollIfNeeded;
 	  var alignWithTop = config.alignWithTop;
 	  var alignWithLeft = config.alignWithLeft;
-	
+
 	  allowHorizontalScroll = allowHorizontalScroll === undefined ? true : allowHorizontalScroll;
-	
+
 	  var isWin = util.isWindow(container);
 	  var elemOffset = util.offset(elem);
 	  var eh = util.outerHeight(elem);
@@ -3057,7 +2433,7 @@
 	  var containerOffset, ch, cw, containerScroll,
 	    diffTop, diffBottom, win,
 	    winScroll, ww, wh;
-	
+
 	  if (isWin) {
 	    win = container;
 	    wh = util.height(win);
@@ -3101,7 +2477,7 @@
 	      (parseFloat(util.css(container, 'borderBottomWidth')) || 0))
 	    };
 	  }
-	
+
 	  if (diffTop.top < 0 || diffBottom.top > 0) {
 	    // 强制向上
 	    if (alignWithTop === true) {
@@ -3126,7 +2502,7 @@
 	      }
 	    }
 	  }
-	
+
 	  if (allowHorizontalScroll) {
 	    if (diffTop.left < 0 || diffBottom.left > 0) {
 	      // 强制向上
@@ -3154,19 +2530,16 @@
 	    }
 	  }
 	}
-	
+
 	module.exports = scrollIntoView;
 
 
 /***/ },
-/* 42 */
-/*!******************************************************!*\
-  !*** ./~/rc-menu/~/dom-scroll-into-view/lib/util.js ***!
-  \******************************************************/
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var RE_NUM = /[\-+]?(?:\d*\.|)\d+(?:[eE][\-+]?\d+|)/.source;
-	
+
 	function getClientPosition(elem) {
 	  var box, x, y;
 	  var doc = elem.ownerDocument;
@@ -3174,26 +2547,26 @@
 	  var docElem = doc && doc.documentElement;
 	  // 根据 GBS 最新数据，A-Grade Browsers 都已支持 getBoundingClientRect 方法，不用再考虑传统的实现方式
 	  box = elem.getBoundingClientRect();
-	
+
 	  // 注：jQuery 还考虑减去 docElem.clientLeft/clientTop
 	  // 但测试发现，这样反而会导致当 html 和 body 有边距/边框样式时，获取的值不正确
 	  // 此外，ie6 会忽略 html 的 margin 值，幸运地是没有谁会去设置 html 的 margin
-	
+
 	  x = box.left;
 	  y = box.top;
-	
+
 	  // In IE, most of the time, 2 extra pixels are added to the top and left
 	  // due to the implicit 2-pixel inset border.  In IE6/7 quirks mode and
 	  // IE6 standards mode, this border can be overridden by setting the
 	  // document element's border to zero -- thus, we cannot rely on the
 	  // offset always being 2 pixels.
-	
+
 	  // In quirks mode, the offset can be determined by querying the body's
 	  // clientLeft/clientTop, but in standards mode, it is found by querying
 	  // the document element's clientLeft/clientTop.  Since we already called
 	  // getClientBoundingRect we have already forced a reflow, so it is not
 	  // too expensive just to query them all.
-	
+
 	  // ie 下应该减去窗口的边框吧，毕竟默认 absolute 都是相对窗口定位的
 	  // 窗口边框标准是设 documentElement ,quirks 时设置 body
 	  // 最好禁止在 body 和 html 上边框 ，但 ie < 9 html 默认有 2px ，减去
@@ -3201,13 +2574,13 @@
 	  // 标准 ie 下 docElem.clientTop 就是 border-top
 	  // ie7 html 即窗口边框改变不了。永远为 2
 	  // 但标准 firefox/chrome/ie9 下 docElem.clientTop 是窗口边框，即使设了 border-top 也为 0
-	
+
 	  x -= docElem.clientLeft || body.clientLeft || 0;
 	  y -= docElem.clientTop || body.clientTop || 0;
-	
+
 	  return {left: x, top: y};
 	}
-	
+
 	function getScroll(w, top) {
 	  var ret = w['page' + (top ? 'Y' : 'X') + 'Offset'];
 	  var method = 'scroll' + (top ? 'Top' : 'Left');
@@ -3222,15 +2595,15 @@
 	  }
 	  return ret;
 	}
-	
+
 	function getScrollLeft(w) {
 	  return getScroll(w);
 	}
-	
+
 	function getScrollTop(w) {
 	  return getScroll(w, true);
 	}
-	
+
 	function getOffset(el) {
 	  var pos = getClientPosition(el);
 	  var doc = el.ownerDocument;
@@ -3242,32 +2615,32 @@
 	function _getComputedStyle(elem, name, computedStyle) {
 	  var val = '';
 	  var d = elem.ownerDocument;
-	
+
 	  // https://github.com/kissyteam/kissy/issues/61
 	  if ((computedStyle = (computedStyle || d.defaultView.getComputedStyle(elem, null)))) {
 	    val = computedStyle.getPropertyValue(name) || computedStyle[name];
 	  }
-	
+
 	  return val;
 	}
-	
+
 	var _RE_NUM_NO_PX = new RegExp('^(' + RE_NUM + ')(?!px)[a-z%]+$', 'i');
 	var RE_POS = /^(top|right|bottom|left)$/,
 	  CURRENT_STYLE = 'currentStyle',
 	  RUNTIME_STYLE = 'runtimeStyle',
 	  LEFT = 'left',
 	  PX = 'px';
-	
+
 	function _getComputedStyleIE(elem, name) {
 	  // currentStyle maybe null
 	  // http://msdn.microsoft.com/en-us/library/ms535231.aspx
 	  var ret = elem[CURRENT_STYLE] && elem[CURRENT_STYLE][name];
-	
+
 	  // 当 width/height 设置为百分比时，通过 pixelLeft 方式转换的 width/height 值
 	  // 一开始就处理了! CUSTOM_STYLE.height,CUSTOM_STYLE.width ,cssHook 解决@2011-08-19
 	  // 在 ie 下不对，需要直接用 offset 方式
 	  // borderWidth 等值也有问题，但考虑到 borderWidth 设为百分比的概率很小，这里就不考虑了
-	
+
 	  // From the awesome hack by Dean Edwards
 	  // http://erik.eae.net/archives/2007/07/27/18.54.15/#comment-102291
 	  // If we're not dealing with a regular pixel number
@@ -3278,80 +2651,80 @@
 	    var style = elem.style,
 	      left = style[LEFT],
 	      rsLeft = elem[RUNTIME_STYLE][LEFT];
-	
+
 	    // prevent flashing of content
 	    elem[RUNTIME_STYLE][LEFT] = elem[CURRENT_STYLE][LEFT];
-	
+
 	    // Put in the new values to get a computed value out
 	    style[LEFT] = name === 'fontSize' ? '1em' : (ret || 0);
 	    ret = style.pixelLeft + PX;
-	
+
 	    // Revert the changed values
 	    style[LEFT] = left;
-	
+
 	    elem[RUNTIME_STYLE][LEFT] = rsLeft;
 	  }
 	  return ret === '' ? 'auto' : ret;
 	}
-	
+
 	var getComputedStyleX;
 	if (typeof window !== 'undefined') {
 	  getComputedStyleX = window.getComputedStyle ? _getComputedStyle : _getComputedStyleIE;
 	}
-	
+
 	// 设置 elem 相对 elem.ownerDocument 的坐标
 	function setOffset(elem, offset) {
 	  // set position first, in-case top/left are set even on static elem
 	  if (css(elem, 'position') === 'static') {
 	    elem.style.position = 'relative';
 	  }
-	
+
 	  var old = getOffset(elem),
 	    ret = {},
 	    current, key;
-	
+
 	  for (key in offset) {
 	    current = parseFloat(css(elem, key)) || 0;
 	    ret[key] = current + offset[key] - old[key];
 	  }
 	  css(elem, ret);
 	}
-	
+
 	function each(arr, fn) {
 	  for (var i = 0; i < arr.length; i++) {
 	    fn(arr[i]);
 	  }
 	}
-	
+
 	function isBorderBoxFn(elem) {
 	  return getComputedStyleX(elem, 'boxSizing') === 'border-box';
 	}
-	
+
 	var BOX_MODELS = ['margin', 'border', 'padding'],
 	  CONTENT_INDEX = -1,
 	  PADDING_INDEX = 2,
 	  BORDER_INDEX = 1,
 	  MARGIN_INDEX = 0;
-	
+
 	function swap(elem, options, callback) {
 	  var old = {},
 	    style = elem.style,
 	    name;
-	
+
 	  // Remember the old values, and insert the new ones
 	  for (name in options) {
 	    old[name] = style[name];
 	    style[name] = options[name];
 	  }
-	
+
 	  callback.call(elem);
-	
+
 	  // Revert the old values
 	  for (name in options) {
 	    style[name] = old[name];
 	  }
 	}
-	
+
 	function getPBMWidth(elem, props, which) {
 	  var value = 0, prop, j, i;
 	  for (j = 0; j < props.length; j++) {
@@ -3370,7 +2743,7 @@
 	  }
 	  return value;
 	}
-	
+
 	/**
 	 * A crude way of determining if an object is a window
 	 * @member util
@@ -3380,9 +2753,9 @@
 	  /*jshint eqeqeq:false*/
 	  return obj != null && obj == obj.window;
 	}
-	
+
 	var domUtils = {};
-	
+
 	each(['Width', 'Height'], function (name) {
 	  domUtils['doc' + name] = function (refWin) {
 	    var d = refWin.document;
@@ -3394,7 +2767,7 @@
 	      d.body['scroll' + name],
 	      domUtils['viewport' + name](d));
 	  };
-	
+
 	  domUtils['viewport' + name] = function (win) {
 	    // pc browser includes scrollbar in window.innerWidth
 	    var prop = 'client' + name,
@@ -3408,7 +2781,7 @@
 	      body && body[prop] || documentElementProp;
 	  };
 	});
-	
+
 	/*
 	 得到元素的大小信息
 	 @param elem
@@ -3460,9 +2833,9 @@
 	        which, computedStyle);
 	  }
 	}
-	
+
 	var cssShow = {position: 'absolute', visibility: 'hidden', display: 'block'};
-	
+
 	// fix #119 : https://github.com/kissyteam/kissy/issues/119
 	function getWHIgnoreDisplay(elem) {
 	  var val, args = arguments;
@@ -3477,14 +2850,14 @@
 	  }
 	  return val;
 	}
-	
+
 	each(['width', 'height'], function (name) {
 	  var first = name.charAt(0).toUpperCase() + name.slice(1);
 	  domUtils['outer' + first] = function (el, includeMargin) {
 	    return el && getWHIgnoreDisplay(el, name, includeMargin ? MARGIN_INDEX : BORDER_INDEX);
 	  };
 	  var which = name === 'width' ? ['Left', 'Right'] : ['Top', 'Bottom'];
-	
+
 	  domUtils[name] = function (elem, val) {
 	    if (val !== undefined) {
 	      if (elem) {
@@ -3500,7 +2873,7 @@
 	    return elem && getWHIgnoreDisplay(elem, name, CONTENT_INDEX);
 	  };
 	});
-	
+
 	function css(el, name, value) {
 	  if (typeof name === 'object') {
 	    for (var i in name) {
@@ -3517,14 +2890,14 @@
 	    return getComputedStyleX(el, name);
 	  }
 	}
-	
+
 	function mix(to, from) {
 	  for (var i in from) {
 	    to[i] = from[i];
 	  }
 	  return to;
 	}
-	
+
 	var utils = module.exports = {
 	  getWindow: function (node) {
 	    var doc = node.ownerDocument || node;
@@ -3594,10 +2967,9 @@
 	  viewportWidth: 0,
 	  viewportHeight: 0
 	};
-	
+
 	mix(utils, domUtils);
 
 
 /***/ }
-/******/ ])
-//# sourceMappingURL=common.js.map
+/******/ ]);

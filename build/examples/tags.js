@@ -1,13 +1,15 @@
-webpackJsonp([3],[
+webpackJsonp([1],[
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(2);
+	module.exports = __webpack_require__(4);
 
 
 /***/ },
 /* 1 */,
-/* 2 */
+/* 2 */,
+/* 3 */,
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(5);
@@ -28,12 +30,12 @@ webpackJsonp([3],[
 
 	var c2 = (
 	  React.createElement("div", null, 
-	    React.createElement("h1", null, "multiple select（scroll the menu）"), 
+	    React.createElement("h1", null, "tags select（scroll the menu）"), 
 	    React.createElement("div", {style: {width: 300}}, 
 	      React.createElement("style", null, 
 	      style
 	      ), 
-	      React.createElement(Select, {multiple: true, value: ['name2', 'name3'], onChange: handleChange}, 
+	      React.createElement(Select, {tags: true, value: ['name2', 'name3'], onChange: handleChange}, 
 	    children
 	      )
 	    )
