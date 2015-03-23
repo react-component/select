@@ -1,7 +1,6 @@
 var React = require('react');
 var Select = require('rc-select');
 var Option = Select.Option;
-require('./examples.css');
 require('rc-menu/assets/index.css');
 require('rc-select/assets/index.css');
 var children = [];
@@ -13,7 +12,7 @@ function handleChange(value) {
   console.log('selected ' + value);
 }
 
-var style = '.rc-select-menu {height:200px;overflow:auto;}';
+var style = '.rc-select-menu {max-height:200px;overflow:auto;}';
 
 var c2 = (
   <div>

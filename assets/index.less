@@ -6,6 +6,13 @@
   margin: 0;
   position: relative;
   vertical-align: middle;
+
+  ul,li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
   > ul > li > a {
     padding: 0;
     background-color: #fff;
@@ -50,7 +57,6 @@
       padding-left: 8px;
       padding-right: 20px;
       text-overflow: ellipsis;
-
       color: #444;
       line-height: 28px;
     }
@@ -77,8 +83,8 @@
     .rc-select-selection__rendered {
       display: inline-block;
       overflow: hidden;
-      padding-left: 8px;
       text-overflow: ellipsis;
+      padding-left: 8px;
     }
 
     .rc-select-selection__clear {
