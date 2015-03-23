@@ -119,6 +119,47 @@ describe('Select', function () {
         done();
       }, 100);
     });
+
+  });
+
+  describe('when use option tags', function () {
+    var div;
+
+    this.timeout(400000);
+
+    beforeEach(function () {
+      div = document.createElement('div');
+      div.tabIndex = 0;
+      document.body.appendChild(div);
+      instance = React.render(
+        <Select tags>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+        div);
+    });
+
+    afterEach(function () {
+      React.unmountComponentAtNode(div);
+    });
+
+    it('should allow user input as tags', function (done) {
+      if (navigator.userAgent.indexOf(' Chrome') === -1) {
+        done();
+        return;
+      }
+
+      var node = React.findDOMNode(instance.refs.input);
+      React.addons.TestUtils.Simulate.keyDown( node, {key:"A"} )
+
+      setTimeout(function () {
+        React.addons.TestUtils.Simulate.keyDown( node, {key:"Enter"} )
+        setTimeout(function () {
+          expect(instance.state.value).to.contain("A");
+        }, 100);
+        done();
+      }, 100);
+    });
   });
 
 });
