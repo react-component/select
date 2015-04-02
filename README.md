@@ -96,6 +96,12 @@ React.render(c, container);
           <td>can select more than one option </td>
         </tr>
         <tr>
+          <td>filterOption</td>
+          <td></td>
+          <td>true</td>
+          <td>whether filter options by input value</td>
+        </tr>
+        <tr>
           <td>tags</td>
           <td></td>
           <td>false</td>
@@ -112,6 +118,18 @@ React.render(c, container);
           <td></td>
           <td>false</td>
           <td>enable combobox mode(can not set multiple at the same time)</td>
+        </tr>
+        <tr>
+          <td>onSelect</td>
+          <td>Function</td>
+          <td></td>
+          <td>called when a option is selected. param is option's value</td>
+        </tr>
+        <tr>
+          <td>onDeselect</td>
+          <td>Function</td>
+          <td></td>
+          <td>called when a option is deselected. param is option's value. only called for multiple or tags</td>
         </tr>
         <tr>
             <td>onChange</td>

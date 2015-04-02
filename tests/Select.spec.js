@@ -150,14 +150,17 @@ describe('Select', function () {
       }
 
       var node = React.findDOMNode(instance.refs.input);
-      React.addons.TestUtils.Simulate.keyDown( node, {key:"A"} )
-
+      node.focus();
+      node.value = 'A';
+      Simulate.change(node);
       setTimeout(function () {
-        React.addons.TestUtils.Simulate.keyDown( node, {key:"Enter"} )
+        Simulate.keyDown(node, {
+          keyCode: KeyCode.ENTER
+        });
         setTimeout(function () {
           expect(instance.state.value).to.contain("A");
+          done();
         }, 100);
-        done();
       }, 100);
     });
   });
