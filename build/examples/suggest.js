@@ -352,7 +352,7 @@ webpackJsonp([3],{
 	 * Expose `debug()` as the module.
 	 */
 
-	exports = module.exports = __webpack_require__(31);
+	exports = module.exports = __webpack_require__(34);
 	exports.log = log;
 	exports.formatArgs = formatArgs;
 	exports.save = save;
@@ -524,7 +524,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 31:
+/***/ 34:
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -540,7 +540,7 @@ webpackJsonp([3],{
 	exports.disable = disable;
 	exports.enable = enable;
 	exports.enabled = enabled;
-	exports.humanize = __webpack_require__(36);
+	exports.humanize = __webpack_require__(38);
 
 	/**
 	 * The currently active debug mode names, and names to skip.
@@ -728,7 +728,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 36:
+/***/ 38:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
