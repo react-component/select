@@ -14,7 +14,6 @@ webpackJsonp([1],{
 	var React = __webpack_require__(6);
 	var Select = __webpack_require__(7);
 	var Option = Select.Option;
-	__webpack_require__(12);
 	__webpack_require__(10);
 	var children = [];
 	for (var i = 10; i < 36; i++) {

@@ -14,7 +14,6 @@ webpackJsonp([0],[
 	var React = __webpack_require__(6);
 	var Select = __webpack_require__(7);
 	var Option = Select.Option;
-	__webpack_require__(12);
 	__webpack_require__(10);
 	function handleChange(value) {
 	  console.log('selected ' + value);
