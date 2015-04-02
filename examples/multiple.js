@@ -1,7 +1,6 @@
 var React = require('react');
 var Select = require('rc-select');
 var Option = Select.Option;
-require('rc-menu/assets/index.css');
 require('rc-select/assets/index.css');
 var children = [];
 for (var i = 10; i < 36; i++) {

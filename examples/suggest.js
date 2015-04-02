@@ -1,7 +1,6 @@
 var React = require('react');
 var Select = require('../');
 var Option = Select.Option;
-require('rc-menu/assets/index.css');
 require('rc-select/assets/index.css');
 var jsonp = require('jsonp');
 var querystring = require('querystring');
