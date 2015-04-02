@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		4:0
+/******/ 		5:0
 /******/ 	};
 
 /******/ 	// The require function
@@ -75,7 +75,7 @@
 /******/ 			script.type = 'text/javascript';
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"single","1":"tags","2":"combobox","3":"multiple"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"single","1":"tags","2":"combobox","3":"suggest","4":"multiple"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -96,32 +96,35 @@
 /* 2 */,
 /* 3 */,
 /* 4 */,
-/* 5 */
+/* 5 */,
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = React;
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
-	var Select = __webpack_require__(11);
-	Select.Option = __webpack_require__(12);
+	var Select = __webpack_require__(14);
+	Select.Option = __webpack_require__(15);
 	module.exports = Select;
 
 
 /***/ },
-/* 7 */
+/* 8 */,
+/* 9 */,
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(8);
+	var content = __webpack_require__(11);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(13)(content, {});
+	var update = __webpack_require__(16)(content, {});
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
@@ -135,23 +138,23 @@
 	}
 
 /***/ },
-/* 8 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(14)();
+	exports = module.exports = __webpack_require__(19)();
 	exports.push([module.id, ".rc-select {\n  box-sizing: border-box;\n  display: block;\n  margin: 0;\n  position: relative;\n  vertical-align: middle;\n}\n.rc-select ul,\n.rc-select li {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n.rc-select > ul > li > a {\n  padding: 0;\n  background-color: #fff;\n}\n.rc-select .rc-select-arrow {\n  height: 26px;\n  position: absolute;\n  top: 1px;\n  right: 1px;\n  width: 20px;\n}\n.rc-select .rc-select-arrow b {\n  border-color: #888 transparent transparent transparent;\n  border-style: solid;\n  border-width: 5px 4px 0 4px;\n  height: 0;\n  left: 50%;\n  margin-left: -4px;\n  margin-top: -2px;\n  position: absolute;\n  top: 50%;\n  width: 0;\n}\n.rc-select .rc-select-selection--single {\n  box-sizing: border-box;\n  cursor: pointer;\n  display: block;\n  height: 28px;\n  -moz-user-select: none;\n   -ms-user-select: none;\n       user-select: none;\n  -webkit-user-select: none;\n  background-color: #fff;\n  border: 1px solid #aaa;\n  border-radius: 4px;\n}\n.rc-select .rc-select-selection--single .rc-select-selection__rendered {\n  display: block;\n  overflow: hidden;\n  padding-left: 8px;\n  padding-right: 20px;\n  text-overflow: ellipsis;\n  color: #444;\n  line-height: 28px;\n}\n.rc-select .rc-select-selection--single .rc-select-selection__clear {\n  cursor: pointer;\n  float: right;\n  font-weight: bold;\n}\n.rc-select .rc-select-selection--multiple {\n  box-sizing: border-box;\n  display: block;\n  min-height: 32px;\n  -moz-user-select: none;\n   -ms-user-select: none;\n       user-select: none;\n  -webkit-user-select: none;\n  background-color: white;\n  border: 1px solid #aaa;\n  border-radius: 4px;\n  cursor: text;\n}\n.rc-select .rc-select-selection--multiple .rc-select-selection__rendered {\n  display: inline-block;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  padding-left: 8px;\n}\n.rc-select .rc-select-selection--multiple .rc-select-selection__clear {\n  cursor: pointer;\n  float: right;\n  font-weight: bold;\n  margin-top: 5px;\n  margin-right: 10px;\n}\n.rc-select .rc-select-selection--multiple .rc-select-selection__choice {\n  background-color: #e4e4e4;\n  border: 1px solid #aaa;\n  border-radius: 4px;\n  cursor: default;\n  float: left;\n  margin-right: 5px;\n  margin-top: 5px;\n  padding: 0 5px;\n}\n.rc-select .rc-select-selection--multiple .rc-select-selection__choice__remove {\n  color: #999;\n  cursor: pointer;\n  display: inline-block;\n  font-weight: bold;\n  margin-right: 2px;\n}\n.rc-select .rc-select-selection--multiple .rc-select-selection__choice__remove:hover {\n  color: #333;\n}\n.rc-select .rc-select-search--inline {\n  float: left;\n}\n.rc-select .rc-select-search--inline .rc-select-search__field {\n  border: none;\n  font-size: 100%;\n  margin-top: 5px;\n  background: transparent;\n  outline: 0;\n}\n.rc-select-dropdown {\n  display: none;\n  background-color: white;\n  border: 1px solid #aaa;\n  border-radius: 4px;\n  box-sizing: border-box;\n  width: 100%;\n  z-index: 100;\n  border-top: none;\n  border-top-left-radius: 0;\n  border-top-right-radius: 0;\n  position: absolute;\n  top: 100%;\n  marin-top: -1px;\n}\n.rc-select-dropdown .rc-select-menu-item[aria-selected=true] {\n  background-color: #ddd;\n}\n.rc-select-search--dropdown {\n  display: block;\n  padding: 4px;\n}\n.rc-select-search--dropdown .rc-select-search__field {\n  padding: 4px;\n  width: 100%;\n  box-sizing: border-box;\n  border: 1px solid #aaa;\n}\n.rc-select-search--dropdown.rc-select-search--hide {\n  display: none;\n}\n.rc-select-open .rc-select-arrow b {\n  border-color: transparent transparent #888 transparent;\n  border-width: 0 4px 5px 4px;\n}\n.rc-select-open .rc-select-dropdown {\n  display: block;\n}\n.rc-select-open .rc-select-selection {\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.rc-select-menu {\n  outline: none;\n  margin-bottom: 0;\n  padding-left: 0;\n  list-style: none;\n  z-index: 99999;\n}\n.rc-select-menu .rc-select-menu-item-active,\n.rc-select-menu .rc-select-menu-submenu-active {\n  background-color: #8EC8F9 !important;\n}\n.rc-select-menu > li {\n  position: relative;\n  display: block;\n  padding: 15px 20px;\n  white-space: nowrap;\n}\n.rc-select-menu > li.rc-select-menu-item-disabled,\n.rc-select-menu > li.rc-select-menu-submenu-disabled {\n  color: #777;\n}\n.rc-select-menu .rc-select-menu-item-divider {\n  padding: 0;\n  height: 1px;\n  margin: 9px 0;\n  overflow: hidden;\n  background-color: #e5e5e5;\n}\n", ""]);
 
 /***/ },
-/* 9 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(10);
+	var content = __webpack_require__(13);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(13)(content, {});
+	var update = __webpack_require__(16)(content, {});
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
@@ -165,14 +168,14 @@
 	}
 
 /***/ },
-/* 10 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(14)();
-	exports.push([module.id, ".rc-menu {\n  outline: none;\n  margin-bottom: 0;\n  padding-left: 0;\n  list-style: none;\n  z-index: 99999;\n  border: 1px solid rgba(0, 0, 0, 0.15);\n  border-radius: 3px;\n}\n.rc-menu .rc-menu-item-active,\n.rc-menu .rc-menu-submenu-active {\n  background-color: #8EC8F9 !important;\n}\n.rc-menu .rc-menu-item-selected {\n  background-color: #008080;\n}\n.rc-menu .rc-menu-submenu-title {\n  padding: 15px 20px;\n}\n.rc-menu > li.rc-menu-submenu {\n  padding: 0;\n}\n.rc-menu > li {\n  position: relative;\n  display: block;\n  padding: 15px 20px;\n  white-space: nowrap;\n}\n.rc-menu > li.rc-menu-item-disabled,\n.rc-menu > li.rc-menu-submenu-disabled {\n  color: #777;\n}\n.rc-menu .rc-menu-item-divider {\n  padding: 0;\n  height: 1px;\n  margin: 9px 0;\n  overflow: hidden;\n  background-color: #e5e5e5;\n}\n.rc-menu-submenu {\n  position: relative;\n}\n.rc-menu-submenu > .rc-menu {\n  display: none;\n  position: absolute;\n  top: 0;\n  left: 100%;\n  min-width: 160px;\n  background-color: #fff;\n}\n.rc-menu-submenu-open > .rc-menu {\n  display: block;\n}\n", ""]);
+	exports = module.exports = __webpack_require__(19)();
+	exports.push([module.id, ".rc-menu{outline:none;margin-bottom:0;padding-left:0;list-style:none;z-index:99999;border:1px solid rgba(0,0,0,0.15);border-radius:3px}.rc-menu .rc-menu-item-active,.rc-menu .rc-menu-submenu-active{background-color:#8EC8F9 !important}.rc-menu .rc-menu-item-selected{background-color:#008080}.rc-menu .rc-menu-submenu-title{padding:15px 20px}.rc-menu>li.rc-menu-submenu{padding:0}.rc-menu>li{position:relative;display:block;padding:15px 20px;white-space:nowrap}.rc-menu>li.rc-menu-item-disabled,.rc-menu>li.rc-menu-submenu-disabled{color:#777}.rc-menu .rc-menu-item-divider{padding:0;height:1px;margin:9px 0;overflow:hidden;background-color:#e5e5e5}.rc-menu-submenu{position:relative}.rc-menu-submenu>.rc-menu{display:none;position:absolute;top:0;left:100%;min-width:160px;background-color:#fff}.rc-menu-submenu-open>.rc-menu{display:block}", ""]);
 
 /***/ },
-/* 11 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */
@@ -180,12 +183,12 @@
 	/**
 	 * Select
 	 */
-	var React = __webpack_require__(5);
-	var rcUtil = __webpack_require__(16);
+	var React = __webpack_require__(6);
+	var rcUtil = __webpack_require__(21);
 	var joinClasses = rcUtil.joinClasses;
 	var classSet = rcUtil.classSet;
 	var KeyCode = rcUtil.KeyCode;
-	var Menu = __webpack_require__(15);
+	var Menu = __webpack_require__(20);
 	var MenuItem = Menu.Item;
 
 	function isMultipleOrTags(props) {
@@ -267,15 +270,17 @@
 	    var sel = [];
 	    var props = this.props;
 	    var childrenKeys = [];
+	    var filterOption = props.filterOption;
+	    var tags = props.tags;
 	    React.Children.forEach(props.children, function(child) {
-	      if (!inputValue || !child.props.disabled && getValueFromOptionChild(child).indexOf(inputValue) > -1) {
+	      if (!filterOption || !inputValue || !child.props.disabled && getValueFromOptionChild(child).indexOf(inputValue) > -1) {
 	        sel.push(child);
 	      }
-	      if (!child.props.disabled) {
+	      if (tags && !child.props.disabled) {
 	        childrenKeys.push(getValueFromOptionChild(child));
 	      }
 	    });
-	    if (props.tags) {
+	    if (tags) {
 	      var value = this.state.value || [];
 	      value = value.filter(function(v) {
 	        return childrenKeys.indexOf(v) === -1 && (!inputValue || v.indexOf(inputValue) > -1);
@@ -365,23 +370,26 @@
 
 	  Object.defineProperty(Select.prototype,"handleMenuSelect",{writable:true,configurable:true,value:function(key, item) {"use strict";
 	    var value;
-	    if (isMultipleOrTags(this.props)) {
+	    var props = this.props;
+	    var selectedValue = item.props.value;
+	    if (isMultipleOrTags(props)) {
 	      value = this.state.value.concat();
-	      value.push(item.props.value);
+	      value.push(selectedValue);
 	    } else {
-	      if (this.state.value[0] === item.props.value) {
+	      if (this.state.value[0] === selectedValue) {
 	        this.setOpenState(false);
 	        return;
 	      }
-	      value = [item.props.value];
+	      value = [selectedValue];
 	    }
-	    this.props.onChange(isMultipleOrTags(this.props) ? value : value[0]);
+	    props.onSelect(selectedValue);
+	    props.onChange(isMultipleOrTags(props) ? value : value[0]);
 	    this.setState({
 	      value: value,
 	      inputValue: ''
 	    });
 	    this.setOpenState(false);
-	    if (this.props.combobox) {
+	    if (props.combobox) {
 	      this.setState({
 	        inputValue: value[0]
 	      });
@@ -415,11 +423,16 @@
 	    }
 	  }});
 
-	  Object.defineProperty(Select.prototype,"removeSelected",{writable:true,configurable:true,value:function(value) {"use strict";
-	    value = this.state.value.filter(function(v) {
-	      return v !== value;
+	  Object.defineProperty(Select.prototype,"removeSelected",{writable:true,configurable:true,value:function(selectedValue) {"use strict";
+	    var props = this.props;
+	    var value = this.state.value.filter(function(v) {
+	      return v !== selectedValue;
 	    });
-	    this.props.onChange(isMultipleOrTags(this.props) ? value : value[0]);
+	    var canMultiple = isMultipleOrTags(props);
+	    if (canMultiple) {
+	      props.onDeselect(selectedValue);
+	    }
+	    props.onChange(isMultipleOrTags(props) ? value : value[0]);
 	    this.setState({
 	      value: value
 	    });
@@ -427,7 +440,7 @@
 
 	  Object.defineProperty(Select.prototype,"handleClearSelection",{writable:true,configurable:true,value:function(e) {"use strict";
 	    e.stopPropagation();
-	    if (this.state.value.length) {
+	    if (this.state.inputValue || this.state.value.length) {
 	      this.props.onChange(isMultipleOrTags(this.props) ? [] : undefined);
 	      this.setState({
 	        value: [],
@@ -587,13 +600,18 @@
 	Select.propTypes = {
 	  multiple: React.PropTypes.bool,
 	  tags: React.PropTypes.bool,
-	  onChange: React.PropTypes.func
+	  onChange: React.PropTypes.func,
+	  onSelect: React.PropTypes.func,
+	  onDeselect: React.PropTypes.func
 	};
 
 	Select.defaultProps = {
 	  prefixCls: 'rc-select',
+	  filterOption: true,
 	  allowClear: true,
 	  onChange: noop,
+	  onSelect: noop,
+	  onDeselect: noop,
 	  notFoundContent: 'Not Found'
 	};
 
@@ -601,7 +619,7 @@
 
 
 /***/ },
-/* 12 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */
@@ -610,7 +628,7 @@
 	 * Option
 	 */
 	/*jshint -W079 */
-	var React = __webpack_require__(5);
+	var React = __webpack_require__(6);
 
 	var ____Class1=React.Component;for(var ____Class1____Key in ____Class1){if(____Class1.hasOwnProperty(____Class1____Key)){Option[____Class1____Key]=____Class1[____Class1____Key];}}var ____SuperProtoOf____Class1=____Class1===null?null:____Class1.prototype;Option.prototype=Object.create(____SuperProtoOf____Class1);Option.prototype.constructor=Option;Option.__superConstructor__=____Class1;function Option(){"use strict";if(____Class1!==null){____Class1.apply(this,arguments);}}
 
@@ -620,7 +638,7 @@
 
 
 /***/ },
-/* 13 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -816,7 +834,9 @@
 
 
 /***/ },
-/* 14 */
+/* 17 */,
+/* 18 */,
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function() {
@@ -837,51 +857,52 @@
 	}
 
 /***/ },
-/* 15 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Menu = __webpack_require__(17);
-	Menu.SubMenu = __webpack_require__(18);
-	Menu.Item = __webpack_require__(19);
+	var Menu = __webpack_require__(23);
+	Menu.SubMenu = __webpack_require__(24);
+	Menu.Item = __webpack_require__(25);
 	module.exports = Menu;
 
 
 /***/ },
-/* 16 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
-	  guid: __webpack_require__(20),
-	  classSet: __webpack_require__(21),
-	  joinClasses: __webpack_require__(22),
-	  KeyCode: __webpack_require__(23),
-	  PureRenderMixin: __webpack_require__(24),
-	  shallowEqual: __webpack_require__(25),
-	  createChainedFunction: __webpack_require__(26),
+	  guid: __webpack_require__(26),
+	  classSet: __webpack_require__(27),
+	  joinClasses: __webpack_require__(28),
+	  KeyCode: __webpack_require__(29),
+	  PureRenderMixin: __webpack_require__(30),
+	  shallowEqual: __webpack_require__(31),
+	  createChainedFunction: __webpack_require__(32),
 	  Dom: {
-	    addEventListener: __webpack_require__(27),
-	    contains: __webpack_require__(28)
+	    addEventListener: __webpack_require__(33),
+	    contains: __webpack_require__(34)
 	  },
 	  Children: {
-	    toArray: __webpack_require__(29)
+	    toArray: __webpack_require__(35)
 	  }
 	};
 
 
 /***/ },
-/* 17 */
+/* 22 */,
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */
 
-	var React = __webpack_require__(5);
-	var rcUtil = __webpack_require__(16);
+	var React = __webpack_require__(6);
+	var rcUtil = __webpack_require__(21);
 	var joinClasses = rcUtil.joinClasses;
 	var classSet = rcUtil.classSet;
 	var createChainedFunction = rcUtil.createChainedFunction;
-	var assign = __webpack_require__(31);
+	var assign = __webpack_require__(38);
 	var KeyCode = rcUtil.KeyCode;
-	var scrollIntoView = __webpack_require__(32);
+	var scrollIntoView = __webpack_require__(39);
 
 	function getActiveKey(props) {
 	  var activeKey = props.activeKey;
@@ -915,9 +936,9 @@
 	  this.instances[name] = c;
 	}
 
-	var ____Class3=React.Component;for(var ____Class3____Key in ____Class3){if(____Class3.hasOwnProperty(____Class3____Key)){Menu[____Class3____Key]=____Class3[____Class3____Key];}}var ____SuperProtoOf____Class3=____Class3===null?null:____Class3.prototype;Menu.prototype=Object.create(____SuperProtoOf____Class3);Menu.prototype.constructor=Menu;Menu.__superConstructor__=____Class3;
+	var ____Class2=React.Component;for(var ____Class2____Key in ____Class2){if(____Class2.hasOwnProperty(____Class2____Key)){Menu[____Class2____Key]=____Class2[____Class2____Key];}}var ____SuperProtoOf____Class2=____Class2===null?null:____Class2.prototype;Menu.prototype=Object.create(____SuperProtoOf____Class2);Menu.prototype.constructor=Menu;Menu.__superConstructor__=____Class2;
 	  function Menu(props) {"use strict";
-	    ____Class3.call(this,props);
+	    ____Class2.call(this,props);
 	    this.state = {
 	      activeKey: getActiveKey.call(this, props),
 	      selectedKeys: props.selectedKeys || []
@@ -1152,18 +1173,18 @@
 
 
 /***/ },
-/* 18 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */
 
-	var React = __webpack_require__(5);
-	var rcUtil = __webpack_require__(16);
+	var React = __webpack_require__(6);
+	var rcUtil = __webpack_require__(21);
 	var joinClasses = rcUtil.joinClasses;
 	var classSet = rcUtil.classSet;
 	var guid = rcUtil.guid;
 	var KeyCode = rcUtil.KeyCode;
-	var Menu = __webpack_require__(17);
+	var Menu = __webpack_require__(23);
 	var createChainedFunction = rcUtil.createChainedFunction;
 
 	var SubMenu = React.createClass({displayName: "SubMenu",
@@ -1173,7 +1194,7 @@
 	    onClick: React.PropTypes.func
 	  },
 
-	  mixins: [__webpack_require__(30)],
+	  mixins: [__webpack_require__(37)],
 
 	  getInitialState:function() {
 	    return {
@@ -1360,20 +1381,20 @@
 
 
 /***/ },
-/* 19 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */
 
-	var React = __webpack_require__(5);
-	var rcUtil = __webpack_require__(16);
+	var React = __webpack_require__(6);
+	var rcUtil = __webpack_require__(21);
 	var joinClasses = rcUtil.joinClasses;
 	var classSet = rcUtil.classSet;
 	var KeyCode = rcUtil.KeyCode;
 
-	var ____Class2=React.Component;for(var ____Class2____Key in ____Class2){if(____Class2.hasOwnProperty(____Class2____Key)){MenuItem[____Class2____Key]=____Class2[____Class2____Key];}}var ____SuperProtoOf____Class2=____Class2===null?null:____Class2.prototype;MenuItem.prototype=Object.create(____SuperProtoOf____Class2);MenuItem.prototype.constructor=MenuItem;MenuItem.__superConstructor__=____Class2;
+	var ____Class3=React.Component;for(var ____Class3____Key in ____Class3){if(____Class3.hasOwnProperty(____Class3____Key)){MenuItem[____Class3____Key]=____Class3[____Class3____Key];}}var ____SuperProtoOf____Class3=____Class3===null?null:____Class3.prototype;MenuItem.prototype=Object.create(____SuperProtoOf____Class3);MenuItem.prototype.constructor=MenuItem;MenuItem.__superConstructor__=____Class3;
 	  function MenuItem(props) {"use strict";
-	    ____Class2.call(this,props);
+	    ____Class3.call(this,props);
 	    ['handleKeyDown', 'handleMouseLeave', 'handleMouseEnter', 'handleClick'].forEach(function(m) {
 	      this[m] = this[m].bind(this);
 	    }.bind(this));
@@ -1487,7 +1508,7 @@
 
 
 /***/ },
-/* 20 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var seed = 0;
@@ -1497,7 +1518,7 @@
 
 
 /***/ },
-/* 21 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1542,7 +1563,7 @@
 
 
 /***/ },
-/* 22 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1589,7 +1610,7 @@
 
 
 /***/ },
-/* 23 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2116,7 +2137,7 @@
 
 
 /***/ },
-/* 24 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2132,7 +2153,7 @@
 
 	"use strict";
 
-	var shallowEqual = __webpack_require__(25);
+	var shallowEqual = __webpack_require__(31);
 
 	/**
 	 * If your React component's render function is "pure", e.g. it will render the
@@ -2169,7 +2190,7 @@
 
 
 /***/ },
-/* 25 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2217,7 +2238,7 @@
 
 
 /***/ },
-/* 26 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2244,7 +2265,7 @@
 
 
 /***/ },
-/* 27 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (target, eventType, callback) {
@@ -2267,7 +2288,7 @@
 
 
 /***/ },
-/* 28 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (root, node) {
@@ -2283,10 +2304,10 @@
 
 
 /***/ },
-/* 29 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(5);
+	var React = __webpack_require__(6);
 
 	module.exports = function (children) {
 	  var ret = [];
@@ -2298,12 +2319,13 @@
 
 
 /***/ },
-/* 30 */
+/* 36 */,
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var rcUtil = __webpack_require__(16);
+	var rcUtil = __webpack_require__(21);
 	var KeyCode = rcUtil.KeyCode;
-	var React = __webpack_require__(5);
+	var React = __webpack_require__(6);
 
 	var SubMenuStateMixin = {
 	  getInitialState:function() {
@@ -2368,7 +2390,7 @@
 
 
 /***/ },
-/* 31 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2400,17 +2422,18 @@
 
 
 /***/ },
-/* 32 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(33);
+	module.exports = __webpack_require__(41);
 
 
 /***/ },
-/* 33 */
+/* 40 */,
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var util = __webpack_require__(34);
+	var util = __webpack_require__(42);
 
 	function scrollIntoView(elem, container, config) {
 	  config = config || {};
@@ -2535,7 +2558,7 @@
 
 
 /***/ },
-/* 34 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var RE_NUM = /[\-+]?(?:\d*\.|)\d+(?:[eE][\-+]?\d+|)/.source;

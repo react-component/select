@@ -11,11 +11,11 @@ webpackJsonp([0],[
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(5);
-	var Select = __webpack_require__(6);
+	var React = __webpack_require__(6);
+	var Select = __webpack_require__(7);
 	var Option = Select.Option;
-	__webpack_require__(9);
-	__webpack_require__(7);
+	__webpack_require__(12);
+	__webpack_require__(10);
 	function handleChange(value) {
 	  console.log('selected ' + value);
 	}
