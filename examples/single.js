@@ -6,12 +6,13 @@ function handleChange(value) {
   console.log('selected ' + value);
 }
 
+
 var c1 = (
   <div>
     <h1>Single Select</h1>
     <div style={{width: 300}}>
-      <Select value="lucy" className="forTest" onChange={handleChange}>
-        <Option value="jack" className="forTest">
+      <Select value="lucy" style={{width:250}} onChange={handleChange}>
+        <Option value="jack">
           <b style={{
             color: 'red'
           }}>jack</b>
