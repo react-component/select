@@ -19,12 +19,13 @@ webpackJsonp([0],[
 	  console.log('selected ' + value);
 	}
 
+
 	var c1 = (
 	  React.createElement("div", null, 
 	    React.createElement("h1", null, "Single Select"), 
 	    React.createElement("div", {style: {width: 300}}, 
-	      React.createElement(Select, {value: "lucy", className: "forTest", onChange: handleChange}, 
-	        React.createElement(Option, {value: "jack", className: "forTest"}, 
+	      React.createElement(Select, {value: "lucy", style: {width:250}, onChange: handleChange}, 
+	        React.createElement(Option, {value: "jack"}, 
 	          React.createElement("b", {style: {
 	            color: 'red'
 	          }}, "jack")
