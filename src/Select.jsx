@@ -1,6 +1,5 @@
-/**
- * Select
- */
+'use strict';
+
 var React = require('react');
 var rcUtil = require('rc-util');
 var joinClasses = rcUtil.joinClasses;

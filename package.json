@@ -1,6 +1,6 @@
 {
   "name": "rc-select",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "description": "select ui component for react",
   "keywords": [
     "react",
@@ -8,6 +8,7 @@
     "react-select",
     "select"
   ],
+  "main": "./lib/index",
   "homepage": "http://github.com/react-component/select",
   "maintainers": [
     "hualei5280@gmail.com",
@@ -21,23 +22,17 @@
     "url": "http://github.com/react-component/select/issues"
   },
   "licenses": "MIT",
-  "spm": {
-    "dependencies": {
-      "react": "*",
-      "rc-util": "2.x",
-      "rc-menu": "3.x"
-    }
-  },
   "config": {
     "port": 8003
   },
   "scripts": {
     "build": "rc-tools run build",
+    "precommit": "rc-tools run precommit",
     "less": "rc-tools run less",
     "gh-pages": "rc-tools run gh-pages",
     "history": "rc-tools run history",
     "start": "node --harmony node_modules/.bin/rc-server",
-    "publish": "rc-tools run tag && spm publish",
+    "publish": "rc-tools run tag",
     "lint": "rc-tools run lint",
     "saucelabs": "node --harmony node_modules/.bin/rc-tools run saucelabs",
     "browser-test": "node --harmony node_modules/.bin/rc-tools run browser-test",
@@ -48,8 +43,8 @@
     "jsonp": "^0.2.0",
     "precommit-hook": "^1.0.7",
     "querystring": "^0.2.0",
-    "rc-server": "^2.0.0",
-    "rc-tools": "2.x",
+    "rc-server": "3.x",
+    "rc-tools": "3.x",
     "react": "~0.13.0"
   },
   "dependencies": {
@@ -57,7 +52,6 @@
     "rc-menu": "3.x"
   },
   "precommit": [
-    "lint",
-    "less"
+    "precommit"
   ]
 }

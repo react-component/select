@@ -1,3 +1,5 @@
+'use strict';
+
 var React = require('react');
 var Select = require('rc-select');
 var Option = Select.Option;

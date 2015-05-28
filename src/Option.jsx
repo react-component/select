@@ -1,6 +1,5 @@
-/**
- * Option
- */
+'use strict';
+
 /*jshint -W079 */
 var React = require('react');
 

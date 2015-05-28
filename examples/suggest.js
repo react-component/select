@@ -1,3 +1,5 @@
+'use strict';
+
 var React = require('react');
 var Select = require('../');
 var Option = Select.Option;
