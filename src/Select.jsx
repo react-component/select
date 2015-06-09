@@ -318,10 +318,10 @@ class Select extends React.Component {
       selectedValueNodes = value.map((v) => {
         return (
           <li className={prefixCls + '-selection__choice'}>
+            {v}
             <span className={prefixCls + '-selection__choice__remove'}
               onClick={this.removeSelected.bind(this, v)}
             >×</span>
-           {v}
           </li>
         );
       });

@@ -1,12 +1,14 @@
+@selectPrefixCls: rc-select;
 
-.rc-select {
+.@{selectPrefixCls} {
   box-sizing: border-box;
   display: inline-block;
   margin: 0;
   position: relative;
   vertical-align: middle;
+  color: #666;
 
-  .rc-select-selection {
+  &-selection {
     outline: none;
   }
 
@@ -22,7 +24,7 @@
   }
 
   // arrow
-  .rc-select-arrow {
+  &-arrow {
     height: 26px;
     position: absolute;
     top: 1px;
@@ -42,7 +44,7 @@
     }
   }
 
-  .rc-select-selection--single {
+  &-selection--single {
     box-sizing: border-box;
     cursor: pointer;
     display: block;
@@ -51,46 +53,45 @@
     -webkit-user-select: none;
 
     background-color: #fff;
-    border: 1px solid #aaa;
+    border: 1px solid #d9d9d9;
     border-radius: 4px;
 
-    .rc-select-selection__rendered {
+    .@{selectPrefixCls}-selection__rendered {
       display: block;
       overflow: hidden;
       padding-left: 8px;
       padding-right: 20px;
       text-overflow: ellipsis;
-      color: #444;
       line-height: 28px;
     }
 
-    .rc-select-selection__clear {
+    .@{selectPrefixCls}-selection__clear {
       cursor: pointer;
       float: right;
       font-weight: bold;
     }
   }
 
-  .rc-select-selection--multiple {
+  &-selection--multiple {
     box-sizing: border-box;
     display: block;
     min-height: 32px;
     user-select: none;
     -webkit-user-select: none;
 
-    background-color: white;
-    border: 1px solid #aaa;
+    background-color: #fff;
+    border: 1px solid #d9d9d9;
     border-radius: 4px;
     cursor: text;
 
-    .rc-select-selection__rendered {
+    .@{selectPrefixCls}-selection__rendered {
       display: inline-block;
       overflow: hidden;
       text-overflow: ellipsis;
       padding-left: 8px;
     }
 
-    .rc-select-selection__clear {
+    .@{selectPrefixCls}-selection__clear {
       cursor: pointer;
       float: right;
       font-weight: bold;
@@ -98,33 +99,32 @@
       margin-right: 10px;
     }
 
-    .rc-select-selection__choice {
-      background-color: #e4e4e4;
-      border: 1px solid #aaa;
+    .@{selectPrefixCls}-selection__choice {
+      background-color: #f3f3f3;
       border-radius: 4px;
       cursor: default;
       float: left;
-      margin-right: 5px;
-      margin-top: 5px;
-      padding: 0 5px;
+      margin-right: 4px;
+      margin-top: 4px;
+      padding: 4px 8px;
     }
 
-    .rc-select-selection__choice__remove {
-      color: #999;
+    .@{selectPrefixCls}-selection__choice__remove {
+      color: #919191;
       cursor: pointer;
       display: inline-block;
       font-weight: bold;
-      margin-right: 2px;
+      padding: 0 0 0 8px;
       &:hover {
         color: #333;
       }
     }
   }
 
-  .rc-select-search--inline {
+  &-search--inline {
     float: left;
 
-    .rc-select-search__field {
+    .@{selectPrefixCls}-search__field {
       border: none;
       font-size: 100%;
       margin-top: 5px;
@@ -132,84 +132,89 @@
       outline: 0;
     }
   }
-}
 
-.rc-select-dropdown {
-  display: none;
-  background-color: white;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-  box-sizing: border-box;
-  width: 100%;
-  z-index: 100;
-  border-top: none;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  position: absolute;
-  top: 100%;
-  marin-top: -1px;
-  outline: none;
-  .rc-select-menu-item[aria-selected=true] {
-    background-color: #ddd;
-  }
-}
 
-.rc-select-search--dropdown {
-  display: block;
-  padding: 4px;
-  .rc-select-search__field {
-    padding: 4px;
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid #aaa;
-  }
-  &.rc-select-search--hide {
+  &-dropdown {
     display: none;
-  }
-}
-
-.rc-select-open {
-  .rc-select-arrow b {
-    border-color: transparent transparent #888 transparent;
-    border-width: 0 4px 5px 4px;
-  }
-  .rc-select-dropdown {
-    display: block;
-  }
-
-  .rc-select-selection {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-}
-
-.rc-select-menu {
-  outline: none;
-  margin-bottom: 0;
-  padding-left: 0; // Override default ul/ol
-  list-style: none;
-  z-index: 99999;
-
-  .rc-select-menu-item-active, .rc-select-menu-submenu-active {
-    background-color: #8EC8F9 !important;
-  }
-
-  > li {
-    position: relative;
-    display: block;
-    padding: 15px 20px;
-    white-space: nowrap;
-
-    // Disabled state sets text to gray and nukes hover/tab effects
-    &.rc-select-menu-item-disabled, &.rc-select-menu-submenu-disabled {
-      color: #777;
+    background-color: white;
+    border: 1px solid #d9d9d9;
+    box-shadow: 0 0px 4px #d9d9d9;
+    border-radius: 4px;
+    box-sizing: border-box;
+    width: 100%;
+    z-index: 100;
+    border-top: none;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    position: absolute;
+    top: 100%;
+    marin-top: -1px;
+    outline: none;
+    .@{selectPrefixCls}-menu-item[aria-selected=true] {
+      background-color: #ddd;
     }
   }
-  .rc-select-menu-item-divider {
-    padding: 0;
-    height: 1px;
-    margin: 9px 0;
-    overflow: hidden;
-    background-color: #e5e5e5;
+
+  &-search--dropdown {
+    display: block;
+    padding: 4px;
+    .@{selectPrefixCls}-search__field {
+      padding: 4px;
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+      outline: none;
+    }
+    &.@{selectPrefixCls}-search--hide {
+      display: none;
+    }
+  }
+
+  &-open {
+    .@{selectPrefixCls}-arrow b {
+      border-color: transparent transparent #888 transparent;
+      border-width: 0 4px 5px 4px;
+    }
+    .@{selectPrefixCls}-dropdown {
+      display: block;
+    }
+
+    .@{selectPrefixCls}-selection {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  &-menu {
+    outline: none;
+    margin-bottom: 0;
+    padding-left: 0; // Override default ul/ol
+    list-style: none;
+    z-index: 99999;
+
+    .@{selectPrefixCls}-menu-item-active, .@{selectPrefixCls}-menu-submenu-active {
+      //background-color: #8EC8F9 !important;
+      background-color: rgba(142, 200, 249, 0.1) !important;
+    }
+
+    > li {
+      position: relative;
+      display: block;
+      padding: 15px 20px;
+      white-space: nowrap;
+
+      // Disabled state sets text to gray and nukes hover/tab effects
+      &.@{selectPrefixCls}-menu-item-disabled, &.@{selectPrefixCls}-menu-submenu-disabled {
+        color: #777;
+      }
+    }
+    .@{selectPrefixCls}-menu-item-divider {
+      padding: 0;
+      height: 1px;
+      margin: 9px 0;
+      overflow: hidden;
+      background-color: #e5e5e5;
+    }
   }
 }
