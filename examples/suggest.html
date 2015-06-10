@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" type="text/css" rel="stylesheet"/>
     <style>
         .hljs {
             display: block;
@@ -172,41 +173,73 @@
     </script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/4.1.0/es5-shim.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/4.1.0/es5-sham.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.js"></script>
     <![endif]-->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.13.0/react.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
 </head>
 <body>
 <div id="__react-content"></div>
 <script src="common.js?nowrap"></script>
-<script src="combobox.js?nowrap"></script>
+<script src="suggest.js?nowrap"></script>
 <div class="highlight">
 <pre>
-<span class="xml">var React = require('react');
-var Select = require('../');
-var Option = Select.Option;
-require('rc-select/assets/index.css');
-var style = {
-  color: 'red'
-};
-var c3 = (
-  <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">h1</span>&gt;</span>combobox<span class="hljs-tag">&lt;/<span class="hljs-title">h1</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=</span></span><span class="hljs-expression">{{<span class="hljs-variable">width</span>: 300}}</span><span class="xml"><span class="hljs-tag">&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">Select</span> <span class="hljs-attribute">combobox</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"jack"</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">b</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{style}</span>&gt;</span>jack<span class="hljs-tag">&lt;/<span class="hljs-title">b</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"lucy"</span> &gt;</span>lucy<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"disabled"</span> <span class="hljs-attribute">disabled</span>&gt;</span>disabled<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"yiminghe"</span>&gt;</span>yiminghe<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-);
+<span class="hljs-string">'use strict'</span>;
 
-React.render(c3, document.getElementById('__react-content'));
-</span>
+<span class="hljs-reserved">var</span> React = <span class="hljs-built_in">require</span>(<span class="hljs-string">'react'</span>);
+<span class="hljs-reserved">var</span> Select = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../'</span>);
+<span class="hljs-reserved">var</span> Option = Select.Option;
+<span class="hljs-built_in">require</span>(<span class="hljs-string">'rc-select/assets/index.css'</span>);
+<span class="hljs-reserved">var</span> jsonp = <span class="hljs-built_in">require</span>(<span class="hljs-string">'jsonp'</span>);
+<span class="hljs-reserved">var</span> querystring = <span class="hljs-built_in">require</span>(<span class="hljs-string">'querystring'</span>);
+
+<span class="hljs-reserved">var</span> Search = React.createClass({
+  getInitialState() {
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attribute">data</span>: []
+    }
+  },
+
+  fetchData(value) {
+    jsonp(<span class="hljs-string">'http://suggest.taobao.com/sug?'</span> + querystring.encode({
+      <span class="hljs-attribute">code</span>: <span class="hljs-string">'utf-8'</span>,
+      <span class="hljs-attribute">q</span>: value
+    }), <span class="hljs-function"><span class="hljs-params">(err, d)</span> =&gt;</span> {
+      <span class="hljs-reserved">var</span> result = d.result;
+      <span class="hljs-reserved">var</span> data = [];
+      result.forEach(<span class="hljs-function"><span class="hljs-params">(r)</span>=&gt;</span> {
+        data.push({
+          <span class="hljs-attribute">value</span>: r[<span class="hljs-number">0</span>],
+          <span class="hljs-attribute">text</span>: r[<span class="hljs-number">0</span>]
+        });
+      });
+      <span class="hljs-keyword">this</span>.setState({
+        <span class="hljs-attribute">data</span>: data
+      });
+    });
+  },
+
+  handleSelect(value) {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'select '</span>, value);
+  },
+
+  render() {
+    <span class="hljs-reserved">var</span> data = <span class="hljs-keyword">this</span>.state.data;
+    <span class="hljs-reserved">var</span> options = data.map(<span class="hljs-function"><span class="hljs-params">(d)</span> =&gt;</span> {
+      <span class="hljs-keyword">return</span> &lt;Option value={d.value}&gt;{d.text}&lt;/Option&gt;;
+    });
+    <span class="hljs-keyword">return</span> &lt;div&gt;
+      &lt;h1&gt;suggest&lt;/h1&gt;
+      &lt;div style={{<span class="hljs-attribute">width</span>: <span class="hljs-number">300</span>}}&gt;
+        &lt;Select combobox onChange={<span class="hljs-keyword">this</span>.fetchData} onSelect={<span class="hljs-keyword">this</span>.handleSelect} filterOption={<span class="hljs-literal">false</span>}&gt;
+        {options}
+        &lt;/Select&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;;
+  }
+});
+
+React.render(&lt;Search /&gt;, <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'__react-content'</span>));
+
 </pre>
 </div>
 </body>
