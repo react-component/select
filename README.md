@@ -184,7 +184,7 @@ npm start
 
 http://localhost:8003/examples/
 
-online example: http://react-component.github.io/select/build/examples/
+online example: http://react-component.github.io/select/examples/
 
 ## Test Case
 
