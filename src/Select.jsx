@@ -330,7 +330,8 @@ class Select extends React.Component {
       <ul className={prefixCls + '-selection__rendered'}>
           {selectedValueNodes}
           {allowClear && !isMultipleOrTags(props) ? clear : null}
-        <li className={joinClasses(prefixCls + '-search', prefixCls + '-search--inline')}>{input}</li>
+        <li className={joinClasses(prefixCls + '-search', prefixCls + '-search--inline')}>
+          {input}<i className="anticon anticon-search"></i></li>
       </ul>
     );
   }
@@ -427,7 +428,7 @@ Select.propTypes = {
 Select.defaultProps = {
   prefixCls: 'rc-select',
   filterOption: true,
-  allowClear: true,
+  allowClear: false,
   onChange: noop,
   onSelect: noop,
   onDeselect: noop,

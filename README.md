@@ -110,7 +110,7 @@ React.render(c, container);
         <tr>
           <td>allowClear</td>
           <td></td>
-          <td>true</td>
+          <td>false</td>
           <td></td>
         </tr>
         <tr>
