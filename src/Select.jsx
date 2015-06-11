@@ -331,7 +331,7 @@ class Select extends React.Component {
           {selectedValueNodes}
           {allowClear && !isMultipleOrTags(props) ? clear : null}
         <li className={joinClasses(prefixCls + '-search', prefixCls + '-search--inline')}>
-          {input}<i className="anticon anticon-search"></i></li>
+          {input} {/*<i className="anticon anticon-search"></i>*/}</li>
       </ul>
     );
   }
