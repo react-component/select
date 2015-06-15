@@ -7,6 +7,7 @@ var classSet = rcUtil.classSet;
 var KeyCode = rcUtil.KeyCode;
 var Menu = require('rc-menu');
 var MenuItem = Menu.Item;
+var anim = require('css-animation');
 
 function isMultipleOrTags(props) {
   return props.multiple || props.tags;
@@ -121,13 +122,16 @@ class Select extends React.Component {
   }
 
   setOpenState(open) {
+    var refs = this.refs;
     this.setState({
       open: open
     }, ()=> {
       if (open || isMultipleOrTags(this.props) || this.props.combobox) {
-        this.refs.input.getDOMNode().focus();
-      } else {
-        this.refs.selection.getDOMNode().focus();
+        if (refs.input) {
+          React.findDOMNode(refs.input).focus();
+        }
+      } else if (refs.selection) {
+        React.findDOMNode(refs.selection).focus();
       }
     });
   }
@@ -147,13 +151,17 @@ class Select extends React.Component {
   }
 
   handleClick() {
-    this.setOpenState(!this.state.open);
+    if (!this.props.disabled) {
+      this.setOpenState(!this.state.open);
+    }
   }
 
   // combobox ignore
   handleKeyDown(e) {
     var keyCode = e.keyCode;
-    if (keyCode === KeyCode.ENTER || e.keyCode === KeyCode.DOWN) {
+    if (this.state.open && !this.refs.input) {
+      this.handleInputKeyDown(e);
+    } else if (keyCode === KeyCode.ENTER || e.keyCode === KeyCode.DOWN) {
       this.handleClick(e);
       e.preventDefault();
     }
@@ -256,6 +264,9 @@ class Select extends React.Component {
   }
 
   handleClearSelection(e) {
+    if (this.props.disabled) {
+      return;
+    }
     e.stopPropagation();
     if (this.state.inputValue || this.state.value.length) {
       this.props.onChange(isMultipleOrTags(this.props) ? [] : undefined);
@@ -344,10 +355,14 @@ class Select extends React.Component {
     if (this.state.open) {
       rootCls[prefixCls + '-open'] = true;
     }
+    if (this.props.disabled) {
+      rootCls[prefixCls + '-disabled'] = true;
+    }
     return (
       <span
         style={props.style}
-        className={joinClasses(props.className, classSet(rootCls))} dir="ltr"
+        className={joinClasses(props.className, classSet(rootCls))}
+        dir="ltr"
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}>
         {children}
@@ -358,6 +373,32 @@ class Select extends React.Component {
   renderOption(child) {
     var props = getPropsFromOption(child);
     return <MenuItem {...props}>{child.props.children}</MenuItem>;
+  }
+
+  animateDropdown(prevProps, prevState) {
+    var props = this.props;
+    var state = this.state;
+    var transitionName = props.transitionName;
+    if (!transitionName && props.animation) {
+      transitionName = `${props.prefixCls}-dropdown-${props.animation}`;
+    }
+    if (transitionName && this.refs.dropdown) {
+      var domNode = React.findDOMNode(this.refs.dropdown);
+      if (state.open && !prevState.open) {
+        anim(domNode, `${transitionName}-enter`);
+      } else if (!state.open && prevState.open) {
+        anim(domNode, `${transitionName}-leave`);
+      }
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    prevState = prevState || {};
+    this.animateDropdown(prevProps, prevState);
+  }
+
+  componentDidMount() {
+    this.componentDidUpdate();
   }
 
   render() {
@@ -371,6 +412,7 @@ class Select extends React.Component {
         onChange={this.handleInputChange}
         onKeyDown={this.handleInputKeyDown}
         value={state.inputValue}
+        disabled={props.disabled}
         className={prefixCls + '-search__field'}
         role="textbox" />
     );
@@ -380,10 +422,19 @@ class Select extends React.Component {
     var dropDown;
     if (state.open) {
       // single and not combobox, input is inside dropdown
-      dropDown = <span key="dropdown" className= {joinClasses(prefixCls + '-dropdown', prefixCls + '-dropdown--below')} tabIndex="-1">
-      {multiple || props.combobox ? null : <span className={joinClasses(prefixCls + '-search', prefixCls + '-search--dropdown')}>{input}</span>}
+      this.cachedDropDown = dropDown = <span key="dropdown"
+        ref="dropdown"
+        className= {joinClasses(prefixCls + '-dropdown', prefixCls + '-dropdown--below')}
+        tabIndex="-1">
+      {
+        multiple || props.combobox || !props.showSearch ?
+          null :
+          <span className={joinClasses(prefixCls + '-search', prefixCls + '-search--dropdown')}>{input}</span>
+        }
         {this.renderMenu(children)}
       </span>;
+    } else {
+      dropDown = this.cachedDropDown;
     }
 
     var extraSelectionProps = {};
@@ -419,7 +470,10 @@ class Select extends React.Component {
 
 Select.propTypes = {
   multiple: React.PropTypes.bool,
+  showSearch: React.PropTypes.bool,
   tags: React.PropTypes.bool,
+  transitionName: React.PropTypes.string,
+  animation: React.PropTypes.string,
   onChange: React.PropTypes.func,
   onSelect: React.PropTypes.func,
   onDeselect: React.PropTypes.func
@@ -428,6 +482,7 @@ Select.propTypes = {
 Select.defaultProps = {
   prefixCls: 'rc-select',
   filterOption: true,
+  showSearch: true,
   allowClear: false,
   onChange: noop,
   onSelect: noop,
