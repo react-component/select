@@ -10,6 +10,17 @@ var Option = Select.Option;
 
 describe('Select', function () {
   var instance;
+  var div;
+
+  beforeEach(function () {
+    div = document.createElement('div');
+    document.body.appendChild(div);
+  });
+
+  afterEach(function () {
+    React.unmountComponentAtNode(div);
+    document.body.removeChild(div);
+  });
 
   it('should add css class of root dom node', function () {
     var instance = TestUtils.renderIntoDocument(
@@ -56,12 +67,12 @@ describe('Select', function () {
   });
 
   it('should have clear button', function () {
-    var instance = TestUtils.renderIntoDocument(
-      <Select>
+    var instance = React.render(
+      <Select allowClear={true}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
-    );
+      </Select>,
+      div);
     expect(TestUtils.scryRenderedDOMComponentsWithClass(instance, 'rc-select-selection__clear').length).to.be(1);
   });
 

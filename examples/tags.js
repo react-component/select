@@ -22,7 +22,8 @@ var c2 = (
       <style>
       {style}
       </style>
-      <Select tags value={['name2', 'name3']} onChange={handleChange}>
+      <Select tags value={['name2', 'name3']}
+        onChange={handleChange}>
     {children}
       </Select>
     </div>

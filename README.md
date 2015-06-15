@@ -84,6 +84,30 @@ React.render(c, container);
           <td>additional css class of root dom node</td>
         </tr>
         <tr>
+          <td>showSearch</td>
+          <td>Boolean</td>
+          <td>true</td>
+          <td>whether show search input in single mode</td>
+        </tr>
+        <tr>
+          <td>disabled</td>
+          <td>Boolean</td>
+          <td>false</td>
+          <td>whether disabled select</td>
+        </tr>
+        <tr>
+          <td>animation</td>
+          <td>String</td>
+          <td></td>
+          <td>dropdown animation name. only support slide-up now</td>
+        </tr>
+        <tr>
+          <td>transitionName</td>
+          <td>String</td>
+          <td></td>
+          <td>dropdown css animation name</td>
+        </tr>
+        <tr>
           <td>value</td>
           <td>String | Array<String></td>
           <td></td>

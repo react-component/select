@@ -1,6 +1,6 @@
 {
   "name": "rc-select",
-  "version": "3.3.5",
+  "version": "3.4.0",
   "description": "select ui component for react",
   "keywords": [
     "react",
@@ -39,6 +39,7 @@
     "browser-test-cover": "node --harmony node_modules/.bin/rc-tools run browser-test-cover"
   },
   "devDependencies": {
+    "css-animation": "~1.0.3",
     "expect.js": "~0.3.1",
     "jsonp": "^0.2.0",
     "precommit-hook": "^1.0.7",
