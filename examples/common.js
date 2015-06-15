@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		5:0
+/******/ 		6:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"single","1":"multiple","2":"tags","3":"suggest","4":"combobox"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"combobox","1":"multiple","2":"single","3":"single-animation","4":"suggest","5":"tags"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -95,7 +95,7 @@
 /* 0 */,
 /* 1 */,
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	module.exports = React;
 
@@ -106,7 +106,7 @@
 	'use strict';
 	
 	var Select = __webpack_require__(4);
-	Select.Option = __webpack_require__(26);
+	Select.Option = __webpack_require__(30);
 	module.exports = Select;
 
 /***/ },
@@ -172,8 +172,9 @@
 	var joinClasses = rcUtil.joinClasses;
 	var classSet = rcUtil.classSet;
 	var KeyCode = rcUtil.KeyCode;
-	var Menu = __webpack_require__(16);
+	var Menu = __webpack_require__(17);
 	var MenuItem = Menu.Item;
+	var anim = __webpack_require__(27);
 	
 	function isMultipleOrTags(props) {
 	  return props.multiple || props.tags;
@@ -291,13 +292,16 @@
 	    value: function setOpenState(open) {
 	      var _this2 = this;
 	
+	      var refs = this.refs;
 	      this.setState({
 	        open: open
 	      }, function () {
 	        if (open || isMultipleOrTags(_this2.props) || _this2.props.combobox) {
-	          _this2.refs.input.getDOMNode().focus();
-	        } else {
-	          _this2.refs.selection.getDOMNode().focus();
+	          if (refs.input) {
+	            React.findDOMNode(refs.input).focus();
+	          }
+	        } else if (refs.selection) {
+	          React.findDOMNode(refs.selection).focus();
 	        }
 	      });
 	    }
@@ -319,7 +323,9 @@
 	  }, {
 	    key: 'handleClick',
 	    value: function handleClick() {
-	      this.setOpenState(!this.state.open);
+	      if (!this.props.disabled) {
+	        this.setOpenState(!this.state.open);
+	      }
 	    }
 	  }, {
 	    key: 'handleKeyDown',
@@ -327,7 +333,9 @@
 	    // combobox ignore
 	    value: function handleKeyDown(e) {
 	      var keyCode = e.keyCode;
-	      if (keyCode === KeyCode.ENTER || e.keyCode === KeyCode.DOWN) {
+	      if (this.state.open && !this.refs.input) {
+	        this.handleInputKeyDown(e);
+	      } else if (keyCode === KeyCode.ENTER || e.keyCode === KeyCode.DOWN) {
 	        this.handleClick(e);
 	        e.preventDefault();
 	      }
@@ -439,6 +447,9 @@
 	  }, {
 	    key: 'handleClearSelection',
 	    value: function handleClearSelection(e) {
+	      if (this.props.disabled) {
+	        return;
+	      }
 	      e.stopPropagation();
 	      if (this.state.inputValue || this.state.value.length) {
 	        this.props.onChange(isMultipleOrTags(this.props) ? [] : undefined);
@@ -503,7 +514,7 @@
 	          }, '×'));
 	        });
 	      }
-	      return React.createElement('ul', { className: prefixCls + '-selection__rendered' }, selectedValueNodes, allowClear && !isMultipleOrTags(props) ? clear : null, React.createElement('li', { className: joinClasses(prefixCls + '-search', prefixCls + '-search--inline') }, input));
+	      return React.createElement('ul', { className: prefixCls + '-selection__rendered' }, selectedValueNodes, allowClear && !isMultipleOrTags(props) ? clear : null, React.createElement('li', { className: joinClasses(prefixCls + '-search', prefixCls + '-search--inline') }, input, ' '));
 	    }
 	  }, {
 	    key: 'renderRoot',
@@ -515,9 +526,13 @@
 	      if (this.state.open) {
 	        rootCls[prefixCls + '-open'] = true;
 	      }
+	      if (this.props.disabled) {
+	        rootCls[prefixCls + '-disabled'] = true;
+	      }
 	      return React.createElement('span', {
 	        style: props.style,
-	        className: joinClasses(props.className, classSet(rootCls)), dir: 'ltr',
+	        className: joinClasses(props.className, classSet(rootCls)),
+	        dir: 'ltr',
 	        onFocus: this.handleFocus,
 	        onBlur: this.handleBlur }, children);
 	    }
@@ -526,6 +541,35 @@
 	    value: function renderOption(child) {
 	      var props = getPropsFromOption(child);
 	      return React.createElement(MenuItem, props, child.props.children);
+	    }
+	  }, {
+	    key: 'animateDropdown',
+	    value: function animateDropdown(prevProps, prevState) {
+	      var props = this.props;
+	      var state = this.state;
+	      var transitionName = props.transitionName;
+	      if (!transitionName && props.animation) {
+	        transitionName = '' + props.prefixCls + '-dropdown-' + props.animation;
+	      }
+	      if (transitionName && this.refs.dropdown) {
+	        var domNode = React.findDOMNode(this.refs.dropdown);
+	        if (state.open && !prevState.open) {
+	          anim(domNode, '' + transitionName + '-enter');
+	        } else if (!state.open && prevState.open) {
+	          anim(domNode, '' + transitionName + '-leave');
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate(prevProps, prevState) {
+	      prevState = prevState || {};
+	      this.animateDropdown(prevProps, prevState);
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.componentDidUpdate();
 	    }
 	  }, {
 	    key: 'render',
@@ -539,6 +583,7 @@
 	        onChange: this.handleInputChange,
 	        onKeyDown: this.handleInputKeyDown,
 	        value: state.inputValue,
+	        disabled: props.disabled,
 	        className: prefixCls + '-search__field',
 	        role: 'textbox' });
 	
@@ -547,7 +592,12 @@
 	      var dropDown;
 	      if (state.open) {
 	        // single and not combobox, input is inside dropdown
-	        dropDown = React.createElement('span', { key: 'dropdown', className: joinClasses(prefixCls + '-dropdown', prefixCls + '-dropdown--below'), tabIndex: '-1' }, multiple || props.combobox ? null : React.createElement('span', { className: joinClasses(prefixCls + '-search', prefixCls + '-search--dropdown') }, input), this.renderMenu(children));
+	        this.cachedDropDown = dropDown = React.createElement('span', { key: 'dropdown',
+	          ref: 'dropdown',
+	          className: joinClasses(prefixCls + '-dropdown', prefixCls + '-dropdown--below'),
+	          tabIndex: '-1' }, multiple || props.combobox || !props.showSearch ? null : React.createElement('span', { className: joinClasses(prefixCls + '-search', prefixCls + '-search--dropdown') }, input), this.renderMenu(children));
+	      } else {
+	        dropDown = this.cachedDropDown;
 	      }
 	
 	      var extraSelectionProps = {};
@@ -575,7 +625,10 @@
 	
 	Select.propTypes = {
 	  multiple: React.PropTypes.bool,
+	  showSearch: React.PropTypes.bool,
 	  tags: React.PropTypes.bool,
+	  transitionName: React.PropTypes.string,
+	  animation: React.PropTypes.string,
 	  onChange: React.PropTypes.func,
 	  onSelect: React.PropTypes.func,
 	  onDeselect: React.PropTypes.func
@@ -584,7 +637,8 @@
 	Select.defaultProps = {
 	  prefixCls: 'rc-select',
 	  filterOption: true,
-	  allowClear: true,
+	  showSearch: true,
+	  allowClear: false,
 	  onChange: noop,
 	  onSelect: noop,
 	  onDeselect: noop,
@@ -592,80 +646,34 @@
 	};
 	
 	module.exports = Select;
+	/*<i className="anticon anticon-search"></i>*/
 
 /***/ },
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
-	  guid: __webpack_require__(7),
-	  classSet: __webpack_require__(8),
-	  joinClasses: __webpack_require__(9),
-	  KeyCode: __webpack_require__(10),
-	  PureRenderMixin: __webpack_require__(11),
-	  shallowEqual: __webpack_require__(6),
+	  guid: __webpack_require__(6),
+	  classSet: __webpack_require__(7),
+	  joinClasses: __webpack_require__(8),
+	  KeyCode: __webpack_require__(9),
+	  PureRenderMixin: __webpack_require__(10),
+	  shallowEqual: __webpack_require__(11),
 	  createChainedFunction: __webpack_require__(12),
 	  Dom: {
 	    addEventListener: __webpack_require__(13),
 	    contains: __webpack_require__(14)
 	  },
 	  Children: {
-	    toArray: __webpack_require__(15)
+	    toArray: __webpack_require__(15),
+	    mapSelf: __webpack_require__(16)
 	  }
 	};
 
 
 /***/ },
 /* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule shallowEqual
-	 */
-	
-	"use strict";
-	
-	/**
-	 * Performs equality by iterating through keys on an object and returning
-	 * false when any key has values which are not strictly equal between
-	 * objA and objB. Returns true when the values of all keys are strictly equal.
-	 *
-	 * @return {boolean}
-	 */
-	function shallowEqual(objA, objB) {
-	  if (objA === objB) {
-	    return true;
-	  }
-	  var key;
-	  // Test for A's keys different from B.
-	  for (key in objA) {
-	    if (objA.hasOwnProperty(key) &&
-	        (!objB.hasOwnProperty(key) || objA[key] !== objB[key])) {
-	      return false;
-	    }
-	  }
-	  // Test for B's keys missing from A.
-	  for (key in objB) {
-	    if (objB.hasOwnProperty(key) && !objA.hasOwnProperty(key)) {
-	      return false;
-	    }
-	  }
-	  return true;
-	}
-	
-	module.exports = shallowEqual;
-
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	var seed = 0;
 	module.exports = function () {
@@ -674,8 +682,8 @@
 
 
 /***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
+/* 7 */
+/***/ function(module, exports) {
 
 	/**
 	 * Copyright 2013-2014, Facebook, Inc.
@@ -719,8 +727,8 @@
 
 
 /***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
+/* 8 */
+/***/ function(module, exports) {
 
 	/**
 	 * Copyright 2013-2014, Facebook, Inc.
@@ -766,8 +774,8 @@
 
 
 /***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
+/* 9 */
+/***/ function(module, exports) {
 
 	/**
 	 * @ignore
@@ -1293,7 +1301,7 @@
 
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1309,7 +1317,7 @@
 	
 	"use strict";
 	
-	var shallowEqual = __webpack_require__(6);
+	var shallowEqual = __webpack_require__(11);
 	
 	/**
 	 * If your React component's render function is "pure", e.g. it will render the
@@ -1346,8 +1354,56 @@
 
 
 /***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule shallowEqual
+	 */
+	
+	"use strict";
+	
+	/**
+	 * Performs equality by iterating through keys on an object and returning
+	 * false when any key has values which are not strictly equal between
+	 * objA and objB. Returns true when the values of all keys are strictly equal.
+	 *
+	 * @return {boolean}
+	 */
+	function shallowEqual(objA, objB) {
+	  if (objA === objB) {
+	    return true;
+	  }
+	  var key;
+	  // Test for A's keys different from B.
+	  for (key in objA) {
+	    if (objA.hasOwnProperty(key) &&
+	        (!objB.hasOwnProperty(key) || objA[key] !== objB[key])) {
+	      return false;
+	    }
+	  }
+	  // Test for B's keys missing from A.
+	  for (key in objB) {
+	    if (objB.hasOwnProperty(key) && !objA.hasOwnProperty(key)) {
+	      return false;
+	    }
+	  }
+	  return true;
+	}
+	
+	module.exports = shallowEqual;
+
+
+/***/ },
 /* 12 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	/**
 	 * Safe chained function
@@ -1374,7 +1430,7 @@
 
 /***/ },
 /* 13 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	module.exports = function (target, eventType, callback) {
 	  if (target.addEventListener) {
@@ -1397,7 +1453,7 @@
 
 /***/ },
 /* 14 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	module.exports = function (root, node) {
 	  while (node) {
@@ -1430,16 +1486,32 @@
 /* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	var React = __webpack_require__(2);
 	
-	var Menu = __webpack_require__(17);
-	Menu.SubMenu = __webpack_require__(21);
-	Menu.Item = __webpack_require__(23);
-	Menu.Divider = __webpack_require__(24);
-	module.exports = Menu;
+	function mirror(o) {
+	  return o;
+	}
+	
+	module.exports = function (children) {
+	  // return ReactFragment
+	  return React.Children.map(children, mirror);
+	};
+
 
 /***/ },
 /* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var Menu = __webpack_require__(18);
+	Menu.SubMenu = __webpack_require__(22);
+	Menu.Item = __webpack_require__(24);
+	Menu.Divider = __webpack_require__(25);
+	module.exports = Menu;
+
+/***/ },
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1460,7 +1532,7 @@
 	var classSet = rcUtil.classSet;
 	var createChainedFunction = rcUtil.createChainedFunction;
 	var KeyCode = rcUtil.KeyCode;
-	var scrollIntoView = __webpack_require__(18);
+	var scrollIntoView = __webpack_require__(19);
 	
 	function noop() {}
 	
@@ -1767,17 +1839,17 @@
 	module.exports = Menu;
 
 /***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(19);
-
-
-/***/ },
 /* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var util = __webpack_require__(20);
+	module.exports = __webpack_require__(20);
+
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var util = __webpack_require__(21);
 	
 	function scrollIntoView(elem, container, config) {
 	  config = config || {};
@@ -1902,8 +1974,8 @@
 
 
 /***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
+/* 21 */
+/***/ function(module, exports) {
 
 	var RE_NUM = /[\-+]?(?:\d*\.|)\d+(?:[eE][\-+]?\d+|)/.source;
 	
@@ -2339,7 +2411,7 @@
 
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2352,7 +2424,7 @@
 	var classSet = rcUtil.classSet;
 	var guid = rcUtil.guid;
 	var KeyCode = rcUtil.KeyCode;
-	var Menu = __webpack_require__(17);
+	var Menu = __webpack_require__(18);
 	var createChainedFunction = rcUtil.createChainedFunction;
 	
 	var SubMenu = React.createClass({
@@ -2364,7 +2436,7 @@
 	    onClick: React.PropTypes.func
 	  },
 	
-	  mixins: [__webpack_require__(22)],
+	  mixins: [__webpack_require__(23)],
 	
 	  getInitialState: function getInitialState() {
 	    return {
@@ -2558,7 +2630,7 @@
 	module.exports = SubMenu;
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2629,7 +2701,7 @@
 	module.exports = SubMenuStateMixin;
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2782,7 +2854,7 @@
 	module.exports = MenuItem;
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2794,7 +2866,7 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
 	var React = __webpack_require__(2);
-	var assign = __webpack_require__(25);
+	var assign = __webpack_require__(26);
 	
 	var Divider = (function (_React$Component) {
 	  function Divider() {
@@ -2829,8 +2901,8 @@
 	module.exports = Divider;
 
 /***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
+/* 26 */
+/***/ function(module, exports) {
 
 	'use strict';
 	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
@@ -2874,7 +2946,175 @@
 
 
 /***/ },
-/* 26 */
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var Event = __webpack_require__(28);
+	var Css = __webpack_require__(29);
+	
+	module.exports = function (node, transitionName, callback) {
+	  var className = transitionName;
+	  var activeClassName = className + '-active';
+	
+	  if (node.rcEndListener) {
+	    node.rcEndListener();
+	  }
+	
+	  node.rcEndListener = function (e) {
+	    if (e && e.target !== node) {
+	      return;
+	    }
+	
+	    if (node.rcAnimTimeout) {
+	      clearTimeout(node.rcAnimTimeout);
+	      node.rcAnimTimeout = null;
+	    }
+	
+	    Css.removeClass(node, className);
+	    Css.removeClass(node, activeClassName);
+	
+	    Event.removeEndEventListener(node, node.rcEndListener);
+	    node.rcEndListener = null;
+	
+	    // Usually this optional callback is used for informing an owner of
+	    // a leave animation and telling it to remove the child.
+	    if (callback) {
+	      callback();
+	    }
+	  };
+	
+	  Event.addEndEventListener(node, node.rcEndListener);
+	
+	  Css.addClass(node, className);
+	
+	  node.rcAnimTimeout = setTimeout(function () {
+	    Css.addClass(node, activeClassName);
+	    node.rcAnimTimeout = null;
+	  }, 0);
+	};
+
+/***/ },
+/* 28 */
+/***/ function(module, exports) {
+
+	
+	'use strict';
+	
+	var EVENT_NAME_MAP = {
+	  transitionend: {
+	    transition: 'transitionend',
+	    WebkitTransition: 'webkitTransitionEnd',
+	    MozTransition: 'mozTransitionEnd',
+	    OTransition: 'oTransitionEnd',
+	    msTransition: 'MSTransitionEnd'
+	  },
+	
+	  animationend: {
+	    animation: 'animationend',
+	    WebkitAnimation: 'webkitAnimationEnd',
+	    MozAnimation: 'mozAnimationEnd',
+	    OAnimation: 'oAnimationEnd',
+	    msAnimation: 'MSAnimationEnd'
+	  }
+	};
+	
+	var endEvents = [];
+	
+	function detectEvents() {
+	  var testEl = document.createElement('div');
+	  var style = testEl.style;
+	
+	  if (!('AnimationEvent' in window)) {
+	    delete EVENT_NAME_MAP.animationend.animation;
+	  }
+	
+	  if (!('TransitionEvent' in window)) {
+	    delete EVENT_NAME_MAP.transitionend.transition;
+	  }
+	
+	  for (var baseEventName in EVENT_NAME_MAP) {
+	    var baseEvents = EVENT_NAME_MAP[baseEventName];
+	    for (var styleName in baseEvents) {
+	      if (styleName in style) {
+	        endEvents.push(baseEvents[styleName]);
+	        break;
+	      }
+	    }
+	  }
+	}
+	
+	if (typeof window !== 'undefined') {
+	  detectEvents();
+	}
+	
+	function addEventListener(node, eventName, eventListener) {
+	  node.addEventListener(eventName, eventListener, false);
+	}
+	
+	function removeEventListener(node, eventName, eventListener) {
+	  node.removeEventListener(eventName, eventListener, false);
+	}
+	
+	var TransitionEvents = {
+	  addEndEventListener: function addEndEventListener(node, eventListener) {
+	    if (endEvents.length === 0) {
+	      window.setTimeout(eventListener, 0);
+	      return;
+	    }
+	    endEvents.forEach(function (endEvent) {
+	      addEventListener(node, endEvent, eventListener);
+	    });
+	  },
+	
+	  endEvents: endEvents,
+	
+	  removeEndEventListener: function removeEndEventListener(node, eventListener) {
+	    if (endEvents.length === 0) {
+	      return;
+	    }
+	    endEvents.forEach(function (endEvent) {
+	      removeEventListener(node, endEvent, eventListener);
+	    });
+	  }
+	};
+	
+	module.exports = TransitionEvents;
+
+/***/ },
+/* 29 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	var SPACE = ' ';
+	var RE_CLASS = /[\n\t\r]/g;
+	
+	var norm = function norm(elemClass) {
+	  return (SPACE + elemClass + SPACE).replace(RE_CLASS, SPACE);
+	};
+	
+	module.exports = {
+	  addClass: function addClass(elem, className) {
+	    elem.className += ' ' + className;
+	  },
+	
+	  removeClass: function removeClass(elem, needle) {
+	    var elemClass = elem.className.trim();
+	    var className = norm(elemClass);
+	    needle = needle.trim();
+	    needle = SPACE + needle + SPACE;
+	    // 一个 cls 有可能多次出现：'link link2 link link3 link'
+	    while (className.indexOf(needle) >= 0) {
+	      className = className.replace(needle, SPACE);
+	    }
+	    elem.className = className.trim();
+	  }
+	};
+
+/***/ },
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2911,21 +3151,21 @@
 	module.exports = Option;
 
 /***/ },
-/* 27 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(28);
+	var content = __webpack_require__(32);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(30)(content, {});
+	var update = __webpack_require__(34)(content, {});
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
-		module.hot.accept("!!/Users/hua/my/react/c/select/node_modules/rc-tools/node_modules/css-loader/index.js!/Users/hua/my/react/c/select/assets/index.css", function() {
-			var newContent = require("!!/Users/hua/my/react/c/select/node_modules/rc-tools/node_modules/css-loader/index.js!/Users/hua/my/react/c/select/assets/index.css");
+		module.hot.accept("!!/Users/yiminghe/code/react-components/select/node_modules/rc-tools/node_modules/css-loader/index.js!/Users/yiminghe/code/react-components/select/assets/index.css", function() {
+			var newContent = require("!!/Users/yiminghe/code/react-components/select/node_modules/rc-tools/node_modules/css-loader/index.js!/Users/yiminghe/code/react-components/select/assets/index.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -2934,15 +3174,15 @@
 	}
 
 /***/ },
-/* 28 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(29)();
-	exports.push([module.id, ".rc-select {\n  box-sizing: border-box;\n  display: inline-block;\n  margin: 0;\n  position: relative;\n  vertical-align: middle;\n  color: #666;\n}\n.rc-select-selection {\n  outline: none;\n}\n.rc-select ul,\n.rc-select li {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n.rc-select > ul > li > a {\n  padding: 0;\n  background-color: #fff;\n}\n.rc-select-arrow {\n  height: 26px;\n  position: absolute;\n  top: 1px;\n  right: 1px;\n  width: 20px;\n}\n.rc-select-arrow b {\n  border-color: #888 transparent transparent transparent;\n  border-style: solid;\n  border-width: 5px 4px 0 4px;\n  height: 0;\n  left: 50%;\n  margin-left: -4px;\n  margin-top: -2px;\n  position: absolute;\n  top: 50%;\n  width: 0;\n}\n.rc-select-selection--single {\n  box-sizing: border-box;\n  cursor: pointer;\n  display: block;\n  height: 28px;\n  -moz-user-select: none;\n   -ms-user-select: none;\n       user-select: none;\n  -webkit-user-select: none;\n  background-color: #fff;\n  border: 1px solid #d9d9d9;\n  border-radius: 4px;\n}\n.rc-select-selection--single .rc-select-selection__rendered {\n  display: block;\n  overflow: hidden;\n  padding-left: 8px;\n  padding-right: 20px;\n  text-overflow: ellipsis;\n  line-height: 28px;\n}\n.rc-select-selection--single .rc-select-selection__clear {\n  cursor: pointer;\n  float: right;\n  font-weight: bold;\n}\n.rc-select-selection--multiple {\n  box-sizing: border-box;\n  display: block;\n  min-height: 32px;\n  -moz-user-select: none;\n   -ms-user-select: none;\n       user-select: none;\n  -webkit-user-select: none;\n  background-color: #fff;\n  border: 1px solid #d9d9d9;\n  border-radius: 4px;\n  cursor: text;\n}\n.rc-select-selection--multiple .rc-select-selection__rendered {\n  display: inline-block;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  padding-left: 8px;\n}\n.rc-select-selection--multiple .rc-select-selection__clear {\n  cursor: pointer;\n  float: right;\n  font-weight: bold;\n  margin-top: 5px;\n  margin-right: 10px;\n}\n.rc-select-selection--multiple .rc-select-selection__choice {\n  background-color: #f3f3f3;\n  border-radius: 4px;\n  cursor: default;\n  float: left;\n  margin-right: 4px;\n  margin-top: 4px;\n  padding: 4px 8px;\n}\n.rc-select-selection--multiple .rc-select-selection__choice__remove {\n  color: #919191;\n  cursor: pointer;\n  display: inline-block;\n  font-weight: bold;\n  padding: 0 0 0 8px;\n}\n.rc-select-selection--multiple .rc-select-selection__choice__remove:hover {\n  color: #333;\n}\n.rc-select-search--inline {\n  float: left;\n}\n.rc-select-search--inline .rc-select-search__field {\n  border: none;\n  font-size: 100%;\n  margin-top: 5px;\n  background: transparent;\n  outline: 0;\n}\n.rc-select-dropdown {\n  display: none;\n  background-color: white;\n  border: 1px solid #d9d9d9;\n  box-shadow: 0 0px 4px #d9d9d9;\n  border-radius: 4px;\n  box-sizing: border-box;\n  width: 100%;\n  z-index: 100;\n  border-top: none;\n  border-top-left-radius: 0;\n  border-top-right-radius: 0;\n  position: absolute;\n  top: 100%;\n  marin-top: -1px;\n  outline: none;\n}\n.rc-select-dropdown .rc-select-menu-item[aria-selected=true] {\n  background-color: #ddd;\n}\n.rc-select-search--dropdown {\n  display: block;\n  padding: 4px;\n}\n.rc-select-search--dropdown .rc-select-search__field {\n  padding: 4px;\n  width: 100%;\n  box-sizing: border-box;\n  border: 1px solid #d9d9d9;\n  border-radius: 4px;\n  outline: none;\n}\n.rc-select-search--dropdown.rc-select-search--hide {\n  display: none;\n}\n.rc-select-open .rc-select-arrow b {\n  border-color: transparent transparent #888 transparent;\n  border-width: 0 4px 5px 4px;\n}\n.rc-select-open .rc-select-dropdown {\n  display: block;\n}\n.rc-select-open .rc-select-selection {\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.rc-select-menu {\n  outline: none;\n  margin-bottom: 0;\n  padding-left: 0;\n  list-style: none;\n  z-index: 99999;\n}\n.rc-select-menu .rc-select-menu-item-active,\n.rc-select-menu .rc-select-menu-submenu-active {\n  background-color: rgba(142, 200, 249, 0.1) !important;\n}\n.rc-select-menu > li {\n  position: relative;\n  display: block;\n  padding: 15px 20px;\n  white-space: nowrap;\n}\n.rc-select-menu > li.rc-select-menu-item-disabled,\n.rc-select-menu > li.rc-select-menu-submenu-disabled {\n  color: #777;\n}\n.rc-select-menu .rc-select-menu-item-divider {\n  padding: 0;\n  height: 1px;\n  margin: 9px 0;\n  overflow: hidden;\n  background-color: #e5e5e5;\n}\n", ""]);
+	exports = module.exports = __webpack_require__(33)();
+	exports.push([module.id, ".rc-select {\n  box-sizing: border-box;\n  display: inline-block;\n  margin: 0;\n  position: relative;\n  vertical-align: middle;\n  color: #666;\n}\n.rc-select ul,\n.rc-select li {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n.rc-select > ul > li > a {\n  padding: 0;\n  background-color: #fff;\n}\n.rc-select-arrow {\n  height: 26px;\n  position: absolute;\n  top: 1px;\n  right: 1px;\n  width: 20px;\n}\n.rc-select-arrow b {\n  border-color: #999999 transparent transparent transparent;\n  border-style: solid;\n  border-width: 5px 4px 0 4px;\n  height: 0;\n  left: 50%;\n  margin-left: -4px;\n  margin-top: -2px;\n  position: absolute;\n  top: 50%;\n  width: 0;\n}\n.rc-select-selection {\n  outline: none;\n  -moz-user-select: none;\n   -ms-user-select: none;\n       user-select: none;\n  -webkit-user-select: none;\n  box-sizing: border-box;\n  display: block;\n  background-color: #fff;\n  border-radius: 6px;\n  border: 1px solid #d9d9d9;\n}\n.rc-select-selection:hover {\n  border-color: #23c0fa;\n}\n.rc-select-selection:active {\n  border-color: #2db7f5;\n}\n.rc-select-disabled {\n  color: #ccc;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n.rc-select-disabled .rc-select-selection:hover,\n.rc-select-disabled .rc-select-selection:active {\n  border-color: #d9d9d9;\n}\n.rc-select-selection--single {\n  height: 28px;\n  cursor: pointer;\n}\n.rc-select-selection--single .rc-select-selection__rendered {\n  display: block;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  padding-left: 10px;\n  padding-right: 20px;\n  line-height: 28px;\n}\n.rc-select-selection--single .rc-select-selection__clear {\n  cursor: pointer;\n  float: right;\n  font-weight: bold;\n}\n.rc-select-selection--multiple {\n  min-height: 32px;\n  cursor: text;\n}\n.rc-select-selection--multiple .rc-select-selection__rendered {\n  display: inline-block;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  padding-left: 8px;\n}\n.rc-select-selection--multiple .rc-select-selection__clear {\n  cursor: pointer;\n  float: right;\n  font-weight: bold;\n  margin-top: 5px;\n  margin-right: 10px;\n}\n.rc-select-selection--multiple .rc-select-selection__choice {\n  background-color: #f3f3f3;\n  border-radius: 4px;\n  cursor: default;\n  float: left;\n  margin-right: 4px;\n  margin-top: 4px;\n  padding: 4px 8px;\n}\n.rc-select-selection--multiple .rc-select-selection__choice__remove {\n  color: #919191;\n  cursor: pointer;\n  display: inline-block;\n  font-weight: bold;\n  padding: 0 0 0 8px;\n}\n.rc-select-selection--multiple .rc-select-selection__choice__remove:hover {\n  color: #333;\n}\n.rc-select-search--inline {\n  float: left;\n}\n.rc-select-search--inline .rc-select-search__field {\n  border: none;\n  font-size: 100%;\n  margin-top: 5px;\n  background: transparent;\n  outline: 0;\n}\n.rc-select-search--inline > i {\n  float: right;\n}\n.rc-select-dropdown {\n  display: none;\n  background-color: white;\n  border: 1px solid #d9d9d9;\n  box-shadow: 0 0px 4px #d9d9d9;\n  border-radius: 4px;\n  box-sizing: border-box;\n  width: 100%;\n  z-index: 100;\n  position: absolute;\n  top: 100%;\n  margin-top: 4px;\n  outline: none;\n}\n.rc-select-dropdown .rc-select-menu-item[aria-selected=true] {\n  background-color: #ddd;\n}\n.rc-select-dropdown-slide-up-enter {\n  -webkit-animation-duration: 0.3s;\n          animation-duration: 0.3s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n  -webkit-transform-origin: 0 0;\n      -ms-transform-origin: 0 0;\n          transform-origin: 0 0;\n  display: block !important;\n  opacity: 0;\n  -webkit-animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);\n          animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);\n  -webkit-animation-play-state: paused;\n          animation-play-state: paused;\n}\n.rc-select-dropdown-slide-up-leave {\n  -webkit-animation-duration: 0.3s;\n          animation-duration: 0.3s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n  -webkit-transform-origin: 0 0;\n      -ms-transform-origin: 0 0;\n          transform-origin: 0 0;\n  display: block !important;\n  opacity: 1;\n  -webkit-animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);\n          animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);\n  -webkit-animation-play-state: paused;\n          animation-play-state: paused;\n}\n.rc-select-dropdown-slide-up-enter.rc-select-dropdown-slide-up-enter-active {\n  -webkit-animation-name: rcDropdownSlideUpIn;\n          animation-name: rcDropdownSlideUpIn;\n  -webkit-animation-play-state: running;\n          animation-play-state: running;\n}\n.rc-select-dropdown-slide-up-leave.rc-select-dropdown-slide-up-leave-active {\n  -webkit-animation-name: rcDropdownSlideUpOut;\n          animation-name: rcDropdownSlideUpOut;\n  -webkit-animation-play-state: running;\n          animation-play-state: running;\n}\n@-webkit-keyframes rcDropdownSlideUpIn {\n  0% {\n    opacity: 0;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(0);\n            transform: scaleY(0);\n  }\n  100% {\n    opacity: 1;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n}\n@keyframes rcDropdownSlideUpIn {\n  0% {\n    opacity: 0;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(0);\n            transform: scaleY(0);\n  }\n  100% {\n    opacity: 1;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n}\n@-webkit-keyframes rcDropdownSlideUpOut {\n  0% {\n    opacity: 1;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n  100% {\n    opacity: 0;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(0);\n            transform: scaleY(0);\n  }\n}\n@keyframes rcDropdownSlideUpOut {\n  0% {\n    opacity: 1;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n  100% {\n    opacity: 0;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(0);\n            transform: scaleY(0);\n  }\n}\n.rc-select-search--dropdown {\n  display: block;\n  padding: 4px;\n}\n.rc-select-search--dropdown .rc-select-search__field {\n  padding: 4px;\n  width: 100%;\n  box-sizing: border-box;\n  border: 1px solid #d9d9d9;\n  border-radius: 4px;\n  outline: none;\n}\n.rc-select-search--dropdown.rc-select-search--hide {\n  display: none;\n}\n.rc-select-open .rc-select-arrow b {\n  border-color: transparent transparent #888 transparent;\n  border-width: 0 4px 5px 4px;\n}\n.rc-select-open .rc-select-dropdown {\n  display: block;\n}\n.rc-select-menu {\n  outline: none;\n  margin-bottom: 0;\n  padding-left: 0;\n  list-style: none;\n  z-index: 9999;\n}\n.rc-select-menu > li {\n  margin: 0;\n  padding: 0;\n}\n.rc-select-menu > .rc-select-menu-item {\n  position: relative;\n  display: block;\n  padding: 7px 10px;\n  font-weight: normal;\n  color: #666666;\n  white-space: nowrap;\n}\n.rc-select-menu > .rc-select-menu-item:hover,\n.rc-select-menu > .rc-select-menu-item-active,\n.rc-select-menu > .rc-select-menu-item-selected {\n  background-color: rgba(142, 200, 249, 0.1) !important;\n}\n.rc-select-menu > .rc-select-menu-item-disabled {\n  color: #ccc;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n.rc-select-menu > .rc-select-menu-item-disabled:hover {\n  color: #ccc;\n  background-color: #fff;\n  cursor: not-allowed;\n}\n.rc-select-menu > .rc-select-menu-item-divider {\n  height: 1px;\n  margin: 1px 0;\n  overflow: hidden;\n  background-color: #e5e5e5;\n  line-height: 0;\n}\n", ""]);
 
 /***/ },
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
+/* 33 */
+/***/ function(module, exports) {
 
 	module.exports = function() {
 		var list = [];
@@ -2962,7 +3202,7 @@
 	}
 
 /***/ },
-/* 30 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*

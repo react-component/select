@@ -1,12 +1,14 @@
-webpackJsonp([0],[
-/* 0 */
+webpackJsonp([3],{
+
+/***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(1);
+	module.exports = __webpack_require__(37);
 
 
 /***/ },
-/* 1 */
+
+/***/ 37:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15,29 +17,35 @@ webpackJsonp([0],[
 	var Select = __webpack_require__(3);
 	var Option = Select.Option;
 	__webpack_require__(31);
-	var style = {
-	  color: 'red'
-	};
-	var c3 = React.createElement(
+	function handleChange(value) {
+	  console.log('selected ' + value);
+	}
+	
+	var c1 = React.createElement(
 	  'div',
 	  null,
 	  React.createElement(
 	    'h1',
 	    null,
-	    'combobox'
+	    'Single Select'
 	  ),
 	  React.createElement(
 	    'div',
 	    { style: { width: 300 } },
 	    React.createElement(
 	      Select,
-	      { combobox: true },
+	      { value: 'lucy', style: { width: 250 },
+	        animation: 'slide-up',
+	        showSearch: false,
+	        onChange: handleChange },
 	      React.createElement(
 	        Option,
 	        { value: 'jack' },
 	        React.createElement(
 	          'b',
-	          { style: style },
+	          { style: {
+	              color: 'red'
+	            } },
 	          'jack'
 	        )
 	      ),
@@ -60,8 +68,9 @@ webpackJsonp([0],[
 	  )
 	);
 	
-	React.render(c3, document.getElementById('__react-content'));
+	React.render(c1, document.getElementById('__react-content'));
 
 /***/ }
-]);
-//# sourceMappingURL=combobox.js.map
+
+});
+//# sourceMappingURL=single-animation.js.map

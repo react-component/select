@@ -180,43 +180,43 @@
 <body>
 <div id="__react-content"></div>
 <script src="common.js?nowrap"></script>
-<script src="tags.js?nowrap"></script>
+<script src="single-animation.js?nowrap"></script>
 <div class="highlight">
 <pre>
-<span class="hljs-pi">'use strict'</span>;
+<span class="xml">'use strict';
 
-<span class="hljs-keyword">var</span> React = <span class="hljs-built_in">require</span>(<span class="hljs-string">'react'</span>);
-<span class="hljs-keyword">var</span> Select = <span class="hljs-built_in">require</span>(<span class="hljs-string">'rc-select'</span>);
-<span class="hljs-keyword">var</span> Option = Select.Option;
-<span class="hljs-built_in">require</span>(<span class="hljs-string">'rc-select/assets/index.css'</span>);
-<span class="hljs-keyword">var</span> children = [];
-<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">10</span>; i &lt; <span class="hljs-number">36</span>; i++) {
-  children.push(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{i.toString(36)</span> + <span class="hljs-attribute">i</span>}&gt;</span>{i.toString(36) + i}<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>)</span>;
+var React = require('react');
+var Select = require('rc-select');
+var Option = Select.Option;
+require('rc-select/assets/index.css');
+function handleChange(value) {
+  console.log('selected ' + value);
 }
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handleChange</span>(<span class="hljs-params">value</span>) </span>{
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'selected '</span> + value);
-}
 
-<span class="hljs-keyword">var</span> style = <span class="hljs-string">'.rc-select-menu {max-height:200px;overflow:auto;}'</span>;
-
-<span class="hljs-keyword">var</span> c2 = (
-  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">h1</span>&gt;</span>tags select（scroll the menu）<span class="hljs-tag">&lt;/<span class="hljs-title">h1</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">300</span>}}&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">style</span>&gt;</span><span class="css">
-      <span class="hljs-rules">{style}</span>
-      </span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">Select</span> <span class="hljs-attribute">tags</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{['name2',</span> '<span class="hljs-attribute">name3</span>']}
+var c1 = (
+  <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">h1</span>&gt;</span>Single Select<span class="hljs-tag">&lt;/<span class="hljs-title">h1</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=</span></span><span class="hljs-expression">{{<span class="hljs-variable">width</span>: 300}}</span><span class="xml"><span class="hljs-tag">&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">Select</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"lucy"</span> <span class="hljs-attribute">style</span>=</span></span><span class="hljs-expression">{{<span class="hljs-variable">width</span>:250}}</span><span class="xml"><span class="hljs-tag">
+        <span class="hljs-attribute">animation</span>=<span class="hljs-value">"slide-up"</span>
+        <span class="hljs-attribute">showSearch</span>=<span class="hljs-value">{false}</span>
         <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{handleChange}</span>&gt;</span>
-    {children}
+        <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"jack"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">b</span> <span class="hljs-attribute">style</span>=</span></span><span class="hljs-expression">{{
+            <span class="hljs-variable">color</span>: '<span class="hljs-variable">red</span>'
+          }}</span><span class="xml"><span class="hljs-tag">&gt;</span>jack<span class="hljs-tag">&lt;/<span class="hljs-title">b</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"lucy"</span>&gt;</span>lucy<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"disabled"</span> <span class="hljs-attribute">disabled</span>&gt;</span>disabled<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"yiminghe"</span>&gt;</span>yiminghe<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-)</span>;
+);
 
-React.render(c2, <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'__react-content'</span>));
-
+React.render(c1, document.getElementById('__react-content'));
+</span>
 </pre>
 </div>
 </body>

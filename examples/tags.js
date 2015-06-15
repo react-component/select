@@ -1,14 +1,14 @@
-webpackJsonp([2],{
+webpackJsonp([5],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(32);
+	module.exports = __webpack_require__(46);
 
 
 /***/ },
 
-/***/ 32:
+/***/ 46:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16,7 +16,7 @@ webpackJsonp([2],{
 	var React = __webpack_require__(2);
 	var Select = __webpack_require__(3);
 	var Option = Select.Option;
-	__webpack_require__(27);
+	__webpack_require__(31);
 	var children = [];
 	for (var i = 10; i < 36; i++) {
 	  children.push(React.createElement(
@@ -50,7 +50,8 @@ webpackJsonp([2],{
 	    ),
 	    React.createElement(
 	      Select,
-	      { tags: true, value: ['name2', 'name3'], onChange: handleChange },
+	      { tags: true, value: ['name2', 'name3'],
+	        onChange: handleChange },
 	      children
 	    )
 	  )
