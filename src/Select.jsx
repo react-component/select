@@ -458,7 +458,7 @@ class Select extends React.Component {
       {...extraSelectionProps}
       >
         {ctrlNode}
-        {multiple ? null :
+        {(multiple||combobox) ? null :
           <span key="arrow" className={prefixCls + '-arrow'}>
             <b></b>
           </span>}
