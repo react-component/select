@@ -180,37 +180,48 @@
 <body>
 <div id="__react-content"></div>
 <script src="common.js?nowrap"></script>
-<script src="combobox.js?nowrap"></script>
+<script src="optgroup.js?nowrap"></script>
 <div class="highlight">
 <pre>
 <span class="xml">'use strict';
 
 var React = require('react');
-var Select = require('../');
+var Select = require('rc-select');
 var Option = Select.Option;
+var OptGroup = Select.OptGroup;
+
 require('rc-select/assets/index.css');
 var pkg = require('../package.json');
-var style = {
-  color: 'red'
-};
-var c3 = (
+
+function handleChange(value) {
+  console.log('selected ' + value);
+}
+
+var c1 = (
   <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">h1</span>&gt;</span>{pkg.name}@{pkg.version}<span class="hljs-tag">&lt;/<span class="hljs-title">h1</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>combobox<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>Select OptGroup<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=</span></span><span class="hljs-expression">{{<span class="hljs-variable">width</span>: 300}}</span><span class="xml"><span class="hljs-tag">&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">Select</span> <span class="hljs-attribute">combobox</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"jack"</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">b</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{style}</span>&gt;</span>jack<span class="hljs-tag">&lt;/<span class="hljs-title">b</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"lucy"</span> &gt;</span>lucy<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"disabled"</span> <span class="hljs-attribute">disabled</span>&gt;</span>disabled<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"yiminghe"</span>&gt;</span>yiminghe<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">Select</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"lucy"</span>
+        <span class="hljs-attribute">showSearch</span>=<span class="hljs-value">{false}</span>
+        <span class="hljs-attribute">style</span>=</span></span><span class="hljs-expression">{{<span class="hljs-variable">width</span>: 250}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{handleChange}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">OptGroup</span> <span class="hljs-attribute">label</span>=<span class="hljs-value">"manager"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"jack"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">b</span> <span class="hljs-attribute">style</span>=</span></span><span class="hljs-expression">{{
+              <span class="hljs-variable">color</span>: '<span class="hljs-variable">red</span>'
+            }}</span><span class="xml"><span class="hljs-tag">&gt;</span>jack<span class="hljs-tag">&lt;/<span class="hljs-title">b</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"lucy"</span>&gt;</span>lucy<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">OptGroup</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">OptGroup</span> <span class="hljs-attribute">label</span>=<span class="hljs-value">"engineer"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"yiminghe"</span>&gt;</span>yiminghe<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">OptGroup</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
 );
 
-React.render(c3, document.getElementById('__react-content'));
+React.render(c1, document.getElementById('__react-content'));
 </span>
 </pre>
 </div>

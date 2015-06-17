@@ -191,6 +191,7 @@
 <span class="hljs-built_in">require</span>(<span class="hljs-string">'rc-select/assets/index.css'</span>);
 <span class="hljs-reserved">var</span> jsonp = <span class="hljs-built_in">require</span>(<span class="hljs-string">'jsonp'</span>);
 <span class="hljs-reserved">var</span> querystring = <span class="hljs-built_in">require</span>(<span class="hljs-string">'querystring'</span>);
+<span class="hljs-reserved">var</span> pkg = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../package.json'</span>);
 
 <span class="hljs-reserved">var</span> Search = React.createClass({
   getInitialState() {
@@ -225,12 +226,16 @@
   render() {
     <span class="hljs-reserved">var</span> data = <span class="hljs-keyword">this</span>.state.data;
     <span class="hljs-reserved">var</span> options = data.map(<span class="hljs-function"><span class="hljs-params">(d)</span> =&gt;</span> {
-      <span class="hljs-keyword">return</span> &lt;Option value={d.value}&gt;{d.text}&lt;/Option&gt;;
+      <span class="hljs-keyword">return</span> &lt;Option value={d.value} key={d.value}&gt;{d.text}&lt;/Option&gt;;
     });
     <span class="hljs-keyword">return</span> &lt;div&gt;
-      &lt;h1&gt;suggest&lt;/h1&gt;
+      &lt;h1&gt;{pkg.name}@{pkg.version}&lt;/h1&gt;
+      &lt;h2&gt;suggest&lt;/h2&gt;
       &lt;div style={{<span class="hljs-attribute">width</span>: <span class="hljs-number">300</span>}}&gt;
-        &lt;Select combobox onChange={<span class="hljs-keyword">this</span>.fetchData} onSelect={<span class="hljs-keyword">this</span>.handleSelect} filterOption={<span class="hljs-literal">false</span>}&gt;
+        &lt;Select combobox
+          showArrow={<span class="hljs-literal">false</span>}
+          notFoundContent=<span class="hljs-string">""</span>
+          onChange={<span class="hljs-keyword">this</span>.fetchData} onSelect={<span class="hljs-keyword">this</span>.handleSelect} filterOption={<span class="hljs-literal">false</span>}&gt;
         {options}
         &lt;/Select&gt;
       &lt;/div&gt;

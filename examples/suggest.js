@@ -1,14 +1,14 @@
-webpackJsonp([4],{
+webpackJsonp([5],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(38);
+	module.exports = __webpack_require__(41);
 
 
 /***/ },
 
-/***/ 38:
+/***/ 41:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16,9 +16,10 @@ webpackJsonp([4],{
 	var React = __webpack_require__(2);
 	var Select = __webpack_require__(3);
 	var Option = Select.Option;
-	__webpack_require__(31);
-	var jsonp = __webpack_require__(39);
-	var querystring = __webpack_require__(43);
+	__webpack_require__(32);
+	var jsonp = __webpack_require__(42);
+	var querystring = __webpack_require__(46);
+	var pkg = __webpack_require__(36);
 	
 	var Search = React.createClass({
 	  displayName: 'Search',
@@ -59,7 +60,7 @@ webpackJsonp([4],{
 	    var options = data.map(function (d) {
 	      return React.createElement(
 	        Option,
-	        { value: d.value },
+	        { value: d.value, key: d.value },
 	        d.text
 	      );
 	    });
@@ -69,6 +70,13 @@ webpackJsonp([4],{
 	      React.createElement(
 	        'h1',
 	        null,
+	        pkg.name,
+	        '@',
+	        pkg.version
+	      ),
+	      React.createElement(
+	        'h2',
+	        null,
 	        'suggest'
 	      ),
 	      React.createElement(
@@ -76,7 +84,10 @@ webpackJsonp([4],{
 	        { style: { width: 300 } },
 	        React.createElement(
 	          Select,
-	          { combobox: true, onChange: this.fetchData, onSelect: this.handleSelect, filterOption: false },
+	          { combobox: true,
+	            showArrow: false,
+	            notFoundContent: '',
+	            onChange: this.fetchData, onSelect: this.handleSelect, filterOption: false },
 	          options
 	        )
 	      )
@@ -88,14 +99,14 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 39:
+/***/ 42:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies
 	 */
 	
-	var debug = __webpack_require__(40)('jsonp');
+	var debug = __webpack_require__(43)('jsonp');
 	
 	/**
 	 * Module exports.
@@ -192,7 +203,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 40:
+/***/ 43:
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -202,7 +213,7 @@ webpackJsonp([4],{
 	 * Expose `debug()` as the module.
 	 */
 	
-	exports = module.exports = __webpack_require__(41);
+	exports = module.exports = __webpack_require__(44);
 	exports.log = log;
 	exports.formatArgs = formatArgs;
 	exports.save = save;
@@ -374,7 +385,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 41:
+/***/ 44:
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -390,7 +401,7 @@ webpackJsonp([4],{
 	exports.disable = disable;
 	exports.enable = enable;
 	exports.enabled = enabled;
-	exports.humanize = __webpack_require__(42);
+	exports.humanize = __webpack_require__(45);
 	
 	/**
 	 * The currently active debug mode names, and names to skip.
@@ -578,7 +589,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 42:
+/***/ 45:
 /***/ function(module, exports) {
 
 	/**
@@ -708,18 +719,18 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 43:
+/***/ 46:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	exports.decode = exports.parse = __webpack_require__(44);
-	exports.encode = exports.stringify = __webpack_require__(45);
+	exports.decode = exports.parse = __webpack_require__(47);
+	exports.encode = exports.stringify = __webpack_require__(48);
 
 
 /***/ },
 
-/***/ 44:
+/***/ 47:
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -806,7 +817,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 45:
+/***/ 48:
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.

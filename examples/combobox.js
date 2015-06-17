@@ -14,7 +14,8 @@ webpackJsonp([0],[
 	var React = __webpack_require__(2);
 	var Select = __webpack_require__(3);
 	var Option = Select.Option;
-	__webpack_require__(31);
+	__webpack_require__(32);
+	var pkg = __webpack_require__(36);
 	var style = {
 	  color: 'red'
 	};
@@ -23,6 +24,13 @@ webpackJsonp([0],[
 	  null,
 	  React.createElement(
 	    'h1',
+	    null,
+	    pkg.name,
+	    '@',
+	    pkg.version
+	  ),
+	  React.createElement(
+	    'h2',
 	    null,
 	    'combobox'
 	  ),

@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		6:0
+/******/ 		7:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"combobox","1":"multiple","2":"single","3":"single-animation","4":"suggest","5":"tags"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"combobox","1":"multiple","2":"optgroup","3":"single","4":"single-animation","5":"suggest","6":"tags"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -106,7 +106,8 @@
 	'use strict';
 	
 	var Select = __webpack_require__(4);
-	Select.Option = __webpack_require__(30);
+	Select.Option = __webpack_require__(31);
+	Select.OptGroup = __webpack_require__(30);
 	module.exports = Select;
 
 /***/ },
@@ -155,6 +156,10 @@
 	  }
 	};
 	
+	function _defineProperty(obj, key, value) {
+	  return Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });
+	}
+	
 	function _classCallCheck(instance, Constructor) {
 	  if (!(instance instanceof Constructor)) {
 	    throw new TypeError('Cannot call a class as a function');
@@ -174,7 +179,9 @@
 	var KeyCode = rcUtil.KeyCode;
 	var Menu = __webpack_require__(17);
 	var MenuItem = Menu.Item;
+	var MenuItemGroup = Menu.ItemGroup;
 	var anim = __webpack_require__(27);
+	var OptGroup = __webpack_require__(30);
 	
 	function isMultipleOrTags(props) {
 	  return props.multiple || props.tags;
@@ -197,20 +204,6 @@
 	    throw new Error('must set value string on Option element!');
 	  }
 	
-	  return ret;
-	}
-	
-	function getPropsFromOption(child) {
-	  var ret = {
-	    key: getValueFromOptionChild(child),
-	    value: getValueFromOptionChild(child)
-	  };
-	  var optionProps = child.props;
-	  for (var i in optionProps) {
-	    if (i !== 'children') {
-	      ret[i] = optionProps[i];
-	    }
-	  }
 	  return ret;
 	}
 	
@@ -249,17 +242,34 @@
 	      });
 	    }
 	  }, {
-	    key: 'renderFilterOptions',
-	    value: function renderFilterOptions() {
+	    key: 'renderFilterOptionsFromChildren',
+	    value: function renderFilterOptionsFromChildren(children, showNotFound) {
+	      var _this2 = this;
+	
 	      var inputValue = this.state.inputValue;
 	      var sel = [];
 	      var props = this.props;
 	      var childrenKeys = [];
 	      var filterOption = props.filterOption;
 	      var tags = props.tags;
-	      React.Children.forEach(props.children, function (child) {
+	      React.Children.forEach(children, function (child) {
+	        if (child.type === OptGroup) {
+	          var innerItems = _this2.renderFilterOptionsFromChildren(child.props.children, false);
+	          if (innerItems.length) {
+	            var label = child.props.label;
+	            var key = child.key;
+	            if (!key && typeof label === 'string') {
+	              key = label;
+	            }
+	            sel.push(React.createElement(MenuItemGroup, { key: key, title: child.props.label }, innerItems));
+	          }
+	          return;
+	        }
 	        if (!filterOption || !inputValue || !child.props.disabled && getValueFromOptionChild(child).indexOf(inputValue) > -1) {
-	          sel.push(child);
+	          sel.push(React.createElement(MenuItem, {
+	            disabled: child.props.disabled,
+	            value: getValueFromOptionChild(child),
+	            key: child.key || getValueFromOptionChild(child) }, child.props.children));
 	        }
 	        if (tags && !child.props.disabled) {
 	          childrenKeys.push(getValueFromOptionChild(child));
@@ -271,32 +281,37 @@
 	          return childrenKeys.indexOf(v) === -1 && (!inputValue || v.indexOf(inputValue) > -1);
 	        });
 	        sel = sel.concat(value.map(function (v) {
-	          return React.createElement(MenuItem, { value: v }, v);
+	          return React.createElement(MenuItem, { value: v, key: v }, v);
 	        }));
 	        if (inputValue) {
 	          var notFindInputItem = sel.every(function (s) {
 	            return getValueFromOptionChild(s) !== inputValue;
 	          });
 	          if (notFindInputItem) {
-	            sel.unshift(React.createElement(MenuItem, { value: inputValue }, inputValue));
+	            sel.unshift(React.createElement(MenuItem, { value: inputValue, key: inputValue }, inputValue));
 	          }
 	        }
 	      }
-	      if (!sel.length) {
+	      if (!sel.length && showNotFound && props.notFoundContent) {
 	        sel = React.createElement(MenuItem, { disabled: true, value: 'NOT_FOUND' }, props.notFoundContent);
 	      }
 	      return sel;
 	    }
 	  }, {
+	    key: 'renderFilterOptions',
+	    value: function renderFilterOptions() {
+	      return this.renderFilterOptionsFromChildren(this.props.children, true);
+	    }
+	  }, {
 	    key: 'setOpenState',
 	    value: function setOpenState(open) {
-	      var _this2 = this;
+	      var _this3 = this;
 	
 	      var refs = this.refs;
 	      this.setState({
 	        open: open
 	      }, function () {
-	        if (open || isMultipleOrTags(_this2.props) || _this2.props.combobox) {
+	        if (open || isMultipleOrTags(_this3.props) || _this3.props.combobox) {
 	          if (refs.input) {
 	            React.findDOMNode(refs.input).focus();
 	          }
@@ -324,7 +339,18 @@
 	    key: 'handleClick',
 	    value: function handleClick() {
 	      if (!this.props.disabled) {
-	        this.setOpenState(!this.state.open);
+	        if (this.state.open) {
+	          this.setOpenState(false);
+	        } else {
+	          this.openIfHasChildren();
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'openIfHasChildren',
+	    value: function openIfHasChildren() {
+	      if (React.Children.count(this.props.children)) {
+	        this.setOpenState(true);
 	      }
 	    }
 	  }, {
@@ -332,11 +358,14 @@
 	
 	    // combobox ignore
 	    value: function handleKeyDown(e) {
+	      if (this.props.disabled) {
+	        return;
+	      }
 	      var keyCode = e.keyCode;
 	      if (this.state.open && !this.refs.input) {
 	        this.handleInputKeyDown(e);
 	      } else if (keyCode === KeyCode.ENTER || e.keyCode === KeyCode.DOWN) {
-	        this.handleClick(e);
+	        this.handleClick();
 	        e.preventDefault();
 	      }
 	    }
@@ -345,9 +374,7 @@
 	    value: function handleInputKeyDown(e) {
 	      if (e.keyCode === KeyCode.DOWN) {
 	        if (!this.state.open) {
-	          this.setState({
-	            open: true
-	          });
+	          this.openIfHasChildren();
 	          e.preventDefault();
 	          e.stopPropagation();
 	          return;
@@ -360,8 +387,9 @@
 	        }
 	        return;
 	      }
-	      if (this.refs.menu) {
-	        if (this.refs.menu.handleKeyDown(e)) {
+	      var menu = this.refs.menu;
+	      if (menu) {
+	        if (menu.handleKeyDown(e)) {
 	          e.preventDefault();
 	          e.stopPropagation();
 	        }
@@ -410,13 +438,13 @@
 	  }, {
 	    key: 'handleBlur',
 	    value: function handleBlur() {
-	      var _this3 = this;
+	      var _this4 = this;
 	
 	      if (this._blurTimer) {
 	        clearTimeout(this._blurTimer);
 	      }
 	      this._blurTimer = setTimeout(function () {
-	        _this3.setState({
+	        _this4.setState({
 	          open: false
 	        });
 	      }, 100);
@@ -462,14 +490,13 @@
 	    }
 	  }, {
 	    key: 'renderMenu',
-	    value: function renderMenu(children) {
+	    value: function renderMenu(menuItems) {
 	      var props = this.props;
 	      var menuProps = {};
 	      if (isMultipleOrTags(props)) {
 	        menuProps.onDeselect = this.handleMenuDeselect;
 	      }
 	      var value = this.state.value;
-	      var menuItems = React.Children.map(children, this.renderOption);
 	      var selectedKeys = [];
 	      React.Children.forEach(menuItems, function (item) {
 	        if (value.indexOf(item.props.value) !== -1) {
@@ -494,7 +521,7 @@
 	  }, {
 	    key: 'renderTopControlNode',
 	    value: function renderTopControlNode(input) {
-	      var _this4 = this;
+	      var _this5 = this;
 	
 	      var value = this.state.value;
 	      var prefixCls = this.props.prefixCls;
@@ -510,7 +537,7 @@
 	      if (isMultipleOrTags(props)) {
 	        selectedValueNodes = value.map(function (v) {
 	          return React.createElement('li', { className: prefixCls + '-selection__choice' }, v, React.createElement('span', { className: prefixCls + '-selection__choice__remove',
-	            onClick: _this4.removeSelected.bind(_this4, v)
+	            onClick: _this5.removeSelected.bind(_this5, v)
 	          }, '×'));
 	        });
 	      }
@@ -519,28 +546,17 @@
 	  }, {
 	    key: 'renderRoot',
 	    value: function renderRoot(children) {
+	      var _rootCls;
+	
 	      var props = this.props;
 	      var prefixCls = props.prefixCls;
-	      var rootCls = {};
-	      rootCls[prefixCls] = true;
-	      if (this.state.open) {
-	        rootCls[prefixCls + '-open'] = true;
-	      }
-	      if (this.props.disabled) {
-	        rootCls[prefixCls + '-disabled'] = true;
-	      }
+	      var rootCls = (_rootCls = {}, _defineProperty(_rootCls, prefixCls, true), _defineProperty(_rootCls, prefixCls + '-open', this.state.open), _defineProperty(_rootCls, prefixCls + '-combobox', props.combobox), _defineProperty(_rootCls, prefixCls + '-disabled', props.disabled), _defineProperty(_rootCls, prefixCls + '-show-arrow', props.showArrow), _rootCls);
 	      return React.createElement('span', {
 	        style: props.style,
 	        className: joinClasses(props.className, classSet(rootCls)),
 	        dir: 'ltr',
 	        onFocus: this.handleFocus,
 	        onBlur: this.handleBlur }, children);
-	    }
-	  }, {
-	    key: 'renderOption',
-	    value: function renderOption(child) {
-	      var props = getPropsFromOption(child);
-	      return React.createElement(MenuItem, props, child.props.children);
 	    }
 	  }, {
 	    key: 'animateDropdown',
@@ -587,15 +603,20 @@
 	        className: prefixCls + '-search__field',
 	        role: 'textbox' });
 	
-	      var children = this.renderFilterOptions();
+	      var menuItems = this.renderFilterOptions();
 	      var ctrlNode = this.renderTopControlNode(input);
 	      var dropDown;
 	      if (state.open) {
-	        // single and not combobox, input is inside dropdown
-	        this.cachedDropDown = dropDown = React.createElement('span', { key: 'dropdown',
-	          ref: 'dropdown',
-	          className: joinClasses(prefixCls + '-dropdown', prefixCls + '-dropdown--below'),
-	          tabIndex: '-1' }, multiple || props.combobox || !props.showSearch ? null : React.createElement('span', { className: joinClasses(prefixCls + '-search', prefixCls + '-search--dropdown') }, input), this.renderMenu(children));
+	        var search = multiple || props.combobox || !props.showSearch ? null : React.createElement('span', { className: joinClasses(prefixCls + '-search', prefixCls + '-search--dropdown') }, input);
+	        if (!search && !menuItems.length) {
+	          this.cachedDropDown = dropDown = null;
+	        } else {
+	          // single and not combobox, input is inside dropdown
+	          this.cachedDropDown = dropDown = React.createElement('span', { key: 'dropdown',
+	            ref: 'dropdown',
+	            className: joinClasses(prefixCls + '-dropdown', prefixCls + '-dropdown--below'),
+	            tabIndex: '-1' }, search, this.renderMenu(menuItems));
+	        }
 	      } else {
 	        dropDown = this.cachedDropDown;
 	      }
@@ -616,7 +637,7 @@
 	        onClick: this.handleClick,
 	        'aria-haspopup': 'true',
 	        'aria-expanded': state.open
-	      }, extraSelectionProps), ctrlNode, multiple ? null : React.createElement('span', { key: 'arrow', className: prefixCls + '-arrow' }, React.createElement('b', null))), dropDown]);
+	      }, extraSelectionProps), ctrlNode, multiple || !props.showArrow ? null : React.createElement('span', { key: 'arrow', className: prefixCls + '-arrow' }, React.createElement('b', null))), dropDown]);
 	    }
 	  }]);
 	
@@ -626,6 +647,7 @@
 	Select.propTypes = {
 	  multiple: React.PropTypes.bool,
 	  showSearch: React.PropTypes.bool,
+	  showArrow: React.PropTypes.bool,
 	  tags: React.PropTypes.bool,
 	  transitionName: React.PropTypes.string,
 	  animation: React.PropTypes.string,
@@ -642,6 +664,7 @@
 	  onChange: noop,
 	  onSelect: noop,
 	  onDeselect: noop,
+	  showArrow: true,
 	  notFoundContent: 'Not Found'
 	};
 	
@@ -1507,7 +1530,8 @@
 	var Menu = __webpack_require__(18);
 	Menu.SubMenu = __webpack_require__(22);
 	Menu.Item = __webpack_require__(24);
-	Menu.Divider = __webpack_require__(25);
+	Menu.ItemGroup = __webpack_require__(25);
+	Menu.Divider = __webpack_require__(26);
 	module.exports = Menu;
 
 /***/ },
@@ -1536,26 +1560,37 @@
 	
 	function noop() {}
 	
+	var now = Date.now();
+	
+	function getChildIndexInChildren(child, children) {
+	  var index = -1;
+	  React.Children.forEach(children, function (c, i) {
+	    if (c === child) {
+	      index = i;
+	    }
+	  });
+	  return index;
+	}
+	
+	function getKeyFromChildren(child, children) {
+	  return child.key || 'rcMenuItem_' + now + '_' + getChildIndexInChildren(child, children);
+	}
+	
 	function getActiveKey(props) {
 	  var activeKey = props.activeKey;
 	  var children = props.children;
-	  React.Children.forEach(children, function (c) {
-	    if (!c.key && !c.props.disabled) {
-	      throw new Error('MenuItem must have key!');
-	    }
-	  });
 	  if (activeKey) {
 	    return activeKey;
 	  }
 	  React.Children.forEach(children, function (c) {
 	    if (c.props.active) {
-	      activeKey = c.key;
+	      activeKey = getKeyFromChildren(c, children);
 	    }
 	  });
 	  if (!activeKey && props.activeFirst) {
 	    React.Children.forEach(children, function (c) {
 	      if (!activeKey && !c.props.disabled) {
-	        activeKey = c.key;
+	        activeKey = getKeyFromChildren(c, children);
 	      }
 	    });
 	    return activeKey;
@@ -1564,8 +1599,9 @@
 	}
 	
 	function saveRef(name, c) {
-	  this.instances = this.instances || {};
-	  this.instances[name] = c;
+	  if (c) {
+	    this.instanceArray.push(c);
+	  }
 	}
 	
 	var Menu = (function (_React$Component) {
@@ -1580,7 +1616,7 @@
 	      selectedKeys: props.selectedKeys || []
 	    };
 	
-	    ['handleItemHover', 'handleDeselect', 'handleSelect', 'handleKeyDown', 'handleDestroy'].forEach(function (m) {
+	    ['handleItemHover', 'handleDeselect', 'handleSelect', 'handleKeyDown', 'handleDestroy', 'renderMenuItem'].forEach(function (m) {
 	      _this[m] = _this[m].bind(_this);
 	    });
 	  }
@@ -1599,62 +1635,50 @@
 	      this.setState(props);
 	    }
 	  }, {
-	    key: 'getChildrenComponents',
-	    value: function getChildrenComponents() {
-	      var _this2 = this;
-	
-	      var ret = [];
-	      this.newChildren.forEach(function (c) {
-	        ret.push(_this2.instances[c.key]);
-	      });
-	      return ret;
-	    }
-	  }, {
 	    key: 'handleKeyDown',
 	
 	    // all keyboard events callbacks run from here at first
 	    value: function handleKeyDown(e) {
-	      var _this3 = this;
+	      var _this2 = this;
 	
 	      var keyCode = e.keyCode;
 	      var handled;
-	      this.newChildren.forEach(function (c) {
-	        var obj = _this3.instances[c.key];
-	        if (c.props.active) {
+	      this.instanceArray.forEach(function (obj) {
+	        if (obj.props.active) {
 	          handled = obj.handleKeyDown(e);
 	        }
 	      });
 	      if (handled) {
-	        return true;
+	        return 1;
 	      }
-	      var activeKey;
+	      var activeItem;
 	      switch (keyCode) {
 	        case KeyCode.UP:
 	          //up
-	          activeKey = this.step(-1);
+	          activeItem = this.step(-1);
 	          break;
 	        case KeyCode.DOWN:
 	          //down
-	          activeKey = this.step(1);
+	          activeItem = this.step(1);
 	          break;
 	        default:
 	      }
-	      if (activeKey) {
+	      if (activeItem) {
 	        e.preventDefault();
 	        this.setState({
-	          activeKey: activeKey
+	          activeKey: activeItem.props.eventKey
 	        }, function () {
-	          scrollIntoView(React.findDOMNode(_this3.instances[activeKey]), React.findDOMNode(_this3), {
+	          scrollIntoView(React.findDOMNode(activeItem), React.findDOMNode(_this2), {
 	            onlyScrollIfNeeded: true
 	          });
 	        });
-	        return true;
+	        return 1;
 	      }
 	    }
 	  }, {
 	    key: 'step',
 	    value: function step(direction) {
-	      var children = this.newChildren;
+	      var children = this.instanceArray;
 	      var activeKey = this.state.activeKey;
 	      var len = children.length;
 	      if (direction < 0) {
@@ -1663,7 +1687,7 @@
 	      // find current activeIndex
 	      var activeIndex = -1;
 	      children.every(function (c, ci) {
-	        if (c.key === activeKey) {
+	        if (c.props.eventKey === activeKey) {
 	          activeIndex = ci;
 	          return false;
 	        }
@@ -1673,7 +1697,6 @@
 	      var i = start;
 	      for (;;) {
 	        var child = children[i];
-	        var key = child.key;
 	        if (child.props.disabled) {
 	          i = (i + 1 + len) % len;
 	          // complete a loop
@@ -1681,7 +1704,7 @@
 	            return null;
 	          }
 	        } else {
-	          return key;
+	          return child;
 	        }
 	      }
 	    }
@@ -1713,7 +1736,7 @@
 	      }
 	      var state = this.state;
 	      // my child
-	      if (this.getChildrenComponents().indexOf(child) !== -1) {
+	      if (this.instanceArray.indexOf(child) !== -1) {
 	        var selectedKeys;
 	        if (props.multiple) {
 	          selectedKeys = state.selectedKeys.concat([key]);
@@ -1733,7 +1756,7 @@
 	    key: 'handleDeselect',
 	    value: function handleDeselect(key, child, e, __childToBeSelected /*internal*/) {
 	      var state = this.state;
-	      var children = this.getChildrenComponents();
+	      var children = this.instanceArray;
 	      // my children
 	      if (children.indexOf(child) !== -1 && children.indexOf(__childToBeSelected) === -1) {
 	        var selectedKeys = state.selectedKeys;
@@ -1765,19 +1788,20 @@
 	  }, {
 	    key: 'renderMenuItem',
 	    value: function renderMenuItem(child) {
-	      var key = child.key;
 	      var state = this.state;
 	      var props = this.props;
+	      var key = getKeyFromChildren(child, props.children);
 	      var childProps = child.props;
 	      return React.cloneElement(child, {
+	        renderMenuItem: this.renderMenuItem,
 	        rootPrefixCls: props.prefixCls,
 	        ref: createChainedFunction(child.ref, saveRef.bind(this, key)),
 	        eventKey: key,
 	        onHover: this.handleItemHover,
-	        active: key === state.activeKey,
+	        active: !childProps.disabled && key === state.activeKey,
 	        multiple: props.multiple,
 	        selected: state.selectedKeys.indexOf(key) !== -1,
-	        onClick: this.props.onClick,
+	        onClick: props.onClick,
 	        onDeselect: createChainedFunction(childProps.onDeselect, this.handleDeselect),
 	        onDestroy: this.handleDestroy,
 	        onSelect: createChainedFunction(childProps.onSelect, this.handleSelect)
@@ -1787,6 +1811,7 @@
 	    key: 'render',
 	    value: function render() {
 	      var props = this.props;
+	      this.instanceArray = [];
 	      var classes = {};
 	      classes[props.prefixCls] = true;
 	      var domProps = {
@@ -1801,14 +1826,12 @@
 	        domProps.tabIndex = '0';
 	        domProps.onKeyDown = this.handleKeyDown;
 	      }
-	
-	      this.newChildren = rcUtil.Children.toArray(props.children).map(this.renderMenuItem, this);
 	      return React.createElement(
 	        'ul',
 	        _extends({
 	          style: this.props.style
 	        }, domProps),
-	        this.newChildren
+	        React.Children.map(props.children, this.renderMenuItem)
 	      );
 	    }
 	  }]);
@@ -2866,7 +2889,68 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
 	var React = __webpack_require__(2);
-	var assign = __webpack_require__(26);
+	
+	var MenuItemGroup = (function (_React$Component) {
+	  function MenuItemGroup() {
+	    _classCallCheck(this, MenuItemGroup);
+	
+	    if (_React$Component != null) {
+	      _React$Component.apply(this, arguments);
+	    }
+	  }
+	
+	  _inherits(MenuItemGroup, _React$Component);
+	
+	  _createClass(MenuItemGroup, [{
+	    key: 'render',
+	    value: function render() {
+	      var props = this.props;
+	      var className = props.className || '';
+	      var rootPrefixCls = props.rootPrefixCls;
+	      className += ' ' + rootPrefixCls + '-item-group';
+	      var titleClassName = '' + rootPrefixCls + '-item-group-title';
+	      var listClassName = '' + rootPrefixCls + '-item-group-list';
+	      return React.createElement(
+	        'li',
+	        { className: className },
+	        React.createElement(
+	          'div',
+	          { className: titleClassName },
+	          props.title
+	        ),
+	        React.createElement(
+	          'ul',
+	          { className: listClassName },
+	          React.Children.map(props.children, props.renderMenuItem)
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return MenuItemGroup;
+	})(React.Component);
+	
+	MenuItemGroup.defaultProps = {
+	  // skip key down loop
+	  disabled: true
+	};
+	module.exports = MenuItemGroup;
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	
+	var React = __webpack_require__(2);
 	
 	var Divider = (function (_React$Component) {
 	  function Divider() {
@@ -2882,12 +2966,11 @@
 	  _createClass(Divider, [{
 	    key: 'render',
 	    value: function render() {
-	      var props = assign({}, this.props);
+	      var props = this.props;
 	      var className = props.className || '';
 	      var rootPrefixCls = props.rootPrefixCls;
 	      className += ' ' + ('' + rootPrefixCls + '-item-divider');
-	      props.className = className;
-	      return React.createElement('li', props);
+	      return React.createElement('li', _extends({}, props, { className: className }));
 	    }
 	  }]);
 	
@@ -2899,51 +2982,6 @@
 	};
 	
 	module.exports = Divider;
-
-/***/ },
-/* 26 */
-/***/ function(module, exports) {
-
-	'use strict';
-	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-	
-	function ToObject(val) {
-		if (val == null) {
-			throw new TypeError('Object.assign cannot be called with null or undefined');
-		}
-	
-		return Object(val);
-	}
-	
-	function ownEnumerableKeys(obj) {
-		var keys = Object.getOwnPropertyNames(obj);
-	
-		if (Object.getOwnPropertySymbols) {
-			keys = keys.concat(Object.getOwnPropertySymbols(obj));
-		}
-	
-		return keys.filter(function (key) {
-			return propIsEnumerable.call(obj, key);
-		});
-	}
-	
-	module.exports = Object.assign || function (target, source) {
-		var from;
-		var keys;
-		var to = ToObject(target);
-	
-		for (var s = 1; s < arguments.length; s++) {
-			from = arguments[s];
-			keys = ownEnumerableKeys(Object(from));
-	
-			for (var i = 0; i < keys.length; i++) {
-				to[keys[i]] = from[keys[i]];
-			}
-		}
-	
-		return to;
-	};
-
 
 /***/ },
 /* 27 */
@@ -3131,7 +3169,42 @@
 	  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) subClass.__proto__ = superClass;
 	}
 	
-	/*jshint -W079 */
+	var React = __webpack_require__(2);
+	
+	var OptGroup = (function (_React$Component) {
+	  function OptGroup() {
+	    _classCallCheck(this, OptGroup);
+	
+	    if (_React$Component != null) {
+	      _React$Component.apply(this, arguments);
+	    }
+	  }
+	
+	  _inherits(OptGroup, _React$Component);
+	
+	  return OptGroup;
+	})(React.Component);
+	
+	module.exports = OptGroup;
+
+/***/ },
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	function _classCallCheck(instance, Constructor) {
+	  if (!(instance instanceof Constructor)) {
+	    throw new TypeError('Cannot call a class as a function');
+	  }
+	}
+	
+	function _inherits(subClass, superClass) {
+	  if (typeof superClass !== 'function' && superClass !== null) {
+	    throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass);
+	  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) subClass.__proto__ = superClass;
+	}
+	
 	var React = __webpack_require__(2);
 	
 	var Option = (function (_React$Component) {
@@ -3151,16 +3224,16 @@
 	module.exports = Option;
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(32);
+	var content = __webpack_require__(33);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(34)(content, {});
+	var update = __webpack_require__(35)(content, {});
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
@@ -3174,14 +3247,14 @@
 	}
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(33)();
-	exports.push([module.id, ".rc-select {\n  box-sizing: border-box;\n  display: inline-block;\n  margin: 0;\n  position: relative;\n  vertical-align: middle;\n  color: #666;\n}\n.rc-select ul,\n.rc-select li {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n.rc-select > ul > li > a {\n  padding: 0;\n  background-color: #fff;\n}\n.rc-select-arrow {\n  height: 26px;\n  position: absolute;\n  top: 1px;\n  right: 1px;\n  width: 20px;\n}\n.rc-select-arrow b {\n  border-color: #999999 transparent transparent transparent;\n  border-style: solid;\n  border-width: 5px 4px 0 4px;\n  height: 0;\n  left: 50%;\n  margin-left: -4px;\n  margin-top: -2px;\n  position: absolute;\n  top: 50%;\n  width: 0;\n}\n.rc-select-selection {\n  outline: none;\n  -moz-user-select: none;\n   -ms-user-select: none;\n       user-select: none;\n  -webkit-user-select: none;\n  box-sizing: border-box;\n  display: block;\n  background-color: #fff;\n  border-radius: 6px;\n  border: 1px solid #d9d9d9;\n}\n.rc-select-selection:hover {\n  border-color: #23c0fa;\n}\n.rc-select-selection:active {\n  border-color: #2db7f5;\n}\n.rc-select-disabled {\n  color: #ccc;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n.rc-select-disabled .rc-select-selection:hover,\n.rc-select-disabled .rc-select-selection:active {\n  border-color: #d9d9d9;\n}\n.rc-select-selection--single {\n  height: 28px;\n  cursor: pointer;\n}\n.rc-select-selection--single .rc-select-selection__rendered {\n  display: block;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  padding-left: 10px;\n  padding-right: 20px;\n  line-height: 28px;\n}\n.rc-select-selection--single .rc-select-selection__clear {\n  cursor: pointer;\n  float: right;\n  font-weight: bold;\n}\n.rc-select-selection--multiple {\n  min-height: 32px;\n  cursor: text;\n}\n.rc-select-selection--multiple .rc-select-selection__rendered {\n  display: inline-block;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  padding-left: 8px;\n}\n.rc-select-selection--multiple .rc-select-selection__clear {\n  cursor: pointer;\n  float: right;\n  font-weight: bold;\n  margin-top: 5px;\n  margin-right: 10px;\n}\n.rc-select-selection--multiple .rc-select-selection__choice {\n  background-color: #f3f3f3;\n  border-radius: 4px;\n  cursor: default;\n  float: left;\n  margin-right: 4px;\n  margin-top: 4px;\n  padding: 4px 8px;\n}\n.rc-select-selection--multiple .rc-select-selection__choice__remove {\n  color: #919191;\n  cursor: pointer;\n  display: inline-block;\n  font-weight: bold;\n  padding: 0 0 0 8px;\n}\n.rc-select-selection--multiple .rc-select-selection__choice__remove:hover {\n  color: #333;\n}\n.rc-select-search--inline {\n  float: left;\n}\n.rc-select-search--inline .rc-select-search__field {\n  border: none;\n  font-size: 100%;\n  margin-top: 5px;\n  background: transparent;\n  outline: 0;\n}\n.rc-select-search--inline > i {\n  float: right;\n}\n.rc-select-dropdown {\n  display: none;\n  background-color: white;\n  border: 1px solid #d9d9d9;\n  box-shadow: 0 0px 4px #d9d9d9;\n  border-radius: 4px;\n  box-sizing: border-box;\n  width: 100%;\n  z-index: 100;\n  position: absolute;\n  top: 100%;\n  margin-top: 4px;\n  outline: none;\n}\n.rc-select-dropdown .rc-select-menu-item[aria-selected=true] {\n  background-color: #ddd;\n}\n.rc-select-dropdown-slide-up-enter {\n  -webkit-animation-duration: 0.3s;\n          animation-duration: 0.3s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n  -webkit-transform-origin: 0 0;\n      -ms-transform-origin: 0 0;\n          transform-origin: 0 0;\n  display: block !important;\n  opacity: 0;\n  -webkit-animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);\n          animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);\n  -webkit-animation-play-state: paused;\n          animation-play-state: paused;\n}\n.rc-select-dropdown-slide-up-leave {\n  -webkit-animation-duration: 0.3s;\n          animation-duration: 0.3s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n  -webkit-transform-origin: 0 0;\n      -ms-transform-origin: 0 0;\n          transform-origin: 0 0;\n  display: block !important;\n  opacity: 1;\n  -webkit-animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);\n          animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);\n  -webkit-animation-play-state: paused;\n          animation-play-state: paused;\n}\n.rc-select-dropdown-slide-up-enter.rc-select-dropdown-slide-up-enter-active {\n  -webkit-animation-name: rcDropdownSlideUpIn;\n          animation-name: rcDropdownSlideUpIn;\n  -webkit-animation-play-state: running;\n          animation-play-state: running;\n}\n.rc-select-dropdown-slide-up-leave.rc-select-dropdown-slide-up-leave-active {\n  -webkit-animation-name: rcDropdownSlideUpOut;\n          animation-name: rcDropdownSlideUpOut;\n  -webkit-animation-play-state: running;\n          animation-play-state: running;\n}\n@-webkit-keyframes rcDropdownSlideUpIn {\n  0% {\n    opacity: 0;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(0);\n            transform: scaleY(0);\n  }\n  100% {\n    opacity: 1;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n}\n@keyframes rcDropdownSlideUpIn {\n  0% {\n    opacity: 0;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(0);\n            transform: scaleY(0);\n  }\n  100% {\n    opacity: 1;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n}\n@-webkit-keyframes rcDropdownSlideUpOut {\n  0% {\n    opacity: 1;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n  100% {\n    opacity: 0;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(0);\n            transform: scaleY(0);\n  }\n}\n@keyframes rcDropdownSlideUpOut {\n  0% {\n    opacity: 1;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n  100% {\n    opacity: 0;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(0);\n            transform: scaleY(0);\n  }\n}\n.rc-select-search--dropdown {\n  display: block;\n  padding: 4px;\n}\n.rc-select-search--dropdown .rc-select-search__field {\n  padding: 4px;\n  width: 100%;\n  box-sizing: border-box;\n  border: 1px solid #d9d9d9;\n  border-radius: 4px;\n  outline: none;\n}\n.rc-select-search--dropdown.rc-select-search--hide {\n  display: none;\n}\n.rc-select-open .rc-select-arrow b {\n  border-color: transparent transparent #888 transparent;\n  border-width: 0 4px 5px 4px;\n}\n.rc-select-open .rc-select-dropdown {\n  display: block;\n}\n.rc-select-menu {\n  outline: none;\n  margin-bottom: 0;\n  padding-left: 0;\n  list-style: none;\n  z-index: 9999;\n}\n.rc-select-menu > li {\n  margin: 0;\n  padding: 0;\n}\n.rc-select-menu > .rc-select-menu-item {\n  position: relative;\n  display: block;\n  padding: 7px 10px;\n  font-weight: normal;\n  color: #666666;\n  white-space: nowrap;\n}\n.rc-select-menu > .rc-select-menu-item:hover,\n.rc-select-menu > .rc-select-menu-item-active,\n.rc-select-menu > .rc-select-menu-item-selected {\n  background-color: rgba(142, 200, 249, 0.1) !important;\n}\n.rc-select-menu > .rc-select-menu-item-disabled {\n  color: #ccc;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n.rc-select-menu > .rc-select-menu-item-disabled:hover {\n  color: #ccc;\n  background-color: #fff;\n  cursor: not-allowed;\n}\n.rc-select-menu > .rc-select-menu-item-divider {\n  height: 1px;\n  margin: 1px 0;\n  overflow: hidden;\n  background-color: #e5e5e5;\n  line-height: 0;\n}\n", ""]);
+	exports = module.exports = __webpack_require__(34)();
+	exports.push([module.id, ".rc-select {\n  box-sizing: border-box;\n  display: inline-block;\n  margin: 0;\n  position: relative;\n  vertical-align: middle;\n  color: #666;\n}\n.rc-select ul,\n.rc-select li {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n.rc-select > ul > li > a {\n  padding: 0;\n  background-color: #fff;\n}\n.rc-select-arrow {\n  height: 26px;\n  position: absolute;\n  top: 1px;\n  right: 1px;\n  width: 20px;\n}\n.rc-select-arrow b {\n  border-color: #999999 transparent transparent transparent;\n  border-style: solid;\n  border-width: 5px 4px 0 4px;\n  height: 0;\n  width: 0;\n  margin-left: -4px;\n  margin-top: -2px;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n}\n.rc-select-selection {\n  outline: none;\n  -moz-user-select: none;\n   -ms-user-select: none;\n       user-select: none;\n  -webkit-user-select: none;\n  box-sizing: border-box;\n  display: block;\n  background-color: #fff;\n  border-radius: 6px;\n  border: 1px solid #d9d9d9;\n}\n.rc-select-selection:hover {\n  border-color: #23c0fa;\n  box-shadow: 0 0 2px rgba(45, 183, 245, 0.8);\n}\n.rc-select-selection:active {\n  border-color: #2db7f5;\n}\n.rc-select-disabled {\n  color: #ccc;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n.rc-select-disabled .rc-select-selection:hover,\n.rc-select-disabled .rc-select-selection:active {\n  border-color: #d9d9d9;\n}\n.rc-select-selection--single {\n  height: 28px;\n  cursor: pointer;\n}\n.rc-select-selection--single .rc-select-selection__rendered {\n  display: block;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  padding-left: 10px;\n  padding-right: 20px;\n  line-height: 28px;\n}\n.rc-select-selection--single .rc-select-selection__clear {\n  cursor: pointer;\n  float: right;\n  font-weight: bold;\n}\n.rc-select-selection--multiple {\n  min-height: 28px;\n  cursor: text;\n}\n.rc-select-selection--multiple .rc-select-selection__rendered {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  padding-left: 8px;\n  padding-bottom: 2px;\n}\n.rc-select-selection--multiple .rc-select-selection__clear {\n  cursor: pointer;\n  float: right;\n  font-weight: bold;\n  margin-top: 5px;\n  margin-right: 10px;\n}\n.rc-select-selection--multiple > ul > li {\n  margin-top: 4px;\n  height: 20px;\n  line-height: 20px;\n}\n.rc-select-selection--multiple .rc-select-selection__choice {\n  background-color: #f3f3f3;\n  border-radius: 4px;\n  cursor: default;\n  float: left;\n  padding: 0 8px;\n  margin-right: 4px;\n}\n.rc-select-selection--multiple .rc-select-selection__choice__remove {\n  color: #919191;\n  cursor: pointer;\n  display: inline-block;\n  font-weight: bold;\n  padding: 0 0 0 8px;\n}\n.rc-select-selection--multiple .rc-select-selection__choice__remove:hover {\n  color: #333;\n}\n.rc-select-search--inline {\n  float: left;\n}\n.rc-select-search--inline .rc-select-search__field {\n  border: none;\n  font-size: 100%;\n  background: transparent;\n  outline: 0;\n}\n.rc-select-search--inline > i {\n  float: right;\n}\n.rc-select-dropdown {\n  display: none;\n  background-color: white;\n  border: 1px solid #d9d9d9;\n  box-shadow: 0 0px 4px #d9d9d9;\n  border-radius: 4px;\n  box-sizing: border-box;\n  width: 100%;\n  z-index: 100;\n  position: absolute;\n  top: 100%;\n  margin-top: 4px;\n  outline: none;\n}\n.rc-select-dropdown .rc-select-menu-item[aria-selected=true] {\n  background-color: #ddd;\n}\n.rc-select-dropdown-slide-up-enter {\n  -webkit-animation-duration: 0.3s;\n          animation-duration: 0.3s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n  -webkit-transform-origin: 0 0;\n      -ms-transform-origin: 0 0;\n          transform-origin: 0 0;\n  display: block !important;\n  opacity: 0;\n  -webkit-animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);\n          animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);\n  -webkit-animation-play-state: paused;\n          animation-play-state: paused;\n}\n.rc-select-dropdown-slide-up-leave {\n  -webkit-animation-duration: 0.3s;\n          animation-duration: 0.3s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n  -webkit-transform-origin: 0 0;\n      -ms-transform-origin: 0 0;\n          transform-origin: 0 0;\n  display: block !important;\n  opacity: 1;\n  -webkit-animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);\n          animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);\n  -webkit-animation-play-state: paused;\n          animation-play-state: paused;\n}\n.rc-select-dropdown-slide-up-enter.rc-select-dropdown-slide-up-enter-active {\n  -webkit-animation-name: rcDropdownSlideUpIn;\n          animation-name: rcDropdownSlideUpIn;\n  -webkit-animation-play-state: running;\n          animation-play-state: running;\n}\n.rc-select-dropdown-slide-up-leave.rc-select-dropdown-slide-up-leave-active {\n  -webkit-animation-name: rcDropdownSlideUpOut;\n          animation-name: rcDropdownSlideUpOut;\n  -webkit-animation-play-state: running;\n          animation-play-state: running;\n}\n@-webkit-keyframes rcDropdownSlideUpIn {\n  0% {\n    opacity: 0;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(0);\n            transform: scaleY(0);\n  }\n  100% {\n    opacity: 1;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n}\n@keyframes rcDropdownSlideUpIn {\n  0% {\n    opacity: 0;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(0);\n            transform: scaleY(0);\n  }\n  100% {\n    opacity: 1;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n}\n@-webkit-keyframes rcDropdownSlideUpOut {\n  0% {\n    opacity: 1;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n  100% {\n    opacity: 0;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(0);\n            transform: scaleY(0);\n  }\n}\n@keyframes rcDropdownSlideUpOut {\n  0% {\n    opacity: 1;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n  100% {\n    opacity: 0;\n    -webkit-transform-origin: 0% 0%;\n            transform-origin: 0% 0%;\n    -webkit-transform: scaleY(0);\n            transform: scaleY(0);\n  }\n}\n.rc-select-search--dropdown {\n  display: block;\n  padding: 4px;\n}\n.rc-select-search--dropdown .rc-select-search__field {\n  padding: 4px;\n  width: 100%;\n  box-sizing: border-box;\n  border: 1px solid #d9d9d9;\n  border-radius: 4px;\n  outline: none;\n}\n.rc-select-search--dropdown.rc-select-search--hide {\n  display: none;\n}\n.rc-select-open .rc-select-arrow b {\n  border-color: transparent transparent #888 transparent;\n  border-width: 0 4px 5px 4px;\n}\n.rc-select-open .rc-select-dropdown {\n  display: block;\n}\n.rc-select-menu {\n  outline: none;\n  margin-bottom: 0;\n  padding-left: 0;\n  list-style: none;\n  z-index: 9999;\n}\n.rc-select-menu-item-group-list {\n  margin: 0;\n  padding: 0;\n}\n.rc-select-menu-item-group-list > li.rc-select-menu-item {\n  padding-left: 20px;\n}\n.rc-select-menu-item-group-title {\n  color: #999;\n  line-height: 1.5;\n  padding: 8px 10px;\n  border-bottom: 1px solid #dedede;\n}\nli.rc-select-menu-item {\n  margin: 0;\n  position: relative;\n  display: block;\n  padding: 7px 10px;\n  font-weight: normal;\n  color: #666666;\n  white-space: nowrap;\n}\nli.rc-select-menu-item:hover,\nli.rc-select-menu-item-active,\nli.rc-select-menu-item-selected {\n  background-color: rgba(142, 200, 249, 0.1) !important;\n}\nli.rc-select-menu-item-disabled {\n  color: #ccc;\n  cursor: not-allowed;\n  pointer-events: none;\n}\nli.rc-select-menu-item-disabled:hover {\n  color: #ccc;\n  background-color: #fff;\n  cursor: not-allowed;\n}\nli.rc-select-menu-item-divider {\n  height: 1px;\n  margin: 1px 0;\n  overflow: hidden;\n  background-color: #e5e5e5;\n  line-height: 0;\n}\n", ""]);
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports) {
 
 	module.exports = function() {
@@ -3202,7 +3275,7 @@
 	}
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -3396,6 +3469,71 @@
 		}
 	}
 
+
+/***/ },
+/* 36 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"name": "rc-select",
+		"version": "3.5.0",
+		"description": "select ui component for react",
+		"keywords": [
+			"react",
+			"react-component",
+			"react-select",
+			"select"
+		],
+		"main": "./lib/index",
+		"homepage": "http://github.com/react-component/select",
+		"maintainers": [
+			"hualei5280@gmail.com",
+			"yiminghe@gmail.com"
+		],
+		"repository": {
+			"type": "git",
+			"url": "git@github.com:react-component/select.git"
+		},
+		"bugs": {
+			"url": "http://github.com/react-component/select/issues"
+		},
+		"licenses": "MIT",
+		"config": {
+			"port": 8003
+		},
+		"scripts": {
+			"build": "rc-tools run build",
+			"precommit": "rc-tools run precommit",
+			"less": "rc-tools run less",
+			"gh-pages": "rc-tools run gh-pages",
+			"history": "rc-tools run history",
+			"start": "node --harmony node_modules/.bin/rc-server",
+			"publish": "rc-tools run tag",
+			"lint": "rc-tools run lint",
+			"saucelabs": "node --harmony node_modules/.bin/rc-tools run saucelabs",
+			"browser-test": "node --harmony node_modules/.bin/rc-tools run browser-test",
+			"browser-test-cover": "node --harmony node_modules/.bin/rc-tools run browser-test-cover"
+		},
+		"devDependencies": {
+			"expect.js": "~0.3.1",
+			"jsonp": "^0.2.0",
+			"precommit-hook": "^1.0.7",
+			"querystring": "^0.2.0",
+			"rc-menu": "~3.3.0",
+			"rc-server": "3.x",
+			"rc-tools": "3.x",
+			"rc-util": "~2.0.3",
+			"react": "~0.13.0"
+		},
+		"dependencies": {
+			"css-animation": "1.0.x",
+			"rc-menu": "3.4.x",
+			"rc-util": "2.0.x"
+		},
+		"precommit": [
+			"precommit"
+		]
+	}
 
 /***/ }
 /******/ ]);

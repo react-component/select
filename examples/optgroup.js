@@ -1,14 +1,14 @@
-webpackJsonp([4],{
+webpackJsonp([2],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(40);
+	module.exports = __webpack_require__(38);
 
 
 /***/ },
 
-/***/ 40:
+/***/ 38:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16,6 +16,8 @@ webpackJsonp([4],{
 	var React = __webpack_require__(2);
 	var Select = __webpack_require__(3);
 	var Option = Select.Option;
+	var OptGroup = Select.OptGroup;
+	
 	__webpack_require__(32);
 	var pkg = __webpack_require__(36);
 	
@@ -36,42 +38,44 @@ webpackJsonp([4],{
 	  React.createElement(
 	    'h2',
 	    null,
-	    'Single Select'
+	    'Select OptGroup'
 	  ),
 	  React.createElement(
 	    'div',
 	    { style: { width: 300 } },
 	    React.createElement(
 	      Select,
-	      { value: 'lucy', style: { width: 250 },
-	        animation: 'slide-up',
+	      { value: 'lucy',
 	        showSearch: false,
-	        onChange: handleChange },
+	        style: { width: 250 }, onChange: handleChange },
 	      React.createElement(
-	        Option,
-	        { value: 'jack' },
+	        OptGroup,
+	        { label: 'manager' },
 	        React.createElement(
-	          'b',
-	          { style: {
-	              color: 'red'
-	            } },
-	          'jack'
+	          Option,
+	          { value: 'jack' },
+	          React.createElement(
+	            'b',
+	            { style: {
+	                color: 'red'
+	              } },
+	            'jack'
+	          )
+	        ),
+	        React.createElement(
+	          Option,
+	          { value: 'lucy' },
+	          'lucy'
 	        )
 	      ),
 	      React.createElement(
-	        Option,
-	        { value: 'lucy' },
-	        'lucy'
-	      ),
-	      React.createElement(
-	        Option,
-	        { value: 'disabled', disabled: true },
-	        'disabled'
-	      ),
-	      React.createElement(
-	        Option,
-	        { value: 'yiminghe' },
-	        'yiminghe'
+	        OptGroup,
+	        { label: 'engineer' },
+	        React.createElement(
+	          Option,
+	          { value: 'yiminghe' },
+	          'yiminghe'
+	        )
 	      )
 	    )
 	  )
@@ -82,4 +86,4 @@ webpackJsonp([4],{
 /***/ }
 
 });
-//# sourceMappingURL=single-animation.js.map
+//# sourceMappingURL=optgroup.js.map

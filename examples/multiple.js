@@ -3,12 +3,12 @@ webpackJsonp([1],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(35);
+	module.exports = __webpack_require__(37);
 
 
 /***/ },
 
-/***/ 35:
+/***/ 37:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16,7 +16,8 @@ webpackJsonp([1],{
 	var React = __webpack_require__(2);
 	var Select = __webpack_require__(3);
 	var Option = Select.Option;
-	__webpack_require__(31);
+	__webpack_require__(32);
+	var pkg = __webpack_require__(36);
 	var children = [];
 	for (var i = 10; i < 36; i++) {
 	  children.push(React.createElement(
@@ -37,6 +38,13 @@ webpackJsonp([1],{
 	  null,
 	  React.createElement(
 	    'h1',
+	    null,
+	    pkg.name,
+	    '@',
+	    pkg.version
+	  ),
+	  React.createElement(
+	    'h2',
 	    null,
 	    'multiple select（scroll the menu）'
 	  ),

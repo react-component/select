@@ -189,14 +189,16 @@ var React = require('react');
 var Select = require('rc-select');
 var Option = Select.Option;
 require('rc-select/assets/index.css');
+var pkg = require('../package.json');
+
 function handleChange(value) {
   console.log('selected ' + value);
 }
 
-
 var c1 = (
   <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">h1</span>&gt;</span>Single Select<span class="hljs-tag">&lt;/<span class="hljs-title">h1</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">h1</span>&gt;</span>{pkg.name}@{pkg.version}<span class="hljs-tag">&lt;/<span class="hljs-title">h1</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>Single Select<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=</span></span><span class="hljs-expression">{{<span class="hljs-variable">width</span>: 300}}</span><span class="xml"><span class="hljs-tag">&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">Select</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"lucy"</span> <span class="hljs-attribute">style</span>=</span></span><span class="hljs-expression">{{<span class="hljs-variable">width</span>:250}}</span><span class="xml"><span class="hljs-tag">
         <span class="hljs-attribute">animation</span>=<span class="hljs-value">"slide-up"</span>

@@ -1,14 +1,14 @@
-webpackJsonp([2],{
+webpackJsonp([3],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(36);
+	module.exports = __webpack_require__(39);
 
 
 /***/ },
 
-/***/ 36:
+/***/ 39:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16,7 +16,9 @@ webpackJsonp([2],{
 	var React = __webpack_require__(2);
 	var Select = __webpack_require__(3);
 	var Option = Select.Option;
-	__webpack_require__(31);
+	__webpack_require__(32);
+	var pkg = __webpack_require__(36);
+	
 	function handleChange(value) {
 	  console.log('selected ' + value);
 	}
@@ -26,6 +28,13 @@ webpackJsonp([2],{
 	  null,
 	  React.createElement(
 	    'h1',
+	    null,
+	    pkg.name,
+	    '@',
+	    pkg.version
+	  ),
+	  React.createElement(
+	    'h2',
 	    null,
 	    'Single Select'
 	  ),
