@@ -7,7 +7,9 @@ var classSet = rcUtil.classSet;
 var KeyCode = rcUtil.KeyCode;
 var Menu = require('rc-menu');
 var MenuItem = Menu.Item;
+var MenuItemGroup = Menu.ItemGroup;
 var anim = require('css-animation');
+var OptGroup = require('./OptGroup');
 
 function isMultipleOrTags(props) {
   return props.multiple || props.tags;
@@ -31,20 +33,6 @@ function getValueFromOptionChild(child) {
     throw new Error('must set value string on Option element!');
   }
 
-  return ret;
-}
-
-function getPropsFromOption(child) {
-  var ret = {
-    key: getValueFromOptionChild(child),
-    value: getValueFromOptionChild(child)
-  };
-  var optionProps = child.props;
-  for (var i in optionProps) {
-    if (i !== 'children') {
-      ret[i] = optionProps[i];
-    }
-  }
   return ret;
 }
 
@@ -83,16 +71,35 @@ class Select extends React.Component {
     });
   }
 
-  renderFilterOptions() {
+  renderFilterOptionsFromChildren(children, showNotFound) {
     var inputValue = this.state.inputValue;
     var sel = [];
     var props = this.props;
     var childrenKeys = [];
     var filterOption = props.filterOption;
     var tags = props.tags;
-    React.Children.forEach(props.children, (child)=> {
+    React.Children.forEach(children, (child)=> {
+      if (child.type === OptGroup) {
+        var innerItems = this.renderFilterOptionsFromChildren(child.props.children, false);
+        if (innerItems.length) {
+          var label = child.props.label;
+          var key = child.key;
+          if (!key && typeof label === 'string') {
+            key = label;
+          }
+          sel.push(<MenuItemGroup key={key} title={child.props.label}>
+        {innerItems}
+          </MenuItemGroup>);
+        }
+        return;
+      }
       if (!filterOption || !inputValue || !child.props.disabled && getValueFromOptionChild(child).indexOf(inputValue) > -1) {
-        sel.push(child);
+        sel.push(<MenuItem
+          disabled={child.props.disabled}
+          value={getValueFromOptionChild(child)}
+          key={child.key || getValueFromOptionChild(child)}>
+        {child.props.children}
+        </MenuItem>);
       }
       if (tags && !child.props.disabled) {
         childrenKeys.push(getValueFromOptionChild(child));
@@ -104,21 +111,25 @@ class Select extends React.Component {
         return childrenKeys.indexOf(v) === -1 && (!inputValue || v.indexOf(inputValue) > -1);
       });
       sel = sel.concat(value.map((v)=> {
-        return <MenuItem value={v}>{v}</MenuItem>;
+        return <MenuItem value={v} key={v}>{v}</MenuItem>;
       }));
       if (inputValue) {
         var notFindInputItem = sel.every((s)=> {
           return getValueFromOptionChild(s) !== inputValue;
         });
         if (notFindInputItem) {
-          sel.unshift(<MenuItem value={inputValue}>{inputValue}</MenuItem>);
+          sel.unshift(<MenuItem value={inputValue} key={inputValue}>{inputValue}</MenuItem>);
         }
       }
     }
-    if (!sel.length) {
+    if (!sel.length && showNotFound && props.notFoundContent) {
       sel = <MenuItem disabled value='NOT_FOUND'>{props.notFoundContent}</MenuItem>;
     }
     return sel;
+  }
+
+  renderFilterOptions() {
+    return this.renderFilterOptionsFromChildren(this.props.children, true);
   }
 
   setOpenState(open) {
@@ -152,17 +163,30 @@ class Select extends React.Component {
 
   handleClick() {
     if (!this.props.disabled) {
-      this.setOpenState(!this.state.open);
+      if (this.state.open) {
+        this.setOpenState(false);
+      } else {
+        this.openIfHasChildren();
+      }
+    }
+  }
+
+  openIfHasChildren() {
+    if (React.Children.count(this.props.children)) {
+      this.setOpenState(true);
     }
   }
 
   // combobox ignore
   handleKeyDown(e) {
+    if (this.props.disabled) {
+      return;
+    }
     var keyCode = e.keyCode;
     if (this.state.open && !this.refs.input) {
       this.handleInputKeyDown(e);
     } else if (keyCode === KeyCode.ENTER || e.keyCode === KeyCode.DOWN) {
-      this.handleClick(e);
+      this.handleClick();
       e.preventDefault();
     }
   }
@@ -170,9 +194,7 @@ class Select extends React.Component {
   handleInputKeyDown(e) {
     if (e.keyCode === KeyCode.DOWN) {
       if (!this.state.open) {
-        this.setState({
-          open: true
-        });
+        this.openIfHasChildren();
         e.preventDefault();
         e.stopPropagation();
         return;
@@ -185,8 +207,9 @@ class Select extends React.Component {
       }
       return;
     }
-    if (this.refs.menu) {
-      if (this.refs.menu.handleKeyDown(e)) {
+    var menu = this.refs.menu;
+    if (menu) {
+      if (menu.handleKeyDown(e)) {
         e.preventDefault();
         e.stopPropagation();
       }
@@ -278,14 +301,13 @@ class Select extends React.Component {
     this.setOpenState(false);
   }
 
-  renderMenu(children) {
+  renderMenu(menuItems) {
     var props = this.props;
     var menuProps = {};
     if (isMultipleOrTags(props)) {
       menuProps.onDeselect = this.handleMenuDeselect;
     }
     var value = this.state.value;
-    var menuItems = React.Children.map(children, this.renderOption);
     var selectedKeys = [];
     React.Children.forEach(menuItems, (item) => {
       if (value.indexOf(item.props.value) !== -1) {
@@ -350,14 +372,13 @@ class Select extends React.Component {
   renderRoot(children) {
     var props = this.props;
     var prefixCls = props.prefixCls;
-    var rootCls = {};
-    rootCls[prefixCls] = true;
-    if (this.state.open) {
-      rootCls[prefixCls + '-open'] = true;
-    }
-    if (this.props.disabled) {
-      rootCls[prefixCls + '-disabled'] = true;
-    }
+    var rootCls = {
+      [prefixCls]: true,
+      [prefixCls + '-open']: this.state.open,
+      [prefixCls + '-combobox']: props.combobox,
+      [prefixCls + '-disabled']: props.disabled,
+      [prefixCls + '-show-arrow']: props.showArrow
+    };
     return (
       <span
         style={props.style}
@@ -368,11 +389,6 @@ class Select extends React.Component {
         {children}
       </span>
     );
-  }
-
-  renderOption(child) {
-    var props = getPropsFromOption(child);
-    return <MenuItem {...props}>{child.props.children}</MenuItem>;
   }
 
   animateDropdown(prevProps, prevState) {
@@ -417,22 +433,24 @@ class Select extends React.Component {
         role="textbox" />
     );
 
-    var children = this.renderFilterOptions();
+    var menuItems = this.renderFilterOptions();
     var ctrlNode = this.renderTopControlNode(input);
     var dropDown;
     if (state.open) {
-      // single and not combobox, input is inside dropdown
-      this.cachedDropDown = dropDown = <span key="dropdown"
-        ref="dropdown"
-        className= {joinClasses(prefixCls + '-dropdown', prefixCls + '-dropdown--below')}
-        tabIndex="-1">
-      {
-        multiple || props.combobox || !props.showSearch ?
-          null :
-          <span className={joinClasses(prefixCls + '-search', prefixCls + '-search--dropdown')}>{input}</span>
-        }
-        {this.renderMenu(children)}
-      </span>;
+      var search = multiple || props.combobox || !props.showSearch ? null :
+        <span className={joinClasses(prefixCls + '-search', prefixCls + '-search--dropdown')}>{input}</span>;
+      if (!search && !menuItems.length) {
+        this.cachedDropDown = dropDown = null;
+      } else {
+        // single and not combobox, input is inside dropdown
+        this.cachedDropDown = dropDown = <span key="dropdown"
+          ref="dropdown"
+          className= {joinClasses(prefixCls + '-dropdown', prefixCls + '-dropdown--below')}
+          tabIndex="-1">
+        {search}
+        {this.renderMenu(menuItems)}
+        </span>;
+      }
     } else {
       dropDown = this.cachedDropDown;
     }
@@ -458,7 +476,7 @@ class Select extends React.Component {
       {...extraSelectionProps}
       >
         {ctrlNode}
-        {multiple ? null :
+        {multiple || !props.showArrow ? null :
           <span key="arrow" className={prefixCls + '-arrow'}>
             <b></b>
           </span>}
@@ -471,6 +489,7 @@ class Select extends React.Component {
 Select.propTypes = {
   multiple: React.PropTypes.bool,
   showSearch: React.PropTypes.bool,
+  showArrow: React.PropTypes.bool,
   tags: React.PropTypes.bool,
   transitionName: React.PropTypes.string,
   animation: React.PropTypes.string,
@@ -487,6 +506,7 @@ Select.defaultProps = {
   onChange: noop,
   onSelect: noop,
   onDeselect: noop,
+  showArrow: true,
   notFoundContent: 'Not Found'
 };
 

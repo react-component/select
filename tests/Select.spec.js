@@ -42,8 +42,8 @@ describe('Select', function () {
     instance.setState({
       open: true
     }, function () {
-      expect(instance.refs.menu.instances['1'].props.selected).to.be(false);
-      expect(instance.refs.menu.instances['2'].props.selected).to.be(true);
+      expect(instance.refs.menu.instanceArray[0].props.selected).to.be(false);
+      expect(instance.refs.menu.instanceArray[1].props.selected).to.be(true);
       done();
     });
   });
@@ -59,9 +59,9 @@ describe('Select', function () {
     instance.setState({
       open: true
     }, function () {
-      expect(instance.refs.menu.instances['1'].props.selected).to.be(true);
-      expect(instance.refs.menu.instances['2'].props.selected).to.be(true);
-      expect(instance.refs.menu.instances['3'].props.selected).to.be(false);
+      expect(instance.refs.menu.instanceArray[0].props.selected).to.be(true);
+      expect(instance.refs.menu.instanceArray[1].props.selected).to.be(true);
+      expect(instance.refs.menu.instanceArray[2].props.selected).to.be(false);
       done();
     });
   });
@@ -132,48 +132,4 @@ describe('Select', function () {
     });
 
   });
-
-  describe('when use option tags', function () {
-    var div;
-
-    this.timeout(400000);
-
-    beforeEach(function () {
-      div = document.createElement('div');
-      div.tabIndex = 0;
-      document.body.appendChild(div);
-      instance = React.render(
-        <Select tags>
-          <Option value="1">1</Option>
-          <Option value="2">2</Option>
-        </Select>,
-        div);
-    });
-
-    afterEach(function () {
-      React.unmountComponentAtNode(div);
-    });
-
-    it('should allow user input as tags', function (done) {
-      if (navigator.userAgent.indexOf(' Chrome') === -1) {
-        done();
-        return;
-      }
-
-      var node = React.findDOMNode(instance.refs.input);
-      node.focus();
-      node.value = 'A';
-      Simulate.change(node);
-      setTimeout(function () {
-        Simulate.keyDown(node, {
-          keyCode: KeyCode.ENTER
-        });
-        setTimeout(function () {
-          expect(instance.state.value).to.contain("A");
-          done();
-        }, 100);
-      }, 100);
-    });
-  });
-
 });

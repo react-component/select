@@ -177,22 +177,50 @@ React.render(c, container);
     </thead>
     <tbody>
         <tr>
-          <td>className</td>
-          <td>String</td>
-          <td></td>
-          <td>additional css class of root dom node</td>
-        </tr>
-        <tr>
             <td>disabled</td>
             <td>Boolean</td>
             <th>false</th>
             <td>no effect for click or keydown for this item</td>
-        </tr>        
+        </tr>
         <tr>
           <td>value</td>
           <td>String</td>
           <td></td>
           <td>search by this attribute</td>
+        </tr>
+        <tr>
+          <td>key</td>
+          <td>String</td>
+          <td></td>
+          <td></td>
+        </tr>
+    </tbody>
+</table>
+
+
+### OptGroup props
+
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th style="width: 100px;">name</th>
+        <th style="width: 50px;">type</th>
+        <th style="width: 50px;">default</th>
+        <th>description</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>label</td>
+          <td>String|React.Element</td>
+          <td></td>
+          <td>group label</td>
+        </tr>
+        <tr>
+          <td>key</td>
+          <td>String</td>
+          <td></td>
+          <td></td>
         </tr>
     </tbody>
 </table>

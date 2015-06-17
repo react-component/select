@@ -1,6 +1,6 @@
 {
   "name": "rc-select",
-  "version": "3.4.1",
+  "version": "3.5.0",
   "description": "select ui component for react",
   "keywords": [
     "react",
@@ -50,9 +50,9 @@
     "react": "~0.13.0"
   },
   "dependencies": {
-    "css-animation": "~1.0.3",
-    "rc-util": "2.0.x",
-    "rc-menu": "3.3.x"
+    "css-animation": "1.0.x",
+    "rc-menu": "3.4.x",
+    "rc-util": "2.0.x"
   },
   "precommit": [
     "precommit"

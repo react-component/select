@@ -266,12 +266,24 @@
     list-style: none;
     z-index: 9999;
 
-    > li {
+    &-item-group-list {
       margin: 0;
       padding: 0;
+
+      > li.@{selectPrefixCls}-menu-item {
+        padding-left: 20px;
+      }
     }
 
-    & > &-item {
+    &-item-group-title {
+      color: #999;
+      line-height: 1.5;
+      padding: 8px 10px;
+      border-bottom: 1px solid #dedede;
+    }
+
+    li&-item {
+      margin: 0;
       position: relative;
       display: block;
       padding: 7px 10px;

@@ -3,3 +3,5 @@
  */
 require('../assets/index.css');
 require('./Select.spec');
+require('./OptGroup.spec');
+require('./tags.spec');
