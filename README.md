@@ -90,6 +90,12 @@ React.render(c, container);
           <td>whether show search input in single mode</td>
         </tr>
         <tr>
+          <td>onSearch</td>
+          <td>Function</td>
+          <td></td>
+          <td>called when input changed</td>
+        </tr>
+        <tr>
           <td>disabled</td>
           <td>Boolean</td>
           <td>false</td>
