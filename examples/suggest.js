@@ -45,7 +45,7 @@ var Search = React.createClass({
     });
     return <div>
       <h1>{pkg.name}@{pkg.version}</h1>
-      <h2>force suggest</h2>
+      <h2>suggest</h2>
       <div style={{width: 300}}>
         <Select combobox
           showArrow={false}
