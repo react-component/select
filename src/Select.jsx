@@ -66,9 +66,11 @@ class Select extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      value: normValue(nextProps.value)
-    });
+    if ('value' in nextProps) {
+      this.setState({
+        value: normValue(nextProps.value)
+      });
+    }
   }
 
   renderFilterOptionsFromChildren(children, showNotFound) {
@@ -95,11 +97,9 @@ class Select extends React.Component {
       }
       if (!filterOption || !inputValue || !child.props.disabled && getValueFromOptionChild(child).indexOf(inputValue) > -1) {
         sel.push(<MenuItem
-          disabled={child.props.disabled}
+          {...child.props}
           value={getValueFromOptionChild(child)}
-          key={child.key || getValueFromOptionChild(child)}>
-        {child.props.children}
-        </MenuItem>);
+          key={child.key || getValueFromOptionChild(child)}/>);
       }
       if (tags && !child.props.disabled) {
         childrenKeys.push(getValueFromOptionChild(child));
@@ -149,16 +149,18 @@ class Select extends React.Component {
 
   handleInputChange(e) {
     var val = e.target.value;
+    var props = this.props;
     this.setState({
       inputValue: val,
       open: true
     });
-    if (this.props.combobox) {
+    if (props.combobox) {
       this.setState({
         value: val ? [val] : []
       });
-      this.props.onChange(val);
+      props.onChange(val);
     }
+    props.onSearch(val);
   }
 
   handleClick() {
@@ -172,7 +174,8 @@ class Select extends React.Component {
   }
 
   openIfHasChildren() {
-    if (React.Children.count(this.props.children)) {
+    var props = this.props;
+    if (React.Children.count(props.children) || !isMultipleOrTags(props) && !props.combobox) {
       this.setOpenState(true);
     }
   }
@@ -495,6 +498,7 @@ Select.propTypes = {
   animation: React.PropTypes.string,
   onChange: React.PropTypes.func,
   onSelect: React.PropTypes.func,
+  onSearch: React.PropTypes.func,
   onDeselect: React.PropTypes.func
 };
 
@@ -505,6 +509,7 @@ Select.defaultProps = {
   allowClear: false,
   onChange: noop,
   onSelect: noop,
+  onSearch: noop,
   onDeselect: noop,
   showArrow: true,
   notFoundContent: 'Not Found'
