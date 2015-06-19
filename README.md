@@ -84,6 +84,12 @@ React.render(c, container);
           <td>additional css class of root dom node</td>
         </tr>
         <tr>
+          <td>optionLabelProp</td>
+          <td>String</td>
+          <td>value</td>
+          <td>which prop value of option will render as content of select</td>
+        </tr>
+        <tr>
           <td>showSearch</td>
           <td>Boolean</td>
           <td>true</td>
@@ -128,8 +134,8 @@ React.render(c, container);
         <tr>
           <td>filterOption</td>
           <td></td>
-          <td>true</td>
-          <td>whether filter options by input value</td>
+          <td>true|Function(inputValue:string, option:Option)</td>
+          <td>whether filter options by input value. default filter by option's value prop's value</td>
         </tr>
         <tr>
           <td>tags</td>
@@ -151,9 +157,9 @@ React.render(c, container);
         </tr>
         <tr>
           <td>onSelect</td>
-          <td>Function</td>
+          <td>Function(value:string, option:Option)</td>
           <td></td>
-          <td>called when a option is selected. param is option's value</td>
+          <td>called when a option is selected. param is option's value and option instance</td>
         </tr>
         <tr>
           <td>onDeselect</td>
@@ -193,12 +199,6 @@ React.render(c, container);
           <td>String</td>
           <td></td>
           <td>search by this attribute</td>
-        </tr>
-        <tr>
-          <td>key</td>
-          <td>String</td>
-          <td></td>
-          <td></td>
         </tr>
     </tbody>
 </table>
