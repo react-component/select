@@ -16,9 +16,7 @@ webpackJsonp([0],[
 	var Option = Select.Option;
 	__webpack_require__(32);
 	var pkg = __webpack_require__(36);
-	var style = {
-	  color: 'red'
-	};
+	
 	var c3 = React.createElement(
 	  'div',
 	  null,
@@ -45,7 +43,9 @@ webpackJsonp([0],[
 	        { value: 'jack' },
 	        React.createElement(
 	          'b',
-	          { style: style },
+	          { style: {
+	              color: 'red'
+	            } },
 	          'jack'
 	        )
 	      ),

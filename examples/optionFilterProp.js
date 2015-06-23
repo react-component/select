@@ -1,14 +1,14 @@
-webpackJsonp([6],{
+webpackJsonp([4],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(49);
+	module.exports = __webpack_require__(47);
 
 
 /***/ },
 
-/***/ 49:
+/***/ 47:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36,39 +36,30 @@ webpackJsonp([6],{
 	  React.createElement(
 	    'h2',
 	    null,
-	    'Single Select'
+	    'Select optionFilterProp'
 	  ),
 	  React.createElement(
 	    'div',
 	    { style: { width: 300 } },
 	    React.createElement(
 	      Select,
-	      { value: 'lucy', style: { width: 250 }, onChange: handleChange },
+	      { value: '张三', style: { width: 250 },
+	        optionFilterProp: 'desc',
+	        onChange: handleChange },
 	      React.createElement(
 	        Option,
-	        { value: 'jack' },
-	        React.createElement(
-	          'b',
-	          { style: {
-	              color: 'red'
-	            } },
-	          'jack'
-	        )
+	        { value: '张三', desc: '张三 zhang san' },
+	        '张三'
 	      ),
 	      React.createElement(
 	        Option,
-	        { value: 'lucy' },
-	        'lucy'
+	        { value: '李四', desc: '李四 li si' },
+	        '李四'
 	      ),
 	      React.createElement(
 	        Option,
-	        { value: 'disabled', disabled: true },
-	        'disabled'
-	      ),
-	      React.createElement(
-	        Option,
-	        { value: 'yiminghe' },
-	        'yiminghe'
+	        { value: '王五', desc: '王五 wang wu' },
+	        '王五'
 	      )
 	    )
 	  )
@@ -79,4 +70,4 @@ webpackJsonp([6],{
 /***/ }
 
 });
-//# sourceMappingURL=single.js.map
+//# sourceMappingURL=optionFilterProp.js.map

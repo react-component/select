@@ -180,38 +180,39 @@
 <body>
 <div id="__react-content"></div>
 <script src="common.js?nowrap"></script>
-<script src="combobox.js?nowrap"></script>
+<script src="optionFilterProp.js?nowrap"></script>
 <div class="highlight">
 <pre>
-<span class="xml">'use strict';
+<span class="hljs-string">'use strict'</span>;
 
-var React = require('react');
-var Select = require('../');
-var Option = Select.Option;
-require('rc-select/assets/index.css');
-var pkg = require('../package.json');
+<span class="hljs-keyword">var</span> React = <span class="hljs-keyword">require</span>(<span class="hljs-string">'react'</span>);
+<span class="hljs-keyword">var</span> <span class="hljs-keyword">Select</span> = <span class="hljs-keyword">require</span>(<span class="hljs-string">'rc-select'</span>);
+<span class="hljs-keyword">var</span> Option = <span class="hljs-keyword">Select</span>.Option;
+<span class="hljs-keyword">require</span>(<span class="hljs-string">'rc-select/assets/index.css'</span>);
+<span class="hljs-keyword">var</span> pkg = <span class="hljs-keyword">require</span>(<span class="hljs-string">'../package.json'</span>);
 
-var c3 = (
-  <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">h1</span>&gt;</span>{pkg.name}@{pkg.version}<span class="hljs-tag">&lt;/<span class="hljs-title">h1</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>combobox<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=</span></span><span class="hljs-expression">{{<span class="hljs-variable">width</span>: 300}}</span><span class="xml"><span class="hljs-tag">&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">Select</span> <span class="hljs-attribute">combobox</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"jack"</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">b</span> <span class="hljs-attribute">style</span>=</span></span><span class="hljs-expression">{{
-            <span class="hljs-variable">color</span>: '<span class="hljs-variable">red</span>'
-          }}</span><span class="xml"><span class="hljs-tag">&gt;</span>jack<span class="hljs-tag">&lt;/<span class="hljs-title">b</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"lucy"</span> &gt;</span>lucy<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"disabled"</span> <span class="hljs-attribute">disabled</span>&gt;</span>disabled<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"yiminghe"</span>&gt;</span>yiminghe<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-);
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handleChange</span><span class="hljs-params">(value)</span> <span class="hljs-comment">{
+  console.log('selected ' + value);
+}</span>
 
-React.render(c3, document.getElementById('__react-content'));
-</span>
+<span class="hljs-title">var</span> <span class="hljs-title">c1</span> = <span class="hljs-params">(
+  &lt;<span class="hljs-keyword">div</span>&gt;
+    &lt;h1&gt;{pkg.name}@{pkg.version}&lt;/h1&gt;
+    &lt;h2&gt;<span class="hljs-keyword">Select</span> optionFilterProp&lt;/h2&gt;
+    &lt;<span class="hljs-keyword">div</span> style={{width: 300}}&gt;
+      &lt;<span class="hljs-keyword">Select</span> value="张三" style={{width:250}}
+        optionFilterProp="<span class="hljs-keyword">desc</span>"
+        onChange={handleChange}&gt;
+        &lt;Option value="张三" <span class="hljs-keyword">desc</span>="张三 zhang san"&gt;张三&lt;/Option&gt;
+        &lt;Option value="李四" <span class="hljs-keyword">desc</span>="李四 li si"&gt;李四&lt;/Option&gt;
+        &lt;Option value="王五" <span class="hljs-keyword">desc</span>="王五 wang wu"&gt;王五&lt;/Option&gt;
+      &lt;/<span class="hljs-keyword">Select</span>&gt;
+    &lt;/<span class="hljs-keyword">div</span>&gt;
+  &lt;/<span class="hljs-keyword">div</span>&gt;
+)</span>;</span>
+
+React.render(c1, document.getElementById(<span class="hljs-string">'__react-content'</span>));
+
 </pre>
 </div>
 </body>

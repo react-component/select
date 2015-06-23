@@ -1,14 +1,14 @@
-webpackJsonp([6],{
+webpackJsonp([5],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(49);
+	module.exports = __webpack_require__(48);
 
 
 /***/ },
 
-/***/ 49:
+/***/ 48:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36,14 +36,22 @@ webpackJsonp([6],{
 	  React.createElement(
 	    'h2',
 	    null,
-	    'Single Select'
+	    'Select placeholder'
 	  ),
 	  React.createElement(
 	    'div',
 	    { style: { width: 300 } },
 	    React.createElement(
 	      Select,
-	      { value: 'lucy', style: { width: 250 }, onChange: handleChange },
+	      {
+	        placeholder: React.createElement(
+	          'i',
+	          null,
+	          '请下拉选择'
+	        ),
+	        searchPlaceholder: '输入过滤',
+	        style: { width: 250 },
+	        onChange: handleChange },
 	      React.createElement(
 	        Option,
 	        { value: 'jack' },
@@ -79,4 +87,4 @@ webpackJsonp([6],{
 /***/ }
 
 });
-//# sourceMappingURL=single.js.map
+//# sourceMappingURL=placeholder.js.map

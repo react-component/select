@@ -1,10 +1,106 @@
-webpackJsonp([8],{
+webpackJsonp([1],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(51);
+	module.exports = __webpack_require__(37);
 
+
+/***/ },
+
+/***/ 37:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(2);
+	var Select = __webpack_require__(3);
+	var Option = Select.Option;
+	__webpack_require__(32);
+	var jsonp = __webpack_require__(38);
+	var querystring = __webpack_require__(42);
+	var pkg = __webpack_require__(36);
+	
+	var Search = React.createClass({
+	  displayName: 'Search',
+	
+	  getInitialState: function getInitialState() {
+	    return {
+	      data: []
+	    };
+	  },
+	
+	  fetchData: function fetchData(value) {
+	    var _this = this;
+	
+	    jsonp('http://suggest.taobao.com/sug?' + querystring.encode({
+	      code: 'utf-8',
+	      q: value
+	    }), function (err, d) {
+	      var result = d.result;
+	      var data = [];
+	      result.forEach(function (r) {
+	        data.push({
+	          value: r[0],
+	          text: r[0]
+	        });
+	      });
+	      _this.setState({
+	        data: data
+	      });
+	    });
+	  },
+	
+	  handleChange: function handleChange(value) {
+	    console.log('select ', value);
+	  },
+	
+	  render: function render() {
+	    var data = this.state.data;
+	    var options = data.map(function (d) {
+	      return React.createElement(
+	        Option,
+	        { value: d.value, key: d.value, label: React.createElement(
+	            'i',
+	            null,
+	            d.text
+	          ) },
+	        d.text
+	      );
+	    });
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h1',
+	        null,
+	        pkg.name,
+	        '@',
+	        pkg.version
+	      ),
+	      React.createElement(
+	        'h2',
+	        null,
+	        'force suggest'
+	      ),
+	      React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          Select,
+	          { onSearch: this.fetchData,
+	            optionLabelProp: 'label',
+	            style: { width: 300 },
+	            onChange: this.handleChange,
+	            filterOption: false },
+	          options
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	React.render(React.createElement(Search, null), document.getElementById('__react-content'));
 
 /***/ },
 
@@ -795,98 +891,7 @@ webpackJsonp([8],{
 	};
 
 
-/***/ },
-
-/***/ 51:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(2);
-	var Select = __webpack_require__(3);
-	var Option = Select.Option;
-	__webpack_require__(32);
-	var jsonp = __webpack_require__(38);
-	var querystring = __webpack_require__(42);
-	var pkg = __webpack_require__(36);
-	
-	var Search = React.createClass({
-	  displayName: 'Search',
-	
-	  getInitialState: function getInitialState() {
-	    return {
-	      data: []
-	    };
-	  },
-	
-	  fetchData: function fetchData(value) {
-	    var _this = this;
-	
-	    jsonp('http://suggest.taobao.com/sug?' + querystring.encode({
-	      code: 'utf-8',
-	      q: value
-	    }), function (err, d) {
-	      var result = d.result;
-	      var data = [];
-	      result.forEach(function (r) {
-	        data.push({
-	          value: r[0],
-	          text: r[0]
-	        });
-	      });
-	      _this.setState({
-	        data: data
-	      });
-	    });
-	  },
-	
-	  handleSelect: function handleSelect(value) {
-	    console.log('select ', value);
-	  },
-	
-	  render: function render() {
-	    var data = this.state.data;
-	    var options = data.map(function (d) {
-	      return React.createElement(
-	        Option,
-	        { value: d.value, key: d.value },
-	        d.text
-	      );
-	    });
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'h1',
-	        null,
-	        pkg.name,
-	        '@',
-	        pkg.version
-	      ),
-	      React.createElement(
-	        'h2',
-	        null,
-	        'suggest'
-	      ),
-	      React.createElement(
-	        'div',
-	        { style: { width: 300 } },
-	        React.createElement(
-	          Select,
-	          { combobox: true,
-	            showArrow: false,
-	            notFoundContent: '',
-	            onChange: this.fetchData, onSelect: this.handleSelect, filterOption: false },
-	          options
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	React.render(React.createElement(Search, null), document.getElementById('__react-content'));
-
 /***/ }
 
 });
-//# sourceMappingURL=suggest.js.map
+//# sourceMappingURL=force-suggest.js.map
