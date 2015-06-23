@@ -11,29 +11,23 @@ var MenuItemGroup = Menu.ItemGroup;
 var anim = require('css-animation');
 var OptGroup = require('./OptGroup');
 
+function isCombobox(props) {
+  return props.combobox;
+}
+
 function isMultipleOrTags(props) {
   return props.multiple || props.tags;
 }
 
-function noop() {
+function isMultipleOrTagsOrCombobox(props) {
+  return isMultipleOrTags(props) || isCombobox(props);
 }
 
-function getValueFromOptionChild(child) {
-  var optionProps = child.props;
-  var children = optionProps.children;
-  var ret;
-  if (optionProps.value !== undefined) {
-    if (typeof optionProps.value === 'string') {
-      ret = optionProps.value;
-    }
-  } else if (typeof children === 'string') {
-    ret = children;
-  }
-  if (!ret && !child.props.disabled) {
-    throw new Error('must set value string on Option element!');
-  }
+function isSingleMode(props) {
+  return !isMultipleOrTagsOrCombobox(props);
+}
 
-  return ret;
+function noop() {
 }
 
 function normValue(value) {
@@ -45,11 +39,21 @@ function normValue(value) {
   return value;
 }
 
+function filterFn(input, child) {
+  return child.props[this.props.optionFilterProp].indexOf(input) > -1;
+}
+
 class Select extends React.Component {
   constructor(props) {
     super(props);
+    var value = [];
+    if ('value' in props) {
+      value = normValue(props.value);
+    } else if ('defaultValue' in props) {
+      value = normValue(props.defaultValue);
+    }
     this.state = {
-      value: normValue(props.value),
+      value: value,
       inputValue: ''
     };
     ['handleClick',
@@ -66,9 +70,50 @@ class Select extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if ('value' in nextProps) {
+      this.setState({
+        value: normValue(nextProps.value)
+      });
+    }
+  }
+
+  fireChange(value) {
+    this.props.onChange(isMultipleOrTags(this.props) ? value : value[0]);
     this.setState({
-      value: normValue(nextProps.value)
+      value: value
     });
+  }
+
+  getLabelByValue(children, value) {
+    if (value === undefined) {
+      return value;
+    }
+    var label;
+    React.Children.forEach(children, (c) => {
+      if (c.type === OptGroup) {
+        var maybe = this.getLabelByValue(c.props.children, value);
+        if (maybe !== undefined) {
+          label = maybe;
+        }
+      } else if (c.props.value === value) {
+        label = c.props[this.props.optionLabelProp];
+      }
+    });
+    return label;
+  }
+
+  filterOption(input, child) {
+    if (!input) {
+      return true;
+    }
+    var filterOption = this.props.filterOption;
+    if (!filterOption) {
+      return true;
+    }
+    if (child.props.disabled) {
+      return false;
+    }
+    return filterOption.call(this, input, child);
   }
 
   renderFilterOptionsFromChildren(children, showNotFound) {
@@ -76,7 +121,6 @@ class Select extends React.Component {
     var sel = [];
     var props = this.props;
     var childrenKeys = [];
-    var filterOption = props.filterOption;
     var tags = props.tags;
     React.Children.forEach(children, (child)=> {
       if (child.type === OptGroup) {
@@ -93,20 +137,24 @@ class Select extends React.Component {
         }
         return;
       }
-      if (!filterOption || !inputValue || !child.props.disabled && getValueFromOptionChild(child).indexOf(inputValue) > -1) {
+      var childValue = child.props.value;
+      if (typeof childValue !== 'string') {
+        throw new Error('Option must set string value');
+      }
+      if (this.filterOption(inputValue, child)) {
         sel.push(<MenuItem
-          disabled={child.props.disabled}
-          value={getValueFromOptionChild(child)}
-          key={child.key || getValueFromOptionChild(child)}>
-        {child.props.children}
-        </MenuItem>);
+          value = {childValue}
+          key = {childValue}
+          {...child.props}
+        />);
       }
       if (tags && !child.props.disabled) {
-        childrenKeys.push(getValueFromOptionChild(child));
+        childrenKeys.push(childValue);
       }
     });
     if (tags) {
-      var value = this.state.value || [];
+      // tags value must be string
+      var value = this.state.value;
       value = value.filter((v)=> {
         return childrenKeys.indexOf(v) === -1 && (!inputValue || v.indexOf(inputValue) > -1);
       });
@@ -115,7 +163,7 @@ class Select extends React.Component {
       }));
       if (inputValue) {
         var notFindInputItem = sel.every((s)=> {
-          return getValueFromOptionChild(s) !== inputValue;
+          return s.props.value !== inputValue;
         });
         if (notFindInputItem) {
           sel.unshift(<MenuItem value={inputValue} key={inputValue}>{inputValue}</MenuItem>);
@@ -137,7 +185,7 @@ class Select extends React.Component {
     this.setState({
       open: open
     }, ()=> {
-      if (open || isMultipleOrTags(this.props) || this.props.combobox) {
+      if (open || isMultipleOrTagsOrCombobox(this.props)) {
         if (refs.input) {
           React.findDOMNode(refs.input).focus();
         }
@@ -149,16 +197,15 @@ class Select extends React.Component {
 
   handleInputChange(e) {
     var val = e.target.value;
+    var props = this.props;
     this.setState({
       inputValue: val,
       open: true
     });
-    if (this.props.combobox) {
-      this.setState({
-        value: val ? [val] : []
-      });
-      this.props.onChange(val);
+    if (isCombobox(props)) {
+      props.onChange(val);
     }
+    props.onSearch(val);
   }
 
   handleClick() {
@@ -172,14 +219,16 @@ class Select extends React.Component {
   }
 
   openIfHasChildren() {
-    if (React.Children.count(this.props.children)) {
+    var props = this.props;
+    if (React.Children.count(props.children) || isSingleMode(props)) {
       this.setOpenState(true);
     }
   }
 
   // combobox ignore
   handleKeyDown(e) {
-    if (this.props.disabled) {
+    var props = this.props;
+    if (props.disabled) {
       return;
     }
     var keyCode = e.keyCode;
@@ -192,6 +241,15 @@ class Select extends React.Component {
   }
 
   handleInputKeyDown(e) {
+    if (isMultipleOrTags(this.props) && !e.target.value && e.keyCode === KeyCode.BACKSPACE) {
+      var value = this.state.value.concat();
+      if (value.length) {
+        value.pop();
+        this.fireChange(value);
+      }
+      return;
+    }
+
     if (e.keyCode === KeyCode.DOWN) {
       if (!this.state.open) {
         this.openIfHasChildren();
@@ -217,29 +275,27 @@ class Select extends React.Component {
   }
 
   handleMenuSelect(key, item) {
-    var value;
+    var value = this.state.value;
     var props = this.props;
     var selectedValue = item.props.value;
     if (isMultipleOrTags(props)) {
-      value = this.state.value.concat();
-      value.push(selectedValue);
+      value = value.concat([selectedValue]);
     } else {
-      if (this.state.value[0] === selectedValue) {
+      if (value[0] === selectedValue) {
         this.setOpenState(false);
         return;
       }
       value = [selectedValue];
     }
-    props.onSelect(selectedValue);
-    props.onChange(isMultipleOrTags(props) ? value : value[0]);
+    props.onSelect(selectedValue, item);
+    this.fireChange(value);
     this.setState({
-      value: value,
       inputValue: ''
     });
     this.setOpenState(false);
-    if (props.combobox) {
+    if (isCombobox(props)) {
       this.setState({
-        inputValue: value[0]
+        inputValue: item.props[this.props.optionLabelProp]
       });
     }
   }
@@ -280,21 +336,19 @@ class Select extends React.Component {
     if (canMultiple) {
       props.onDeselect(selectedValue);
     }
-    props.onChange(isMultipleOrTags(props) ? value : value[0]);
-    this.setState({
-      value: value
-    });
+    this.fireChange(value);
   }
 
   handleClearSelection(e) {
-    if (this.props.disabled) {
+    var props = this.props;
+    var state = this.state;
+    if (props.disabled) {
       return;
     }
     e.stopPropagation();
-    if (this.state.inputValue || this.state.value.length) {
-      this.props.onChange(isMultipleOrTags(this.props) ? [] : undefined);
+    if (state.inputValue || state.value.length) {
+      this.fireChange([]);
       this.setState({
-        value: [],
         inputValue: ''
       });
     }
@@ -310,7 +364,7 @@ class Select extends React.Component {
     var value = this.state.value;
     var selectedKeys = [];
     React.Children.forEach(menuItems, (item) => {
-      if (value.indexOf(item.props.value) !== -1) {
+      if (value.indexOf(item.props.value) !== -1 && item.key) {
         selectedKeys.push(item.key);
       }
     });
@@ -334,24 +388,25 @@ class Select extends React.Component {
 
   renderTopControlNode(input) {
     var value = this.state.value;
-    var prefixCls = this.props.prefixCls;
-    var allowClear = this.props.allowClear;
+    var props = this.props;
+    var prefixCls = props.prefixCls;
+    var allowClear = props.allowClear;
+    var children = props.children;
     var clear = <span className={prefixCls + '-selection__clear'}
       onClick={this.handleClearSelection}>×</span>;
-    var props = this.props;
     // single and not combobox, input is inside dropdown
-    if (!props.combobox && !isMultipleOrTags(props)) {
-      return <span className={prefixCls + '-selection__rendered'}>
-          {value[0]}
+    if (isSingleMode(props)) {
+      return (<span className={prefixCls + '-selection__rendered'}>
+        <span>{this.getLabelByValue(children, value[0]) || props.placeholder}</span>
           {allowClear ? clear : null}
-      </span>;
+      </span>);
     }
     var selectedValueNodes;
     if (isMultipleOrTags(props)) {
       selectedValueNodes = value.map((v) => {
         return (
           <li className={prefixCls + '-selection__choice'}>
-            {v}
+            <span className={prefixCls + '-selection__choice__content'}>{this.getLabelByValue(children, v) || v}</span>
             <span className={prefixCls + '-selection__choice__remove'}
               onClick={this.removeSelected.bind(this, v)}
             >×</span>
@@ -364,7 +419,8 @@ class Select extends React.Component {
           {selectedValueNodes}
           {allowClear && !isMultipleOrTags(props) ? clear : null}
         <li className={joinClasses(prefixCls + '-search', prefixCls + '-search--inline')}>
-          {input} {/*<i className="anticon anticon-search"></i>*/}</li>
+          {input}
+        </li>
       </ul>
     );
   }
@@ -375,15 +431,13 @@ class Select extends React.Component {
     var rootCls = {
       [prefixCls]: true,
       [prefixCls + '-open']: this.state.open,
-      [prefixCls + '-combobox']: props.combobox,
-      [prefixCls + '-disabled']: props.disabled,
-      [prefixCls + '-show-arrow']: props.showArrow
+      [prefixCls + '-combobox']: isCombobox(props),
+      [prefixCls + '-disabled']: props.disabled
     };
     return (
       <span
         style={props.style}
         className={joinClasses(props.className, classSet(rootCls))}
-        dir="ltr"
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}>
         {children}
@@ -429,6 +483,7 @@ class Select extends React.Component {
         onKeyDown={this.handleInputKeyDown}
         value={state.inputValue}
         disabled={props.disabled}
+        placeholder={props.searchPlaceholder}
         className={prefixCls + '-search__field'}
         role="textbox" />
     );
@@ -437,7 +492,7 @@ class Select extends React.Component {
     var ctrlNode = this.renderTopControlNode(input);
     var dropDown;
     if (state.open) {
-      var search = multiple || props.combobox || !props.showSearch ? null :
+      var search = isMultipleOrTagsOrCombobox(props) || !props.showSearch ? null :
         <span className={joinClasses(prefixCls + '-search', prefixCls + '-search--dropdown')}>{input}</span>;
       if (!search && !menuItems.length) {
         this.cachedDropDown = dropDown = null;
@@ -456,7 +511,7 @@ class Select extends React.Component {
     }
 
     var extraSelectionProps = {};
-    if (!props.combobox) {
+    if (!isCombobox(props)) {
       extraSelectionProps = {
         onKeyDown: this.handleKeyDown,
         tabIndex: 0
@@ -488,25 +543,36 @@ class Select extends React.Component {
 
 Select.propTypes = {
   multiple: React.PropTypes.bool,
+  filterOption: React.PropTypes.any,
   showSearch: React.PropTypes.bool,
   showArrow: React.PropTypes.bool,
   tags: React.PropTypes.bool,
   transitionName: React.PropTypes.string,
+  optionLabelProp: React.PropTypes.string,
+  optionFilterProp: React.PropTypes.string,
   animation: React.PropTypes.string,
   onChange: React.PropTypes.func,
   onSelect: React.PropTypes.func,
+  onSearch: React.PropTypes.func,
+  searchPlaceholder: React.PropTypes.string,
+  placeholder: React.PropTypes.any,
   onDeselect: React.PropTypes.func
 };
 
 Select.defaultProps = {
   prefixCls: 'rc-select',
-  filterOption: true,
+  filterOption: filterFn,
   showSearch: true,
   allowClear: false,
+  placeholder: '',
+  searchPlaceholder: '',
   onChange: noop,
   onSelect: noop,
+  onSearch: noop,
   onDeselect: noop,
   showArrow: true,
+  optionFilterProp: 'value',
+  optionLabelProp: 'value',
   notFoundContent: 'Not Found'
 };
 
