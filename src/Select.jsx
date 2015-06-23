@@ -40,7 +40,7 @@ function normValue(value) {
 }
 
 function filterFn(input, child) {
-  return child.props.value.indexOf(input) > -1;
+  return child.props[this.props.optionFilterProp].indexOf(input) > -1;
 }
 
 class Select extends React.Component {
@@ -113,8 +113,7 @@ class Select extends React.Component {
     if (child.props.disabled) {
       return false;
     }
-
-    return filterOption(input, child);
+    return filterOption.call(this, input, child);
   }
 
   renderFilterOptionsFromChildren(children, showNotFound) {
@@ -139,18 +138,15 @@ class Select extends React.Component {
         return;
       }
       var childValue = child.props.value;
+      if (typeof childValue !== 'string') {
+        throw new Error('Option must set string value');
+      }
       if (this.filterOption(inputValue, child)) {
-        if (childValue === undefined) {
-          if (typeof child.props.children === 'string') {
-            childValue = child.props.children;
-          } else {
-            throw new Error('Option must set string value');
-          }
-        }
         sel.push(<MenuItem
           value = {childValue}
+          key = {childValue}
           {...child.props}
-          key={childValue}/>);
+        />);
       }
       if (tags && !child.props.disabled) {
         childrenKeys.push(childValue);
@@ -553,6 +549,7 @@ Select.propTypes = {
   tags: React.PropTypes.bool,
   transitionName: React.PropTypes.string,
   optionLabelProp: React.PropTypes.string,
+  optionFilterProp: React.PropTypes.string,
   animation: React.PropTypes.string,
   onChange: React.PropTypes.func,
   onSelect: React.PropTypes.func,
@@ -574,6 +571,7 @@ Select.defaultProps = {
   onSearch: noop,
   onDeselect: noop,
   showArrow: true,
+  optionFilterProp: 'value',
   optionLabelProp: 'value',
   notFoundContent: 'Not Found'
 };

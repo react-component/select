@@ -1,7 +1,7 @@
 # rc-select
 ---
 
-select ui component for react
+React Select
 
 [![NPM version][npm-image]][npm-url]
 [![SPM version](http://spmjs.io/badge/rc-select)](http://spmjs.io/package/rc-select)
@@ -54,9 +54,9 @@ var Option = Select.Option;
 
 var c = (
   <Select>
-    <Option value="1">jack</Option>
-    <Option value="2">lucy</Option>
-    <Option value="3">jim</Option>
+    <Option value="jack">jack</Option>
+    <Option value="lucy">lucy</Option>
+    <Option value="jim">jim</Option>
   </Select>
 );
 React.render(c, container);
@@ -84,10 +84,22 @@ React.render(c, container);
           <td>additional css class of root dom node</td>
         </tr>
         <tr>
+          <td>filterOption</td>
+          <td></td>
+          <td>true|Function(inputValue:string, option:Option)</td>
+          <td>whether filter options by input value. default filter by option's optionFilterProp prop's value</td>
+        </tr>
+        <tr>
           <td>optionLabelProp</td>
           <td>String</td>
           <td>value</td>
           <td>which prop value of option will render as content of select</td>
+        </tr>
+        <tr>
+          <td>optionFilterProp</td>
+          <td>String</td>
+          <td>value</td>
+          <td>which prop value of option will be used for filter if filterOption is true</td>
         </tr>
         <tr>
           <td>showSearch</td>
@@ -123,19 +135,19 @@ React.render(c, container);
           <td>value</td>
           <td>String | Array<String></td>
           <td></td>
-          <td>specify the default selected item(s)</td>
-        </tr> 
+          <td>specify the selected option(s)</td>
+        </tr>
+        <tr>
+          <td>defaultValue</td>
+          <td>String | Array<String></td>
+          <td></td>
+          <td>specify the default selected option(s)</td>
+        </tr>
         <tr>
           <td>multiple</td>
           <td></td>
           <td>false</td>
-          <td>can select more than one option </td>
-        </tr>
-        <tr>
-          <td>filterOption</td>
-          <td></td>
-          <td>true|Function(inputValue:string, option:Option)</td>
-          <td>whether filter options by input value. default filter by option's value prop's value</td>
+          <td>can select more than one option</td>
         </tr>
         <tr>
           <td>tags</td>
@@ -168,10 +180,10 @@ React.render(c, container);
           <td>called when a option is deselected. param is option's value. only called for multiple or tags</td>
         </tr>
         <tr>
-            <td>onChange</td>
-            <td>function(value)</td>
-            <th></th>
-            <td>called when select an option or input value change(combobox)</td>
+          <td>onChange</td>
+          <td>function(value)</td>
+          <th></th>
+          <td>called when select an option or input value change(combobox)</td>
         </tr>
     </tbody>
 </table>
