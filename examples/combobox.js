@@ -4,11 +4,9 @@ var React = require('react');
 var Select = require('../');
 var Option = Select.Option;
 require('rc-select/assets/index.css');
-var pkg = require('../package.json');
 
 var c3 = (
   <div>
-    <h1>{pkg.name}@{pkg.version}</h1>
     <h2>combobox</h2>
     <div style={{width: 300}}>
       <Select combobox>

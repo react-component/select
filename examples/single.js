@@ -4,7 +4,6 @@ var React = require('react');
 var Select = require('rc-select');
 var Option = Select.Option;
 require('rc-select/assets/index.css');
-var pkg = require('../package.json');
 
 function handleChange(value) {
   console.log('selected ' + value);
@@ -12,7 +11,6 @@ function handleChange(value) {
 
 var c1 = (
   <div>
-    <h1>{pkg.name}@{pkg.version}</h1>
     <h2>Single Select</h2>
     <div style={{width: 300}}>
       <Select value="lucy" style={{width:250}} onChange={handleChange}>

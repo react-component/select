@@ -6,7 +6,6 @@ var Option = Select.Option;
 require('rc-select/assets/index.css');
 var jsonp = require('jsonp');
 var querystring = require('querystring');
-var pkg = require('../package.json');
 
 var Search = React.createClass({
   getInitialState() {
@@ -44,7 +43,6 @@ var Search = React.createClass({
       return <Option value={d.value} key={d.value}>{d.text}</Option>;
     });
     return <div>
-      <h1>{pkg.name}@{pkg.version}</h1>
       <h2>suggest</h2>
       <div style={{width: 300}}>
         <Select combobox

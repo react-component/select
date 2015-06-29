@@ -4,7 +4,6 @@ var React = require('react');
 var Select = require('rc-select');
 var Option = Select.Option;
 require('rc-select/assets/index.css');
-var pkg = require('../package.json');
 var children = [];
 for (var i = 10; i < 36; i++) {
   children.push(<Option value={i.toString(36) + i}>{i.toString(36) + i}</Option>);
@@ -18,7 +17,6 @@ var style = '.rc-select-menu {max-height:200px;overflow:auto;}';
 
 var c2 = (
   <div>
-    <h1>{pkg.name}@{pkg.version}</h1>
     <h2>multiple select（scroll the menu）</h2>
     <div style={{width: 300}}>
       <style>

@@ -6,7 +6,6 @@ var Option = Select.Option;
 var OptGroup = Select.OptGroup;
 
 require('rc-select/assets/index.css');
-var pkg = require('../package.json');
 
 function handleChange(value) {
   console.log('selected ' + value);
@@ -14,7 +13,6 @@ function handleChange(value) {
 
 var c1 = (
   <div>
-    <h1>{pkg.name}@{pkg.version}</h1>
     <h2>Select OptGroup</h2>
     <div style={{width: 300}}>
       <Select value="lucy"
