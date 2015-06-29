@@ -3,19 +3,19 @@ webpackJsonp([8],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(51);
+	module.exports = __webpack_require__(50);
 
 
 /***/ },
 
-/***/ 38:
+/***/ 37:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies
 	 */
 	
-	var debug = __webpack_require__(39)('jsonp');
+	var debug = __webpack_require__(38)('jsonp');
 	
 	/**
 	 * Module exports.
@@ -112,7 +112,7 @@ webpackJsonp([8],{
 
 /***/ },
 
-/***/ 39:
+/***/ 38:
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -122,7 +122,7 @@ webpackJsonp([8],{
 	 * Expose `debug()` as the module.
 	 */
 	
-	exports = module.exports = __webpack_require__(40);
+	exports = module.exports = __webpack_require__(39);
 	exports.log = log;
 	exports.formatArgs = formatArgs;
 	exports.save = save;
@@ -294,7 +294,7 @@ webpackJsonp([8],{
 
 /***/ },
 
-/***/ 40:
+/***/ 39:
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -310,7 +310,7 @@ webpackJsonp([8],{
 	exports.disable = disable;
 	exports.enable = enable;
 	exports.enabled = enabled;
-	exports.humanize = __webpack_require__(41);
+	exports.humanize = __webpack_require__(40);
 	
 	/**
 	 * The currently active debug mode names, and names to skip.
@@ -498,7 +498,7 @@ webpackJsonp([8],{
 
 /***/ },
 
-/***/ 41:
+/***/ 40:
 /***/ function(module, exports) {
 
 	/**
@@ -628,18 +628,18 @@ webpackJsonp([8],{
 
 /***/ },
 
-/***/ 42:
+/***/ 41:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	exports.decode = exports.parse = __webpack_require__(43);
-	exports.encode = exports.stringify = __webpack_require__(44);
+	exports.decode = exports.parse = __webpack_require__(42);
+	exports.encode = exports.stringify = __webpack_require__(43);
 
 
 /***/ },
 
-/***/ 43:
+/***/ 42:
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -726,7 +726,7 @@ webpackJsonp([8],{
 
 /***/ },
 
-/***/ 44:
+/***/ 43:
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -797,7 +797,7 @@ webpackJsonp([8],{
 
 /***/ },
 
-/***/ 51:
+/***/ 50:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -806,9 +806,8 @@ webpackJsonp([8],{
 	var Select = __webpack_require__(3);
 	var Option = Select.Option;
 	__webpack_require__(32);
-	var jsonp = __webpack_require__(38);
-	var querystring = __webpack_require__(42);
-	var pkg = __webpack_require__(36);
+	var jsonp = __webpack_require__(37);
+	var querystring = __webpack_require__(41);
 	
 	var Search = React.createClass({
 	  displayName: 'Search',
@@ -856,13 +855,6 @@ webpackJsonp([8],{
 	    return React.createElement(
 	      'div',
 	      null,
-	      React.createElement(
-	        'h1',
-	        null,
-	        pkg.name,
-	        '@',
-	        pkg.version
-	      ),
 	      React.createElement(
 	        'h2',
 	        null,

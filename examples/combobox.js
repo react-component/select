@@ -15,18 +15,10 @@ webpackJsonp([0],[
 	var Select = __webpack_require__(3);
 	var Option = Select.Option;
 	__webpack_require__(32);
-	var pkg = __webpack_require__(36);
 	
 	var c3 = React.createElement(
 	  'div',
 	  null,
-	  React.createElement(
-	    'h1',
-	    null,
-	    pkg.name,
-	    '@',
-	    pkg.version
-	  ),
 	  React.createElement(
 	    'h2',
 	    null,

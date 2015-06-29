@@ -3,12 +3,12 @@ webpackJsonp([2],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(45);
+	module.exports = __webpack_require__(44);
 
 
 /***/ },
 
-/***/ 45:
+/***/ 44:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17,7 +17,6 @@ webpackJsonp([2],{
 	var Select = __webpack_require__(3);
 	var Option = Select.Option;
 	__webpack_require__(32);
-	var pkg = __webpack_require__(36);
 	var children = [];
 	for (var i = 10; i < 36; i++) {
 	  children.push(React.createElement(
@@ -36,13 +35,6 @@ webpackJsonp([2],{
 	var c2 = React.createElement(
 	  'div',
 	  null,
-	  React.createElement(
-	    'h1',
-	    null,
-	    pkg.name,
-	    '@',
-	    pkg.version
-	  ),
 	  React.createElement(
 	    'h2',
 	    null,

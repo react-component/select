@@ -140,7 +140,7 @@
 	  var _again = true;_function: while (_again) {
 	    var object = _x,
 	        property = _x2,
-	        receiver = _x3;desc = parent = getter = undefined;_again = false;var desc = Object.getOwnPropertyDescriptor(object, property);if (desc === undefined) {
+	        receiver = _x3;desc = parent = getter = undefined;_again = false;if (object === null) object = Function.prototype;var desc = Object.getOwnPropertyDescriptor(object, property);if (desc === undefined) {
 	      var parent = Object.getPrototypeOf(object);if (parent === null) {
 	        return undefined;
 	      } else {
@@ -157,7 +157,11 @@
 	};
 	
 	function _defineProperty(obj, key, value) {
-	  return Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });
+	  if (key in obj) {
+	    Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });
+	  } else {
+	    obj[key] = value;
+	  }return obj;
 	}
 	
 	function _classCallCheck(instance, Constructor) {
@@ -625,14 +629,14 @@
 	      var state = this.state;
 	      var transitionName = props.transitionName;
 	      if (!transitionName && props.animation) {
-	        transitionName = '' + props.prefixCls + '-dropdown-' + props.animation;
+	        transitionName = props.prefixCls + '-dropdown-' + props.animation;
 	      }
 	      if (transitionName && this.refs.dropdown) {
 	        var domNode = React.findDOMNode(this.refs.dropdown);
 	        if (state.open && !prevState.open) {
-	          anim(domNode, '' + transitionName + '-enter');
+	          anim(domNode, transitionName + '-enter');
 	        } else if (!state.open && prevState.open) {
-	          anim(domNode, '' + transitionName + '-leave');
+	          anim(domNode, transitionName + '-leave');
 	        }
 	      }
 	    }
@@ -3228,6 +3232,26 @@
 
 	'use strict';
 	
+	var _get = function get(_x, _x2, _x3) {
+	  var _again = true;_function: while (_again) {
+	    var object = _x,
+	        property = _x2,
+	        receiver = _x3;desc = parent = getter = undefined;_again = false;if (object === null) object = Function.prototype;var desc = Object.getOwnPropertyDescriptor(object, property);if (desc === undefined) {
+	      var parent = Object.getPrototypeOf(object);if (parent === null) {
+	        return undefined;
+	      } else {
+	        _x = parent;_x2 = property;_x3 = receiver;_again = true;continue _function;
+	      }
+	    } else if ('value' in desc) {
+	      return desc.value;
+	    } else {
+	      var getter = desc.get;if (getter === undefined) {
+	        return undefined;
+	      }return getter.call(receiver);
+	    }
+	  }
+	};
+	
 	function _classCallCheck(instance, Constructor) {
 	  if (!(instance instanceof Constructor)) {
 	    throw new TypeError('Cannot call a class as a function');
@@ -3246,9 +3270,7 @@
 	  function OptGroup() {
 	    _classCallCheck(this, OptGroup);
 	
-	    if (_React$Component != null) {
-	      _React$Component.apply(this, arguments);
-	    }
+	    _get(Object.getPrototypeOf(OptGroup.prototype), 'constructor', this).apply(this, arguments);
 	  }
 	
 	  _inherits(OptGroup, _React$Component);
@@ -3263,6 +3285,26 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+	
+	var _get = function get(_x, _x2, _x3) {
+	  var _again = true;_function: while (_again) {
+	    var object = _x,
+	        property = _x2,
+	        receiver = _x3;desc = parent = getter = undefined;_again = false;if (object === null) object = Function.prototype;var desc = Object.getOwnPropertyDescriptor(object, property);if (desc === undefined) {
+	      var parent = Object.getPrototypeOf(object);if (parent === null) {
+	        return undefined;
+	      } else {
+	        _x = parent;_x2 = property;_x3 = receiver;_again = true;continue _function;
+	      }
+	    } else if ('value' in desc) {
+	      return desc.value;
+	    } else {
+	      var getter = desc.get;if (getter === undefined) {
+	        return undefined;
+	      }return getter.call(receiver);
+	    }
+	  }
+	};
 	
 	function _classCallCheck(instance, Constructor) {
 	  if (!(instance instanceof Constructor)) {
@@ -3282,9 +3324,7 @@
 	  function Option() {
 	    _classCallCheck(this, Option);
 	
-	    if (_React$Component != null) {
-	      _React$Component.apply(this, arguments);
-	    }
+	    _get(Object.getPrototypeOf(Option.prototype), 'constructor', this).apply(this, arguments);
 	  }
 	
 	  _inherits(Option, _React$Component);
@@ -3540,71 +3580,6 @@
 		}
 	}
 
-
-/***/ },
-/* 36 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"name": "rc-select",
-		"version": "4.0.0",
-		"description": "select ui component for react",
-		"keywords": [
-			"react",
-			"react-component",
-			"react-select",
-			"select"
-		],
-		"main": "./lib/index",
-		"homepage": "http://github.com/react-component/select",
-		"maintainers": [
-			"hualei5280@gmail.com",
-			"yiminghe@gmail.com"
-		],
-		"repository": {
-			"type": "git",
-			"url": "git@github.com:react-component/select.git"
-		},
-		"bugs": {
-			"url": "http://github.com/react-component/select/issues"
-		},
-		"licenses": "MIT",
-		"config": {
-			"port": 8003
-		},
-		"scripts": {
-			"build": "rc-tools run build",
-			"precommit": "rc-tools run precommit",
-			"less": "rc-tools run less",
-			"gh-pages": "rc-tools run gh-pages",
-			"history": "rc-tools run history",
-			"start": "node --harmony node_modules/.bin/rc-server",
-			"publish": "rc-tools run tag",
-			"lint": "rc-tools run lint",
-			"saucelabs": "node --harmony node_modules/.bin/rc-tools run saucelabs",
-			"browser-test": "node --harmony node_modules/.bin/rc-tools run browser-test",
-			"browser-test-cover": "node --harmony node_modules/.bin/rc-tools run browser-test-cover"
-		},
-		"devDependencies": {
-			"expect.js": "~0.3.1",
-			"jsonp": "^0.2.0",
-			"precommit-hook": "^1.0.7",
-			"querystring": "^0.2.0",
-			"rc-menu": "~3.3.0",
-			"rc-server": "3.x",
-			"rc-tools": "3.x",
-			"rc-util": "~2.0.3",
-			"react": "~0.13.0"
-		},
-		"dependencies": {
-			"css-animation": "1.0.x",
-			"rc-menu": "3.4.x",
-			"rc-util": "2.0.x"
-		},
-		"precommit": [
-			"precommit"
-		]
-	}
 
 /***/ }
 /******/ ]);
