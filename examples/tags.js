@@ -23,7 +23,9 @@ var c2 = (
       <style>
       {style}
       </style>
-      <Select tags value={['name2', 'name3']}
+      <Select tags
+        maxTagTextLength={10}
+        value={['name2', 'name3']}
         onChange={handleChange}>
     {children}
       </Select>

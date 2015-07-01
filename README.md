@@ -156,6 +156,12 @@ React.render(c, container);
           <td>when tagging is enabled the user can select from pre-existing options or create a new tag by picking the first choice, which is what the user has typed into the search box so far.</td>
         </tr>
         <tr>
+          <td>maxTagTextLength</td>
+          <td></td>
+          <td></td>
+          <td>max tag text length to show</td>
+        </tr>
+        <tr>
           <td>allowClear</td>
           <td></td>
           <td>false</td>

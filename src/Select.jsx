@@ -404,9 +404,15 @@ class Select extends React.Component {
     var selectedValueNodes;
     if (isMultipleOrTags(props)) {
       selectedValueNodes = value.map((v) => {
+        var content = this.getLabelByValue(children, v) || v;
+        var title = content;
+        var maxTagTextLength = props.maxTagTextLength;
+        if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
+          content = content.slice(0, maxTagTextLength) + '...';
+        }
         return (
-          <li className={prefixCls + '-selection__choice'}>
-            <span className={prefixCls + '-selection__choice__content'}>{this.getLabelByValue(children, v) || v}</span>
+          <li className={prefixCls + '-selection__choice'} title={title}>
+            <span className={prefixCls + '-selection__choice__content'}>{content}</span>
             <span className={prefixCls + '-selection__choice__remove'}
               onClick={this.removeSelected.bind(this, v)}
             >×</span>
@@ -556,7 +562,8 @@ Select.propTypes = {
   onSearch: React.PropTypes.func,
   searchPlaceholder: React.PropTypes.string,
   placeholder: React.PropTypes.any,
-  onDeselect: React.PropTypes.func
+  onDeselect: React.PropTypes.func,
+  maxTagTextLength: React.PropTypes.number
 };
 
 Select.defaultProps = {

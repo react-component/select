@@ -1,6 +1,14 @@
 # History
 ----
 
+## 4.1.0 / 2015-07-01
+
+`new` [#13](https://github.com/react-component/select/issues/13) add maxTagTextLength
+
+## 4.0.0 / 2015-06-26
+
+https://github.com/react-component/select/issues/11
+
 ## 3.5.0 / 2015-06-17
 
 `new` [#6](https://github.com/react-component/select/issues/6) add OptGroup
