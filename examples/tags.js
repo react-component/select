@@ -51,7 +51,9 @@ webpackJsonp([9],{
 	    ),
 	    React.createElement(
 	      Select,
-	      { tags: true, value: ['name2', 'name3'],
+	      { tags: true,
+	        maxTagTextLength: 10,
+	        value: ['name2', 'name3'],
 	        onChange: handleChange },
 	      children
 	    )

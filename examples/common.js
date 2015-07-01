@@ -601,7 +601,13 @@
 	      var selectedValueNodes;
 	      if (isMultipleOrTags(props)) {
 	        selectedValueNodes = value.map(function (v) {
-	          return React.createElement('li', { className: prefixCls + '-selection__choice' }, React.createElement('span', { className: prefixCls + '-selection__choice__content' }, _this6.getLabelByValue(children, v) || v), React.createElement('span', { className: prefixCls + '-selection__choice__remove',
+	          var content = _this6.getLabelByValue(children, v) || v;
+	          var title = content;
+	          var maxTagTextLength = props.maxTagTextLength;
+	          if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
+	            content = content.slice(0, maxTagTextLength) + '...';
+	          }
+	          return React.createElement('li', { className: prefixCls + '-selection__choice', title: title }, React.createElement('span', { className: prefixCls + '-selection__choice__content' }, content), React.createElement('span', { className: prefixCls + '-selection__choice__remove',
 	            onClick: _this6.removeSelected.bind(_this6, v)
 	          }, '×'));
 	        });
@@ -724,7 +730,8 @@
 	  onSearch: React.PropTypes.func,
 	  searchPlaceholder: React.PropTypes.string,
 	  placeholder: React.PropTypes.any,
-	  onDeselect: React.PropTypes.func
+	  onDeselect: React.PropTypes.func,
+	  maxTagTextLength: React.PropTypes.number
 	};
 	
 	Select.defaultProps = {
