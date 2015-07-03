@@ -27,40 +27,69 @@ webpackJsonp([9],{
 	  ));
 	}
 	
-	function handleChange(value) {
-	  console.log('selected ' + value);
-	}
-	
 	var style = '.rc-select-menu {max-height:200px;overflow:auto;}';
 	
-	var c2 = React.createElement(
-	  'div',
-	  null,
-	  React.createElement(
-	    'h2',
-	    null,
-	    'tags select（scroll the menu）'
-	  ),
-	  React.createElement(
-	    'div',
-	    { style: { width: 300 } },
-	    React.createElement(
-	      'style',
-	      null,
-	      style
-	    ),
-	    React.createElement(
-	      Select,
-	      { tags: true,
-	        maxTagTextLength: 10,
-	        value: ['name2', 'name3'],
-	        onChange: handleChange },
-	      children
-	    )
-	  )
-	);
+	var Test = React.createClass({
+	  displayName: 'Test',
 	
-	React.render(c2, document.getElementById('__react-content'));
+	  getInitialState: function getInitialState() {
+	    return {
+	      disabled: false,
+	      value: ['name2', 'name3']
+	    };
+	  },
+	  handleChange: function handleChange(value) {
+	    console.log('selected ' + value);
+	    this.setState({
+	      value: value
+	    });
+	  },
+	  handleDisabled: function handleDisabled() {
+	    this.setState({
+	      disabled: !this.state.disabled
+	    });
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h2',
+	        null,
+	        'tags select（scroll the menu）'
+	      ),
+	      React.createElement(
+	        'div',
+	        { style: { width: 300 } },
+	        React.createElement(
+	          'style',
+	          null,
+	          style
+	        ),
+	        React.createElement(
+	          Select,
+	          { tags: true,
+	            disabled: this.state.disabled,
+	            maxTagTextLength: 10,
+	            value: this.state.value,
+	            onChange: this.handleChange },
+	          children
+	        )
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        React.createElement(
+	          'button',
+	          { onClick: this.handleDisabled },
+	          'toggle disabled'
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	React.render(React.createElement(Test, null), document.getElementById('__react-content'));
 
 /***/ }
 
