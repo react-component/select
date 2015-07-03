@@ -329,6 +329,9 @@ class Select extends React.Component {
 
   removeSelected(selectedValue) {
     var props = this.props;
+    if (props.disabled) {
+      return;
+    }
     var value = this.state.value.filter((v)=> {
       return v !== selectedValue;
     });

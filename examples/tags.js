@@ -10,27 +10,48 @@ for (var i = 10; i < 36; i++) {
   children.push(<Option value={i.toString(36) + i}>{i.toString(36) + i}</Option>);
 }
 
-function handleChange(value) {
-  console.log('selected ' + value);
-}
-
 var style = '.rc-select-menu {max-height:200px;overflow:auto;}';
 
-var c2 = (
-  <div>
-    <h2>tags select（scroll the menu）</h2>
-    <div style={{width: 300}}>
-      <style>
+var Test = React.createClass({
+  getInitialState() {
+    return {
+      disabled: false,
+      value: ['name2', 'name3']
+    };
+  },
+  handleChange(value) {
+    console.log('selected ' + value);
+    this.setState({
+      value: value
+    });
+  },
+  handleDisabled() {
+    this.setState({
+      disabled: !this.state.disabled
+    });
+  },
+  render() {
+    return (
+      <div>
+        <h2>tags select（scroll the menu）</h2>
+        <div style={{width: 300}}>
+          <style>
       {style}
-      </style>
-      <Select tags
-        maxTagTextLength={10}
-        value={['name2', 'name3']}
-        onChange={handleChange}>
+          </style>
+          <Select tags
+            disabled={this.state.disabled}
+            maxTagTextLength={10}
+            value={this.state.value}
+            onChange={this.handleChange}>
     {children}
-      </Select>
-    </div>
-  </div>
-);
+          </Select>
+        </div>
+        <p>
+          <button onClick={this.handleDisabled}>toggle disabled</button>
+        </p>
+      </div>
+    );
+  }
+});
 
-React.render(c2, document.getElementById('__react-content'));
+React.render(<Test />, document.getElementById('__react-content'));
