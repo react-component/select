@@ -22,7 +22,7 @@ webpackJsonp([9],{
 	for (var i = 10; i < 36; i++) {
 	  children.push(React.createElement(
 	    Option,
-	    { value: i.toString(36) + i },
+	    { value: i.toString(36) + i, key: i.toString(36) + i },
 	    i.toString(36) + i
 	  ));
 	}
@@ -60,7 +60,7 @@ webpackJsonp([9],{
 	      ),
 	      React.createElement(
 	        'div',
-	        { style: { width: 300 } },
+	        null,
 	        React.createElement(
 	          'style',
 	          null,
@@ -69,6 +69,7 @@ webpackJsonp([9],{
 	        React.createElement(
 	          Select,
 	          { tags: true,
+	            style: { width: 500 },
 	            disabled: this.state.disabled,
 	            maxTagTextLength: 10,
 	            value: this.state.value,

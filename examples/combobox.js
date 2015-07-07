@@ -29,7 +29,9 @@ webpackJsonp([0],[
 	    { style: { width: 300 } },
 	    React.createElement(
 	      Select,
-	      { combobox: true },
+	      {
+	        style: { width: 500 },
+	        combobox: true },
 	      React.createElement(
 	        Option,
 	        { value: 'jack' },

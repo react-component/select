@@ -862,10 +862,12 @@ webpackJsonp([8],{
 	      ),
 	      React.createElement(
 	        'div',
-	        { style: { width: 300 } },
+	        null,
 	        React.createElement(
 	          Select,
-	          { combobox: true,
+	          {
+	            style: { width: 500 },
+	            combobox: true,
 	            showArrow: false,
 	            notFoundContent: '',
 	            onChange: this.fetchData, onSelect: this.handleSelect, filterOption: false },

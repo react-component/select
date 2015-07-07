@@ -180,7 +180,7 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
 </head>
 <body>
-<h1>rc-select@4.1.1</h1>
+<h1>rc-select@4.2.0</h1>
 <div id="__react-content"></div>
 <script src="common.js?nowrap"></script>
 <script src="force-suggest.js?nowrap"></script>
@@ -189,7 +189,7 @@
 <span class="hljs-string">'use strict'</span>;
 
 <span class="hljs-reserved">var</span> React = <span class="hljs-built_in">require</span>(<span class="hljs-string">'react'</span>);
-<span class="hljs-reserved">var</span> Select = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../'</span>);
+<span class="hljs-reserved">var</span> Select = <span class="hljs-built_in">require</span>(<span class="hljs-string">'rc-select'</span>);
 <span class="hljs-reserved">var</span> Option = Select.Option;
 <span class="hljs-built_in">require</span>(<span class="hljs-string">'rc-select/assets/index.css'</span>);
 <span class="hljs-reserved">var</span> jsonp = <span class="hljs-built_in">require</span>(<span class="hljs-string">'jsonp'</span>);
@@ -235,7 +235,7 @@
       &lt;div&gt;
         &lt;Select onSearch={<span class="hljs-keyword">this</span>.fetchData}
           optionLabelProp=<span class="hljs-string">"label"</span>
-          style={{<span class="hljs-attribute">width</span>: <span class="hljs-number">300</span>}}
+          style={{<span class="hljs-attribute">width</span>:<span class="hljs-number">500</span>}}
           onChange={<span class="hljs-keyword">this</span>.handleChange}
           filterOption={<span class="hljs-literal">false</span>}&gt;
         {options}

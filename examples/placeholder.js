@@ -42,7 +42,7 @@ webpackJsonp([5],{
 	          '请下拉选择'
 	        ),
 	        searchPlaceholder: '输入过滤',
-	        style: { width: 250 },
+	        style: { width: 500 },
 	        onChange: handleChange },
 	      React.createElement(
 	        Option,

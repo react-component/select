@@ -82,7 +82,7 @@ webpackJsonp([1],{
 	          Select,
 	          { onSearch: this.fetchData,
 	            optionLabelProp: 'label',
-	            style: { width: 300 },
+	            style: { width: 500 },
 	            onChange: this.handleChange,
 	            filterOption: false },
 	          options

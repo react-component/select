@@ -39,7 +39,8 @@ webpackJsonp([3],{
 	      Select,
 	      { value: 'lucy',
 	        showSearch: false,
-	        style: { width: 250 }, onChange: handleChange },
+	        style: { width: 500 },
+	        onChange: handleChange },
 	      React.createElement(
 	        OptGroup,
 	        { label: 'manager' },

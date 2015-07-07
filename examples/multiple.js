@@ -51,7 +51,10 @@ webpackJsonp([2],{
 	    React.createElement(
 	      Select,
 	      {
-	        multiple: true, value: ['name2', 'name3'], onChange: handleChange },
+	        style: { width: 500 },
+	        multiple: true,
+	        value: ['name2', 'name3'],
+	        onChange: handleChange },
 	      children
 	    )
 	  )

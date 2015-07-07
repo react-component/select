@@ -35,7 +35,8 @@ webpackJsonp([7],{
 	    { style: { width: 300 } },
 	    React.createElement(
 	      Select,
-	      { value: 'lucy', style: { width: 250 },
+	      { value: 'lucy',
+	        style: { width: 500 },
 	        animation: 'slide-up',
 	        showSearch: false,
 	        onChange: handleChange },
