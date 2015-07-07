@@ -171,7 +171,7 @@ class Select extends React.Component {
       }
     }
     if (!sel.length && showNotFound && props.notFoundContent) {
-      sel = <MenuItem disabled value='NOT_FOUND'>{props.notFoundContent}</MenuItem>;
+      sel = [<MenuItem disabled value='NOT_FOUND'>{props.notFoundContent}</MenuItem>];
     }
     return sel;
   }
