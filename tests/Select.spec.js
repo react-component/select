@@ -131,5 +131,14 @@ describe('Select', function () {
       }, 100);
     });
 
+    it('should show not found', function (done) {
+      React.findDOMNode(instance.refs.input).value = "4";
+      Simulate.change(instance.refs.input);
+      setTimeout(function () {
+        expect(TestUtils.scryRenderedDOMComponentsWithClass(instance, 'rc-select-menu-item').length).to.be(1);
+        expect(TestUtils.scryRenderedDOMComponentsWithClass(instance, 'rc-select-menu-item')[0].props.children).to.be('Not Found');
+        done();
+      }, 100);
+    });
   });
 });

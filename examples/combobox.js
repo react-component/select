@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react');
-var Select = require('../');
+var Select = require('rc-select');
 var Option = Select.Option;
 require('rc-select/assets/index.css');
 
@@ -9,7 +9,9 @@ var c3 = (
   <div>
     <h2>combobox</h2>
     <div style={{width: 300}}>
-      <Select combobox>
+      <Select
+        style={{width:500}}
+        combobox>
         <Option value="jack">
           <b style={{
             color: 'red'

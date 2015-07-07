@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react');
-var Select = require('../');
+var Select = require('rc-select');
 var Option = Select.Option;
 require('rc-select/assets/index.css');
 var jsonp = require('jsonp');
@@ -47,7 +47,7 @@ var Search = React.createClass({
       <div>
         <Select onSearch={this.fetchData}
           optionLabelProp="label"
-          style={{width: 300}}
+          style={{width:500}}
           onChange={this.handleChange}
           filterOption={false}>
         {options}

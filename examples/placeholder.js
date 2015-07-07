@@ -16,7 +16,7 @@ var c1 = (
       <Select
         placeholder={<i>请下拉选择</i>}
         searchPlaceholder="输入过滤"
-        style={{width:250}}
+        style={{width:500}}
         onChange={handleChange}>
         <Option value="jack">
           <b style={{

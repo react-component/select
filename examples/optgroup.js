@@ -17,7 +17,8 @@ var c1 = (
     <div style={{width: 300}}>
       <Select value="lucy"
         showSearch={false}
-        style={{width: 250}} onChange={handleChange}>
+        style={{width:500}}
+        onChange={handleChange}>
         <OptGroup label="manager">
           <Option value="jack">
             <b style={{

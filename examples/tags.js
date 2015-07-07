@@ -7,7 +7,7 @@ require('rc-select/assets/index.css');
 
 var children = [];
 for (var i = 10; i < 36; i++) {
-  children.push(<Option value={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+  children.push(<Option value={i.toString(36) + i} key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
 }
 
 var style = '.rc-select-menu {max-height:200px;overflow:auto;}';
@@ -34,11 +34,12 @@ var Test = React.createClass({
     return (
       <div>
         <h2>tags select（scroll the menu）</h2>
-        <div style={{width: 300}}>
+        <div>
           <style>
       {style}
           </style>
           <Select tags
+            style={{width:500}}
             disabled={this.state.disabled}
             maxTagTextLength={10}
             value={this.state.value}

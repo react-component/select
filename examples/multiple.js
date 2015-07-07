@@ -23,7 +23,10 @@ var c2 = (
       {style}
       </style>
       <Select
-        multiple value={['name2', 'name3']} onChange={handleChange}>
+        style={{width:500}}
+        multiple
+        value={['name2', 'name3']}
+        onChange={handleChange}>
     {children}
       </Select>
     </div>

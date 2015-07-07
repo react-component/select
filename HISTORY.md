@@ -1,6 +1,10 @@
 # History
 ----
 
+## 4.2.0 / 2015-07-07
+
+`improved` [#15](https://github.com/react-component/select/issues/15) fix input in multiple mode
+
 ## 4.1.0 / 2015-07-01
 
 `new` [#13](https://github.com/react-component/select/issues/13) add maxTagTextLength

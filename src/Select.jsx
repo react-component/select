@@ -171,7 +171,7 @@ class Select extends React.Component {
       }
     }
     if (!sel.length && showNotFound && props.notFoundContent) {
-      sel = [<MenuItem disabled value='NOT_FOUND'>{props.notFoundContent}</MenuItem>];
+      sel = [<MenuItem disabled value='NOT_FOUND' key='NOT_FOUND'>{props.notFoundContent}</MenuItem>];
     }
     return sel;
   }
@@ -241,8 +241,10 @@ class Select extends React.Component {
   }
 
   handleInputKeyDown(e) {
-    if (isMultipleOrTags(this.props) && !e.target.value && e.keyCode === KeyCode.BACKSPACE) {
-      var value = this.state.value.concat();
+    var props = this.props;
+    var state = this.state;
+    if (isMultipleOrTags(props) && !e.target.value && e.keyCode === KeyCode.BACKSPACE) {
+      var value = state.value.concat();
       if (value.length) {
         value.pop();
         this.fireChange(value);
@@ -251,14 +253,14 @@ class Select extends React.Component {
     }
 
     if (e.keyCode === KeyCode.DOWN) {
-      if (!this.state.open) {
+      if (!state.open) {
         this.openIfHasChildren();
         e.preventDefault();
         e.stopPropagation();
         return;
       }
     } else if (e.keyCode === KeyCode.ESC) {
-      if (this.state.open) {
+      if (state.open) {
         this.setOpenState(false);
         e.preventDefault();
         e.stopPropagation();
@@ -266,7 +268,7 @@ class Select extends React.Component {
       return;
     }
     var menu = this.refs.menu;
-    if (menu) {
+    if (menu && state.open) {
       if (menu.handleKeyDown(e)) {
         e.preventDefault();
         e.stopPropagation();
@@ -278,6 +280,9 @@ class Select extends React.Component {
     var value = this.state.value;
     var props = this.props;
     var selectedValue = item.props.value;
+    if (value.indexOf(selectedValue) !== -1) {
+      return;
+    }
     if (isMultipleOrTags(props)) {
       value = value.concat([selectedValue]);
     } else {
@@ -366,14 +371,18 @@ class Select extends React.Component {
     }
     var value = this.state.value;
     var selectedKeys = [];
+    var activeKey;
     React.Children.forEach(menuItems, (item) => {
-      if (value.indexOf(item.props.value) !== -1 && item.key) {
-        selectedKeys.push(item.key);
+      var itemValue = item.props.value;
+      var itemKey = item.key;
+      if (value.indexOf(itemValue) !== -1 && itemKey) {
+        selectedKeys.push(itemKey);
       }
     });
-    var activeKey;
-    if (selectedKeys.length === 1) {
-      activeKey = selectedKeys[0];
+    if (!isMultipleOrTags(props)) {
+      if (!activeKey && selectedKeys.length === 1) {
+        activeKey = selectedKeys[0];
+      }
     }
     return <Menu
       ref="menu"
@@ -414,11 +423,12 @@ class Select extends React.Component {
           content = content.slice(0, maxTagTextLength) + '...';
         }
         return (
-          <li className={prefixCls + '-selection__choice'} title={title}>
+          <li className={prefixCls + '-selection__choice'}
+            key={v}
+            title={title}>
             <span className={prefixCls + '-selection__choice__content'}>{content}</span>
             <span className={prefixCls + '-selection__choice__remove'}
-              onClick={this.removeSelected.bind(this, v)}
-            >×</span>
+              onClick={this.removeSelected.bind(this, v)}/>
           </li>
         );
       });
@@ -474,6 +484,14 @@ class Select extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     prevState = prevState || {};
     this.animateDropdown(prevProps, prevState);
+    if (isMultipleOrTags(this.props)) {
+      var inputNode = React.findDOMNode(this.refs.input);
+      if (inputNode.value) {
+        inputNode.style.width = inputNode.scrollWidth + 'px';
+      } else {
+        inputNode.style.width = '';
+      }
+    }
   }
 
   componentDidMount() {

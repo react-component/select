@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react');
-var Select = require('../');
+var Select = require('rc-select');
 var Option = Select.Option;
 require('rc-select/assets/index.css');
 var jsonp = require('jsonp');
@@ -44,8 +44,10 @@ var Search = React.createClass({
     });
     return <div>
       <h2>suggest</h2>
-      <div style={{width: 300}}>
-        <Select combobox
+      <div>
+        <Select
+          style={{width: 500}}
+          combobox
           showArrow={false}
           notFoundContent=""
           onChange={this.fetchData} onSelect={this.handleSelect} filterOption={false}>

@@ -13,7 +13,8 @@ var c1 = (
   <div>
     <h2>Single Select</h2>
     <div style={{width: 300}}>
-      <Select value="lucy" style={{width:250}}
+      <Select value="lucy"
+        style={{width:500}}
         animation="slide-up"
         showSearch={false}
         onChange={handleChange}>

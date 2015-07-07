@@ -13,7 +13,9 @@ var c1 = (
   <div>
     <h2>Single Select</h2>
     <div style={{width: 300}}>
-      <Select value="lucy" style={{width:250}} onChange={handleChange}>
+      <Select value="lucy"
+        style={{width:500}}
+        onChange={handleChange}>
         <Option value="jack">
           <b style={{
             color: 'red'
