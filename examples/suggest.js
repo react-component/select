@@ -24,7 +24,7 @@ var Search = React.createClass({
       result.forEach((r)=> {
         data.push({
           value: r[0],
-          text: r[0]
+          text: <b>{r[0]}</b>
         });
       });
       this.setState({
@@ -40,7 +40,7 @@ var Search = React.createClass({
   render() {
     var data = this.state.data;
     var options = data.map((d) => {
-      return <Option value={d.value} key={d.value}>{d.text}</Option>;
+      return <Option key={d.value}>{d.text}</Option>;
     });
     return <div>
       <h2>suggest</h2>

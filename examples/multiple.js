@@ -6,7 +6,7 @@ var Option = Select.Option;
 require('rc-select/assets/index.css');
 var children = [];
 for (var i = 10; i < 36; i++) {
-  children.push(<Option value={i.toString(36) + i} key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+  children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
 }
 
 function handleChange(value) {

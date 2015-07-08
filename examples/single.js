@@ -10,7 +10,7 @@ function handleChange(value) {
 }
 
 var c1 = (
-  <div>
+  <div style={{margin:20}}>
     <h2>Single Select</h2>
     <div style={{width: 300}}>
       <Select value="lucy"
@@ -26,6 +26,16 @@ var c1 = (
         <Option value="yiminghe">yiminghe</Option>
       </Select>
     </div>
+
+    <h2>native select</h2>
+      <select value="lucy"
+        style={{width:500}}
+        onChange={handleChange}>
+        <option value="jack">jack</option>
+        <option value="lucy">lucy</option>
+        <option value="disabled" disabled>disabled</option>
+        <option value="yiminghe">yiminghe</option>
+      </select>
   </div>
 );
 

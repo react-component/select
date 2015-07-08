@@ -28,8 +28,8 @@ describe('tags', function () {
     div.tabIndex = 0;
     instance = React.render(
       <Select tags>
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+        <Option key="1">1</Option>
+        <Option key="2">2</Option>
       </Select>,
       div);
   });

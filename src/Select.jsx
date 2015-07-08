@@ -40,7 +40,7 @@ function normValue(value) {
 }
 
 function filterFn(input, child) {
-  return child.props[this.props.optionFilterProp].indexOf(input) > -1;
+  return this.getPropValue(child, this.props.optionFilterProp).indexOf(input) > -1;
 }
 
 class Select extends React.Component {
@@ -77,6 +77,25 @@ class Select extends React.Component {
     }
   }
 
+  getValuePropValue(c) {
+    var props = c.props;
+    if ('value' in props) {
+      return props.value;
+    }
+    if (c.key) {
+      return c.key;
+    }
+    throw new Error('no key or value for ' + c);
+  }
+
+  getPropValue(c, prop) {
+    if (prop === 'value') {
+      return this.getValuePropValue(c);
+    } else {
+      return c.props[prop];
+    }
+  }
+
   fireChange(value) {
     this.props.onChange(isMultipleOrTags(this.props) ? value : value[0]);
     this.setState({
@@ -88,15 +107,15 @@ class Select extends React.Component {
     if (value === undefined) {
       return value;
     }
-    var label;
+    var label = null;
     React.Children.forEach(children, (c) => {
       if (c.type === OptGroup) {
         var maybe = this.getLabelByValue(c.props.children, value);
         if (maybe !== undefined) {
           label = maybe;
         }
-      } else if (c.props.value === value) {
-        label = c.props[this.props.optionLabelProp];
+      } else if (this.getValuePropValue(c) === value) {
+        label = this.getPropValue(c, this.props.optionLabelProp);
       }
     });
     return label;
@@ -130,17 +149,16 @@ class Select extends React.Component {
           var key = child.key;
           if (!key && typeof label === 'string') {
             key = label;
+          } else if (!label && key) {
+            label = key;
           }
-          sel.push(<MenuItemGroup key={key} title={child.props.label}>
+          sel.push(<MenuItemGroup key={key} title={label}>
         {innerItems}
           </MenuItemGroup>);
         }
         return;
       }
-      var childValue = child.props.value;
-      if (typeof childValue !== 'string') {
-        throw new Error('Option must set string value');
-      }
+      var childValue = this.getValuePropValue(child);
       if (this.filterOption(inputValue, child)) {
         sel.push(<MenuItem
           value = {childValue}
@@ -163,7 +181,7 @@ class Select extends React.Component {
       }));
       if (inputValue) {
         var notFindInputItem = sel.every((s)=> {
-          return s.props.value !== inputValue;
+          return this.getValuePropValue(s) !== inputValue;
         });
         if (notFindInputItem) {
           sel.unshift(<MenuItem value={inputValue} key={inputValue}>{inputValue}</MenuItem>);
@@ -279,7 +297,7 @@ class Select extends React.Component {
   handleMenuSelect(key, item) {
     var value = this.state.value;
     var props = this.props;
-    var selectedValue = item.props.value;
+    var selectedValue = this.getValuePropValue(item);
     if (value.indexOf(selectedValue) !== -1) {
       return;
     }
@@ -300,14 +318,14 @@ class Select extends React.Component {
     this.setOpenState(false);
     if (isCombobox(props)) {
       this.setState({
-        inputValue: item.props[this.props.optionLabelProp]
+        inputValue: this.getPropValue(item, this.props.optionLabelProp)
       });
     }
   }
 
   handleMenuDeselect(key, item, e) {
     if (e.type === 'click') {
-      this.removeSelected(item.props.value);
+      this.removeSelected(this.getValuePropValue(item));
     }
     this.setState({
       inputValue: ''
@@ -373,7 +391,7 @@ class Select extends React.Component {
     var selectedKeys = [];
     var activeKey;
     React.Children.forEach(menuItems, (item) => {
-      var itemValue = item.props.value;
+      var itemValue = this.getValuePropValue(item);
       var itemKey = item.key;
       if (value.indexOf(itemValue) !== -1 && itemKey) {
         selectedKeys.push(itemKey);

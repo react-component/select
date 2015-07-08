@@ -213,10 +213,16 @@ React.render(c, container);
             <td>no effect for click or keydown for this item</td>
         </tr>
         <tr>
+          <td>key</td>
+          <td>String</td>
+          <td></td>
+          <td>if react want you to set key, then key is same as value, you can omit value.</td>
+        </tr>
+        <tr>
           <td>value</td>
           <td>String</td>
           <td></td>
-          <td>search by this attribute</td>
+          <td>default filter by this attribute. if react want you to set key, then key is same as value, you can omit value.</td>
         </tr>
     </tbody>
 </table>

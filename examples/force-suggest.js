@@ -40,7 +40,7 @@ var Search = React.createClass({
   render() {
     var data = this.state.data;
     var options = data.map((d) => {
-      return <Option value={d.value} key={d.value} label={<i>{d.text}</i>}>{d.text}</Option>;
+      return <Option key={d.value} label={<i>{d.text}</i>}>{d.text}</Option>;
     });
     return <div>
       <h2>force suggest</h2>
