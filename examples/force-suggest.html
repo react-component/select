@@ -180,7 +180,7 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
 </head>
 <body>
-<h1>rc-select@4.2.0</h1>
+<h1>rc-select@4.2.1</h1>
 <div id="__react-content"></div>
 <script src="common.js?nowrap"></script>
 <script src="force-suggest.js?nowrap"></script>
@@ -228,7 +228,7 @@
   render() {
     <span class="hljs-reserved">var</span> data = <span class="hljs-keyword">this</span>.state.data;
     <span class="hljs-reserved">var</span> options = data.map(<span class="hljs-function"><span class="hljs-params">(d)</span> =&gt;</span> {
-      <span class="hljs-keyword">return</span> &lt;Option value={d.value} key={d.value} label={&lt;i&gt;{d.text}&lt;/i&gt;}&gt;{d.text}&lt;/Option&gt;;
+      <span class="hljs-keyword">return</span> &lt;Option key={d.value} label={&lt;i&gt;{d.text}&lt;/i&gt;}&gt;{d.text}&lt;/Option&gt;;
     });
     <span class="hljs-keyword">return</span> &lt;div&gt;
       &lt;h2&gt;force suggest&lt;/h2&gt;

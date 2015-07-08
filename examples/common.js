@@ -215,7 +215,7 @@
 	}
 	
 	function filterFn(input, child) {
-	  return child.props[this.props.optionFilterProp].indexOf(input) > -1;
+	  return this.getPropValue(child, this.props.optionFilterProp).indexOf(input) > -1;
 	}
 	
 	var Select = (function (_React$Component) {
@@ -252,6 +252,27 @@
 	      }
 	    }
 	  }, {
+	    key: 'getValuePropValue',
+	    value: function getValuePropValue(c) {
+	      var props = c.props;
+	      if ('value' in props) {
+	        return props.value;
+	      }
+	      if (c.key) {
+	        return c.key;
+	      }
+	      throw new Error('no key or value for ' + c);
+	    }
+	  }, {
+	    key: 'getPropValue',
+	    value: function getPropValue(c, prop) {
+	      if (prop === 'value') {
+	        return this.getValuePropValue(c);
+	      } else {
+	        return c.props[prop];
+	      }
+	    }
+	  }, {
 	    key: 'fireChange',
 	    value: function fireChange(value) {
 	      this.props.onChange(isMultipleOrTags(this.props) ? value : value[0]);
@@ -267,15 +288,15 @@
 	      if (value === undefined) {
 	        return value;
 	      }
-	      var label;
+	      var label = null;
 	      React.Children.forEach(children, function (c) {
 	        if (c.type === OptGroup) {
 	          var maybe = _this2.getLabelByValue(c.props.children, value);
 	          if (maybe !== undefined) {
 	            label = maybe;
 	          }
-	        } else if (c.props.value === value) {
-	          label = c.props[_this2.props.optionLabelProp];
+	        } else if (_this2.getValuePropValue(c) === value) {
+	          label = _this2.getPropValue(c, _this2.props.optionLabelProp);
 	        }
 	      });
 	      return label;
@@ -313,15 +334,14 @@
 	            var key = child.key;
 	            if (!key && typeof label === 'string') {
 	              key = label;
+	            } else if (!label && key) {
+	              label = key;
 	            }
-	            sel.push(React.createElement(MenuItemGroup, { key: key, title: child.props.label }, innerItems));
+	            sel.push(React.createElement(MenuItemGroup, { key: key, title: label }, innerItems));
 	          }
 	          return;
 	        }
-	        var childValue = child.props.value;
-	        if (typeof childValue !== 'string') {
-	          throw new Error('Option must set string value');
-	        }
+	        var childValue = _this3.getValuePropValue(child);
 	        if (_this3.filterOption(inputValue, child)) {
 	          sel.push(React.createElement(MenuItem, _extends({
 	            value: childValue,
@@ -343,7 +363,7 @@
 	        }));
 	        if (inputValue) {
 	          var notFindInputItem = sel.every(function (s) {
-	            return s.props.value !== inputValue;
+	            return _this3.getValuePropValue(s) !== inputValue;
 	          });
 	          if (notFindInputItem) {
 	            sel.unshift(React.createElement(MenuItem, { value: inputValue, key: inputValue }, inputValue));
@@ -470,7 +490,7 @@
 	    value: function handleMenuSelect(key, item) {
 	      var value = this.state.value;
 	      var props = this.props;
-	      var selectedValue = item.props.value;
+	      var selectedValue = this.getValuePropValue(item);
 	      if (value.indexOf(selectedValue) !== -1) {
 	        return;
 	      }
@@ -491,7 +511,7 @@
 	      this.setOpenState(false);
 	      if (isCombobox(props)) {
 	        this.setState({
-	          inputValue: item.props[this.props.optionLabelProp]
+	          inputValue: this.getPropValue(item, this.props.optionLabelProp)
 	        });
 	      }
 	    }
@@ -499,7 +519,7 @@
 	    key: 'handleMenuDeselect',
 	    value: function handleMenuDeselect(key, item, e) {
 	      if (e.type === 'click') {
-	        this.removeSelected(item.props.value);
+	        this.removeSelected(this.getValuePropValue(item));
 	      }
 	      this.setState({
 	        inputValue: ''
@@ -563,6 +583,8 @@
 	  }, {
 	    key: 'renderMenu',
 	    value: function renderMenu(menuItems) {
+	      var _this6 = this;
+	
 	      var props = this.props;
 	      var menuProps = {};
 	      if (isMultipleOrTags(props)) {
@@ -572,7 +594,7 @@
 	      var selectedKeys = [];
 	      var activeKey;
 	      React.Children.forEach(menuItems, function (item) {
-	        var itemValue = item.props.value;
+	        var itemValue = _this6.getValuePropValue(item);
 	        var itemKey = item.key;
 	        if (value.indexOf(itemValue) !== -1 && itemKey) {
 	          selectedKeys.push(itemKey);
@@ -597,7 +619,7 @@
 	  }, {
 	    key: 'renderTopControlNode',
 	    value: function renderTopControlNode(input) {
-	      var _this6 = this;
+	      var _this7 = this;
 	
 	      var value = this.state.value;
 	      var props = this.props;
@@ -613,7 +635,7 @@
 	      var selectedValueNodes;
 	      if (isMultipleOrTags(props)) {
 	        selectedValueNodes = value.map(function (v) {
-	          var content = _this6.getLabelByValue(children, v) || v;
+	          var content = _this7.getLabelByValue(children, v) || v;
 	          var title = content;
 	          var maxTagTextLength = props.maxTagTextLength;
 	          if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
@@ -622,7 +644,7 @@
 	          return React.createElement('li', { className: prefixCls + '-selection__choice',
 	            key: v,
 	            title: title }, React.createElement('span', { className: prefixCls + '-selection__choice__content' }, content), React.createElement('span', { className: prefixCls + '-selection__choice__remove',
-	            onClick: _this6.removeSelected.bind(_this6, v) }));
+	            onClick: _this7.removeSelected.bind(_this7, v) }));
 	        });
 	      }
 	      return React.createElement('ul', { className: prefixCls + '-selection__rendered' }, selectedValueNodes, allowClear && !isMultipleOrTags(props) ? clear : null, React.createElement('li', { className: joinClasses(prefixCls + '-search', prefixCls + '-search--inline') }, input));

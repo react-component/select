@@ -24,7 +24,7 @@ webpackJsonp([6],{
 	
 	var c1 = React.createElement(
 	  'div',
-	  null,
+	  { style: { margin: 20 } },
 	  React.createElement(
 	    'h2',
 	    null,
@@ -64,6 +64,37 @@ webpackJsonp([6],{
 	        { value: 'yiminghe' },
 	        'yiminghe'
 	      )
+	    )
+	  ),
+	  React.createElement(
+	    'h2',
+	    null,
+	    'native select'
+	  ),
+	  React.createElement(
+	    'select',
+	    { value: 'lucy',
+	      style: { width: 500 },
+	      onChange: handleChange },
+	    React.createElement(
+	      'option',
+	      { value: 'jack' },
+	      'jack'
+	    ),
+	    React.createElement(
+	      'option',
+	      { value: 'lucy' },
+	      'lucy'
+	    ),
+	    React.createElement(
+	      'option',
+	      { value: 'disabled', disabled: true },
+	      'disabled'
+	    ),
+	    React.createElement(
+	      'option',
+	      { value: 'yiminghe' },
+	      'yiminghe'
 	    )
 	  )
 	);

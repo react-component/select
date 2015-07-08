@@ -21,7 +21,7 @@ webpackJsonp([2],{
 	for (var i = 10; i < 36; i++) {
 	  children.push(React.createElement(
 	    Option,
-	    { value: i.toString(36) + i, key: i.toString(36) + i },
+	    { key: i.toString(36) + i },
 	    i.toString(36) + i
 	  ));
 	}

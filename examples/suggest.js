@@ -830,7 +830,11 @@ webpackJsonp([8],{
 	      result.forEach(function (r) {
 	        data.push({
 	          value: r[0],
-	          text: r[0]
+	          text: React.createElement(
+	            'b',
+	            null,
+	            r[0]
+	          )
 	        });
 	      });
 	      _this.setState({
@@ -848,7 +852,7 @@ webpackJsonp([8],{
 	    var options = data.map(function (d) {
 	      return React.createElement(
 	        Option,
-	        { value: d.value, key: d.value },
+	        { key: d.value },
 	        d.text
 	      );
 	    });

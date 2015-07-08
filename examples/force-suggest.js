@@ -59,7 +59,7 @@ webpackJsonp([1],{
 	    var options = data.map(function (d) {
 	      return React.createElement(
 	        Option,
-	        { value: d.value, key: d.value, label: React.createElement(
+	        { key: d.value, label: React.createElement(
 	            'i',
 	            null,
 	            d.text
