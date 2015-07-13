@@ -228,13 +228,13 @@
   render() {
     <span class="hljs-reserved">var</span> data = <span class="hljs-keyword">this</span>.state.data;
     <span class="hljs-reserved">var</span> options = data.map(<span class="hljs-function"><span class="hljs-params">(d)</span> =&gt;</span> {
-      <span class="hljs-keyword">return</span> &lt;Option key={d.value} label={&lt;i&gt;{d.text}&lt;/i&gt;}&gt;{d.text}&lt;/Option&gt;;
+      <span class="hljs-keyword">return</span> &lt;Option key={d.value}&gt;&lt;i&gt;{d.text}&lt;/i&gt;&lt;/Option&gt;;
     });
     <span class="hljs-keyword">return</span> &lt;div&gt;
       &lt;h2&gt;force suggest&lt;/h2&gt;
       &lt;div&gt;
         &lt;Select onSearch={<span class="hljs-keyword">this</span>.fetchData}
-          optionLabelProp=<span class="hljs-string">"label"</span>
+          optionLabelProp=<span class="hljs-string">"children"</span>
           style={{<span class="hljs-attribute">width</span>:<span class="hljs-number">500</span>}}
           onChange={<span class="hljs-keyword">this</span>.handleChange}
           filterOption={<span class="hljs-literal">false</span>}&gt;

@@ -59,12 +59,12 @@ webpackJsonp([1],{
 	    var options = data.map(function (d) {
 	      return React.createElement(
 	        Option,
-	        { key: d.value, label: React.createElement(
-	            'i',
-	            null,
-	            d.text
-	          ) },
-	        d.text
+	        { key: d.value },
+	        React.createElement(
+	          'i',
+	          null,
+	          d.text
+	        )
 	      );
 	    });
 	    return React.createElement(
@@ -81,7 +81,7 @@ webpackJsonp([1],{
 	        React.createElement(
 	          Select,
 	          { onSearch: this.fetchData,
-	            optionLabelProp: 'label',
+	            optionLabelProp: 'children',
 	            style: { width: 500 },
 	            onChange: this.handleChange,
 	            filterOption: false },
