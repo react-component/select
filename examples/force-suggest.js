@@ -40,13 +40,13 @@ var Search = React.createClass({
   render() {
     var data = this.state.data;
     var options = data.map((d) => {
-      return <Option key={d.value} label={<i>{d.text}</i>}>{d.text}</Option>;
+      return <Option key={d.value}><i>{d.text}</i></Option>;
     });
     return <div>
       <h2>force suggest</h2>
       <div>
         <Select onSearch={this.fetchData}
-          optionLabelProp="label"
+          optionLabelProp="children"
           style={{width:500}}
           onChange={this.handleChange}
           filterOption={false}>
