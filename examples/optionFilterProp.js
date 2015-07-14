@@ -3,12 +3,12 @@ webpackJsonp([4],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(46);
+	module.exports = __webpack_require__(51);
 
 
 /***/ },
 
-/***/ 46:
+/***/ 51:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16,7 +16,7 @@ webpackJsonp([4],{
 	var React = __webpack_require__(2);
 	var Select = __webpack_require__(3);
 	var Option = Select.Option;
-	__webpack_require__(32);
+	__webpack_require__(37);
 	
 	function handleChange(value) {
 	  console.log('selected ' + value);
@@ -37,6 +37,7 @@ webpackJsonp([4],{
 	      Select,
 	      { value: '张三',
 	        style: { width: 500 },
+	        renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	        optionFilterProp: 'desc',
 	        onChange: handleChange },
 	      React.createElement(

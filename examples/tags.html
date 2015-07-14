@@ -180,7 +180,7 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
 </head>
 <body>
-<h1>rc-select@4.2.1</h1>
+<h1>rc-select@4.3.0</h1>
 <div id="__react-content"></div>
 <script src="common.js?nowrap"></script>
 <script src="tags.js?nowrap"></script>
@@ -197,8 +197,6 @@ require(<span class="hljs-string">'rc-select/assets/index.css'</span>);
 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">10</span>; i &lt; <span class="hljs-number">36</span>; i++) {
   children.push(&lt;Option key={i.toString(<span class="hljs-number">36</span>) + i}&gt;{i.toString(<span class="hljs-number">36</span>) + i}&lt;/Option&gt;);
 }
-
-<span class="hljs-keyword">var</span> style = <span class="hljs-string">'.rc-select-menu {max-height:200px;overflow:auto;}'</span>;
 
 <span class="hljs-keyword">var</span> Test = React.createClass({
   getInitialState() {
@@ -223,10 +221,9 @@ require(<span class="hljs-string">'rc-select/assets/index.css'</span>);
       &lt;div&gt;
         &lt;h2&gt;tags <span class="hljs-keyword">select</span>（scroll the menu）&lt;/h2&gt;
         &lt;div&gt;
-          &lt;style&gt;
-      {style}
-          &lt;/style&gt;
           &lt;Select tags
+            dropdownStyle={{maxHeight:<span class="hljs-number">200</span>,overflow:<span class="hljs-string">'auto'</span>}}
+            renderDropdownToBody={location.href.indexOf(<span class="hljs-string">'renderDropdownToBody'</span>) !== -<span class="hljs-number">1</span>}
             style={{width:<span class="hljs-number">500</span>}}
             disabled={<span class="hljs-keyword">this</span>.state.disabled}
             maxTagTextLength={<span class="hljs-number">10</span>}

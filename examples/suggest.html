@@ -180,7 +180,7 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
 </head>
 <body>
-<h1>rc-select@4.2.1</h1>
+<h1>rc-select@4.3.0</h1>
 <div id="__react-content"></div>
 <script src="common.js?nowrap"></script>
 <script src="suggest.js?nowrap"></script>
@@ -236,6 +236,7 @@
         &lt;Select
           style={{<span class="hljs-attribute">width</span>: <span class="hljs-number">500</span>}}
           combobox
+          renderDropdownToBody={location.href.indexOf(<span class="hljs-string">'renderDropdownToBody'</span>) !== -<span class="hljs-number">1</span>}
           showArrow={<span class="hljs-literal">false</span>}
           notFoundContent=<span class="hljs-string">""</span>
           onChange={<span class="hljs-keyword">this</span>.fetchData} onSelect={<span class="hljs-keyword">this</span>.handleSelect} filterOption={<span class="hljs-literal">false</span>}&gt;

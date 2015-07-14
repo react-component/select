@@ -14,7 +14,7 @@ webpackJsonp([0],[
 	var React = __webpack_require__(2);
 	var Select = __webpack_require__(3);
 	var Option = Select.Option;
-	__webpack_require__(32);
+	__webpack_require__(37);
 	
 	var c3 = React.createElement(
 	  'div',
@@ -30,6 +30,7 @@ webpackJsonp([0],[
 	    React.createElement(
 	      Select,
 	      {
+	        renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	        style: { width: 500 },
 	        combobox: true },
 	      React.createElement(

@@ -3,12 +3,12 @@ webpackJsonp([5],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(47);
+	module.exports = __webpack_require__(52);
 
 
 /***/ },
 
-/***/ 47:
+/***/ 52:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16,7 +16,7 @@ webpackJsonp([5],{
 	var React = __webpack_require__(2);
 	var Select = __webpack_require__(3);
 	var Option = Select.Option;
-	__webpack_require__(32);
+	__webpack_require__(37);
 	
 	function handleChange(value) {
 	  console.log('selected ' + value);
@@ -41,6 +41,7 @@ webpackJsonp([5],{
 	          null,
 	          '请下拉选择'
 	        ),
+	        renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	        searchPlaceholder: '输入过滤',
 	        style: { width: 500 },
 	        onChange: handleChange },

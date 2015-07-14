@@ -3,12 +3,12 @@ webpackJsonp([9],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(51);
+	module.exports = __webpack_require__(56);
 
 
 /***/ },
 
-/***/ 51:
+/***/ 56:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16,7 +16,7 @@ webpackJsonp([9],{
 	var React = __webpack_require__(2);
 	var Select = __webpack_require__(3);
 	var Option = Select.Option;
-	__webpack_require__(32);
+	__webpack_require__(37);
 	
 	var children = [];
 	for (var i = 10; i < 36; i++) {
@@ -26,8 +26,6 @@ webpackJsonp([9],{
 	    i.toString(36) + i
 	  ));
 	}
-	
-	var style = '.rc-select-menu {max-height:200px;overflow:auto;}';
 	
 	var Test = React.createClass({
 	  displayName: 'Test',
@@ -62,13 +60,10 @@ webpackJsonp([9],{
 	        'div',
 	        null,
 	        React.createElement(
-	          'style',
-	          null,
-	          style
-	        ),
-	        React.createElement(
 	          Select,
 	          { tags: true,
+	            dropdownStyle: { maxHeight: 200, overflow: 'auto' },
+	            renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	            style: { width: 500 },
 	            disabled: this.state.disabled,
 	            maxTagTextLength: 10,

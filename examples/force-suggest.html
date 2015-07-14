@@ -180,7 +180,7 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
 </head>
 <body>
-<h1>rc-select@4.2.1</h1>
+<h1>rc-select@4.3.0</h1>
 <div id="__react-content"></div>
 <script src="common.js?nowrap"></script>
 <script src="force-suggest.js?nowrap"></script>
@@ -234,6 +234,7 @@
       &lt;h2&gt;force suggest&lt;/h2&gt;
       &lt;div&gt;
         &lt;Select onSearch={<span class="hljs-keyword">this</span>.fetchData}
+          renderDropdownToBody={location.href.indexOf(<span class="hljs-string">'renderDropdownToBody'</span>) !== -<span class="hljs-number">1</span>}
           optionLabelProp=<span class="hljs-string">"children"</span>
           style={{<span class="hljs-attribute">width</span>:<span class="hljs-number">500</span>}}
           onChange={<span class="hljs-keyword">this</span>.handleChange}
