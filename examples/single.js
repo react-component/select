@@ -9,34 +9,58 @@ function handleChange(value) {
   console.log('selected ' + value);
 }
 
-var c1 = (
-  <div style={{margin:20}}>
-    <h2>Single Select</h2>
-    <div style={{width: 300}}>
-      <Select value="lucy"
-        style={{width:500}}
-        onChange={handleChange}>
-        <Option value="jack">
-          <b style={{
-            color: 'red'
-          }}>jack</b>
-        </Option>
-        <Option value="lucy">lucy</Option>
-        <Option value="disabled" disabled>disabled</Option>
-        <Option value="yiminghe">yiminghe</Option>
-      </Select>
-    </div>
+var Test = React.createClass({
+  getInitialState() {
+    return {
+      destroy: false
+    }
+  },
 
-    <h2>native select</h2>
-      <select value="lucy"
-        style={{width:500}}
-        onChange={handleChange}>
-        <option value="jack">jack</option>
-        <option value="lucy">lucy</option>
-        <option value="disabled" disabled>disabled</option>
-        <option value="yiminghe">yiminghe</option>
-      </select>
-  </div>
-);
+  handleDestroy() {
+    this.setState({
+      destroy: 1
+    });
+  },
 
-React.render(c1, document.getElementById('__react-content'));
+  render() {
+    if (this.state.destroy) {
+      return null;
+    }
+    return (
+      <div style={{margin: 20}}>
+        <h2>Single Select</h2>
+        <div style={{width: 300}}>
+          <Select value="lucy"
+            renderDropdownToBody={location.href.indexOf('renderDropdownToBody') !== -1}
+            style={{width: 500}}
+            onChange={handleChange}>
+            <Option value="jack">
+              <b style={{
+                color: 'red'
+              }}>jack</b>
+            </Option>
+            <Option value="lucy">lucy</Option>
+            <Option value="disabled" disabled>disabled</Option>
+            <Option value="yiminghe">yiminghe</Option>
+          </Select>
+        </div>
+
+        <h2>native select</h2>
+        <select value="lucy"
+          style={{width: 500}}
+          onChange={handleChange}>
+          <option value="jack">jack</option>
+          <option value="lucy">lucy</option>
+          <option value="disabled" disabled>disabled</option>
+          <option value="yiminghe">yiminghe</option>
+        </select>
+
+        <p>
+          <button onClick={this.handleDestroy}>destroy</button>
+        </p>
+      </div>
+    );
+  }
+});
+
+React.render(<Test />, document.getElementById('__react-content'));

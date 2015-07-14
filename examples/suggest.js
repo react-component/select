@@ -48,6 +48,7 @@ var Search = React.createClass({
         <Select
           style={{width: 500}}
           combobox
+          renderDropdownToBody={location.href.indexOf('renderDropdownToBody') !== -1}
           showArrow={false}
           notFoundContent=""
           onChange={this.fetchData} onSelect={this.handleSelect} filterOption={false}>

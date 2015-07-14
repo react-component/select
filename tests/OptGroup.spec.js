@@ -8,7 +8,7 @@ var Select = require('../');
 var Option = Select.Option;
 var OptGroup = Select.OptGroup;
 
-describe('OptGroup',function(){
+describe('OptGroup', function () {
   var div;
 
   beforeEach(function () {
@@ -16,13 +16,14 @@ describe('OptGroup',function(){
     document.body.appendChild(div);
   });
 
-  afterEach(function () {
+  afterEach(function (done) {
     React.unmountComponentAtNode(div);
     document.body.removeChild(div);
+    done();
   });
 
-  it('works',function(){
-    var select=React.render(<Select value="lucy"
+  it('works', function (done) {
+    var select = React.render(<Select value="lucy"
       showSearch={false}
       style={{width: 250}}>
       <OptGroup label="manager">
@@ -36,11 +37,13 @@ describe('OptGroup',function(){
       <OptGroup label="engineer">
         <Option value="yiminghe">yiminghe</Option>
       </OptGroup>
-    </Select>,div);
+    </Select>, div);
 
     Simulate.click(TestUtils.scryRenderedDOMComponentsWithClass(select, 'rc-select-selection')[0]);
 
     expect(TestUtils.scryRenderedDOMComponentsWithClass(select, 'rc-select-menu-item-group').length).to.be(2);
     expect(TestUtils.scryRenderedDOMComponentsWithClass(select, 'rc-select-menu-item').length).to.be(3);
+
+    done();
   });
 });

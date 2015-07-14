@@ -1,9 +1,7 @@
 'use strict';
 
-var React = require('react');
+import React from 'react';
 
-class Option extends React.Component {
+export default class Option extends React.Component {
 
 }
-
-module.exports = Option;

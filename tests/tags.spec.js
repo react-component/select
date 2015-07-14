@@ -44,7 +44,7 @@ describe('tags', function () {
       return;
     }
 
-    var node = React.findDOMNode(instance.refs.input);
+    var node = instance.getInputDOMNode();
     node.focus();
     node.value = 'A';
     Simulate.change(node);

@@ -22,6 +22,24 @@ describe('Select', function () {
     document.body.removeChild(div);
   });
 
+  it('renderDropdownToBody works', function (done) {
+    var instance = React.render(
+      <Select
+        renderDropdownToBody={true}
+        value="2">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+      div);
+    instance.setState({
+      open: true
+    }, function () {
+      expect(instance.getDropdownDOMNode().parentNode.parentNode.nodeName.toLowerCase()).to.be('body');
+      expect(instance.getDropdownDOMNode().parentNode.className).to.contain('open');
+      done();
+    });
+  });
+
   it('should add css class of root dom node', function () {
     var instance = TestUtils.renderIntoDocument(
       <Select className="forTest" openClassName="my-open" value="2">
@@ -42,8 +60,8 @@ describe('Select', function () {
     instance.setState({
       open: true
     }, function () {
-      expect(instance.refs.menu.instanceArray[0].props.selected).to.be(false);
-      expect(instance.refs.menu.instanceArray[1].props.selected).to.be(true);
+      expect(instance.dropdownInstance.refs.menu.instanceArray[0].props.selected).to.be(false);
+      expect(instance.dropdownInstance.refs.menu.instanceArray[1].props.selected).to.be(true);
       done();
     });
   });
@@ -59,9 +77,9 @@ describe('Select', function () {
     instance.setState({
       open: true
     }, function () {
-      expect(instance.refs.menu.instanceArray[0].props.selected).to.be(true);
-      expect(instance.refs.menu.instanceArray[1].props.selected).to.be(true);
-      expect(instance.refs.menu.instanceArray[2].props.selected).to.be(false);
+      expect(instance.dropdownInstance.refs.menu.instanceArray[0].props.selected).to.be(true);
+      expect(instance.dropdownInstance.refs.menu.instanceArray[1].props.selected).to.be(true);
+      expect(instance.dropdownInstance.refs.menu.instanceArray[2].props.selected).to.be(false);
       done();
     });
   });
@@ -104,7 +122,7 @@ describe('Select', function () {
         div);
       React.findDOMNode(instance.refs.selection).focus();
       Simulate.click(React.findDOMNode(instance.refs.selection));
-      React.findDOMNode(instance.refs.input).focus();
+      instance.getInputDOMNode().focus();
       setTimeout(function () {
         instance.setState({
           open: true
@@ -132,8 +150,8 @@ describe('Select', function () {
     });
 
     it('should show not found', function (done) {
-      React.findDOMNode(instance.refs.input).value = "4";
-      Simulate.change(instance.refs.input);
+      instance.getInputDOMNode().value = "4";
+      Simulate.change(instance.getInputDOMNode());
       setTimeout(function () {
         expect(TestUtils.scryRenderedDOMComponentsWithClass(instance, 'rc-select-menu-item').length).to.be(1);
         expect(TestUtils.scryRenderedDOMComponentsWithClass(instance, 'rc-select-menu-item')[0].props.children).to.be('Not Found');

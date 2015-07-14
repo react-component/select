@@ -1,9 +1,7 @@
 'use strict';
 
-var React = require('react');
+import React from 'react';
 
-class OptGroup extends React.Component {
+export default class OptGroup extends React.Component {
 
 }
-
-module.exports = OptGroup;

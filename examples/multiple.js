@@ -23,6 +23,7 @@ var c2 = (
       {style}
       </style>
       <Select
+        renderDropdownToBody={location.href.indexOf('renderDropdownToBody') !== -1}
         style={{width:500}}
         multiple
         value={['name2', 'name3']}

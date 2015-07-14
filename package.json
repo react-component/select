@@ -1,6 +1,6 @@
 {
   "name": "rc-select",
-  "version": "4.2.1",
+  "version": "4.3.0",
   "description": "select ui component for react",
   "keywords": [
     "react",
@@ -43,7 +43,6 @@
     "jsonp": "^0.2.0",
     "precommit-hook": "^1.0.7",
     "querystring": "^0.2.0",
-    "rc-menu": "~3.3.0",
     "rc-server": "3.x",
     "rc-tools": "3.x",
     "rc-util": "~2.0.3",
@@ -51,6 +50,8 @@
   },
   "dependencies": {
     "css-animation": "1.0.x",
+    "dom-align": "~1.0.8",
+    "object-assign": "~3.0.0",
     "rc-menu": "3.4.x",
     "rc-util": "2.0.x"
   },

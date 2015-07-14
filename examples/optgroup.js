@@ -16,6 +16,7 @@ var c1 = (
     <h2>Select OptGroup</h2>
     <div style={{width: 300}}>
       <Select value="lucy"
+        renderDropdownToBody={location.href.indexOf('renderDropdownToBody') !== -1}
         showSearch={false}
         style={{width:500}}
         onChange={handleChange}>

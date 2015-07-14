@@ -1,6 +1,10 @@
 # History
 ----
 
+## 4.3.0 / 2015-07-14
+
+`new` [#17](https://github.com/react-component/select/issues/17) support render dropdown to body
+
 ## 4.2.0 / 2015-07-07
 
 `improved` [#15](https://github.com/react-component/select/issues/15) fix input in multiple mode

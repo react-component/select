@@ -46,6 +46,7 @@ var Search = React.createClass({
       <h2>force suggest</h2>
       <div>
         <Select onSearch={this.fetchData}
+          renderDropdownToBody={location.href.indexOf('renderDropdownToBody') !== -1}
           optionLabelProp="children"
           style={{width:500}}
           onChange={this.handleChange}

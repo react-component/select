@@ -191,6 +191,24 @@ React.render(c, container);
           <th></th>
           <td>called when select an option or input value change(combobox)</td>
         </tr>
+        <tr>
+          <td>renderDropdownToBody</td>
+          <td>Boolean</td>
+          <th>false</th>
+          <td>whether render dropdown to body</td>
+        </tr>
+        <tr>
+          <td>dropdownMatchSelectWidth</td>
+          <td>Boolean</td>
+          <th>true</th>
+          <td>whether dropdown 's with is same with select</td>
+        </tr>
+        <tr>
+          <td>dropdownStyle</td>
+          <td>Object</td>
+          <th>{}</th>
+          <td>additional style applied to dropdown</td>
+        </tr>
     </tbody>
 </table>
 

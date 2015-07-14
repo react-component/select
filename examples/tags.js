@@ -10,8 +10,6 @@ for (var i = 10; i < 36; i++) {
   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
 }
 
-var style = '.rc-select-menu {max-height:200px;overflow:auto;}';
-
 var Test = React.createClass({
   getInitialState() {
     return {
@@ -35,10 +33,9 @@ var Test = React.createClass({
       <div>
         <h2>tags select（scroll the menu）</h2>
         <div>
-          <style>
-      {style}
-          </style>
           <Select tags
+            dropdownStyle={{maxHeight:200,overflow:'auto'}}
+            renderDropdownToBody={location.href.indexOf('renderDropdownToBody') !== -1}
             style={{width:500}}
             disabled={this.state.disabled}
             maxTagTextLength={10}
