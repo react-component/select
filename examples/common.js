@@ -710,7 +710,7 @@
 	        onClick: this.handleClick,
 	        'aria-haspopup': 'true',
 	        'aria-expanded': state.open
-	      }, extraSelectionProps), ctrlNode, multiple || !props.showArrow ? null : _react2['default'].createElement('span', { key: 'arrow', className: prefixCls + '-arrow' }, _react2['default'].createElement('b', null))), props.renderDropdownToBody ? null : this.getDropdownElement());
+	      }, extraSelectionProps), ctrlNode, multiple || !props.showArrow ? null : _react2['default'].createElement('span', { key: 'arrow', className: prefixCls + '-arrow', tabIndex: '-1', style: { outline: 'none' } }, _react2['default'].createElement('b', null))), props.renderDropdownToBody ? null : this.getDropdownElement());
 	    }
 	  }]);
 	
