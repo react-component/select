@@ -150,8 +150,8 @@ describe('Select', function () {
       instance.getInputDOMNode().value = "4";
       Simulate.change(instance.getInputDOMNode());
       setTimeout(function () {
-        expect(TestUtils.scryRenderedDOMComponentsWithClass(instance, 'rc-select-menu-item').length).to.be(1);
-        expect(TestUtils.scryRenderedDOMComponentsWithClass(instance, 'rc-select-menu-item')[0].props.children).to.be('Not Found');
+        expect(TestUtils.scryRenderedDOMComponentsWithClass(instance, 'rc-select-dropdown-menu-item').length).to.be(1);
+        expect(TestUtils.scryRenderedDOMComponentsWithClass(instance, 'rc-select-dropdown-menu-item')[0].props.children).to.be('Not Found');
         done();
       }, 100);
     });
