@@ -433,6 +433,7 @@ class Select extends React.Component {
     if (isMultipleOrTags(this.props)) {
       var inputNode = this.getInputDOMNode();
       if (inputNode.value) {
+        inputNode.style.width = '';
         inputNode.style.width = inputNode.scrollWidth + 'px';
       } else {
         inputNode.style.width = '';
