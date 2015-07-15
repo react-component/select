@@ -490,7 +490,7 @@ class Select extends React.Component {
         >
         {ctrlNode}
         {multiple || !props.showArrow ? null :
-          <span key="arrow" className={prefixCls + '-arrow'}>
+          <span key="arrow" className={prefixCls + '-arrow'} tabIndex="-1" style={{outline: 'none'}}>
             <b></b>
           </span>}
         </span>
