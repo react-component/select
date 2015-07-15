@@ -41,22 +41,20 @@ describe('Select', function () {
   });
 
   it('should add css class of root dom node', function () {
-    var instance = TestUtils.renderIntoDocument(
+    var instance = React.render(
       <Select className="forTest" openClassName="my-open" value="2">
         <Option value="1">1</Option>
         <Option value="2" disabled>2</Option>
-      </Select>
-    );
+      </Select>,div);
     expect(React.findDOMNode(instance).className.indexOf('forTest') !== -1).to.be(true);
   });
 
   it('should default select the right option', function (done) {
-    var instance = TestUtils.renderIntoDocument(
+    var instance = React.render(
       <Select value="2">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
-    );
+      </Select>, div);
     instance.setState({
       open: true
     }, function () {
@@ -67,13 +65,12 @@ describe('Select', function () {
   });
 
   it('should can select multiple items', function (done) {
-    var instance = TestUtils.renderIntoDocument(
+    var instance = React.render(
       <Select multiple value={['1', '2']}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
         <Option value="3">2</Option>
-      </Select>
-    );
+      </Select>,div);
     instance.setState({
       open: true
     }, function () {
@@ -95,11 +92,11 @@ describe('Select', function () {
   });
 
   it('should be combobox', function () {
-    var instance = TestUtils.renderIntoDocument(
+    var instance = React.render(
       <Select combobox>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,div
     );
     expect(!!React.findDOMNode(instance.refs.selection).getAttribute('tabindex')).to.be(false);
   });
