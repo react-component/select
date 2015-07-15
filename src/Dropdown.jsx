@@ -99,6 +99,7 @@ class SelectDropdown extends React.Component {
     }
     return <Menu
       ref="menu"
+      style={props.dropdownMenuStyle}
       onSelect={props.onMenuSelect}
       activeFirst={true}
       activeKey={activeKey}
@@ -106,14 +107,19 @@ class SelectDropdown extends React.Component {
       focusable={false}
       {...menuProps}
       selectedKeys={selectedKeys}
-      prefixCls={props.prefixCls + '-menu'}>
+      prefixCls={`${this.getDropdownPrefixCls()}-menu`}>
           {menuItems}
     </Menu>;
+  }
+
+  getDropdownPrefixCls() {
+    return this.props.prefixCls + '-dropdown';
   }
 
   render() {
     var props = this.props;
     var prefixCls = props.prefixCls;
+    var dropdownPrefixCls = this.getDropdownPrefixCls();
     var menuItems = this.renderFilterOptions();
     var style = assign({}, props.dropdownStyle);
     var search = props.isMultipleOrTagsOrCombobox || !props.showSearch ? null :
@@ -126,7 +132,7 @@ class SelectDropdown extends React.Component {
       onFocus={props.onDropdownFocus}
       onBlur={props.onDropdownBlur}
       style={style}
-      className= {`${prefixCls}-dropdown ${prefixCls}-dropdown--below`}
+      className= {`${dropdownPrefixCls} ${dropdownPrefixCls}--below`}
       tabIndex="-1">
         {search}
         {this.renderMenu(menuItems)}

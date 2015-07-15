@@ -393,6 +393,7 @@ class Select extends React.Component {
         prefixCls={props.prefixCls}
         isMultipleOrTagsOrCombobox={isMultipleOrTagsOrCombobox(props)}
         showSearch={props.showSearch}
+        dropdownMenuStyle={props.dropdownMenuStyle}
         dropdownStyle={props.dropdownStyle}>
       {props.children}
       </SelectDropdown>;
@@ -535,6 +536,7 @@ Select.defaultProps = {
   showArrow: true,
   dropdownMatchSelectWidth: true,
   dropdownStyle: {},
+  dropdownMenuStyle: {},
   renderDropdownToBody: false,
   optionFilterProp: 'value',
   optionLabelProp: 'value',

@@ -1,6 +1,10 @@
 # History
 ----
 
+## 4.4.0 / 2015-07-15
+
+`new` support dropdownStyle dropdownMenuStyle prop
+
 ## 4.3.0 / 2015-07-14
 
 `new` [#17](https://github.com/react-component/select/issues/17) support render dropdown to body

@@ -194,8 +194,72 @@
     //border-top-right-radius: 0;
     position: absolute;
     outline: none;
-    .@{selectPrefixCls}-menu-item[aria-selected=true] {
-      background-color: #ddd;
+
+    &-menu {
+      outline: none;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      z-index: 9999;
+
+      > li {
+        margin: 0;
+        padding: 0;
+      }
+
+      &-item-group-list {
+        margin: 0;
+        padding: 0;
+
+        > li.@{selectPrefixCls}-menu-item {
+          padding-left: 20px;
+        }
+      }
+
+      &-item-group-title {
+        color: #999;
+        line-height: 1.5;
+        padding: 8px 10px;
+        border-bottom: 1px solid #dedede;
+      }
+
+      li&-item {
+        margin: 0;
+        position: relative;
+        display: block;
+        padding: 7px 10px;
+        font-weight: normal;
+        color: #666666;
+        white-space: nowrap;
+
+        &:hover, &-active, &-selected {
+          background-color: rgba(142, 200, 249, 0.1) !important;
+        }
+
+        &-selected{
+          background-color: #ddd;
+        }
+
+        &-disabled {
+          color: #ccc;
+          cursor: not-allowed;
+          pointer-events: none;
+
+          &:hover {
+            color: #ccc;
+            background-color: #fff;
+            cursor: not-allowed;
+          }
+        }
+
+        &-divider {
+          height: 1px;
+          margin: 1px 0;
+          overflow: hidden;
+          background-color: #e5e5e5;
+          line-height: 0;
+        }
+      }
     }
 
     .effect() {
@@ -286,69 +350,6 @@
     .@{selectPrefixCls}-selection {
       //border-bottom-left-radius: 0;
       //border-bottom-right-radius: 0;
-    }
-  }
-
-  &-menu {
-    outline: none;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    z-index: 9999;
-
-    > li {
-      margin: 0;
-      padding: 0;
-    }
-
-    &-item-group-list {
-      margin: 0;
-      padding: 0;
-
-      > li.@{selectPrefixCls}-menu-item {
-        padding-left: 20px;
-      }
-    }
-
-    &-item-group-title {
-      color: #999;
-      line-height: 1.5;
-      padding: 8px 10px;
-      border-bottom: 1px solid #dedede;
-    }
-
-    li&-item {
-      margin: 0;
-      position: relative;
-      display: block;
-      padding: 7px 10px;
-      font-weight: normal;
-      color: #666666;
-      white-space: nowrap;
-
-      &:hover, &-active, &-selected {
-        background-color: rgba(142, 200, 249, 0.1) !important;
-      }
-
-      &-disabled {
-        color: #ccc;
-        cursor: not-allowed;
-        pointer-events: none;
-
-        &:hover {
-          color: #ccc;
-          background-color: #fff;
-          cursor: not-allowed;
-        }
-      }
-
-      &-divider {
-        height: 1px;
-        margin: 1px 0;
-        overflow: hidden;
-        background-color: #e5e5e5;
-        line-height: 0;
-      }
     }
   }
 }

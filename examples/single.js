@@ -31,6 +31,7 @@ var Test = React.createClass({
         <h2>Single Select</h2>
         <div style={{width: 300}}>
           <Select value="lucy"
+            dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
             renderDropdownToBody={location.href.indexOf('renderDropdownToBody') !== -1}
             style={{width: 500}}
             onChange={handleChange}>
@@ -42,6 +43,9 @@ var Test = React.createClass({
             <Option value="lucy">lucy</Option>
             <Option value="disabled" disabled>disabled</Option>
             <Option value="yiminghe">yiminghe</Option>
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (i) {
+            return <Option key={i}>{i}</Option>
+          })}
           </Select>
         </div>
 

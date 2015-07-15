@@ -209,6 +209,12 @@ React.render(c, container);
           <th>{}</th>
           <td>additional style applied to dropdown</td>
         </tr>
+        <tr>
+          <td>dropdownMenuStyle</td>
+          <td>Object</td>
+          <th>{}</th>
+          <td>additional style applied to dropdown menu</td>
+        </tr>
     </tbody>
 </table>
 
