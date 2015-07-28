@@ -3,12 +3,12 @@ webpackJsonp([3],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(50);
+	module.exports = __webpack_require__(51);
 
 
 /***/ },
 
-/***/ 50:
+/***/ 51:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18,7 +18,7 @@ webpackJsonp([3],{
 	var Option = Select.Option;
 	var OptGroup = Select.OptGroup;
 	
-	__webpack_require__(37);
+	__webpack_require__(38);
 	
 	function handleChange(value) {
 	  console.log('selected ' + value);
@@ -37,17 +37,17 @@ webpackJsonp([3],{
 	    { style: { width: 300 } },
 	    React.createElement(
 	      Select,
-	      { value: 'lucy',
+	      { value: "lucy",
 	        renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	        showSearch: false,
 	        style: { width: 500 },
 	        onChange: handleChange },
 	      React.createElement(
 	        OptGroup,
-	        { label: 'manager' },
+	        { label: "manager" },
 	        React.createElement(
 	          Option,
-	          { value: 'jack' },
+	          { value: "jack" },
 	          React.createElement(
 	            'b',
 	            { style: {
@@ -58,16 +58,16 @@ webpackJsonp([3],{
 	        ),
 	        React.createElement(
 	          Option,
-	          { value: 'lucy' },
+	          { value: "lucy" },
 	          'lucy'
 	        )
 	      ),
 	      React.createElement(
 	        OptGroup,
-	        { label: 'engineer' },
+	        { label: "engineer" },
 	        React.createElement(
 	          Option,
-	          { value: 'yiminghe' },
+	          { value: "yiminghe" },
 	          'yiminghe'
 	        )
 	      )

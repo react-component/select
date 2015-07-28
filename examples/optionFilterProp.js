@@ -3,12 +3,12 @@ webpackJsonp([4],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(51);
+	module.exports = __webpack_require__(52);
 
 
 /***/ },
 
-/***/ 51:
+/***/ 52:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16,7 +16,7 @@ webpackJsonp([4],{
 	var React = __webpack_require__(2);
 	var Select = __webpack_require__(3);
 	var Option = Select.Option;
-	__webpack_require__(37);
+	__webpack_require__(38);
 	
 	function handleChange(value) {
 	  console.log('selected ' + value);
@@ -35,24 +35,24 @@ webpackJsonp([4],{
 	    { style: { width: 300 } },
 	    React.createElement(
 	      Select,
-	      { value: '张三',
+	      { value: "张三",
 	        style: { width: 500 },
 	        renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
-	        optionFilterProp: 'desc',
+	        optionFilterProp: "desc",
 	        onChange: handleChange },
 	      React.createElement(
 	        Option,
-	        { value: '张三', desc: '张三 zhang san' },
+	        { value: "张三", desc: "张三 zhang san" },
 	        '张三'
 	      ),
 	      React.createElement(
 	        Option,
-	        { value: '李四', desc: '李四 li si' },
+	        { value: "李四", desc: "李四 li si" },
 	        '李四'
 	      ),
 	      React.createElement(
 	        Option,
-	        { value: '王五', desc: '王五 wang wu' },
+	        { value: "王五", desc: "王五 wang wu" },
 	        '王五'
 	      )
 	    )

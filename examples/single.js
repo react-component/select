@@ -3,12 +3,12 @@ webpackJsonp([6],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(53);
+	module.exports = __webpack_require__(54);
 
 
 /***/ },
 
-/***/ 53:
+/***/ 54:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16,7 +16,7 @@ webpackJsonp([6],{
 	var React = __webpack_require__(2);
 	var Select = __webpack_require__(3);
 	var Option = Select.Option;
-	__webpack_require__(37);
+	__webpack_require__(38);
 	
 	function handleChange(value) {
 	  console.log('selected ' + value);
@@ -54,13 +54,14 @@ webpackJsonp([6],{
 	        { style: { width: 300 } },
 	        React.createElement(
 	          Select,
-	          { value: 'lucy',
+	          { value: "lucy",
+	            dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
 	            renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	            style: { width: 500 },
 	            onChange: handleChange },
 	          React.createElement(
 	            Option,
-	            { value: 'jack' },
+	            { value: "jack" },
 	            React.createElement(
 	              'b',
 	              { style: {
@@ -71,19 +72,26 @@ webpackJsonp([6],{
 	          ),
 	          React.createElement(
 	            Option,
-	            { value: 'lucy' },
+	            { value: "lucy" },
 	            'lucy'
 	          ),
 	          React.createElement(
 	            Option,
-	            { value: 'disabled', disabled: true },
+	            { value: "disabled", disabled: true },
 	            'disabled'
 	          ),
 	          React.createElement(
 	            Option,
-	            { value: 'yiminghe' },
+	            { value: "yiminghe" },
 	            'yiminghe'
-	          )
+	          ),
+	          [1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (i) {
+	            return React.createElement(
+	              Option,
+	              { key: i },
+	              i
+	            );
+	          })
 	        )
 	      ),
 	      React.createElement(
@@ -93,27 +101,27 @@ webpackJsonp([6],{
 	      ),
 	      React.createElement(
 	        'select',
-	        { value: 'lucy',
+	        { value: "lucy",
 	          style: { width: 500 },
 	          onChange: handleChange },
 	        React.createElement(
 	          'option',
-	          { value: 'jack' },
+	          { value: "jack" },
 	          'jack'
 	        ),
 	        React.createElement(
 	          'option',
-	          { value: 'lucy' },
+	          { value: "lucy" },
 	          'lucy'
 	        ),
 	        React.createElement(
 	          'option',
-	          { value: 'disabled', disabled: true },
+	          { value: "disabled", disabled: true },
 	          'disabled'
 	        ),
 	        React.createElement(
 	          'option',
-	          { value: 'yiminghe' },
+	          { value: "yiminghe" },
 	          'yiminghe'
 	        )
 	      ),

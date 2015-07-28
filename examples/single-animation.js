@@ -3,12 +3,12 @@ webpackJsonp([7],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(54);
+	module.exports = __webpack_require__(55);
 
 
 /***/ },
 
-/***/ 54:
+/***/ 55:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16,7 +16,7 @@ webpackJsonp([7],{
 	var React = __webpack_require__(2);
 	var Select = __webpack_require__(3);
 	var Option = Select.Option;
-	__webpack_require__(37);
+	__webpack_require__(38);
 	
 	function handleChange(value) {
 	  console.log('selected ' + value);
@@ -35,15 +35,15 @@ webpackJsonp([7],{
 	    { style: { width: 300 } },
 	    React.createElement(
 	      Select,
-	      { value: 'lucy',
+	      { value: "lucy",
 	        style: { width: 500 },
 	        renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
-	        animation: 'slide-up',
+	        animation: "slide-up",
 	        showSearch: false,
 	        onChange: handleChange },
 	      React.createElement(
 	        Option,
-	        { value: 'jack' },
+	        { value: "jack" },
 	        React.createElement(
 	          'b',
 	          { style: {
@@ -54,17 +54,17 @@ webpackJsonp([7],{
 	      ),
 	      React.createElement(
 	        Option,
-	        { value: 'lucy' },
+	        { value: "lucy" },
 	        'lucy'
 	      ),
 	      React.createElement(
 	        Option,
-	        { value: 'disabled', disabled: true },
+	        { value: "disabled", disabled: true },
 	        'disabled'
 	      ),
 	      React.createElement(
 	        Option,
-	        { value: 'yiminghe' },
+	        { value: "yiminghe" },
 	        'yiminghe'
 	      )
 	    )

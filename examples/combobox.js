@@ -14,7 +14,7 @@ webpackJsonp([0],[
 	var React = __webpack_require__(2);
 	var Select = __webpack_require__(3);
 	var Option = Select.Option;
-	__webpack_require__(37);
+	__webpack_require__(38);
 	
 	var c3 = React.createElement(
 	  'div',
@@ -35,7 +35,7 @@ webpackJsonp([0],[
 	        combobox: true },
 	      React.createElement(
 	        Option,
-	        { value: 'jack' },
+	        { value: "jack" },
 	        React.createElement(
 	          'b',
 	          { style: {
@@ -46,17 +46,17 @@ webpackJsonp([0],[
 	      ),
 	      React.createElement(
 	        Option,
-	        { value: 'lucy' },
+	        { value: "lucy" },
 	        'lucy'
 	      ),
 	      React.createElement(
 	        Option,
-	        { value: 'disabled', disabled: true },
+	        { value: "disabled", disabled: true },
 	        'disabled'
 	      ),
 	      React.createElement(
 	        Option,
-	        { value: 'yiminghe' },
+	        { value: "yiminghe" },
 	        'yiminghe'
 	      )
 	    )
