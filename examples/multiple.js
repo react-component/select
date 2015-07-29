@@ -13,16 +13,15 @@ function handleChange(value) {
   console.log('selected ' + value);
 }
 
-var style = '.rc-select-menu {max-height:200px;overflow:auto;}';
-
 var c2 = (
   <div>
     <h2>multiple select（scroll the menu）</h2>
     <div style={{width: 300}}>
-      <style>
-      {style}
-      </style>
       <Select
+        dropdownMenuStyle={{
+        maxHeight:200,
+        overflow:'auto'
+        }}
         renderDropdownToBody={location.href.indexOf('renderDropdownToBody') !== -1}
         style={{width:500}}
         multiple
