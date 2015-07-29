@@ -30,8 +30,6 @@ webpackJsonp([2],{
 	  console.log('selected ' + value);
 	}
 	
-	var style = '.rc-select-menu {max-height:200px;overflow:auto;}';
-	
 	var c2 = React.createElement(
 	  'div',
 	  null,
@@ -44,13 +42,12 @@ webpackJsonp([2],{
 	    'div',
 	    { style: { width: 300 } },
 	    React.createElement(
-	      'style',
-	      null,
-	      style
-	    ),
-	    React.createElement(
 	      Select,
 	      {
+	        dropdownMenuStyle: {
+	          maxHeight: 200,
+	          overflow: 'auto'
+	        },
 	        renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	        style: { width: 500 },
 	        multiple: true,

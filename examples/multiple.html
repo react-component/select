@@ -255,16 +255,15 @@
   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'selected '</span> + value);
 }
 
-<span class="hljs-keyword">var</span> style = <span class="hljs-string">'.rc-select-menu {max-height:200px;overflow:auto;}'</span>;
-
 <span class="hljs-keyword">var</span> c2 = (
   <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>multiple select（scroll the menu）<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">300</span>}}&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">style</span>&gt;</span><span class="css">
-      <span class="hljs-rules">{style}</span>
-      </span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">Select</span>
+        <span class="hljs-attribute">dropdownMenuStyle</span>=<span class="hljs-value">{{</span>
+        <span class="hljs-attribute">maxHeight:200</span>,
+        <span class="hljs-attribute">overflow:</span>'<span class="hljs-attribute">auto</span>'
+        }}
         <span class="hljs-attribute">renderDropdownToBody</span>=<span class="hljs-value">{location.href.indexOf('renderDropdownToBody')</span> !=<span class="hljs-value">=</span> <span class="hljs-attribute">-1</span>}
         <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:500}}</span>
         <span class="hljs-attribute">multiple</span>
