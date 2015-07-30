@@ -35,7 +35,7 @@ describe('Select', function () {
       open: true
     }, function () {
       expect(instance.getDropdownDOMNode().parentNode.parentNode.nodeName.toLowerCase()).to.be('body');
-      expect(instance.getDropdownDOMNode().parentNode.className).to.contain('open');
+      expect(instance.getDropdownDOMNode().className).not.to.contain('hidden');
       done();
     });
   });

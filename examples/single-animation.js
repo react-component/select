@@ -1,9 +1,8 @@
 'use strict';
 
-var React = require('react');
-var Select = require('rc-select');
-var Option = Select.Option;
-require('rc-select/assets/index.css');
+import React from 'react';
+import Select, {Option} from 'rc-select';
+import 'rc-select/assets/index.css';
 
 function handleChange(value) {
   console.log('selected ' + value);

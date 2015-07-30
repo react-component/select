@@ -2,16 +2,16 @@
 
 
 import React from 'react';
-import {joinClasses, classSet, KeyCode} from 'rc-util';
-import anim from 'css-animation';
+import {classSet, KeyCode} from 'rc-util';
 import OptGroup from './OptGroup';
-import domAlign from 'dom-align';
+import Align from 'rc-align';
+import Animate from 'rc-animate';
 import SelectDropdown from './Dropdown';
 import {
   getPropValue, getValuePropValue, isCombobox,
   isMultipleOrTags, isMultipleOrTagsOrCombobox,
   isSingleMode, normValue
-  } from './util';
+} from './util';
 
 function noop() {
 }
@@ -24,10 +24,9 @@ function saveRef(name, component) {
   this[name] = component;
 }
 
-export default
 class Select extends React.Component {
   constructor(props) {
-    super(...arguments);
+    super(props);
     var value = [];
     if ('value' in props) {
       value = normValue(props.value);
@@ -39,6 +38,7 @@ class Select extends React.Component {
       inputValue: ''
     };
     ['handleClick',
+      'getDOMNode',
       'handleKeyDown',
       'handleInputKeyDown',
       'handleInputChange',
@@ -279,12 +279,12 @@ class Select extends React.Component {
     var allowClear = props.allowClear;
     var children = props.children;
     var clear = <span className={prefixCls + '-selection__clear'}
-      onClick={this.handleClearSelection}>×</span>;
+                      onClick={this.handleClearSelection}>×</span>;
     // single and not combobox, input is inside dropdown
     if (isSingleMode(props)) {
       return (<span className={prefixCls + '-selection__rendered'}>
         <span>{this.getLabelByValue(children, value[0]) || props.placeholder}</span>
-          {allowClear ? clear : null}
+        {allowClear ? clear : null}
       </span>);
     } else {
       var selectedValueNodes;
@@ -298,11 +298,11 @@ class Select extends React.Component {
           }
           return (
             <li className={prefixCls + '-selection__choice'}
-              key={v}
-              title={title}>
+                key={v}
+                title={title}>
               <span className={prefixCls + '-selection__choice__content'}>{content}</span>
               <span className={prefixCls + '-selection__choice__remove'}
-                onClick={this.removeSelected.bind(this, v)}/>
+                    onClick={this.removeSelected.bind(this, v)}/>
             </li>
           );
         });
@@ -311,8 +311,8 @@ class Select extends React.Component {
         <ul className={prefixCls + '-selection__rendered'}>
           {selectedValueNodes}
           {allowClear && !isMultipleOrTags(props) ? clear : null}
-          <li className={joinClasses(prefixCls + '-search', prefixCls + '-search--inline')}>
-          {this.getInputElement()}
+          <li className={`${prefixCls}-search ${prefixCls}-search--inline`}>
+            {this.getInputElement()}
           </li>
         </ul>
       );
@@ -331,112 +331,103 @@ class Select extends React.Component {
     return this.dropdownContainer;
   }
 
-  renderDropdown(prevState) {
-    var state = this.state;
-    var props = this.props;
-    var dropdownDOMNode;
-    if (state.open && props.renderDropdownToBody) {
-      React.render(this.getDropdownElement(), this.getDropdownContainer());
-    }
-    if (this.dropdownContainer) {
-      this.dropdownContainer.className = `${this.props.prefixCls}-dropdown-container${state.open ? '-open' : ''}`;
-    }
-    if (props.dropdownMatchSelectWidth && state.open) {
-      dropdownDOMNode = this.getDropdownDOMNode();
-      if (dropdownDOMNode) {
-        dropdownDOMNode.style.width = React.findDOMNode(this).offsetWidth + 'px';
-      }
-    }
-    if (!prevState.open && state.open) {
-      dropdownDOMNode = this.getDropdownDOMNode();
-      if (dropdownDOMNode) {
-        domAlign(dropdownDOMNode, React.findDOMNode(this), {
-          points: ['tl', 'bl'],
-          offset: [0, 4]
-        });
-      }
-    }
-  }
-
   getInputElement() {
     var props = this.props;
     return <input ref={this.saveInputRef}
-      onChange={this.handleInputChange}
-      onKeyDown={this.handleInputKeyDown}
-      value={this.state.inputValue}
-      disabled={props.disabled}
-      placeholder={props.searchPlaceholder}
-      className={props.prefixCls + '-search__field'}
-      role="textbox" />;
+                  onChange={this.handleInputChange}
+                  onKeyDown={this.handleInputKeyDown}
+                  value={this.state.inputValue}
+                  disabled={props.disabled}
+                  placeholder={props.searchPlaceholder}
+                  className={props.prefixCls + '-search__field'}
+                  role="textbox"/>;
   }
 
   getDropdownElement() {
     var state = this.state;
     var props = this.props;
-    if (state.open) {
-      this.cachedDropDown = <SelectDropdown
-        key="dropdown"
-        onDropdownFocus={this.handleFocus}
-        onDropdownBlur={this.handleBlur}
-        filterOption={props.filterOption}
-        optionFilterProp={props.optionFilterProp}
-        optionLabelProp={props.optionLabelProp}
-        inputValue={state.inputValue}
-        inputElement={this.getInputElement()}
-        ref={this.saveDropdownRef}
-        tags={props.tags}
-        notFoundContent={props.notFoundContent}
-        onMenuDeselect={this.handleMenuDeselect}
-        onMenuSelect={this.handleMenuSelect}
-        value={state.value}
-        isMultipleOrTags={isMultipleOrTags(props)}
-        prefixCls={props.prefixCls}
-        isMultipleOrTagsOrCombobox={isMultipleOrTagsOrCombobox(props)}
-        showSearch={props.showSearch}
-        dropdownMenuStyle={props.dropdownMenuStyle}
-        dropdownStyle={props.dropdownStyle}>
-      {props.children}
-      </SelectDropdown>;
-    }
-    return this.cachedDropDown;
+    return <Animate
+      component=""
+      exclusive={true}
+      animateMount={true}
+      showProp="selectOpen"
+      transitionName={this.getDropdownTransitionName()}>
+      <Align target={this.getDOMNode}
+             key="dropdown"
+             selectOpen={state.open}
+             disabled={!state.open}
+             align={{
+          points: ['tl', 'bl'],
+          offset: [0, 4]
+        }}>
+        <SelectDropdown
+          key="dropdown"
+          visible={state.open}
+          onDropdownFocus={this.handleFocus}
+          onDropdownBlur={this.handleBlur}
+          filterOption={props.filterOption}
+          optionFilterProp={props.optionFilterProp}
+          optionLabelProp={props.optionLabelProp}
+          inputValue={state.inputValue}
+          inputElement={this.getInputElement()}
+          ref={this.saveDropdownRef}
+          tags={props.tags}
+          notFoundContent={props.notFoundContent}
+          onMenuDeselect={this.handleMenuDeselect}
+          onMenuSelect={this.handleMenuSelect}
+          value={state.value}
+          isMultipleOrTags={isMultipleOrTags(props)}
+          prefixCls={props.prefixCls}
+          isMultipleOrTagsOrCombobox={isMultipleOrTagsOrCombobox(props)}
+          showSearch={props.showSearch}
+          dropdownMenuStyle={props.dropdownMenuStyle}
+          dropdownStyle={props.dropdownStyle}>
+          {props.children}
+        </SelectDropdown>
+      </Align>
+    </Animate>;
   }
 
-  animateDropdown(prevProps, prevState) {
+  getDropdownTransitionName() {
     var props = this.props;
-    var state = this.state;
     var transitionName = props.transitionName;
     if (!transitionName && props.animation) {
       transitionName = `${props.prefixCls}-dropdown-${props.animation}`;
     }
-    var domNode = this.getDropdownDOMNode();
-    if (transitionName && domNode) {
-      if (state.open && !prevState.open) {
-        anim(domNode, `${transitionName}-enter`);
-      } else if (!state.open && prevState.open) {
-        anim(domNode, `${transitionName}-leave`);
-      }
-    }
+    return transitionName;
   }
 
   getInputDOMNode() {
     return React.findDOMNode(this.inputInstance);
   }
 
-  componentDidMount() {
-    this.componentDidUpdate();
+  getDOMNode() {
+    return React.findDOMNode(this);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    prevState = prevState || {};
-    this.renderDropdown(prevState);
-    this.animateDropdown(prevProps, prevState);
-    if (isMultipleOrTags(this.props)) {
-      var inputNode = this.getInputDOMNode();
-      if (inputNode.value) {
-        inputNode.style.width = '';
-        inputNode.style.width = inputNode.scrollWidth + 'px';
-      } else {
-        inputNode.style.width = '';
+  componentDidUpdate() {
+    var state = this.state;
+    var props = this.props;
+    if (this.haveOpened) {
+      if (props.renderDropdownToBody) {
+        React.render(this.getDropdownElement(), this.getDropdownContainer());
+      }
+    }
+    if (state.open) {
+      if (props.dropdownMatchSelectWidth) {
+        var dropdownDOMNode = this.getDropdownDOMNode();
+        if (dropdownDOMNode) {
+          dropdownDOMNode.style.width = this.getDOMNode().offsetWidth + 'px';
+        }
+      }
+      if (isMultipleOrTags(props)) {
+        var inputNode = this.getInputDOMNode();
+        if (inputNode.value) {
+          inputNode.style.width = '';
+          inputNode.style.width = inputNode.scrollWidth + 'px';
+        } else {
+          inputNode.style.width = '';
+        }
       }
     }
   }
@@ -468,35 +459,40 @@ class Select extends React.Component {
       };
     }
     var rootCls = {
-      [prefixCls]: true,
+      [props.className]: !!props.className,
+      [prefixCls]: 1,
       [prefixCls + '-open']: this.state.open,
       [prefixCls + '-combobox']: isCombobox(props),
       [prefixCls + '-disabled']: props.disabled
     };
+    var dropdownElement;
+    this.haveOpened = this.haveOpened || state.open;
+    if (this.haveOpened) {
+      dropdownElement = this.getDropdownElement();
+    }
     return (
       <span
         style={props.style}
-        className={joinClasses(props.className, classSet(rootCls))}
+        className={classSet(rootCls)}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}>
         <span ref="selection"
-          key="selection"
-          className={joinClasses(prefixCls + '-selection',
-            `${prefixCls}-selection--${multiple ? 'multiple' : 'single'}`)}
-          role="combobox"
-          aria-autocomplete="list"
-          onClick={this.handleClick}
-          aria-haspopup="true"
-          aria-expanded={state.open}
-      {...extraSelectionProps}
-        >
+              key="selection"
+              className={`${prefixCls}-selection ${prefixCls}-selection--${multiple ? 'multiple' : 'single'}`}
+              role="combobox"
+              aria-autocomplete="list"
+              onClick={this.handleClick}
+              aria-haspopup="true"
+              aria-expanded={state.open}
+          {...extraSelectionProps}
+          >
         {ctrlNode}
-        {multiple || !props.showArrow ? null :
-          <span key="arrow" className={prefixCls + '-arrow'} tabIndex="-1" style={{outline: 'none'}}>
+          {multiple || !props.showArrow ? null :
+            <span key="arrow" className={prefixCls + '-arrow'} tabIndex="-1" style={{outline: 'none'}}>
             <b></b>
           </span>}
         </span>
-      {props.renderDropdownToBody ? null : this.getDropdownElement()}
+        {props.renderDropdownToBody ? null : dropdownElement}
       </span>
     );
   }
@@ -543,3 +539,5 @@ Select.defaultProps = {
   optionLabelProp: 'value',
   notFoundContent: 'Not Found'
 };
+
+export default Select;

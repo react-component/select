@@ -3,8 +3,8 @@ import {getValuePropValue, getSelectKeys} from './util';
 import Menu, {Item as MenuItem, ItemGroup as MenuItemGroup} from 'rc-menu';
 import OptGroup from './OptGroup';
 import assign from 'object-assign';
+import {classSet} from 'rc-util';
 
-export default
 class SelectDropdown extends React.Component {
   filterOption(input, child) {
     if (!input) {
@@ -18,6 +18,10 @@ class SelectDropdown extends React.Component {
       return false;
     }
     return filterOption.call(this, input, child);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return this.props.visible || nextProps.visible;
   }
 
   renderFilterOptionsFromChildren(children, showNotFound) {
@@ -38,7 +42,7 @@ class SelectDropdown extends React.Component {
             label = key;
           }
           sel.push(<MenuItemGroup key={key} title={label}>
-        {innerItems}
+            {innerItems}
           </MenuItemGroup>);
         }
         return;
@@ -46,10 +50,10 @@ class SelectDropdown extends React.Component {
       var childValue = getValuePropValue(child);
       if (this.filterOption(inputValue, child)) {
         sel.push(<MenuItem
-          value = {childValue}
-          key = {childValue}
+          value={childValue}
+          key={childValue}
           {...child.props}
-        />);
+          />);
       }
       if (tags && !child.props.disabled) {
         childrenKeys.push(childValue);
@@ -108,7 +112,7 @@ class SelectDropdown extends React.Component {
       {...menuProps}
       selectedKeys={selectedKeys}
       prefixCls={`${this.getDropdownPrefixCls()}-menu`}>
-          {menuItems}
+      {menuItems}
     </Menu>;
   }
 
@@ -127,15 +131,22 @@ class SelectDropdown extends React.Component {
     if (!search && !menuItems.length) {
       style.visibility = 'hidden';
     }
+    var className = {
+      [dropdownPrefixCls]: 1,
+      [`${dropdownPrefixCls}--below`]: 1,
+      [`${dropdownPrefixCls}-hidden`]: !props.visible
+    };
     // single and not combobox, input is inside dropdown
     return <span key="dropdown"
-      onFocus={props.onDropdownFocus}
-      onBlur={props.onDropdownBlur}
-      style={style}
-      className= {`${dropdownPrefixCls} ${dropdownPrefixCls}--below`}
-      tabIndex="-1">
+                 onFocus={props.onDropdownFocus}
+                 onBlur={props.onDropdownBlur}
+                 style={style}
+                 className={classSet(className)}
+                 tabIndex="-1">
         {search}
-        {this.renderMenu(menuItems)}
+      {this.renderMenu(menuItems)}
     </span>;
   }
 }
+
+export default SelectDropdown;

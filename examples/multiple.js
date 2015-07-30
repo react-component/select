@@ -1,9 +1,9 @@
 'use strict';
 
-var React = require('react');
-var Select = require('rc-select');
-var Option = Select.Option;
-require('rc-select/assets/index.css');
+import React from 'react';
+import Select, {Option} from 'rc-select';
+import 'rc-select/assets/index.css';
+
 var children = [];
 for (var i = 10; i < 36; i++) {
   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);

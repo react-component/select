@@ -180,7 +180,6 @@
   }
 
   &-dropdown {
-    display: none;
     background-color: white;
     border: 1px solid #d9d9d9;
     box-shadow: 0 0px 4px #d9d9d9;
@@ -194,6 +193,10 @@
     //border-top-right-radius: 0;
     position: absolute;
     outline: none;
+
+    &-hidden {
+      display: none;
+    }
 
     &-menu {
       outline: none;
@@ -236,7 +239,7 @@
           background-color: rgba(142, 200, 249, 0.1) !important;
         }
 
-        &-selected{
+        &-selected {
           background-color: #ddd;
         }
 
@@ -316,12 +319,6 @@
         transform-origin: 0% 0%;
         transform: scaleY(0);
       }
-    }
-  }
-
-  &-dropdown-container-open, &-open {
-    .@{selectPrefixCls}-dropdown {
-      display: block;
     }
   }
 

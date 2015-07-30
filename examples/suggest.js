@@ -1,11 +1,10 @@
 'use strict';
 
-var React = require('react');
-var Select = require('rc-select');
-var Option = Select.Option;
-require('rc-select/assets/index.css');
-var jsonp = require('jsonp');
-var querystring = require('querystring');
+import React from 'react';
+import Select, {Option} from 'rc-select';
+import 'rc-select/assets/index.css';
+import jsonp from 'jsonp';
+import querystring from 'querystring';
 
 var Search = React.createClass({
   getInitialState() {

@@ -1,6 +1,10 @@
 # History
 ----
 
+## 4.5.0 / 2015-07-30
+
+use rc-animate & rc-align. (assets change)
+
 ## 4.4.0 / 2015-07-15
 
 `new` support dropdownStyle dropdownMenuStyle prop
