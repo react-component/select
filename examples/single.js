@@ -3,26 +3,33 @@ webpackJsonp([6],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(54);
+	module.exports = __webpack_require__(60);
 
 
 /***/ },
 
-/***/ 54:
+/***/ 60:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(2);
-	var Select = __webpack_require__(3);
-	var Option = Select.Option;
-	__webpack_require__(38);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _rcSelect = __webpack_require__(3);
+	
+	var _rcSelect2 = _interopRequireDefault(_rcSelect);
+	
+	__webpack_require__(44);
 	
 	function handleChange(value) {
 	  console.log('selected ' + value);
 	}
 	
-	var Test = React.createClass({
+	var Test = _react2['default'].createClass({
 	  displayName: 'Test',
 	
 	  getInitialState: function getInitialState() {
@@ -41,28 +48,28 @@ webpackJsonp([6],{
 	    if (this.state.destroy) {
 	      return null;
 	    }
-	    return React.createElement(
+	    return _react2['default'].createElement(
 	      'div',
 	      { style: { margin: 20 } },
-	      React.createElement(
+	      _react2['default'].createElement(
 	        'h2',
 	        null,
 	        'Single Select'
 	      ),
-	      React.createElement(
+	      _react2['default'].createElement(
 	        'div',
 	        { style: { width: 300 } },
-	        React.createElement(
-	          Select,
+	        _react2['default'].createElement(
+	          _rcSelect2['default'],
 	          { value: "lucy",
 	            dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
 	            renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	            style: { width: 500 },
 	            onChange: handleChange },
-	          React.createElement(
-	            Option,
+	          _react2['default'].createElement(
+	            _rcSelect.Option,
 	            { value: "jack" },
-	            React.createElement(
+	            _react2['default'].createElement(
 	              'b',
 	              { style: {
 	                  color: 'red'
@@ -70,65 +77,65 @@ webpackJsonp([6],{
 	              'jack'
 	            )
 	          ),
-	          React.createElement(
-	            Option,
+	          _react2['default'].createElement(
+	            _rcSelect.Option,
 	            { value: "lucy" },
 	            'lucy'
 	          ),
-	          React.createElement(
-	            Option,
+	          _react2['default'].createElement(
+	            _rcSelect.Option,
 	            { value: "disabled", disabled: true },
 	            'disabled'
 	          ),
-	          React.createElement(
-	            Option,
+	          _react2['default'].createElement(
+	            _rcSelect.Option,
 	            { value: "yiminghe" },
 	            'yiminghe'
 	          ),
 	          [1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (i) {
-	            return React.createElement(
-	              Option,
+	            return _react2['default'].createElement(
+	              _rcSelect.Option,
 	              { key: i },
 	              i
 	            );
 	          })
 	        )
 	      ),
-	      React.createElement(
+	      _react2['default'].createElement(
 	        'h2',
 	        null,
 	        'native select'
 	      ),
-	      React.createElement(
+	      _react2['default'].createElement(
 	        'select',
 	        { value: "lucy",
 	          style: { width: 500 },
 	          onChange: handleChange },
-	        React.createElement(
+	        _react2['default'].createElement(
 	          'option',
 	          { value: "jack" },
 	          'jack'
 	        ),
-	        React.createElement(
+	        _react2['default'].createElement(
 	          'option',
 	          { value: "lucy" },
 	          'lucy'
 	        ),
-	        React.createElement(
+	        _react2['default'].createElement(
 	          'option',
 	          { value: "disabled", disabled: true },
 	          'disabled'
 	        ),
-	        React.createElement(
+	        _react2['default'].createElement(
 	          'option',
 	          { value: "yiminghe" },
 	          'yiminghe'
 	        )
 	      ),
-	      React.createElement(
+	      _react2['default'].createElement(
 	        'p',
 	        null,
-	        React.createElement(
+	        _react2['default'].createElement(
 	          'button',
 	          { onClick: this.handleDestroy },
 	          'destroy'
@@ -138,7 +145,7 @@ webpackJsonp([6],{
 	  }
 	});
 	
-	React.render(React.createElement(Test, null), document.getElementById('__react-content'));
+	_react2['default'].render(_react2['default'].createElement(Test, null), document.getElementById('__react-content'));
 
 /***/ }
 

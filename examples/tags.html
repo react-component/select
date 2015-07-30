@@ -234,35 +234,34 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>rc-select@4.4.1</h1>
+            <h1>rc-select@4.5.0</h1>
             <p>select ui component for react</p>
         </div>
         <div class="example" id="__react-content"></div>
         <script src="common.js?nowrap"></script>
         <script src="tags.js?nowrap"></script>
-        <div class="highlight"><pre><code><span class="hljs-string">'use strict'</span>;
+        <div class="highlight"><pre><code><span class="hljs-pi">'use strict'</span>;
 
-<span class="hljs-keyword">var</span> React = require(<span class="hljs-string">'react'</span>);
-<span class="hljs-keyword">var</span> Select = require(<span class="hljs-string">'rc-select'</span>);
-<span class="hljs-keyword">var</span> Option = Select.Option;
-require(<span class="hljs-string">'rc-select/assets/index.css'</span>);
+<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> Select, {Option} <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-select'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-select/assets/index.css'</span>;
 
 <span class="hljs-keyword">var</span> children = [];
 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">10</span>; i &lt; <span class="hljs-number">36</span>; i++) {
-  children.push(&lt;Option key={i.toString(<span class="hljs-number">36</span>) + i}&gt;{i.toString(<span class="hljs-number">36</span>) + i}&lt;/Option&gt;);
+  children.push(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{i.toString(36)</span> + <span class="hljs-attribute">i</span>}&gt;</span>{i.toString(36) + i}<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>)</span>;
 }
 
 <span class="hljs-keyword">var</span> Test = React.createClass({
   getInitialState() {
     <span class="hljs-keyword">return</span> {
-      disabled: <span class="hljs-keyword">false</span>,
-      <span class="hljs-keyword">value</span>: [<span class="hljs-string">'name2'</span>, <span class="hljs-string">'name3'</span>]
+      disabled: <span class="hljs-literal">false</span>,
+      value: [<span class="hljs-string">'name2'</span>, <span class="hljs-string">'name3'</span>]
     };
   },
-  handleChange(<span class="hljs-keyword">value</span>) {
-    console.log(<span class="hljs-string">'selected '</span> + <span class="hljs-keyword">value</span>);
+  handleChange(value) {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'selected '</span> + value);
     <span class="hljs-keyword">this</span>.setState({
-      <span class="hljs-keyword">value</span>: <span class="hljs-keyword">value</span>
+      value: value
     });
   },
   handleDisabled() {
@@ -272,30 +271,30 @@ require(<span class="hljs-string">'rc-select/assets/index.css'</span>);
   },
   render() {
     <span class="hljs-keyword">return</span> (
-      &lt;div&gt;
-        &lt;h2&gt;tags <span class="hljs-keyword">select</span>（scroll the menu）&lt;/h2&gt;
-        &lt;div&gt;
-          &lt;Select tags
-            dropdownStyle={{maxHeight:<span class="hljs-number">200</span>,overflow:<span class="hljs-string">'auto'</span>}}
-            renderDropdownToBody={location.href.indexOf(<span class="hljs-string">'renderDropdownToBody'</span>) !== -<span class="hljs-number">1</span>}
-            style={{width:<span class="hljs-number">500</span>}}
-            disabled={<span class="hljs-keyword">this</span>.state.disabled}
-            maxTagTextLength={<span class="hljs-number">10</span>}
-            <span class="hljs-keyword">value</span>={<span class="hljs-keyword">this</span>.state.<span class="hljs-keyword">value</span>}
-            onChange={<span class="hljs-keyword">this</span>.handleChange}&gt;
+      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>tags select（scroll the menu）<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">Select</span> <span class="hljs-attribute">tags</span>
+            <span class="hljs-attribute">dropdownStyle</span>=<span class="hljs-value">{{maxHeight:200,overflow:'auto'}}</span>
+            <span class="hljs-attribute">renderDropdownToBody</span>=<span class="hljs-value">{location.href.indexOf('renderDropdownToBody')</span> !=<span class="hljs-value">=</span> <span class="hljs-attribute">-1</span>}
+            <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:500}}</span>
+            <span class="hljs-attribute">disabled</span>=<span class="hljs-value">{this.state.disabled}</span>
+            <span class="hljs-attribute">maxTagTextLength</span>=<span class="hljs-value">{10}</span>
+            <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value}</span>
+            <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.handleChange}</span>&gt;</span>
     {children}
-          &lt;/Select&gt;
-        &lt;/div&gt;
-        &lt;p&gt;
-          &lt;button onClick={<span class="hljs-keyword">this</span>.handleDisabled}&gt;toggle disabled&lt;/button&gt;
-        &lt;/p&gt;
-      &lt;/div&gt;
-    );
+          <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.handleDisabled}</span>&gt;</span>toggle disabled<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    )</span>;
   }
 });
 
-React.render(&lt;Test /&gt;, document.getElementById(<span class="hljs-string">'__react-content'</span>));
-</code></pre></div>
+React.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Test</span> /&gt;</span>, document.getElementById('__react-content'));
+</span></code></pre></div>
     </div>
     <a href="http://github.com/react-component/select"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
 </body>

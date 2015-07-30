@@ -11,32 +11,39 @@ webpackJsonp([0],[
 
 	'use strict';
 	
-	var React = __webpack_require__(2);
-	var Select = __webpack_require__(3);
-	var Option = Select.Option;
-	__webpack_require__(38);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var c3 = React.createElement(
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _rcSelect = __webpack_require__(3);
+	
+	var _rcSelect2 = _interopRequireDefault(_rcSelect);
+	
+	__webpack_require__(44);
+	
+	var c3 = _react2['default'].createElement(
 	  'div',
 	  null,
-	  React.createElement(
+	  _react2['default'].createElement(
 	    'h2',
 	    null,
 	    'combobox'
 	  ),
-	  React.createElement(
+	  _react2['default'].createElement(
 	    'div',
 	    { style: { width: 300 } },
-	    React.createElement(
-	      Select,
+	    _react2['default'].createElement(
+	      _rcSelect2['default'],
 	      {
 	        renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	        style: { width: 500 },
 	        combobox: true },
-	      React.createElement(
-	        Option,
+	      _react2['default'].createElement(
+	        _rcSelect.Option,
 	        { value: "jack" },
-	        React.createElement(
+	        _react2['default'].createElement(
 	          'b',
 	          { style: {
 	              color: 'red'
@@ -44,18 +51,18 @@ webpackJsonp([0],[
 	          'jack'
 	        )
 	      ),
-	      React.createElement(
-	        Option,
+	      _react2['default'].createElement(
+	        _rcSelect.Option,
 	        { value: "lucy" },
 	        'lucy'
 	      ),
-	      React.createElement(
-	        Option,
+	      _react2['default'].createElement(
+	        _rcSelect.Option,
 	        { value: "disabled", disabled: true },
 	        'disabled'
 	      ),
-	      React.createElement(
-	        Option,
+	      _react2['default'].createElement(
+	        _rcSelect.Option,
 	        { value: "yiminghe" },
 	        'yiminghe'
 	      )
@@ -63,7 +70,7 @@ webpackJsonp([0],[
 	  )
 	);
 	
-	React.render(c3, document.getElementById('__react-content'));
+	_react2['default'].render(c3, document.getElementById('__react-content'));
 
 /***/ }
 ]);

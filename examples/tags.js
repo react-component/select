@@ -3,31 +3,38 @@ webpackJsonp([9],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(57);
+	module.exports = __webpack_require__(63);
 
 
 /***/ },
 
-/***/ 57:
+/***/ 63:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(2);
-	var Select = __webpack_require__(3);
-	var Option = Select.Option;
-	__webpack_require__(38);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _rcSelect = __webpack_require__(3);
+	
+	var _rcSelect2 = _interopRequireDefault(_rcSelect);
+	
+	__webpack_require__(44);
 	
 	var children = [];
 	for (var i = 10; i < 36; i++) {
-	  children.push(React.createElement(
-	    Option,
+	  children.push(_react2['default'].createElement(
+	    _rcSelect.Option,
 	    { key: i.toString(36) + i },
 	    i.toString(36) + i
 	  ));
 	}
 	
-	var Test = React.createClass({
+	var Test = _react2['default'].createClass({
 	  displayName: 'Test',
 	
 	  getInitialState: function getInitialState() {
@@ -48,19 +55,19 @@ webpackJsonp([9],{
 	    });
 	  },
 	  render: function render() {
-	    return React.createElement(
+	    return _react2['default'].createElement(
 	      'div',
 	      null,
-	      React.createElement(
+	      _react2['default'].createElement(
 	        'h2',
 	        null,
 	        'tags select（scroll the menu）'
 	      ),
-	      React.createElement(
+	      _react2['default'].createElement(
 	        'div',
 	        null,
-	        React.createElement(
-	          Select,
+	        _react2['default'].createElement(
+	          _rcSelect2['default'],
 	          { tags: true,
 	            dropdownStyle: { maxHeight: 200, overflow: 'auto' },
 	            renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
@@ -72,10 +79,10 @@ webpackJsonp([9],{
 	          children
 	        )
 	      ),
-	      React.createElement(
+	      _react2['default'].createElement(
 	        'p',
 	        null,
-	        React.createElement(
+	        _react2['default'].createElement(
 	          'button',
 	          { onClick: this.handleDisabled },
 	          'toggle disabled'
@@ -85,7 +92,7 @@ webpackJsonp([9],{
 	  }
 	});
 	
-	React.render(React.createElement(Test, null), document.getElementById('__react-content'));
+	_react2['default'].render(_react2['default'].createElement(Test, null), document.getElementById('__react-content'));
 
 /***/ }
 

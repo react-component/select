@@ -3,40 +3,47 @@ webpackJsonp([5],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(53);
+	module.exports = __webpack_require__(59);
 
 
 /***/ },
 
-/***/ 53:
+/***/ 59:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(2);
-	var Select = __webpack_require__(3);
-	var Option = Select.Option;
-	__webpack_require__(38);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _rcSelect = __webpack_require__(3);
+	
+	var _rcSelect2 = _interopRequireDefault(_rcSelect);
+	
+	__webpack_require__(44);
 	
 	function handleChange(value) {
 	  console.log('selected ' + value);
 	}
 	
-	var c1 = React.createElement(
+	var c1 = _react2['default'].createElement(
 	  'div',
 	  null,
-	  React.createElement(
+	  _react2['default'].createElement(
 	    'h2',
 	    null,
 	    'Select placeholder'
 	  ),
-	  React.createElement(
+	  _react2['default'].createElement(
 	    'div',
 	    { style: { width: 300 } },
-	    React.createElement(
-	      Select,
+	    _react2['default'].createElement(
+	      _rcSelect2['default'],
 	      {
-	        placeholder: React.createElement(
+	        placeholder: _react2['default'].createElement(
 	          'i',
 	          null,
 	          '请下拉选择'
@@ -45,10 +52,10 @@ webpackJsonp([5],{
 	        searchPlaceholder: "输入过滤",
 	        style: { width: 500 },
 	        onChange: handleChange },
-	      React.createElement(
-	        Option,
+	      _react2['default'].createElement(
+	        _rcSelect.Option,
 	        { value: "jack" },
-	        React.createElement(
+	        _react2['default'].createElement(
 	          'b',
 	          { style: {
 	              color: 'red'
@@ -56,18 +63,18 @@ webpackJsonp([5],{
 	          'jack'
 	        )
 	      ),
-	      React.createElement(
-	        Option,
+	      _react2['default'].createElement(
+	        _rcSelect.Option,
 	        { value: "lucy" },
 	        'lucy'
 	      ),
-	      React.createElement(
-	        Option,
+	      _react2['default'].createElement(
+	        _rcSelect.Option,
 	        { value: "disabled", disabled: true },
 	        'disabled'
 	      ),
-	      React.createElement(
-	        Option,
+	      _react2['default'].createElement(
+	        _rcSelect.Option,
 	        { value: "yiminghe" },
 	        'yiminghe'
 	      )
@@ -75,7 +82,7 @@ webpackJsonp([5],{
 	  )
 	);
 	
-	React.render(c1, document.getElementById('__react-content'));
+	_react2['default'].render(c1, document.getElementById('__react-content'));
 
 /***/ }
 

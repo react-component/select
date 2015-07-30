@@ -3,24 +3,32 @@ webpackJsonp([2],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(50);
+	module.exports = __webpack_require__(56);
 
 
 /***/ },
 
-/***/ 50:
+/***/ 56:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(2);
-	var Select = __webpack_require__(3);
-	var Option = Select.Option;
-	__webpack_require__(38);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _rcSelect = __webpack_require__(3);
+	
+	var _rcSelect2 = _interopRequireDefault(_rcSelect);
+	
+	__webpack_require__(44);
+	
 	var children = [];
 	for (var i = 10; i < 36; i++) {
-	  children.push(React.createElement(
-	    Option,
+	  children.push(_react2['default'].createElement(
+	    _rcSelect.Option,
 	    { key: i.toString(36) + i },
 	    i.toString(36) + i
 	  ));
@@ -30,19 +38,19 @@ webpackJsonp([2],{
 	  console.log('selected ' + value);
 	}
 	
-	var c2 = React.createElement(
+	var c2 = _react2['default'].createElement(
 	  'div',
 	  null,
-	  React.createElement(
+	  _react2['default'].createElement(
 	    'h2',
 	    null,
 	    'multiple select（scroll the menu）'
 	  ),
-	  React.createElement(
+	  _react2['default'].createElement(
 	    'div',
 	    { style: { width: 300 } },
-	    React.createElement(
-	      Select,
+	    _react2['default'].createElement(
+	      _rcSelect2['default'],
 	      {
 	        dropdownMenuStyle: {
 	          maxHeight: 200,
@@ -58,7 +66,7 @@ webpackJsonp([2],{
 	  )
 	);
 	
-	React.render(c2, document.getElementById('__react-content'));
+	_react2['default'].render(c2, document.getElementById('__react-content'));
 
 /***/ }
 

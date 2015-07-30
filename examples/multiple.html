@@ -234,7 +234,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>rc-select@4.4.1</h1>
+            <h1>rc-select@4.5.0</h1>
             <p>select ui component for react</p>
         </div>
         <div class="example" id="__react-content"></div>
@@ -242,10 +242,10 @@
         <script src="multiple.js?nowrap"></script>
         <div class="highlight"><pre><code><span class="hljs-pi">'use strict'</span>;
 
-<span class="hljs-keyword">var</span> React = <span class="hljs-built_in">require</span>(<span class="hljs-string">'react'</span>);
-<span class="hljs-keyword">var</span> Select = <span class="hljs-built_in">require</span>(<span class="hljs-string">'rc-select'</span>);
-<span class="hljs-keyword">var</span> Option = Select.Option;
-<span class="hljs-built_in">require</span>(<span class="hljs-string">'rc-select/assets/index.css'</span>);
+<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> Select, {Option} <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-select'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-select/assets/index.css'</span>;
+
 <span class="hljs-keyword">var</span> children = [];
 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">10</span>; i &lt; <span class="hljs-number">36</span>; i++) {
   children.push(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{i.toString(36)</span> + <span class="hljs-attribute">i</span>}&gt;</span>{i.toString(36) + i}<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>)</span>;

@@ -3,52 +3,57 @@ webpackJsonp([3],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(51);
+	module.exports = __webpack_require__(57);
 
 
 /***/ },
 
-/***/ 51:
+/***/ 57:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var React = __webpack_require__(2);
-	var Select = __webpack_require__(3);
-	var Option = Select.Option;
-	var OptGroup = Select.OptGroup;
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	__webpack_require__(38);
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _rcSelect = __webpack_require__(3);
+	
+	var _rcSelect2 = _interopRequireDefault(_rcSelect);
+	
+	__webpack_require__(44);
 	
 	function handleChange(value) {
 	  console.log('selected ' + value);
 	}
 	
-	var c1 = React.createElement(
+	var c1 = _react2['default'].createElement(
 	  'div',
 	  null,
-	  React.createElement(
+	  _react2['default'].createElement(
 	    'h2',
 	    null,
 	    'Select OptGroup'
 	  ),
-	  React.createElement(
+	  _react2['default'].createElement(
 	    'div',
 	    { style: { width: 300 } },
-	    React.createElement(
-	      Select,
+	    _react2['default'].createElement(
+	      _rcSelect2['default'],
 	      { value: "lucy",
 	        renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	        showSearch: false,
 	        style: { width: 500 },
 	        onChange: handleChange },
-	      React.createElement(
-	        OptGroup,
+	      _react2['default'].createElement(
+	        _rcSelect.OptGroup,
 	        { label: "manager" },
-	        React.createElement(
-	          Option,
+	        _react2['default'].createElement(
+	          _rcSelect.Option,
 	          { value: "jack" },
-	          React.createElement(
+	          _react2['default'].createElement(
 	            'b',
 	            { style: {
 	                color: 'red'
@@ -56,17 +61,17 @@ webpackJsonp([3],{
 	            'jack'
 	          )
 	        ),
-	        React.createElement(
-	          Option,
+	        _react2['default'].createElement(
+	          _rcSelect.Option,
 	          { value: "lucy" },
 	          'lucy'
 	        )
 	      ),
-	      React.createElement(
-	        OptGroup,
+	      _react2['default'].createElement(
+	        _rcSelect.OptGroup,
 	        { label: "engineer" },
-	        React.createElement(
-	          Option,
+	        _react2['default'].createElement(
+	          _rcSelect.Option,
 	          { value: "yiminghe" },
 	          'yiminghe'
 	        )
@@ -75,7 +80,7 @@ webpackJsonp([3],{
 	  )
 	);
 	
-	React.render(c1, document.getElementById('__react-content'));
+	_react2['default'].render(c1, document.getElementById('__react-content'));
 
 /***/ }
 
