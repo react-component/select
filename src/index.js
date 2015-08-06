@@ -1,4 +1,4 @@
-'use strict';
+
 
 import Select from './Select';
 import Option from './Option';

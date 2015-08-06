@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Select, {Option} from 'rc-select';
-import 'rc-select/assets/index.css';
+import 'rc-select/assets/index.less';
 import jsonp from 'jsonp';
 import querystring from 'querystring';
 

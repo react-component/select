@@ -6,36 +6,26 @@ import assign from 'object-assign';
 import {classSet} from 'rc-util';
 
 class SelectDropdown extends React.Component {
-  filterOption(input, child) {
-    if (!input) {
-      return true;
-    }
-    var filterOption = this.props.filterOption;
-    if (!filterOption) {
-      return true;
-    }
-    if (child.props.disabled) {
-      return false;
-    }
-    return filterOption.call(this, input, child);
-  }
-
   shouldComponentUpdate(nextProps) {
     return this.props.visible || nextProps.visible;
   }
 
+  getDropdownPrefixCls() {
+    return this.props.prefixCls + '-dropdown';
+  }
+
   renderFilterOptionsFromChildren(children, showNotFound) {
-    var sel = [];
-    var props = this.props;
-    var inputValue = props.inputValue;
-    var childrenKeys = [];
-    var tags = props.tags;
+    let sel = [];
+    const props = this.props;
+    const inputValue = props.inputValue;
+    const childrenKeys = [];
+    const tags = props.tags;
     React.Children.forEach(children, (child)=> {
       if (child.type === OptGroup) {
-        var innerItems = this.renderFilterOptionsFromChildren(child.props.children, false);
+        const innerItems = this.renderFilterOptionsFromChildren(child.props.children, false);
         if (innerItems.length) {
-          var label = child.props.label;
-          var key = child.key;
+          let label = child.props.label;
+          let key = child.key;
           if (!key && typeof label === 'string') {
             key = label;
           } else if (!label && key) {
@@ -47,7 +37,7 @@ class SelectDropdown extends React.Component {
         }
         return;
       }
-      var childValue = getValuePropValue(child);
+      const childValue = getValuePropValue(child);
       if (this.filterOption(inputValue, child)) {
         sel.push(<MenuItem
           value={childValue}
@@ -61,7 +51,7 @@ class SelectDropdown extends React.Component {
     });
     if (tags) {
       // tags value must be string
-      var value = props.value;
+      let value = props.value;
       value = value.filter((v)=> {
         return childrenKeys.indexOf(v) === -1 && (!inputValue || v.indexOf(inputValue) > -1);
       });
@@ -69,7 +59,7 @@ class SelectDropdown extends React.Component {
         return <MenuItem value={v} key={v}>{v}</MenuItem>;
       }));
       if (inputValue) {
-        var notFindInputItem = sel.every((s)=> {
+        const notFindInputItem = sel.every((s)=> {
           return getValuePropValue(s) !== inputValue;
         });
         if (notFindInputItem) {
@@ -78,7 +68,7 @@ class SelectDropdown extends React.Component {
       }
     }
     if (!sel.length && showNotFound && props.notFoundContent) {
-      sel = [<MenuItem disabled value='NOT_FOUND' key='NOT_FOUND'>{props.notFoundContent}</MenuItem>];
+      sel = [<MenuItem disabled value="NOT_FOUND" key="NOT_FOUND">{props.notFoundContent}</MenuItem>];
     }
     return sel;
   }
@@ -88,20 +78,20 @@ class SelectDropdown extends React.Component {
   }
 
   renderMenu(menuItems) {
-    var props = this.props;
-    var menuProps = {};
+    const props = this.props;
+    const menuProps = {};
     if (props.isMultipleOrTags) {
       menuProps.onDeselect = props.onMenuDeselect;
     }
-    var value = props.value;
-    var selectedKeys = getSelectKeys(menuItems, value);
-    var activeKey;
+    const value = props.value;
+    const selectedKeys = getSelectKeys(menuItems, value);
+    let activeKey;
     if (!props.isMultipleOrTags) {
       if (!activeKey && selectedKeys.length === 1) {
         activeKey = selectedKeys[0];
       }
     }
-    return <Menu
+    return (<Menu
       ref="menu"
       style={props.dropdownMenuStyle}
       onSelect={props.onMenuSelect}
@@ -113,31 +103,27 @@ class SelectDropdown extends React.Component {
       selectedKeys={selectedKeys}
       prefixCls={`${this.getDropdownPrefixCls()}-menu`}>
       {menuItems}
-    </Menu>;
-  }
-
-  getDropdownPrefixCls() {
-    return this.props.prefixCls + '-dropdown';
+    </Menu>);
   }
 
   render() {
-    var props = this.props;
-    var prefixCls = props.prefixCls;
-    var dropdownPrefixCls = this.getDropdownPrefixCls();
-    var menuItems = this.renderFilterOptions();
-    var style = assign({}, props.dropdownStyle);
-    var search = props.isMultipleOrTagsOrCombobox || !props.showSearch ? null :
+    const props = this.props;
+    const prefixCls = props.prefixCls;
+    const dropdownPrefixCls = this.getDropdownPrefixCls();
+    const menuItems = this.renderFilterOptions();
+    const style = assign({}, props.dropdownStyle);
+    const search = props.isMultipleOrTagsOrCombobox || !props.showSearch ? null :
       <span className={`${prefixCls}-search ${prefixCls}-search--dropdown`}>{props.inputElement}</span>;
     if (!search && !menuItems.length) {
       style.visibility = 'hidden';
     }
-    var className = {
+    const className = {
       [dropdownPrefixCls]: 1,
       [`${dropdownPrefixCls}--below`]: 1,
-      [`${dropdownPrefixCls}-hidden`]: !props.visible
+      [`${dropdownPrefixCls}-hidden`]: !props.visible,
     };
     // single and not combobox, input is inside dropdown
-    return <span key="dropdown"
+    return (<span key="dropdown"
                  onFocus={props.onDropdownFocus}
                  onBlur={props.onDropdownBlur}
                  style={style}
@@ -145,8 +131,29 @@ class SelectDropdown extends React.Component {
                  tabIndex="-1">
         {search}
       {this.renderMenu(menuItems)}
-    </span>;
+    </span>);
+  }
+
+  filterOption(input, child) {
+    if (!input) {
+      return true;
+    }
+    const filterOption = this.props.filterOption;
+    if (!filterOption) {
+      return true;
+    }
+    if (child.props.disabled) {
+      return false;
+    }
+    return filterOption.call(this, input, child);
   }
 }
+
+SelectDropdown.propTypes = {
+  filterOption: React.PropTypes.oneOfType([React.PropTypes.bool, React.PropTypes.func]),
+  visible: React.PropTypes.bool,
+  prefixCls: React.PropTypes.string,
+  children: React.PropTypes.any,
+};
 
 export default SelectDropdown;

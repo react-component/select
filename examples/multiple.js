@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Select, {Option} from 'rc-select';
-import 'rc-select/assets/index.css';
+import 'rc-select/assets/index.less';
 
 var children = [];
 for (var i = 10; i < 36; i++) {

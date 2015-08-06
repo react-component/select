@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Select, {Option} from 'rc-select';
-import 'rc-select/assets/index.css';
+import 'rc-select/assets/index.less';
 
 var c3 = (
   <div>

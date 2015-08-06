@@ -2,7 +2,7 @@ import {ItemGroup as MenuItemGroup} from 'rc-menu';
 import React from 'react';
 
 export function getValuePropValue(c) {
-  var props = c.props;
+  const props = c.props;
   if ('value' in props) {
     return props.value;
   }
@@ -15,9 +15,8 @@ export function getValuePropValue(c) {
 export function getPropValue(c, prop) {
   if (prop === 'value') {
     return getValuePropValue(c);
-  } else {
-    return c.props[prop];
   }
+  return c.props[prop];
 }
 
 export function isCombobox(props) {
@@ -37,25 +36,26 @@ export function isSingleMode(props) {
 }
 
 export function normValue(value) {
+  let ret = value;
   if (value === undefined) {
-    value = [];
+    ret = [];
   } else if (!Array.isArray(value)) {
-    value = [value];
+    ret = [value];
   }
-  return value;
+  return ret;
 }
 
 export function getSelectKeys(menuItems, value) {
-  if (value == null) {
+  if (value === null || value === undefined) {
     return [];
   }
-  var selectedKeys = [];
+  let selectedKeys = [];
   React.Children.forEach(menuItems, (item) => {
     if (item.type === MenuItemGroup) {
       selectedKeys = selectedKeys.concat(getSelectKeys(item.props.children, value));
     } else {
-      var itemValue = getValuePropValue(item);
-      var itemKey = item.key;
+      const itemValue = getValuePropValue(item);
+      const itemKey = item.key;
       if (value.indexOf(itemValue) !== -1 && itemKey) {
         selectedKeys.push(itemKey);
       }

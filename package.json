@@ -1,6 +1,6 @@
 {
   "name": "rc-select",
-  "version": "4.5.1",
+  "version": "4.5.2",
   "description": "select ui component for react",
   "keywords": [
     "react",
@@ -9,6 +9,7 @@
     "select"
   ],
   "main": "./lib/index",
+  "files":["assets/*.css","lib"],
   "homepage": "http://github.com/react-component/select",
   "maintainers": [
     "hualei5280@gmail.com",
@@ -27,13 +28,11 @@
   },
   "scripts": {
     "build": "rc-tools run build",
-    "precommit": "rc-tools run precommit",
-    "less": "rc-tools run less",
     "gh-pages": "rc-tools run gh-pages",
-    "history": "rc-tools run history",
     "start": "node --harmony node_modules/.bin/rc-server",
-    "publish": "rc-tools run tag",
+    "pub": "rc-tools run pub",
     "lint": "rc-tools run lint",
+    "karma": "rc-tools run karma",
     "saucelabs": "node --harmony node_modules/.bin/rc-tools run saucelabs",
     "browser-test": "node --harmony node_modules/.bin/rc-tools run browser-test",
     "browser-test-cover": "node --harmony node_modules/.bin/rc-tools run browser-test-cover"
@@ -44,18 +43,17 @@
     "precommit-hook": "^1.0.7",
     "querystring": "^0.2.0",
     "rc-server": "3.x",
-    "rc-tools": "3.x",
-    "rc-util": "~2.0.3",
+    "rc-tools": "4.x",
     "react": "~0.13.0"
   },
   "dependencies": {
     "object-assign": "3.x",
     "rc-align": "1.x",
     "rc-animate": "1.x",
-    "rc-menu": "3.4.x",
+    "rc-menu": "3.5.x",
     "rc-util": "2.x"
   },
   "precommit": [
-    "precommit"
+    "lint"
   ]
 }
