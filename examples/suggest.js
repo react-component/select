@@ -887,7 +887,7 @@ webpackJsonp([8],{
 	            combobox: true,
 	            renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	            showArrow: false,
-	            notFoundContent: "",
+	            notFoundContent: '',
 	            onChange: this.fetchData, onSelect: this.handleSelect, filterOption: false },
 	          options
 	        )

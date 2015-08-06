@@ -42,17 +42,17 @@ webpackJsonp([3],{
 	    { style: { width: 300 } },
 	    _react2['default'].createElement(
 	      _rcSelect2['default'],
-	      { value: "lucy",
+	      { value: 'lucy',
 	        renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	        showSearch: false,
 	        style: { width: 500 },
 	        onChange: handleChange },
 	      _react2['default'].createElement(
 	        _rcSelect.OptGroup,
-	        { label: "manager" },
+	        { label: 'manager' },
 	        _react2['default'].createElement(
 	          _rcSelect.Option,
-	          { value: "jack" },
+	          { value: 'jack' },
 	          _react2['default'].createElement(
 	            'b',
 	            { style: {
@@ -63,16 +63,16 @@ webpackJsonp([3],{
 	        ),
 	        _react2['default'].createElement(
 	          _rcSelect.Option,
-	          { value: "lucy" },
+	          { value: 'lucy' },
 	          'lucy'
 	        )
 	      ),
 	      _react2['default'].createElement(
 	        _rcSelect.OptGroup,
-	        { label: "engineer" },
+	        { label: 'engineer' },
 	        _react2['default'].createElement(
 	          _rcSelect.Option,
-	          { value: "yiminghe" },
+	          { value: 'yiminghe' },
 	          'yiminghe'
 	        )
 	      )

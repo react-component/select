@@ -42,15 +42,15 @@ webpackJsonp([7],{
 	    { style: { width: 300 } },
 	    _react2['default'].createElement(
 	      _rcSelect2['default'],
-	      { value: "lucy",
+	      { value: 'lucy',
 	        style: { width: 500 },
 	        renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
-	        animation: "slide-up",
+	        animation: 'slide-up',
 	        showSearch: false,
 	        onChange: handleChange },
 	      _react2['default'].createElement(
 	        _rcSelect.Option,
-	        { value: "jack" },
+	        { value: 'jack' },
 	        _react2['default'].createElement(
 	          'b',
 	          { style: {
@@ -61,17 +61,17 @@ webpackJsonp([7],{
 	      ),
 	      _react2['default'].createElement(
 	        _rcSelect.Option,
-	        { value: "lucy" },
+	        { value: 'lucy' },
 	        'lucy'
 	      ),
 	      _react2['default'].createElement(
 	        _rcSelect.Option,
-	        { value: "disabled", disabled: true },
+	        { value: 'disabled', disabled: true },
 	        'disabled'
 	      ),
 	      _react2['default'].createElement(
 	        _rcSelect.Option,
-	        { value: "yiminghe" },
+	        { value: 'yiminghe' },
 	        'yiminghe'
 	      )
 	    )

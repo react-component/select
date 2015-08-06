@@ -95,7 +95,7 @@ webpackJsonp([1],{
 	          _rcSelect2['default'],
 	          { onSearch: this.fetchData,
 	            renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
-	            optionLabelProp: "children",
+	            optionLabelProp: 'children',
 	            style: { width: 500 },
 	            onChange: this.handleChange,
 	            filterOption: false },

@@ -42,7 +42,7 @@ webpackJsonp([0],[
 	        combobox: true },
 	      _react2['default'].createElement(
 	        _rcSelect.Option,
-	        { value: "jack" },
+	        { value: 'jack' },
 	        _react2['default'].createElement(
 	          'b',
 	          { style: {
@@ -53,17 +53,17 @@ webpackJsonp([0],[
 	      ),
 	      _react2['default'].createElement(
 	        _rcSelect.Option,
-	        { value: "lucy" },
+	        { value: 'lucy' },
 	        'lucy'
 	      ),
 	      _react2['default'].createElement(
 	        _rcSelect.Option,
-	        { value: "disabled", disabled: true },
+	        { value: 'disabled', disabled: true },
 	        'disabled'
 	      ),
 	      _react2['default'].createElement(
 	        _rcSelect.Option,
-	        { value: "yiminghe" },
+	        { value: 'yiminghe' },
 	        'yiminghe'
 	      )
 	    )

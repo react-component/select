@@ -61,14 +61,14 @@ webpackJsonp([6],{
 	        { style: { width: 300 } },
 	        _react2['default'].createElement(
 	          _rcSelect2['default'],
-	          { value: "lucy",
+	          { value: 'lucy',
 	            dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
 	            renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	            style: { width: 500 },
 	            onChange: handleChange },
 	          _react2['default'].createElement(
 	            _rcSelect.Option,
-	            { value: "jack" },
+	            { value: 'jack' },
 	            _react2['default'].createElement(
 	              'b',
 	              { style: {
@@ -79,17 +79,17 @@ webpackJsonp([6],{
 	          ),
 	          _react2['default'].createElement(
 	            _rcSelect.Option,
-	            { value: "lucy" },
+	            { value: 'lucy' },
 	            'lucy'
 	          ),
 	          _react2['default'].createElement(
 	            _rcSelect.Option,
-	            { value: "disabled", disabled: true },
+	            { value: 'disabled', disabled: true },
 	            'disabled'
 	          ),
 	          _react2['default'].createElement(
 	            _rcSelect.Option,
-	            { value: "yiminghe" },
+	            { value: 'yiminghe' },
 	            'yiminghe'
 	          ),
 	          [1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (i) {
@@ -108,27 +108,27 @@ webpackJsonp([6],{
 	      ),
 	      _react2['default'].createElement(
 	        'select',
-	        { value: "lucy",
+	        { value: 'lucy',
 	          style: { width: 500 },
 	          onChange: handleChange },
 	        _react2['default'].createElement(
 	          'option',
-	          { value: "jack" },
+	          { value: 'jack' },
 	          'jack'
 	        ),
 	        _react2['default'].createElement(
 	          'option',
-	          { value: "lucy" },
+	          { value: 'lucy' },
 	          'lucy'
 	        ),
 	        _react2['default'].createElement(
 	          'option',
-	          { value: "disabled", disabled: true },
+	          { value: 'disabled', disabled: true },
 	          'disabled'
 	        ),
 	        _react2['default'].createElement(
 	          'option',
-	          { value: "yiminghe" },
+	          { value: 'yiminghe' },
 	          'yiminghe'
 	        )
 	      ),

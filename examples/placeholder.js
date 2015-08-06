@@ -49,12 +49,12 @@ webpackJsonp([5],{
 	          '请下拉选择'
 	        ),
 	        renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
-	        searchPlaceholder: "输入过滤",
+	        searchPlaceholder: '输入过滤',
 	        style: { width: 500 },
 	        onChange: handleChange },
 	      _react2['default'].createElement(
 	        _rcSelect.Option,
-	        { value: "jack" },
+	        { value: 'jack' },
 	        _react2['default'].createElement(
 	          'b',
 	          { style: {
@@ -65,17 +65,17 @@ webpackJsonp([5],{
 	      ),
 	      _react2['default'].createElement(
 	        _rcSelect.Option,
-	        { value: "lucy" },
+	        { value: 'lucy' },
 	        'lucy'
 	      ),
 	      _react2['default'].createElement(
 	        _rcSelect.Option,
-	        { value: "disabled", disabled: true },
+	        { value: 'disabled', disabled: true },
 	        'disabled'
 	      ),
 	      _react2['default'].createElement(
 	        _rcSelect.Option,
-	        { value: "yiminghe" },
+	        { value: 'yiminghe' },
 	        'yiminghe'
 	      )
 	    )

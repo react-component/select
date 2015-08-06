@@ -42,24 +42,24 @@ webpackJsonp([4],{
 	    { style: { width: 300 } },
 	    _react2['default'].createElement(
 	      _rcSelect2['default'],
-	      { value: "张三",
+	      { value: '张三',
 	        style: { width: 500 },
 	        renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
-	        optionFilterProp: "desc",
+	        optionFilterProp: 'desc',
 	        onChange: handleChange },
 	      _react2['default'].createElement(
 	        _rcSelect.Option,
-	        { value: "张三", desc: "张三 zhang san" },
+	        { value: '张三', desc: '张三 zhang san' },
 	        '张三'
 	      ),
 	      _react2['default'].createElement(
 	        _rcSelect.Option,
-	        { value: "李四", desc: "李四 li si" },
+	        { value: '李四', desc: '李四 li si' },
 	        '李四'
 	      ),
 	      _react2['default'].createElement(
 	        _rcSelect.Option,
-	        { value: "王五", desc: "王五 wang wu" },
+	        { value: '王五', desc: '王五 wang wu' },
 	        '王五'
 	      )
 	    )
