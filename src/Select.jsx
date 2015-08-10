@@ -177,7 +177,7 @@ class Select extends React.Component {
     }
   }
 
-  onMenuSelect(key, item) {
+  onMenuSelect({item}) {
     let value = this.state.value;
     const props = this.props;
     const selectedValue = getValuePropValue(item);

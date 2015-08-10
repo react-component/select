@@ -95,7 +95,7 @@ class SelectDropdown extends React.Component {
       ref="menu"
       style={props.dropdownMenuStyle}
       onSelect={props.onMenuSelect}
-      activeFirst={true}
+      defaultActiveFirst={true}
       activeKey={activeKey}
       multiple={props.isMultipleOrTags}
       focusable={false}
