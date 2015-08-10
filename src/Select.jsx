@@ -359,10 +359,13 @@ class Select extends React.Component {
     const children = props.children;
     const clear = (<span className={prefixCls + '-selection__clear'}
                          onClick={this.onClearSelection}/>);
+    const placeholder = (<span className={prefixCls + '-selection__placeholder'}>
+                           {props.placeholder}
+                         </span>);
     // single and not combobox, input is inside dropdown
     if (isSingleMode(props)) {
       return (<span className={prefixCls + '-selection__rendered'}>
-        <span>{this.getLabelByValue(children, value[0]) || props.placeholder}</span>
+        <span>{this.getLabelByValue(children, value[0]) || placeholder}</span>
         {allowClear ? clear : null}
       </span>);
     }
