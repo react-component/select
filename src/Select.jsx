@@ -169,7 +169,7 @@ class Select extends React.Component {
     }
 
     if (state.open) {
-      const menu = this.dropdownInstance && this.dropdownInstance.refs.menu;
+      const menu = this.dropdownInstance && this.dropdownInstance.getMenuComponent();
       if (menu && menu.onKeyDown(e)) {
         e.preventDefault();
         e.stopPropagation();
@@ -195,10 +195,10 @@ class Select extends React.Component {
     }
     props.onSelect(selectedValue, item);
     this.fireChange(value);
+    this.setOpenState(false);
     this.setState({
       inputValue: '',
     });
-    this.setOpenState(false);
     if (isCombobox(props)) {
       this.setState({
         inputValue: getPropValue(item, props.optionLabelProp),
@@ -206,14 +206,14 @@ class Select extends React.Component {
     }
   }
 
-  onMenuDeselect(key, item, e) {
-    if (e.type === 'click') {
+  onMenuDeselect({item, domEvent}) {
+    if (domEvent.type === 'click') {
       this.removeSelected(getValuePropValue(item));
     }
+    this.setOpenState(false);
     this.setState({
       inputValue: '',
     });
-    this.setOpenState(false);
   }
 
   onBlur() {
@@ -243,11 +243,11 @@ class Select extends React.Component {
     e.stopPropagation();
     if (state.inputValue || state.value.length) {
       this.fireChange([]);
+      this.setOpenState(false);
       this.setState({
         inputValue: '',
       });
     }
-    this.setOpenState(false);
   }
 
   getLabelByValue(children, value) {

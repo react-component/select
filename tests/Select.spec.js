@@ -58,8 +58,8 @@ describe('Select', function () {
     instance.setState({
       open: true
     }, function () {
-      expect(instance.dropdownInstance.refs.menu.instanceArray[0].props.selected).to.be(false);
-      expect(instance.dropdownInstance.refs.menu.instanceArray[1].props.selected).to.be(true);
+      expect(instance.dropdownInstance.getMenuComponent().instanceArray[0].props.selected).to.be(false);
+      expect(instance.dropdownInstance.getMenuComponent().instanceArray[1].props.selected).to.be(true);
       done();
     });
   });
@@ -74,9 +74,9 @@ describe('Select', function () {
     instance.setState({
       open: true
     }, function () {
-      expect(instance.dropdownInstance.refs.menu.instanceArray[0].props.selected).to.be(true);
-      expect(instance.dropdownInstance.refs.menu.instanceArray[1].props.selected).to.be(true);
-      expect(instance.dropdownInstance.refs.menu.instanceArray[2].props.selected).to.be(false);
+      expect(instance.dropdownInstance.getMenuComponent().instanceArray[0].props.selected).to.be(true);
+      expect(instance.dropdownInstance.getMenuComponent().instanceArray[1].props.selected).to.be(true);
+      expect(instance.dropdownInstance.getMenuComponent().instanceArray[2].props.selected).to.be(false);
       done();
     });
   });

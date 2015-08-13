@@ -1,9 +1,9 @@
 import React from 'react';
-import {getValuePropValue, getSelectKeys} from './util';
-import Menu, {Item as MenuItem, ItemGroup as MenuItemGroup} from 'rc-menu';
+import {getValuePropValue} from './util';
+import {Item as MenuItem, ItemGroup as MenuItemGroup} from 'rc-menu';
 import OptGroup from './OptGroup';
-import assign from 'object-assign';
 import {classSet} from 'rc-util';
+import Panel from './DropdownPanel';
 
 class SelectDropdown extends React.Component {
   shouldComponentUpdate(nextProps) {
@@ -12,6 +12,10 @@ class SelectDropdown extends React.Component {
 
   getDropdownPrefixCls() {
     return this.props.prefixCls + '-dropdown';
+  }
+
+  getMenuComponent() {
+    return this.refs.panel.refs.menu;
   }
 
   renderFilterOptionsFromChildren(children, showNotFound) {
@@ -77,61 +81,32 @@ class SelectDropdown extends React.Component {
     return this.renderFilterOptionsFromChildren(this.props.children, true);
   }
 
-  renderMenu(menuItems) {
-    const props = this.props;
-    const menuProps = {};
-    if (props.isMultipleOrTags) {
-      menuProps.onDeselect = props.onMenuDeselect;
-    }
-    const value = props.value;
-    const selectedKeys = getSelectKeys(menuItems, value);
-    let activeKey;
-    if (!props.isMultipleOrTags) {
-      if (!activeKey && selectedKeys.length === 1) {
-        activeKey = selectedKeys[0];
-      }
-    }
-    return (<Menu
-      ref="menu"
-      style={props.dropdownMenuStyle}
-      onSelect={props.onMenuSelect}
-      defaultActiveFirst={true}
-      activeKey={activeKey}
-      multiple={props.isMultipleOrTags}
-      focusable={false}
-      {...menuProps}
-      selectedKeys={selectedKeys}
-      prefixCls={`${this.getDropdownPrefixCls()}-menu`}>
-      {menuItems}
-    </Menu>);
-  }
 
   render() {
     const props = this.props;
     const prefixCls = props.prefixCls;
     const dropdownPrefixCls = this.getDropdownPrefixCls();
     const menuItems = this.renderFilterOptions();
-    const style = assign({}, props.dropdownStyle);
+    let visible = props.visible;
     const search = props.isMultipleOrTagsOrCombobox || !props.showSearch ? null :
       <span className={`${prefixCls}-search ${prefixCls}-search--dropdown`}>{props.inputElement}</span>;
     if (!search && !menuItems.length) {
-      style.visibility = 'hidden';
+      visible = false;
     }
     const className = {
       [dropdownPrefixCls]: 1,
       [`${dropdownPrefixCls}--below`]: 1,
-      [`${dropdownPrefixCls}-hidden`]: !props.visible,
+      [`${dropdownPrefixCls}-hidden`]: !visible,
     };
     // single and not combobox, input is inside dropdown
-    return (<span key="dropdown"
+    return (<div key="dropdown"
                  onFocus={props.onDropdownFocus}
                  onBlur={props.onDropdownBlur}
-                 style={style}
+                 style={props.dropdownStyle}
                  className={classSet(className)}
                  tabIndex="-1">
-        {search}
-      {this.renderMenu(menuItems)}
-    </span>);
+      <Panel ref="panel" {...props} menuItems={menuItems} visible={visible} search={search}/>
+    </div>);
   }
 
   filterOption(input, child) {

@@ -31,16 +31,17 @@ var Test = React.createClass({
     return (
       <div>
         <h2>tags select（scroll the menu）</h2>
+
         <div>
           <Select tags
-            dropdownStyle={{maxHeight:200,overflow:'auto'}}
-            renderDropdownToBody={location.href.indexOf('renderDropdownToBody') !== -1}
-            style={{width:500}}
-            disabled={this.state.disabled}
-            maxTagTextLength={10}
-            value={this.state.value}
-            onChange={this.handleChange}>
-    {children}
+                  dropdownMenuStyle={{maxHeight:200,overflow:'auto'}}
+                  renderDropdownToBody={location.href.indexOf('renderDropdownToBody') !== -1}
+                  style={{width:500}}
+                  disabled={this.state.disabled}
+                  maxTagTextLength={10}
+                  value={this.state.value}
+                  onChange={this.handleChange}>
+            {children}
           </Select>
         </div>
         <p>
