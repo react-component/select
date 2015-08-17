@@ -282,14 +282,18 @@ class Select extends React.Component {
 
   getInputElement() {
     const props = this.props;
-    return (<input ref={this.saveInputRef}
-                   onChange={this.onInputChange}
-                   onKeyDown={this.onInputKeyDown}
-                   value={this.state.inputValue}
-                   disabled={props.disabled}
-                   placeholder={props.searchPlaceholder}
-                   className={props.prefixCls + '-search__field'}
-                   role="textbox"/>);
+    return (<span className={props.prefixCls + '-search__field__wrap'}>
+    <input ref={this.saveInputRef}
+           onChange={this.onInputChange}
+           onKeyDown={this.onInputKeyDown}
+           value={this.state.inputValue}
+           disabled={props.disabled}
+           className={props.prefixCls + '-search__field'}
+           role="textbox"/>
+      {props.searchPlaceholder ? <span
+        style={{display: this.state.inputValue ? 'none' : 'block'}}
+        className={props.prefixCls + '-search__field__placeholder'}>{props.searchPlaceholder}</span> : null}
+                   </span>);
   }
 
   getDropdownElement() {

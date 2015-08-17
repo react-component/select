@@ -1,6 +1,10 @@
 # History
 ----
 
+## 4.7.0 / 2015-08-18
+
+implement searchPlaceholder to prevent bug for ie10
+
 ## 4.5.0 / 2015-07-30
 
 use rc-animate & rc-align. (assets change)
