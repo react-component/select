@@ -3,12 +3,12 @@ webpackJsonp([9],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(63);
+	module.exports = __webpack_require__(67);
 
 
 /***/ },
 
-/***/ 63:
+/***/ 67:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23,7 +23,7 @@ webpackJsonp([9],{
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(44);
+	__webpack_require__(48);
 	
 	var children = [];
 	for (var i = 10; i < 36; i++) {
@@ -69,7 +69,7 @@ webpackJsonp([9],{
 	        _react2['default'].createElement(
 	          _rcSelect2['default'],
 	          { tags: true,
-	            dropdownStyle: { maxHeight: 200, overflow: 'auto' },
+	            dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
 	            renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	            style: { width: 500 },
 	            disabled: this.state.disabled,

@@ -3,12 +3,12 @@ webpackJsonp([4],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(58);
+	module.exports = __webpack_require__(62);
 
 
 /***/ },
 
-/***/ 58:
+/***/ 62:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23,7 +23,7 @@ webpackJsonp([4],{
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(44);
+	__webpack_require__(48);
 	
 	function handleChange(value) {
 	  console.log('selected ' + value);

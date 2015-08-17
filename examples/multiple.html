@@ -235,49 +235,69 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>rc-select@4.5.2</h1>
+            <h1>rc-select@4.7.1</h1>
             <p>select ui component for react</p>
         </div>
         <div class="example" id="__react-content"></div>
         <script src="common.js?nowrap"></script>
         <script src="multiple.js?nowrap"></script>
-        <div class="highlight"><pre><code><span class="hljs-pi">'use strict'</span>;
+        <div class="highlight"><pre><code><span class="xml">'use strict';
 
-<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
-<span class="hljs-keyword">import</span> Select, {Option} <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-select'</span>;
-<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-select/assets/index.css'</span>;
+import React from 'react';
+import Select, {Option} from 'rc-select';
+import 'rc-select/assets/index.css';
 
-<span class="hljs-keyword">var</span> children = [];
-<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">10</span>; i &lt; <span class="hljs-number">36</span>; i++) {
-  children.push(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{i.toString(36)</span> + <span class="hljs-attribute">i</span>}&gt;</span>{i.toString(36) + i}<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>)</span>;
+var children = [];
+for (var i = 10; i <span class="hljs-tag">&lt; <span class="hljs-attribute">36</span>; <span class="hljs-attribute">i</span>++) {
+  <span class="hljs-attribute">children.push</span>(&lt;<span class="hljs-attribute">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{i.toString(36)</span> + <span class="hljs-attribute">i</span>}&gt;</span>{i.toString(36) + i}<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>);
 }
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handleChange</span>(<span class="hljs-params">value</span>) </span>{
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'selected '</span> + value);
+function handleChange(value) {
+  console.log('selected ' + value);
 }
 
-<span class="hljs-keyword">var</span> c2 = (
-  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>multiple select（scroll the menu）<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">300</span>}}&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">Select</span>
-        <span class="hljs-attribute">dropdownMenuStyle</span>=<span class="hljs-value">{{</span>
-        <span class="hljs-attribute">maxHeight:200</span>,
-        <span class="hljs-attribute">overflow:</span>'<span class="hljs-attribute">auto</span>'
-        }}
-        <span class="hljs-attribute">renderDropdownToBody</span>=<span class="hljs-value">{location.href.indexOf('renderDropdownToBody')</span> !=<span class="hljs-value">=</span> <span class="hljs-attribute">-1</span>}
-        <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:500}}</span>
-        <span class="hljs-attribute">multiple</span>
-        <span class="hljs-attribute">value</span>=<span class="hljs-value">{['name2',</span> '<span class="hljs-attribute">name3</span>']}
-        <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{handleChange}</span>&gt;</span>
-    {children}
-      <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-)</span>;
+var Test = React.createClass({
+  getInitialState(){
+    return {
+      useAnim: 0
+    };
+  },
+  useAnim(e){
+    this.setState({
+      useAnim: e.target.checked
+    });
+  },
+  render(){
+    return (
+      <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>multiple select（scroll the menu）<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
 
-React.render(c2, <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'__react-content'</span>));
-</code></pre></div>
+        <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">label</span>&gt;</span>anim <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">checked</span>=<span class="hljs-value">{this.state.useAnim}</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"checkbox"</span> <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.useAnim}</span>/&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=</span></span><span class="hljs-expression">{{<span class="hljs-variable">width</span>: 300}}</span><span class="xml"><span class="hljs-tag">&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">Select</span>
+            <span class="hljs-attribute">animation</span>=<span class="hljs-value">{this.state.useAnim?"slide-up":null}</span>
+            <span class="hljs-attribute">dropdownMenuStyle</span>=</span></span><span class="hljs-expression">{{
+        <span class="hljs-variable">maxHeight</span>:200,
+        <span class="hljs-variable">overflow</span>:'<span class="hljs-variable">auto</span>'
+        }}</span><span class="xml"><span class="hljs-tag">
+            <span class="hljs-attribute">renderDropdownToBody</span>=<span class="hljs-value">{location.href.indexOf('renderDropdownToBody')</span> !=<span class="hljs-value">=</span> <span class="hljs-attribute">-1</span>}
+            <span class="hljs-attribute">style</span>=</span></span><span class="hljs-expression">{{<span class="hljs-variable">width</span>:500}}</span><span class="xml"><span class="hljs-tag">
+            <span class="hljs-attribute">multiple</span>
+            <span class="hljs-attribute">value</span>=<span class="hljs-value">{['name2',</span> '<span class="hljs-attribute">name3</span>']}
+            <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{handleChange}</span>&gt;</span>
+            {children}
+          <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    );
+  }
+});
+
+React.render(<span class="hljs-tag">&lt;<span class="hljs-title">Test</span> /&gt;</span>, document.getElementById('__react-content'));
+</span></code></pre></div>
     </div>
     <a href="http://github.com/react-component/select"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
 </body>
