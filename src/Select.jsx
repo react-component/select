@@ -45,6 +45,7 @@ class Select extends React.Component {
       'onClearSelection',
       'onMenuSelect',
       'onMenuDeselect',
+      'onPlaceholderClick',
     ];
     events.forEach((m)=> {
       this[m] = this[m].bind(this);
@@ -234,6 +235,10 @@ class Select extends React.Component {
     }
   }
 
+  onPlaceholderClick() {
+    this.getInputDOMNode().focus();
+  }
+
   onClearSelection(e) {
     const props = this.props;
     const state = this.state;
@@ -292,6 +297,7 @@ class Select extends React.Component {
            role="textbox"/>
       {props.searchPlaceholder ? <span
         style={{display: this.state.inputValue ? 'none' : 'block'}}
+        onClick={this.onPlaceholderClick}
         className={props.prefixCls + '-search__field__placeholder'}>{props.searchPlaceholder}</span> : null}
                    </span>);
   }
