@@ -206,7 +206,7 @@
 	    var value = [];
 	    if ('value' in props) {
 	      value = (0, _util.normValue)(props.value);
-	    } else if ('defaultValue' in props) {
+	    } else {
 	      value = (0, _util.normValue)(props.defaultValue);
 	    }
 	    this.state = {
@@ -236,9 +236,7 @@
 	      var state = this.state;
 	      var props = this.props;
 	      if (this.haveOpened) {
-	        if (props.renderDropdownToBody) {
-	          _react2['default'].render(this.getDropdownElement(), this.getDropdownContainer());
-	        }
+	        _react2['default'].render(this.getDropdownElement(), this.getDropdownContainer());
 	      }
 	      if (state.open) {
 	        if (props.dropdownMatchSelectWidth) {
@@ -323,7 +321,8 @@
 	      if ((0, _util.isMultipleOrTags)(props) && !e.target.value && keyCode === _rcUtil.KeyCode.BACKSPACE) {
 	        var value = state.value.concat();
 	        if (value.length) {
-	          value.pop();
+	          var popValue = value.pop();
+	          props.onDeselect(popValue);
 	          this.fireChange(value);
 	        }
 	        return;
@@ -661,11 +660,7 @@
 	        };
 	      }
 	      var rootCls = (_rootCls = {}, _defineProperty(_rootCls, props.className, !!props.className), _defineProperty(_rootCls, prefixCls, 1), _defineProperty(_rootCls, prefixCls + '-open', this.state.open), _defineProperty(_rootCls, prefixCls + '-combobox', (0, _util.isCombobox)(props)), _defineProperty(_rootCls, prefixCls + '-disabled', props.disabled), _rootCls);
-	      var dropdownElement = undefined;
 	      this.haveOpened = this.haveOpened || state.open;
-	      if (this.haveOpened) {
-	        dropdownElement = this.getDropdownElement();
-	      }
 	      return _react2['default'].createElement(
 	        'span',
 	        {
@@ -690,8 +685,7 @@
 	            { key: 'arrow', className: prefixCls + '-arrow', tabIndex: '-1', style: { outline: 'none' } },
 	            _react2['default'].createElement('b', null)
 	          )
-	        ),
-	        props.renderDropdownToBody ? null : dropdownElement
+	        )
 	      );
 	    }
 	  }, {
@@ -739,10 +733,13 @@
 	  }, {
 	    key: 'fireChange',
 	    value: function fireChange(value) {
-	      this.props.onChange((0, _util.isMultipleOrTags)(this.props) ? value : value[0]);
-	      this.setState({
-	        value: value
-	      });
+	      var props = this.props;
+	      if (!('value' in props)) {
+	        this.setState({
+	          value: value
+	        });
+	      }
+	      props.onChange((0, _util.isMultipleOrTags)(props) ? value : value[0]);
 	    }
 	  }]);
 	
@@ -755,7 +752,6 @@
 	  showSearch: _react2['default'].PropTypes.bool,
 	  disabled: _react2['default'].PropTypes.bool,
 	  showArrow: _react2['default'].PropTypes.bool,
-	  renderDropdownToBody: _react2['default'].PropTypes.bool,
 	  tags: _react2['default'].PropTypes.bool,
 	  transitionName: _react2['default'].PropTypes.string,
 	  optionLabelProp: _react2['default'].PropTypes.string,
@@ -778,6 +774,7 @@
 	  allowClear: false,
 	  placeholder: '',
 	  searchPlaceholder: '',
+	  defaultValue: [],
 	  onChange: noop,
 	  onSelect: noop,
 	  onSearch: noop,
@@ -786,7 +783,6 @@
 	  dropdownMatchSelectWidth: true,
 	  dropdownStyle: {},
 	  dropdownMenuStyle: {},
-	  renderDropdownToBody: false,
 	  optionFilterProp: 'value',
 	  optionLabelProp: 'value',
 	  notFoundContent: 'Not Found'
@@ -3775,28 +3771,32 @@
 	    closeSubMenuOnMouseLeave: _react2['default'].PropTypes.bool,
 	    selectedKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
 	    defaultSelectedKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
-	    defaultOpenedKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
-	    openedKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
+	    defaultOpenKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
+	    openKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
 	    mode: _react2['default'].PropTypes.string,
 	    onClick: _react2['default'].PropTypes.func,
-	    onOpenedChange: _react2['default'].PropTypes.func,
+	    onOpenChange: _react2['default'].PropTypes.func,
 	    onSelect: _react2['default'].PropTypes.func,
 	    onDeselect: _react2['default'].PropTypes.func,
-	    onDestroy: _react2['default'].PropTypes.func
+	    onDestroy: _react2['default'].PropTypes.func,
+	    level: _react2['default'].PropTypes.number,
+	    eventKey: _react2['default'].PropTypes.string,
+	    selectable: _react2['default'].PropTypes.bool
 	  },
 	
 	  getDefaultProps: function getDefaultProps() {
 	    return {
 	      openSubMenuOnMouseEnter: true,
 	      closeSubMenuOnMouseLeave: true,
-	      onOpenedChange: _util.noop,
+	      selectable: true,
+	      onOpenChange: _util.noop,
 	      onClick: _util.noop,
 	      onSelect: _util.noop,
 	      onOpen: _util.noop,
 	      onClose: _util.noop,
 	      onDeselect: _util.noop,
 	      defaultSelectedKeys: [],
-	      defaultOpenedKeys: []
+	      defaultOpenKeys: []
 	    };
 	  },
 	
@@ -3805,15 +3805,15 @@
 	  getInitialState: function getInitialState() {
 	    var props = this.props;
 	    var selectedKeys = props.defaultSelectedKeys;
-	    var openedKeys = props.defaultOpenedKeys;
+	    var openKeys = props.defaultOpenKeys;
 	    if ('selectedKeys' in props) {
 	      selectedKeys = props.selectedKeys || [];
 	    }
-	    if ('openedKeys' in props) {
-	      openedKeys = props.openedKeys || [];
+	    if ('openKeys' in props) {
+	      openKeys = props.openKeys || [];
 	    }
 	    return {
-	      selectedKeys: selectedKeys, openedKeys: openedKeys
+	      selectedKeys: selectedKeys, openKeys: openKeys
 	    };
 	  },
 	
@@ -3822,8 +3822,8 @@
 	    if ('selectedKeys' in nextProps) {
 	      props.selectedKeys = nextProps.selectedKeys;
 	    }
-	    if ('openedKeys' in nextProps) {
-	      props.openedKeys = nextProps.openedKeys;
+	    if ('openKeys' in nextProps) {
+	      props.openKeys = nextProps.openKeys;
 	    }
 	    this.setState(props);
 	  },
@@ -3832,14 +3832,14 @@
 	    var state = this.state;
 	    var props = this.props;
 	    var selectedKeys = state.selectedKeys;
-	    var openedKeys = state.openedKeys;
+	    var openKeys = state.openKeys;
 	    var index = selectedKeys.indexOf(key);
 	    if (!('selectedKeys' in props) && index !== -1) {
 	      selectedKeys.splice(index, 1);
 	    }
-	    index = openedKeys.indexOf(key);
-	    if (!('openedKeys' in props) && index !== -1) {
-	      openedKeys.splice(index, 1);
+	    index = openKeys.indexOf(key);
+	    if (!('openKeys' in props) && index !== -1) {
+	      openKeys.splice(index, 1);
 	    }
 	  },
 	
@@ -3855,11 +3855,11 @@
 	        var activeItem = _this.instanceArray.filter(function (c) {
 	          return c.props.eventKey === activeKey;
 	        })[0];
-	        if (activeItem && activeItem.props.opened) {
-	          _this.onOpenedChange({
+	        if (activeItem && activeItem.props.open) {
+	          _this.onOpenChange({
 	            key: item.props.eventKey,
 	            item: e.item,
-	            opened: true
+	            open: true
 	          });
 	        }
 	      })();
@@ -3870,22 +3870,24 @@
 	
 	  onSelect: function onSelect(selectInfo) {
 	    var props = this.props;
-	    // root menu
-	    var selectedKeys = this.state.selectedKeys;
-	    var selectedKey = selectInfo.key;
-	    if (props.multiple) {
-	      selectedKeys = selectedKeys.concat([selectedKey]);
-	    } else {
-	      selectedKeys = [selectedKey];
-	    }
-	    if (!('selectedKeys' in props)) {
-	      this.setState({
+	    if (props.selectable) {
+	      // root menu
+	      var selectedKeys = this.state.selectedKeys;
+	      var selectedKey = selectInfo.key;
+	      if (props.multiple) {
+	        selectedKeys = selectedKeys.concat([selectedKey]);
+	      } else {
+	        selectedKeys = [selectedKey];
+	      }
+	      if (!('selectedKeys' in props)) {
+	        this.setState({
+	          selectedKeys: selectedKeys
+	        });
+	      }
+	      props.onSelect((0, _objectAssign2['default'])({}, selectInfo, {
 	        selectedKeys: selectedKeys
-	      });
+	      }));
 	    }
-	    props.onSelect((0, _objectAssign2['default'])({}, selectInfo, {
-	      selectedKeys: selectedKeys
-	    }));
 	  },
 	
 	  onClick: function onClick(e) {
@@ -3898,40 +3900,40 @@
 	        this.setState({
 	          activeKey: null
 	        });
-	        if (!('openedKeys' in this.props)) {
-	          this.setState({ openedKeys: [] });
+	        if (!('openKeys' in this.props)) {
+	          this.setState({ openKeys: [] });
 	        }
-	        this.props.onOpenedChange({ openedKeys: [] });
+	        this.props.onOpenChange({ openKeys: [] });
 	      }
 	    }
 	    props.onClick(e);
 	  },
 	
-	  onOpenedChange: function onOpenedChange(e) {
-	    var openedKeys = this.state.openedKeys;
+	  onOpenChange: function onOpenChange(e) {
+	    var openKeys = this.state.openKeys;
 	    var props = this.props;
 	    var changed = true;
-	    if (e.opened) {
-	      changed = openedKeys.indexOf(e.key) === -1;
+	    if (e.open) {
+	      changed = openKeys.indexOf(e.key) === -1;
 	      if (changed) {
-	        openedKeys = openedKeys.concat(e.key);
+	        openKeys = openKeys.concat(e.key);
 	      }
 	    } else {
-	      var index = openedKeys.indexOf(e.key);
+	      var index = openKeys.indexOf(e.key);
 	      changed = index !== -1;
 	      if (changed) {
-	        openedKeys = openedKeys.concat();
-	        openedKeys.splice(index, 1);
+	        openKeys = openKeys.concat();
+	        openKeys.splice(index, 1);
 	      }
 	    }
 	    if (changed) {
 	      // hack: batch does not update state
-	      this.state.openedKeys = openedKeys;
-	      if (!('openedKeys' in this.props)) {
-	        this.setState({ openedKeys: openedKeys });
+	      this.state.openKeys = openKeys;
+	      if (!('openKeys' in this.props)) {
+	        this.setState({ openKeys: openKeys });
 	      }
-	      var info = (0, _objectAssign2['default'])({ openedKeys: openedKeys }, e);
-	      if (e.opened) {
+	      var info = (0, _objectAssign2['default'])({ openKeys: openKeys }, e);
+	      if (e.open) {
 	        props.onOpen(info);
 	      } else {
 	        props.onClose(info);
@@ -3941,28 +3943,30 @@
 	
 	  onDeselect: function onDeselect(selectInfo) {
 	    var props = this.props;
-	    var selectedKeys = this.state.selectedKeys.concat();
-	    var selectedKey = selectInfo.key;
-	    var index = selectedKeys.indexOf(selectedKey);
-	    if (index !== -1) {
-	      selectedKeys.splice(index, 1);
-	    }
-	    if (!('selectedKeys' in props)) {
-	      this.setState({
+	    if (props.selectable) {
+	      var selectedKeys = this.state.selectedKeys.concat();
+	      var selectedKey = selectInfo.key;
+	      var index = selectedKeys.indexOf(selectedKey);
+	      if (index !== -1) {
+	        selectedKeys.splice(index, 1);
+	      }
+	      if (!('selectedKeys' in props)) {
+	        this.setState({
+	          selectedKeys: selectedKeys
+	        });
+	      }
+	      props.onDeselect((0, _objectAssign2['default'])({}, selectInfo, {
 	        selectedKeys: selectedKeys
-	      });
+	      }));
 	    }
-	    props.onDeselect((0, _objectAssign2['default'])({}, selectInfo, {
-	      selectedKeys: selectedKeys
-	    }));
 	  },
 	
 	  renderMenuItem: function renderMenuItem(c, i) {
-	    var key = (0, _util.getKeyFromChildrenIndex)(c, i);
+	    var key = (0, _util.getKeyFromChildrenIndex)(c, this.props.eventKey, i);
 	    var state = this.state;
 	    var extraProps = {
-	      openedKeys: state.openedKeys,
-	      opened: state.openedKeys.indexOf(key) !== -1,
+	      openKeys: state.openKeys,
+	      open: state.openKeys.indexOf(key) !== -1,
 	      selectedKeys: state.selectedKeys,
 	      selected: state.selectedKeys.indexOf(key) !== -1,
 	      openSubMenuOnMouseEnter: this.props.openSubMenuOnMouseEnter
@@ -3980,13 +3984,13 @@
 	    return this.props.mode === 'inline';
 	  },
 	
-	  lastOpenedSubMenu: function lastOpenedSubMenu() {
+	  lastOpenSubMenu: function lastOpenSubMenu() {
 	    var _this2 = this;
 	
 	    var lastOpen = [];
-	    if (this.state.openedKeys.length) {
+	    if (this.state.openKeys.length) {
 	      lastOpen = this.instanceArray.filter(function (c) {
-	        return _this2.state.openedKeys.indexOf(c.props.eventKey) !== -1;
+	        return _this2.state.openKeys.indexOf(c.props.eventKey) !== -1;
 	      });
 	    }
 	    return lastOpen[0];
@@ -4031,10 +4035,11 @@
 	function getActiveKey(props) {
 	  var activeKey = props.activeKey;
 	  var children = props.children;
+	  var eventKey = props.eventKey;
 	  if (activeKey) {
 	    var found = undefined;
 	    _react2['default'].Children.forEach(children, function (c, i) {
-	      if (!c.props.disabled && activeKey === (0, _util.getKeyFromChildrenIndex)(c, i)) {
+	      if (!c.props.disabled && activeKey === (0, _util.getKeyFromChildrenIndex)(c, eventKey, i)) {
 	        found = true;
 	      }
 	    });
@@ -4046,7 +4051,7 @@
 	  if (props.defaultActiveFirst) {
 	    _react2['default'].Children.forEach(children, function (c, i) {
 	      if (!activeKey && !c.props.disabled) {
-	        activeKey = (0, _util.getKeyFromChildrenIndex)(c, i);
+	        activeKey = (0, _util.getKeyFromChildrenIndex)(c, eventKey, i);
 	      }
 	    });
 	    return activeKey;
@@ -4070,8 +4075,8 @@
 	    activeKey: _react2['default'].PropTypes.string,
 	    selectedKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
 	    defaultSelectedKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
-	    defaultOpenedKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
-	    openedKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string)
+	    defaultOpenKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
+	    openKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string)
 	  },
 	
 	  getDefaultProps: function getDefaultProps() {
@@ -4162,16 +4167,16 @@
 	    // keep active for sub menu for click active
 	    // empty
 	
-	    // clear last opened status
+	    // clear last open status
 	    if (hover && mode !== 'inline') {
 	      var activeItem = this.instanceArray.filter(function (c) {
 	        return c.props.eventKey === activeKey;
 	      })[0];
 	      if (activeItem && activeItem.isSubMenu && activeItem.props.eventKey !== key) {
-	        this.onOpenedChange({
+	        this.onOpenChange({
 	          item: activeItem,
 	          key: activeItem.props.eventKey,
-	          opened: false
+	          open: false
 	        });
 	      }
 	    }
@@ -4180,7 +4185,7 @@
 	  renderCommonMenuItem: function renderCommonMenuItem(child, i, extraProps) {
 	    var state = this.state;
 	    var props = this.props;
-	    var key = (0, _util.getKeyFromChildrenIndex)(child, i);
+	    var key = (0, _util.getKeyFromChildrenIndex)(child, props.eventKey, i);
 	    var childProps = child.props;
 	    var newChildProps = (0, _objectAssign2['default'])({
 	      mode: props.mode,
@@ -4195,7 +4200,7 @@
 	      active: !childProps.disabled && key === state.activeKey,
 	      multiple: props.multiple,
 	      onClick: this.onClick,
-	      onOpenedChange: this.onOpenedChange,
+	      onOpenChange: this.onOpenChange,
 	      onDeselect: this.onDeselect,
 	      onDestroy: this.onDestroy,
 	      onSelect: this.onSelect
@@ -4897,8 +4902,9 @@
 	exports['default'] = {
 	  noop: function noop() {},
 	
-	  getKeyFromChildrenIndex: function getKeyFromChildrenIndex(child, index) {
-	    return child.key || 'rcMenuItem_' + now + '_' + index;
+	  getKeyFromChildrenIndex: function getKeyFromChildrenIndex(child, menuEventKey, index) {
+	    var prefix = menuEventKey || '';
+	    return child.key || prefix + 'item_' + now + '_' + index;
 	  }
 	};
 	module.exports = exports['default'];
@@ -4935,12 +4941,12 @@
 	  propTypes: {
 	    title: _react2['default'].PropTypes.node,
 	    onClick: _react2['default'].PropTypes.func,
-	    onOpenedChange: _react2['default'].PropTypes.func,
+	    onOpenChange: _react2['default'].PropTypes.func,
 	    rootPrefixCls: _react2['default'].PropTypes.string,
 	    eventKey: _react2['default'].PropTypes.string,
 	    multiple: _react2['default'].PropTypes.bool,
 	    active: _react2['default'].PropTypes.bool,
-	    opened: _react2['default'].PropTypes.bool,
+	    open: _react2['default'].PropTypes.bool,
 	    onSelect: _react2['default'].PropTypes.func,
 	    closeSubMenuOnMouseLeave: _react2['default'].PropTypes.bool,
 	    onDeselect: _react2['default'].PropTypes.func,
@@ -4988,10 +4994,10 @@
 	    }
 	
 	    if (keyCode === _rcUtil.KeyCode.RIGHT) {
-	      if (this.props.opened) {
+	      if (this.props.open) {
 	        menu.onKeyDown(e);
 	      } else {
-	        this.triggerOpenedChange(true);
+	        this.triggerOpenChange(true);
 	        this.setState({
 	          defaultActiveFirst: true
 	        });
@@ -5000,19 +5006,19 @@
 	    }
 	    if (keyCode === _rcUtil.KeyCode.LEFT) {
 	      var handled = undefined;
-	      if (this.props.opened) {
+	      if (this.props.open) {
 	        handled = menu.onKeyDown(e);
 	      } else {
 	        return undefined;
 	      }
 	      if (!handled) {
-	        this.triggerOpenedChange(false);
+	        this.triggerOpenChange(false);
 	        handled = true;
 	      }
 	      return handled;
 	    }
 	
-	    if (this.props.opened && (keyCode === _rcUtil.KeyCode.UP || keyCode === _rcUtil.KeyCode.DOWN)) {
+	    if (this.props.open && (keyCode === _rcUtil.KeyCode.UP || keyCode === _rcUtil.KeyCode.DOWN)) {
 	      return menu.onKeyDown(e);
 	    }
 	  },
@@ -5024,8 +5030,8 @@
 	    }
 	  },
 	
-	  onOpenedChange: function onOpenedChange(e) {
-	    this.props.onOpenedChange(e);
+	  onOpenChange: function onOpenChange(e) {
+	    this.props.onOpenChange(e);
 	  },
 	
 	  onMouseEnter: function onMouseEnter() {
@@ -5041,7 +5047,7 @@
 	      trigger: 'mouseenter'
 	    });
 	    if (props.openSubMenuOnMouseEnter) {
-	      this.triggerOpenedChange(true);
+	      this.triggerOpenChange(true);
 	    }
 	    this.setState({
 	      defaultActiveFirst: false
@@ -5063,16 +5069,16 @@
 	          trigger: 'mouseleave'
 	        });
 	      }
-	      if (_this.isMounted() && _this.props.opened) {
+	      if (_this.isMounted() && _this.props.open) {
 	        if (_this.props.closeSubMenuOnMouseLeave) {
-	          _this.triggerOpenedChange(false);
+	          _this.triggerOpenChange(false);
 	        }
 	      }
 	    }, 100);
 	  },
 	
 	  onClick: function onClick() {
-	    this.triggerOpenedChange(!this.props.opened, 'click');
+	    this.triggerOpenChange(!this.props.open, 'click');
 	    this.setState({
 	      defaultActiveFirst: false
 	    });
@@ -5102,15 +5108,15 @@
 	    return this.getPrefixCls() + '-disabled';
 	  },
 	
-	  getOpenedClassName: function getOpenedClassName() {
-	    return this.props.rootPrefixCls + '-submenu-opened';
+	  getOpenClassName: function getOpenClassName() {
+	    return this.props.rootPrefixCls + '-submenu-open';
 	  },
 	
 	  renderChildren: function renderChildren(children) {
 	    var props = this.props;
 	    var baseProps = {
 	      mode: props.mode === 'horizontal' ? 'vertical' : props.mode,
-	      visible: this.props.opened,
+	      visible: this.props.open,
 	      level: props.level + 1,
 	      inlineIndent: props.inlineIndent,
 	      focusable: false,
@@ -5119,8 +5125,9 @@
 	      onDeselect: this.onDeselect,
 	      onDestroy: this.onDestroy,
 	      selectedKeys: props.selectedKeys,
-	      openedKeys: props.openedKeys,
-	      onOpenedChange: this.onOpenedChange,
+	      eventKey: props.eventKey + '-menu-',
+	      openKeys: props.openKeys,
+	      onOpenChange: this.onOpenChange,
 	      closeSubMenuOnMouseLeave: props.closeSubMenuOnMouseLeave,
 	      defaultActiveFirst: this.state.defaultActiveFirst,
 	      multiple: props.multiple,
@@ -5138,12 +5145,12 @@
 	  render: function render() {
 	    var _classes;
 	
-	    this.haveOpened = this.haveOpened || this.props.opened;
+	    this.haveOpen = this.haveOpen || this.props.open;
 	    var props = this.props;
 	    var prefixCls = this.getPrefixCls();
 	    var classes = (_classes = {}, _defineProperty(_classes, props.className, !!props.className), _defineProperty(_classes, prefixCls + '-' + props.mode, 1), _classes);
 	
-	    classes[this.getOpenedClassName()] = this.props.opened;
+	    classes[this.getOpenClassName()] = this.props.open;
 	    classes[this.getActiveClassName()] = props.active;
 	    classes[this.getDisabledClassName()] = props.disabled;
 	    this._menuId = this._menuId || (0, _rcUtil.guid)();
@@ -5178,7 +5185,7 @@
 	          style: style,
 	          className: prefixCls + '-title'
 	        }, titleMouseEvents, clickEvents, {
-	          'aria-opened': props.opened,
+	          'aria-open': props.open,
 	          'aria-owns': this._menuId,
 	          'aria-haspopup': 'true'
 	        }),
@@ -5192,12 +5199,12 @@
 	    this.menuInstance = c;
 	  },
 	
-	  triggerOpenedChange: function triggerOpenedChange(opened, type) {
-	    this.onOpenedChange({
+	  triggerOpenChange: function triggerOpenChange(open, type) {
+	    this.onOpenChange({
 	      key: this.props.eventKey,
 	      item: this,
 	      trigger: type,
-	      opened: opened
+	      open: open
 	    });
 	  }
 	});
@@ -5238,9 +5245,9 @@
 	    onSelect: _react2['default'].PropTypes.func,
 	    onClick: _react2['default'].PropTypes.func,
 	    onDeselect: _react2['default'].PropTypes.func,
-	    onOpenedChange: _react2['default'].PropTypes.func,
+	    onOpenChange: _react2['default'].PropTypes.func,
 	    onDestroy: _react2['default'].PropTypes.func,
-	    openedKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
+	    openKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
 	    closeSubMenuOnMouseLeave: _react2['default'].PropTypes.bool
 	  },
 	
@@ -5258,8 +5265,8 @@
 	    this.props.onClick(e);
 	  },
 	
-	  onOpenedChange: function onOpenedChange(e) {
-	    this.props.onOpenedChange(e);
+	  onOpenChange: function onOpenChange(e) {
+	    this.props.onOpenChange(e);
 	  },
 	
 	  onDestroy: function onDestroy(key) {
@@ -5271,12 +5278,12 @@
 	  },
 	
 	  renderMenuItem: function renderMenuItem(c, i) {
-	    var key = (0, _util.getKeyFromChildrenIndex)(c, i);
 	    var props = this.props;
+	    var key = (0, _util.getKeyFromChildrenIndex)(c, props.eventKey, i);
 	    var extraProps = {
-	      openedKeys: props.openedKeys,
+	      openKeys: props.openKeys,
 	      selectedKeys: props.selectedKeys,
-	      opened: props.openedKeys.indexOf(key) !== -1,
+	      open: props.openKeys.indexOf(key) !== -1,
 	      selected: props.selectedKeys.indexOf(key) !== -1,
 	      openSubMenuOnMouseEnter: true
 	    };
@@ -5316,7 +5323,7 @@
 	
 	  componentDidUpdate: function componentDidUpdate() {
 	    if (this.props.mode !== 'inline') {
-	      if (this.props.opened) {
+	      if (this.props.open) {
 	        this.bindRootCloseHandlers();
 	      } else {
 	        this.unbindRootCloseHandlers();
@@ -5346,7 +5353,7 @@
 	      item: this,
 	      key: this.props.eventKey
 	    });
-	    this.triggerOpenedChange(false);
+	    this.triggerOpenChange(false);
 	  },
 	
 	  bindRootCloseHandlers: function bindRootCloseHandlers() {
@@ -5810,250 +5817,9 @@
 
 /***/ },
 /* 48 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(49);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(51)(content, {});
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		module.hot.accept("!!/Users/yiminghe/code/react-components/select/node_modules/rc-tools/node_modules/css-loader/index.js?sourceMap!/Users/yiminghe/code/react-components/select/node_modules/rc-tools/node_modules/less-loader/index.js?sourceMap!/Users/yiminghe/code/react-components/select/assets/index.less", function() {
-			var newContent = require("!!/Users/yiminghe/code/react-components/select/node_modules/rc-tools/node_modules/css-loader/index.js?sourceMap!/Users/yiminghe/code/react-components/select/node_modules/rc-tools/node_modules/less-loader/index.js?sourceMap!/Users/yiminghe/code/react-components/select/assets/index.less");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 49 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(50)();
-	exports.push([module.id, ".rc-select {\n  box-sizing: border-box;\n  display: inline-block;\n  margin: 0;\n  position: relative;\n  vertical-align: middle;\n  color: #666;\n}\n.rc-select ul,\n.rc-select li {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n.rc-select > ul > li > a {\n  padding: 0;\n  background-color: #fff;\n}\n.rc-select-arrow {\n  height: 26px;\n  position: absolute;\n  top: 1px;\n  right: 1px;\n  width: 20px;\n}\n.rc-select-arrow b {\n  border-color: #999999 transparent transparent transparent;\n  border-style: solid;\n  border-width: 5px 4px 0 4px;\n  height: 0;\n  width: 0;\n  margin-left: -4px;\n  margin-top: -2px;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n}\n.rc-select-selection {\n  outline: none;\n  user-select: none;\n  -webkit-user-select: none;\n  box-sizing: border-box;\n  display: block;\n  background-color: #fff;\n  border-radius: 6px;\n  border: 1px solid #d9d9d9;\n}\n.rc-select-selection:hover {\n  border-color: #23c0fa;\n  box-shadow: 0 0 2px rgba(45, 183, 245, 0.8);\n}\n.rc-select-selection:active {\n  border-color: #2db7f5;\n}\n.rc-select-disabled {\n  color: #ccc;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n.rc-select-disabled .rc-select-selection:hover,\n.rc-select-disabled .rc-select-selection:active {\n  border-color: #d9d9d9;\n}\n.rc-select-selection--single {\n  height: 28px;\n  cursor: pointer;\n}\n.rc-select-selection--single .rc-select-selection__rendered {\n  display: block;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  padding-left: 10px;\n  padding-right: 20px;\n  line-height: 28px;\n}\n.rc-select-selection--single .rc-select-selection__clear {\n  cursor: pointer;\n  float: right;\n  font-weight: bold;\n}\n.rc-select-disabled .rc-select-selection__choice__remove {\n  color: #ccc;\n  cursor: default;\n}\n.rc-select-disabled .rc-select-selection__choice__remove:hover {\n  color: #ccc;\n}\n.rc-select .rc-select-search__field__wrap {\n  display: inline-block;\n  position: relative;\n}\n.rc-select .rc-select-search__field__placeholder {\n  position: absolute;\n  top: 0;\n  left: 3px;\n  color: #aaa;\n}\n.rc-select-search--inline {\n  float: left;\n  width: 100%;\n}\n.rc-select-search--inline .rc-select-search__field__wrap {\n  width: 100%;\n}\n.rc-select-search--inline .rc-select-search__field {\n  border: none;\n  font-size: 100%;\n  background: transparent;\n  outline: 0;\n  width: 100%;\n}\n.rc-select-search--inline > i {\n  float: right;\n}\n.rc-select-selection--multiple {\n  min-height: 28px;\n  cursor: text;\n}\n.rc-select-selection--multiple .rc-select-search--inline {\n  width: auto;\n}\n.rc-select-selection--multiple .rc-select-search--inline .rc-select-search__field {\n  width: 0.75em;\n}\n.rc-select-selection--multiple .rc-select-selection__rendered {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  padding-left: 8px;\n  padding-bottom: 2px;\n}\n.rc-select-selection--multiple .rc-select-selection__clear {\n  cursor: pointer;\n  float: right;\n  font-weight: bold;\n  margin-top: 5px;\n  margin-right: 10px;\n}\n.rc-select-selection--multiple .rc-select-selection__clear:after {\n  content: '×';\n}\n.rc-select-selection--multiple > ul > li {\n  margin-top: 4px;\n  height: 20px;\n  line-height: 20px;\n}\n.rc-select-selection--multiple .rc-select-selection__choice {\n  background-color: #f3f3f3;\n  border-radius: 4px;\n  cursor: default;\n  float: left;\n  padding: 0 8px;\n  margin-right: 4px;\n}\n.rc-select-selection--multiple .rc-select-selection__choice__remove {\n  color: #919191;\n  cursor: pointer;\n  display: inline-block;\n  font-weight: bold;\n  padding: 0 0 0 8px;\n}\n.rc-select-selection--multiple .rc-select-selection__choice__remove:before {\n  content: '×';\n}\n.rc-select-selection--multiple .rc-select-selection__choice__remove:hover {\n  color: #333;\n}\n.rc-select-dropdown {\n  background-color: white;\n  border: 1px solid #d9d9d9;\n  box-shadow: 0 0px 4px #d9d9d9;\n  border-radius: 4px;\n  box-sizing: border-box;\n  z-index: 100;\n  left: -9999px;\n  top: -9999px;\n  position: absolute;\n  outline: none;\n}\n.rc-select-dropdown-hidden {\n  display: none;\n}\n.rc-select-dropdown-menu {\n  outline: none;\n  margin: 0;\n  padding: 0;\n  list-style: none;\n  z-index: 9999;\n}\n.rc-select-dropdown-menu > li {\n  margin: 0;\n  padding: 0;\n}\n.rc-select-dropdown-menu-item-group-list {\n  margin: 0;\n  padding: 0;\n}\n.rc-select-dropdown-menu-item-group-list > li.rc-select-menu-item {\n  padding-left: 20px;\n}\n.rc-select-dropdown-menu-item-group-title {\n  color: #999;\n  line-height: 1.5;\n  padding: 8px 10px;\n  border-bottom: 1px solid #dedede;\n}\nli.rc-select-dropdown-menu-item {\n  margin: 0;\n  position: relative;\n  display: block;\n  padding: 7px 10px;\n  font-weight: normal;\n  color: #666666;\n  white-space: nowrap;\n}\nli.rc-select-dropdown-menu-item:hover,\nli.rc-select-dropdown-menu-item-active,\nli.rc-select-dropdown-menu-item-selected {\n  background-color: rgba(142, 200, 249, 0.1) !important;\n}\nli.rc-select-dropdown-menu-item-selected {\n  background-color: #ddd;\n}\nli.rc-select-dropdown-menu-item-disabled {\n  color: #ccc;\n  cursor: not-allowed;\n  pointer-events: none;\n}\nli.rc-select-dropdown-menu-item-disabled:hover {\n  color: #ccc;\n  background-color: #fff;\n  cursor: not-allowed;\n}\nli.rc-select-dropdown-menu-item-divider {\n  height: 1px;\n  margin: 1px 0;\n  overflow: hidden;\n  background-color: #e5e5e5;\n  line-height: 0;\n}\n.rc-select-dropdown-slide-up-enter {\n  animation-duration: 0.3s;\n  animation-fill-mode: both;\n  transform-origin: 0 0;\n  display: block !important;\n  opacity: 0;\n  animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);\n  animation-play-state: paused;\n}\n.rc-select-dropdown-slide-up-leave {\n  animation-duration: 0.3s;\n  animation-fill-mode: both;\n  transform-origin: 0 0;\n  display: block !important;\n  opacity: 1;\n  animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);\n  animation-play-state: paused;\n}\n.rc-select-dropdown-slide-up-enter.rc-select-dropdown-slide-up-enter-active {\n  animation-name: rcDropdownSlideUpIn;\n  animation-play-state: running;\n}\n.rc-select-dropdown-slide-up-leave.rc-select-dropdown-slide-up-leave-active {\n  animation-name: rcDropdownSlideUpOut;\n  animation-play-state: running;\n}\n@keyframes rcDropdownSlideUpIn {\n  0% {\n    opacity: 0;\n    transform-origin: 0% 0%;\n    transform: scaleY(0);\n  }\n  100% {\n    opacity: 1;\n    transform-origin: 0% 0%;\n    transform: scaleY(1);\n  }\n}\n@keyframes rcDropdownSlideUpOut {\n  0% {\n    opacity: 1;\n    transform-origin: 0% 0%;\n    transform: scaleY(1);\n  }\n  100% {\n    opacity: 0;\n    transform-origin: 0% 0%;\n    transform: scaleY(0);\n  }\n}\n.rc-select-search--dropdown {\n  display: block;\n  padding: 4px;\n}\n.rc-select-search--dropdown .rc-select-search__field__wrap {\n  width: 100%;\n}\n.rc-select-search--dropdown .rc-select-search__field__placeholder {\n  top: 4px;\n}\n.rc-select-search--dropdown .rc-select-search__field {\n  padding: 4px;\n  width: 100%;\n  box-sizing: border-box;\n  border: 1px solid #d9d9d9;\n  border-radius: 4px;\n  outline: none;\n}\n.rc-select-search--dropdown.rc-select-search--hide {\n  display: none;\n}\n.rc-select-open .rc-select-arrow b {\n  border-color: transparent transparent #888 transparent;\n  border-width: 0 4px 5px 4px;\n}\n", "", {"version":3,"sources":["index.less"],"names":[],"mappings":"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","sourcesContent":["@selectPrefixCls: rc-select;\n\n//mixin\n.selection__clear() {\n  cursor: pointer;\n  float: right;\n  font-weight: bold;\n}\n\n.@{selectPrefixCls} {\n  box-sizing: border-box;\n  display: inline-block;\n  margin: 0;\n  position: relative;\n  vertical-align: middle;\n  color: #666;\n\n  ul, li {\n    margin: 0;\n    padding: 0;\n    list-style: none;\n  }\n\n  > ul > li > a {\n    padding: 0;\n    background-color: #fff;\n  }\n\n  // arrow\n  &-arrow {\n    height: 26px;\n    position: absolute;\n    top: 1px;\n    right: 1px;\n    width: 20px;\n    b {\n      border-color: #999999 transparent transparent transparent;\n      border-style: solid;\n      border-width: 5px 4px 0 4px;\n      height: 0;\n      width: 0;\n      margin-left: -4px;\n      margin-top: -2px;\n      position: absolute;\n      top: 50%;\n      left: 50%;\n    }\n  }\n\n  &-selection {\n    outline: none;\n    user-select: none;\n    -webkit-user-select: none;\n\n    box-sizing: border-box;\n    display: block;\n\n    background-color: #fff;\n    border-radius: 6px;\n    border: 1px solid #d9d9d9;\n    &:hover {\n      border-color: #23c0fa;\n      box-shadow: 0 0 2px fadeout(#2db7f5, 20%);\n    }\n    &:active {\n      border-color: #2db7f5;\n    }\n  }\n\n  &-disabled {\n    color: #ccc;\n    cursor: not-allowed;\n    pointer-events: none;\n  }\n\n  &-disabled &-selection {\n    &:hover, &:active {\n      border-color: #d9d9d9;\n    }\n  }\n\n  &-selection--single {\n    height: 28px;\n    cursor: pointer;\n\n    .@{selectPrefixCls}-selection__rendered {\n      display: block;\n      overflow: hidden;\n      text-overflow: ellipsis;\n      padding-left: 10px;\n      padding-right: 20px;\n      line-height: 28px;\n    }\n\n    .@{selectPrefixCls}-selection__clear {\n      .selection__clear();\n    }\n  }\n\n  &-disabled &-selection__choice__remove {\n    color: #ccc;\n    cursor: default;\n    &:hover {\n      color: #ccc;\n    }\n  }\n\n  .@{selectPrefixCls}-search__field__wrap {\n    display: inline-block;\n    position: relative;\n  }\n\n  .@{selectPrefixCls}-search__field__placeholder {\n    position: absolute;\n    top: 0;\n    left: 3px;\n    color: #aaa;\n  }\n\n  &-search--inline {\n    float: left;\n    width: 100%;\n    .@{selectPrefixCls}-search__field__wrap {\n      width: 100%;\n    }\n    .@{selectPrefixCls}-search__field {\n      border: none;\n      font-size: 100%;\n      //margin-top: 5px;\n      background: transparent;\n      outline: 0;\n      width: 100%;\n    }\n    > i {\n      float: right;\n    }\n  }\n\n  &-selection--multiple {\n    min-height: 28px;\n    cursor: text;\n\n    .@{selectPrefixCls}-search--inline {\n      width: auto;\n      .@{selectPrefixCls}-search__field {\n        width: 0.75em;\n      }\n    }\n\n    .@{selectPrefixCls}-selection__rendered {\n      //display: inline-block;\n      overflow: hidden;\n      text-overflow: ellipsis;\n      padding-left: 8px;\n      padding-bottom: 2px;\n    }\n\n    .@{selectPrefixCls}-selection__clear {\n      .selection__clear();\n      margin-top: 5px;\n      margin-right: 10px;\n\n      &:after {\n        content: '×'\n      }\n    }\n\n    > ul > li {\n      margin-top: 4px;\n      height: 20px;\n      line-height: 20px;\n    }\n\n    .@{selectPrefixCls}-selection__choice {\n      background-color: #f3f3f3;\n      border-radius: 4px;\n      cursor: default;\n      float: left;\n      padding: 0 8px;\n      margin-right: 4px;\n    }\n\n    .@{selectPrefixCls}-selection__choice__remove {\n      color: #919191;\n      cursor: pointer;\n      display: inline-block;\n      font-weight: bold;\n      padding: 0 0 0 8px;\n\n      &:before {\n        content: '×'\n      }\n\n      &:hover {\n        color: #333;\n      }\n    }\n  }\n\n  &-dropdown {\n    background-color: white;\n    border: 1px solid #d9d9d9;\n    box-shadow: 0 0px 4px #d9d9d9;\n    border-radius: 4px;\n    box-sizing: border-box;\n    z-index: 100;\n    left: -9999px;\n    top: -9999px;\n    //border-top: none;\n    //border-top-left-radius: 0;\n    //border-top-right-radius: 0;\n    position: absolute;\n    outline: none;\n\n    &-hidden {\n      display: none;\n    }\n\n    &-menu {\n      outline: none;\n      margin: 0;\n      padding: 0;\n      list-style: none;\n      z-index: 9999;\n\n      > li {\n        margin: 0;\n        padding: 0;\n      }\n\n      &-item-group-list {\n        margin: 0;\n        padding: 0;\n\n        > li.@{selectPrefixCls}-menu-item {\n          padding-left: 20px;\n        }\n      }\n\n      &-item-group-title {\n        color: #999;\n        line-height: 1.5;\n        padding: 8px 10px;\n        border-bottom: 1px solid #dedede;\n      }\n\n      li&-item {\n        margin: 0;\n        position: relative;\n        display: block;\n        padding: 7px 10px;\n        font-weight: normal;\n        color: #666666;\n        white-space: nowrap;\n\n        &:hover, &-active, &-selected {\n          background-color: rgba(142, 200, 249, 0.1) !important;\n        }\n\n        &-selected {\n          background-color: #ddd;\n        }\n\n        &-disabled {\n          color: #ccc;\n          cursor: not-allowed;\n          pointer-events: none;\n\n          &:hover {\n            color: #ccc;\n            background-color: #fff;\n            cursor: not-allowed;\n          }\n        }\n\n        &-divider {\n          height: 1px;\n          margin: 1px 0;\n          overflow: hidden;\n          background-color: #e5e5e5;\n          line-height: 0;\n        }\n      }\n    }\n\n    .effect() {\n      animation-duration: 0.3s;\n      animation-fill-mode: both;\n      transform-origin: 0 0;\n      display: block !important;\n    }\n\n    &-slide-up-enter {\n      .effect();\n      opacity: 0;\n      animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);\n      animation-play-state: paused;\n    }\n\n    &-slide-up-leave {\n      .effect();\n      opacity: 1;\n      animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);\n      animation-play-state: paused;\n    }\n\n    &-slide-up-enter&-slide-up-enter-active {\n      animation-name: rcDropdownSlideUpIn;\n      animation-play-state: running;\n    }\n\n    &-slide-up-leave&-slide-up-leave-active {\n      animation-name: rcDropdownSlideUpOut;\n      animation-play-state: running;\n    }\n\n    @keyframes rcDropdownSlideUpIn {\n      0% {\n        opacity: 0;\n        transform-origin: 0% 0%;\n        transform: scaleY(0);\n      }\n      100% {\n        opacity: 1;\n        transform-origin: 0% 0%;\n        transform: scaleY(1);\n      }\n    }\n    @keyframes rcDropdownSlideUpOut {\n      0% {\n        opacity: 1;\n        transform-origin: 0% 0%;\n        transform: scaleY(1);\n      }\n      100% {\n        opacity: 0;\n        transform-origin: 0% 0%;\n        transform: scaleY(0);\n      }\n    }\n  }\n\n  &-search--dropdown {\n    display: block;\n    padding: 4px;\n    .@{selectPrefixCls}-search__field__wrap {\n      width: 100%;\n    }\n    .@{selectPrefixCls}-search__field__placeholder {\n      top: 4px;\n    }\n    .@{selectPrefixCls}-search__field {\n      padding: 4px;\n      width: 100%;\n      box-sizing: border-box;\n      border: 1px solid #d9d9d9;\n      border-radius: 4px;\n      outline: none;\n    }\n    &.@{selectPrefixCls}-search--hide {\n      display: none;\n    }\n  }\n\n  &-open {\n    .@{selectPrefixCls}-arrow b {\n      border-color: transparent transparent #888 transparent;\n      border-width: 0 4px 5px 4px;\n    }\n  }\n}\n"]}]);
-
-/***/ },
-/* 50 */
 /***/ function(module, exports) {
 
-	module.exports = function() {
-		var list = [];
-		list.toString = function toString() {
-			var result = [];
-			for(var i = 0; i < this.length; i++) {
-				var item = this[i];
-				if(item[2]) {
-					result.push("@media " + item[2] + "{" + item[1] + "}");
-				} else {
-					result.push(item[1]);
-				}
-			}
-			return result.join("");
-		};
-		return list;
-	}
-
-/***/ },
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	var stylesInDom = {},
-		memoize = function(fn) {
-			var memo;
-			return function () {
-				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-				return memo;
-			};
-		},
-		isIE9 = memoize(function() {
-			return /msie 9\b/.test(window.navigator.userAgent.toLowerCase());
-		}),
-		getHeadElement = memoize(function () {
-			return document.head || document.getElementsByTagName("head")[0];
-		}),
-		singletonElement = null,
-		singletonCounter = 0;
-	
-	module.exports = function(list, options) {
-		if(false) {
-			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-		}
-	
-		options = options || {};
-		// Force single-tag solution on IE9, which has a hard limit on the # of <style>
-		// tags it will allow on a page
-		if (typeof options.singleton === "undefined") options.singleton = isIE9();
-	
-		var styles = listToStyles(list);
-		addStylesToDom(styles, options);
-	
-		return function update(newList) {
-			var mayRemove = [];
-			for(var i = 0; i < styles.length; i++) {
-				var item = styles[i];
-				var domStyle = stylesInDom[item.id];
-				domStyle.refs--;
-				mayRemove.push(domStyle);
-			}
-			if(newList) {
-				var newStyles = listToStyles(newList);
-				addStylesToDom(newStyles, options);
-			}
-			for(var i = 0; i < mayRemove.length; i++) {
-				var domStyle = mayRemove[i];
-				if(domStyle.refs === 0) {
-					for(var j = 0; j < domStyle.parts.length; j++)
-						domStyle.parts[j]();
-					delete stylesInDom[domStyle.id];
-				}
-			}
-		};
-	}
-	
-	function addStylesToDom(styles, options) {
-		for(var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-			if(domStyle) {
-				domStyle.refs++;
-				for(var j = 0; j < domStyle.parts.length; j++) {
-					domStyle.parts[j](item.parts[j]);
-				}
-				for(; j < item.parts.length; j++) {
-					domStyle.parts.push(addStyle(item.parts[j], options));
-				}
-			} else {
-				var parts = [];
-				for(var j = 0; j < item.parts.length; j++) {
-					parts.push(addStyle(item.parts[j], options));
-				}
-				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-			}
-		}
-	}
-	
-	function listToStyles(list) {
-		var styles = [];
-		var newStyles = {};
-		for(var i = 0; i < list.length; i++) {
-			var item = list[i];
-			var id = item[0];
-			var css = item[1];
-			var media = item[2];
-			var sourceMap = item[3];
-			var part = {css: css, media: media, sourceMap: sourceMap};
-			if(!newStyles[id])
-				styles.push(newStyles[id] = {id: id, parts: [part]});
-			else
-				newStyles[id].parts.push(part);
-		}
-		return styles;
-	}
-	
-	function createStyleElement() {
-		var styleElement = document.createElement("style");
-		var head = getHeadElement();
-		styleElement.type = "text/css";
-		head.appendChild(styleElement);
-		return styleElement;
-	}
-	
-	function addStyle(obj, options) {
-		var styleElement, update, remove;
-	
-		if (options.singleton) {
-			var styleIndex = singletonCounter++;
-			styleElement = singletonElement || (singletonElement = createStyleElement());
-			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
-			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
-		} else {
-			styleElement = createStyleElement();
-			update = applyToTag.bind(null, styleElement);
-			remove = function () {
-				styleElement.parentNode.removeChild(styleElement);
-			};
-		}
-	
-		update(obj);
-	
-		return function updateStyle(newObj) {
-			if(newObj) {
-				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
-					return;
-				update(obj = newObj);
-			} else {
-				remove();
-			}
-		};
-	}
-	
-	function replaceText(source, id, replacement) {
-		var boundaries = ["/** >>" + id + " **/", "/** " + id + "<< **/"];
-		var start = source.lastIndexOf(boundaries[0]);
-		var wrappedReplacement = replacement
-			? (boundaries[0] + replacement + boundaries[1])
-			: "";
-		if (source.lastIndexOf(boundaries[0]) >= 0) {
-			var end = source.lastIndexOf(boundaries[1]) + boundaries[1].length;
-			return source.slice(0, start) + wrappedReplacement + source.slice(end);
-		} else {
-			return source + wrappedReplacement;
-		}
-	}
-	
-	function applyToSingletonTag(styleElement, index, remove, obj) {
-		var css = remove ? "" : obj.css;
-	
-		if(styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = replaceText(styleElement.styleSheet.cssText, index, css);
-		} else {
-			var cssNode = document.createTextNode(css);
-			var childNodes = styleElement.childNodes;
-			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
-			if (childNodes.length) {
-				styleElement.insertBefore(cssNode, childNodes[index]);
-			} else {
-				styleElement.appendChild(cssNode);
-			}
-		}
-	}
-	
-	function applyToTag(styleElement, obj) {
-		var css = obj.css;
-		var media = obj.media;
-		var sourceMap = obj.sourceMap;
-	
-		if(sourceMap && typeof btoa === "function") {
-			try {
-				css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(JSON.stringify(sourceMap)) + " */";
-				css = "@import url(\"data:text/css;base64," + btoa(css) + "\")";
-			} catch(e) {}
-		}
-	
-		if(media) {
-			styleElement.setAttribute("media", media)
-		}
-	
-		if(styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = css;
-		} else {
-			while(styleElement.firstChild) {
-				styleElement.removeChild(styleElement.firstChild);
-			}
-			styleElement.appendChild(document.createTextNode(css));
-		}
-	}
-
+	// removed by extract-text-webpack-plugin
 
 /***/ }
 /******/ ]);

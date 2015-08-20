@@ -3,12 +3,12 @@ webpackJsonp([5],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(63);
+	module.exports = __webpack_require__(60);
 
 
 /***/ },
 
-/***/ 63:
+/***/ 60:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -42,7 +42,7 @@ webpackJsonp([5],{
 	    { style: { width: 300 } },
 	    _react2['default'].createElement(
 	      _rcSelect2['default'],
-	      { value: '张三',
+	      { defaultValue: '张三',
 	        style: { width: 500 },
 	        renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	        optionFilterProp: 'desc',

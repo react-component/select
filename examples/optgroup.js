@@ -3,12 +3,12 @@ webpackJsonp([4],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(62);
+	module.exports = __webpack_require__(59);
 
 
 /***/ },
 
-/***/ 62:
+/***/ 59:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -42,7 +42,7 @@ webpackJsonp([4],{
 	    { style: { width: 300 } },
 	    _react2['default'].createElement(
 	      _rcSelect2['default'],
-	      { value: 'lucy',
+	      { defaultValue: 'lucy',
 	        renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	        showSearch: false,
 	        style: { width: 500 },

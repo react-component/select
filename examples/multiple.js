@@ -3,12 +3,12 @@ webpackJsonp([3],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(61);
+	module.exports = __webpack_require__(58);
 
 
 /***/ },
 
-/***/ 61:
+/***/ 58:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34,8 +34,16 @@ webpackJsonp([3],{
 	  ));
 	}
 	
-	function handleChange(value) {
+	function onChange(value) {
 	  console.log('selected ' + value);
+	}
+	
+	function onSelect() {
+	  console.log(arguments);
+	}
+	
+	function onDeselect() {
+	  console.log(arguments);
 	}
 	
 	var Test = _react2['default'].createClass({
@@ -84,8 +92,10 @@ webpackJsonp([3],{
 	            renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	            style: { width: 500 },
 	            multiple: true,
-	            value: ['name2', 'name3'],
-	            onChange: handleChange },
+	            defaultValue: ['name2', 'name3'],
+	            onSelect: onSelect,
+	            onDeselect: onDeselect,
+	            onChange: onChange },
 	          children
 	        )
 	      )

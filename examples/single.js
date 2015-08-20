@@ -3,12 +3,12 @@ webpackJsonp([7],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(65);
+	module.exports = __webpack_require__(62);
 
 
 /***/ },
 
-/***/ 65:
+/***/ 62:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34,8 +34,19 @@ webpackJsonp([7],{
 	
 	  getInitialState: function getInitialState() {
 	    return {
-	      destroy: false
+	      destroy: false,
+	      value: 'lucy'
 	    };
+	  },
+	
+	  onChange: function onChange(e) {
+	    var value = undefined;
+	    if (e.target) {
+	      value = e.target.value;
+	    } else {
+	      value = e;
+	    }
+	    this.setState({ value: value });
 	  },
 	
 	  handleDestroy: function handleDestroy() {
@@ -61,11 +72,11 @@ webpackJsonp([7],{
 	        { style: { width: 300 } },
 	        _react2['default'].createElement(
 	          _rcSelect2['default'],
-	          { value: 'lucy',
+	          { value: this.state.value,
 	            dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
 	            renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	            style: { width: 500 },
-	            onChange: handleChange },
+	            onChange: this.onChange },
 	          _react2['default'].createElement(
 	            _rcSelect.Option,
 	            { value: 'jack' },
@@ -108,9 +119,9 @@ webpackJsonp([7],{
 	      ),
 	      _react2['default'].createElement(
 	        'select',
-	        { value: 'lucy',
+	        { value: this.state.value,
 	          style: { width: 500 },
-	          onChange: handleChange },
+	          onChange: this.onChange },
 	        _react2['default'].createElement(
 	          'option',
 	          { value: 'jack' },
@@ -130,7 +141,14 @@ webpackJsonp([7],{
 	          'option',
 	          { value: 'yiminghe' },
 	          'yiminghe'
-	        )
+	        ),
+	        [1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (i) {
+	          return _react2['default'].createElement(
+	            'option',
+	            { value: i, key: i },
+	            i
+	          );
+	        })
 	      ),
 	      _react2['default'].createElement(
 	        'p',
