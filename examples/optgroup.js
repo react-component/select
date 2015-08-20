@@ -12,7 +12,7 @@ var c1 = (
   <div>
     <h2>Select OptGroup</h2>
     <div style={{width: 300}}>
-      <Select value="lucy"
+      <Select defaultValue="lucy"
         renderDropdownToBody={location.href.indexOf('renderDropdownToBody') !== -1}
         showSearch={false}
         style={{width:500}}

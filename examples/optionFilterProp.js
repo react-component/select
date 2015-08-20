@@ -12,7 +12,7 @@ var c1 = (
   <div>
     <h2>Select optionFilterProp</h2>
     <div style={{width: 300}}>
-      <Select value="张三"
+      <Select defaultValue="张三"
         style={{width:500}}
         renderDropdownToBody={location.href.indexOf('renderDropdownToBody') !== -1}
         optionFilterProp="desc"

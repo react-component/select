@@ -12,7 +12,7 @@ var c1 = (
   <div>
     <h2>Single Select</h2>
     <div style={{width: 300}}>
-      <Select value="lucy"
+      <Select defaultValue="lucy"
         style={{width:500}}
         renderDropdownToBody={location.href.indexOf('renderDropdownToBody') !== -1}
         animation="slide-up"

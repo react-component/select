@@ -1,6 +1,12 @@
 # History
 ----
 
+## 4.8.0 / 2015-08-20
+
+- make value a controlled value
+- add defaultValue prop
+- remove renderDropdownToBody prop. defaults to true
+
 ## 4.7.0 / 2015-08-18
 
 implement searchPlaceholder to prevent bug for ie10

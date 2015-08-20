@@ -27,7 +27,7 @@ class Select extends React.Component {
     let value = [];
     if ('value' in props) {
       value = normValue(props.value);
-    } else if ('defaultValue' in props) {
+    } else {
       value = normValue(props.defaultValue);
     }
     this.state = {
@@ -66,9 +66,7 @@ class Select extends React.Component {
     const state = this.state;
     const props = this.props;
     if (this.haveOpened) {
-      if (props.renderDropdownToBody) {
-        React.render(this.getDropdownElement(), this.getDropdownContainer());
-      }
+      React.render(this.getDropdownElement(), this.getDropdownContainer());
     }
     if (state.open) {
       if (props.dropdownMatchSelectWidth) {
@@ -147,7 +145,8 @@ class Select extends React.Component {
     if (isMultipleOrTags(props) && !e.target.value && keyCode === KeyCode.BACKSPACE) {
       const value = state.value.concat();
       if (value.length) {
-        value.pop();
+        const popValue = value.pop();
+        props.onDeselect(popValue);
         this.fireChange(value);
       }
       return;
@@ -436,11 +435,7 @@ class Select extends React.Component {
       [prefixCls + '-combobox']: isCombobox(props),
       [prefixCls + '-disabled']: props.disabled,
     };
-    let dropdownElement;
     this.haveOpened = this.haveOpened || state.open;
-    if (this.haveOpened) {
-      dropdownElement = this.getDropdownElement();
-    }
     return (
       <span
         style={props.style}
@@ -463,7 +458,6 @@ class Select extends React.Component {
             <b></b>
           </span>}
         </span>
-        {props.renderDropdownToBody ? null : dropdownElement}
       </span>
     );
   }
@@ -506,10 +500,13 @@ class Select extends React.Component {
   }
 
   fireChange(value) {
-    this.props.onChange(isMultipleOrTags(this.props) ? value : value[0]);
-    this.setState({
-      value: value,
-    });
+    const props = this.props;
+    if (!('value' in props)) {
+      this.setState({
+        value: value,
+      });
+    }
+    props.onChange(isMultipleOrTags(props) ? value : value[0]);
   }
 }
 
@@ -519,7 +516,6 @@ Select.propTypes = {
   showSearch: React.PropTypes.bool,
   disabled: React.PropTypes.bool,
   showArrow: React.PropTypes.bool,
-  renderDropdownToBody: React.PropTypes.bool,
   tags: React.PropTypes.bool,
   transitionName: React.PropTypes.string,
   optionLabelProp: React.PropTypes.string,
@@ -542,6 +538,7 @@ Select.defaultProps = {
   allowClear: false,
   placeholder: '',
   searchPlaceholder: '',
+  defaultValue: [],
   onChange: noop,
   onSelect: noop,
   onSearch: noop,
@@ -550,7 +547,6 @@ Select.defaultProps = {
   dropdownMatchSelectWidth: true,
   dropdownStyle: {},
   dropdownMenuStyle: {},
-  renderDropdownToBody: false,
   optionFilterProp: 'value',
   optionLabelProp: 'value',
   notFoundContent: 'Not Found',

@@ -9,8 +9,16 @@ for (var i = 10; i < 36; i++) {
   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
 }
 
-function handleChange(value) {
+function onChange(value) {
   console.log('selected ' + value);
+}
+
+function onSelect() {
+  console.log(arguments);
+}
+
+function onDeselect() {
+  console.log(arguments);
 }
 
 var Test = React.createClass({
@@ -43,8 +51,10 @@ var Test = React.createClass({
             renderDropdownToBody={location.href.indexOf('renderDropdownToBody') !== -1}
             style={{width:500}}
             multiple
-            value={['name2', 'name3']}
-            onChange={handleChange}>
+            defaultValue={['name2', 'name3']}
+            onSelect={onSelect}
+            onDeselect={onDeselect}
+            onChange={onChange}>
             {children}
           </Select>
         </div>

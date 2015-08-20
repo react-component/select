@@ -22,10 +22,9 @@ describe('Select', function () {
     document.body.removeChild(div);
   });
 
-  it('renderDropdownToBody works', function (done) {
+  it('render to body works', function (done) {
     var instance = React.render(
       <Select
-        renderDropdownToBody={true}
         value="2">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
@@ -51,7 +50,7 @@ describe('Select', function () {
 
   it('should default select the right option', function (done) {
     var instance = React.render(
-      <Select value="2">
+      <Select defaultValue="2">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>, div);
@@ -150,8 +149,8 @@ describe('Select', function () {
       instance.getInputDOMNode().value = "4";
       Simulate.change(instance.getInputDOMNode());
       setTimeout(function () {
-        expect(TestUtils.scryRenderedDOMComponentsWithClass(instance, 'rc-select-dropdown-menu-item').length).to.be(1);
-        expect(TestUtils.scryRenderedDOMComponentsWithClass(instance, 'rc-select-dropdown-menu-item')[0].props.children).to.be('Not Found');
+        expect(TestUtils.scryRenderedDOMComponentsWithClass(instance.dropdownInstance, 'rc-select-dropdown-menu-item').length).to.be(1);
+        expect(TestUtils.scryRenderedDOMComponentsWithClass(instance.dropdownInstance, 'rc-select-dropdown-menu-item')[0].props.children).to.be('Not Found');
         done();
       }, 100);
     });

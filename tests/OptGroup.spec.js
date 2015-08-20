@@ -41,8 +41,8 @@ describe('OptGroup', function () {
 
     Simulate.click(TestUtils.scryRenderedDOMComponentsWithClass(select, 'rc-select-selection')[0]);
 
-    expect(TestUtils.scryRenderedDOMComponentsWithClass(select, 'rc-select-dropdown-menu-item-group').length).to.be(2);
-    expect(TestUtils.scryRenderedDOMComponentsWithClass(select, 'rc-select-dropdown-menu-item').length).to.be(3);
+    expect(TestUtils.scryRenderedDOMComponentsWithClass(select.dropdownInstance, 'rc-select-dropdown-menu-item-group').length).to.be(2);
+    expect(TestUtils.scryRenderedDOMComponentsWithClass(select.dropdownInstance, 'rc-select-dropdown-menu-item').length).to.be(3);
 
     done();
   });

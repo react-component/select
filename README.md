@@ -132,10 +132,16 @@ React.render(c, container);
           <td>dropdown css animation name</td>
         </tr>
         <tr>
+          <td>defaultValue</td>
+          <td>String | Array<String></td>
+          <td></td>
+          <td>initial selected option(s)</td>
+        </tr>
+        <tr>
           <td>value</td>
           <td>String | Array<String></td>
           <td></td>
-          <td>specify the selected option(s)</td>
+          <td>current selected option(s)</td>
         </tr>
         <tr>
           <td>defaultValue</td>
@@ -190,12 +196,6 @@ React.render(c, container);
           <td>function(value)</td>
           <th></th>
           <td>called when select an option or input value change(combobox)</td>
-        </tr>
-        <tr>
-          <td>renderDropdownToBody</td>
-          <td>Boolean</td>
-          <th>false</th>
-          <td>whether render dropdown to body</td>
         </tr>
         <tr>
           <td>dropdownMatchSelectWidth</td>

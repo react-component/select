@@ -30,10 +30,10 @@ describe('optionFilterProp', function () {
     Simulate.click(React.findDOMNode(select.refs.selection));
     select.getInputDOMNode().value = "1";
     Simulate.change(select.getInputDOMNode());
-    expect(TestUtils.scryRenderedDOMComponentsWithClass(select, 'rc-select-dropdown-menu-item').length).to.be(2);
+    expect(TestUtils.scryRenderedDOMComponentsWithClass(select.dropdownInstance, 'rc-select-dropdown-menu-item').length).to.be(2);
     select.getInputDOMNode().value = "2";
     Simulate.change(select.getInputDOMNode());
-    expect(TestUtils.scryRenderedDOMComponentsWithClass(select, 'rc-select-dropdown-menu-item').length).to.be(1);
+    expect(TestUtils.scryRenderedDOMComponentsWithClass(select.dropdownInstance, 'rc-select-dropdown-menu-item').length).to.be(1);
   });
 
   it('can set optionFilterProp', function () {
@@ -48,15 +48,15 @@ describe('optionFilterProp', function () {
     Simulate.click(React.findDOMNode(select.refs.selection));
     select.getInputDOMNode().value = "1";
     Simulate.change(select.getInputDOMNode());
-    expect(TestUtils.scryRenderedDOMComponentsWithClass(select, 'rc-select-dropdown-menu-item').length).to.be(0);
+    expect(TestUtils.scryRenderedDOMComponentsWithClass(select.dropdownInstance, 'rc-select-dropdown-menu-item').length).to.be(0);
     select.getInputDOMNode().value = "2";
     Simulate.change(select.getInputDOMNode());
-    expect(TestUtils.scryRenderedDOMComponentsWithClass(select, 'rc-select-dropdown-menu-item').length).to.be(0);
+    expect(TestUtils.scryRenderedDOMComponentsWithClass(select.dropdownInstance, 'rc-select-dropdown-menu-item').length).to.be(0);
     select.getInputDOMNode().value = "一";
     Simulate.change(select.getInputDOMNode());
-    expect(TestUtils.scryRenderedDOMComponentsWithClass(select, 'rc-select-dropdown-menu-item').length).to.be(2);
+    expect(TestUtils.scryRenderedDOMComponentsWithClass(select.dropdownInstance, 'rc-select-dropdown-menu-item').length).to.be(2);
     select.getInputDOMNode().value = "二";
     Simulate.change(select.getInputDOMNode());
-    expect(TestUtils.scryRenderedDOMComponentsWithClass(select, 'rc-select-dropdown-menu-item').length).to.be(1);
+    expect(TestUtils.scryRenderedDOMComponentsWithClass(select.dropdownInstance, 'rc-select-dropdown-menu-item').length).to.be(1);
   });
 });
