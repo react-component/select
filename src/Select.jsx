@@ -335,6 +335,7 @@ class Select extends React.Component {
           prefixCls={props.prefixCls}
           isMultipleOrTagsOrCombobox={isMultipleOrTagsOrCombobox(props)}
           showSearch={props.showSearch}
+          className={props.dropdownClassName}
           dropdownMenuStyle={props.dropdownMenuStyle}
           dropdownStyle={props.dropdownStyle}>
           {props.children}
