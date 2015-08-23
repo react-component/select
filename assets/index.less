@@ -290,7 +290,7 @@
       display: block !important;
     }
 
-    &-slide-up-enter {
+    &-slide-up-enter,&-slide-up-appear {
       .effect();
       opacity: 0;
       animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
@@ -304,7 +304,7 @@
       animation-play-state: paused;
     }
 
-    &-slide-up-enter&-slide-up-enter-active {
+    &-slide-up-enter&-slide-up-enter-active,&-slide-up-appear&-slide-up-appear-active {
       animation-name: rcDropdownSlideUpIn;
       animation-play-state: running;
     }

@@ -307,7 +307,7 @@ class Select extends React.Component {
     return (<Animate
       component=""
       exclusive={true}
-      animateMount={true}
+      transitionAppear={true}
       showProp="selectOpen"
       transitionName={this.getDropdownTransitionName()}>
       <Align target={this.getDOMNode}
