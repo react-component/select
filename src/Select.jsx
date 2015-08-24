@@ -304,6 +304,8 @@ class Select extends React.Component {
   getDropdownElement() {
     const state = this.state;
     const props = this.props;
+    let dropdownClassName = props.dropdownClassName || '';
+    dropdownClassName = `${dropdownClassName} ${props.prefixCls}-dropdown--${props.multiple ? 'multiple' : 'single'}`;
     return (<Animate
       component=""
       exclusive={true}
@@ -335,6 +337,7 @@ class Select extends React.Component {
           prefixCls={props.prefixCls}
           isMultipleOrTagsOrCombobox={isMultipleOrTagsOrCombobox(props)}
           showSearch={props.showSearch}
+          className={dropdownClassName}
           dropdownMenuStyle={props.dropdownMenuStyle}
           dropdownStyle={props.dropdownStyle}>
           {props.children}

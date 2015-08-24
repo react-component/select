@@ -204,6 +204,12 @@ React.render(c, container);
           <td>whether dropdown 's with is same with select</td>
         </tr>
         <tr>
+          <td>dropdownClassName</td>
+          <td>String</td>
+          <th></th>
+          <td>additional className applied to dropdown</td>
+        </tr>
+        <tr>
           <td>dropdownStyle</td>
           <td>Object</td>
           <th>{}</th>

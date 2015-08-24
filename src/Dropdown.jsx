@@ -97,6 +97,7 @@ class SelectDropdown extends React.Component {
       [dropdownPrefixCls]: 1,
       [`${dropdownPrefixCls}--below`]: 1,
       [`${dropdownPrefixCls}-hidden`]: !visible,
+      [props.className]: 1,
     };
     // single and not combobox, input is inside dropdown
     return (<div key="dropdown"
