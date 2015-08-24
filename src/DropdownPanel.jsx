@@ -36,7 +36,7 @@ const Panel = React.createClass({
       return (<Menu
         ref="menu"
         style={props.dropdownMenuStyle}
-        onSelect={props.onMenuSelect}
+        onClick={props.onMenuSelect}
         defaultActiveFirst={true}
         activeKey={activeKey}
         multiple={props.isMultipleOrTags}
