@@ -24,6 +24,9 @@ const Panel = React.createClass({
       const menuProps = {};
       if (props.isMultipleOrTags) {
         menuProps.onDeselect = props.onMenuDeselect;
+        menuProps.onSelect = props.onMenuSelect;
+      } else {
+        menuProps.onClick = props.onMenuSelect;
       }
       const value = props.value;
       const selectedKeys = getSelectKeys(menuItems, value);
@@ -36,7 +39,6 @@ const Panel = React.createClass({
       return (<Menu
         ref="menu"
         style={props.dropdownMenuStyle}
-        onSelect={props.onMenuSelect}
         defaultActiveFirst={true}
         activeKey={activeKey}
         multiple={props.isMultipleOrTags}

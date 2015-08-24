@@ -181,10 +181,10 @@ class Select extends React.Component {
     let value = this.state.value;
     const props = this.props;
     const selectedValue = getValuePropValue(item);
-    if (value.indexOf(selectedValue) !== -1) {
-      return;
-    }
     if (isMultipleOrTags(props)) {
+      if (value.indexOf(selectedValue) !== -1) {
+        return;
+      }
       value = value.concat([selectedValue]);
     } else {
       if (value[0] === selectedValue) {
@@ -304,8 +304,9 @@ class Select extends React.Component {
   getDropdownElement() {
     const state = this.state;
     const props = this.props;
+    const multiple = isMultipleOrTags(props);
     let dropdownClassName = props.dropdownClassName || '';
-    dropdownClassName = `${dropdownClassName} ${props.prefixCls}-dropdown--${props.multiple ? 'multiple' : 'single'}`;
+    dropdownClassName = `${dropdownClassName} ${props.prefixCls}-dropdown--${multiple ? 'multiple' : 'single'}`;
     return (<Animate
       component=""
       exclusive={true}
