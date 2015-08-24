@@ -181,10 +181,10 @@ class Select extends React.Component {
     let value = this.state.value;
     const props = this.props;
     const selectedValue = getValuePropValue(item);
-    if (value.indexOf(selectedValue) !== -1) {
-      return;
-    }
     if (isMultipleOrTags(props)) {
+      if (value.indexOf(selectedValue) !== -1) {
+        return;
+      }
       value = value.concat([selectedValue]);
     } else {
       if (value[0] === selectedValue) {
