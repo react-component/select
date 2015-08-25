@@ -33,10 +33,13 @@ env:
   - TEST_TYPE=browser-test
   - TEST_TYPE=browser-test-cover
   - TEST_TYPE=saucelabs
-  allow_failures:
-  - env: TEST_TYPE=saucelabs
   global:
   - secure: Uf3gHWC2QEnOtIeDTWnWwxyQCXUAZYegkx0GAD9PK9CBEBJfezQM3VphGoOlguBMK8n5u4BFiJfOAPOsadpQiYeG6Qu07U0/3BkNT9Q9f5uOIC0Di3YaoqS1uGHJZey/molbIEcbuAo5YNIBvKZmJiBHduJ5ni+StnETehYkTjU=
   - secure: icXxTaCvXlzEQ/e/Ih2VhgPrw64okBagFad88mKuI+XpR8Sx/u5bNOaltBIB0rgPA439IFezda9i5DnlBacJIT6zLjHxDtdxElZ5fnBZPYwk9BU6JNtxHtfrLcQsFhUVwsJMuAtKYBAmdzGqhNzYvnBwgmZDTUTTEYtgn6huaxY=
   - secure: OaBJynPhXVOGkuiHePxr/5LawnEjiCN+Ywl1h5wXjIc5PZiEzsSqCJkXtVjUftuzBACBne8h+pZkPrVBK5ACwVT+Z9T0cFSdT4PIzorrmO12aSUtwSo08eP6OgpkWzav79Z0DTlUTNZjEZVUMF6KBqlZySTJeCOq+LA418V3S4c=
   - secure: TbGWieoxComExvFyZCTRybPs3OCQomVBjZzBdGorNEKNZb2IaKMPJKTIFkHco9zeRySpOE5Yw2GWFRQXNVsNUd45CYADaCERXECf4su8MQL8VRgRdYmK1s0xuIBdKSRUgDXcVxbA0TwF9owixMfO8CuA006ks1Z5ET4xcEYWDXs=
+
+
+matrix:
+  allow_failures:
+  - env: "TEST_TYPE=saucelabs"
