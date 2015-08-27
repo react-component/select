@@ -1,14 +1,14 @@
-webpackJsonp([5],{
+webpackJsonp([7],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(60);
+	module.exports = __webpack_require__(63);
 
 
 /***/ },
 
-/***/ 60:
+/***/ 63:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23,7 +23,7 @@ webpackJsonp([5],{
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(48);
+	__webpack_require__(49);
 	
 	function handleChange(value) {
 	  console.log('selected ' + value);
@@ -44,7 +44,6 @@ webpackJsonp([5],{
 	      _rcSelect2['default'],
 	      { defaultValue: '张三',
 	        style: { width: 500 },
-	        renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	        optionFilterProp: 'desc',
 	        onChange: handleChange },
 	      _react2['default'].createElement(

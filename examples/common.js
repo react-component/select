@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		11:0
+/******/ 		13:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"combobox","1":"email","2":"force-suggest","3":"multiple","4":"optgroup","5":"optionFilterProp","6":"placeholder","7":"single","8":"single-animation","9":"suggest","10":"tags"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"combobox","1":"email","2":"force-suggest","3":"mul-suggest","4":"mul-tag-suggest","5":"multiple","6":"optgroup","7":"optionFilterProp","8":"placeholder","9":"single","10":"single-animation","11":"suggest","12":"tags"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -123,7 +123,7 @@
 	
 	var _Select2 = _interopRequireDefault(_Select);
 	
-	var _Option = __webpack_require__(47);
+	var _Option = __webpack_require__(48);
 	
 	var _Option2 = _interopRequireDefault(_Option);
 	
@@ -178,11 +178,11 @@
 	
 	var _rcAnimate2 = _interopRequireDefault(_rcAnimate);
 	
-	var _Dropdown = __webpack_require__(30);
+	var _Dropdown = __webpack_require__(31);
 	
 	var _Dropdown2 = _interopRequireDefault(_Dropdown);
 	
-	var _util = __webpack_require__(31);
+	var _util = __webpack_require__(32);
 	
 	function noop() {}
 	
@@ -287,11 +287,17 @@
 	  }, {
 	    key: 'onClick',
 	    value: function onClick() {
-	      if (!this.props.disabled) {
+	      var props = this.props;
+	      if (!props.disabled) {
 	        if (this.state.open) {
 	          this.setOpenState(false);
 	        } else {
 	          this.openIfHasChildren();
+	          if ((0, _util.isMultipleOrTagsOrCombobox)(props)) {
+	            if (this.getInputDOMNode()) {
+	              this.getInputDOMNode().focus();
+	            }
+	          }
 	        }
 	      }
 	    }
@@ -360,10 +366,10 @@
 	      var value = this.state.value;
 	      var props = this.props;
 	      var selectedValue = (0, _util.getValuePropValue)(item);
-	      if (value.indexOf(selectedValue) !== -1) {
-	        return;
-	      }
 	      if ((0, _util.isMultipleOrTags)(props)) {
+	        if (value.indexOf(selectedValue) !== -1) {
+	          return;
+	        }
 	        value = value.concat([selectedValue]);
 	      } else {
 	        if (value[0] === selectedValue) {
@@ -506,12 +512,15 @@
 	    value: function getDropdownElement() {
 	      var state = this.state;
 	      var props = this.props;
+	      var multiple = (0, _util.isMultipleOrTags)(props);
+	      var dropdownClassName = props.dropdownClassName || '';
+	      dropdownClassName = dropdownClassName + ' ' + props.prefixCls + '-dropdown--' + (multiple ? 'multiple' : 'single');
 	      return _react2['default'].createElement(
 	        _rcAnimate2['default'],
 	        {
 	          component: '',
 	          exclusive: true,
-	          animateMount: true,
+	          transitionAppear: true,
 	          showProp: 'selectOpen',
 	          transitionName: this.getDropdownTransitionName() },
 	        _react2['default'].createElement(
@@ -543,6 +552,7 @@
 	              prefixCls: props.prefixCls,
 	              isMultipleOrTagsOrCombobox: (0, _util.isMultipleOrTagsOrCombobox)(props),
 	              showSearch: props.showSearch,
+	              className: dropdownClassName,
 	              dropdownMenuStyle: props.dropdownMenuStyle,
 	              dropdownStyle: props.dropdownStyle },
 	            props.children
@@ -2684,6 +2694,10 @@
 	
 	var _AnimateChild2 = _interopRequireDefault(_AnimateChild);
 	
+	var _util = __webpack_require__(30);
+	
+	var _util2 = _interopRequireDefault(_util);
+	
 	var defaultKey = 'rc_animate_' + Date.now();
 	
 	function getChildrenFromProps(props) {
@@ -2698,18 +2712,23 @@
 	  return children;
 	}
 	
+	function noop() {}
+	
 	var Animate = _react2['default'].createClass({
 	  displayName: 'Animate',
 	
-	  protoTypes: {
+	  propTypes: {
 	    component: _react2['default'].PropTypes.any,
 	    animation: _react2['default'].PropTypes.object,
 	    transitionName: _react2['default'].PropTypes.string,
 	    transitionEnter: _react2['default'].PropTypes.bool,
+	    transitionAppear: _react2['default'].PropTypes.bool,
 	    transitionLeave: _react2['default'].PropTypes.bool,
 	    onEnd: _react2['default'].PropTypes.func,
-	    showProp: _react2['default'].PropTypes.bool,
-	    animateMount: _react2['default'].PropTypes.bool
+	    onEnter: _react2['default'].PropTypes.func,
+	    onLeave: _react2['default'].PropTypes.func,
+	    onAppear: _react2['default'].PropTypes.func,
+	    showProp: _react2['default'].PropTypes.string
 	  },
 	
 	  getDefaultProps: function getDefaultProps() {
@@ -2718,9 +2737,11 @@
 	      component: 'span',
 	      transitionEnter: true,
 	      transitionLeave: true,
-	      enter: true,
-	      animateMount: false,
-	      onEnd: function onEnd() {}
+	      transitionAppear: false,
+	      onEnd: noop,
+	      onEnter: noop,
+	      onLeave: noop,
+	      onAppear: noop
 	    };
 	  },
 	
@@ -2733,8 +2754,23 @@
 	    };
 	  },
 	
-	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	  componentDidMount: function componentDidMount() {
 	    var _this = this;
+	
+	    var showProp = this.props.showProp;
+	    var children = this.state.children;
+	    if (showProp) {
+	      children = children.filter(function (c) {
+	        return !!c.props[showProp];
+	      });
+	    }
+	    children.forEach(function (c) {
+	      _this.performAppear(c.key);
+	    });
+	  },
+	
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	    var _this2 = this;
 	
 	    var nextChildren = (0, _ChildrenUtils.toArrayChildren)(getChildrenFromProps(nextProps));
 	    var props = this.props;
@@ -2744,27 +2780,37 @@
 	    // last props children if exclusive
 	    // exclusive needs immediate response
 	    var currentChildren = this.state.children;
-	    var newChildren = _ChildrenUtils2['default'].mergeChildren(currentChildren, nextChildren);
-	
-	    if (showProp && !exclusive) {
-	      newChildren = newChildren.map(function (c) {
-	        if (!c.props[showProp] && (0, _ChildrenUtils.isShownInChildren)(currentChildren, c, showProp)) {
-	          c = _react2['default'].cloneElement(c, _defineProperty({}, showProp, true));
+	    var newChildren = undefined;
+	    var needSetState = false;
+	    if (showProp) {
+	      needSetState = true;
+	      newChildren = currentChildren.map(function (currentChild) {
+	        var nextChild = (0, _ChildrenUtils.findChildInChildrenByKey)(nextChildren, currentChild.key);
+	        if (!nextChild.props[showProp] && currentChild.props[showProp]) {
+	          return _react2['default'].cloneElement(nextChild, _defineProperty({}, showProp, true));
 	        }
-	        return c;
+	        return nextChild;
 	      });
+	    } else {
+	      newChildren = _ChildrenUtils2['default'].mergeChildren(currentChildren, nextChildren);
+	      if (newChildren.length !== currentChildren.length || newChildren.length !== nextChildren.length) {
+	        needSetState = true;
+	      }
 	    }
-	
-	    this.setState({
-	      children: newChildren
-	    });
 	
 	    // exclusive needs immediate response
 	    if (exclusive) {
 	      Object.keys(currentlyAnimatingKeys).forEach(function (key) {
-	        _this.stop(key);
+	        needSetState = false;
+	        _this2.stop(key);
 	      });
 	      currentChildren = (0, _ChildrenUtils.toArrayChildren)(getChildrenFromProps(props));
+	    }
+	
+	    if (needSetState) {
+	      this.setState({
+	        children: newChildren
+	      });
 	    }
 	
 	    nextChildren.forEach(function (c) {
@@ -2772,17 +2818,17 @@
 	      if (currentlyAnimatingKeys[key]) {
 	        return;
 	      }
-	      var hasPrev = (0, _ChildrenUtils.inChildren)(currentChildren, c);
+	      var hasPrev = (0, _ChildrenUtils.findChildInChildrenByKey)(currentChildren, key);
 	      if (showProp) {
 	        if (hasPrev) {
-	          var showInNow = (0, _ChildrenUtils.isShownInChildren)(currentChildren, c, showProp);
+	          var showInNow = (0, _ChildrenUtils.findShownChildInChildrenByKey)(currentChildren, key, showProp);
 	          var showInNext = c.props[showProp];
 	          if (!showInNow && showInNext) {
-	            _this.keysToEnter.push(key);
+	            _this2.keysToEnter.push(key);
 	          }
 	        }
 	      } else if (!hasPrev) {
-	        _this.keysToEnter.push(key);
+	        _this2.keysToEnter.push(key);
 	      }
 	    });
 	
@@ -2791,92 +2837,19 @@
 	      if (currentlyAnimatingKeys[key]) {
 	        return;
 	      }
-	      var hasNext = (0, _ChildrenUtils.inChildren)(nextChildren, c);
+	      var hasNext = (0, _ChildrenUtils.findChildInChildrenByKey)(nextChildren, key);
 	      if (showProp) {
 	        if (hasNext) {
-	          var showInNext = (0, _ChildrenUtils.isShownInChildren)(nextChildren, c, showProp);
+	          var showInNext = (0, _ChildrenUtils.findShownChildInChildrenByKey)(nextChildren, key, showProp);
 	          var showInNow = c.props[showProp];
 	          if (!showInNext && showInNow) {
-	            _this.keysToLeave.push(key);
+	            _this2.keysToLeave.push(key);
 	          }
 	        }
 	      } else if (!hasNext) {
-	        _this.keysToLeave.push(key);
+	        _this2.keysToLeave.push(key);
 	      }
 	    });
-	  },
-	
-	  performEnter: function performEnter(key) {
-	    // may already remove by exclusive
-	    if (this.refs[key]) {
-	      this.currentlyAnimatingKeys[key] = true;
-	      this.refs[key].componentWillEnter(this._handleDoneEntering.bind(this, key));
-	    }
-	  },
-	
-	  _handleDoneEntering: function _handleDoneEntering(key) {
-	    delete this.currentlyAnimatingKeys[key];
-	    var currentChildren = (0, _ChildrenUtils.toArrayChildren)(getChildrenFromProps(this.props));
-	    if (!this.isValidChildByKey(currentChildren, key)) {
-	      // exclusive will not need this
-	      this.performLeave(key);
-	    } else {
-	      this.props.onEnd(key, true);
-	      if (this.isMounted() && !(0, _ChildrenUtils.isSameChildren)(this.state.children, currentChildren)) {
-	        this.setState({
-	          children: currentChildren
-	        });
-	      }
-	    }
-	  },
-	
-	  performLeave: function performLeave(key) {
-	    // may already remove by exclusive
-	    if (this.refs[key]) {
-	      this.currentlyAnimatingKeys[key] = true;
-	      this.refs[key].componentWillLeave(this._handleDoneLeaving.bind(this, key));
-	    }
-	  },
-	
-	  isValidChildByKey: function isValidChildByKey(currentChildren, key) {
-	    var showProp = this.props.showProp;
-	    if (showProp) {
-	      return (0, _ChildrenUtils.isShownInChildrenByKey)(currentChildren, key, showProp);
-	    } else {
-	      return (0, _ChildrenUtils.inChildrenByKey)(currentChildren, key);
-	    }
-	  },
-	
-	  _handleDoneLeaving: function _handleDoneLeaving(key) {
-	    delete this.currentlyAnimatingKeys[key];
-	    var currentChildren = (0, _ChildrenUtils.toArrayChildren)(getChildrenFromProps(this.props));
-	    // in case state change is too fast
-	    if (this.isValidChildByKey(currentChildren, key)) {
-	      this.performEnter(key);
-	    } else {
-	      this.props.onEnd(key, false);
-	      if (this.isMounted() && !(0, _ChildrenUtils.isSameChildren)(this.state.children, currentChildren)) {
-	        this.setState({
-	          children: currentChildren
-	        });
-	      }
-	    }
-	  },
-	
-	  stop: function stop(key) {
-	    delete this.currentlyAnimatingKeys[key];
-	    var component = this.refs[key];
-	    if (component) {
-	      component.stop();
-	    }
-	  },
-	
-	  componentDidMount: function componentDidMount() {
-	    if (this.props.animateMount) {
-	      this.state.children.map(function (c) {
-	        return c.key;
-	      }).forEach(this.performEnter);
-	    }
 	  },
 	
 	  componentDidUpdate: function componentDidUpdate() {
@@ -2902,6 +2875,7 @@
 	          animation: props.animation,
 	          transitionName: props.transitionName,
 	          transitionEnter: props.transitionEnter,
+	          transitionAppear: props.transitionAppear,
 	          transitionLeave: props.transitionLeave },
 	        child
 	      );
@@ -2913,8 +2887,88 @@
 	        this.props,
 	        children
 	      );
+	    }
+	    return children[0] || null;
+	  },
+	
+	  performEnter: function performEnter(key) {
+	    // may already remove by exclusive
+	    if (this.refs[key]) {
+	      this.currentlyAnimatingKeys[key] = true;
+	      this.refs[key].componentWillEnter(this.handleDoneAdding.bind(this, key, 'enter'));
+	    }
+	  },
+	
+	  performAppear: function performAppear(key) {
+	    if (this.refs[key]) {
+	      this.currentlyAnimatingKeys[key] = true;
+	      this.refs[key].componentWillAppear(this.handleDoneAdding.bind(this, key, 'appear'));
+	    }
+	  },
+	
+	  handleDoneAdding: function handleDoneAdding(key, type) {
+	    var props = this.props;
+	    delete this.currentlyAnimatingKeys[key];
+	    var currentChildren = (0, _ChildrenUtils.toArrayChildren)(getChildrenFromProps(props));
+	    if (!this.isValidChildByKey(currentChildren, key)) {
+	      // exclusive will not need this
+	      this.performLeave(key);
 	    } else {
-	      return children[0] || null;
+	      if (type === 'appear') {
+	        if (_util2['default'].allowAppearCallback(props)) {
+	          props.onAppear(key);
+	          props.onEnd(key, true);
+	        }
+	      } else {
+	        if (_util2['default'].allowEnterCallback(props)) {
+	          props.onEnter(key);
+	          props.onEnd(key, true);
+	        }
+	      }
+	    }
+	  },
+	
+	  performLeave: function performLeave(key) {
+	    // may already remove by exclusive
+	    if (this.refs[key]) {
+	      this.currentlyAnimatingKeys[key] = true;
+	      this.refs[key].componentWillLeave(this.handleDoneLeaving.bind(this, key));
+	    }
+	  },
+	
+	  handleDoneLeaving: function handleDoneLeaving(key) {
+	    var props = this.props;
+	    delete this.currentlyAnimatingKeys[key];
+	    var currentChildren = (0, _ChildrenUtils.toArrayChildren)(getChildrenFromProps(props));
+	    // in case state change is too fast
+	    if (this.isValidChildByKey(currentChildren, key)) {
+	      this.performEnter(key);
+	    } else {
+	      if (_util2['default'].allowLeaveCallback(props)) {
+	        props.onLeave(key);
+	        props.onEnd(key, false);
+	      }
+	      if (this.isMounted() && !(0, _ChildrenUtils.isSameChildren)(this.state.children, currentChildren, props.showProp)) {
+	        this.setState({
+	          children: currentChildren
+	        });
+	      }
+	    }
+	  },
+	
+	  isValidChildByKey: function isValidChildByKey(currentChildren, key) {
+	    var showProp = this.props.showProp;
+	    if (showProp) {
+	      return (0, _ChildrenUtils.findShownChildInChildrenByKey)(currentChildren, key, showProp);
+	    }
+	    return (0, _ChildrenUtils.findChildInChildrenByKey)(currentChildren, key);
+	  },
+	
+	  stop: function stop(key) {
+	    delete this.currentlyAnimatingKeys[key];
+	    var component = this.refs[key];
+	    if (component) {
+	      component.stop();
 	    }
 	  }
 	});
@@ -2938,20 +2992,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	function inChildren(children, child) {
-	  var found = 0;
-	  children.forEach(function (c) {
-	    if (found) {
-	      return;
-	    }
-	    found = c.key === child.key;
-	  });
-	  return found;
-	}
-	
-	exports['default'] = {
-	  inChildren: inChildren,
-	
+	var utils = {
 	  toArrayChildren: function toArrayChildren(children) {
 	    var ret = [];
 	    _react2['default'].Children.forEach(children, function (c) {
@@ -2960,48 +3001,57 @@
 	    return ret;
 	  },
 	
-	  isShownInChildren: function isShownInChildren(children, child, showProp) {
-	    var found = 0;
-	    children.forEach(function (c) {
-	      if (found) {
-	        return;
-	      }
-	      found = c.key === child.key && c.props[showProp];
-	    });
-	    return found;
+	  findChildInChildrenByKey: function findChildInChildrenByKey(children, key) {
+	    var ret = 0;
+	    if (children) {
+	      children.forEach(function (c) {
+	        if (ret) {
+	          return;
+	        }
+	        if (c.key === key) {
+	          ret = c;
+	        }
+	      });
+	    }
+	    return ret;
 	  },
 	
-	  inChildrenByKey: function inChildrenByKey(children, key) {
+	  findShownChildInChildrenByKey: function findShownChildInChildrenByKey(children, key, showProp) {
+	    var ret = null;
+	    if (children) {
+	      children.forEach(function (c) {
+	        if (c.key === key && c.props[showProp]) {
+	          if (ret) {
+	            throw new Error('two child with same key for <rc-animate> children');
+	          }
+	          ret = c;
+	        }
+	      });
+	    }
+	    return ret;
+	  },
+	
+	  findHiddenChildInChildrenByKey: function findHiddenChildInChildrenByKey(children, key, showProp) {
 	    var found = 0;
 	    if (children) {
 	      children.forEach(function (c) {
 	        if (found) {
 	          return;
 	        }
-	        found = c.key === key;
+	        found = c.key === key && !c.props[showProp];
 	      });
 	    }
 	    return found;
 	  },
 	
-	  isShownInChildrenByKey: function isShownInChildrenByKey(children, key, showProp) {
-	    var found = 0;
-	    if (children) {
-	      children.forEach(function (c) {
-	        if (found) {
-	          return;
-	        }
-	        found = c.key === key && c.props[showProp];
-	      });
-	    }
-	    return found;
-	  },
-	
-	  isSameChildren: function isSameChildren(c1, c2) {
+	  isSameChildren: function isSameChildren(c1, c2, showProp) {
 	    var same = c1.length === c2.length;
 	    if (same) {
-	      c1.forEach(function (c, i) {
-	        if (c !== c2[i]) {
+	      c1.forEach(function (child, i) {
+	        var child2 = c2[i];
+	        if (child.key !== child2.key) {
+	          same = false;
+	        } else if (showProp && child.props[showProp] !== child2.props[showProp]) {
 	          same = false;
 	        }
 	      });
@@ -3017,7 +3067,7 @@
 	    var nextChildrenPending = {};
 	    var pendingChildren = [];
 	    prev.forEach(function (c) {
-	      if (inChildren(next, c)) {
+	      if (utils.findChildInChildrenByKey(next, c.key)) {
 	        if (pendingChildren.length) {
 	          nextChildrenPending[c.key] = pendingChildren;
 	          pendingChildren = [];
@@ -3039,6 +3089,8 @@
 	    return ret;
 	  }
 	};
+	
+	exports['default'] = utils;
 	module.exports = exports['default'];
 
 /***/ },
@@ -3061,13 +3113,22 @@
 	
 	var _cssAnimation2 = _interopRequireDefault(_cssAnimation);
 	
+	var _util = __webpack_require__(30);
+	
+	var _util2 = _interopRequireDefault(_util);
+	
 	var transitionMap = {
 	  enter: 'transitionEnter',
+	  appear: 'transitionAppear',
 	  leave: 'transitionLeave'
 	};
 	
 	var AnimateChild = _react2['default'].createClass({
 	  displayName: 'AnimateChild',
+	
+	  propTypes: {
+	    children: _react2['default'].PropTypes.any
+	  },
 	
 	  transition: function transition(animationType, finishCallback) {
 	    var _this = this;
@@ -3099,17 +3160,23 @@
 	  },
 	
 	  componentWillEnter: function componentWillEnter(done) {
-	    var props = this.props;
-	    if (props.transitionEnter && props.transitionName || props.animation.enter) {
+	    if (_util2['default'].isEnterSupported(this.props)) {
 	      this.transition('enter', done);
 	    } else {
 	      done();
 	    }
 	  },
 	
+	  componentWillAppear: function componentWillAppear(done) {
+	    if (_util2['default'].isAppearSupported(this.props)) {
+	      this.transition('appear', done);
+	    } else {
+	      done();
+	    }
+	  },
+	
 	  componentWillLeave: function componentWillLeave(done) {
-	    var props = this.props;
-	    if (props.transitionLeave && props.transitionName || props.animation.leave) {
+	    if (_util2['default'].isLeaveSupported(this.props)) {
 	      this.transition('leave', done);
 	    } else {
 	      done();
@@ -3403,6 +3470,39 @@
 
 /***/ },
 /* 30 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var util = {
+	  isAppearSupported: function isAppearSupported(props) {
+	    return props.transitionName && props.transitionAppear || props.animation.appear;
+	  },
+	  isEnterSupported: function isEnterSupported(props) {
+	    return props.transitionName && props.transitionEnter || props.animation.enter;
+	  },
+	  isLeaveSupported: function isLeaveSupported(props) {
+	    return props.transitionName && props.transitionLeave || props.animation.leave;
+	  },
+	
+	  allowAppearCallback: function allowAppearCallback(props) {
+	    return props.transitionAppear || props.animation.appear;
+	  },
+	  allowEnterCallback: function allowEnterCallback(props) {
+	    return props.transitionEnter || props.animation.enter;
+	  },
+	  allowLeaveCallback: function allowLeaveCallback(props) {
+	    return props.transitionLeave || props.animation.leave;
+	  }
+	};
+	exports["default"] = util;
+	module.exports = exports["default"];
+
+/***/ },
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3429,9 +3529,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _util = __webpack_require__(31);
+	var _util = __webpack_require__(32);
 	
-	var _rcMenu = __webpack_require__(32);
+	var _rcMenu = __webpack_require__(33);
 	
 	var _OptGroup = __webpack_require__(18);
 	
@@ -3439,7 +3539,7 @@
 	
 	var _rcUtil = __webpack_require__(6);
 	
-	var _DropdownPanel = __webpack_require__(46);
+	var _DropdownPanel = __webpack_require__(47);
 	
 	var _DropdownPanel2 = _interopRequireDefault(_DropdownPanel);
 	
@@ -3565,7 +3665,7 @@
 	      if (!search && !menuItems.length) {
 	        visible = false;
 	      }
-	      var className = (_className = {}, _defineProperty(_className, dropdownPrefixCls, 1), _defineProperty(_className, dropdownPrefixCls + '--below', 1), _defineProperty(_className, dropdownPrefixCls + '-hidden', !visible), _className);
+	      var className = (_className = {}, _defineProperty(_className, dropdownPrefixCls, 1), _defineProperty(_className, dropdownPrefixCls + '--below', 1), _defineProperty(_className, dropdownPrefixCls + '-hidden', !visible), _defineProperty(_className, props.className, !!props.className), _className);
 	      // single and not combobox, input is inside dropdown
 	      return _react2['default'].createElement(
 	        'div',
@@ -3609,7 +3709,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3628,7 +3728,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rcMenu = __webpack_require__(32);
+	var _rcMenu = __webpack_require__(33);
 	
 	var _react = __webpack_require__(2);
 	
@@ -3698,7 +3798,7 @@
 	}
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3709,23 +3809,23 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _Menu = __webpack_require__(33);
+	var _Menu = __webpack_require__(34);
 	
 	var _Menu2 = _interopRequireDefault(_Menu);
 	
-	var _SubMenu = __webpack_require__(40);
+	var _SubMenu = __webpack_require__(41);
 	
 	var _SubMenu2 = _interopRequireDefault(_SubMenu);
 	
-	var _MenuItem = __webpack_require__(43);
+	var _MenuItem = __webpack_require__(44);
 	
 	var _MenuItem2 = _interopRequireDefault(_MenuItem);
 	
-	var _MenuItemGroup = __webpack_require__(44);
+	var _MenuItemGroup = __webpack_require__(45);
 	
 	var _MenuItemGroup2 = _interopRequireDefault(_MenuItemGroup);
 	
-	var _Divider = __webpack_require__(45);
+	var _Divider = __webpack_require__(46);
 	
 	var _Divider2 = _interopRequireDefault(_Divider);
 	
@@ -3738,7 +3838,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3753,15 +3853,15 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _MenuMixin = __webpack_require__(34);
+	var _MenuMixin = __webpack_require__(35);
 	
 	var _MenuMixin2 = _interopRequireDefault(_MenuMixin);
 	
-	var _objectAssign = __webpack_require__(38);
+	var _objectAssign = __webpack_require__(39);
 	
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 	
-	var _util = __webpack_require__(39);
+	var _util = __webpack_require__(40);
 	
 	var Menu = _react2['default'].createClass({
 	  displayName: 'Menu',
@@ -4001,7 +4101,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4022,15 +4122,15 @@
 	
 	var _rcUtil = __webpack_require__(6);
 	
-	var _domScrollIntoView = __webpack_require__(35);
+	var _domScrollIntoView = __webpack_require__(36);
 	
 	var _domScrollIntoView2 = _interopRequireDefault(_domScrollIntoView);
 	
-	var _objectAssign = __webpack_require__(38);
+	var _objectAssign = __webpack_require__(39);
 	
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 	
-	var _util = __webpack_require__(39);
+	var _util = __webpack_require__(40);
 	
 	function getActiveKey(props) {
 	  var activeKey = props.activeKey;
@@ -4273,17 +4373,17 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 35 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(36);
-
-
-/***/ },
 /* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var util = __webpack_require__(37);
+	module.exports = __webpack_require__(37);
+
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var util = __webpack_require__(38);
 	
 	function scrollIntoView(elem, container, config) {
 	  config = config || {};
@@ -4408,7 +4508,7 @@
 
 
 /***/ },
-/* 37 */
+/* 38 */
 /***/ function(module, exports) {
 
 	var RE_NUM = /[\-+]?(?:\d*\.|)\d+(?:[eE][\-+]?\d+|)/.source;
@@ -4845,7 +4945,7 @@
 
 
 /***/ },
-/* 38 */
+/* 39 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4890,7 +4990,7 @@
 
 
 /***/ },
-/* 39 */
+/* 40 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4910,7 +5010,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 40 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4925,7 +5025,7 @@
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
-	var _SubPopupMenu = __webpack_require__(41);
+	var _SubPopupMenu = __webpack_require__(42);
 	
 	var _SubPopupMenu2 = _interopRequireDefault(_SubPopupMenu);
 	
@@ -4954,7 +5054,7 @@
 	    onItemHover: _react2['default'].PropTypes.func
 	  },
 	
-	  mixins: [__webpack_require__(42)],
+	  mixins: [__webpack_require__(43)],
 	
 	  getInitialState: function getInitialState() {
 	    this.isSubMenu = 1;
@@ -5213,7 +5313,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 41 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5228,15 +5328,15 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _MenuMixin = __webpack_require__(34);
+	var _MenuMixin = __webpack_require__(35);
 	
 	var _MenuMixin2 = _interopRequireDefault(_MenuMixin);
 	
-	var _objectAssign = __webpack_require__(38);
+	var _objectAssign = __webpack_require__(39);
 	
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 	
-	var _util = __webpack_require__(39);
+	var _util = __webpack_require__(40);
 	
 	var SubPopupMenu = _react2['default'].createClass({
 	  displayName: 'SubPopupMenu',
@@ -5301,7 +5401,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 42 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5382,7 +5482,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 43 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5565,7 +5665,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5635,7 +5735,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 45 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5691,7 +5791,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5708,9 +5808,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _util = __webpack_require__(31);
+	var _util = __webpack_require__(32);
 	
-	var _rcMenu = __webpack_require__(32);
+	var _rcMenu = __webpack_require__(33);
 	
 	var _rcMenu2 = _interopRequireDefault(_rcMenu);
 	
@@ -5738,6 +5838,9 @@
 	      var menuProps = {};
 	      if (props.isMultipleOrTags) {
 	        menuProps.onDeselect = props.onMenuDeselect;
+	        menuProps.onSelect = props.onMenuSelect;
+	      } else {
+	        menuProps.onClick = props.onMenuSelect;
 	      }
 	      var value = props.value;
 	      var selectedKeys = (0, _util.getSelectKeys)(menuItems, value);
@@ -5752,7 +5855,6 @@
 	        _extends({
 	          ref: 'menu',
 	          style: props.dropdownMenuStyle,
-	          onSelect: props.onMenuSelect,
 	          defaultActiveFirst: true,
 	          activeKey: activeKey,
 	          multiple: props.isMultipleOrTags,
@@ -5779,7 +5881,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 47 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5816,7 +5918,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 48 */
+/* 49 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

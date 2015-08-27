@@ -239,7 +239,8 @@ li.rc-select-dropdown-menu-item-divider {
   background-color: #e5e5e5;
   line-height: 0;
 }
-.rc-select-dropdown-slide-up-enter {
+.rc-select-dropdown-slide-up-enter,
+.rc-select-dropdown-slide-up-appear {
   -webkit-animation-duration: 0.3s;
           animation-duration: 0.3s;
   -webkit-animation-fill-mode: both;
@@ -269,7 +270,8 @@ li.rc-select-dropdown-menu-item-divider {
   -webkit-animation-play-state: paused;
           animation-play-state: paused;
 }
-.rc-select-dropdown-slide-up-enter.rc-select-dropdown-slide-up-enter-active {
+.rc-select-dropdown-slide-up-enter.rc-select-dropdown-slide-up-enter-active,
+.rc-select-dropdown-slide-up-appear.rc-select-dropdown-slide-up-appear-active {
   -webkit-animation-name: rcDropdownSlideUpIn;
           animation-name: rcDropdownSlideUpIn;
   -webkit-animation-play-state: running;

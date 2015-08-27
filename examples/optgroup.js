@@ -1,14 +1,14 @@
-webpackJsonp([4],{
+webpackJsonp([6],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(59);
+	module.exports = __webpack_require__(62);
 
 
 /***/ },
 
-/***/ 59:
+/***/ 62:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23,7 +23,7 @@ webpackJsonp([4],{
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(48);
+	__webpack_require__(49);
 	
 	function handleChange(value) {
 	  console.log('selected ' + value);
@@ -43,7 +43,6 @@ webpackJsonp([4],{
 	    _react2['default'].createElement(
 	      _rcSelect2['default'],
 	      { defaultValue: 'lucy',
-	        renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	        showSearch: false,
 	        style: { width: 500 },
 	        onChange: handleChange },

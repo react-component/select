@@ -21,7 +21,7 @@ webpackJsonp([0],[
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(48);
+	__webpack_require__(49);
 	
 	var c3 = _react2['default'].createElement(
 	  'div',
@@ -37,7 +37,6 @@ webpackJsonp([0],[
 	    _react2['default'].createElement(
 	      _rcSelect2['default'],
 	      {
-	        renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	        style: { width: 500 },
 	        combobox: true },
 	      _react2['default'].createElement(

@@ -1,14 +1,14 @@
-webpackJsonp([3],{
+webpackJsonp([5],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(58);
+	module.exports = __webpack_require__(61);
 
 
 /***/ },
 
-/***/ 58:
+/***/ 61:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23,7 +23,7 @@ webpackJsonp([3],{
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(48);
+	__webpack_require__(49);
 	
 	var children = [];
 	for (var i = 10; i < 36; i++) {
@@ -89,7 +89,6 @@ webpackJsonp([3],{
 	              maxHeight: 200,
 	              overflow: 'auto'
 	            },
-	            renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	            style: { width: 500 },
 	            multiple: true,
 	            defaultValue: ['name2', 'name3'],

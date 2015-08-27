@@ -1,14 +1,14 @@
-webpackJsonp([6],{
+webpackJsonp([8],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(61);
+	module.exports = __webpack_require__(64);
 
 
 /***/ },
 
-/***/ 61:
+/***/ 64:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23,7 +23,7 @@ webpackJsonp([6],{
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(48);
+	__webpack_require__(49);
 	
 	function handleChange(value) {
 	  console.log('selected ' + value);
@@ -48,7 +48,6 @@ webpackJsonp([6],{
 	          null,
 	          '请下拉选择'
 	        ),
-	        renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	        searchPlaceholder: '输入过滤',
 	        style: { width: 500 },
 	        onChange: handleChange },

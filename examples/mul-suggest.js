@@ -1,9 +1,9 @@
-webpackJsonp([11],{
+webpackJsonp([3],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(67);
+	module.exports = __webpack_require__(59);
 
 
 /***/ },
@@ -797,7 +797,7 @@ webpackJsonp([11],{
 
 /***/ },
 
-/***/ 67:
+/***/ 59:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -875,7 +875,7 @@ webpackJsonp([11],{
 	      _react2['default'].createElement(
 	        'h2',
 	        null,
-	        'suggest'
+	        'multiple suggest'
 	      ),
 	      _react2['default'].createElement(
 	        'div',
@@ -884,10 +884,11 @@ webpackJsonp([11],{
 	          _rcSelect2['default'],
 	          {
 	            style: { width: 500 },
-	            combobox: true,
-	            showArrow: false,
+	            multiple: true,
 	            notFoundContent: '',
-	            onChange: this.fetchData, onSelect: this.handleSelect, filterOption: false },
+	            onSearch: this.fetchData,
+	            onSelect: this.handleSelect,
+	            filterOption: false },
 	          options
 	        )
 	      )
@@ -900,4 +901,4 @@ webpackJsonp([11],{
 /***/ }
 
 });
-//# sourceMappingURL=suggest.js.map
+//# sourceMappingURL=mul-suggest.js.map

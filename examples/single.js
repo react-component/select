@@ -1,14 +1,14 @@
-webpackJsonp([7],{
+webpackJsonp([9],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(62);
+	module.exports = __webpack_require__(65);
 
 
 /***/ },
 
-/***/ 62:
+/***/ 65:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23,7 +23,7 @@ webpackJsonp([7],{
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(48);
+	__webpack_require__(49);
 	
 	function handleChange(value) {
 	  console.log('selected ' + value);
@@ -74,7 +74,6 @@ webpackJsonp([7],{
 	          _rcSelect2['default'],
 	          { value: this.state.value,
 	            dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
-	            renderDropdownToBody: location.href.indexOf('renderDropdownToBody') !== -1,
 	            style: { width: 500 },
 	            onChange: this.onChange },
 	          _react2['default'].createElement(
