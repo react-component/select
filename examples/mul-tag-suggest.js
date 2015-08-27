@@ -42,14 +42,15 @@ var Search = React.createClass({
       return <Option key={d.value}>{d.text}</Option>;
     });
     return <div>
-      <h2>suggest</h2>
+      <h2>multiple suggest</h2>
       <div>
         <Select
           style={{width: 500}}
-          combobox
-          showArrow={false}
+          tags
           notFoundContent=""
-          onChange={this.fetchData} onSelect={this.handleSelect} filterOption={false}>
+          onSearch={this.fetchData}
+          onSelect={this.handleSelect}
+          filterOption={false}>
         {options}
         </Select>
       </div>

@@ -14,7 +14,6 @@ var c1 = (
     <div style={{width: 300}}>
       <Select defaultValue="lucy"
         style={{width:500}}
-        renderDropdownToBody={location.href.indexOf('renderDropdownToBody') !== -1}
         animation="slide-up"
         showSearch={false}
         onChange={handleChange}>

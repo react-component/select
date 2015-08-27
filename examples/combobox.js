@@ -9,7 +9,6 @@ var c3 = (
     <h2>combobox</h2>
     <div style={{width: 300}}>
       <Select
-        renderDropdownToBody={location.href.indexOf('renderDropdownToBody') !== -1}
         style={{width:500}}
         combobox>
         <Option value="jack">

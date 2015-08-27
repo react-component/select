@@ -114,11 +114,17 @@ class Select extends React.Component {
   }
 
   onClick() {
-    if (!this.props.disabled) {
+    const props = this.props;
+    if (!props.disabled) {
       if (this.state.open) {
         this.setOpenState(false);
       } else {
         this.openIfHasChildren();
+        if (isMultipleOrTagsOrCombobox(props)) {
+          if (this.getInputDOMNode()) {
+            this.getInputDOMNode().focus();
+          }
+        }
       }
     }
   }

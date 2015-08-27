@@ -43,7 +43,6 @@ var Test = React.createClass({
         <div style={{width: 300}}>
           <Select value={this.state.value}
                   dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
-                  renderDropdownToBody={location.href.indexOf('renderDropdownToBody') !== -1}
                   style={{width: 500}}
                   onChange={this.onChange}>
             <Option value="jack">

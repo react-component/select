@@ -35,7 +35,6 @@ var Test = React.createClass({
         <div>
           <Select tags
                   dropdownMenuStyle={{maxHeight:200,overflow:'auto'}}
-                  renderDropdownToBody={location.href.indexOf('renderDropdownToBody') !== -1}
                   style={{width:500}}
                   disabled={this.state.disabled}
                   maxTagTextLength={10}

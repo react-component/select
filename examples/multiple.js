@@ -48,7 +48,6 @@ var Test = React.createClass({
         maxHeight:200,
         overflow:'auto'
         }}
-            renderDropdownToBody={location.href.indexOf('renderDropdownToBody') !== -1}
             style={{width:500}}
             multiple
             defaultValue={['name2', 'name3']}

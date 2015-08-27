@@ -14,7 +14,6 @@ var c1 = (
     <div style={{width: 300}}>
       <Select
         placeholder={<i>请下拉选择</i>}
-        renderDropdownToBody={location.href.indexOf('renderDropdownToBody') !== -1}
         searchPlaceholder="输入过滤"
         style={{width:500}}
         onChange={handleChange}>
