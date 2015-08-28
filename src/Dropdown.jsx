@@ -4,6 +4,8 @@ import {Item as MenuItem, ItemGroup as MenuItemGroup} from 'rc-menu';
 import OptGroup from './OptGroup';
 import {classSet} from 'rc-util';
 import Panel from './DropdownPanel';
+import Align from 'rc-align';
+import Animate from 'rc-animate';
 
 class SelectDropdown extends React.Component {
   shouldComponentUpdate(nextProps) {
@@ -98,16 +100,31 @@ class SelectDropdown extends React.Component {
       [`${dropdownPrefixCls}--below`]: 1,
       [`${dropdownPrefixCls}-hidden`]: !visible,
       [props.className]: !!props.className,
+      [`${dropdownPrefixCls}--${props.isMultipleOrTags ? 'multiple' : 'single'}`]: 1,
     };
     // single and not combobox, input is inside dropdown
-    return (<div key="dropdown"
-                 onFocus={props.onDropdownFocus}
-                 onBlur={props.onDropdownBlur}
-                 style={props.dropdownStyle}
-                 className={classSet(className)}
-                 tabIndex="-1">
-      <Panel ref="panel" {...props} menuItems={menuItems} visible={visible} search={search}/>
-    </div>);
+    return (
+      <Animate
+        component=""
+        exclusive={true}
+        transitionAppear={true}
+        showProp="selectOpen"
+        transitionName={props.transitionName}>
+        <Align target={props.getAlignTarget}
+               key="dropdown"
+               selectOpen={visible}
+               disabled={!visible}
+               align={{points: ['tl', 'bl'], offset: [0, 4]}}>
+          <div key="dropdown"
+               onFocus={props.onDropdownFocus}
+               onBlur={props.onDropdownBlur}
+               style={props.dropdownStyle}
+               className={classSet(className)}
+               tabIndex="-1">
+            <Panel ref="panel" {...props} menuItems={menuItems} visible={visible} search={search}/>
+          </div>
+        </Align>
+      </Animate>);
   }
 
   filterOption(input, child) {

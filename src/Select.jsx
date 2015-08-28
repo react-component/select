@@ -1,8 +1,6 @@
 import React from 'react';
 import {classSet, KeyCode} from 'rc-util';
 import OptGroup from './OptGroup';
-import Align from 'rc-align';
-import Animate from 'rc-animate';
 import SelectDropdown from './Dropdown';
 import {
   getPropValue, getValuePropValue, isCombobox,
@@ -310,47 +308,35 @@ class Select extends React.Component {
   getDropdownElement() {
     const state = this.state;
     const props = this.props;
-    const multiple = isMultipleOrTags(props);
-    let dropdownClassName = props.dropdownClassName || '';
-    dropdownClassName = `${dropdownClassName} ${props.prefixCls}-dropdown--${multiple ? 'multiple' : 'single'}`;
-    return (<Animate
-      component=""
-      exclusive={true}
-      transitionAppear={true}
-      showProp="selectOpen"
-      transitionName={this.getDropdownTransitionName()}>
-      <Align target={this.getDOMNode}
-             key="dropdown"
-             selectOpen={state.open}
-             disabled={!state.open}
-             align={{points: ['tl', 'bl'], offset: [0, 4]}}>
-        <SelectDropdown
-          key="dropdown"
-          visible={state.open}
-          onDropdownFocus={this.onFocus}
-          onDropdownBlur={this.onBlur}
-          filterOption={props.filterOption}
-          optionFilterProp={props.optionFilterProp}
-          optionLabelProp={props.optionLabelProp}
-          inputValue={state.inputValue}
-          inputElement={this.getInputElement()}
-          ref={this.saveDropdownRef}
-          tags={props.tags}
-          notFoundContent={props.notFoundContent}
-          onMenuDeselect={this.onMenuDeselect}
-          onMenuSelect={this.onMenuSelect}
-          value={state.value}
-          isMultipleOrTags={isMultipleOrTags(props)}
-          prefixCls={props.prefixCls}
-          isMultipleOrTagsOrCombobox={isMultipleOrTagsOrCombobox(props)}
-          showSearch={props.showSearch}
-          className={dropdownClassName}
-          dropdownMenuStyle={props.dropdownMenuStyle}
-          dropdownStyle={props.dropdownStyle}>
-          {props.children}
-        </SelectDropdown>
-      </Align>
-    </Animate>);
+    return (
+      <SelectDropdown
+        key="dropdown"
+        transitionName={this.getDropdownTransitionName()}
+        visible={state.open}
+        getAlignTarget={this.getDOMNode}
+        onDropdownFocus={this.onFocus}
+        onDropdownBlur={this.onBlur}
+        filterOption={props.filterOption}
+        optionFilterProp={props.optionFilterProp}
+        optionLabelProp={props.optionLabelProp}
+        inputValue={state.inputValue}
+        inputElement={this.getInputElement()}
+        ref={this.saveDropdownRef}
+        tags={props.tags}
+        notFoundContent={props.notFoundContent}
+        onMenuDeselect={this.onMenuDeselect}
+        onMenuSelect={this.onMenuSelect}
+        value={state.value}
+        isMultipleOrTags={isMultipleOrTags(props)}
+        prefixCls={props.prefixCls}
+        isMultipleOrTagsOrCombobox={isMultipleOrTagsOrCombobox(props)}
+        showSearch={props.showSearch}
+        className={props.dropdownClassName}
+        dropdownMenuStyle={props.dropdownMenuStyle}
+        dropdownStyle={props.dropdownStyle}>
+        {props.children}
+      </SelectDropdown>
+    );
   }
 
   getDropdownTransitionName() {
