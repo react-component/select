@@ -147,6 +147,11 @@
       }
     }
 
+    .@{selectPrefixCls}-search__field__placeholder {
+      top: 5px;
+      left: 8px;
+    }
+
     .@{selectPrefixCls}-selection__rendered {
       //display: inline-block;
       overflow: hidden;
@@ -290,7 +295,7 @@
       display: block !important;
     }
 
-    &-slide-up-enter,&-slide-up-appear {
+    &-slide-up-enter, &-slide-up-appear {
       .effect();
       opacity: 0;
       animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
@@ -304,7 +309,7 @@
       animation-play-state: paused;
     }
 
-    &-slide-up-enter&-slide-up-enter-active,&-slide-up-appear&-slide-up-appear-active {
+    &-slide-up-enter&-slide-up-enter-active, &-slide-up-appear&-slide-up-appear-active {
       animation-name: rcDropdownSlideUpIn;
       animation-play-state: running;
     }

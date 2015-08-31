@@ -254,6 +254,12 @@ React.render(c, container);
           <td></td>
           <td>default filter by this attribute. if react want you to set key, then key is same as value, you can omit value.</td>
         </tr>
+        <tr>
+          <td>notFoundContent</td>
+          <td>String</td>
+          <td></td>
+          <td>specify content to show when no result matches. defaults to Not Found</td>
+        </tr>
     </tbody>
 </table>
 

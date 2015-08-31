@@ -47,6 +47,7 @@ var Search = React.createClass({
         <Select
           style={{width: 500}}
           animation="slide-up"
+          searchPlaceholder="搜索下"
           multiple
           notFoundContent=""
           onSearch={this.fetchData}

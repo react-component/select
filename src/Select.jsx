@@ -288,6 +288,17 @@ class Select extends React.Component {
     return this.dropdownContainer;
   }
 
+  getSearchPlaceholderElement(hidden) {
+    const props = this.props;
+    if (props.searchPlaceholder) {
+      return (<span
+        style={{display: hidden ? 'none' : 'block'}}
+        onClick={this.onPlaceholderClick}
+        className={props.prefixCls + '-search__field__placeholder'}>{props.searchPlaceholder}</span>);
+    }
+    return null;
+  }
+
   getInputElement() {
     const props = this.props;
     return (<span className={props.prefixCls + '-search__field__wrap'}>
@@ -298,10 +309,7 @@ class Select extends React.Component {
            disabled={props.disabled}
            className={props.prefixCls + '-search__field'}
            role="textbox"/>
-      {props.searchPlaceholder ? <span
-        style={{display: this.state.inputValue ? 'none' : 'block'}}
-        onClick={this.onPlaceholderClick}
-        className={props.prefixCls + '-search__field__placeholder'}>{props.searchPlaceholder}</span> : null}
+      {isMultipleOrTags(props) ? null : this.getSearchPlaceholderElement(!!this.state.inputValue)}
                    </span>);
   }
 
@@ -450,9 +458,10 @@ class Select extends React.Component {
           >
         {ctrlNode}
           {multiple || !props.showArrow ? null :
-            <span key="arrow" className={prefixCls + '-arrow'} tabIndex="-1" style={{outline: 'none'}}>
+            (<span key="arrow" className={prefixCls + '-arrow'} tabIndex="-1" style={{outline: 'none'}}>
             <b></b>
-          </span>}
+          </span>)}
+          {multiple ? this.getSearchPlaceholderElement(!!this.state.inputValue || this.state.value.length) : null}
         </span>
       </span>
     );
