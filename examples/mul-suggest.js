@@ -884,6 +884,8 @@ webpackJsonp([3],{
 	          _rcSelect2['default'],
 	          {
 	            style: { width: 500 },
+	            animation: 'slide-up',
+	            searchPlaceholder: '搜索下',
 	            multiple: true,
 	            notFoundContent: '',
 	            onSearch: this.fetchData,

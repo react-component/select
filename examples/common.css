@@ -87,11 +87,11 @@
 .rc-select-disabled .rc-select-selection__choice__remove:hover {
   color: #ccc;
 }
-.rc-select .rc-select-search__field__wrap {
+.rc-select-search__field__wrap {
   display: inline-block;
   position: relative;
 }
-.rc-select .rc-select-search__field__placeholder {
+.rc-select-search__field__placeholder {
   position: absolute;
   top: 0;
   left: 3px;
@@ -123,6 +123,10 @@
 }
 .rc-select-selection--multiple .rc-select-search--inline .rc-select-search__field {
   width: 0.75em;
+}
+.rc-select-selection--multiple .rc-select-search__field__placeholder {
+  top: 5px;
+  left: 8px;
 }
 .rc-select-selection--multiple .rc-select-selection__rendered {
   overflow: hidden;
