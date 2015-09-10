@@ -35,7 +35,7 @@ export function isSingleMode(props) {
   return !isMultipleOrTagsOrCombobox(props);
 }
 
-export function normValue(value) {
+export function toArray(value) {
   let ret = value;
   if (value === undefined) {
     ret = [];

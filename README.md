@@ -193,9 +193,9 @@ React.render(c, container);
         </tr>
         <tr>
           <td>onChange</td>
-          <td>function(value)</td>
+          <td>function(value, label)</td>
           <th></th>
-          <td>called when select an option or input value change(combobox)</td>
+          <td>called when select an option or input value change(combobox).</td>
         </tr>
         <tr>
           <td>dropdownMatchSelectWidth</td>

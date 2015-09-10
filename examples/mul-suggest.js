@@ -9,15 +9,17 @@ import querystring from 'querystring';
 var Search = React.createClass({
   getInitialState() {
     return {
-      data: []
+      data: [],
+      value: [],
+      label: [],
     }
   },
 
   fetchData(value) {
     jsonp('http://suggest.taobao.com/sug?' + querystring.encode({
-      code: 'utf-8',
-      q: value
-    }), (err, d) => {
+        code: 'utf-8',
+        q: value
+      }), (err, d) => {
       var result = d.result;
       var data = [];
       result.forEach((r)=> {
@@ -32,28 +34,36 @@ var Search = React.createClass({
     });
   },
 
-  handleSelect(value) {
-    console.log('select ', value);
+  onChange(value, label) {
+    console.log('onChange ', value, label);
+    this.setState({
+      value,
+      label
+    });
   },
 
   render() {
     var data = this.state.data;
     var options = data.map((d) => {
-      return <Option key={d.value}>{d.text}</Option>;
+      return <Option key={d.value}><i>{d.text}</i></Option>;
     });
     return <div>
       <h2>multiple suggest</h2>
+
       <div>
         <Select
+          value={this.state.value}
+          label={this.state.label}
           style={{width: 500}}
           animation="slide-up"
           searchPlaceholder="搜索下"
+          optionLabelProp="children"
           multiple
           notFoundContent=""
           onSearch={this.fetchData}
-          onSelect={this.handleSelect}
+          onChange={this.onChange}
           filterOption={false}>
-        {options}
+          {options}
         </Select>
       </div>
     </div>;

@@ -1,6 +1,10 @@
 # History
 ----
 
+## 4.9.0 / 2015-09-10
+
+- add label for onChange listener
+
 ## 4.8.0 / 2015-08-20
 
 - make value a controlled value

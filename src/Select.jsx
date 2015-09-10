@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import {classSet, KeyCode} from 'rc-util';
 import OptGroup from './OptGroup';
 import SelectDropdown from './Dropdown';
 import {
   getPropValue, getValuePropValue, isCombobox,
   isMultipleOrTags, isMultipleOrTagsOrCombobox,
-  isSingleMode, normValue
+  isSingleMode, toArray
 } from './util';
 
 function noop() {
@@ -21,24 +21,28 @@ function saveRef(name, component) {
 
 const Select = React.createClass({
   propTypes: {
-    multiple: React.PropTypes.bool,
-    filterOption: React.PropTypes.any,
-    showSearch: React.PropTypes.bool,
-    disabled: React.PropTypes.bool,
-    showArrow: React.PropTypes.bool,
-    tags: React.PropTypes.bool,
-    transitionName: React.PropTypes.string,
-    optionLabelProp: React.PropTypes.string,
-    optionFilterProp: React.PropTypes.string,
-    animation: React.PropTypes.string,
-    onChange: React.PropTypes.func,
-    onSelect: React.PropTypes.func,
-    onSearch: React.PropTypes.func,
-    searchPlaceholder: React.PropTypes.string,
-    placeholder: React.PropTypes.any,
-    onDeselect: React.PropTypes.func,
-    dropdownStyle: React.PropTypes.object,
-    maxTagTextLength: React.PropTypes.number,
+    multiple: PropTypes.bool,
+    filterOption: PropTypes.any,
+    showSearch: PropTypes.bool,
+    disabled: PropTypes.bool,
+    showArrow: PropTypes.bool,
+    tags: PropTypes.bool,
+    transitionName: PropTypes.string,
+    optionLabelProp: PropTypes.string,
+    optionFilterProp: PropTypes.string,
+    animation: PropTypes.string,
+    onChange: PropTypes.func,
+    onSelect: PropTypes.func,
+    onSearch: PropTypes.func,
+    searchPlaceholder: PropTypes.string,
+    placeholder: PropTypes.any,
+    onDeselect: PropTypes.func,
+    value: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
+    defaultValue: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
+    label: PropTypes.oneOfType([PropTypes.array, PropTypes.any]),
+    defaultLabel: PropTypes.oneOfType([PropTypes.array, PropTypes.any]),
+    dropdownStyle: PropTypes.object,
+    maxTagTextLength: PropTypes.number,
   },
 
   getDefaultProps() {
@@ -68,24 +72,27 @@ const Select = React.createClass({
     const props = this.props;
     let value = [];
     if ('value' in props) {
-      value = normValue(props.value);
+      value = toArray(props.value);
     } else {
-      value = normValue(props.defaultValue);
+      value = toArray(props.defaultValue);
     }
+    const label = this.getLabelFromProps(props, value, 1);
     let inputValue = '';
     if (props.combobox) {
       inputValue = value[0] || '';
     }
     this.saveInputRef = saveRef.bind(this, 'inputInstance');
     this.saveDropdownRef = saveRef.bind(this, 'dropdownInstance');
-    return {value, inputValue};
+    return {value, inputValue, label};
   },
 
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
-      const value = normValue(nextProps.value);
+      const value = toArray(nextProps.value);
+      const label = this.getLabelFromProps(nextProps, value);
       this.setState({
         value,
+        label,
       });
       if (nextProps.combobox) {
         this.setState({
@@ -141,7 +148,7 @@ const Select = React.createClass({
       open: true,
     });
     if (isCombobox(props)) {
-      this.fireChange([val]);
+      this.fireChange([val], [val]);
     }
     props.onSearch(val);
   },
@@ -184,9 +191,11 @@ const Select = React.createClass({
     if (isMultipleOrTags(props) && !e.target.value && keyCode === KeyCode.BACKSPACE) {
       const value = state.value.concat();
       if (value.length) {
+        const label = state.label.concat();
         const popValue = value.pop();
+        label.pop();
         props.onDeselect(popValue);
-        this.fireChange(value);
+        this.fireChange(value, label);
       }
       return;
     }
@@ -218,22 +227,26 @@ const Select = React.createClass({
 
   onMenuSelect({item}) {
     let value = this.state.value;
+    let label = this.state.label;
     const props = this.props;
     const selectedValue = getValuePropValue(item);
+    const selectedLabel = this.getLabelFromOption(item);
     if (isMultipleOrTags(props)) {
       if (value.indexOf(selectedValue) !== -1) {
         return;
       }
       value = value.concat([selectedValue]);
+      label = label.concat([selectedLabel]);
     } else {
       if (value[0] === selectedValue) {
         this.setOpenState(false);
         return;
       }
       value = [selectedValue];
+      label = [selectedLabel];
     }
     props.onSelect(selectedValue, item);
-    this.fireChange(value);
+    this.fireChange(value, label);
     this.setOpenState(false);
     this.setState({
       inputValue: '',
@@ -285,7 +298,7 @@ const Select = React.createClass({
     }
     e.stopPropagation();
     if (state.inputValue || state.value.length) {
-      this.fireChange([]);
+      this.fireChange([], []);
       this.setOpenState(false);
       this.setState({
         inputValue: '',
@@ -293,22 +306,55 @@ const Select = React.createClass({
     }
   },
 
-  getLabelByValue(children, value) {
+  getLabelBySingleValue(children, value) {
     if (value === undefined) {
       return null;
     }
     let label = null;
     React.Children.forEach(children, (c) => {
       if (c.type === OptGroup) {
-        const maybe = this.getLabelByValue(c.props.children, value);
+        const maybe = this.getLabelBySingleValue(c.props.children, value);
         if (maybe !== null) {
           label = maybe;
         }
       } else if (getValuePropValue(c) === value) {
-        label = getPropValue(c, this.props.optionLabelProp);
+        label = this.getLabelFromOption(c);
       }
     });
     return label;
+  },
+
+  getLabelFromOption(c) {
+    return getPropValue(c, this.props.optionLabelProp);
+  },
+
+  getLabelFromProps(props, value, init) {
+    let label = [];
+    if ('label' in props) {
+      label = toArray(props.label);
+    } else if (init && 'defaultLabel' in props) {
+      label = toArray(props.defaultLabel);
+    } else {
+      label = this.getLabelByValue(props.children, value);
+    }
+    return label;
+  },
+
+  getVLForOnChange(vls) {
+    if (vls !== undefined) {
+      return isMultipleOrTags(this.props) ? vls : vls[0];
+    }
+    return vls;
+  },
+
+  getLabelByValue(children, value) {
+    return value.map((v)=> {
+      const label = this.getLabelBySingleValue(children, v);
+      if (label === null) {
+        return v;
+      }
+      return label;
+    });
   },
 
   getDropdownDOMNode() {
@@ -397,10 +443,10 @@ const Select = React.createClass({
 
   renderTopControlNode() {
     const value = this.state.value;
+    const label = this.state.label;
     const props = this.props;
     const prefixCls = props.prefixCls;
     const allowClear = props.allowClear;
-    const children = props.children;
     const clear = (<span key="clear"
                          className={prefixCls + '-selection__clear'}
                          onClick={this.onClearSelection}/>);
@@ -410,9 +456,8 @@ const Select = React.createClass({
                            {props.placeholder}
                          </span>);
       let innerNode = placeholder;
-      const innerValue = this.getLabelByValue(children, value[0]);
-      if (innerValue !== null) {
-        innerNode = <span key="value">{this.getLabelByValue(children, value[0])}</span>;
+      if (this.state.label[0]) {
+        innerNode = <span key="value">{this.state.label[0]}</span>;
       }
       return (<span className={prefixCls + '-selection__rendered'}>
         {[innerNode, allowClear ? clear : null]}
@@ -421,8 +466,8 @@ const Select = React.createClass({
 
     let selectedValueNodes;
     if (isMultipleOrTags(props)) {
-      selectedValueNodes = value.map((v) => {
-        let content = this.getLabelByValue(children, v) || v;
+      selectedValueNodes = value.map((v, index) => {
+        let content = label[index];
         const title = content;
         const maxTagTextLength = props.maxTagTextLength;
         if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
@@ -503,14 +548,19 @@ const Select = React.createClass({
     if (props.disabled) {
       return;
     }
-    const value = this.state.value.filter((v)=> {
-      return v !== selectedValue;
+    const label = this.state.label.concat();
+    const index = this.state.value.indexOf(selectedValue);
+    const value = this.state.value.filter((v) => {
+      return (v !== selectedValue);
     });
+    if (index !== -1) {
+      label.splice(index, 1);
+    }
     const canMultiple = isMultipleOrTags(props);
     if (canMultiple) {
       props.onDeselect(selectedValue);
     }
-    this.fireChange(value);
+    this.fireChange(value, label);
   },
 
   setOpenState(open) {
@@ -535,14 +585,14 @@ const Select = React.createClass({
     }
   },
 
-  fireChange(value) {
+  fireChange(value, label) {
     const props = this.props;
     if (!('value' in props)) {
       this.setState({
-        value,
+        value, label,
       });
     }
-    props.onChange(isMultipleOrTags(props) ? value : value[0]);
+    props.onChange(this.getVLForOnChange(value), this.getVLForOnChange(label));
   },
 });
 
