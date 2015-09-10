@@ -23,6 +23,10 @@ webpackJsonp([0],[
 	
 	__webpack_require__(49);
 	
+	function onChange(value) {
+	  console.log(value);
+	}
+	
 	var c3 = _react2['default'].createElement(
 	  'div',
 	  null,
@@ -38,6 +42,8 @@ webpackJsonp([0],[
 	      _rcSelect2['default'],
 	      {
 	        style: { width: 500 },
+	        onChange: onChange,
+	        defaultValue: 'l',
 	        combobox: true },
 	      _react2['default'].createElement(
 	        _rcSelect.Option,

@@ -148,17 +148,9 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	var _react = __webpack_require__(2);
 	
@@ -179,608 +171,572 @@
 	function noop() {}
 	
 	function filterFn(input, child) {
-	  return (0, _util.getPropValue)(child, this.props.optionFilterProp).indexOf(input) > -1;
+	  return String((0, _util.getPropValue)(child, this.props.optionFilterProp)).indexOf(input) > -1;
 	}
 	
 	function saveRef(name, component) {
 	  this[name] = component;
 	}
 	
-	var Select = (function (_React$Component) {
-	  _inherits(Select, _React$Component);
+	var Select = _react2['default'].createClass({
+	  displayName: 'Select',
 	
-	  function Select(props) {
-	    var _this = this;
+	  propTypes: {
+	    multiple: _react2['default'].PropTypes.bool,
+	    filterOption: _react2['default'].PropTypes.any,
+	    showSearch: _react2['default'].PropTypes.bool,
+	    disabled: _react2['default'].PropTypes.bool,
+	    showArrow: _react2['default'].PropTypes.bool,
+	    tags: _react2['default'].PropTypes.bool,
+	    transitionName: _react2['default'].PropTypes.string,
+	    optionLabelProp: _react2['default'].PropTypes.string,
+	    optionFilterProp: _react2['default'].PropTypes.string,
+	    animation: _react2['default'].PropTypes.string,
+	    onChange: _react2['default'].PropTypes.func,
+	    onSelect: _react2['default'].PropTypes.func,
+	    onSearch: _react2['default'].PropTypes.func,
+	    searchPlaceholder: _react2['default'].PropTypes.string,
+	    placeholder: _react2['default'].PropTypes.any,
+	    onDeselect: _react2['default'].PropTypes.func,
+	    dropdownStyle: _react2['default'].PropTypes.object,
+	    maxTagTextLength: _react2['default'].PropTypes.number
+	  },
 	
-	    _classCallCheck(this, Select);
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      prefixCls: 'rc-select',
+	      filterOption: filterFn,
+	      showSearch: true,
+	      allowClear: false,
+	      placeholder: '',
+	      searchPlaceholder: '',
+	      defaultValue: [],
+	      onChange: noop,
+	      onSelect: noop,
+	      onSearch: noop,
+	      onDeselect: noop,
+	      showArrow: true,
+	      dropdownMatchSelectWidth: true,
+	      dropdownStyle: {},
+	      dropdownMenuStyle: {},
+	      optionFilterProp: 'value',
+	      optionLabelProp: 'value',
+	      notFoundContent: 'Not Found'
+	    };
+	  },
 	
-	    _get(Object.getPrototypeOf(Select.prototype), 'constructor', this).call(this, props);
+	  getInitialState: function getInitialState() {
+	    var props = this.props;
 	    var value = [];
 	    if ('value' in props) {
 	      value = (0, _util.normValue)(props.value);
 	    } else {
 	      value = (0, _util.normValue)(props.defaultValue);
 	    }
-	    this.state = {
-	      value: value,
-	      inputValue: ''
-	    };
-	    var events = ['onClick', 'getDOMNode', 'onKeyDown', 'onInputKeyDown', 'onInputChange', 'onFocus', 'onBlur', 'onClearSelection', 'onMenuSelect', 'onMenuDeselect', 'onPlaceholderClick'];
-	    events.forEach(function (m) {
-	      _this[m] = _this[m].bind(_this);
-	    });
+	    var inputValue = '';
+	    if (props.combobox) {
+	      inputValue = value[0] || '';
+	    }
 	    this.saveInputRef = saveRef.bind(this, 'inputInstance');
 	    this.saveDropdownRef = saveRef.bind(this, 'dropdownInstance');
-	  }
+	    return { value: value, inputValue: inputValue };
+	  },
 	
-	  _createClass(Select, [{
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nextProps) {
-	      if ('value' in nextProps) {
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	    if ('value' in nextProps) {
+	      var value = (0, _util.normValue)(nextProps.value);
+	      this.setState({
+	        value: value
+	      });
+	      if (nextProps.combobox) {
 	        this.setState({
-	          value: (0, _util.normValue)(nextProps.value)
+	          inputValue: value[0] || ''
 	        });
 	      }
 	    }
-	  }, {
-	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate() {
-	      var state = this.state;
-	      var props = this.props;
-	      if (this.haveOpened) {
-	        _react2['default'].render(this.getDropdownElement(), this.getDropdownContainer());
-	      }
-	      if (state.open) {
-	        if (props.dropdownMatchSelectWidth) {
-	          var dropdownDOMNode = this.getDropdownDOMNode();
-	          if (dropdownDOMNode) {
-	            dropdownDOMNode.style.width = this.getDOMNode().offsetWidth + 'px';
-	          }
-	        }
-	        if ((0, _util.isMultipleOrTags)(props)) {
-	          var inputNode = this.getInputDOMNode();
-	          if (inputNode.value) {
-	            inputNode.style.width = '';
-	            inputNode.style.width = inputNode.scrollWidth + 'px';
-	          } else {
-	            inputNode.style.width = '';
-	          }
-	        }
-	      }
-	    }
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      if (this.dropdownContainer) {
-	        _react2['default'].unmountComponentAtNode(this.dropdownContainer);
-	        document.body.removeChild(this.dropdownContainer);
-	        this.dropdownContainer = null;
-	      }
-	      this.dropdownInstance = null;
-	      if (this._blurTimer) {
-	        clearTimeout(this._blurTimer);
-	        this._blurTimer = null;
-	      }
-	    }
-	  }, {
-	    key: 'onInputChange',
-	    value: function onInputChange(e) {
-	      var val = e.target.value;
-	      var props = this.props;
-	      this.setState({
-	        inputValue: val,
-	        open: true
-	      });
-	      if ((0, _util.isCombobox)(props)) {
-	        props.onChange(val);
-	      }
-	      props.onSearch(val);
-	    }
-	  }, {
-	    key: 'onClick',
-	    value: function onClick() {
-	      var props = this.props;
-	      if (!props.disabled) {
-	        if (this.state.open) {
-	          this.setOpenState(false);
-	        } else {
-	          this.openIfHasChildren();
-	          if ((0, _util.isMultipleOrTagsOrCombobox)(props)) {
-	            if (this.getInputDOMNode()) {
-	              this.getInputDOMNode().focus();
-	            }
-	          }
-	        }
-	      }
-	    }
+	  },
 	
-	    // combobox ignore
-	  }, {
-	    key: 'onKeyDown',
-	    value: function onKeyDown(e) {
-	      var props = this.props;
-	      if (props.disabled) {
-	        return;
-	      }
-	      var keyCode = e.keyCode;
-	      if (this.state.open && !this.getInputDOMNode()) {
-	        this.onInputKeyDown(e);
-	      } else if (keyCode === _rcUtil.KeyCode.ENTER || keyCode === _rcUtil.KeyCode.DOWN) {
-	        this.onClick();
-	        e.preventDefault();
-	      }
+	  componentDidUpdate: function componentDidUpdate() {
+	    var state = this.state;
+	    var props = this.props;
+	    if (this.haveOpened) {
+	      _react2['default'].render(this.getDropdownElement(), this.getDropdownContainer());
 	    }
-	  }, {
-	    key: 'onInputKeyDown',
-	    value: function onInputKeyDown(e) {
-	      var props = this.props;
-	      var state = this.state;
-	      var keyCode = e.keyCode;
-	      if ((0, _util.isMultipleOrTags)(props) && !e.target.value && keyCode === _rcUtil.KeyCode.BACKSPACE) {
-	        var value = state.value.concat();
-	        if (value.length) {
-	          var popValue = value.pop();
-	          props.onDeselect(popValue);
-	          this.fireChange(value);
-	        }
-	        return;
-	      }
-	
-	      if (keyCode === _rcUtil.KeyCode.DOWN) {
-	        if (!state.open) {
-	          this.openIfHasChildren();
-	          e.preventDefault();
-	          e.stopPropagation();
-	          return;
-	        }
-	      } else if (keyCode === _rcUtil.KeyCode.ESC) {
-	        if (state.open) {
-	          this.setOpenState(false);
-	          e.preventDefault();
-	          e.stopPropagation();
-	        }
-	        return;
-	      }
-	
-	      if (state.open) {
-	        var menu = this.dropdownInstance && this.dropdownInstance.getMenuComponent();
-	        if (menu && menu.onKeyDown(e)) {
-	          e.preventDefault();
-	          e.stopPropagation();
+	    if (state.open) {
+	      if (props.dropdownMatchSelectWidth) {
+	        var dropdownDOMNode = this.getDropdownDOMNode();
+	        if (dropdownDOMNode) {
+	          dropdownDOMNode.style.width = this.getDOMNode().offsetWidth + 'px';
 	        }
 	      }
-	    }
-	  }, {
-	    key: 'onMenuSelect',
-	    value: function onMenuSelect(_ref) {
-	      var item = _ref.item;
-	
-	      var value = this.state.value;
-	      var props = this.props;
-	      var selectedValue = (0, _util.getValuePropValue)(item);
 	      if ((0, _util.isMultipleOrTags)(props)) {
-	        if (value.indexOf(selectedValue) !== -1) {
-	          return;
+	        var inputNode = this.getInputDOMNode();
+	        if (inputNode.value) {
+	          inputNode.style.width = '';
+	          inputNode.style.width = inputNode.scrollWidth + 'px';
+	        } else {
+	          inputNode.style.width = '';
 	        }
-	        value = value.concat([selectedValue]);
+	      }
+	    }
+	  },
+	
+	  componentWillUnmount: function componentWillUnmount() {
+	    if (this.dropdownContainer) {
+	      _react2['default'].unmountComponentAtNode(this.dropdownContainer);
+	      document.body.removeChild(this.dropdownContainer);
+	      this.dropdownContainer = null;
+	    }
+	    this.dropdownInstance = null;
+	    if (this._blurTimer) {
+	      clearTimeout(this._blurTimer);
+	      this._blurTimer = null;
+	    }
+	  },
+	
+	  onInputChange: function onInputChange(e) {
+	    var val = e.target.value;
+	    var props = this.props;
+	    this.setState({
+	      inputValue: val,
+	      open: true
+	    });
+	    if ((0, _util.isCombobox)(props)) {
+	      this.fireChange([val]);
+	    }
+	    props.onSearch(val);
+	  },
+	
+	  onClick: function onClick() {
+	    var props = this.props;
+	    if (!props.disabled) {
+	      if (this.state.open) {
+	        this.setOpenState(false);
 	      } else {
-	        if (value[0] === selectedValue) {
-	          this.setOpenState(false);
-	          return;
+	        this.openIfHasChildren();
+	        if ((0, _util.isMultipleOrTagsOrCombobox)(props)) {
+	          if (this.getInputDOMNode()) {
+	            this.getInputDOMNode().focus();
+	          }
 	        }
-	        value = [selectedValue];
-	      }
-	      props.onSelect(selectedValue, item);
-	      this.fireChange(value);
-	      this.setOpenState(false);
-	      this.setState({
-	        inputValue: ''
-	      });
-	      if ((0, _util.isCombobox)(props)) {
-	        this.setState({
-	          inputValue: (0, _util.getPropValue)(item, props.optionLabelProp)
-	        });
 	      }
 	    }
-	  }, {
-	    key: 'onMenuDeselect',
-	    value: function onMenuDeselect(_ref2) {
-	      var item = _ref2.item;
-	      var domEvent = _ref2.domEvent;
+	  },
 	
-	      if (domEvent.type === 'click') {
-	        this.removeSelected((0, _util.getValuePropValue)(item));
-	      }
-	      this.setOpenState(false);
-	      this.setState({
-	        inputValue: ''
-	      });
+	  // combobox ignore
+	  onKeyDown: function onKeyDown(e) {
+	    var props = this.props;
+	    if (props.disabled) {
+	      return;
 	    }
-	  }, {
-	    key: 'onBlur',
-	    value: function onBlur() {
-	      var _this2 = this;
+	    var keyCode = e.keyCode;
+	    if (this.state.open && !this.getInputDOMNode()) {
+	      this.onInputKeyDown(e);
+	    } else if (keyCode === _rcUtil.KeyCode.ENTER || keyCode === _rcUtil.KeyCode.DOWN) {
+	      this.onClick();
+	      e.preventDefault();
+	    }
+	  },
 	
-	      if (this._blurTimer) {
-	        clearTimeout(this._blurTimer);
+	  onInputKeyDown: function onInputKeyDown(e) {
+	    var props = this.props;
+	    var state = this.state;
+	    var keyCode = e.keyCode;
+	    if ((0, _util.isMultipleOrTags)(props) && !e.target.value && keyCode === _rcUtil.KeyCode.BACKSPACE) {
+	      var value = state.value.concat();
+	      if (value.length) {
+	        var popValue = value.pop();
+	        props.onDeselect(popValue);
+	        this.fireChange(value);
 	      }
-	      this._blurTimer = setTimeout(function () {
-	        _this2.setState({
-	          open: false
-	        });
-	      }, 100);
+	      return;
 	    }
-	  }, {
-	    key: 'onFocus',
-	    value: function onFocus() {
-	      if (this._blurTimer) {
-	        clearTimeout(this._blurTimer);
-	        this._blurTimer = null;
-	      }
-	    }
-	  }, {
-	    key: 'onPlaceholderClick',
-	    value: function onPlaceholderClick() {
-	      this.getInputDOMNode().focus();
-	    }
-	  }, {
-	    key: 'onClearSelection',
-	    value: function onClearSelection(e) {
-	      var props = this.props;
-	      var state = this.state;
-	      if (props.disabled) {
+	
+	    if (keyCode === _rcUtil.KeyCode.DOWN) {
+	      if (!state.open) {
+	        this.openIfHasChildren();
+	        e.preventDefault();
+	        e.stopPropagation();
 	        return;
 	      }
-	      e.stopPropagation();
-	      if (state.inputValue || state.value.length) {
-	        this.fireChange([]);
+	    } else if (keyCode === _rcUtil.KeyCode.ESC) {
+	      if (state.open) {
 	        this.setOpenState(false);
-	        this.setState({
-	          inputValue: ''
-	        });
+	        e.preventDefault();
+	        e.stopPropagation();
 	      }
+	      return;
 	    }
-	  }, {
-	    key: 'getLabelByValue',
-	    value: function getLabelByValue(children, value) {
-	      var _this3 = this;
 	
-	      if (value === undefined) {
-	        return null;
+	    if (state.open) {
+	      var menu = this.dropdownInstance && this.dropdownInstance.getMenuComponent();
+	      if (menu && menu.onKeyDown(e)) {
+	        e.preventDefault();
+	        e.stopPropagation();
 	      }
-	      var label = null;
-	      _react2['default'].Children.forEach(children, function (c) {
-	        if (c.type === _OptGroup2['default']) {
-	          var maybe = _this3.getLabelByValue(c.props.children, value);
-	          if (maybe !== null) {
-	            label = maybe;
-	          }
-	        } else if ((0, _util.getValuePropValue)(c) === value) {
-	          label = (0, _util.getPropValue)(c, _this3.props.optionLabelProp);
-	        }
+	    }
+	  },
+	
+	  onMenuSelect: function onMenuSelect(_ref) {
+	    var item = _ref.item;
+	
+	    var value = this.state.value;
+	    var props = this.props;
+	    var selectedValue = (0, _util.getValuePropValue)(item);
+	    if ((0, _util.isMultipleOrTags)(props)) {
+	      if (value.indexOf(selectedValue) !== -1) {
+	        return;
+	      }
+	      value = value.concat([selectedValue]);
+	    } else {
+	      if (value[0] === selectedValue) {
+	        this.setOpenState(false);
+	        return;
+	      }
+	      value = [selectedValue];
+	    }
+	    props.onSelect(selectedValue, item);
+	    this.fireChange(value);
+	    this.setOpenState(false);
+	    this.setState({
+	      inputValue: ''
+	    });
+	    if ((0, _util.isCombobox)(props)) {
+	      this.setState({
+	        inputValue: (0, _util.getPropValue)(item, props.optionLabelProp)
 	      });
-	      return label;
 	    }
-	  }, {
-	    key: 'getDropdownDOMNode',
-	    value: function getDropdownDOMNode() {
-	      return _react2['default'].findDOMNode(this.dropdownInstance);
+	  },
+	
+	  onMenuDeselect: function onMenuDeselect(_ref2) {
+	    var item = _ref2.item;
+	    var domEvent = _ref2.domEvent;
+	
+	    if (domEvent.type === 'click') {
+	      this.removeSelected((0, _util.getValuePropValue)(item));
 	    }
-	  }, {
-	    key: 'getDropdownContainer',
-	    value: function getDropdownContainer() {
-	      if (!this.dropdownContainer) {
-	        this.dropdownContainer = document.createElement('div');
-	        document.body.appendChild(this.dropdownContainer);
-	      }
-	      return this.dropdownContainer;
+	    this.setOpenState(false);
+	    this.setState({
+	      inputValue: ''
+	    });
+	  },
+	
+	  onBlur: function onBlur() {
+	    var _this = this;
+	
+	    if (this._blurTimer) {
+	      clearTimeout(this._blurTimer);
 	    }
-	  }, {
-	    key: 'getSearchPlaceholderElement',
-	    value: function getSearchPlaceholderElement(hidden) {
-	      var props = this.props;
-	      if (props.searchPlaceholder) {
-	        return _react2['default'].createElement(
-	          'span',
-	          {
-	            style: { display: hidden ? 'none' : 'block' },
-	            onClick: this.onPlaceholderClick,
-	            className: props.prefixCls + '-search__field__placeholder' },
-	          props.searchPlaceholder
-	        );
-	      }
+	    this._blurTimer = setTimeout(function () {
+	      _this.setState({
+	        open: false
+	      });
+	    }, 100);
+	  },
+	
+	  onFocus: function onFocus() {
+	    if (this._blurTimer) {
+	      clearTimeout(this._blurTimer);
+	      this._blurTimer = null;
+	    }
+	  },
+	
+	  onPlaceholderClick: function onPlaceholderClick() {
+	    this.getInputDOMNode().focus();
+	  },
+	
+	  onClearSelection: function onClearSelection(e) {
+	    var props = this.props;
+	    var state = this.state;
+	    if (props.disabled) {
+	      return;
+	    }
+	    e.stopPropagation();
+	    if (state.inputValue || state.value.length) {
+	      this.fireChange([]);
+	      this.setOpenState(false);
+	      this.setState({
+	        inputValue: ''
+	      });
+	    }
+	  },
+	
+	  getLabelByValue: function getLabelByValue(children, value) {
+	    var _this2 = this;
+	
+	    if (value === undefined) {
 	      return null;
 	    }
-	  }, {
-	    key: 'getInputElement',
-	    value: function getInputElement() {
-	      var props = this.props;
+	    var label = null;
+	    _react2['default'].Children.forEach(children, function (c) {
+	      if (c.type === _OptGroup2['default']) {
+	        var maybe = _this2.getLabelByValue(c.props.children, value);
+	        if (maybe !== null) {
+	          label = maybe;
+	        }
+	      } else if ((0, _util.getValuePropValue)(c) === value) {
+	        label = (0, _util.getPropValue)(c, _this2.props.optionLabelProp);
+	      }
+	    });
+	    return label;
+	  },
+	
+	  getDropdownDOMNode: function getDropdownDOMNode() {
+	    return _react2['default'].findDOMNode(this.dropdownInstance);
+	  },
+	
+	  getDropdownContainer: function getDropdownContainer() {
+	    if (!this.dropdownContainer) {
+	      this.dropdownContainer = document.createElement('div');
+	      document.body.appendChild(this.dropdownContainer);
+	    }
+	    return this.dropdownContainer;
+	  },
+	
+	  getSearchPlaceholderElement: function getSearchPlaceholderElement(hidden) {
+	    var props = this.props;
+	    if (props.searchPlaceholder) {
 	      return _react2['default'].createElement(
 	        'span',
-	        { className: props.prefixCls + '-search__field__wrap' },
-	        _react2['default'].createElement('input', { ref: this.saveInputRef,
-	          onChange: this.onInputChange,
-	          onKeyDown: this.onInputKeyDown,
-	          value: this.state.inputValue,
-	          disabled: props.disabled,
-	          className: props.prefixCls + '-search__field',
-	          role: 'textbox' }),
-	        (0, _util.isMultipleOrTags)(props) ? null : this.getSearchPlaceholderElement(!!this.state.inputValue)
-	      );
-	    }
-	  }, {
-	    key: 'getDropdownElement',
-	    value: function getDropdownElement() {
-	      var state = this.state;
-	      var props = this.props;
-	      return _react2['default'].createElement(
-	        _Dropdown2['default'],
 	        {
-	          key: 'dropdown',
-	          transitionName: this.getDropdownTransitionName(),
-	          visible: state.open,
-	          getAlignTarget: this.getDOMNode,
-	          onDropdownFocus: this.onFocus,
-	          onDropdownBlur: this.onBlur,
-	          filterOption: props.filterOption,
-	          optionFilterProp: props.optionFilterProp,
-	          optionLabelProp: props.optionLabelProp,
-	          inputValue: state.inputValue,
-	          inputElement: this.getInputElement(),
-	          ref: this.saveDropdownRef,
-	          tags: props.tags,
-	          notFoundContent: props.notFoundContent,
-	          onMenuDeselect: this.onMenuDeselect,
-	          onMenuSelect: this.onMenuSelect,
-	          value: state.value,
-	          isMultipleOrTags: (0, _util.isMultipleOrTags)(props),
-	          prefixCls: props.prefixCls,
-	          isMultipleOrTagsOrCombobox: (0, _util.isMultipleOrTagsOrCombobox)(props),
-	          showSearch: props.showSearch,
-	          className: props.dropdownClassName,
-	          dropdownMenuStyle: props.dropdownMenuStyle,
-	          dropdownStyle: props.dropdownStyle },
-	        props.children
+	          style: { display: hidden ? 'none' : 'block' },
+	          onClick: this.onPlaceholderClick,
+	          className: props.prefixCls + '-search__field__placeholder' },
+	        props.searchPlaceholder
 	      );
 	    }
-	  }, {
-	    key: 'getDropdownTransitionName',
-	    value: function getDropdownTransitionName() {
-	      var props = this.props;
-	      var transitionName = props.transitionName;
-	      if (!transitionName && props.animation) {
-	        transitionName = props.prefixCls + '-dropdown-' + props.animation;
-	      }
-	      return transitionName;
-	    }
-	  }, {
-	    key: 'getInputDOMNode',
-	    value: function getInputDOMNode() {
-	      return _react2['default'].findDOMNode(this.inputInstance);
-	    }
-	  }, {
-	    key: 'getDOMNode',
-	    value: function getDOMNode() {
-	      return _react2['default'].findDOMNode(this);
-	    }
-	  }, {
-	    key: 'renderTopControlNode',
-	    value: function renderTopControlNode() {
-	      var _this4 = this;
+	    return null;
+	  },
 	
-	      var value = this.state.value;
-	      var props = this.props;
-	      var prefixCls = props.prefixCls;
-	      var allowClear = props.allowClear;
-	      var children = props.children;
-	      var clear = _react2['default'].createElement('span', { key: 'clear',
-	        className: prefixCls + '-selection__clear',
-	        onClick: this.onClearSelection });
-	      // single and not combobox, input is inside dropdown
-	      if ((0, _util.isSingleMode)(props)) {
-	        var placeholder = _react2['default'].createElement(
+	  getInputElement: function getInputElement() {
+	    var props = this.props;
+	    return _react2['default'].createElement(
+	      'span',
+	      { className: props.prefixCls + '-search__field__wrap' },
+	      _react2['default'].createElement('input', { ref: this.saveInputRef,
+	        onChange: this.onInputChange,
+	        onKeyDown: this.onInputKeyDown,
+	        value: this.state.inputValue,
+	        disabled: props.disabled,
+	        className: props.prefixCls + '-search__field',
+	        role: 'textbox' }),
+	      (0, _util.isMultipleOrTags)(props) ? null : this.getSearchPlaceholderElement(!!this.state.inputValue)
+	    );
+	  },
+	
+	  getDropdownElement: function getDropdownElement() {
+	    var state = this.state;
+	    var props = this.props;
+	    return _react2['default'].createElement(
+	      _Dropdown2['default'],
+	      {
+	        key: 'dropdown',
+	        transitionName: this.getDropdownTransitionName(),
+	        visible: state.open,
+	        getAlignTarget: this.getDOMNode,
+	        onDropdownFocus: this.onFocus,
+	        onDropdownBlur: this.onBlur,
+	        filterOption: props.filterOption,
+	        optionFilterProp: props.optionFilterProp,
+	        optionLabelProp: props.optionLabelProp,
+	        inputValue: state.inputValue,
+	        inputElement: this.getInputElement(),
+	        ref: this.saveDropdownRef,
+	        tags: props.tags,
+	        notFoundContent: props.notFoundContent,
+	        onMenuDeselect: this.onMenuDeselect,
+	        onMenuSelect: this.onMenuSelect,
+	        value: state.value,
+	        isMultipleOrTags: (0, _util.isMultipleOrTags)(props),
+	        prefixCls: props.prefixCls,
+	        isMultipleOrTagsOrCombobox: (0, _util.isMultipleOrTagsOrCombobox)(props),
+	        showSearch: props.showSearch,
+	        className: props.dropdownClassName,
+	        dropdownMenuStyle: props.dropdownMenuStyle,
+	        dropdownStyle: props.dropdownStyle },
+	      props.children
+	    );
+	  },
+	
+	  getDropdownTransitionName: function getDropdownTransitionName() {
+	    var props = this.props;
+	    var transitionName = props.transitionName;
+	    if (!transitionName && props.animation) {
+	      transitionName = props.prefixCls + '-dropdown-' + props.animation;
+	    }
+	    return transitionName;
+	  },
+	
+	  getInputDOMNode: function getInputDOMNode() {
+	    return _react2['default'].findDOMNode(this.inputInstance);
+	  },
+	
+	  renderTopControlNode: function renderTopControlNode() {
+	    var _this3 = this;
+	
+	    var value = this.state.value;
+	    var props = this.props;
+	    var prefixCls = props.prefixCls;
+	    var allowClear = props.allowClear;
+	    var children = props.children;
+	    var clear = _react2['default'].createElement('span', { key: 'clear',
+	      className: prefixCls + '-selection__clear',
+	      onClick: this.onClearSelection });
+	    // single and not combobox, input is inside dropdown
+	    if ((0, _util.isSingleMode)(props)) {
+	      var placeholder = _react2['default'].createElement(
+	        'span',
+	        { key: 'placeholder', className: prefixCls + '-selection__placeholder' },
+	        props.placeholder
+	      );
+	      var innerNode = placeholder;
+	      var innerValue = this.getLabelByValue(children, value[0]);
+	      if (innerValue !== null) {
+	        innerNode = _react2['default'].createElement(
 	          'span',
-	          { key: 'placeholder', className: prefixCls + '-selection__placeholder' },
-	          props.placeholder
+	          { key: 'value' },
+	          this.getLabelByValue(children, value[0])
 	        );
-	        var innerNode = placeholder;
-	        var innerValue = this.getLabelByValue(children, value[0]);
-	        if (innerValue) {
-	          innerNode = _react2['default'].createElement(
-	            'span',
-	            { key: 'value' },
-	            this.getLabelByValue(children, value[0])
-	          );
+	      }
+	      return _react2['default'].createElement(
+	        'span',
+	        { className: prefixCls + '-selection__rendered' },
+	        [innerNode, allowClear ? clear : null]
+	      );
+	    }
+	
+	    var selectedValueNodes = undefined;
+	    if ((0, _util.isMultipleOrTags)(props)) {
+	      selectedValueNodes = value.map(function (v) {
+	        var content = _this3.getLabelByValue(children, v) || v;
+	        var title = content;
+	        var maxTagTextLength = props.maxTagTextLength;
+	        if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
+	          content = content.slice(0, maxTagTextLength) + '...';
 	        }
 	        return _react2['default'].createElement(
-	          'span',
-	          { className: prefixCls + '-selection__rendered' },
-	          [innerNode, allowClear ? clear : null]
-	        );
-	      }
-	
-	      var selectedValueNodes = undefined;
-	      if ((0, _util.isMultipleOrTags)(props)) {
-	        selectedValueNodes = value.map(function (v) {
-	          var content = _this4.getLabelByValue(children, v) || v;
-	          var title = content;
-	          var maxTagTextLength = props.maxTagTextLength;
-	          if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
-	            content = content.slice(0, maxTagTextLength) + '...';
-	          }
-	          return _react2['default'].createElement(
-	            'li',
-	            { className: prefixCls + '-selection__choice',
-	              key: v,
-	              title: title },
-	            _react2['default'].createElement(
-	              'span',
-	              { className: prefixCls + '-selection__choice__content' },
-	              content
-	            ),
-	            _react2['default'].createElement('span', { className: prefixCls + '-selection__choice__remove',
-	              onClick: _this4.removeSelected.bind(_this4, v) })
-	          );
-	        });
-	      }
-	      return _react2['default'].createElement(
-	        'ul',
-	        { className: prefixCls + '-selection__rendered' },
-	        selectedValueNodes,
-	        allowClear && !(0, _util.isMultipleOrTags)(props) ? clear : null,
-	        _react2['default'].createElement(
 	          'li',
-	          { className: prefixCls + '-search ' + prefixCls + '-search--inline' },
-	          this.getInputElement()
-	        )
-	      );
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _rootCls;
-	
-	      var props = this.props;
-	      var multiple = (0, _util.isMultipleOrTags)(props);
-	      var state = this.state;
-	      var prefixCls = props.prefixCls;
-	      var ctrlNode = this.renderTopControlNode();
-	      var extraSelectionProps = {};
-	      if (!(0, _util.isCombobox)(props)) {
-	        extraSelectionProps = {
-	          onKeyDown: this.onKeyDown,
-	          tabIndex: 0
-	        };
-	      }
-	      var rootCls = (_rootCls = {}, _defineProperty(_rootCls, props.className, !!props.className), _defineProperty(_rootCls, prefixCls, 1), _defineProperty(_rootCls, prefixCls + '-open', this.state.open), _defineProperty(_rootCls, prefixCls + '-combobox', (0, _util.isCombobox)(props)), _defineProperty(_rootCls, prefixCls + '-disabled', props.disabled), _rootCls);
-	      this.haveOpened = this.haveOpened || state.open;
-	      return _react2['default'].createElement(
-	        'span',
-	        {
-	          style: props.style,
-	          className: (0, _rcUtil.classSet)(rootCls),
-	          onFocus: this.onFocus,
-	          onBlur: this.onBlur },
-	        _react2['default'].createElement(
-	          'span',
-	          _extends({ ref: 'selection',
-	            key: 'selection',
-	            className: prefixCls + '-selection ' + prefixCls + '-selection--' + (multiple ? 'multiple' : 'single'),
-	            role: 'combobox',
-	            'aria-autocomplete': 'list',
-	            onClick: this.onClick,
-	            'aria-haspopup': 'true',
-	            'aria-expanded': state.open
-	          }, extraSelectionProps),
-	          ctrlNode,
-	          multiple || !props.showArrow ? null : _react2['default'].createElement(
+	          { className: prefixCls + '-selection__choice',
+	            key: v,
+	            title: title },
+	          _react2['default'].createElement(
 	            'span',
-	            { key: 'arrow', className: prefixCls + '-arrow', tabIndex: '-1', style: { outline: 'none' } },
-	            _react2['default'].createElement('b', null)
+	            { className: prefixCls + '-selection__choice__content' },
+	            content
 	          ),
-	          multiple ? this.getSearchPlaceholderElement(!!this.state.inputValue || this.state.value.length) : null
-	        )
-	      );
-	    }
-	  }, {
-	    key: 'removeSelected',
-	    value: function removeSelected(selectedValue) {
-	      var props = this.props;
-	      if (props.disabled) {
-	        return;
-	      }
-	      var value = this.state.value.filter(function (v) {
-	        return v !== selectedValue;
+	          _react2['default'].createElement('span', { className: prefixCls + '-selection__choice__remove',
+	            onClick: _this3.removeSelected.bind(_this3, v) })
+	        );
 	      });
-	      var canMultiple = (0, _util.isMultipleOrTags)(props);
-	      if (canMultiple) {
-	        props.onDeselect(selectedValue);
-	      }
-	      this.fireChange(value);
 	    }
-	  }, {
-	    key: 'setOpenState',
-	    value: function setOpenState(open) {
-	      var _this5 = this;
+	    return _react2['default'].createElement(
+	      'ul',
+	      { className: prefixCls + '-selection__rendered' },
+	      selectedValueNodes,
+	      allowClear && !(0, _util.isMultipleOrTags)(props) ? clear : null,
+	      _react2['default'].createElement(
+	        'li',
+	        { className: prefixCls + '-search ' + prefixCls + '-search--inline' },
+	        this.getInputElement()
+	      )
+	    );
+	  },
 	
-	      var refs = this.refs;
-	      this.setState({
-	        open: open
-	      }, function () {
-	        if (open || (0, _util.isMultipleOrTagsOrCombobox)(_this5.props)) {
-	          if (_this5.getInputDOMNode()) {
-	            _this5.getInputDOMNode().focus();
-	          }
-	        } else if (refs.selection) {
-	          _react2['default'].findDOMNode(refs.selection).focus();
+	  render: function render() {
+	    var _rootCls;
+	
+	    var props = this.props;
+	    var multiple = (0, _util.isMultipleOrTags)(props);
+	    var state = this.state;
+	    var prefixCls = props.prefixCls;
+	    var ctrlNode = this.renderTopControlNode();
+	    var extraSelectionProps = {};
+	    if (!(0, _util.isCombobox)(props)) {
+	      extraSelectionProps = {
+	        onKeyDown: this.onKeyDown,
+	        tabIndex: 0
+	      };
+	    }
+	    var rootCls = (_rootCls = {}, _defineProperty(_rootCls, props.className, !!props.className), _defineProperty(_rootCls, prefixCls, 1), _defineProperty(_rootCls, prefixCls + '-open', this.state.open), _defineProperty(_rootCls, prefixCls + '-combobox', (0, _util.isCombobox)(props)), _defineProperty(_rootCls, prefixCls + '-disabled', props.disabled), _rootCls);
+	    this.haveOpened = this.haveOpened || state.open;
+	    return _react2['default'].createElement(
+	      'span',
+	      {
+	        style: props.style,
+	        className: (0, _rcUtil.classSet)(rootCls),
+	        onFocus: this.onFocus,
+	        onBlur: this.onBlur },
+	      _react2['default'].createElement(
+	        'span',
+	        _extends({ ref: 'selection',
+	          key: 'selection',
+	          className: prefixCls + '-selection ' + prefixCls + '-selection--' + (multiple ? 'multiple' : 'single'),
+	          role: 'combobox',
+	          'aria-autocomplete': 'list',
+	          onClick: this.onClick,
+	          'aria-haspopup': 'true',
+	          'aria-expanded': state.open
+	        }, extraSelectionProps),
+	        ctrlNode,
+	        multiple || !props.showArrow ? null : _react2['default'].createElement(
+	          'span',
+	          { key: 'arrow', className: prefixCls + '-arrow', tabIndex: '-1', style: { outline: 'none' } },
+	          _react2['default'].createElement('b', null)
+	        ),
+	        multiple ? this.getSearchPlaceholderElement(!!this.state.inputValue || this.state.value.length) : null
+	      )
+	    );
+	  },
+	
+	  removeSelected: function removeSelected(selectedValue) {
+	    var props = this.props;
+	    if (props.disabled) {
+	      return;
+	    }
+	    var value = this.state.value.filter(function (v) {
+	      return v !== selectedValue;
+	    });
+	    var canMultiple = (0, _util.isMultipleOrTags)(props);
+	    if (canMultiple) {
+	      props.onDeselect(selectedValue);
+	    }
+	    this.fireChange(value);
+	  },
+	
+	  setOpenState: function setOpenState(open) {
+	    var _this4 = this;
+	
+	    var refs = this.refs;
+	    this.setState({
+	      open: open
+	    }, function () {
+	      if (open || (0, _util.isMultipleOrTagsOrCombobox)(_this4.props)) {
+	        if (_this4.getInputDOMNode()) {
+	          _this4.getInputDOMNode().focus();
 	        }
+	      } else if (refs.selection) {
+	        _react2['default'].findDOMNode(refs.selection).focus();
+	      }
+	    });
+	  },
+	
+	  openIfHasChildren: function openIfHasChildren() {
+	    var props = this.props;
+	    if (_react2['default'].Children.count(props.children) || (0, _util.isSingleMode)(props)) {
+	      this.setOpenState(true);
+	    }
+	  },
+	
+	  fireChange: function fireChange(value) {
+	    var props = this.props;
+	    if (!('value' in props)) {
+	      this.setState({
+	        value: value
 	      });
 	    }
-	  }, {
-	    key: 'openIfHasChildren',
-	    value: function openIfHasChildren() {
-	      var props = this.props;
-	      if (_react2['default'].Children.count(props.children) || (0, _util.isSingleMode)(props)) {
-	        this.setOpenState(true);
-	      }
-	    }
-	  }, {
-	    key: 'fireChange',
-	    value: function fireChange(value) {
-	      var props = this.props;
-	      if (!('value' in props)) {
-	        this.setState({
-	          value: value
-	        });
-	      }
-	      props.onChange((0, _util.isMultipleOrTags)(props) ? value : value[0]);
-	    }
-	  }]);
-	
-	  return Select;
-	})(_react2['default'].Component);
-	
-	Select.propTypes = {
-	  multiple: _react2['default'].PropTypes.bool,
-	  filterOption: _react2['default'].PropTypes.any,
-	  showSearch: _react2['default'].PropTypes.bool,
-	  disabled: _react2['default'].PropTypes.bool,
-	  showArrow: _react2['default'].PropTypes.bool,
-	  tags: _react2['default'].PropTypes.bool,
-	  transitionName: _react2['default'].PropTypes.string,
-	  optionLabelProp: _react2['default'].PropTypes.string,
-	  optionFilterProp: _react2['default'].PropTypes.string,
-	  animation: _react2['default'].PropTypes.string,
-	  onChange: _react2['default'].PropTypes.func,
-	  onSelect: _react2['default'].PropTypes.func,
-	  onSearch: _react2['default'].PropTypes.func,
-	  searchPlaceholder: _react2['default'].PropTypes.string,
-	  placeholder: _react2['default'].PropTypes.any,
-	  onDeselect: _react2['default'].PropTypes.func,
-	  dropdownStyle: _react2['default'].PropTypes.object,
-	  maxTagTextLength: _react2['default'].PropTypes.number
-	};
-	
-	Select.defaultProps = {
-	  prefixCls: 'rc-select',
-	  filterOption: filterFn,
-	  showSearch: true,
-	  allowClear: false,
-	  placeholder: '',
-	  searchPlaceholder: '',
-	  defaultValue: [],
-	  onChange: noop,
-	  onSelect: noop,
-	  onSearch: noop,
-	  onDeselect: noop,
-	  showArrow: true,
-	  dropdownMatchSelectWidth: true,
-	  dropdownStyle: {},
-	  dropdownMenuStyle: {},
-	  optionFilterProp: 'value',
-	  optionLabelProp: 'value',
-	  notFoundContent: 'Not Found'
-	};
+	    props.onChange((0, _util.isMultipleOrTags)(props) ? value : value[0]);
+	  }
+	});
 	
 	exports['default'] = Select;
 	module.exports = exports['default'];

@@ -35,7 +35,7 @@ webpackJsonp([9],{
 	  getInitialState: function getInitialState() {
 	    return {
 	      destroy: false,
-	      value: 'lucy'
+	      value: 0
 	    };
 	  },
 	
