@@ -182,24 +182,28 @@
 	  displayName: 'Select',
 	
 	  propTypes: {
-	    multiple: _react2['default'].PropTypes.bool,
-	    filterOption: _react2['default'].PropTypes.any,
-	    showSearch: _react2['default'].PropTypes.bool,
-	    disabled: _react2['default'].PropTypes.bool,
-	    showArrow: _react2['default'].PropTypes.bool,
-	    tags: _react2['default'].PropTypes.bool,
-	    transitionName: _react2['default'].PropTypes.string,
-	    optionLabelProp: _react2['default'].PropTypes.string,
-	    optionFilterProp: _react2['default'].PropTypes.string,
-	    animation: _react2['default'].PropTypes.string,
-	    onChange: _react2['default'].PropTypes.func,
-	    onSelect: _react2['default'].PropTypes.func,
-	    onSearch: _react2['default'].PropTypes.func,
-	    searchPlaceholder: _react2['default'].PropTypes.string,
-	    placeholder: _react2['default'].PropTypes.any,
-	    onDeselect: _react2['default'].PropTypes.func,
-	    dropdownStyle: _react2['default'].PropTypes.object,
-	    maxTagTextLength: _react2['default'].PropTypes.number
+	    multiple: _react.PropTypes.bool,
+	    filterOption: _react.PropTypes.any,
+	    showSearch: _react.PropTypes.bool,
+	    disabled: _react.PropTypes.bool,
+	    showArrow: _react.PropTypes.bool,
+	    tags: _react.PropTypes.bool,
+	    transitionName: _react.PropTypes.string,
+	    optionLabelProp: _react.PropTypes.string,
+	    optionFilterProp: _react.PropTypes.string,
+	    animation: _react.PropTypes.string,
+	    onChange: _react.PropTypes.func,
+	    onSelect: _react.PropTypes.func,
+	    onSearch: _react.PropTypes.func,
+	    searchPlaceholder: _react.PropTypes.string,
+	    placeholder: _react.PropTypes.any,
+	    onDeselect: _react.PropTypes.func,
+	    value: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.string]),
+	    defaultValue: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.string]),
+	    label: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.any]),
+	    defaultLabel: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.any]),
+	    dropdownStyle: _react.PropTypes.object,
+	    maxTagTextLength: _react.PropTypes.number
 	  },
 	
 	  getDefaultProps: function getDefaultProps() {
@@ -229,24 +233,27 @@
 	    var props = this.props;
 	    var value = [];
 	    if ('value' in props) {
-	      value = (0, _util.normValue)(props.value);
+	      value = (0, _util.toArray)(props.value);
 	    } else {
-	      value = (0, _util.normValue)(props.defaultValue);
+	      value = (0, _util.toArray)(props.defaultValue);
 	    }
+	    var label = this.getLabelFromProps(props, value, 1);
 	    var inputValue = '';
 	    if (props.combobox) {
 	      inputValue = value[0] || '';
 	    }
 	    this.saveInputRef = saveRef.bind(this, 'inputInstance');
 	    this.saveDropdownRef = saveRef.bind(this, 'dropdownInstance');
-	    return { value: value, inputValue: inputValue };
+	    return { value: value, inputValue: inputValue, label: label };
 	  },
 	
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	    if ('value' in nextProps) {
-	      var value = (0, _util.normValue)(nextProps.value);
+	      var value = (0, _util.toArray)(nextProps.value);
+	      var label = this.getLabelFromProps(nextProps, value);
 	      this.setState({
-	        value: value
+	        value: value,
+	        label: label
 	      });
 	      if (nextProps.combobox) {
 	        this.setState({
@@ -302,7 +309,7 @@
 	      open: true
 	    });
 	    if ((0, _util.isCombobox)(props)) {
-	      this.fireChange([val]);
+	      this.fireChange([val], [val]);
 	    }
 	    props.onSearch(val);
 	  },
@@ -345,9 +352,11 @@
 	    if ((0, _util.isMultipleOrTags)(props) && !e.target.value && keyCode === _rcUtil.KeyCode.BACKSPACE) {
 	      var value = state.value.concat();
 	      if (value.length) {
+	        var label = state.label.concat();
 	        var popValue = value.pop();
+	        label.pop();
 	        props.onDeselect(popValue);
-	        this.fireChange(value);
+	        this.fireChange(value, label);
 	      }
 	      return;
 	    }
@@ -381,22 +390,26 @@
 	    var item = _ref.item;
 	
 	    var value = this.state.value;
+	    var label = this.state.label;
 	    var props = this.props;
 	    var selectedValue = (0, _util.getValuePropValue)(item);
+	    var selectedLabel = this.getLabelFromOption(item);
 	    if ((0, _util.isMultipleOrTags)(props)) {
 	      if (value.indexOf(selectedValue) !== -1) {
 	        return;
 	      }
 	      value = value.concat([selectedValue]);
+	      label = label.concat([selectedLabel]);
 	    } else {
 	      if (value[0] === selectedValue) {
 	        this.setOpenState(false);
 	        return;
 	      }
 	      value = [selectedValue];
+	      label = [selectedLabel];
 	    }
 	    props.onSelect(selectedValue, item);
-	    this.fireChange(value);
+	    this.fireChange(value, label);
 	    this.setOpenState(false);
 	    this.setState({
 	      inputValue: ''
@@ -453,7 +466,7 @@
 	    }
 	    e.stopPropagation();
 	    if (state.inputValue || state.value.length) {
-	      this.fireChange([]);
+	      this.fireChange([], []);
 	      this.setOpenState(false);
 	      this.setState({
 	        inputValue: ''
@@ -461,7 +474,7 @@
 	    }
 	  },
 	
-	  getLabelByValue: function getLabelByValue(children, value) {
+	  getLabelBySingleValue: function getLabelBySingleValue(children, value) {
 	    var _this2 = this;
 	
 	    if (value === undefined) {
@@ -470,15 +483,50 @@
 	    var label = null;
 	    _react2['default'].Children.forEach(children, function (c) {
 	      if (c.type === _OptGroup2['default']) {
-	        var maybe = _this2.getLabelByValue(c.props.children, value);
+	        var maybe = _this2.getLabelBySingleValue(c.props.children, value);
 	        if (maybe !== null) {
 	          label = maybe;
 	        }
 	      } else if ((0, _util.getValuePropValue)(c) === value) {
-	        label = (0, _util.getPropValue)(c, _this2.props.optionLabelProp);
+	        label = _this2.getLabelFromOption(c);
 	      }
 	    });
 	    return label;
+	  },
+	
+	  getLabelFromOption: function getLabelFromOption(c) {
+	    return (0, _util.getPropValue)(c, this.props.optionLabelProp);
+	  },
+	
+	  getLabelFromProps: function getLabelFromProps(props, value, init) {
+	    var label = [];
+	    if ('label' in props) {
+	      label = (0, _util.toArray)(props.label);
+	    } else if (init && 'defaultLabel' in props) {
+	      label = (0, _util.toArray)(props.defaultLabel);
+	    } else {
+	      label = this.getLabelByValue(props.children, value);
+	    }
+	    return label;
+	  },
+	
+	  getVLForOnChange: function getVLForOnChange(vls) {
+	    if (vls !== undefined) {
+	      return (0, _util.isMultipleOrTags)(this.props) ? vls : vls[0];
+	    }
+	    return vls;
+	  },
+	
+	  getLabelByValue: function getLabelByValue(children, value) {
+	    var _this3 = this;
+	
+	    return value.map(function (v) {
+	      var label = _this3.getLabelBySingleValue(children, v);
+	      if (label === null) {
+	        return v;
+	      }
+	      return label;
+	    });
 	  },
 	
 	  getDropdownDOMNode: function getDropdownDOMNode() {
@@ -572,13 +620,13 @@
 	  },
 	
 	  renderTopControlNode: function renderTopControlNode() {
-	    var _this3 = this;
+	    var _this4 = this;
 	
 	    var value = this.state.value;
+	    var label = this.state.label;
 	    var props = this.props;
 	    var prefixCls = props.prefixCls;
 	    var allowClear = props.allowClear;
-	    var children = props.children;
 	    var clear = _react2['default'].createElement('span', { key: 'clear',
 	      className: prefixCls + '-selection__clear',
 	      onClick: this.onClearSelection });
@@ -590,12 +638,11 @@
 	        props.placeholder
 	      );
 	      var innerNode = placeholder;
-	      var innerValue = this.getLabelByValue(children, value[0]);
-	      if (innerValue !== null) {
+	      if (this.state.label[0]) {
 	        innerNode = _react2['default'].createElement(
 	          'span',
 	          { key: 'value' },
-	          this.getLabelByValue(children, value[0])
+	          this.state.label[0]
 	        );
 	      }
 	      return _react2['default'].createElement(
@@ -607,8 +654,8 @@
 	
 	    var selectedValueNodes = undefined;
 	    if ((0, _util.isMultipleOrTags)(props)) {
-	      selectedValueNodes = value.map(function (v) {
-	        var content = _this3.getLabelByValue(children, v) || v;
+	      selectedValueNodes = value.map(function (v, index) {
+	        var content = label[index];
 	        var title = content;
 	        var maxTagTextLength = props.maxTagTextLength;
 	        if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
@@ -625,7 +672,7 @@
 	            content
 	          ),
 	          _react2['default'].createElement('span', { className: prefixCls + '-selection__choice__remove',
-	            onClick: _this3.removeSelected.bind(_this3, v) })
+	            onClick: _this4.removeSelected.bind(_this4, v) })
 	        );
 	      });
 	    }
@@ -693,26 +740,31 @@
 	    if (props.disabled) {
 	      return;
 	    }
+	    var label = this.state.label.concat();
+	    var index = this.state.value.indexOf(selectedValue);
 	    var value = this.state.value.filter(function (v) {
 	      return v !== selectedValue;
 	    });
+	    if (index !== -1) {
+	      label.splice(index, 1);
+	    }
 	    var canMultiple = (0, _util.isMultipleOrTags)(props);
 	    if (canMultiple) {
 	      props.onDeselect(selectedValue);
 	    }
-	    this.fireChange(value);
+	    this.fireChange(value, label);
 	  },
 	
 	  setOpenState: function setOpenState(open) {
-	    var _this4 = this;
+	    var _this5 = this;
 	
 	    var refs = this.refs;
 	    this.setState({
 	      open: open
 	    }, function () {
-	      if (open || (0, _util.isMultipleOrTagsOrCombobox)(_this4.props)) {
-	        if (_this4.getInputDOMNode()) {
-	          _this4.getInputDOMNode().focus();
+	      if (open || (0, _util.isMultipleOrTagsOrCombobox)(_this5.props)) {
+	        if (_this5.getInputDOMNode()) {
+	          _this5.getInputDOMNode().focus();
 	        }
 	      } else if (refs.selection) {
 	        _react2['default'].findDOMNode(refs.selection).focus();
@@ -727,14 +779,14 @@
 	    }
 	  },
 	
-	  fireChange: function fireChange(value) {
+	  fireChange: function fireChange(value, label) {
 	    var props = this.props;
 	    if (!('value' in props)) {
 	      this.setState({
-	        value: value
+	        value: value, label: label
 	      });
 	    }
-	    props.onChange((0, _util.isMultipleOrTags)(props) ? value : value[0]);
+	    props.onChange(this.getVLForOnChange(value), this.getVLForOnChange(label));
 	  }
 	});
 	
@@ -1875,7 +1927,7 @@
 	exports.isMultipleOrTags = isMultipleOrTags;
 	exports.isMultipleOrTagsOrCombobox = isMultipleOrTagsOrCombobox;
 	exports.isSingleMode = isSingleMode;
-	exports.normValue = normValue;
+	exports.toArray = toArray;
 	exports.getSelectKeys = getSelectKeys;
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1920,7 +1972,7 @@
 	  return !isMultipleOrTagsOrCombobox(props);
 	}
 	
-	function normValue(value) {
+	function toArray(value) {
 	  var ret = value;
 	  if (value === undefined) {
 	    ret = [];

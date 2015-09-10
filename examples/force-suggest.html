@@ -235,72 +235,101 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>rc-select@4.8.6</h1>
+            <h1>rc-select@4.9.0</h1>
             <p>select ui component for react</p>
         </div>
         <div class="example" id="__react-content"></div>
         <script src="common.js?nowrap"></script>
         <script src="force-suggest.js?nowrap"></script>
-        <div class="highlight"><pre><code><span class="hljs-pi">'use strict'</span>;
+        <div class="highlight"><pre><code><span class="hljs-string">'use strict'</span>;
 
-<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
-<span class="hljs-keyword">import</span> Select, {Option} <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-select'</span>;
-<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-select/assets/index.css'</span>;
-<span class="hljs-keyword">import</span> jsonp <span class="hljs-keyword">from</span> <span class="hljs-string">'jsonp'</span>;
-<span class="hljs-keyword">import</span> querystring <span class="hljs-keyword">from</span> <span class="hljs-string">'querystring'</span>;
+<span class="hljs-reserved">import</span> React from <span class="hljs-string">'react'</span>;
+<span class="hljs-reserved">import</span> Select, {Option} from <span class="hljs-string">'rc-select'</span>;
+<span class="hljs-reserved">import</span> <span class="hljs-string">'rc-select/assets/index.css'</span>;
+<span class="hljs-reserved">import</span> jsonp from <span class="hljs-string">'jsonp'</span>;
+<span class="hljs-reserved">import</span> querystring from <span class="hljs-string">'querystring'</span>;
 
-<span class="hljs-keyword">var</span> Search = React.createClass({
+<span class="hljs-reserved">var</span> Search = React.createClass({
   getInitialState() {
     <span class="hljs-keyword">return</span> {
-      data: []
+      <span class="hljs-attribute">loading</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-attribute">data</span>: [],
+      <span class="hljs-attribute">value</span>: <span class="hljs-string">''</span>,
+      <span class="hljs-attribute">label</span>: <span class="hljs-string">''</span>
     }
   },
 
   fetchData(value) {
-    jsonp(<span class="hljs-string">'http://suggest.taobao.com/sug?'</span> + querystring.encode({
-      code: <span class="hljs-string">'utf-8'</span>,
-      q: value
-    }), (err, d) =&gt; {
-      <span class="hljs-keyword">var</span> result = d.result;
-      <span class="hljs-keyword">var</span> data = [];
-      result.forEach((r)=&gt; {
-        data.push({
-          value: r[<span class="hljs-number">0</span>],
-          text: r[<span class="hljs-number">0</span>]
-        });
-      });
-      <span class="hljs-keyword">this</span>.setState({
-        data: data
-      });
+    <span class="hljs-keyword">this</span>.setState({
+      <span class="hljs-attribute">loading</span>: <span class="hljs-literal">true</span>
     });
+    <span class="hljs-keyword">this</span>.bufferFetch(value);
   },
 
-  handleChange(value) {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'select '</span>, value);
+  bufferFetch(value){
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.timeout) {
+      clearTimeout(<span class="hljs-keyword">this</span>.timeout);
+      <span class="hljs-keyword">this</span>.timeout = <span class="hljs-literal">null</span>;
+    }
+    <span class="hljs-keyword">this</span>.currentValue = value;
+    <span class="hljs-keyword">this</span>.timeout = setTimeout(<span class="hljs-function"><span class="hljs-params">()</span>=&gt;</span> {
+      jsonp(<span class="hljs-string">'http://suggest.taobao.com/sug?'</span> + querystring.encode({
+          <span class="hljs-attribute">code</span>: <span class="hljs-string">'utf-8'</span>,
+          <span class="hljs-attribute">q</span>: value
+        }), <span class="hljs-function"><span class="hljs-params">(err, d)</span> =&gt;</span> {
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.currentValue === value) {
+          <span class="hljs-reserved">var</span> result = d.result;
+          <span class="hljs-reserved">var</span> data = [];
+          result.forEach(<span class="hljs-function"><span class="hljs-params">(r)</span>=&gt;</span> {
+            data.push({
+              <span class="hljs-attribute">value</span>: r[<span class="hljs-number">0</span>],
+              <span class="hljs-attribute">text</span>: r[<span class="hljs-number">0</span>]
+            });
+          });
+          <span class="hljs-keyword">this</span>.setState({
+            <span class="hljs-attribute">data</span>: data,
+            <span class="hljs-attribute">loading</span>: <span class="hljs-literal">false</span>
+          });
+        }
+      });
+    }, <span class="hljs-number">300</span>);
+  },
+
+  handleChange(value, label) {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'select '</span>, value, label);
+    <span class="hljs-keyword">this</span>.setState({value, label})
   },
 
   render() {
-    <span class="hljs-keyword">var</span> data = <span class="hljs-keyword">this</span>.state.data;
-    <span class="hljs-keyword">var</span> options = data.map((d) =&gt; {
-      <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{d.value}</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">i</span>&gt;</span>{d.text}<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>;</span>
-    });
-    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>force suggest<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Select</span> <span class="hljs-attribute">onSearch</span>=<span class="hljs-value">{this.fetchData}</span>
-          <span class="hljs-attribute">optionLabelProp</span>=<span class="hljs-value">"children"</span>
-          <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:500}}</span>
-          <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.handleChange}</span>
-          <span class="hljs-attribute">filterOption</span>=<span class="hljs-value">{false}</span>&gt;</span>
-        {options}
-        <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>;</span>
+    <span class="hljs-reserved">var</span> data = <span class="hljs-keyword">this</span>.state.data;
+    <span class="hljs-reserved">var</span> options;
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.state.loading) {
+      options = &lt;Option disabled key=<span class="hljs-string">"disabled"</span>&gt;loading&lt;/Option&gt;;
+    } <span class="hljs-keyword">else</span> {
+      options = data.map(<span class="hljs-function"><span class="hljs-params">(d)</span> =&gt;</span> {
+        <span class="hljs-keyword">return</span> &lt;Option key={d.value}&gt;&lt;i&gt;{d.text}&lt;/i&gt;&lt;/Option&gt;;
+      });
+    }
+    <span class="hljs-keyword">return</span> &lt;div&gt;
+      &lt;h2&gt;force suggest&lt;/h2&gt;
+
+      &lt;div&gt;
+        &lt;Select onSearch={<span class="hljs-keyword">this</span>.fetchData}
+                value={<span class="hljs-keyword">this</span>.state.value}
+                label={<span class="hljs-keyword">this</span>.state.label}
+                optionLabelProp=<span class="hljs-string">"children"</span>
+                style={{<span class="hljs-attribute">width</span>:<span class="hljs-number">500</span>}}
+                onChange={<span class="hljs-keyword">this</span>.handleChange}
+                filterOption={<span class="hljs-literal">false</span>}&gt;
+          {options}
+        &lt;/Select&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;;
   }
 });
 
-React.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Search</span> /&gt;</span>, document.getElementById('__react-content'));
-</span></code></pre></div>
+React.render(&lt;Search /&gt;, <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'__react-content'</span>));
+</code></pre></div>
     </div>
     <a href="http://github.com/react-component/select"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
 </body>

@@ -827,7 +827,9 @@ webpackJsonp([3],{
 	
 	  getInitialState: function getInitialState() {
 	    return {
-	      data: []
+	      data: [],
+	      value: [],
+	      label: []
 	    };
 	  },
 	
@@ -856,8 +858,12 @@ webpackJsonp([3],{
 	    });
 	  },
 	
-	  handleSelect: function handleSelect(value) {
-	    console.log('select ', value);
+	  onChange: function onChange(value, label) {
+	    console.log('onChange ', value, label);
+	    this.setState({
+	      value: value,
+	      label: label
+	    });
 	  },
 	
 	  render: function render() {
@@ -866,7 +872,11 @@ webpackJsonp([3],{
 	      return _react2['default'].createElement(
 	        _rcSelect.Option,
 	        { key: d.value },
-	        d.text
+	        _react2['default'].createElement(
+	          'i',
+	          null,
+	          d.text
+	        )
 	      );
 	    });
 	    return _react2['default'].createElement(
@@ -883,13 +893,16 @@ webpackJsonp([3],{
 	        _react2['default'].createElement(
 	          _rcSelect2['default'],
 	          {
+	            value: this.state.value,
+	            label: this.state.label,
 	            style: { width: 500 },
 	            animation: 'slide-up',
 	            searchPlaceholder: '搜索下',
+	            optionLabelProp: 'children',
 	            multiple: true,
 	            notFoundContent: '',
 	            onSearch: this.fetchData,
-	            onSelect: this.handleSelect,
+	            onChange: this.onChange,
 	            filterOption: false },
 	          options
 	        )

@@ -235,7 +235,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>rc-select@4.8.6</h1>
+            <h1>rc-select@4.9.0</h1>
             <p>select ui component for react</p>
         </div>
         <div class="example" id="__react-content"></div>
@@ -255,7 +255,7 @@ var Test = React.createClass({
   getInitialState() {
     return {
       destroy: false,
-      value: 0
+      value: '1'
     }
   },
 
@@ -297,7 +297,7 @@ var Test = React.createClass({
             <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"disabled"</span> <span class="hljs-attribute">disabled</span>&gt;</span>disabled<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
             <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"yiminghe"</span>&gt;</span>yiminghe<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
             {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (i) {
-              return <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{i}</span>&gt;</span>{i}<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
+              return <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{i+''}</span>&gt;</span>{i+''}<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
             })}
           <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
@@ -311,7 +311,7 @@ var Test = React.createClass({
           <span class="hljs-tag">&lt;<span class="hljs-title">option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"disabled"</span> <span class="hljs-attribute">disabled</span>&gt;</span>disabled<span class="hljs-tag">&lt;/<span class="hljs-title">option</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"yiminghe"</span>&gt;</span>yiminghe<span class="hljs-tag">&lt;/<span class="hljs-title">option</span>&gt;</span>
           {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (i) {
-            return <span class="hljs-tag">&lt;<span class="hljs-title">option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{i}</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{i}</span>&gt;</span>{i}<span class="hljs-tag">&lt;/<span class="hljs-title">option</span>&gt;</span>
+            return <span class="hljs-tag">&lt;<span class="hljs-title">option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{i+''}</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{i+''}</span>&gt;</span>{i}<span class="hljs-tag">&lt;/<span class="hljs-title">option</span>&gt;</span>
           })}
         <span class="hljs-tag">&lt;/<span class="hljs-title">select</span>&gt;</span>
 

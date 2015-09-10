@@ -38,48 +38,78 @@ webpackJsonp([2],{
 	
 	  getInitialState: function getInitialState() {
 	    return {
-	      data: []
+	      loading: false,
+	      data: [],
+	      value: '',
+	      label: ''
 	    };
 	  },
 	
 	  fetchData: function fetchData(value) {
-	    var _this = this;
-	
-	    (0, _jsonp2['default'])('http://suggest.taobao.com/sug?' + _querystring2['default'].encode({
-	      code: 'utf-8',
-	      q: value
-	    }), function (err, d) {
-	      var result = d.result;
-	      var data = [];
-	      result.forEach(function (r) {
-	        data.push({
-	          value: r[0],
-	          text: r[0]
-	        });
-	      });
-	      _this.setState({
-	        data: data
-	      });
+	    this.setState({
+	      loading: true
 	    });
+	    this.bufferFetch(value);
 	  },
 	
-	  handleChange: function handleChange(value) {
-	    console.log('select ', value);
+	  bufferFetch: function bufferFetch(value) {
+	    var _this = this;
+	
+	    if (this.timeout) {
+	      clearTimeout(this.timeout);
+	      this.timeout = null;
+	    }
+	    this.currentValue = value;
+	    this.timeout = setTimeout(function () {
+	      (0, _jsonp2['default'])('http://suggest.taobao.com/sug?' + _querystring2['default'].encode({
+	        code: 'utf-8',
+	        q: value
+	      }), function (err, d) {
+	        if (_this.currentValue === value) {
+	          var result = d.result;
+	          var data = [];
+	          result.forEach(function (r) {
+	            data.push({
+	              value: r[0],
+	              text: r[0]
+	            });
+	          });
+	          _this.setState({
+	            data: data,
+	            loading: false
+	          });
+	        }
+	      });
+	    }, 300);
+	  },
+	
+	  handleChange: function handleChange(value, label) {
+	    console.log('select ', value, label);
+	    this.setState({ value: value, label: label });
 	  },
 	
 	  render: function render() {
 	    var data = this.state.data;
-	    var options = data.map(function (d) {
-	      return _react2['default'].createElement(
+	    var options;
+	    if (this.state.loading) {
+	      options = _react2['default'].createElement(
 	        _rcSelect.Option,
-	        { key: d.value },
-	        _react2['default'].createElement(
-	          'i',
-	          null,
-	          d.text
-	        )
+	        { disabled: true, key: 'disabled' },
+	        'loading'
 	      );
-	    });
+	    } else {
+	      options = data.map(function (d) {
+	        return _react2['default'].createElement(
+	          _rcSelect.Option,
+	          { key: d.value },
+	          _react2['default'].createElement(
+	            'i',
+	            null,
+	            d.text
+	          )
+	        );
+	      });
+	    }
 	    return _react2['default'].createElement(
 	      'div',
 	      null,
@@ -94,6 +124,8 @@ webpackJsonp([2],{
 	        _react2['default'].createElement(
 	          _rcSelect2['default'],
 	          { onSearch: this.fetchData,
+	            value: this.state.value,
+	            label: this.state.label,
 	            optionLabelProp: 'children',
 	            style: { width: 500 },
 	            onChange: this.handleChange,
