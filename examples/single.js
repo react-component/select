@@ -12,7 +12,7 @@ var Test = React.createClass({
   getInitialState() {
     return {
       destroy: false,
-      value: 'lucy'
+      value: 0
     }
   },
 

@@ -12,53 +12,88 @@ function noop() {
 }
 
 function filterFn(input, child) {
-  return getPropValue(child, this.props.optionFilterProp).indexOf(input) > -1;
+  return String(getPropValue(child, this.props.optionFilterProp)).indexOf(input) > -1;
 }
 
 function saveRef(name, component) {
   this[name] = component;
 }
 
-class Select extends React.Component {
-  constructor(props) {
-    super(props);
+const Select = React.createClass({
+  propTypes: {
+    multiple: React.PropTypes.bool,
+    filterOption: React.PropTypes.any,
+    showSearch: React.PropTypes.bool,
+    disabled: React.PropTypes.bool,
+    showArrow: React.PropTypes.bool,
+    tags: React.PropTypes.bool,
+    transitionName: React.PropTypes.string,
+    optionLabelProp: React.PropTypes.string,
+    optionFilterProp: React.PropTypes.string,
+    animation: React.PropTypes.string,
+    onChange: React.PropTypes.func,
+    onSelect: React.PropTypes.func,
+    onSearch: React.PropTypes.func,
+    searchPlaceholder: React.PropTypes.string,
+    placeholder: React.PropTypes.any,
+    onDeselect: React.PropTypes.func,
+    dropdownStyle: React.PropTypes.object,
+    maxTagTextLength: React.PropTypes.number,
+  },
+
+  getDefaultProps() {
+    return {
+      prefixCls: 'rc-select',
+      filterOption: filterFn,
+      showSearch: true,
+      allowClear: false,
+      placeholder: '',
+      searchPlaceholder: '',
+      defaultValue: [],
+      onChange: noop,
+      onSelect: noop,
+      onSearch: noop,
+      onDeselect: noop,
+      showArrow: true,
+      dropdownMatchSelectWidth: true,
+      dropdownStyle: {},
+      dropdownMenuStyle: {},
+      optionFilterProp: 'value',
+      optionLabelProp: 'value',
+      notFoundContent: 'Not Found',
+    };
+  },
+
+  getInitialState() {
+    const props = this.props;
     let value = [];
     if ('value' in props) {
       value = normValue(props.value);
     } else {
       value = normValue(props.defaultValue);
     }
-    this.state = {
-      value: value,
-      inputValue: '',
-    };
-    const events = [
-      'onClick',
-      'getDOMNode',
-      'onKeyDown',
-      'onInputKeyDown',
-      'onInputChange',
-      'onFocus',
-      'onBlur',
-      'onClearSelection',
-      'onMenuSelect',
-      'onMenuDeselect',
-      'onPlaceholderClick',
-    ];
-    events.forEach((m)=> {
-      this[m] = this[m].bind(this);
-    });
+    let inputValue = '';
+    if (props.combobox) {
+      inputValue = value[0] || '';
+    }
     this.saveInputRef = saveRef.bind(this, 'inputInstance');
     this.saveDropdownRef = saveRef.bind(this, 'dropdownInstance');
-  }
+    return {value, inputValue};
+  },
 
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
+      const value = normValue(nextProps.value);
       this.setState({
-        value: normValue(nextProps.value),
+        value,
       });
+      if (nextProps.combobox) {
+        this.setState({
+          inputValue: value[0] || '',
+        });
+      }
     }
-  }
+  },
 
   componentDidUpdate() {
     const state = this.state;
@@ -83,7 +118,7 @@ class Select extends React.Component {
         }
       }
     }
-  }
+  },
 
   componentWillUnmount() {
     if (this.dropdownContainer) {
@@ -96,7 +131,7 @@ class Select extends React.Component {
       clearTimeout(this._blurTimer);
       this._blurTimer = null;
     }
-  }
+  },
 
   onInputChange(e) {
     const val = e.target.value;
@@ -106,10 +141,10 @@ class Select extends React.Component {
       open: true,
     });
     if (isCombobox(props)) {
-      props.onChange(val);
+      this.fireChange([val]);
     }
     props.onSearch(val);
-  }
+  },
 
   onClick() {
     const props = this.props;
@@ -125,7 +160,7 @@ class Select extends React.Component {
         }
       }
     }
-  }
+  },
 
   // combobox ignore
   onKeyDown(e) {
@@ -140,7 +175,7 @@ class Select extends React.Component {
       this.onClick();
       e.preventDefault();
     }
-  }
+  },
 
   onInputKeyDown(e) {
     const props = this.props;
@@ -179,7 +214,7 @@ class Select extends React.Component {
         e.stopPropagation();
       }
     }
-  }
+  },
 
   onMenuSelect({item}) {
     let value = this.state.value;
@@ -208,7 +243,7 @@ class Select extends React.Component {
         inputValue: getPropValue(item, props.optionLabelProp),
       });
     }
-  }
+  },
 
   onMenuDeselect({item, domEvent}) {
     if (domEvent.type === 'click') {
@@ -218,7 +253,7 @@ class Select extends React.Component {
     this.setState({
       inputValue: '',
     });
-  }
+  },
 
   onBlur() {
     if (this._blurTimer) {
@@ -229,18 +264,18 @@ class Select extends React.Component {
         open: false,
       });
     }, 100);
-  }
+  },
 
   onFocus() {
     if (this._blurTimer) {
       clearTimeout(this._blurTimer);
       this._blurTimer = null;
     }
-  }
+  },
 
   onPlaceholderClick() {
     this.getInputDOMNode().focus();
-  }
+  },
 
   onClearSelection(e) {
     const props = this.props;
@@ -256,7 +291,7 @@ class Select extends React.Component {
         inputValue: '',
       });
     }
-  }
+  },
 
   getLabelByValue(children, value) {
     if (value === undefined) {
@@ -274,11 +309,11 @@ class Select extends React.Component {
       }
     });
     return label;
-  }
+  },
 
   getDropdownDOMNode() {
     return React.findDOMNode(this.dropdownInstance);
-  }
+  },
 
   getDropdownContainer() {
     if (!this.dropdownContainer) {
@@ -286,7 +321,7 @@ class Select extends React.Component {
       document.body.appendChild(this.dropdownContainer);
     }
     return this.dropdownContainer;
-  }
+  },
 
   getSearchPlaceholderElement(hidden) {
     const props = this.props;
@@ -297,7 +332,7 @@ class Select extends React.Component {
         className={props.prefixCls + '-search__field__placeholder'}>{props.searchPlaceholder}</span>);
     }
     return null;
-  }
+  },
 
   getInputElement() {
     const props = this.props;
@@ -311,7 +346,7 @@ class Select extends React.Component {
            role="textbox"/>
       {isMultipleOrTags(props) ? null : this.getSearchPlaceholderElement(!!this.state.inputValue)}
                    </span>);
-  }
+  },
 
   getDropdownElement() {
     const state = this.state;
@@ -345,7 +380,7 @@ class Select extends React.Component {
         {props.children}
       </SelectDropdown>
     );
-  }
+  },
 
   getDropdownTransitionName() {
     const props = this.props;
@@ -354,15 +389,11 @@ class Select extends React.Component {
       transitionName = `${props.prefixCls}-dropdown-${props.animation}`;
     }
     return transitionName;
-  }
+  },
 
   getInputDOMNode() {
     return React.findDOMNode(this.inputInstance);
-  }
-
-  getDOMNode() {
-    return React.findDOMNode(this);
-  }
+  },
 
   renderTopControlNode() {
     const value = this.state.value;
@@ -380,7 +411,7 @@ class Select extends React.Component {
                          </span>);
       let innerNode = placeholder;
       const innerValue = this.getLabelByValue(children, value[0]);
-      if (innerValue) {
+      if (innerValue !== null) {
         innerNode = <span key="value">{this.getLabelByValue(children, value[0])}</span>;
       }
       return (<span className={prefixCls + '-selection__rendered'}>
@@ -417,7 +448,7 @@ class Select extends React.Component {
         </li>
       </ul>
     );
-  }
+  },
 
   render() {
     const props = this.props;
@@ -465,7 +496,7 @@ class Select extends React.Component {
         </span>
       </span>
     );
-  }
+  },
 
   removeSelected(selectedValue) {
     const props = this.props;
@@ -480,12 +511,12 @@ class Select extends React.Component {
       props.onDeselect(selectedValue);
     }
     this.fireChange(value);
-  }
+  },
 
   setOpenState(open) {
     const refs = this.refs;
     this.setState({
-      open: open,
+      open,
     }, ()=> {
       if (open || isMultipleOrTagsOrCombobox(this.props)) {
         if (this.getInputDOMNode()) {
@@ -495,66 +526,24 @@ class Select extends React.Component {
         React.findDOMNode(refs.selection).focus();
       }
     });
-  }
+  },
 
   openIfHasChildren() {
     const props = this.props;
     if (React.Children.count(props.children) || isSingleMode(props)) {
       this.setOpenState(true);
     }
-  }
+  },
 
   fireChange(value) {
     const props = this.props;
     if (!('value' in props)) {
       this.setState({
-        value: value,
+        value,
       });
     }
     props.onChange(isMultipleOrTags(props) ? value : value[0]);
-  }
-}
-
-Select.propTypes = {
-  multiple: React.PropTypes.bool,
-  filterOption: React.PropTypes.any,
-  showSearch: React.PropTypes.bool,
-  disabled: React.PropTypes.bool,
-  showArrow: React.PropTypes.bool,
-  tags: React.PropTypes.bool,
-  transitionName: React.PropTypes.string,
-  optionLabelProp: React.PropTypes.string,
-  optionFilterProp: React.PropTypes.string,
-  animation: React.PropTypes.string,
-  onChange: React.PropTypes.func,
-  onSelect: React.PropTypes.func,
-  onSearch: React.PropTypes.func,
-  searchPlaceholder: React.PropTypes.string,
-  placeholder: React.PropTypes.any,
-  onDeselect: React.PropTypes.func,
-  dropdownStyle: React.PropTypes.object,
-  maxTagTextLength: React.PropTypes.number,
-};
-
-Select.defaultProps = {
-  prefixCls: 'rc-select',
-  filterOption: filterFn,
-  showSearch: true,
-  allowClear: false,
-  placeholder: '',
-  searchPlaceholder: '',
-  defaultValue: [],
-  onChange: noop,
-  onSelect: noop,
-  onSearch: noop,
-  onDeselect: noop,
-  showArrow: true,
-  dropdownMatchSelectWidth: true,
-  dropdownStyle: {},
-  dropdownMenuStyle: {},
-  optionFilterProp: 'value',
-  optionLabelProp: 'value',
-  notFoundContent: 'Not Found',
-};
+  },
+});
 
 export default Select;

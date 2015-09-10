@@ -133,19 +133,19 @@ React.render(c, container);
         </tr>
         <tr>
           <td>defaultValue</td>
-          <td>String | Array<String></td>
+          <td>String | Array&lt;String&gt;</td>
           <td></td>
           <td>initial selected option(s)</td>
         </tr>
         <tr>
           <td>value</td>
-          <td>String | Array<String></td>
+          <td>String | Array&lt;String&gt;</td>
           <td></td>
           <td>current selected option(s)</td>
         </tr>
         <tr>
           <td>defaultValue</td>
-          <td>String | Array<String></td>
+          <td>String | Array&lt;String&gt;</td>
           <td></td>
           <td>specify the default selected option(s)</td>
         </tr>

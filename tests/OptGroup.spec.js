@@ -1,4 +1,4 @@
-'use strict';
+
 
 var expect = require('expect.js');
 var React = require('react/addons');

@@ -1,4 +1,4 @@
-'use strict';
+
 
 var expect = require('expect.js');
 var React = require('react/addons');
@@ -89,17 +89,6 @@ describe('Select', function () {
       div);
     expect(TestUtils.scryRenderedDOMComponentsWithClass(instance, 'rc-select-selection__clear').length).to.be(1);
   });
-
-  it('should be combobox', function () {
-    var instance = React.render(
-      <Select combobox>
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
-      </Select>,div
-    );
-    expect(!!React.findDOMNode(instance.refs.selection).getAttribute('tabindex')).to.be(false);
-  });
-
 
   describe('when open', function () {
     var div;
