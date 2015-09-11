@@ -4,7 +4,6 @@
 React Select
 
 [![NPM version][npm-image]][npm-url]
-[![SPM version](http://spmjs.io/badge/rc-select)](http://spmjs.io/package/rc-select)
 [![build status][travis-image]][travis-url]
 [![Test coverage][coveralls-image]][coveralls-url]
 [![gemnasium deps][gemnasium-image]][gemnasium-url]
@@ -47,6 +46,7 @@ React Select
 ## Usage
 
 ### basic use
+
 ```js
 var React = require('react'); 
 var Select = require('../');
@@ -61,7 +61,6 @@ var c = (
 );
 React.render(c, container);
 ```
-
 
 ## API
 
@@ -221,6 +220,12 @@ React.render(c, container);
           <th>{}</th>
           <td>additional style applied to dropdown menu</td>
         </tr>
+        <tr>
+          <td>notFoundContent</td>
+          <td>String</td>
+          <td></td>
+          <td>specify content to show when no result matches. defaults to Not Found</td>
+        </tr>
     </tbody>
 </table>
 
@@ -253,12 +258,6 @@ React.render(c, container);
           <td>String</td>
           <td></td>
           <td>default filter by this attribute. if react want you to set key, then key is same as value, you can omit value.</td>
-        </tr>
-        <tr>
-          <td>notFoundContent</td>
-          <td>String</td>
-          <td></td>
-          <td>specify content to show when no result matches. defaults to Not Found</td>
         </tr>
     </tbody>
 </table>
