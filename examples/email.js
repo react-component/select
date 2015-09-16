@@ -3,12 +3,12 @@ webpackJsonp([1],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(50);
+	module.exports = __webpack_require__(205);
 
 
 /***/ },
 
-/***/ 50:
+/***/ 205:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19,11 +19,11 @@ webpackJsonp([1],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _rcSelect = __webpack_require__(3);
+	var _rcSelect = __webpack_require__(158);
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(49);
+	__webpack_require__(204);
 	
 	var Test = _react2['default'].createClass({
 	  displayName: 'Test',
@@ -33,10 +33,18 @@ webpackJsonp([1],{
 	      options: []
 	    };
 	  },
-	  handleChange: function handleChange(value) {
+	  onSelect: function onSelect(value) {
+	    console.log('onSelect', value);
+	  },
+	  onChange: function onChange(value) {
+	    console.log('onChange', value);
 	    var options;
 	    if (!value || value.indexOf('@') >= 0) {
-	      options = [];
+	      options = _react2['default'].createElement(
+	        _rcSelect.Option,
+	        { key: value },
+	        value
+	      );
 	    } else {
 	      options = ['gmail.com', 'yahoo.com', 'outlook.com'].map(function (domain) {
 	        var email = value + '@' + domain;
@@ -56,7 +64,8 @@ webpackJsonp([1],{
 	      _rcSelect2['default'],
 	      { combobox: true,
 	        style: { width: 200 },
-	        onChange: this.handleChange,
+	        onChange: this.onChange,
+	        onSelect: this.onSelect,
 	        searchPlaceholder: '请输入账户名' },
 	      this.state.options
 	    );
