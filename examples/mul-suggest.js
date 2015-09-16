@@ -867,7 +867,7 @@ webpackJsonp([3],{
 	
 	__webpack_require__(204);
 	
-	var _tbFetchSuggest = __webpack_require__(207);
+	var _commonTbFetchSuggest = __webpack_require__(207);
 	
 	var Search = _react2['default'].createClass({
 	  displayName: 'Search',
@@ -883,7 +883,7 @@ webpackJsonp([3],{
 	  fetchData: function fetchData(value) {
 	    var _this = this;
 	
-	    (0, _tbFetchSuggest.fetch)(value, function (data) {
+	    (0, _commonTbFetchSuggest.fetch)(value, function (data) {
 	      _this.setState({
 	        data: data
 	      });
