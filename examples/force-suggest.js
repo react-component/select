@@ -25,13 +25,7 @@ webpackJsonp([2],{
 	
 	__webpack_require__(49);
 	
-	var _jsonp = __webpack_require__(52);
-	
-	var _jsonp2 = _interopRequireDefault(_jsonp);
-	
-	var _querystring = __webpack_require__(56);
-	
-	var _querystring2 = _interopRequireDefault(_querystring);
+	var _tbFetchSuggest = __webpack_require__(52);
 	
 	var Search = _react2['default'].createClass({
 	  displayName: 'Search',
@@ -46,41 +40,17 @@ webpackJsonp([2],{
 	  },
 	
 	  fetchData: function fetchData(value) {
+	    var _this = this;
+	
 	    this.setState({
 	      loading: true
 	    });
-	    this.bufferFetch(value);
-	  },
-	
-	  bufferFetch: function bufferFetch(value) {
-	    var _this = this;
-	
-	    if (this.timeout) {
-	      clearTimeout(this.timeout);
-	      this.timeout = null;
-	    }
-	    this.currentValue = value;
-	    this.timeout = setTimeout(function () {
-	      (0, _jsonp2['default'])('http://suggest.taobao.com/sug?' + _querystring2['default'].encode({
-	        code: 'utf-8',
-	        q: value
-	      }), function (err, d) {
-	        if (_this.currentValue === value) {
-	          var result = d.result;
-	          var data = [];
-	          result.forEach(function (r) {
-	            data.push({
-	              value: r[0],
-	              text: r[0]
-	            });
-	          });
-	          _this.setState({
-	            data: data,
-	            loading: false
-	          });
-	        }
+	    (0, _tbFetchSuggest.fetch)(value, function (data) {
+	      _this.setState({
+	        data: data,
+	        loading: false
 	      });
-	    }, 300);
+	    });
 	  },
 	
 	  handleChange: function handleChange(value, label) {
@@ -144,11 +114,64 @@ webpackJsonp([2],{
 /***/ 52:
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _jsonp = __webpack_require__(53);
+	
+	var _jsonp2 = _interopRequireDefault(_jsonp);
+	
+	var _querystring = __webpack_require__(57);
+	
+	var _querystring2 = _interopRequireDefault(_querystring);
+	
+	var timeout = undefined,
+	    currentValue = undefined;
+	
+	exports['default'] = {
+	  fetch: function fetch(value, callback) {
+	    if (timeout) {
+	      clearTimeout(timeout);
+	      timeout = null;
+	    }
+	    currentValue = value;
+	    timeout = setTimeout(function () {
+	      (0, _jsonp2['default'])('http://suggest.taobao.com/sug?' + _querystring2['default'].encode({
+	        code: 'utf-8',
+	        q: value
+	      }), function (err, d) {
+	        if (currentValue === value) {
+	          var result = d.result;
+	          var data = [];
+	          result.forEach(function (r) {
+	            data.push({
+	              value: r[0],
+	              text: r[0]
+	            });
+	          });
+	          callback(data);
+	        }
+	      });
+	    }, 300);
+	  }
+	};
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 53:
+/***/ function(module, exports, __webpack_require__) {
+
 	/**
 	 * Module dependencies
 	 */
 	
-	var debug = __webpack_require__(53)('jsonp');
+	var debug = __webpack_require__(54)('jsonp');
 	
 	/**
 	 * Module exports.
@@ -245,7 +268,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 53:
+/***/ 54:
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -255,7 +278,7 @@ webpackJsonp([2],{
 	 * Expose `debug()` as the module.
 	 */
 	
-	exports = module.exports = __webpack_require__(54);
+	exports = module.exports = __webpack_require__(55);
 	exports.log = log;
 	exports.formatArgs = formatArgs;
 	exports.save = save;
@@ -427,7 +450,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 54:
+/***/ 55:
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -443,7 +466,7 @@ webpackJsonp([2],{
 	exports.disable = disable;
 	exports.enable = enable;
 	exports.enabled = enabled;
-	exports.humanize = __webpack_require__(55);
+	exports.humanize = __webpack_require__(56);
 	
 	/**
 	 * The currently active debug mode names, and names to skip.
@@ -631,7 +654,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 55:
+/***/ 56:
 /***/ function(module, exports) {
 
 	/**
@@ -761,18 +784,18 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 56:
+/***/ 57:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	exports.decode = exports.parse = __webpack_require__(57);
-	exports.encode = exports.stringify = __webpack_require__(58);
+	exports.decode = exports.parse = __webpack_require__(58);
+	exports.encode = exports.stringify = __webpack_require__(59);
 
 
 /***/ },
 
-/***/ 57:
+/***/ 58:
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -859,7 +882,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 58:
+/***/ 59:
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.

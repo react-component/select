@@ -241,15 +241,14 @@
         <div class="example" id="__react-content"></div>
         <script src="common.js?nowrap"></script>
         <script src="mul-tag-suggest.js?nowrap"></script>
-        <div class="highlight"><pre><code>'use strict';
+        <div class="highlight"><pre><code><span class="hljs-pi">'use strict'</span>;
 
-<span class="hljs-keyword">import</span> <span class="hljs-type">React</span> <span class="hljs-keyword">from</span> 'react';
-<span class="hljs-keyword">import</span> <span class="hljs-type">Select</span>, {<span class="hljs-type">Option</span>} <span class="hljs-keyword">from</span> 'rc-select';
-<span class="hljs-keyword">import</span> 'rc-select/assets/index.css';
-<span class="hljs-keyword">import</span> jsonp <span class="hljs-keyword">from</span> 'jsonp';
-<span class="hljs-keyword">import</span> querystring <span class="hljs-keyword">from</span> 'querystring';
+<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> Select, {Option} <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-select'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-select/assets/index.css'</span>;
+<span class="hljs-keyword">import</span> {fetch} <span class="hljs-keyword">from</span> <span class="hljs-string">'./tbFetchSuggest'</span>;
 
-<span class="hljs-keyword">var</span> <span class="hljs-type">Search</span> = <span class="hljs-type">React</span>.createClass({
+<span class="hljs-keyword">var</span> Search = React.createClass({
   getInitialState() {
     <span class="hljs-keyword">return</span> {
       data: []
@@ -257,52 +256,42 @@
   },
 
   fetchData(value) {
-    jsonp('http://suggest.taobao.com/sug?' + querystring.encode({
-      code: 'utf-<span class="hljs-number">8</span>',
-      q: value
-    }), (err, d) =&gt; {
-      <span class="hljs-keyword">var</span> <span class="hljs-literal">result</span> = d.<span class="hljs-literal">result</span>;
-      <span class="hljs-keyword">var</span> data = [];
-      <span class="hljs-literal">result</span>.forEach((r)=&gt; {
-        data.push({
-          value: r[<span class="hljs-number">0</span>],
-          text: &lt;b&gt;{r[<span class="hljs-number">0</span>]}&lt;/b&gt;
-        });
-      });
-      this.setState({
-        data: data
+    fetch(value, (data) =&gt; {
+      <span class="hljs-keyword">this</span>.setState({
+        data,
       });
     });
   },
 
   handleSelect(value) {
-    console.log('select ', value);
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'select '</span>, value);
   },
 
   render() {
-    <span class="hljs-keyword">var</span> data = this.state.data;
+    <span class="hljs-keyword">var</span> data = <span class="hljs-keyword">this</span>.state.data;
     <span class="hljs-keyword">var</span> options = data.map((d) =&gt; {
-      <span class="hljs-keyword">return</span> &lt;<span class="hljs-type">Option</span> key={d.value}&gt;{d.text}&lt;/<span class="hljs-type">Option</span>&gt;;
+      <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{d.value}</span>&gt;</span>{d.text}<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>;</span>
     });
-    <span class="hljs-keyword">return</span> &lt;<span class="hljs-keyword">div</span>&gt;
-      &lt;h2&gt;multiple suggest&lt;/h2&gt;
-      &lt;<span class="hljs-keyword">div</span>&gt;
-        &lt;<span class="hljs-type">Select</span>
-          style={{width: <span class="hljs-number">500</span>}}
-          tags
-          notFoundContent=<span class="hljs-string">""</span>
-          onSearch={this.fetchData}
-          onSelect={this.handleSelect}
-          filterOption={<span class="hljs-literal">false</span>}&gt;
-        {options}
-        &lt;/<span class="hljs-type">Select</span>&gt;
-      &lt;/<span class="hljs-keyword">div</span>&gt;
-    &lt;/<span class="hljs-keyword">div</span>&gt;;
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>multiple suggest<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">Select</span>
+          <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">500</span>}}
+          <span class="hljs-attribute">tags</span>
+          <span class="hljs-attribute">notFoundContent</span>=<span class="hljs-value">""</span>
+          <span class="hljs-attribute">onSearch</span>=<span class="hljs-value">{this.fetchData}</span>
+          <span class="hljs-attribute">onSelect</span>=<span class="hljs-value">{this.handleSelect}</span>
+          <span class="hljs-attribute">filterOption</span>=<span class="hljs-value">{false}</span>&gt;</span>
+          {options}
+        <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>;</span>
   }
 });
 
-<span class="hljs-type">React</span>.render(&lt;<span class="hljs-type">Search</span> /&gt;, document.getElementById('__react-content'));
-</code></pre></div>
+React.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Search</span> /&gt;</span>, document.getElementById('__react-content'));
+</span></code></pre></div>
     </div>
     <a href="http://github.com/react-component/select"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
 </body>

@@ -770,6 +770,8 @@
       
       <li><a href="examples/tags.html">tags</a></li>
       
+      <li><a href="examples/tbFetchSuggest.html">tbFetchSuggest</a></li>
+      
     </ul>
   </div>
 </div>
@@ -779,7 +781,6 @@
     <h1>rc-select<a id="user-content-rc-select" name="rc-select" class="anchor" aria-hidden="true" href="#rc-select"><span class="octicon octicon-link"></span></a></h1><hr>
 <p>React Select</p>
 <p><a href="http://npmjs.org/package/rc-select" title="null"><img src="http://img.shields.io/npm/v/rc-select.svg?style=flat-square" alt="NPM version"></a>
-<a href="http://spmjs.io/package/rc-select" title="null"><img src="http://spmjs.io/badge/rc-select" alt="SPM version"></a>
 <a href="https://travis-ci.org/react-component/select" title="null"><img src="https://img.shields.io/travis/react-component/select.svg?style=flat-square" alt="build status"></a>
 <a href="https://coveralls.io/r/react-component/select?branch=master" title="null"><img src="https://img.shields.io/coveralls/react-component/select.svg?style=flat-square" alt="Test coverage"></a>
 <a href="https://gemnasium.com/react-component/select" title="null"><img src="http://img.shields.io/gemnasium/react-component/select.svg?style=flat-square" alt="gemnasium deps"></a>
@@ -961,6 +962,12 @@ React.render(c, container);</code></pre></div><h2>API<a id="user-content-api" na
           <th>{}</th>
           <td>additional style applied to dropdown menu</td>
         </tr>
+        <tr>
+          <td>notFoundContent</td>
+          <td>String</td>
+          <td></td>
+          <td>specify content to show when no result matches. defaults to Not Found</td>
+        </tr>
     </tbody>
 </table>
 
@@ -991,12 +998,6 @@ React.render(c, container);</code></pre></div><h2>API<a id="user-content-api" na
           <td>String</td>
           <td></td>
           <td>default filter by this attribute. if react want you to set key, then key is same as value, you can omit value.</td>
-        </tr>
-        <tr>
-          <td>notFoundContent</td>
-          <td>String</td>
-          <td></td>
-          <td>specify content to show when no result matches. defaults to Not Found</td>
         </tr>
     </tbody>
 </table>
