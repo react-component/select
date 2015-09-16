@@ -3,8 +3,7 @@
 import React from 'react';
 import Select, {Option} from 'rc-select';
 import 'rc-select/assets/index.less';
-import jsonp from 'jsonp';
-import querystring from 'querystring';
+import {fetch} from './tbFetchSuggest';
 
 var Search = React.createClass({
   getInitialState() {
@@ -14,20 +13,9 @@ var Search = React.createClass({
   },
 
   fetchData(value) {
-    jsonp('http://suggest.taobao.com/sug?' + querystring.encode({
-      code: 'utf-8',
-      q: value
-    }), (err, d) => {
-      var result = d.result;
-      var data = [];
-      result.forEach((r)=> {
-        data.push({
-          value: r[0],
-          text: <b>{r[0]}</b>
-        });
-      });
+    fetch(value, (data) => {
       this.setState({
-        data: data
+        data,
       });
     });
   },
@@ -43,6 +31,7 @@ var Search = React.createClass({
     });
     return <div>
       <h2>multiple suggest</h2>
+
       <div>
         <Select
           style={{width: 500}}
@@ -51,7 +40,7 @@ var Search = React.createClass({
           onSearch={this.fetchData}
           onSelect={this.handleSelect}
           filterOption={false}>
-        {options}
+          {options}
         </Select>
       </div>
     </div>;

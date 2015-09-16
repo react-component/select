@@ -3,8 +3,7 @@
 import React from 'react';
 import Select, {Option} from 'rc-select';
 import 'rc-select/assets/index.less';
-import jsonp from 'jsonp';
-import querystring from 'querystring';
+import {fetch} from './tbFetchSuggest';
 
 var Search = React.createClass({
   getInitialState() {
@@ -20,36 +19,12 @@ var Search = React.createClass({
     this.setState({
       loading: true
     });
-    this.bufferFetch(value);
-  },
-
-  bufferFetch(value){
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-      this.timeout = null;
-    }
-    this.currentValue = value;
-    this.timeout = setTimeout(()=> {
-      jsonp('http://suggest.taobao.com/sug?' + querystring.encode({
-          code: 'utf-8',
-          q: value
-        }), (err, d) => {
-        if (this.currentValue === value) {
-          var result = d.result;
-          var data = [];
-          result.forEach((r)=> {
-            data.push({
-              value: r[0],
-              text: r[0]
-            });
-          });
-          this.setState({
-            data: data,
-            loading: false
-          });
-        }
+    fetch(value, (data)=> {
+      this.setState({
+        data,
+        loading: false
       });
-    }, 300);
+    });
   },
 
   handleChange(value, label) {
