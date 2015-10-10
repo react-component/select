@@ -48,7 +48,7 @@ React Select
 ### basic use
 
 ```js
-var React = require('react'); 
+var React = require('react');
 var Select = require('../');
 var Option = Select.Option;
 
@@ -138,13 +138,13 @@ React.render(c, container);
         </tr>
         <tr>
           <td>value</td>
-          <td>String | Array&lt;String&gt;</td>
+          <td>String | Number | Array&lt;String&gt; | Array&lt;Number&gt;</td>
           <td></td>
           <td>current selected option(s)</td>
         </tr>
         <tr>
           <td>defaultValue</td>
-          <td>String | Array&lt;String&gt;</td>
+          <td>String | Number | Array&lt;String&gt; | Array&lt;Number&gt;</td>
           <td></td>
           <td>specify the default selected option(s)</td>
         </tr>
@@ -200,7 +200,7 @@ React.render(c, container);
           <td>dropdownMatchSelectWidth</td>
           <td>Boolean</td>
           <th>true</th>
-          <td>whether dropdown 's with is same with select</td>
+          <td>whether dropdown's width is same with select</td>
         </tr>
         <tr>
           <td>dropdownClassName</td>
