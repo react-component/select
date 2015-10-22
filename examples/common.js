@@ -21241,21 +21241,17 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
 	var _react = __webpack_require__(2);
 	
 	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactDom = __webpack_require__(158);
+	
+	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
 	var _util = __webpack_require__(176);
 	
@@ -21279,193 +21275,210 @@
 	
 	var _rcAnimate2 = _interopRequireDefault(_rcAnimate);
 	
+	function isBelow(align) {
+	  var points = align.points;
+	  if (points[0] === 'tl' && points[1] === 'bl') {
+	    return true;
+	  }
+	  return false;
+	}
+	
 	var ALIGN = {
 	  points: ['tl', 'bl'],
 	  offset: [0, 4],
 	  overflow: {
-	    adjustX: 1,
+	    adjustX: 0,
 	    adjustY: 1
 	  }
 	};
 	
-	var SelectDropdown = (function (_React$Component) {
-	  _inherits(SelectDropdown, _React$Component);
+	var SelectDropdown = _react2['default'].createClass({
+	  displayName: 'SelectDropdown',
 	
-	  function SelectDropdown() {
-	    _classCallCheck(this, SelectDropdown);
+	  propTypes: {
+	    filterOption: _react2['default'].PropTypes.oneOfType([_react2['default'].PropTypes.bool, _react2['default'].PropTypes.func]),
+	    visible: _react2['default'].PropTypes.bool,
+	    prefixCls: _react2['default'].PropTypes.string,
+	    children: _react2['default'].PropTypes.any
+	  },
 	
-	    _get(Object.getPrototypeOf(SelectDropdown.prototype), 'constructor', this).apply(this, arguments);
-	  }
+	  componentDidMount: function componentDidMount() {
+	    this.nativeDOMNode = _reactDom2['default'].findDOMNode(this);
+	  },
 	
-	  _createClass(SelectDropdown, [{
-	    key: 'shouldComponentUpdate',
-	    value: function shouldComponentUpdate(nextProps) {
-	      return this.props.visible || nextProps.visible;
-	    }
-	  }, {
-	    key: 'getDropdownPrefixCls',
-	    value: function getDropdownPrefixCls() {
-	      return this.props.prefixCls + '-dropdown';
-	    }
-	  }, {
-	    key: 'getMenuComponent',
-	    value: function getMenuComponent() {
-	      return this.refs.panel.refs.menu;
-	    }
-	  }, {
-	    key: 'filterOption',
-	    value: function filterOption(input, child) {
-	      if (!input) {
-	        return true;
-	      }
-	      var filterOption = this.props.filterOption;
-	      if (!filterOption) {
-	        return true;
-	      }
-	      if (child.props.disabled) {
-	        return false;
-	      }
-	      return filterOption.call(this, input, child);
-	    }
-	  }, {
-	    key: 'renderFilterOptionsFromChildren',
-	    value: function renderFilterOptionsFromChildren(children, showNotFound) {
-	      var _this = this;
+	  shouldComponentUpdate: function shouldComponentUpdate(nextProps) {
+	    return this.props.visible || nextProps.visible;
+	  },
 	
-	      var sel = [];
-	      var props = this.props;
-	      var inputValue = props.inputValue;
-	      var childrenKeys = [];
-	      var tags = props.tags;
-	      _react2['default'].Children.forEach(children, function (child) {
-	        if (child.type === _OptGroup2['default']) {
-	          var innerItems = _this.renderFilterOptionsFromChildren(child.props.children, false);
-	          if (innerItems.length) {
-	            var label = child.props.label;
-	            var key = child.key;
-	            if (!key && typeof label === 'string') {
-	              key = label;
-	            } else if (!label && key) {
-	              label = key;
-	            }
-	            sel.push(_react2['default'].createElement(
-	              _rcMenu.ItemGroup,
-	              { key: key, title: label },
-	              innerItems
-	            ));
+	  onAlign: function onAlign(node, align) {
+	    var dropdownPrefixCls = this.getDropdownPrefixCls();
+	    var belowClassName = dropdownPrefixCls + '--below';
+	    var topClassName = dropdownPrefixCls + '--top';
+	    var className = node.className;
+	    var hasBelowClassName = className.indexOf(belowClassName);
+	    var isBelowAlign = isBelow(align);
+	    if (!isBelowAlign && hasBelowClassName) {
+	      node.className = node.className.replace(belowClassName, topClassName);
+	    }
+	  },
+	
+	  getDropdownPrefixCls: function getDropdownPrefixCls() {
+	    return this.props.prefixCls + '-dropdown';
+	  },
+	
+	  getMenuComponent: function getMenuComponent() {
+	    return this.refs.panel.refs.menu;
+	  },
+	
+	  filterOption: function filterOption(input, child) {
+	    if (!input) {
+	      return true;
+	    }
+	    var filterOption = this.props.filterOption;
+	    if (!filterOption) {
+	      return true;
+	    }
+	    if (child.props.disabled) {
+	      return false;
+	    }
+	    return filterOption.call(this, input, child);
+	  },
+	
+	  renderFilterOptionsFromChildren: function renderFilterOptionsFromChildren(children, showNotFound) {
+	    var _this = this;
+	
+	    var sel = [];
+	    var props = this.props;
+	    var inputValue = props.inputValue;
+	    var childrenKeys = [];
+	    var tags = props.tags;
+	    _react2['default'].Children.forEach(children, function (child) {
+	      if (child.type === _OptGroup2['default']) {
+	        var innerItems = _this.renderFilterOptionsFromChildren(child.props.children, false);
+	        if (innerItems.length) {
+	          var label = child.props.label;
+	          var key = child.key;
+	          if (!key && typeof label === 'string') {
+	            key = label;
+	          } else if (!label && key) {
+	            label = key;
 	          }
-	          return;
+	          sel.push(_react2['default'].createElement(
+	            _rcMenu.ItemGroup,
+	            { key: key, title: label },
+	            innerItems
+	          ));
 	        }
-	        var childValue = (0, _util.getValuePropValue)(child);
-	        if (_this.filterOption(inputValue, child)) {
-	          sel.push(_react2['default'].createElement(_rcMenu.Item, _extends({
-	            value: childValue,
-	            key: childValue
-	          }, child.props)));
-	        }
-	        if (tags && !child.props.disabled) {
-	          childrenKeys.push(childValue);
-	        }
+	        return;
+	      }
+	      var childValue = (0, _util.getValuePropValue)(child);
+	      if (_this.filterOption(inputValue, child)) {
+	        sel.push(_react2['default'].createElement(_rcMenu.Item, _extends({
+	          value: childValue,
+	          key: childValue
+	        }, child.props)));
+	      }
+	      if (tags && !child.props.disabled) {
+	        childrenKeys.push(childValue);
+	      }
+	    });
+	    if (tags) {
+	      // tags value must be string
+	      var value = props.value;
+	      value = value.filter(function (singleValue) {
+	        return childrenKeys.indexOf(singleValue) === -1 && (!inputValue || singleValue.indexOf(inputValue) > -1);
 	      });
-	      if (tags) {
-	        // tags value must be string
-	        var value = props.value;
-	        value = value.filter(function (singleValue) {
-	          return childrenKeys.indexOf(singleValue) === -1 && (!inputValue || singleValue.indexOf(inputValue) > -1);
+	      sel = sel.concat(value.map(function (singleValue) {
+	        return _react2['default'].createElement(
+	          _rcMenu.Item,
+	          { value: singleValue, key: singleValue },
+	          singleValue
+	        );
+	      }));
+	      if (inputValue) {
+	        var notFindInputItem = sel.every(function (option) {
+	          return (0, _util.getValuePropValue)(option) !== inputValue;
 	        });
-	        sel = sel.concat(value.map(function (singleValue) {
-	          return _react2['default'].createElement(
+	        if (notFindInputItem) {
+	          sel.unshift(_react2['default'].createElement(
 	            _rcMenu.Item,
-	            { value: singleValue, key: singleValue },
-	            singleValue
-	          );
-	        }));
-	        if (inputValue) {
-	          var notFindInputItem = sel.every(function (option) {
-	            return (0, _util.getValuePropValue)(option) !== inputValue;
-	          });
-	          if (notFindInputItem) {
-	            sel.unshift(_react2['default'].createElement(
-	              _rcMenu.Item,
-	              { value: inputValue, key: inputValue },
-	              inputValue
-	            ));
-	          }
+	            { value: inputValue, key: inputValue },
+	            inputValue
+	          ));
 	        }
 	      }
-	      if (!sel.length && showNotFound && props.notFoundContent) {
-	        sel = [_react2['default'].createElement(
-	          _rcMenu.Item,
-	          { disabled: true, value: 'NOT_FOUND', key: 'NOT_FOUND' },
-	          props.notFoundContent
-	        )];
-	      }
-	      return sel;
 	    }
-	  }, {
-	    key: 'renderFilterOptions',
-	    value: function renderFilterOptions() {
-	      return this.renderFilterOptionsFromChildren(this.props.children, true);
+	    if (!sel.length && showNotFound && props.notFoundContent) {
+	      sel = [_react2['default'].createElement(
+	        _rcMenu.Item,
+	        { disabled: true, value: 'NOT_FOUND', key: 'NOT_FOUND' },
+	        props.notFoundContent
+	      )];
 	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _className;
+	    return sel;
+	  },
 	
-	      var props = this.props;
-	      var prefixCls = props.prefixCls;
-	      var dropdownPrefixCls = this.getDropdownPrefixCls();
-	      var menuItems = this.renderFilterOptions();
-	      var visible = props.visible;
-	      var search = props.isMultipleOrTagsOrCombobox || !props.showSearch ? null : _react2['default'].createElement(
-	        'span',
-	        { className: prefixCls + '-search ' + prefixCls + '-search--dropdown' },
-	        props.inputElement
-	      );
-	      if (!search && !menuItems.length) {
-	        visible = false;
+	  renderFilterOptions: function renderFilterOptions() {
+	    return this.renderFilterOptionsFromChildren(this.props.children, true);
+	  },
+	
+	  render: function render() {
+	    var _classSet;
+	
+	    var props = this.props;
+	    var prefixCls = props.prefixCls;
+	    var dropdownPrefixCls = this.getDropdownPrefixCls();
+	    var menuItems = this.renderFilterOptions();
+	    var visible = props.visible;
+	    var search = props.isMultipleOrTagsOrCombobox || !props.showSearch ? null : _react2['default'].createElement(
+	      'span',
+	      { className: prefixCls + '-search ' + prefixCls + '-search--dropdown' },
+	      props.inputElement
+	    );
+	    if (!search && !menuItems.length) {
+	      visible = false;
+	    }
+	    var hiddenClass = dropdownPrefixCls + '-hidden';
+	    var className = (0, _rcUtil.classSet)((_classSet = {}, _defineProperty(_classSet, dropdownPrefixCls, 1), _defineProperty(_classSet, dropdownPrefixCls + '--below', 1), _defineProperty(_classSet, hiddenClass, !visible), _defineProperty(_classSet, props.className, !!props.className), _defineProperty(_classSet, dropdownPrefixCls + '--' + (props.isMultipleOrTags ? 'multiple' : 'single'), 1), _classSet));
+	    var domNode = this.nativeDOMNode;
+	    if (!visible && domNode) {
+	      // keep adjusted className
+	      className = domNode.className;
+	      if (className.indexOf(hiddenClass) === -1) {
+	        className += ' ' + hiddenClass;
 	      }
-	      var className = (_className = {}, _defineProperty(_className, dropdownPrefixCls, 1), _defineProperty(_className, dropdownPrefixCls + '--below', 1), _defineProperty(_className, dropdownPrefixCls + '-hidden', !visible), _defineProperty(_className, props.className, !!props.className), _defineProperty(_className, dropdownPrefixCls + '--' + (props.isMultipleOrTags ? 'multiple' : 'single'), 1), _className);
-	      // single and not combobox, input is inside dropdown
-	      return _react2['default'].createElement(
-	        _rcAnimate2['default'],
-	        {
-	          component: '',
-	          exclusive: true,
-	          transitionAppear: true,
-	          showProp: 'selectOpen',
-	          transitionName: props.transitionName },
+	    }
+	    // single and not combobox, input is inside dropdown
+	    return _react2['default'].createElement(
+	      _rcAnimate2['default'],
+	      {
+	        component: '',
+	        exclusive: true,
+	        transitionAppear: true,
+	        showProp: 'selectOpen',
+	        transitionName: props.transitionName },
+	      _react2['default'].createElement(
+	        _rcAlign2['default'],
+	        { target: props.getAlignTarget,
+	          key: 'dropdown',
+	          onAlign: this.onAlign,
+	          selectOpen: visible,
+	          disabled: !visible,
+	          align: ALIGN },
 	        _react2['default'].createElement(
-	          _rcAlign2['default'],
-	          { target: props.getAlignTarget,
-	            key: 'dropdown',
-	            selectOpen: visible,
-	            disabled: !visible,
-	            align: ALIGN },
-	          _react2['default'].createElement(
-	            'div',
-	            { key: 'dropdown',
-	              onFocus: props.onDropdownFocus,
-	              onBlur: props.onDropdownBlur,
-	              style: props.dropdownStyle,
-	              className: (0, _rcUtil.classSet)(className),
-	              tabIndex: '-1' },
-	            _react2['default'].createElement(_DropdownPanel2['default'], _extends({ ref: 'panel' }, props, { menuItems: menuItems, visible: visible, search: search }))
-	          )
+	          'div',
+	          { key: 'dropdown',
+	            onFocus: props.onDropdownFocus,
+	            onBlur: props.onDropdownBlur,
+	            style: props.dropdownStyle,
+	            className: className,
+	            tabIndex: '-1' },
+	          _react2['default'].createElement(_DropdownPanel2['default'], _extends({ ref: 'panel' }, props, { menuItems: menuItems, visible: visible, search: search }))
 	        )
-	      );
-	    }
-	  }]);
-	
-	  return SelectDropdown;
-	})(_react2['default'].Component);
-	
-	SelectDropdown.propTypes = {
-	  filterOption: _react2['default'].PropTypes.oneOfType([_react2['default'].PropTypes.bool, _react2['default'].PropTypes.func]),
-	  visible: _react2['default'].PropTypes.bool,
-	  prefixCls: _react2['default'].PropTypes.string,
-	  children: _react2['default'].PropTypes.any
-	};
+	      )
+	    );
+	  }
+	});
 	
 	exports['default'] = SelectDropdown;
 	module.exports = exports['default'];

@@ -245,8 +245,8 @@ li.rc-select-dropdown-menu-item-divider {
 }
 .rc-select-dropdown-slide-up-enter,
 .rc-select-dropdown-slide-up-appear {
-  -webkit-animation-duration: 0.3s;
-          animation-duration: 0.3s;
+  -webkit-animation-duration: .3s;
+          animation-duration: .3s;
   -webkit-animation-fill-mode: both;
           animation-fill-mode: both;
   -webkit-transform-origin: 0 0;
@@ -260,8 +260,8 @@ li.rc-select-dropdown-menu-item-divider {
           animation-play-state: paused;
 }
 .rc-select-dropdown-slide-up-leave {
-  -webkit-animation-duration: 0.3s;
-          animation-duration: 0.3s;
+  -webkit-animation-duration: .3s;
+          animation-duration: .3s;
   -webkit-animation-fill-mode: both;
           animation-fill-mode: both;
   -webkit-transform-origin: 0 0;
@@ -274,16 +274,29 @@ li.rc-select-dropdown-menu-item-divider {
   -webkit-animation-play-state: paused;
           animation-play-state: paused;
 }
-.rc-select-dropdown-slide-up-enter.rc-select-dropdown-slide-up-enter-active,
-.rc-select-dropdown-slide-up-appear.rc-select-dropdown-slide-up-appear-active {
+.rc-select-dropdown-slide-up-enter.rc-select-dropdown-slide-up-enter-active.rc-select-dropdown--below,
+.rc-select-dropdown-slide-up-appear.rc-select-dropdown-slide-up-appear-active.rc-select-dropdown--below {
   -webkit-animation-name: rcDropdownSlideUpIn;
           animation-name: rcDropdownSlideUpIn;
   -webkit-animation-play-state: running;
           animation-play-state: running;
 }
-.rc-select-dropdown-slide-up-leave.rc-select-dropdown-slide-up-leave-active {
+.rc-select-dropdown-slide-up-leave.rc-select-dropdown-slide-up-leave-active.rc-select-dropdown--below {
   -webkit-animation-name: rcDropdownSlideUpOut;
           animation-name: rcDropdownSlideUpOut;
+  -webkit-animation-play-state: running;
+          animation-play-state: running;
+}
+.rc-select-dropdown-slide-up-enter.rc-select-dropdown-slide-up-enter-active.rc-select-dropdown--top,
+.rc-select-dropdown-slide-up-appear.rc-select-dropdown-slide-up-appear-active.rc-select-dropdown--top {
+  -webkit-animation-name: rcDropdownSlideDownIn;
+          animation-name: rcDropdownSlideDownIn;
+  -webkit-animation-play-state: running;
+          animation-play-state: running;
+}
+.rc-select-dropdown-slide-up-leave.rc-select-dropdown-slide-up-leave-active.rc-select-dropdown--top {
+  -webkit-animation-name: rcDropdownSlideDownOut;
+          animation-name: rcDropdownSlideDownOut;
   -webkit-animation-play-state: running;
           animation-play-state: running;
 }
@@ -347,6 +360,70 @@ li.rc-select-dropdown-menu-item-divider {
     opacity: 0;
     -webkit-transform-origin: 0% 0%;
             transform-origin: 0% 0%;
+    -webkit-transform: scaleY(0);
+            transform: scaleY(0);
+  }
+}
+@-webkit-keyframes rcDropdownSlideDownIn {
+  0% {
+    opacity: 0;
+    -webkit-transform-origin: 0% 100%;
+            transform-origin: 0% 100%;
+    -webkit-transform: scaleY(0);
+            transform: scaleY(0);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform-origin: 0% 100%;
+            transform-origin: 0% 100%;
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1);
+  }
+}
+@keyframes rcDropdownSlideDownIn {
+  0% {
+    opacity: 0;
+    -webkit-transform-origin: 0% 100%;
+            transform-origin: 0% 100%;
+    -webkit-transform: scaleY(0);
+            transform: scaleY(0);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform-origin: 0% 100%;
+            transform-origin: 0% 100%;
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1);
+  }
+}
+@-webkit-keyframes rcDropdownSlideDownOut {
+  0% {
+    opacity: 1;
+    -webkit-transform-origin: 0% 100%;
+            transform-origin: 0% 100%;
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform-origin: 0% 100%;
+            transform-origin: 0% 100%;
+    -webkit-transform: scaleY(0);
+            transform: scaleY(0);
+  }
+}
+@keyframes rcDropdownSlideDownOut {
+  0% {
+    opacity: 1;
+    -webkit-transform-origin: 0% 100%;
+            transform-origin: 0% 100%;
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform-origin: 0% 100%;
+            transform-origin: 0% 100%;
     -webkit-transform: scaleY(0);
             transform: scaleY(0);
   }
