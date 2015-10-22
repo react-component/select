@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {getValuePropValue} from './util';
 import {Item as MenuItem, ItemGroup as MenuItemGroup} from 'rc-menu';
 import OptGroup from './OptGroup';
@@ -7,27 +8,58 @@ import Panel from './DropdownPanel';
 import Align from 'rc-align';
 import Animate from 'rc-animate';
 
+function isBelow(align) {
+  const points = align.points;
+  if (points[0] === 'tl' && points[1] === 'bl') {
+    return true;
+  }
+  return false;
+}
+
 const ALIGN = {
   points: ['tl', 'bl'],
   offset: [0, 4],
   overflow: {
-    adjustX: 1,
+    adjustX: 0,
     adjustY: 1,
   },
 };
 
-class SelectDropdown extends React.Component {
+const SelectDropdown = React.createClass({
+  propTypes: {
+    filterOption: React.PropTypes.oneOfType([React.PropTypes.bool, React.PropTypes.func]),
+    visible: React.PropTypes.bool,
+    prefixCls: React.PropTypes.string,
+    children: React.PropTypes.any,
+  },
+
+  componentDidMount() {
+    this.nativeDOMNode = ReactDOM.findDOMNode(this);
+  },
+
   shouldComponentUpdate(nextProps) {
     return this.props.visible || nextProps.visible;
-  }
+  },
+
+  onAlign(node, align) {
+    const dropdownPrefixCls = this.getDropdownPrefixCls();
+    const belowClassName = `${dropdownPrefixCls}--below`;
+    const topClassName = `${dropdownPrefixCls}--top`;
+    const className = node.className;
+    const hasBelowClassName = className.indexOf(belowClassName);
+    const isBelowAlign = isBelow(align);
+    if (!isBelowAlign && hasBelowClassName) {
+      node.className = node.className.replace(belowClassName, topClassName);
+    }
+  },
 
   getDropdownPrefixCls() {
     return this.props.prefixCls + '-dropdown';
-  }
+  },
 
   getMenuComponent() {
     return this.refs.panel.refs.menu;
-  }
+  },
 
   filterOption(input, child) {
     if (!input) {
@@ -41,7 +73,7 @@ class SelectDropdown extends React.Component {
       return false;
     }
     return filterOption.call(this, input, child);
-  }
+  },
 
   renderFilterOptionsFromChildren(children, showNotFound) {
     let sel = [];
@@ -100,11 +132,11 @@ class SelectDropdown extends React.Component {
       sel = [<MenuItem disabled value="NOT_FOUND" key="NOT_FOUND">{props.notFoundContent}</MenuItem>];
     }
     return sel;
-  }
+  },
 
   renderFilterOptions() {
     return this.renderFilterOptionsFromChildren(this.props.children, true);
-  }
+  },
 
   render() {
     const props = this.props;
@@ -113,17 +145,26 @@ class SelectDropdown extends React.Component {
     const menuItems = this.renderFilterOptions();
     let visible = props.visible;
     const search = props.isMultipleOrTagsOrCombobox || !props.showSearch ? null :
-      <span className={`${prefixCls}-search ${prefixCls}-search--dropdown`}>{props.inputElement}</span>;
+      (<span className={`${prefixCls}-search ${prefixCls}-search--dropdown`}>{props.inputElement}</span>);
     if (!search && !menuItems.length) {
       visible = false;
     }
-    const className = {
+    const hiddenClass = `${dropdownPrefixCls}-hidden`;
+    let className = classSet({
       [dropdownPrefixCls]: 1,
       [`${dropdownPrefixCls}--below`]: 1,
-      [`${dropdownPrefixCls}-hidden`]: !visible,
+      [hiddenClass]: !visible,
       [props.className]: !!props.className,
       [`${dropdownPrefixCls}--${props.isMultipleOrTags ? 'multiple' : 'single'}`]: 1,
-    };
+    });
+    const domNode = this.nativeDOMNode;
+    if (!visible && domNode) {
+      // keep adjusted className
+      className = domNode.className;
+      if (className.indexOf(hiddenClass) === -1) {
+        className += ' ' + hiddenClass;
+      }
+    }
     // single and not combobox, input is inside dropdown
     return (
       <Animate
@@ -134,6 +175,7 @@ class SelectDropdown extends React.Component {
         transitionName={props.transitionName}>
         <Align target={props.getAlignTarget}
                key="dropdown"
+               onAlign={this.onAlign}
                selectOpen={visible}
                disabled={!visible}
                align={ALIGN}>
@@ -141,20 +183,13 @@ class SelectDropdown extends React.Component {
                onFocus={props.onDropdownFocus}
                onBlur={props.onDropdownBlur}
                style={props.dropdownStyle}
-               className={classSet(className)}
+               className={className}
                tabIndex="-1">
             <Panel ref="panel" {...props} menuItems={menuItems} visible={visible} search={search}/>
           </div>
         </Align>
       </Animate>);
-  }
-}
-
-SelectDropdown.propTypes = {
-  filterOption: React.PropTypes.oneOfType([React.PropTypes.bool, React.PropTypes.func]),
-  visible: React.PropTypes.bool,
-  prefixCls: React.PropTypes.string,
-  children: React.PropTypes.any,
-};
+  },
+});
 
 export default SelectDropdown;
