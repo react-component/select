@@ -3,12 +3,12 @@ webpackJsonp([7],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(219);
+	module.exports = __webpack_require__(235);
 
 
 /***/ },
 
-/***/ 219:
+/***/ 235:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19,11 +19,15 @@ webpackJsonp([7],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _rcSelect = __webpack_require__(158);
+	var _rcSelect = __webpack_require__(159);
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(204);
+	__webpack_require__(220);
+	
+	var _reactDom = __webpack_require__(158);
+	
+	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
 	function handleChange(value) {
 	  console.log('selected ' + value);
@@ -65,7 +69,7 @@ webpackJsonp([7],{
 	  )
 	);
 	
-	_react2['default'].render(c1, document.getElementById('__react-content'));
+	_reactDom2['default'].render(c1, document.getElementById('__react-content'));
 
 /***/ }
 

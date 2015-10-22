@@ -17,11 +17,15 @@ webpackJsonp([0],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _rcSelect = __webpack_require__(158);
+	var _reactDom = __webpack_require__(158);
+	
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+	
+	var _rcSelect = __webpack_require__(159);
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(204);
+	__webpack_require__(220);
 	
 	function onChange(value) {
 	  console.log(value);
@@ -75,7 +79,7 @@ webpackJsonp([0],[
 	  )
 	);
 	
-	_react2['default'].render(c3, document.getElementById('__react-content'));
+	_reactDom2['default'].render(c3, document.getElementById('__react-content'));
 
 /***/ }
 ]);
