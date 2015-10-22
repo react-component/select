@@ -7,6 +7,15 @@ import Panel from './DropdownPanel';
 import Align from 'rc-align';
 import Animate from 'rc-animate';
 
+const ALIGN = {
+  points: ['tl', 'bl'],
+  offset: [0, 4],
+  overflow: {
+    adjustX: 1,
+    adjustY: 1,
+  },
+};
+
 class SelectDropdown extends React.Component {
   shouldComponentUpdate(nextProps) {
     return this.props.visible || nextProps.visible;
@@ -18,6 +27,20 @@ class SelectDropdown extends React.Component {
 
   getMenuComponent() {
     return this.refs.panel.refs.menu;
+  }
+
+  filterOption(input, child) {
+    if (!input) {
+      return true;
+    }
+    const filterOption = this.props.filterOption;
+    if (!filterOption) {
+      return true;
+    }
+    if (child.props.disabled) {
+      return false;
+    }
+    return filterOption.call(this, input, child);
   }
 
   renderFilterOptionsFromChildren(children, showNotFound) {
@@ -58,15 +81,15 @@ class SelectDropdown extends React.Component {
     if (tags) {
       // tags value must be string
       let value = props.value;
-      value = value.filter((v)=> {
-        return childrenKeys.indexOf(v) === -1 && (!inputValue || v.indexOf(inputValue) > -1);
+      value = value.filter((singleValue)=> {
+        return childrenKeys.indexOf(singleValue) === -1 && (!inputValue || singleValue.indexOf(inputValue) > -1);
       });
-      sel = sel.concat(value.map((v)=> {
-        return <MenuItem value={v} key={v}>{v}</MenuItem>;
+      sel = sel.concat(value.map((singleValue)=> {
+        return <MenuItem value={singleValue} key={singleValue}>{singleValue}</MenuItem>;
       }));
       if (inputValue) {
-        const notFindInputItem = sel.every((s)=> {
-          return getValuePropValue(s) !== inputValue;
+        const notFindInputItem = sel.every((option)=> {
+          return getValuePropValue(option) !== inputValue;
         });
         if (notFindInputItem) {
           sel.unshift(<MenuItem value={inputValue} key={inputValue}>{inputValue}</MenuItem>);
@@ -82,7 +105,6 @@ class SelectDropdown extends React.Component {
   renderFilterOptions() {
     return this.renderFilterOptionsFromChildren(this.props.children, true);
   }
-
 
   render() {
     const props = this.props;
@@ -106,15 +128,15 @@ class SelectDropdown extends React.Component {
     return (
       <Animate
         component=""
-        exclusive={true}
-        transitionAppear={true}
+        exclusive
+        transitionAppear
         showProp="selectOpen"
         transitionName={props.transitionName}>
         <Align target={props.getAlignTarget}
                key="dropdown"
                selectOpen={visible}
                disabled={!visible}
-               align={{points: ['tl', 'bl'], offset: [0, 4]}}>
+               align={ALIGN}>
           <div key="dropdown"
                onFocus={props.onDropdownFocus}
                onBlur={props.onDropdownBlur}
@@ -125,20 +147,6 @@ class SelectDropdown extends React.Component {
           </div>
         </Align>
       </Animate>);
-  }
-
-  filterOption(input, child) {
-    if (!input) {
-      return true;
-    }
-    const filterOption = this.props.filterOption;
-    if (!filterOption) {
-      return true;
-    }
-    if (child.props.disabled) {
-      return false;
-    }
-    return filterOption.call(this, input, child);
   }
 }
 

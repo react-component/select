@@ -3,6 +3,7 @@
 import React from 'react';
 import Select, {Option} from 'rc-select';
 import 'rc-select/assets/index.less';
+import ReactDOM from 'react-dom';
 
 function handleChange(value) {
   console.log('selected ' + value);
@@ -38,6 +39,8 @@ var Test = React.createClass({
     }
     return (
       <div style={{margin: 20}}>
+        <div style={{height:150}}/>
+
         <h2>Single Select</h2>
 
         <div style={{width: 300}}>
@@ -80,4 +83,4 @@ var Test = React.createClass({
   }
 });
 
-React.render(<Test />, document.getElementById('__react-content'));
+ReactDOM.render(<Test />, document.getElementById('__react-content'));

@@ -1,11 +1,12 @@
 import React, {PropTypes} from 'react';
+import ReactDOM from 'react-dom';
 import {classSet, KeyCode} from 'rc-util';
 import OptGroup from './OptGroup';
 import SelectDropdown from './Dropdown';
 import {
   getPropValue, getValuePropValue, isCombobox,
   isMultipleOrTags, isMultipleOrTagsOrCombobox,
-  isSingleMode, toArray
+  isSingleMode, toArray,
 } from './util';
 
 function noop() {
@@ -106,13 +107,13 @@ const Select = React.createClass({
     const state = this.state;
     const props = this.props;
     if (this.haveOpened) {
-      React.render(this.getDropdownElement(), this.getDropdownContainer());
+      ReactDOM.render(this.getDropdownElement(), this.getDropdownContainer());
     }
     if (state.open) {
       if (props.dropdownMatchSelectWidth) {
         const dropdownDOMNode = this.getDropdownDOMNode();
         if (dropdownDOMNode) {
-          dropdownDOMNode.style.width = this.getDOMNode().offsetWidth + 'px';
+          dropdownDOMNode.style.width = ReactDOM.findDOMNode(this).offsetWidth + 'px';
         }
       }
       if (isMultipleOrTags(props)) {
@@ -129,7 +130,7 @@ const Select = React.createClass({
 
   componentWillUnmount() {
     if (this.dropdownContainer) {
-      React.unmountComponentAtNode(this.dropdownContainer);
+      ReactDOM.unmountComponentAtNode(this.dropdownContainer);
       document.body.removeChild(this.dropdownContainer);
       this.dropdownContainer = null;
     }
@@ -140,8 +141,8 @@ const Select = React.createClass({
     }
   },
 
-  onInputChange(e) {
-    const val = e.target.value;
+  onInputChange(event) {
+    const val = event.target.value;
     const props = this.props;
     this.setState({
       inputValue: val,
@@ -170,25 +171,25 @@ const Select = React.createClass({
   },
 
   // combobox ignore
-  onKeyDown(e) {
+  onKeyDown(event) {
     const props = this.props;
     if (props.disabled) {
       return;
     }
-    const keyCode = e.keyCode;
+    const keyCode = event.keyCode;
     if (this.state.open && !this.getInputDOMNode()) {
-      this.onInputKeyDown(e);
+      this.onInputKeyDown(event);
     } else if (keyCode === KeyCode.ENTER || keyCode === KeyCode.DOWN) {
       this.onClick();
-      e.preventDefault();
+      event.preventDefault();
     }
   },
 
-  onInputKeyDown(e) {
+  onInputKeyDown(event) {
     const props = this.props;
     const state = this.state;
-    const keyCode = e.keyCode;
-    if (isMultipleOrTags(props) && !e.target.value && keyCode === KeyCode.BACKSPACE) {
+    const keyCode = event.keyCode;
+    if (isMultipleOrTags(props) && !event.target.value && keyCode === KeyCode.BACKSPACE) {
       const value = state.value.concat();
       if (value.length) {
         const label = state.label.concat();
@@ -203,24 +204,24 @@ const Select = React.createClass({
     if (keyCode === KeyCode.DOWN) {
       if (!state.open) {
         this.openIfHasChildren();
-        e.preventDefault();
-        e.stopPropagation();
+        event.preventDefault();
+        event.stopPropagation();
         return;
       }
     } else if (keyCode === KeyCode.ESC) {
       if (state.open) {
         this.setOpenState(false);
-        e.preventDefault();
-        e.stopPropagation();
+        event.preventDefault();
+        event.stopPropagation();
       }
       return;
     }
 
     if (state.open) {
       const menu = this.dropdownInstance && this.dropdownInstance.getMenuComponent();
-      if (menu && menu.onKeyDown(e)) {
-        e.preventDefault();
-        e.stopPropagation();
+      if (menu && menu.onKeyDown(event)) {
+        event.preventDefault();
+        event.stopPropagation();
       }
     }
   },
@@ -290,13 +291,13 @@ const Select = React.createClass({
     this.getInputDOMNode().focus();
   },
 
-  onClearSelection(e) {
+  onClearSelection(event) {
     const props = this.props;
     const state = this.state;
     if (props.disabled) {
       return;
     }
-    e.stopPropagation();
+    event.stopPropagation();
     if (state.inputValue || state.value.length) {
       this.fireChange([], []);
       this.setOpenState(false);
@@ -311,21 +312,25 @@ const Select = React.createClass({
       return null;
     }
     let label = null;
-    React.Children.forEach(children, (c) => {
-      if (c.type === OptGroup) {
-        const maybe = this.getLabelBySingleValue(c.props.children, value);
+    React.Children.forEach(children, (child) => {
+      if (child.type === OptGroup) {
+        const maybe = this.getLabelBySingleValue(child.props.children, value);
         if (maybe !== null) {
           label = maybe;
         }
-      } else if (getValuePropValue(c) === value) {
-        label = this.getLabelFromOption(c);
+      } else if (getValuePropValue(child) === value) {
+        label = this.getLabelFromOption(child);
       }
     });
     return label;
   },
 
-  getLabelFromOption(c) {
-    return getPropValue(c, this.props.optionLabelProp);
+  getNativeDOMNode() {
+    return ReactDOM.findDOMNode(this);
+  },
+
+  getLabelFromOption(child) {
+    return getPropValue(child, this.props.optionLabelProp);
   },
 
   getLabelFromProps(props, value, init) {
@@ -347,18 +352,18 @@ const Select = React.createClass({
     return vls;
   },
 
-  getLabelByValue(children, value) {
-    return value.map((v)=> {
-      const label = this.getLabelBySingleValue(children, v);
+  getLabelByValue(children, values) {
+    return values.map((value)=> {
+      const label = this.getLabelBySingleValue(children, value);
       if (label === null) {
-        return v;
+        return value;
       }
       return label;
     });
   },
 
   getDropdownDOMNode() {
-    return React.findDOMNode(this.dropdownInstance);
+    return ReactDOM.findDOMNode(this.dropdownInstance);
   },
 
   getDropdownContainer() {
@@ -402,7 +407,7 @@ const Select = React.createClass({
         key="dropdown"
         transitionName={this.getDropdownTransitionName()}
         visible={state.open}
-        getAlignTarget={this.getDOMNode}
+        getAlignTarget={this.getNativeDOMNode}
         onDropdownFocus={this.onFocus}
         onDropdownBlur={this.onBlur}
         filterOption={props.filterOption}
@@ -438,7 +443,59 @@ const Select = React.createClass({
   },
 
   getInputDOMNode() {
-    return React.findDOMNode(this.inputInstance);
+    return this.inputInstance;
+  },
+
+  setOpenState(open) {
+    const refs = this.refs;
+    this.setState({
+      open,
+    }, ()=> {
+      if (open || isMultipleOrTagsOrCombobox(this.props)) {
+        if (this.getInputDOMNode()) {
+          this.getInputDOMNode().focus();
+        }
+      } else if (refs.selection) {
+        refs.selection.focus();
+      }
+    });
+  },
+
+  removeSelected(selectedValue) {
+    const props = this.props;
+    if (props.disabled) {
+      return;
+    }
+    const label = this.state.label.concat();
+    const index = this.state.value.indexOf(selectedValue);
+    const value = this.state.value.filter((singleValue) => {
+      return (singleValue !== selectedValue);
+    });
+    if (index !== -1) {
+      label.splice(index, 1);
+    }
+    const canMultiple = isMultipleOrTags(props);
+    if (canMultiple) {
+      props.onDeselect(selectedValue);
+    }
+    this.fireChange(value, label);
+  },
+
+  openIfHasChildren() {
+    const props = this.props;
+    if (React.Children.count(props.children) || isSingleMode(props)) {
+      this.setOpenState(true);
+    }
+  },
+
+  fireChange(value, label) {
+    const props = this.props;
+    if (!('value' in props)) {
+      this.setState({
+        value, label,
+      });
+    }
+    props.onChange(this.getVLForOnChange(value), this.getVLForOnChange(label));
   },
 
   renderTopControlNode() {
@@ -466,7 +523,7 @@ const Select = React.createClass({
 
     let selectedValueNodes;
     if (isMultipleOrTags(props)) {
-      selectedValueNodes = value.map((v, index) => {
+      selectedValueNodes = value.map((singleValue, index) => {
         let content = label[index];
         const title = content;
         const maxTagTextLength = props.maxTagTextLength;
@@ -475,11 +532,11 @@ const Select = React.createClass({
         }
         return (
           <li className={prefixCls + '-selection__choice'}
-              key={v}
+              key={singleValue}
               title={title}>
             <span className={prefixCls + '-selection__choice__content'}>{content}</span>
               <span className={prefixCls + '-selection__choice__remove'}
-                    onClick={this.removeSelected.bind(this, v)}/>
+                    onClick={this.removeSelected.bind(this, singleValue)}/>
           </li>
         );
       });
@@ -541,58 +598,6 @@ const Select = React.createClass({
         </span>
       </span>
     );
-  },
-
-  removeSelected(selectedValue) {
-    const props = this.props;
-    if (props.disabled) {
-      return;
-    }
-    const label = this.state.label.concat();
-    const index = this.state.value.indexOf(selectedValue);
-    const value = this.state.value.filter((v) => {
-      return (v !== selectedValue);
-    });
-    if (index !== -1) {
-      label.splice(index, 1);
-    }
-    const canMultiple = isMultipleOrTags(props);
-    if (canMultiple) {
-      props.onDeselect(selectedValue);
-    }
-    this.fireChange(value, label);
-  },
-
-  setOpenState(open) {
-    const refs = this.refs;
-    this.setState({
-      open,
-    }, ()=> {
-      if (open || isMultipleOrTagsOrCombobox(this.props)) {
-        if (this.getInputDOMNode()) {
-          this.getInputDOMNode().focus();
-        }
-      } else if (refs.selection) {
-        React.findDOMNode(refs.selection).focus();
-      }
-    });
-  },
-
-  openIfHasChildren() {
-    const props = this.props;
-    if (React.Children.count(props.children) || isSingleMode(props)) {
-      this.setOpenState(true);
-    }
-  },
-
-  fireChange(value, label) {
-    const props = this.props;
-    if (!('value' in props)) {
-      this.setState({
-        value, label,
-      });
-    }
-    props.onChange(this.getVLForOnChange(value), this.getVLForOnChange(label));
   },
 });
 

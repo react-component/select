@@ -1,22 +1,22 @@
 import {ItemGroup as MenuItemGroup} from 'rc-menu';
 import React from 'react';
 
-export function getValuePropValue(c) {
-  const props = c.props;
+export function getValuePropValue(child) {
+  const props = child.props;
   if ('value' in props) {
     return props.value;
   }
-  if (c.key) {
-    return c.key;
+  if (child.key) {
+    return child.key;
   }
-  throw new Error('no key or value for ' + c);
+  throw new Error('no key or value for ' + child);
 }
 
-export function getPropValue(c, prop) {
+export function getPropValue(child, prop) {
   if (prop === 'value') {
-    return getValuePropValue(c);
+    return getValuePropValue(child);
   }
-  return c.props[prop];
+  return child.props[prop];
 }
 
 export function isCombobox(props) {

@@ -3,6 +3,7 @@
 import React from 'react';
 import Select, {Option} from 'rc-select';
 import 'rc-select/assets/index.less';
+import ReactDOM from 'react-dom';
 
 var children = [];
 for (var i = 10; i < 36; i++) {
@@ -51,4 +52,4 @@ var Test = React.createClass({
   }
 });
 
-React.render(<Test />, document.getElementById('__react-content'));
+ReactDOM.render(<Test />, document.getElementById('__react-content'));

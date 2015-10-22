@@ -3,6 +3,7 @@
 import React from 'react';
 import Select, {Option} from 'rc-select';
 import 'rc-select/assets/index.less';
+import ReactDOM from 'react-dom';
 
 function handleChange(value) {
   console.log('selected ' + value);
@@ -30,4 +31,4 @@ var c1 = (
   </div>
 );
 
-React.render(c1, document.getElementById('__react-content'));
+ReactDOM.render(c1, document.getElementById('__react-content'));

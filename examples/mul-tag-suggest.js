@@ -4,6 +4,7 @@ import React from 'react';
 import Select, {Option} from 'rc-select';
 import 'rc-select/assets/index.less';
 import {fetch} from './common/tbFetchSuggest';
+import ReactDOM from 'react-dom';
 
 var Search = React.createClass({
   getInitialState() {
@@ -47,4 +48,4 @@ var Search = React.createClass({
   }
 });
 
-React.render(<Search />, document.getElementById('__react-content'));
+ReactDOM.render(<Search />, document.getElementById('__react-content'));

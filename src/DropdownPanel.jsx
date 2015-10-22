@@ -39,7 +39,7 @@ const Panel = React.createClass({
       return (<Menu
         ref="menu"
         style={props.dropdownMenuStyle}
-        defaultActiveFirst={true}
+        defaultActiveFirst
         activeKey={activeKey}
         multiple={props.isMultipleOrTags}
         focusable={false}

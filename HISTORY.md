@@ -1,5 +1,9 @@
 # History
 ----
+## 5.0.0 / 2015-10-22
+
+- only support react 0.14+
+- auto adjust position if visible region is not enough
 
 ## 4.9.0 / 2015-09-10
 

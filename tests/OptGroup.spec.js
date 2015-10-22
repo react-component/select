@@ -1,11 +1,10 @@
-
-
 var expect = require('expect.js');
-var React = require('react/addons');
-var TestUtils = React.addons.TestUtils;
+var React = require('react');
+var TestUtils = require('react-addons-test-utils');
 var Simulate = TestUtils.Simulate;
 var Select = require('../');
 var Option = Select.Option;
+var ReactDOM = require('react-dom');
 var OptGroup = Select.OptGroup;
 
 describe('OptGroup', function () {
@@ -17,13 +16,13 @@ describe('OptGroup', function () {
   });
 
   afterEach(function (done) {
-    React.unmountComponentAtNode(div);
+    ReactDOM.unmountComponentAtNode(div);
     document.body.removeChild(div);
     done();
   });
 
   it('works', function (done) {
-    var select = React.render(<Select value="lucy"
+    var select = ReactDOM.render(<Select value="lucy"
       showSearch={false}
       style={{width: 250}}>
       <OptGroup label="manager">

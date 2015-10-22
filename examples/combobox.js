@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Select, {Option} from 'rc-select';
 import 'rc-select/assets/index.less';
 
@@ -30,4 +31,4 @@ var c3 = (
   </div>
 );
 
-React.render(c3, document.getElementById('__react-content'));
+ReactDOM.render(c3, document.getElementById('__react-content'));

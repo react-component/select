@@ -1,8 +1,7 @@
-
-
 var expect = require('expect.js');
-var React = require('react/addons');
-var TestUtils = React.addons.TestUtils;
+var React = require('react');
+var ReactDOM = require('react-dom');
+var TestUtils = require('react-addons-test-utils');
 var Simulate = TestUtils.Simulate;
 var KeyCode = require('rc-util').KeyCode;
 var Select = require('../');
@@ -17,7 +16,7 @@ describe('tags', function () {
   });
 
   afterEach(function () {
-    React.unmountComponentAtNode(div);
+    ReactDOM.unmountComponentAtNode(div);
     document.body.removeChild(div);
   });
 
@@ -26,7 +25,7 @@ describe('tags', function () {
 
   beforeEach(function () {
     div.tabIndex = 0;
-    instance = React.render(
+    instance = ReactDOM.render(
       <Select tags>
         <Option key="1">1</Option>
         <Option key="2">2</Option>
@@ -35,7 +34,7 @@ describe('tags', function () {
   });
 
   afterEach(function () {
-    React.unmountComponentAtNode(div);
+    ReactDOM.unmountComponentAtNode(div);
   });
 
   it('should allow user input as tags', function (done) {
