@@ -19664,7 +19664,7 @@
 	
 	var _Select2 = _interopRequireDefault(_Select);
 	
-	var _Option = __webpack_require__(219);
+	var _Option = __webpack_require__(220);
 	
 	var _Option2 = _interopRequireDefault(_Option);
 	
@@ -21275,6 +21275,10 @@
 	
 	var _rcAnimate2 = _interopRequireDefault(_rcAnimate);
 	
+	var _DropdownInner = __webpack_require__(219);
+	
+	var _DropdownInner2 = _interopRequireDefault(_DropdownInner);
+	
 	function isBelow(align) {
 	  var points = align.points;
 	  if (points[0] === 'tl' && points[1] === 'bl') {
@@ -21438,15 +21442,10 @@
 	    if (!search && !menuItems.length) {
 	      visible = false;
 	    }
-	    var hiddenClass = dropdownPrefixCls + '-hidden';
-	    var className = (0, _rcUtil.classSet)((_classSet = {}, _defineProperty(_classSet, dropdownPrefixCls, 1), _defineProperty(_classSet, dropdownPrefixCls + '--below', 1), _defineProperty(_classSet, hiddenClass, !visible), _defineProperty(_classSet, props.className, !!props.className), _defineProperty(_classSet, dropdownPrefixCls + '--' + (props.isMultipleOrTags ? 'multiple' : 'single'), 1), _classSet));
-	    var domNode = this.nativeDOMNode;
-	    if (!visible && domNode) {
-	      // keep adjusted className
-	      className = domNode.className;
-	      if (className.indexOf(hiddenClass) === -1) {
-	        className += ' ' + hiddenClass;
-	      }
+	    var hiddenClassName = dropdownPrefixCls + '-hidden';
+	    var className = (0, _rcUtil.classSet)((_classSet = {}, _defineProperty(_classSet, dropdownPrefixCls, 1), _defineProperty(_classSet, dropdownPrefixCls + '--below', 1), _defineProperty(_classSet, props.className, !!props.className), _defineProperty(_classSet, dropdownPrefixCls + '--' + (props.isMultipleOrTags ? 'multiple' : 'single'), 1), _classSet));
+	    if (!visible && this.nativeDOMNode) {
+	      className = this.nativeDOMNode.className.replace(' ' + hiddenClassName, '');
 	    }
 	    // single and not combobox, input is inside dropdown
 	    return _react2['default'].createElement(
@@ -21463,16 +21462,19 @@
 	          key: 'dropdown',
 	          onAlign: this.onAlign,
 	          selectOpen: visible,
+	          childrenProps: {
+	            visible: 'selectOpen'
+	          },
 	          disabled: !visible,
 	          align: ALIGN },
 	        _react2['default'].createElement(
-	          'div',
-	          { key: 'dropdown',
-	            onFocus: props.onDropdownFocus,
-	            onBlur: props.onDropdownBlur,
-	            style: props.dropdownStyle,
-	            className: className,
-	            tabIndex: '-1' },
+	          _DropdownInner2['default'],
+	          {
+	            onDropdownFocus: props.onDropdownFocus,
+	            onDropdownBlur: props.onDropdownBlur,
+	            dropdownStyle: props.dropdownStyle,
+	            hiddenClassName: hiddenClassName,
+	            className: className },
 	          _react2['default'].createElement(_DropdownPanel2['default'], _extends({ ref: 'panel' }, props, { menuItems: menuItems, visible: visible, search: search }))
 	        )
 	      )
@@ -24635,6 +24637,7 @@
 	  displayName: 'Align',
 	
 	  propTypes: {
+	    childrenProps: _react.PropTypes.object,
 	    align: _react.PropTypes.object.isRequired,
 	    target: _react.PropTypes.func,
 	    onAlign: _react.PropTypes.func,
@@ -24726,7 +24729,21 @@
 	  },
 	
 	  render: function render() {
-	    return _react2['default'].Children.only(this.props.children);
+	    var _props = this.props;
+	    var childrenProps = _props.childrenProps;
+	    var children = _props.children;
+	
+	    var child = _react2['default'].Children.only(children);
+	    if (childrenProps) {
+	      var newProps = {};
+	      for (var prop in childrenProps) {
+	        if (childrenProps.hasOwnProperty(prop)) {
+	          newProps[prop] = this.props[childrenProps[prop]];
+	        }
+	      }
+	      return _react2['default'].cloneElement(child, newProps);
+	    }
+	    return child;
 	  }
 	});
 	
@@ -24901,15 +24918,6 @@
 	    }
 	  }
 	
-	  // https://github.com/kissyteam/kissy/issues/190
-	  // http://localhost:8888/kissy/src/overlay/demo/other/relative_align/align.html
-	  // 相对于屏幕位置没变，而 left/top 变了
-	  // 例如 <div 'relative'><el absolute></div>
-	  _utils2['default'].offset(el, {
-	    left: newElRegion.left,
-	    top: newElRegion.top
-	  });
-	
 	  // need judge to in case set fixed with in css on height auto element
 	  if (newElRegion.width !== elRegion.width) {
 	    _utils2['default'].css(el, 'width', el.width() + newElRegion.width - elRegion.width);
@@ -24918,6 +24926,18 @@
 	  if (newElRegion.height !== elRegion.height) {
 	    _utils2['default'].css(el, 'height', el.height() + newElRegion.height - elRegion.height);
 	  }
+	
+	  // https://github.com/kissyteam/kissy/issues/190
+	  // http://localhost:8888/kissy/src/overlay/demo/other/relative_align/align.html
+	  // 相对于屏幕位置没变，而 left/top 变了
+	  // 例如 <div 'relative'><el absolute></div>
+	  _utils2['default'].offset(el, {
+	    left: newElRegion.left,
+	    top: newElRegion.top
+	  }, {
+	    useCssRight: align.useCssRight,
+	    useCssBottom: align.useCssBottom
+	  });
 	
 	  return {
 	    points: points,
@@ -25054,9 +25074,10 @@
 	  var computedStyle = cs;
 	  var val = '';
 	  var d = elem.ownerDocument;
+	  computedStyle = computedStyle || d.defaultView.getComputedStyle(elem, null);
 	
 	  // https://github.com/kissyteam/kissy/issues/61
-	  if (computedStyle = computedStyle || d.defaultView.getComputedStyle(elem, null)) {
+	  if (computedStyle) {
 	    val = computedStyle.getPropertyValue(name) || computedStyle[name];
 	  }
 	
@@ -25110,25 +25131,66 @@
 	  getComputedStyleX = window.getComputedStyle ? _getComputedStyle : _getComputedStyleIE;
 	}
 	
+	function getOffsetDirection(dir, option) {
+	  if (dir === 'left') {
+	    return option.useCssRight ? 'right' : dir;
+	  }
+	  return option.useCssBottom ? 'bottom' : dir;
+	}
+	
+	function oppositeOffsetDirection(dir) {
+	  if (dir === 'left') {
+	    return 'right';
+	  } else if (dir === 'right') {
+	    return 'left';
+	  } else if (dir === 'top') {
+	    return 'bottom';
+	  } else if (dir === 'bottom') {
+	    return 'top';
+	  }
+	}
+	
 	// 设置 elem 相对 elem.ownerDocument 的坐标
-	function setOffset(elem, offset) {
+	function setOffset(elem, offset, option) {
 	  // set position first, in-case top/left are set even on static elem
 	  if (css(elem, 'position') === 'static') {
 	    elem.style.position = 'relative';
 	  }
-	  var preset = -9999;
+	  var presetH = -999;
+	  var presetV = -999;
+	  var horizontalProperty = getOffsetDirection('left', option);
+	  var verticalProperty = getOffsetDirection('top', option);
+	  var oppositeHorizontalProperty = oppositeOffsetDirection(horizontalProperty);
+	  var oppositeVerticalProperty = oppositeOffsetDirection(verticalProperty);
+	
+	  if (horizontalProperty !== 'left') {
+	    presetH = 999;
+	  }
+	
+	  if (verticalProperty !== 'top') {
+	    presetV = 999;
+	  }
+	
 	  if ('left' in offset) {
-	    elem.style.left = preset + 'px';
+	    elem.style[oppositeHorizontalProperty] = '';
+	    elem.style[horizontalProperty] = presetH + 'px';
 	  }
 	  if ('top' in offset) {
-	    elem.style.top = preset + 'px';
+	    elem.style[oppositeVerticalProperty] = '';
+	    elem.style[verticalProperty] = presetV + 'px';
 	  }
 	  var old = getOffset(elem);
 	  var ret = {};
 	  var key = undefined;
 	  for (key in offset) {
 	    if (offset.hasOwnProperty(key)) {
-	      ret[key] = preset + offset[key] - old[key];
+	      var dir = getOffsetDirection(key, option);
+	      var preset = key === 'left' ? presetH : presetV;
+	      if (dir === key) {
+	        ret[dir] = preset + offset[key] - old[key];
+	      } else {
+	        ret[dir] = preset + old[key] - offset[key];
+	      }
 	    }
 	  }
 	  css(elem, ret);
@@ -25343,9 +25405,9 @@
 	    var doc = node.ownerDocument || node;
 	    return doc.defaultView || doc.parentWindow;
 	  },
-	  offset: function offset(el, value) {
+	  offset: function offset(el, value, option) {
 	    if (typeof value !== 'undefined') {
-	      setOffset(el, value);
+	      setOffset(el, value, option || {});
 	    } else {
 	      return getOffset(el);
 	    }
@@ -25500,11 +25562,11 @@
 	  // all scrollable containers.
 	  while (el) {
 	    // clientWidth is zero for inline block elements in ie.
-	    if ((navigator.userAgent.indexOf('MSIE') === -1 || el.clientWidth !== 0) && (
+	    if ((navigator.userAgent.indexOf('MSIE') === -1 || el.clientWidth !== 0) &&
 	    // body may have overflow set on it, yet we still get the entire
 	    // viewport. In some browsers, el.offsetParent may be
 	    // document.documentElement, so check for that too.
-	    el !== body && el !== documentElement && _utils2['default'].css(el, 'overflow') !== 'visible')) {
+	    el !== body && el !== documentElement && _utils2['default'].css(el, 'overflow') !== 'visible') {
 	      var pos = _utils2['default'].offset(el);
 	      // add border
 	      pos.left += el.clientLeft;
@@ -26612,6 +26674,54 @@
 	  value: true
 	});
 	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var DropdownInner = _react2['default'].createClass({
+	  displayName: 'DropdownInner',
+	
+	  propTypes: {
+	    hiddenClassName: _react.PropTypes.string,
+	    className: _react.PropTypes.string,
+	    dropdownStyle: _react.PropTypes.object,
+	    onDropdownFocus: _react.PropTypes.func,
+	    onDropdownBlur: _react.PropTypes.func,
+	    children: _react.PropTypes.any
+	  },
+	  render: function render() {
+	    var props = this.props;
+	    var className = props.className;
+	    if (!props.visible) {
+	      className += ' ' + props.hiddenClassName;
+	    }
+	    return _react2['default'].createElement(
+	      'div',
+	      { onFocus: props.onDropdownFocus,
+	        onBlur: props.onDropdownBlur,
+	        style: props.dropdownStyle,
+	        className: className,
+	        tabIndex: '-1' },
+	      props.children
+	    );
+	  }
+	});
+	
+	exports['default'] = DropdownInner;
+	module.exports = exports['default'];
+
+/***/ },
+/* 220 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
 	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -26640,7 +26750,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 220 */
+/* 221 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
