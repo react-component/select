@@ -7,6 +7,7 @@ import {classSet} from 'rc-util';
 import Panel from './DropdownPanel';
 import Align from 'rc-align';
 import Animate from 'rc-animate';
+import DropdownInner from './DropdownInner';
 
 function isBelow(align) {
   const points = align.points;
@@ -149,21 +150,15 @@ const SelectDropdown = React.createClass({
     if (!search && !menuItems.length) {
       visible = false;
     }
-    const hiddenClass = `${dropdownPrefixCls}-hidden`;
+    const hiddenClassName = `${dropdownPrefixCls}-hidden`;
     let className = classSet({
       [dropdownPrefixCls]: 1,
       [`${dropdownPrefixCls}--below`]: 1,
-      [hiddenClass]: !visible,
       [props.className]: !!props.className,
       [`${dropdownPrefixCls}--${props.isMultipleOrTags ? 'multiple' : 'single'}`]: 1,
     });
-    const domNode = this.nativeDOMNode;
-    if (!visible && domNode) {
-      // keep adjusted className
-      className = domNode.className;
-      if (className.indexOf(hiddenClass) === -1) {
-        className += ' ' + hiddenClass;
-      }
+    if (!visible && this.nativeDOMNode) {
+      className = this.nativeDOMNode.className.replace(' ' + hiddenClassName, '');
     }
     // single and not combobox, input is inside dropdown
     return (
@@ -177,16 +172,19 @@ const SelectDropdown = React.createClass({
                key="dropdown"
                onAlign={this.onAlign}
                selectOpen={visible}
+               childrenProps={{
+                 visible: 'selectOpen',
+               }}
                disabled={!visible}
                align={ALIGN}>
-          <div key="dropdown"
-               onFocus={props.onDropdownFocus}
-               onBlur={props.onDropdownBlur}
-               style={props.dropdownStyle}
-               className={className}
-               tabIndex="-1">
+          <DropdownInner
+            onDropdownFocus={props.onDropdownFocus}
+            onDropdownBlur={props.onDropdownBlur}
+            dropdownStyle={props.dropdownStyle}
+            hiddenClassName={hiddenClassName}
+            className={className}>
             <Panel ref="panel" {...props} menuItems={menuItems} visible={visible} search={search}/>
-          </div>
+          </DropdownInner>
         </Align>
       </Animate>);
   },
