@@ -2,12 +2,12 @@ import React, {PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import {classSet, KeyCode} from 'rc-util';
 import OptGroup from './OptGroup';
-import SelectDropdown from './Dropdown';
 import {
   getPropValue, getValuePropValue, isCombobox,
   isMultipleOrTags, isMultipleOrTagsOrCombobox,
   isSingleMode, toArray,
 } from './util';
+import SelectTrigger from './SelectTrigger';
 
 function noop() {
 }
@@ -83,7 +83,6 @@ const Select = React.createClass({
       inputValue = value[0] || '';
     }
     this.saveInputRef = saveRef.bind(this, 'inputInstance');
-    this.saveDropdownRef = saveRef.bind(this, 'dropdownInstance');
     return {value, inputValue, label};
   },
 
@@ -106,24 +105,13 @@ const Select = React.createClass({
   componentDidUpdate() {
     const state = this.state;
     const props = this.props;
-    if (this.haveOpened) {
-      ReactDOM.render(this.getDropdownElement(), this.getDropdownContainer());
-    }
-    if (state.open) {
-      if (props.dropdownMatchSelectWidth) {
-        const dropdownDOMNode = this.getDropdownDOMNode();
-        if (dropdownDOMNode) {
-          dropdownDOMNode.style.width = ReactDOM.findDOMNode(this).offsetWidth + 'px';
-        }
-      }
-      if (isMultipleOrTags(props)) {
-        const inputNode = this.getInputDOMNode();
-        if (inputNode.value) {
-          inputNode.style.width = '';
-          inputNode.style.width = inputNode.scrollWidth + 'px';
-        } else {
-          inputNode.style.width = '';
-        }
+    if (state.open && isMultipleOrTags(props)) {
+      const inputNode = this.getInputDOMNode();
+      if (inputNode.value) {
+        inputNode.style.width = '';
+        inputNode.style.width = inputNode.scrollWidth + 'px';
+      } else {
+        inputNode.style.width = '';
       }
     }
   },
@@ -133,11 +121,6 @@ const Select = React.createClass({
       ReactDOM.unmountComponentAtNode(this.dropdownContainer);
       document.body.removeChild(this.dropdownContainer);
       this.dropdownContainer = null;
-    }
-    this.dropdownInstance = null;
-    if (this._blurTimer) {
-      clearTimeout(this._blurTimer);
-      this._blurTimer = null;
     }
   },
 
@@ -154,20 +137,8 @@ const Select = React.createClass({
     props.onSearch(val);
   },
 
-  onClick() {
-    const props = this.props;
-    if (!props.disabled) {
-      if (this.state.open) {
-        this.setOpenState(false);
-      } else {
-        this.openIfHasChildren();
-        if (isMultipleOrTagsOrCombobox(props)) {
-          if (this.getInputDOMNode()) {
-            this.getInputDOMNode().focus();
-          }
-        }
-      }
-    }
+  onDropdownVisibleChange(open) {
+    this.setOpenState(open);
   },
 
   // combobox ignore
@@ -180,7 +151,7 @@ const Select = React.createClass({
     if (this.state.open && !this.getInputDOMNode()) {
       this.onInputKeyDown(event);
     } else if (keyCode === KeyCode.ENTER || keyCode === KeyCode.DOWN) {
-      this.onClick();
+      this.setOpenState(true);
       event.preventDefault();
     }
   },
@@ -218,7 +189,7 @@ const Select = React.createClass({
     }
 
     if (state.open) {
-      const menu = this.dropdownInstance && this.dropdownInstance.getMenuComponent();
+      const menu = this.refs.trigger.getInnerMenu();
       if (menu && menu.onKeyDown(event)) {
         event.preventDefault();
         event.stopPropagation();
@@ -269,24 +240,6 @@ const Select = React.createClass({
     });
   },
 
-  onBlur() {
-    if (this._blurTimer) {
-      clearTimeout(this._blurTimer);
-    }
-    this._blurTimer = setTimeout(() => {
-      this.setState({
-        open: false,
-      });
-    }, 100);
-  },
-
-  onFocus() {
-    if (this._blurTimer) {
-      clearTimeout(this._blurTimer);
-      this._blurTimer = null;
-    }
-  },
-
   onPlaceholderClick() {
     this.getInputDOMNode().focus();
   },
@@ -325,10 +278,6 @@ const Select = React.createClass({
     return label;
   },
 
-  getNativeDOMNode() {
-    return ReactDOM.findDOMNode(this);
-  },
-
   getLabelFromOption(child) {
     return getPropValue(child, this.props.optionLabelProp);
   },
@@ -360,10 +309,6 @@ const Select = React.createClass({
       }
       return label;
     });
-  },
-
-  getDropdownDOMNode() {
-    return ReactDOM.findDOMNode(this.dropdownInstance);
   },
 
   getDropdownContainer() {
@@ -399,51 +344,16 @@ const Select = React.createClass({
                    </span>);
   },
 
-  getDropdownElement() {
-    const state = this.state;
-    const props = this.props;
-    return (
-      <SelectDropdown
-        key="dropdown"
-        transitionName={this.getDropdownTransitionName()}
-        visible={state.open}
-        getAlignTarget={this.getNativeDOMNode}
-        onDropdownFocus={this.onFocus}
-        onDropdownBlur={this.onBlur}
-        filterOption={props.filterOption}
-        optionFilterProp={props.optionFilterProp}
-        optionLabelProp={props.optionLabelProp}
-        inputValue={state.inputValue}
-        inputElement={this.getInputElement()}
-        ref={this.saveDropdownRef}
-        tags={props.tags}
-        notFoundContent={props.notFoundContent}
-        onMenuDeselect={this.onMenuDeselect}
-        onMenuSelect={this.onMenuSelect}
-        value={state.value}
-        isMultipleOrTags={isMultipleOrTags(props)}
-        prefixCls={props.prefixCls}
-        isMultipleOrTagsOrCombobox={isMultipleOrTagsOrCombobox(props)}
-        showSearch={props.showSearch}
-        className={props.dropdownClassName}
-        dropdownMenuStyle={props.dropdownMenuStyle}
-        dropdownStyle={props.dropdownStyle}>
-        {props.children}
-      </SelectDropdown>
-    );
-  },
-
-  getDropdownTransitionName() {
-    const props = this.props;
-    let transitionName = props.transitionName;
-    if (!transitionName && props.animation) {
-      transitionName = `${props.prefixCls}-dropdown-${props.animation}`;
-    }
-    return transitionName;
-  },
-
   getInputDOMNode() {
     return this.inputInstance;
+  },
+
+  getPopupDOMNode() {
+    return this.refs.trigger.getPopupDOMNode();
+  },
+
+  getPopupMenuComponent() {
+    return this.refs.trigger.getInnerMenu();
   },
 
   setOpenState(open) {
@@ -568,35 +478,44 @@ const Select = React.createClass({
     const rootCls = {
       [props.className]: !!props.className,
       [prefixCls]: 1,
-      [prefixCls + '-open']: this.state.open,
+      [prefixCls + '-open']: state.open,
       [prefixCls + '-combobox']: isCombobox(props),
       [prefixCls + '-disabled']: props.disabled,
     };
-    this.haveOpened = this.haveOpened || state.open;
+
     return (
+      <SelectTrigger {...props}
+        options={props.children}
+        multiple={multiple}
+        visible={state.open}
+        inputValue={state.inputValue}
+        inputElement={this.getInputElement()}
+        value={state.value}
+        onDropdownVisibleChange={this.onDropdownVisibleChange}
+        onMenuSelect={this.onMenuSelect}
+        onMenuDeselect={this.onMenuDeselect}
+        ref="trigger">
       <span
         style={props.style}
-        className={classSet(rootCls)}
-        onFocus={this.onFocus}
-        onBlur={this.onBlur}>
+        className={classSet(rootCls)}>
         <span ref="selection"
               key="selection"
               className={`${prefixCls}-selection ${prefixCls}-selection--${multiple ? 'multiple' : 'single'}`}
               role="combobox"
               aria-autocomplete="list"
-              onClick={this.onClick}
               aria-haspopup="true"
               aria-expanded={state.open}
           {...extraSelectionProps}
-          >
+        >
         {ctrlNode}
           {multiple || !props.showArrow ? null :
             (<span key="arrow" className={prefixCls + '-arrow'} tabIndex="-1" style={{outline: 'none'}}>
-            <b></b>
+              <b/>
           </span>)}
           {multiple ? this.getSearchPlaceholderElement(!!this.state.inputValue || this.state.value.length) : null}
         </span>
       </span>
+      </SelectTrigger>
     );
   },
 });

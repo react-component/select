@@ -6,6 +6,7 @@ var Simulate = TestUtils.Simulate;
 var KeyCode = require('rc-util').KeyCode;
 var Select = require('../');
 var Option = Select.Option;
+var $ = require('jquery');
 
 describe('Select', function () {
   var instance;
@@ -32,8 +33,8 @@ describe('Select', function () {
     instance.setState({
       open: true
     }, function () {
-      expect(instance.getDropdownDOMNode().parentNode.parentNode.nodeName.toLowerCase()).to.be('body');
-      expect(instance.getDropdownDOMNode().className).not.to.contain('hidden');
+      expect(instance.getPopupDOMNode().parentNode.parentNode.nodeName.toLowerCase()).to.be('body');
+      expect(instance.getPopupDOMNode().className).not.to.contain('hidden');
       done();
     });
   });
@@ -43,7 +44,7 @@ describe('Select', function () {
       <Select className="forTest" openClassName="my-open" value="2">
         <Option value="1">1</Option>
         <Option value="2" disabled>2</Option>
-      </Select>,div);
+      </Select>, div);
     expect(ReactDOM.findDOMNode(instance).className.indexOf('forTest') !== -1).to.be(true);
   });
 
@@ -56,8 +57,8 @@ describe('Select', function () {
     instance.setState({
       open: true
     }, function () {
-      expect(instance.dropdownInstance.getMenuComponent().instanceArray[0].props.selected).to.be(false);
-      expect(instance.dropdownInstance.getMenuComponent().instanceArray[1].props.selected).to.be(true);
+      expect(instance.getPopupMenuComponent().instanceArray[0].props.selected).to.be(false);
+      expect(instance.getPopupMenuComponent().instanceArray[1].props.selected).to.be(true);
       done();
     });
   });
@@ -68,13 +69,13 @@ describe('Select', function () {
         <Option value="1">1</Option>
         <Option value="2">2</Option>
         <Option value="3">2</Option>
-      </Select>,div);
+      </Select>, div);
     instance.setState({
       open: true
     }, function () {
-      expect(instance.dropdownInstance.getMenuComponent().instanceArray[0].props.selected).to.be(true);
-      expect(instance.dropdownInstance.getMenuComponent().instanceArray[1].props.selected).to.be(true);
-      expect(instance.dropdownInstance.getMenuComponent().instanceArray[2].props.selected).to.be(false);
+      expect(instance.getPopupMenuComponent().instanceArray[0].props.selected).to.be(true);
+      expect(instance.getPopupMenuComponent().instanceArray[1].props.selected).to.be(true);
+      expect(instance.getPopupMenuComponent().instanceArray[2].props.selected).to.be(false);
       done();
     });
   });
@@ -104,41 +105,20 @@ describe('Select', function () {
           <Option value="2">2</Option>
         </Select>,
         div);
-      ReactDOM.findDOMNode(instance.refs.selection).focus();
       Simulate.click(ReactDOM.findDOMNode(instance.refs.selection));
-      instance.getInputDOMNode().focus();
-      setTimeout(function () {
-        instance.setState({
-          open: true
-        }, function () {
-          done();
-        });
-      }, 100);
+      done();
     });
 
     afterEach(function () {
       ReactDOM.unmountComponentAtNode(div);
     });
 
-    it('should close on blur', function (done) {
-      if (navigator.userAgent.indexOf(' Chrome') === -1) {
-        done();
-        return;
-      }
-      expect(ReactDOM.findDOMNode(instance).className.match(/\brc-select-open\b/)).to.be.ok();
-      div.focus();
-      setTimeout(function () {
-        expect(ReactDOM.findDOMNode(instance).className.match(/\brc-select-open\b/)).not.to.be.ok();
-        done();
-      }, 100);
-    });
-
     it('should show not found', function (done) {
       instance.getInputDOMNode().value = "4";
       Simulate.change(instance.getInputDOMNode());
       setTimeout(function () {
-        expect(TestUtils.scryRenderedDOMComponentsWithClass(instance.dropdownInstance, 'rc-select-dropdown-menu-item').length).to.be(1);
-        expect(TestUtils.scryRenderedDOMComponentsWithClass(instance.dropdownInstance, 'rc-select-dropdown-menu-item')[0].innerHTML).to.be('Not Found');
+        expect($(instance.getPopupDOMNode()).find('.rc-select-dropdown-menu-item').length).to.be(1);
+        expect($(instance.getPopupDOMNode()).find('.rc-select-dropdown-menu-item')[0].innerHTML).to.be('Not Found');
         done();
       }, 100);
     });

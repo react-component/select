@@ -6,6 +6,7 @@ var Simulate = TestUtils.Simulate;
 var KeyCode = require('rc-util').KeyCode;
 var Select = require('../');
 var Option = Select.Option;
+var $ = require('jquery');
 
 describe('optionFilterProp', function () {
   var div;
@@ -29,10 +30,10 @@ describe('optionFilterProp', function () {
     Simulate.click(ReactDOM.findDOMNode(select.refs.selection));
     select.getInputDOMNode().value = "1";
     Simulate.change(select.getInputDOMNode());
-    expect(TestUtils.scryRenderedDOMComponentsWithClass(select.dropdownInstance, 'rc-select-dropdown-menu-item').length).to.be(2);
+    expect($(select.getPopupDOMNode()).find('.rc-select-dropdown-menu-item').length).to.be(2);
     select.getInputDOMNode().value = "2";
     Simulate.change(select.getInputDOMNode());
-    expect(TestUtils.scryRenderedDOMComponentsWithClass(select.dropdownInstance, 'rc-select-dropdown-menu-item').length).to.be(1);
+    expect($(select.getPopupDOMNode()).find('.rc-select-dropdown-menu-item').length).to.be(1);
   });
 
   it('can set optionFilterProp', function () {
@@ -47,15 +48,15 @@ describe('optionFilterProp', function () {
     Simulate.click(ReactDOM.findDOMNode(select.refs.selection));
     select.getInputDOMNode().value = "1";
     Simulate.change(select.getInputDOMNode());
-    expect(TestUtils.scryRenderedDOMComponentsWithClass(select.dropdownInstance, 'rc-select-dropdown-menu-item').length).to.be(0);
+    expect($(select.getPopupDOMNode()).find('.rc-select-dropdown-menu-item').length).to.be(0);
     select.getInputDOMNode().value = "2";
     Simulate.change(select.getInputDOMNode());
-    expect(TestUtils.scryRenderedDOMComponentsWithClass(select.dropdownInstance, 'rc-select-dropdown-menu-item').length).to.be(0);
+    expect($(select.getPopupDOMNode()).find('.rc-select-dropdown-menu-item').length).to.be(0);
     select.getInputDOMNode().value = "一";
     Simulate.change(select.getInputDOMNode());
-    expect(TestUtils.scryRenderedDOMComponentsWithClass(select.dropdownInstance, 'rc-select-dropdown-menu-item').length).to.be(2);
+    expect($(select.getPopupDOMNode()).find('.rc-select-dropdown-menu-item').length).to.be(2);
     select.getInputDOMNode().value = "二";
     Simulate.change(select.getInputDOMNode());
-    expect(TestUtils.scryRenderedDOMComponentsWithClass(select.dropdownInstance, 'rc-select-dropdown-menu-item').length).to.be(1);
+    expect($(select.getPopupDOMNode()).find('.rc-select-dropdown-menu-item').length).to.be(1);
   });
 });

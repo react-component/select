@@ -308,22 +308,22 @@
       animation-play-state: paused;
     }
 
-    &-slide-up-enter&-slide-up-enter-active&--below, &-slide-up-appear&-slide-up-appear-active&--below {
+    &-slide-up-enter&-slide-up-enter-active&-placement-bottomLeft, &-slide-up-appear&-slide-up-appear-active&-placement-bottomLeft {
       animation-name: rcDropdownSlideUpIn;
       animation-play-state: running;
     }
 
-    &-slide-up-leave&-slide-up-leave-active&--below {
+    &-slide-up-leave&-slide-up-leave-active&-placement-bottomLeft {
       animation-name: rcDropdownSlideUpOut;
       animation-play-state: running;
     }
 
-    &-slide-up-enter&-slide-up-enter-active&--top, &-slide-up-appear&-slide-up-appear-active&--top {
+    &-slide-up-enter&-slide-up-enter-active&-placement-topLeft, &-slide-up-appear&-slide-up-appear-active&-placement-topLeft {
       animation-name: rcDropdownSlideDownIn;
       animation-play-state: running;
     }
 
-    &-slide-up-leave&-slide-up-leave-active&--top {
+    &-slide-up-leave&-slide-up-leave-active&-placement-topLeft {
       animation-name: rcDropdownSlideDownOut;
       animation-play-state: running;
     }
@@ -379,7 +379,7 @@
     }
   }
 
-  &-search--dropdown {
+  &-dropdown-search {
     display: block;
     padding: 4px;
     .@{selectPrefixCls}-search__field__wrap {

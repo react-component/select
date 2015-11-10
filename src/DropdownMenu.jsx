@@ -2,7 +2,7 @@ import React from 'react';
 import {getSelectKeys} from './util';
 import Menu from 'rc-menu';
 
-const Panel = React.createClass({
+const DropdownMenu = React.createClass({
   propTypes: {
     prefixCls: React.PropTypes.string,
     menuItems: React.PropTypes.any,
@@ -10,11 +10,8 @@ const Panel = React.createClass({
   },
 
   shouldComponentUpdate(nextProps) {
+    // freeze when hide
     return nextProps.visible;
-  },
-
-  getDropdownPrefixCls() {
-    return this.props.prefixCls + '-dropdown';
   },
 
   renderMenu() {
@@ -22,7 +19,7 @@ const Panel = React.createClass({
     const menuItems = props.menuItems;
     if (menuItems && menuItems.length) {
       const menuProps = {};
-      if (props.isMultipleOrTags) {
+      if (props.multiple) {
         menuProps.onDeselect = props.onMenuDeselect;
         menuProps.onSelect = props.onMenuSelect;
       } else {
@@ -31,7 +28,7 @@ const Panel = React.createClass({
       const value = props.value;
       const selectedKeys = getSelectKeys(menuItems, value);
       let activeKey;
-      if (!props.isMultipleOrTags) {
+      if (!props.multiple) {
         if (!activeKey && selectedKeys.length === 1) {
           activeKey = selectedKeys[0];
         }
@@ -41,11 +38,11 @@ const Panel = React.createClass({
         style={props.dropdownMenuStyle}
         defaultActiveFirst
         activeKey={activeKey}
-        multiple={props.isMultipleOrTags}
+        multiple={props.multiple}
         focusable={false}
         {...menuProps}
         selectedKeys={selectedKeys}
-        prefixCls={`${this.getDropdownPrefixCls()}-menu`}>
+        prefixCls={`${props.prefixCls}-menu`}>
         {menuItems}
       </Menu>);
     }
@@ -59,4 +56,4 @@ const Panel = React.createClass({
   },
 });
 
-export default Panel;
+export default DropdownMenu;

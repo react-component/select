@@ -6,6 +6,7 @@ var Simulate = TestUtils.Simulate;
 var Select = require('../');
 var Option = Select.Option;
 var OptGroup = Select.OptGroup;
+var $ = require('jquery');
 
 describe('Combobox', function () {
   var div;
@@ -39,10 +40,8 @@ describe('Combobox', function () {
     );
     var input = ReactDOM.findDOMNode(TestUtils.scryRenderedDOMComponentsWithClass(instance, 'rc-select-search__field')[0]);
     expect(input.value).to.be('1');
-    input.click();
-
-    var dropdownInstance = instance.dropdownInstance;
-    var activeItem = ReactDOM.findDOMNode(TestUtils.scryRenderedDOMComponentsWithClass(dropdownInstance, 'rc-select-dropdown-menu-item-active')[0]);
+    Simulate.click(input);
+    var activeItem =$(instance.getPopupDOMNode()).find('.rc-select-dropdown-menu-item-active')[0];
     expect(activeItem.innerHTML).to.be('11111');
     Simulate.click(activeItem);
     expect(input.value).to.be('11111');

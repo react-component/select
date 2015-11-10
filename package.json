@@ -1,6 +1,6 @@
 {
   "name": "rc-select",
-  "version": "5.0.2",
+  "version": "5.1.0",
   "description": "select ui component for react",
   "keywords": [
     "react",
@@ -38,13 +38,13 @@
     "karma": "rc-tools run karma",
     "saucelabs": "rc-tools run saucelabs",
     "browser-test": "rc-tools run browser-test",
-    "browser-test-cover": "rc-tools run browser-test-cover",
-    "validate": "npm ls"
+    "browser-test-cover": "rc-tools run browser-test-cover"
   },
   "devDependencies": {
     "expect.js": "~0.3.1",
+    "jquery": "~1.11.3",
     "jsonp": "^0.2.0",
-    "precommit-hook-eslint": "3.x",
+    "pre-commit": "1.x",
     "querystring": "^0.2.0",
     "rc-server": "3.x",
     "rc-tools": "4.x",
@@ -53,10 +53,9 @@
     "react-dom": "~0.14.0"
   },
   "dependencies": {
-    "rc-align": "2.x",
-    "rc-animate": "2.x",
     "rc-menu": "4.x",
-    "rc-util": "2.x"
+    "rc-trigger": "1.x",
+    "rc-util": "3.x"
   },
   "pre-commit": [
     "lint"
