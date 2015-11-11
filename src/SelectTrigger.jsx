@@ -30,7 +30,7 @@ const SelectTrigger = React.createClass({
   propTypes: {
     dropdownMatchSelectWidth: PropTypes.bool,
     visible: PropTypes.bool,
-    filterOption: PropTypes.func,
+    filterOption: PropTypes.any,
     options: PropTypes.any,
     prefixCls: PropTypes.string,
     popupClassName: PropTypes.string,
