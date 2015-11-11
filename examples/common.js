@@ -25943,7 +25943,7 @@
 	  propTypes: {
 	    dropdownMatchSelectWidth: _react.PropTypes.bool,
 	    visible: _react.PropTypes.bool,
-	    filterOption: _react.PropTypes.func,
+	    filterOption: _react.PropTypes.any,
 	    options: _react.PropTypes.any,
 	    prefixCls: _react.PropTypes.string,
 	    popupClassName: _react.PropTypes.string,
