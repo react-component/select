@@ -257,24 +257,19 @@
         color: #666666;
         white-space: nowrap;
 
-        &:hover, &-active, &-selected {
-          background-color: rgba(142, 200, 249, 0.1) !important;
-        }
-
         &-selected {
           background-color: #ddd;
+        }
+
+        &-active {
+          background-color: #5897fb;
+          color: white;
         }
 
         &-disabled {
           color: #ccc;
           cursor: not-allowed;
           pointer-events: none;
-
-          &:hover {
-            color: #ccc;
-            background-color: #fff;
-            cursor: not-allowed;
-          }
         }
 
         &-divider {

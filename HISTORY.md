@@ -1,5 +1,10 @@
 # History
 ----
+
+## 5.2.0 / 2015-11-24
+
+- do not hide dropdown on multiple or tag mode
+
 ## 5.0.0 / 2015-10-22
 
 - only support react 0.14+
