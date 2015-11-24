@@ -217,9 +217,9 @@ const Select = React.createClass({
       }
       value = [selectedValue];
       label = [selectedLabel];
+      this.setOpenState(false);
     }
     this.fireChange(value, label);
-    this.setOpenState(false);
     this.setState({
       inputValue: '',
     });
@@ -234,7 +234,9 @@ const Select = React.createClass({
     if (domEvent.type === 'click') {
       this.removeSelected(getValuePropValue(item));
     }
-    this.setOpenState(false);
+    if (!isMultipleOrTags(this.props)) {
+      this.setOpenState(false);
+    }
     this.setState({
       inputValue: '',
     });
