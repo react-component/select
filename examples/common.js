@@ -19961,9 +19961,9 @@
 	      }
 	      value = [selectedValue];
 	      label = [selectedLabel];
+	      this.setOpenState(false);
 	    }
 	    this.fireChange(value, label);
-	    this.setOpenState(false);
 	    this.setState({
 	      inputValue: ''
 	    });
@@ -19981,7 +19981,9 @@
 	    if (domEvent.type === 'click') {
 	      this.removeSelected((0, _util.getValuePropValue)(item));
 	    }
-	    this.setOpenState(false);
+	    if (!(0, _util.isMultipleOrTags)(this.props)) {
+	      this.setOpenState(false);
+	    }
 	    this.setState({
 	      inputValue: ''
 	    });
@@ -28867,19 +28869,20 @@
 	      }
 	      var value = props.value;
 	      var selectedKeys = (0, _util.getSelectKeys)(menuItems, value);
-	      var activeKey = undefined;
+	      var activeKeyProps = {};
 	      if (!props.multiple) {
-	        if (!activeKey && selectedKeys.length === 1) {
-	          activeKey = selectedKeys[0];
+	        // activeKeyProps.defaultActiveFirst = true;
+	        if (selectedKeys.length === 1) {
+	          activeKeyProps.activeKey = selectedKeys[0];
 	        }
 	      }
 	      return _react2['default'].createElement(
 	        _rcMenu2['default'],
 	        _extends({
 	          ref: 'menu',
-	          style: props.dropdownMenuStyle,
 	          defaultActiveFirst: true,
-	          activeKey: activeKey,
+	          style: props.dropdownMenuStyle
+	        }, activeKeyProps, {
 	          multiple: props.multiple,
 	          focusable: false
 	        }, menuProps, {
