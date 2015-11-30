@@ -2,11 +2,12 @@ import React, {PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import {classSet, KeyCode} from 'rc-util';
 import OptGroup from './OptGroup';
+import Animate from 'rc-animate';
 import {
   getPropValue, getValuePropValue, isCombobox,
   isMultipleOrTags, isMultipleOrTagsOrCombobox,
   isSingleMode, toArray,
-} from './util';
+  } from './util';
 import SelectTrigger from './SelectTrigger';
 
 function noop() {
@@ -32,6 +33,7 @@ const Select = React.createClass({
     optionLabelProp: PropTypes.string,
     optionFilterProp: PropTypes.string,
     animation: PropTypes.string,
+    choiceAnimation: PropTypes.string,
     onChange: PropTypes.func,
     onSelect: PropTypes.func,
     onSearch: PropTypes.func,
@@ -335,15 +337,15 @@ const Select = React.createClass({
   getInputElement() {
     const props = this.props;
     return (<span className={props.prefixCls + '-search__field__wrap'}>
-    <input ref={this.saveInputRef}
-           onChange={this.onInputChange}
-           onKeyDown={this.onInputKeyDown}
-           value={this.state.inputValue}
-           disabled={props.disabled}
-           className={props.prefixCls + '-search__field'}
-           role="textbox"/>
+      <input ref={this.saveInputRef}
+        onChange={this.onInputChange}
+        onKeyDown={this.onInputKeyDown}
+        value={this.state.inputValue}
+        disabled={props.disabled}
+        className={props.prefixCls + '-search__field'}
+        role="textbox"/>
       {isMultipleOrTags(props) ? null : this.getSearchPlaceholderElement(!!this.state.inputValue)}
-                   </span>);
+    </span>);
   },
 
   getInputDOMNode() {
@@ -373,7 +375,7 @@ const Select = React.createClass({
     });
   },
 
-  removeSelected(selectedValue) {
+  removeSelected(selectedValue, e) {
     const props = this.props;
     if (props.disabled) {
       return;
@@ -391,6 +393,12 @@ const Select = React.createClass({
       props.onDeselect(selectedValue);
     }
     this.fireChange(value, label);
+    const content = this.refs[selectedValue + '-content'];
+    const dom = content.parentNode;
+    dom.style.width = content.offsetWidth + 'px';
+    dom.style.width = content.offsetWidth + 'px';
+    dom.style.width = 0;
+    dom.style.padding = 0;
   },
 
   openIfHasChildren() {
@@ -409,7 +417,6 @@ const Select = React.createClass({
     }
     props.onChange(this.getVLForOnChange(value), this.getVLForOnChange(label));
   },
-
   renderTopControlNode() {
     const value = this.state.value;
     const label = this.state.label;
@@ -417,13 +424,13 @@ const Select = React.createClass({
     const prefixCls = props.prefixCls;
     const allowClear = props.allowClear;
     const clear = (<span key="clear"
-                         className={prefixCls + '-selection__clear'}
-                         onClick={this.onClearSelection}/>);
+      className={prefixCls + '-selection__clear'}
+      onClick={this.onClearSelection}/>);
     // single and not combobox, input is inside dropdown
     if (isSingleMode(props)) {
       const placeholder = (<span key="placeholder" className={prefixCls + '-selection__placeholder'}>
                            {props.placeholder}
-                         </span>);
+      </span>);
       let innerNode = placeholder;
       if (this.state.label[0]) {
         innerNode = <span key="value">{this.state.label[0]}</span>;
@@ -443,24 +450,24 @@ const Select = React.createClass({
           content = content.slice(0, maxTagTextLength) + '...';
         }
         return (
-          <li className={prefixCls + '-selection__choice'}
-              key={singleValue}
-              title={title}>
-            <span className={prefixCls + '-selection__choice__content'}>{content}</span>
-              <span className={prefixCls + '-selection__choice__remove'}
-                    onClick={this.removeSelected.bind(this, singleValue)}/>
+          <li className={`${prefixCls}-selection__choice`}
+            key={singleValue}
+            title={title}>
+            <span className={prefixCls + '-selection__choice__content'} ref={`${singleValue}-content`}>{content}</span>
+            <span className={prefixCls + '-selection__choice__remove'}
+              onClick={this.removeSelected.bind(this, singleValue)}/>
           </li>
         );
       });
     }
     return (
-      <ul className={prefixCls + '-selection__rendered'}>
+      <Animate className={prefixCls + '-selection__rendered'} component='ul' transitionName={this.props.choiceAnimation || 'zoom'} transitionAppear={true}>
         {selectedValueNodes}
-        {allowClear && !isMultipleOrTags(props) ? clear : null}
-        <li className={`${prefixCls}-search ${prefixCls}-search--inline`}>
+        {allowClear && !isMultipleOrTags(props) ? clear : <div key='null'/>}
+        <li className={`${prefixCls}-search ${prefixCls}-search--inline`} key='i'>
           {this.getInputElement()}
         </li>
-      </ul>
+      </Animate>
     );
   },
 
@@ -497,26 +504,26 @@ const Select = React.createClass({
         onMenuSelect={this.onMenuSelect}
         onMenuDeselect={this.onMenuDeselect}
         ref="trigger">
-      <span
-        style={props.style}
-        className={classSet(rootCls)}>
-        <span ref="selection"
-              key="selection"
-              className={`${prefixCls}-selection ${prefixCls}-selection--${multiple ? 'multiple' : 'single'}`}
-              role="combobox"
-              aria-autocomplete="list"
-              aria-haspopup="true"
-              aria-expanded={state.open}
+        <span
+          style={props.style}
+          className={classSet(rootCls)}>
+          <span ref="selection"
+            key="selection"
+            className={`${prefixCls}-selection ${prefixCls}-selection--${multiple ? 'multiple' : 'single'}`}
+            role="combobox"
+            aria-autocomplete="list"
+            aria-haspopup="true"
+            aria-expanded={state.open}
           {...extraSelectionProps}
-        >
+          >
         {ctrlNode}
           {multiple || !props.showArrow ? null :
             (<span key="arrow" className={prefixCls + '-arrow'} tabIndex="-1" style={{outline: 'none'}}>
               <b/>
-          </span>)}
+            </span>)}
           {multiple ? this.getSearchPlaceholderElement(!!this.state.inputValue || this.state.value.length) : null}
+          </span>
         </span>
-      </span>
       </SelectTrigger>
     );
   },
