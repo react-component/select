@@ -391,10 +391,10 @@ const Select = React.createClass({
       props.onDeselect(selectedValue);
     }
     this.fireChange(value, label);
-    const dom = e.target.parentNode;
     const content = this.refs[selectedValue + '-content'];
-    dom.style.width = content.offsetWidth + 'px';// dom.children[0].offsetWidth + 'px';
-    dom.style.width = content.offsetWidth + 'px';// dom.children[0].offsetWidth + 'px';
+    const dom = content.parentNode;
+    dom.style.width = content.offsetWidth + 'px';
+    dom.style.width = content.offsetWidth + 'px';
     dom.style.width = 0;
     dom.style.padding = 0;
   },
