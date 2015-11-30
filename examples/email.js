@@ -3,12 +3,12 @@ webpackJsonp([1],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(248);
+	module.exports = __webpack_require__(230);
 
 
 /***/ },
 
-/***/ 248:
+/***/ 230:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23,7 +23,7 @@ webpackJsonp([1],{
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(247);
+	__webpack_require__(229);
 	
 	var _reactDom = __webpack_require__(159);
 	
@@ -42,7 +42,7 @@ webpackJsonp([1],{
 	  },
 	  onChange: function onChange(value) {
 	    console.log('onChange', value);
-	    var options;
+	    var options = undefined;
 	    if (!value || value.indexOf('@') >= 0) {
 	      options = _react2['default'].createElement(
 	        _rcSelect.Option,

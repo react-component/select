@@ -25,7 +25,7 @@ webpackJsonp([0],[
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(247);
+	__webpack_require__(229);
 	
 	function onChange(value) {
 	  console.log(value);
@@ -47,6 +47,7 @@ webpackJsonp([0],[
 	      {
 	        style: { width: 500 },
 	        onChange: onChange,
+	        allowClear: true,
 	        defaultValue: 'l',
 	        combobox: true },
 	      _react2['default'].createElement(

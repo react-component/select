@@ -3,12 +3,12 @@ webpackJsonp([3],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(258);
+	module.exports = __webpack_require__(240);
 
 
 /***/ },
 
-/***/ 250:
+/***/ 232:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16,33 +16,36 @@ webpackJsonp([3],{
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
+	exports.fetch = fetch;
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _jsonp = __webpack_require__(251);
+	var _jsonp = __webpack_require__(233);
 	
 	var _jsonp2 = _interopRequireDefault(_jsonp);
 	
-	var _querystring = __webpack_require__(255);
+	var _querystring = __webpack_require__(237);
 	
 	var _querystring2 = _interopRequireDefault(_querystring);
 	
-	var timeout = undefined,
-	    currentValue = undefined;
+	var timeout = undefined;
+	var currentValue = undefined;
 	
-	exports['default'] = {
-	  fetch: function fetch(value, callback) {
-	    if (timeout) {
-	      clearTimeout(timeout);
-	      timeout = null;
-	    }
-	    currentValue = value;
-	    timeout = setTimeout(function () {
-	      (0, _jsonp2['default'])('http://suggest.taobao.com/sug?' + _querystring2['default'].encode({
-	        code: 'utf-8',
-	        q: value
-	      }), function (err, d) {
-	        if (currentValue === value) {
+	function fetch(value, callback) {
+	  if (timeout) {
+	    clearTimeout(timeout);
+	    timeout = null;
+	  }
+	  currentValue = value;
+	
+	  function fake() {
+	    var str = _querystring2['default'].encode({
+	      code: 'utf-8',
+	      q: value
+	    });
+	    (0, _jsonp2['default'])('http://suggest.taobao.com/sug?' + str, function (err, d) {
+	      if (currentValue === value) {
+	        (function () {
 	          var result = d.result;
 	          var data = [];
 	          result.forEach(function (r) {
@@ -52,23 +55,24 @@ webpackJsonp([3],{
 	            });
 	          });
 	          callback(data);
-	        }
-	      });
-	    }, 300);
+	        })();
+	      }
+	    });
 	  }
-	};
-	module.exports = exports['default'];
+	
+	  timeout = setTimeout(fake, 300);
+	}
 
 /***/ },
 
-/***/ 251:
+/***/ 233:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies
 	 */
 	
-	var debug = __webpack_require__(252)('jsonp');
+	var debug = __webpack_require__(234)('jsonp');
 	
 	/**
 	 * Module exports.
@@ -165,7 +169,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 252:
+/***/ 234:
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -175,7 +179,7 @@ webpackJsonp([3],{
 	 * Expose `debug()` as the module.
 	 */
 	
-	exports = module.exports = __webpack_require__(253);
+	exports = module.exports = __webpack_require__(235);
 	exports.log = log;
 	exports.formatArgs = formatArgs;
 	exports.save = save;
@@ -347,7 +351,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 253:
+/***/ 235:
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -363,7 +367,7 @@ webpackJsonp([3],{
 	exports.disable = disable;
 	exports.enable = enable;
 	exports.enabled = enabled;
-	exports.humanize = __webpack_require__(254);
+	exports.humanize = __webpack_require__(236);
 	
 	/**
 	 * The currently active debug mode names, and names to skip.
@@ -551,7 +555,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 254:
+/***/ 236:
 /***/ function(module, exports) {
 
 	/**
@@ -681,18 +685,18 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 255:
+/***/ 237:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	exports.decode = exports.parse = __webpack_require__(256);
-	exports.encode = exports.stringify = __webpack_require__(257);
+	exports.decode = exports.parse = __webpack_require__(238);
+	exports.encode = exports.stringify = __webpack_require__(239);
 
 
 /***/ },
 
-/***/ 256:
+/***/ 238:
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -779,7 +783,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 257:
+/***/ 239:
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -850,7 +854,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 258:
+/***/ 240:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -865,9 +869,9 @@ webpackJsonp([3],{
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(247);
+	__webpack_require__(229);
 	
-	var _commonTbFetchSuggest = __webpack_require__(250);
+	var _commonTbFetchSuggest = __webpack_require__(232);
 	
 	var _reactDom = __webpack_require__(159);
 	
@@ -884,6 +888,14 @@ webpackJsonp([3],{
 	    };
 	  },
 	
+	  onChange: function onChange(value, label) {
+	    console.log('onChange ', value, label);
+	    this.setState({
+	      value: value,
+	      label: label
+	    });
+	  },
+	
 	  fetchData: function fetchData(value) {
 	    var _this = this;
 	
@@ -891,14 +903,6 @@ webpackJsonp([3],{
 	      _this.setState({
 	        data: data
 	      });
-	    });
-	  },
-	
-	  onChange: function onChange(value, label) {
-	    console.log('onChange ', value, label);
-	    this.setState({
-	      value: value,
-	      label: label
 	    });
 	  },
 	

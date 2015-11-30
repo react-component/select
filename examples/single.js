@@ -3,12 +3,12 @@ webpackJsonp([9],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(264);
+	module.exports = __webpack_require__(246);
 
 
 /***/ },
 
-/***/ 264:
+/***/ 246:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23,15 +23,11 @@ webpackJsonp([9],{
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(247);
+	__webpack_require__(229);
 	
 	var _reactDom = __webpack_require__(159);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
-	
-	function handleChange(value) {
-	  console.log('selected ' + value);
-	}
 	
 	var Test = _react2['default'].createClass({
 	  displayName: 'Test',

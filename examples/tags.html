@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>tags.js - example - rc-select@5.2.1</title>
+  <title>tags.js - example - rc-select@5.3.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,52 +257,52 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-select@5.2.1</h1>
+    <h1>rc-select@5.3.0</h1>
 
     <p>select ui component for react</p>
   </div>
   <div class="example" id="__react-content"></div>
   <script src="common.js?nowrap"></script>
   <script src="tags.js?nowrap"></script>
-  <div class="highlight"><pre><code language="js"><span class="hljs-pi">'use strict'</span>;
+  <div class="highlight"><pre><code language="js">
 
-<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
-<span class="hljs-keyword">import</span> Select, {Option} <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-select'</span>;
-<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-select/assets/index.css'</span>;
-<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
+import React from <span class="hljs-string">'react'</span>;
+import Select, {Option} from <span class="hljs-string">'rc-select'</span>;
+import <span class="hljs-string">'rc-select/assets/index.css'</span>;
+import ReactDOM from <span class="hljs-string">'react-dom'</span>;
 
-<span class="hljs-keyword">var</span> children = [];
-<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">10</span>; i &lt; <span class="hljs-number">36</span>; i++) {
-  children.push(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{i.toString(36)</span> + <span class="hljs-attribute">i</span>}&gt;</span>{i.toString(36) + i}<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>)</span>;
+<span class="hljs-keyword">const</span> children = [];
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">10</span>; i &lt; <span class="hljs-number">36</span>; i++) {
+  children.push(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{i.toString(36)</span> + <span class="hljs-attribute">i</span>}&gt;</span>{i.toString(36) + i}<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>);
 }
 
-<span class="hljs-keyword">var</span> Test = React.createClass({
+const Test = React.createClass({
   getInitialState() {
-    <span class="hljs-keyword">return</span> {
-      disabled: <span class="hljs-literal">false</span>,
-      value: [<span class="hljs-string">'name2'</span>, <span class="hljs-string">'name3'</span>]
+    return {
+      disabled: false,
+      value: ['name2', 'name3'],
     };
   },
   handleChange(value) {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'selected '</span> + value);
-    <span class="hljs-keyword">this</span>.setState({
-      value: value
+    console.log('selected ' + value);
+    this.setState({
+      value: value,
     });
   },
   handleDisabled() {
-    <span class="hljs-keyword">this</span>.setState({
-      disabled: !<span class="hljs-keyword">this</span>.state.disabled
+    this.setState({
+      disabled: !this.state.disabled,
     });
   },
   render() {
-    <span class="hljs-keyword">return</span> (
-      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+    return (
+      <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>tags select（scroll the menu）<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
 
         <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">Select</span> <span class="hljs-attribute">tags</span>
-                  <span class="hljs-attribute">dropdownMenuStyle</span>=<span class="hljs-value">{{maxHeight:200,overflow:'auto'}}</span>
-                  <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:500}}</span>
+                  <span class="hljs-attribute">dropdownMenuStyle</span>=<span class="hljs-value">{{maxHeight:</span> <span class="hljs-attribute">200</span>, <span class="hljs-attribute">overflow:</span> '<span class="hljs-attribute">auto</span>'}}
+                  <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">500</span>}}
                   <span class="hljs-attribute">disabled</span>=<span class="hljs-value">{this.state.disabled}</span>
                   <span class="hljs-attribute">maxTagTextLength</span>=<span class="hljs-value">{10}</span>
                   <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value}</span>
@@ -314,11 +314,11 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
           <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.handleDisabled}</span>&gt;</span>toggle disabled<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-    )</span>;
-  }
+    );
+  },
 });
 
-ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Test</span> /&gt;</span>, document.getElementById('__react-content'));
+ReactDOM.render(<span class="hljs-tag">&lt;<span class="hljs-title">Test</span> /&gt;</span>, document.getElementById('__react-content'));
 </span></code></pre></div>
 </div>
 <a href="http://github.com/react-component/select">

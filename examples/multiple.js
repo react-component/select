@@ -3,12 +3,12 @@ webpackJsonp([5],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(260);
+	module.exports = __webpack_require__(242);
 
 
 /***/ },
 
-/***/ 260:
+/***/ 242:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23,7 +23,7 @@ webpackJsonp([5],{
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(247);
+	__webpack_require__(229);
 	
 	var _reactDom = __webpack_require__(159);
 	
@@ -64,6 +64,10 @@ webpackJsonp([5],{
 	    });
 	  },
 	  render: function render() {
+	    var dropdownMenuStyle = {
+	      maxHeight: 200,
+	      overflow: 'auto'
+	    };
 	    return _react2['default'].createElement(
 	      'div',
 	      null,
@@ -88,11 +92,9 @@ webpackJsonp([5],{
 	        _react2['default'].createElement(
 	          _rcSelect2['default'],
 	          {
-	            animation: this.state.useAnim ? "slide-up" : null,
-	            dropdownMenuStyle: {
-	              maxHeight: 200,
-	              overflow: 'auto'
-	            },
+	            animation: this.state.useAnim ? 'slide-up' : null,
+	            choiceTransitionName: 'rc-select-selection__choice-zoom',
+	            dropdownMenuStyle: dropdownMenuStyle,
 	            style: { width: 500 },
 	            multiple: true,
 	            defaultValue: ['name2', 'name3'],
