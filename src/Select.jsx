@@ -458,8 +458,9 @@ const Select = React.createClass({
         );
       });
     }
+    const Appear = true;
     return (
-      <Animate className={prefixCls + '-selection__rendered'} component={'ul'} transitionName={this.props.choiceAnimation || 'zoom'} transitionAppear={ `${true}` }>
+      <Animate className={prefixCls + '-selection__rendered'} component={'ul'} transitionName={this.props.choiceAnimation || 'zoom'} transitionAppear={ Appear }>
         {selectedValueNodes}
         {allowClear && !isMultipleOrTags(props) ? clear : <div key={'null'}/>}
         <li className={`${prefixCls}-search ${prefixCls}-search--inline`} key={'i'}>
