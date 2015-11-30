@@ -29,7 +29,6 @@ const DropdownMenu = React.createClass({
       const selectedKeys = getSelectKeys(menuItems, value);
       const activeKeyProps = {};
       if (!props.multiple) {
-        // activeKeyProps.defaultActiveFirst = true;
         if (selectedKeys.length === 1) {
           activeKeyProps.activeKey = selectedKeys[0];
         }

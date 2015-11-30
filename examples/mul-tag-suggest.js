@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import Select, {Option} from 'rc-select';
@@ -6,11 +6,11 @@ import 'rc-select/assets/index.less';
 import {fetch} from './common/tbFetchSuggest';
 import ReactDOM from 'react-dom';
 
-var Search = React.createClass({
+const Search = React.createClass({
   getInitialState() {
     return {
-      data: []
-    }
+      data: [],
+    };
   },
 
   fetchData(value) {
@@ -26,11 +26,11 @@ var Search = React.createClass({
   },
 
   render() {
-    var data = this.state.data;
-    var options = data.map((d) => {
+    const data = this.state.data;
+    const options = data.map((d) => {
       return <Option key={d.value}>{d.text}</Option>;
     });
-    return <div>
+    return (<div>
       <h2>multiple suggest</h2>
 
       <div>
@@ -44,8 +44,8 @@ var Search = React.createClass({
           {options}
         </Select>
       </div>
-    </div>;
-  }
+    </div>);
+  },
 });
 
 ReactDOM.render(<Search />, document.getElementById('__react-content'));

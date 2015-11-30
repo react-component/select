@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import Select, {Option} from 'rc-select';
@@ -9,18 +9,18 @@ function handleChange(value) {
   console.log('selected ' + value);
 }
 
-var c1 = (
+const c1 = (
   <div>
     <h2>Select placeholder</h2>
     <div style={{width: 300}}>
       <Select
         placeholder={<i>请下拉选择</i>}
         searchPlaceholder="输入过滤"
-        style={{width:500}}
+        style={{width: 500}}
         onChange={handleChange}>
         <Option value="jack">
           <b style={{
-            color: 'red'
+            color: 'red',
           }}>jack</b>
         </Option>
         <Option value="lucy">lucy</Option>

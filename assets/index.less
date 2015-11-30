@@ -1,10 +1,9 @@
 @selectPrefixCls: rc-select;
 
-//mixin
-.selection__clear() {
-  cursor: pointer;
-  float: right;
-  font-weight: bold;
+.effect() {
+  animation-duration: .3s;
+  animation-fill-mode: both;
+  transform-origin: 0 0;
 }
 
 .@{selectPrefixCls} {
@@ -81,6 +80,7 @@
   &-selection--single {
     height: 28px;
     cursor: pointer;
+    position: relative;
 
     .@{selectPrefixCls}-selection__rendered {
       display: block;
@@ -92,7 +92,15 @@
     }
 
     .@{selectPrefixCls}-selection__clear {
-      .selection__clear();
+      cursor: pointer;
+      font-weight: bold;
+      position: absolute;
+      top: 5px;
+      right: 20px;
+
+      &:after {
+        content: '×'
+      }
     }
   }
 
@@ -159,16 +167,6 @@
       padding-bottom: 2px;
     }
 
-    .@{selectPrefixCls}-selection__clear {
-      .selection__clear();
-      margin-top: 5px;
-      margin-right: 10px;
-
-      &:after {
-        content: '×'
-      }
-    }
-
     > ul > li {
       margin-top: 4px;
       height: 20px;
@@ -185,6 +183,7 @@
       position: relative;
       overflow: hidden;
       transition: padding .3s cubic-bezier(0.6, -0.28, 0.735, 0.045), width .3s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+
       &:hover {
         //padding-left: 8px;
         //padding-right: 22px;
@@ -192,15 +191,57 @@
           opacity: 1;
           transform: scale(1);
         }
-        & .@{selectPrefixCls}-selection__choice__content{
+        & .@{selectPrefixCls}-selection__choice__content {
           margin-left: -8px;
           margin-right: 8px;
         }
       }
-      & .@{selectPrefixCls}-selection__choice__content{
+
+      & .@{selectPrefixCls}-selection__choice__content {
         margin-left: 0;
         margin-right: 0;
         transition: margin .3s cubic-bezier(0.165, 0.84, 0.44, 1);
+      }
+
+      &-zoom-enter, &-zoom-appear, &-zoom-leave {
+        .effect();
+        opacity: 0;
+        animation-play-state: paused;
+        animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      &-zoom-leave {
+        opacity: 1;
+        animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+      }
+
+      &-zoom-enter.@{selectPrefixCls}-selection__choice-zoom-enter-active,
+      &-zoom-appear.@{selectPrefixCls}-selection__choice-zoom-appear-active {
+        animation-play-state: running;
+        animation-name: rcSelectChoiceZoomIn;
+      }
+
+      &-zoom-leave.@{selectPrefixCls}-selection__choice-zoom-leave-active {
+        animation-play-state: running;
+        animation-name: rcSelectChoiceZoomOut;
+      }
+
+      @keyframes rcSelectChoiceZoomIn {
+        0% {
+          transform: scale(0.6);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes rcSelectChoiceZoomOut {
+        to {
+          transform: scale(0);
+          opacity: 0;
+        }
       }
     }
 
@@ -212,7 +253,8 @@
       position: absolute;
       opacity: 0;
       transform: scale(0);
-      margin-left: -14px;
+      top: 0;
+      right: 2px;
       transition: opacity .3s, transform .3s;
       &:before {
         content: '×'
@@ -305,12 +347,6 @@
       }
     }
 
-    .effect() {
-      animation-duration: .3s;
-      animation-fill-mode: both;
-      transform-origin: 0 0;
-    }
-
     &-slide-up-enter, &-slide-up-appear {
       .effect();
       opacity: 0;
@@ -326,26 +362,26 @@
     }
 
     &-slide-up-enter&-slide-up-enter-active&-placement-bottomLeft, &-slide-up-appear&-slide-up-appear-active&-placement-bottomLeft {
-      animation-name: rcDropdownSlideUpIn;
+      animation-name: rcSelectDropdownSlideUpIn;
       animation-play-state: running;
     }
 
     &-slide-up-leave&-slide-up-leave-active&-placement-bottomLeft {
-      animation-name: rcDropdownSlideUpOut;
+      animation-name: rcSelectDropdownSlideUpOut;
       animation-play-state: running;
     }
 
     &-slide-up-enter&-slide-up-enter-active&-placement-topLeft, &-slide-up-appear&-slide-up-appear-active&-placement-topLeft {
-      animation-name: rcDropdownSlideDownIn;
+      animation-name: rcSelectDropdownSlideDownIn;
       animation-play-state: running;
     }
 
     &-slide-up-leave&-slide-up-leave-active&-placement-topLeft {
-      animation-name: rcDropdownSlideDownOut;
+      animation-name: rcSelectDropdownSlideDownOut;
       animation-play-state: running;
     }
 
-    @keyframes rcDropdownSlideUpIn {
+    @keyframes rcSelectDropdownSlideUpIn {
       0% {
         opacity: 0;
         transform-origin: 0% 0%;
@@ -357,7 +393,7 @@
         transform: scaleY(1);
       }
     }
-    @keyframes rcDropdownSlideUpOut {
+    @keyframes rcSelectDropdownSlideUpOut {
       0% {
         opacity: 1;
         transform-origin: 0% 0%;
@@ -370,7 +406,7 @@
       }
     }
 
-    @keyframes rcDropdownSlideDownIn {
+    @keyframes rcSelectDropdownSlideDownIn {
       0% {
         opacity: 0;
         transform-origin: 0% 100%;
@@ -382,7 +418,7 @@
         transform: scaleY(1);
       }
     }
-    @keyframes rcDropdownSlideDownOut {
+    @keyframes rcSelectDropdownSlideDownOut {
       0% {
         opacity: 1;
         transform-origin: 0% 100%;
@@ -423,48 +459,5 @@
       border-color: transparent transparent #888 transparent;
       border-width: 0 4px 5px 4px;
     }
-  }
-}
-
-.zoom-enter, .zoom-appear {
-  opacity: 0;
-  animation-duration: .3s;
-  animation-fill-mode: both;
-  animation-play-state: paused;
-  animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.zoom-leave {
-  animation-duration: .3s;
-  animation-fill-mode: both;
-  animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);
-  opacity: 1;
-}
-
-.zoom-enter.zoom-enter-active, .zoom-appear {
-  animation-play-state: running;
-  animation-name: rcRenderedZoomIn;
-}
-
-.zoom-leave.zoom-leave-active {
-  animation-play-state: running;
-  animation-name: rcRenderedZoomOut;
-}
-
-@keyframes rcRenderedZoomIn {
-  0% {
-    transform: scale(0.6);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes rcRenderedZoomOut {
-  to {
-    transform: scale(0);
-    opacity: 0;
   }
 }

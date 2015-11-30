@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import Select, {Option} from 'rc-select';
@@ -6,36 +6,36 @@ import 'rc-select/assets/index.less';
 import {fetch} from './common/tbFetchSuggest';
 import ReactDOM from 'react-dom';
 
-var Search = React.createClass({
+const Search = React.createClass({
   getInitialState() {
     return {
       loading: false,
       data: [],
       value: '',
-      label: ''
-    }
+      label: '',
+    };
   },
 
   fetchData(value) {
     this.setState({
-      loading: true
+      loading: true,
     });
     fetch(value, (data)=> {
       this.setState({
         data,
-        loading: false
+        loading: false,
       });
     });
   },
 
   handleChange(value, label) {
     console.log('select ', value, label);
-    this.setState({value, label})
+    this.setState({value, label});
   },
 
   render() {
-    var data = this.state.data;
-    var options;
+    const data = this.state.data;
+    let options;
     if (this.state.loading) {
       options = <Option disabled key="disabled">loading</Option>;
     } else {
@@ -43,7 +43,7 @@ var Search = React.createClass({
         return <Option key={d.value}><i>{d.text}</i></Option>;
       });
     }
-    return <div>
+    return (<div>
       <h2>force suggest</h2>
 
       <div>
@@ -51,14 +51,14 @@ var Search = React.createClass({
                 value={this.state.value}
                 label={this.state.label}
                 optionLabelProp="children"
-                style={{width:500}}
+                style={{width: 500}}
                 onChange={this.handleChange}
                 filterOption={false}>
           {options}
         </Select>
       </div>
-    </div>;
-  }
+    </div>);
+  },
 });
 
 ReactDOM.render(<Search />, document.getElementById('__react-content'));

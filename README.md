@@ -131,6 +131,12 @@ React.render(c, container);
           <td>dropdown css animation name</td>
         </tr>
         <tr>
+          <td>choiceTransitionName</td>
+          <td>String</td>
+          <td></td>
+          <td>css animation name for selected items at multiple mode</td>
+        </tr>
+        <tr>
           <td>defaultValue</td>
           <td>String | Array&lt;String&gt;</td>
           <td></td>

@@ -1,6 +1,6 @@
 import Trigger from 'rc-trigger';
 import React, {PropTypes} from 'react';
-import {classSet} from 'rc-util';
+import classnames from 'classnames';
 import DropdownMenu from './DropdownMenu';
 import ReactDOM from 'react-dom';
 import OptGroup from './OptGroup';
@@ -190,7 +190,7 @@ const SelectTrigger = React.createClass({
                       menuItems, search, multiple, visible,
                     })}
                     popupVisible={visible}
-                    popupClassName={classSet(popupClassName)}
+                    popupClassName={classnames(popupClassName)}
                     popupStyle={props.dropdownStyle}
     >{this.props.children}</Trigger>);
   },

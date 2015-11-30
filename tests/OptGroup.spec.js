@@ -1,35 +1,35 @@
-var expect = require('expect.js');
-var React = require('react');
-var TestUtils = require('react-addons-test-utils');
-var Simulate = TestUtils.Simulate;
-var Select = require('../');
-var Option = Select.Option;
-var ReactDOM = require('react-dom');
-var OptGroup = Select.OptGroup;
-var $ = require('jquery');
+const expect = require('expect.js');
+const React = require('react');
+const TestUtils = require('react-addons-test-utils');
+const Simulate = TestUtils.Simulate;
+const Select = require('../');
+const Option = Select.Option;
+const ReactDOM = require('react-dom');
+const OptGroup = Select.OptGroup;
+const $ = require('jquery');
 
-describe('OptGroup', function () {
-  var div;
+describe('OptGroup', () => {
+  let div = null;
 
-  beforeEach(function () {
+  beforeEach(() => {
     div = document.createElement('div');
     document.body.appendChild(div);
   });
 
-  afterEach(function (done) {
+  afterEach((done) => {
     ReactDOM.unmountComponentAtNode(div);
     document.body.removeChild(div);
     done();
   });
 
-  it('works', function (done) {
-    var select = ReactDOM.render(<Select value="lucy"
+  it('works', (done) => {
+    const select = ReactDOM.render(<Select value="lucy"
       showSearch={false}
       style={{width: 250}}>
       <OptGroup label="manager">
         <Option value="jack">
           <b style={{
-            color: 'red'
+            color: 'red',
           }}>jack</b>
         </Option>
         <Option value="lucy">lucy</Option>

@@ -1,6 +1,10 @@
 # History
 ----
 
+## 5.3.0 / 2015-11-30
+
+- add choiceTransitionName prop
+
 ## 5.2.0 / 2015-11-24
 
 - do not hide dropdown on multiple or tag mode

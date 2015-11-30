@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import Select, {Option} from 'rc-select';
@@ -9,20 +9,20 @@ function handleChange(value) {
   console.log('selected ' + value);
 }
 
-var c1 = (
+const c1 = (
   <div>
-    <div style={{height:150}}/>
+    <div style={{height: 150}}/>
     <h2>Single Select</h2>
 
     <div style={{width: 300}}>
       <Select defaultValue="lucy"
-              style={{width:500}}
+              style={{width: 500}}
               animation="slide-up"
               showSearch={false}
               onChange={handleChange}>
         <Option value="jack">
           <b style={{
-            color: 'red'
+            color: 'red',
           }}>jack</b>
         </Option>
         <Option value="lucy">lucy</Option>

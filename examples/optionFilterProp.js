@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import Select, {Option} from 'rc-select';
@@ -9,12 +9,12 @@ function handleChange(value) {
   console.log('selected ' + value);
 }
 
-var c1 = (
+const c1 = (
   <div>
     <h2>Select optionFilterProp</h2>
     <div style={{width: 300}}>
       <Select defaultValue="张三"
-        style={{width:500}}
+        style={{width: 500}}
         optionFilterProp="desc"
         onChange={handleChange}>
         <Option value="张三" desc="张三 zhang san">张三</Option>

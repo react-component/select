@@ -1,21 +1,22 @@
-var expect = require('expect.js');
-var React = require('react');
-var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
-var Simulate = TestUtils.Simulate;
-var KeyCode = require('rc-util').KeyCode;
-var Select = require('../');
-var Option = Select.Option;
+const expect = require('expect.js');
+const React = require('react');
+const ReactDOM = require('react-dom');
+const TestUtils = require('react-addons-test-utils');
+const Simulate = TestUtils.Simulate;
+const KeyCode = require('rc-util').KeyCode;
+const Select = require('../');
+const Option = Select.Option;
 
-describe('tags', function () {
-  var div, instance;
+describe('tags', function test() {
+  let div;
+  let instance;
 
-  beforeEach(function () {
+  beforeEach(() => {
     div = document.createElement('div');
     document.body.appendChild(div);
   });
 
-  afterEach(function () {
+  afterEach(() => {
     ReactDOM.unmountComponentAtNode(div);
     document.body.removeChild(div);
   });
@@ -23,7 +24,7 @@ describe('tags', function () {
 
   this.timeout(400000);
 
-  beforeEach(function () {
+  beforeEach(() => {
     div.tabIndex = 0;
     instance = ReactDOM.render(
       <Select tags>
@@ -33,26 +34,26 @@ describe('tags', function () {
       div);
   });
 
-  afterEach(function () {
+  afterEach(() => {
     ReactDOM.unmountComponentAtNode(div);
   });
 
-  it('should allow user input as tags', function (done) {
+  it('should allow user input as tags', (done) => {
     if (navigator.userAgent.indexOf(' Chrome') === -1) {
       done();
       return;
     }
 
-    var node = instance.getInputDOMNode();
+    const node = instance.getInputDOMNode();
     node.focus();
     node.value = 'A';
     Simulate.change(node);
-    setTimeout(function () {
+    setTimeout(() => {
       Simulate.keyDown(node, {
-        keyCode: KeyCode.ENTER
+        keyCode: KeyCode.ENTER,
       });
-      setTimeout(function () {
-        expect(instance.state.value).to.contain("A");
+      setTimeout(() => {
+        expect(instance.state.value).to.contain('A');
         done();
       }, 100);
     }, 100);

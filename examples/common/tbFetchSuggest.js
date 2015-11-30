@@ -1,31 +1,34 @@
 import jsonp from 'jsonp';
 import querystring from 'querystring';
-let timeout, currentValue;
+let timeout;
+let currentValue;
 
-export default {
-  fetch(value, callback){
-    if (timeout) {
-      clearTimeout(timeout);
-      timeout = null;
-    }
-    currentValue = value;
-    timeout = setTimeout(()=> {
-      jsonp('http://suggest.taobao.com/sug?' + querystring.encode({
-          code: 'utf-8',
-          q: value
-        }), (err, d) => {
-        if (currentValue === value) {
-          var result = d.result;
-          var data = [];
-          result.forEach((r)=> {
-            data.push({
-              value: r[0],
-              text: r[0]
-            });
+export function fetch(value, callback) {
+  if (timeout) {
+    clearTimeout(timeout);
+    timeout = null;
+  }
+  currentValue = value;
+
+  function fake() {
+    const str = querystring.encode({
+      code: 'utf-8',
+      q: value,
+    });
+    jsonp('http://suggest.taobao.com/sug?' + str, (err, d) => {
+      if (currentValue === value) {
+        const result = d.result;
+        const data = [];
+        result.forEach((r)=> {
+          data.push({
+            value: r[0],
+            text: r[0],
           });
-          callback(data);
-        }
-      });
-    }, 300);
-  },
-};
+        });
+        callback(data);
+      }
+    });
+  }
+
+  timeout = setTimeout(fake, 300);
+}

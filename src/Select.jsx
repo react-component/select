@@ -1,13 +1,14 @@
 import React, {PropTypes} from 'react';
 import ReactDOM from 'react-dom';
-import {classSet, KeyCode} from 'rc-util';
+import { KeyCode } from 'rc-util';
+import classnames from 'classnames';
 import OptGroup from './OptGroup';
 import Animate from 'rc-animate';
 import {
   getPropValue, getValuePropValue, isCombobox,
   isMultipleOrTags, isMultipleOrTagsOrCombobox,
   isSingleMode, toArray,
-  } from './util';
+} from './util';
 import SelectTrigger from './SelectTrigger';
 
 function noop() {
@@ -33,7 +34,7 @@ const Select = React.createClass({
     optionLabelProp: PropTypes.string,
     optionFilterProp: PropTypes.string,
     animation: PropTypes.string,
-    choiceAnimation: PropTypes.string,
+    choiceTransitionName: PropTypes.string,
     onChange: PropTypes.func,
     onSelect: PropTypes.func,
     onSearch: PropTypes.func,
@@ -338,12 +339,12 @@ const Select = React.createClass({
     const props = this.props;
     return (<span className={props.prefixCls + '-search__field__wrap'}>
       <input ref={this.saveInputRef}
-        onChange={this.onInputChange}
-        onKeyDown={this.onInputKeyDown}
-        value={this.state.inputValue}
-        disabled={props.disabled}
-        className={props.prefixCls + '-search__field'}
-        role="textbox"/>
+             onChange={this.onInputChange}
+             onKeyDown={this.onInputKeyDown}
+             value={this.state.inputValue}
+             disabled={props.disabled}
+             className={props.prefixCls + '-search__field'}
+             role="textbox"/>
       {isMultipleOrTags(props) ? null : this.getSearchPlaceholderElement(!!this.state.inputValue)}
     </span>);
   },
@@ -375,7 +376,7 @@ const Select = React.createClass({
     });
   },
 
-  removeSelected(selectedValue, e) {
+  removeSelected(selectedValue) {
     const props = this.props;
     if (props.disabled) {
       return;
@@ -421,14 +422,11 @@ const Select = React.createClass({
     const value = this.state.value;
     const label = this.state.label;
     const props = this.props;
-    const prefixCls = props.prefixCls;
-    const allowClear = props.allowClear;
-    const clear = (<span key="clear"
-      className={prefixCls + '-selection__clear'}
-      onClick={this.onClearSelection}/>);
+    const { choiceTransitionName, prefixCls, maxTagTextLength } = props;
     // single and not combobox, input is inside dropdown
     if (isSingleMode(props)) {
-      const placeholder = (<span key="placeholder" className={prefixCls + '-selection__placeholder'}>
+      const placeholder = (<span key="placeholder"
+                                 className={prefixCls + '-selection__placeholder'}>
                            {props.placeholder}
       </span>);
       let innerNode = placeholder;
@@ -436,39 +434,41 @@ const Select = React.createClass({
         innerNode = <span key="value">{this.state.label[0]}</span>;
       }
       return (<span className={prefixCls + '-selection__rendered'}>
-        {[innerNode, allowClear ? clear : null]}
+        {innerNode}
       </span>);
     }
 
-    let selectedValueNodes;
+    let selectedValueNodes = [];
     if (isMultipleOrTags(props)) {
       selectedValueNodes = value.map((singleValue, index) => {
         let content = label[index];
         const title = content;
-        const maxTagTextLength = props.maxTagTextLength;
         if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
           content = content.slice(0, maxTagTextLength) + '...';
         }
         return (
           <li className={`${prefixCls}-selection__choice`}
-            key={singleValue}
-            title={title}>
+              key={singleValue}
+              title={title}>
             <span className={prefixCls + '-selection__choice__content'} ref={`${singleValue}-content`}>{content}</span>
             <span className={prefixCls + '-selection__choice__remove'}
-              onClick={this.removeSelected.bind(this, singleValue)}/>
+                  onClick={this.removeSelected.bind(this, singleValue)}/>
           </li>
         );
       });
     }
-    return (
-      <Animate className={prefixCls + '-selection__rendered'} component='ul' transitionName={this.props.choiceAnimation || 'zoom'} transitionAppear={true}>
+    selectedValueNodes.push(<li className={`${prefixCls}-search ${prefixCls}-search--inline`} key="__input">
+      {this.getInputElement()}
+    </li>);
+    const className = prefixCls + '-selection__rendered';
+    if (isMultipleOrTags(props) && choiceTransitionName) {
+      return (<Animate className={className}
+                       component="ul"
+                       transitionName={choiceTransitionName}>
         {selectedValueNodes}
-        {allowClear && !isMultipleOrTags(props) ? clear : <div key='null'/>}
-        <li className={`${prefixCls}-search ${prefixCls}-search--inline`} key='i'>
-          {this.getInputElement()}
-        </li>
-      </Animate>
-    );
+      </Animate>);
+    }
+    return (<ul className={className}>{selectedValueNodes}</ul>);
   },
 
   render() {
@@ -492,6 +492,10 @@ const Select = React.createClass({
       [prefixCls + '-disabled']: props.disabled,
     };
 
+    const allowClear = props.allowClear;
+    const clear = (<span key="clear"
+                         className={prefixCls + '-selection__clear'}
+                         onClick={this.onClearSelection}/>);
     return (
       <SelectTrigger {...props}
         options={props.children}
@@ -506,22 +510,23 @@ const Select = React.createClass({
         ref="trigger">
         <span
           style={props.style}
-          className={classSet(rootCls)}>
+          className={classnames(rootCls)}>
           <span ref="selection"
-            key="selection"
-            className={`${prefixCls}-selection ${prefixCls}-selection--${multiple ? 'multiple' : 'single'}`}
-            role="combobox"
-            aria-autocomplete="list"
-            aria-haspopup="true"
-            aria-expanded={state.open}
-          {...extraSelectionProps}
+                key="selection"
+                className={`${prefixCls}-selection ${prefixCls}-selection--${multiple ? 'multiple' : 'single'}`}
+                role="combobox"
+                aria-autocomplete="list"
+                aria-haspopup="true"
+                aria-expanded={state.open}
+            {...extraSelectionProps}
           >
         {ctrlNode}
-          {multiple || !props.showArrow ? null :
-            (<span key="arrow" className={prefixCls + '-arrow'} tabIndex="-1" style={{outline: 'none'}}>
+            {allowClear && !isMultipleOrTags(props) ? clear : null}
+            {multiple || !props.showArrow ? null :
+              (<span key="arrow" className={prefixCls + '-arrow'} tabIndex="-1" style={{outline: 'none'}}>
               <b/>
             </span>)}
-          {multiple ? this.getSearchPlaceholderElement(!!this.state.inputValue || this.state.value.length) : null}
+            {multiple ? this.getSearchPlaceholderElement(!!this.state.inputValue || this.state.value.length) : null}
           </span>
         </span>
       </SelectTrigger>
