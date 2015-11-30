@@ -55,7 +55,8 @@
   "dependencies": {
     "rc-menu": "4.x",
     "rc-trigger": "1.x",
-    "rc-util": "3.x"
+    "rc-util": "3.x",
+    "rc-animate": "2.0.2"
   },
   "pre-commit": [
     "lint"

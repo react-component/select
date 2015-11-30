@@ -180,17 +180,31 @@
       border-radius: 4px;
       cursor: default;
       float: left;
-      padding: 0 8px;
+      padding: 0 15px;
       margin-right: 4px;
+      position: relative;
+      overflow: hidden;
+      transition: padding .3s cubic-bezier(0.77, 0, 0.175, 1), width .3s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+      &:hover {
+        padding-left: 8px;
+        padding-right: 22px;
+        & .@{selectPrefixCls}-selection__choice__remove {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
     }
 
     .@{selectPrefixCls}-selection__choice__remove {
       color: #919191;
       cursor: pointer;
-      display: inline-block;
       font-weight: bold;
       padding: 0 0 0 8px;
-
+      position: absolute;
+      opacity: 0;
+      transform: scale(0);
+      margin-left: -6px;
+      transition: opacity .3s, transform .3s;
       &:before {
         content: '×'
       }
@@ -405,5 +419,48 @@
       border-color: transparent transparent #888 transparent;
       border-width: 0 4px 5px 4px;
     }
+  }
+}
+
+.zoom-enter, .zoom-appear {
+  opacity: 0;
+  animation-duration: .3s;
+  animation-fill-mode: both;
+  animation-play-state: paused;
+  animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.zoom-leave {
+  animation-duration: .3s;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  opacity: 1;
+}
+
+.zoom-enter.zoom-enter-active, .zoom-appear {
+  animation-play-state: running;
+  animation-name: rcRenderedZoomIn;
+}
+
+.zoom-leave.zoom-leave-active {
+  animation-play-state: running;
+  animation-name: rcRenderedZoomOut;
+}
+
+@keyframes rcRenderedZoomIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes rcRenderedZoomOut {
+  to {
+    transform: scale(0);
+    opacity: 0;
   }
 }
