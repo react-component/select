@@ -184,14 +184,23 @@
       margin-right: 4px;
       position: relative;
       overflow: hidden;
-      transition: padding .3s cubic-bezier(0.77, 0, 0.175, 1), width .3s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+      transition: padding .3s cubic-bezier(0.6, -0.28, 0.735, 0.045), width .3s cubic-bezier(0.6, -0.28, 0.735, 0.045);
       &:hover {
-        padding-left: 8px;
-        padding-right: 22px;
+        //padding-left: 8px;
+        //padding-right: 22px;
         & .@{selectPrefixCls}-selection__choice__remove {
           opacity: 1;
           transform: scale(1);
         }
+        & .@{selectPrefixCls}-selection__choice__content{
+          margin-left: -8px;
+          margin-right: 8px;
+        }
+      }
+      & .@{selectPrefixCls}-selection__choice__content{
+        margin-left: 0;
+        margin-right: 0;
+        transition: margin .3s cubic-bezier(0.165, 0.84, 0.44, 1);
       }
     }
 
@@ -203,7 +212,7 @@
       position: absolute;
       opacity: 0;
       transform: scale(0);
-      margin-left: -6px;
+      margin-left: -14px;
       transition: opacity .3s, transform .3s;
       &:before {
         content: '×'
