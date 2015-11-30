@@ -458,12 +458,11 @@ const Select = React.createClass({
         );
       });
     }
-    const Appear = true;
     return (
-      <Animate className={prefixCls + '-selection__rendered'} component={'ul'} transitionName={this.props.choiceAnimation || 'zoom'} transitionAppear={ Appear }>
+      <Animate className={prefixCls + '-selection__rendered'} component='ul' transitionName={this.props.choiceAnimation || 'zoom'} transitionAppear={true}>
         {selectedValueNodes}
-        {allowClear && !isMultipleOrTags(props) ? clear : <div key={'null'}/>}
-        <li className={`${prefixCls}-search ${prefixCls}-search--inline`} key={'i'}>
+        {allowClear && !isMultipleOrTags(props) ? clear : <div key='null'/>}
+        <li className={`${prefixCls}-search ${prefixCls}-search--inline`} key='i'>
           {this.getInputElement()}
         </li>
       </Animate>
