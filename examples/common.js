@@ -20162,12 +20162,6 @@
 	      props.onDeselect(selectedValue);
 	    }
 	    this.fireChange(value, label);
-	    var content = this.refs[selectedValue + '-content'];
-	    var dom = content.parentNode;
-	    dom.style.width = content.offsetWidth + 'px';
-	    dom.style.width = content.offsetWidth + 'px';
-	    dom.style.width = 0;
-	    dom.style.padding = 0;
 	  },
 	
 	  openIfHasChildren: function openIfHasChildren() {
@@ -20234,7 +20228,7 @@
 	            title: title },
 	          _react2['default'].createElement(
 	            'span',
-	            { className: prefixCls + '-selection__choice__content', ref: singleValue + '-content' },
+	            { className: prefixCls + '-selection__choice__content' },
 	            content
 	          ),
 	          _react2['default'].createElement('span', { className: prefixCls + '-selection__choice__remove',
