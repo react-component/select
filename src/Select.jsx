@@ -394,12 +394,6 @@ const Select = React.createClass({
       props.onDeselect(selectedValue);
     }
     this.fireChange(value, label);
-    const content = this.refs[selectedValue + '-content'];
-    const dom = content.parentNode;
-    dom.style.width = content.offsetWidth + 'px';
-    dom.style.width = content.offsetWidth + 'px';
-    dom.style.width = 0;
-    dom.style.padding = 0;
   },
 
   openIfHasChildren() {
@@ -450,7 +444,7 @@ const Select = React.createClass({
           <li className={`${prefixCls}-selection__choice`}
               key={singleValue}
               title={title}>
-            <span className={prefixCls + '-selection__choice__content'} ref={`${singleValue}-content`}>{content}</span>
+            <span className={prefixCls + '-selection__choice__content'}>{content}</span>
             <span className={prefixCls + '-selection__choice__remove'}
                   onClick={this.removeSelected.bind(this, singleValue)}/>
           </li>
