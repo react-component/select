@@ -11,6 +11,8 @@ webpackJsonp([12],{
 /***/ 249:
 /***/ function(module, exports, __webpack_require__) {
 
+	/* eslint no-console: 0 */
+	
 	'use strict';
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -47,13 +49,13 @@ webpackJsonp([12],{
 	      value: ['name2', 'name3']
 	    };
 	  },
-	  handleChange: function handleChange(value) {
+	  onChange: function onChange(value) {
 	    console.log('selected ' + value);
 	    this.setState({
 	      value: value
 	    });
 	  },
-	  handleDisabled: function handleDisabled() {
+	  toggleDisabled: function toggleDisabled() {
 	    this.setState({
 	      disabled: !this.state.disabled
 	    });
@@ -78,7 +80,7 @@ webpackJsonp([12],{
 	            disabled: this.state.disabled,
 	            maxTagTextLength: 10,
 	            value: this.state.value,
-	            onChange: this.handleChange },
+	            onChange: this.onChange },
 	          children
 	        )
 	      ),
@@ -87,7 +89,7 @@ webpackJsonp([12],{
 	        null,
 	        _react2['default'].createElement(
 	          'button',
-	          { onClick: this.handleDisabled },
+	          { onClick: this.toggleDisabled },
 	          'toggle disabled'
 	        )
 	      )

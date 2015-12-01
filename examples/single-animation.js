@@ -11,6 +11,8 @@ webpackJsonp([10],{
 /***/ 247:
 /***/ function(module, exports, __webpack_require__) {
 
+	/* eslint no-console: 0 */
+	
 	'use strict';
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -29,7 +31,7 @@ webpackJsonp([10],{
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	function handleChange(value) {
+	function onChange(value) {
 	  console.log('selected ' + value);
 	}
 	
@@ -51,7 +53,7 @@ webpackJsonp([10],{
 	        style: { width: 500 },
 	        animation: 'slide-up',
 	        showSearch: false,
-	        onChange: handleChange },
+	        onChange: onChange },
 	      _react2['default'].createElement(
 	        _rcSelect.Option,
 	        { value: 'jack' },

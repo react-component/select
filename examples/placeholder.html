@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>placeholder.js - example - rc-select@5.3.1</title>
+  <title>placeholder.js - example - rc-select@5.4.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,21 +257,21 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-select@5.3.1</h1>
+    <h1>rc-select@5.4.0</h1>
 
     <p>select ui component for react</p>
   </div>
   <div class="example" id="__react-content"></div>
   <script src="common.js?nowrap"></script>
   <script src="placeholder.js?nowrap"></script>
-  <div class="highlight"><pre><code language="js">
+  <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint no-console: 0 */</span>
 
 import React from <span class="hljs-string">'react'</span>;
 import Select, {Option} from <span class="hljs-string">'rc-select'</span>;
 import <span class="hljs-string">'rc-select/assets/index.css'</span>;
 import ReactDOM from <span class="hljs-string">'react-dom'</span>;
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handleChange</span><span class="hljs-params">(value)</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onChange</span><span class="hljs-params">(value)</span> </span>{
   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'selected '</span> + value);
 }
 
@@ -283,7 +283,7 @@ import ReactDOM from <span class="hljs-string">'react-dom'</span>;
         <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{&lt;i</span>&gt;</span>请下拉选择<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>}
         searchPlaceholder="输入过滤"
         style={{width: 500}}
-        onChange={handleChange}&gt;
+        onChange={onChange}&gt;
         <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"jack"</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">b</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span>
             <span class="hljs-attribute">color:</span> '<span class="hljs-attribute">red</span>',

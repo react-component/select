@@ -11,6 +11,8 @@ webpackJsonp([2],{
 /***/ 231:
 /***/ function(module, exports, __webpack_require__) {
 
+	/* eslint no-console: 0 */
+	
 	'use strict';
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -37,10 +39,16 @@ webpackJsonp([2],{
 	  getInitialState: function getInitialState() {
 	    return {
 	      loading: false,
+	      disabled: false,
 	      data: [],
 	      value: '',
 	      label: ''
 	    };
+	  },
+	
+	  onChange: function onChange(value, label) {
+	    console.log('select ', value, label);
+	    this.setState({ value: value, label: label });
 	  },
 	
 	  fetchData: function fetchData(value) {
@@ -57,9 +65,10 @@ webpackJsonp([2],{
 	    });
 	  },
 	
-	  handleChange: function handleChange(value, label) {
-	    console.log('select ', value, label);
-	    this.setState({ value: value, label: label });
+	  toggleDisabled: function toggleDisabled() {
+	    this.setState({
+	      disabled: !this.state.disabled
+	    });
 	  },
 	
 	  render: function render() {
@@ -93,16 +102,26 @@ webpackJsonp([2],{
 	        'force suggest'
 	      ),
 	      _react2['default'].createElement(
+	        'p',
+	        null,
+	        _react2['default'].createElement(
+	          'button',
+	          { onClick: this.toggleDisabled },
+	          'toggle disabled'
+	        )
+	      ),
+	      _react2['default'].createElement(
 	        'div',
 	        null,
 	        _react2['default'].createElement(
 	          _rcSelect2['default'],
 	          { onSearch: this.fetchData,
+	            disabled: this.state.disabled,
 	            value: this.state.value,
 	            label: this.state.label,
 	            optionLabelProp: 'children',
 	            style: { width: 500 },
-	            onChange: this.handleChange,
+	            onChange: this.onChange,
 	            filterOption: false },
 	          options
 	        )

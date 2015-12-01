@@ -9,6 +9,8 @@ webpackJsonp([0],[
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* eslint no-console: 0 */
+	
 	'use strict';
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -27,60 +29,88 @@ webpackJsonp([0],[
 	
 	__webpack_require__(229);
 	
-	function onChange(value) {
-	  console.log(value);
-	}
+	var Test = _react2['default'].createClass({
+	  displayName: 'Test',
 	
-	var c3 = _react2['default'].createElement(
-	  'div',
-	  null,
-	  _react2['default'].createElement(
-	    'h2',
-	    null,
-	    'combobox'
-	  ),
-	  _react2['default'].createElement(
-	    'div',
-	    { style: { width: 300 } },
-	    _react2['default'].createElement(
-	      _rcSelect2['default'],
-	      {
-	        style: { width: 500 },
-	        onChange: onChange,
-	        allowClear: true,
-	        defaultValue: 'l',
-	        combobox: true },
+	  getInitialState: function getInitialState() {
+	    return {
+	      disabled: false
+	    };
+	  },
+	
+	  onChange: function onChange(value) {
+	    console.log(value);
+	  },
+	
+	  toggleDisabled: function toggleDisabled() {
+	    this.setState({
+	      disabled: !this.state.disabled
+	    });
+	  },
+	
+	  render: function render() {
+	    return _react2['default'].createElement(
+	      'div',
+	      null,
 	      _react2['default'].createElement(
-	        _rcSelect.Option,
-	        { value: 'jack' },
+	        'h2',
+	        null,
+	        'combobox'
+	      ),
+	      _react2['default'].createElement(
+	        'p',
+	        null,
 	        _react2['default'].createElement(
-	          'b',
-	          { style: {
-	              color: 'red'
-	            } },
-	          'jack'
+	          'button',
+	          { onClick: this.toggleDisabled },
+	          'toggle disabled'
 	        )
 	      ),
 	      _react2['default'].createElement(
-	        _rcSelect.Option,
-	        { value: 'lucy' },
-	        'lucy'
-	      ),
-	      _react2['default'].createElement(
-	        _rcSelect.Option,
-	        { value: 'disabled', disabled: true },
-	        'disabled'
-	      ),
-	      _react2['default'].createElement(
-	        _rcSelect.Option,
-	        { value: 'yiminghe' },
-	        'yiminghe'
+	        'div',
+	        { style: { width: 300 } },
+	        _react2['default'].createElement(
+	          _rcSelect2['default'],
+	          {
+	            disabled: this.state.disabled,
+	            style: { width: 500 },
+	            onChange: this.onChange,
+	            allowClear: true,
+	            defaultValue: 'l',
+	            combobox: true },
+	          _react2['default'].createElement(
+	            _rcSelect.Option,
+	            { value: 'jack' },
+	            _react2['default'].createElement(
+	              'b',
+	              { style: {
+	                  color: 'red'
+	                } },
+	              'jack'
+	            )
+	          ),
+	          _react2['default'].createElement(
+	            _rcSelect.Option,
+	            { value: 'lucy' },
+	            'lucy'
+	          ),
+	          _react2['default'].createElement(
+	            _rcSelect.Option,
+	            { value: 'disabled', disabled: true },
+	            'disabled'
+	          ),
+	          _react2['default'].createElement(
+	            _rcSelect.Option,
+	            { value: 'yiminghe' },
+	            'yiminghe'
+	          )
+	        )
 	      )
-	    )
-	  )
-	);
+	    );
+	  }
+	});
 	
-	_reactDom2['default'].render(c3, document.getElementById('__react-content'));
+	_reactDom2['default'].render(_react2['default'].createElement(Test, null), document.getElementById('__react-content'));
 
 /***/ }
 ]);

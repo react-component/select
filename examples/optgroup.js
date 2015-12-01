@@ -11,6 +11,8 @@ webpackJsonp([6],{
 /***/ 243:
 /***/ function(module, exports, __webpack_require__) {
 
+	/* eslint no-console: 0 */
+	
 	'use strict';
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -29,7 +31,7 @@ webpackJsonp([6],{
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	function handleChange(value) {
+	function onChange(value) {
 	  console.log('selected ' + value);
 	}
 	
@@ -49,7 +51,7 @@ webpackJsonp([6],{
 	      { defaultValue: 'lucy',
 	        showSearch: false,
 	        style: { width: 500 },
-	        onChange: handleChange },
+	        onChange: onChange },
 	      _react2['default'].createElement(
 	        _rcSelect.OptGroup,
 	        { label: 'manager' },

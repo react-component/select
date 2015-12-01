@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>tags.js - example - rc-select@5.3.1</title>
+  <title>tags.js - example - rc-select@5.4.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,14 +257,14 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-select@5.3.1</h1>
+    <h1>rc-select@5.4.0</h1>
 
     <p>select ui component for react</p>
   </div>
   <div class="example" id="__react-content"></div>
   <script src="common.js?nowrap"></script>
   <script src="tags.js?nowrap"></script>
-  <div class="highlight"><pre><code language="js">
+  <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint no-console: 0 */</span>
 
 import React from <span class="hljs-string">'react'</span>;
 import Select, {Option} from <span class="hljs-string">'rc-select'</span>;
@@ -283,13 +283,13 @@ const Test = React.createClass({
       value: ['name2', 'name3'],
     };
   },
-  handleChange(value) {
+  onChange(value) {
     console.log('selected ' + value);
     this.setState({
       value: value,
     });
   },
-  handleDisabled() {
+  toggleDisabled() {
     this.setState({
       disabled: !this.state.disabled,
     });
@@ -306,12 +306,12 @@ const Test = React.createClass({
                   <span class="hljs-attribute">disabled</span>=<span class="hljs-value">{this.state.disabled}</span>
                   <span class="hljs-attribute">maxTagTextLength</span>=<span class="hljs-value">{10}</span>
                   <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value}</span>
-                  <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.handleChange}</span>&gt;</span>
+                  <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>&gt;</span>
             {children}
           <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.handleDisabled}</span>&gt;</span>toggle disabled<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.toggleDisabled}</span>&gt;</span>toggle disabled<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     );

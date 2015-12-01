@@ -20264,7 +20264,11 @@
 	    var props = this.props;
 	    var multiple = (0, _util.isMultipleOrTags)(props);
 	    var state = this.state;
+	    var className = props.className;
+	    var disabled = props.disabled;
+	    var allowClear = props.allowClear;
 	    var prefixCls = props.prefixCls;
+	
 	    var ctrlNode = this.renderTopControlNode();
 	    var extraSelectionProps = {};
 	    if (!(0, _util.isCombobox)(props)) {
@@ -20273,9 +20277,8 @@
 	        tabIndex: 0
 	      };
 	    }
-	    var rootCls = (_rootCls = {}, _defineProperty(_rootCls, props.className, !!props.className), _defineProperty(_rootCls, prefixCls, 1), _defineProperty(_rootCls, prefixCls + '-open', state.open), _defineProperty(_rootCls, prefixCls + '-combobox', (0, _util.isCombobox)(props)), _defineProperty(_rootCls, prefixCls + '-disabled', props.disabled), _rootCls);
+	    var rootCls = (_rootCls = {}, _defineProperty(_rootCls, className, !!className), _defineProperty(_rootCls, prefixCls, 1), _defineProperty(_rootCls, prefixCls + '-open', state.open), _defineProperty(_rootCls, prefixCls + '-combobox', (0, _util.isCombobox)(props)), _defineProperty(_rootCls, prefixCls + '-disabled', disabled), _defineProperty(_rootCls, prefixCls + '-enabled', !disabled), _rootCls);
 	
-	    var allowClear = props.allowClear;
 	    var clear = _react2['default'].createElement('span', { key: 'clear',
 	      className: prefixCls + '-selection__clear',
 	      onClick: this.onClearSelection });
@@ -20284,6 +20287,7 @@
 	      _extends({}, props, {
 	        options: props.children,
 	        multiple: multiple,
+	        disabled: disabled,
 	        visible: state.open,
 	        inputValue: state.inputValue,
 	        inputElement: this.getInputElement(),
@@ -25694,18 +25698,22 @@
 	    if (!search && !menuItems.length) {
 	      visible = false;
 	    }
+	    var popupElement = this.getDropdownElement({
+	      menuItems: menuItems,
+	      search: search,
+	      multiple: multiple,
+	      visible: visible
+	    });
 	    return _react2['default'].createElement(
 	      _rcTrigger2['default'],
-	      { action: ['click'],
+	      { action: props.disabled ? [] : ['click'],
 	        ref: 'trigger',
 	        popupPlacement: 'bottomLeft',
 	        builtinPlacements: BUILT_IN_PLACEMENTS,
 	        prefixCls: dropdownPrefixCls,
 	        popupTransitionName: this.getDropdownTransitionName(),
 	        onPopupVisibleChange: props.onDropdownVisibleChange,
-	        popup: this.getDropdownElement({
-	          menuItems: menuItems, search: search, multiple: multiple, visible: visible
-	        }),
+	        popup: popupElement,
 	        popupVisible: visible,
 	        popupClassName: (0, _classnames2['default'])(popupClassName),
 	        popupStyle: props.dropdownStyle
