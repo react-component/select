@@ -1,11 +1,11 @@
-
+/* eslint no-console: 0 */
 
 import React from 'react';
 import Select, {Option, OptGroup} from 'rc-select';
 import 'rc-select/assets/index.less';
 import ReactDOM from 'react-dom';
 
-function handleChange(value) {
+function onChange(value) {
   console.log('selected ' + value);
 }
 
@@ -16,7 +16,7 @@ const c1 = (
       <Select defaultValue="lucy"
         showSearch={false}
         style={{width: 500}}
-        onChange={handleChange}>
+        onChange={onChange}>
         <OptGroup label="manager">
           <Option value="jack">
             <b style={{

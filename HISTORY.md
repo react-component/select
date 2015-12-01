@@ -1,6 +1,10 @@
 # History
 ----
 
+## 5.4.0 / 2015-12-01
+
+- fix disabled for old ie
+
 ## 5.3.0 / 2015-11-30
 
 - add choiceTransitionName prop

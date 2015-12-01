@@ -469,7 +469,7 @@ const Select = React.createClass({
     const props = this.props;
     const multiple = isMultipleOrTags(props);
     const state = this.state;
-    const prefixCls = props.prefixCls;
+    const {className, disabled, allowClear, prefixCls} = props;
     const ctrlNode = this.renderTopControlNode();
     let extraSelectionProps = {};
     if (!isCombobox(props)) {
@@ -479,14 +479,14 @@ const Select = React.createClass({
       };
     }
     const rootCls = {
-      [props.className]: !!props.className,
+      [className]: !!className,
       [prefixCls]: 1,
       [prefixCls + '-open']: state.open,
       [prefixCls + '-combobox']: isCombobox(props),
-      [prefixCls + '-disabled']: props.disabled,
+      [prefixCls + '-disabled']: disabled,
+      [prefixCls + '-enabled']: !disabled,
     };
 
-    const allowClear = props.allowClear;
     const clear = (<span key="clear"
                          className={prefixCls + '-selection__clear'}
                          onClick={this.onClearSelection}/>);
@@ -494,6 +494,7 @@ const Select = React.createClass({
       <SelectTrigger {...props}
         options={props.children}
         multiple={multiple}
+        disabled={disabled}
         visible={state.open}
         inputValue={state.inputValue}
         inputElement={this.getInputElement()}

@@ -1,11 +1,11 @@
-
+/* eslint no-console: 0 */
 
 import React from 'react';
 import Select, {Option} from 'rc-select';
 import 'rc-select/assets/index.less';
 import ReactDOM from 'react-dom';
 
-function handleChange(value) {
+function onChange(value) {
   console.log('selected ' + value);
 }
 
@@ -19,7 +19,7 @@ const c1 = (
               style={{width: 500}}
               animation="slide-up"
               showSearch={false}
-              onChange={handleChange}>
+              onChange={onChange}>
         <Option value="jack">
           <b style={{
             color: 'red',

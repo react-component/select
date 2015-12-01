@@ -1,4 +1,4 @@
-
+/* eslint no-console: 0 */
 
 import React from 'react';
 import Select, {Option} from 'rc-select';
@@ -17,13 +17,13 @@ const Test = React.createClass({
       value: ['name2', 'name3'],
     };
   },
-  handleChange(value) {
+  onChange(value) {
     console.log('selected ' + value);
     this.setState({
       value: value,
     });
   },
-  handleDisabled() {
+  toggleDisabled() {
     this.setState({
       disabled: !this.state.disabled,
     });
@@ -40,12 +40,12 @@ const Test = React.createClass({
                   disabled={this.state.disabled}
                   maxTagTextLength={10}
                   value={this.state.value}
-                  onChange={this.handleChange}>
+                  onChange={this.onChange}>
             {children}
           </Select>
         </div>
         <p>
-          <button onClick={this.handleDisabled}>toggle disabled</button>
+          <button onClick={this.toggleDisabled}>toggle disabled</button>
         </p>
       </div>
     );

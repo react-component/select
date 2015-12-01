@@ -56,24 +56,15 @@
     background-color: #fff;
     border-radius: 6px;
     border: 1px solid #d9d9d9;
+  }
+
+  &-enabled &-selection {
     &:hover {
       border-color: #23c0fa;
       box-shadow: 0 0 2px fadeout(#2db7f5, 20%);
     }
     &:active {
       border-color: #2db7f5;
-    }
-  }
-
-  &-disabled {
-    color: #ccc;
-    cursor: not-allowed;
-    pointer-events: none;
-  }
-
-  &-disabled &-selection {
-    &:hover, &:active {
-      border-color: #d9d9d9;
     }
   }
 
@@ -92,7 +83,6 @@
     }
 
     .@{selectPrefixCls}-selection__clear {
-      cursor: pointer;
       font-weight: bold;
       position: absolute;
       top: 5px;
@@ -104,11 +94,19 @@
     }
   }
 
-  &-disabled &-selection__choice__remove {
+  &-disabled {
     color: #ccc;
-    cursor: default;
-    &:hover {
+    cursor: not-allowed;
+
+    .@{selectPrefixCls}-selection--single,
+    .@{selectPrefixCls}-selection__choice__remove {
+      cursor: not-allowed;
       color: #ccc;
+
+      &:hover {
+        cursor: not-allowed;
+        color: #ccc;
+      }
     }
   }
 
@@ -143,9 +141,12 @@
     }
   }
 
+  &-enabled&-selection--multiple {
+    cursor: text;
+  }
+
   &-selection--multiple {
     min-height: 28px;
-    cursor: text;
 
     .@{selectPrefixCls}-search--inline {
       width: auto;
@@ -172,80 +173,82 @@
       height: 20px;
       line-height: 20px;
     }
+  }
 
+  &-enabled {
     .@{selectPrefixCls}-selection__choice {
-      background-color: #f3f3f3;
-      border-radius: 4px;
       cursor: default;
-      float: left;
-      padding: 0 15px;
-      margin-right: 4px;
-      position: relative;
-      overflow: hidden;
-      transition: padding .3s cubic-bezier(0.6, -0.28, 0.735, 0.045), width .3s cubic-bezier(0.6, -0.28, 0.735, 0.045);
-
       &:hover {
-        //padding-left: 8px;
-        //padding-right: 22px;
-        & .@{selectPrefixCls}-selection__choice__remove {
+        .@{selectPrefixCls}-selection__choice__remove {
           opacity: 1;
           transform: scale(1);
         }
-        & .@{selectPrefixCls}-selection__choice__content {
+        .@{selectPrefixCls}-selection__choice__content {
           margin-left: -8px;
           margin-right: 8px;
         }
       }
+    }
+  }
 
-      & .@{selectPrefixCls}-selection__choice__content {
-        margin-left: 0;
-        margin-right: 0;
-        transition: margin .3s cubic-bezier(0.165, 0.84, 0.44, 1);
-      }
+  & &-selection__choice {
+    background-color: #f3f3f3;
+    border-radius: 4px;
+    float: left;
+    padding: 0 15px;
+    margin-right: 4px;
+    position: relative;
+    overflow: hidden;
+    transition: padding .3s cubic-bezier(0.6, -0.28, 0.735, 0.045), width .3s cubic-bezier(0.6, -0.28, 0.735, 0.045);
 
-      &-zoom-enter, &-zoom-appear, &-zoom-leave {
-        .effect();
+    &__content {
+      margin-left: 0;
+      margin-right: 0;
+      transition: margin .3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    &-zoom-enter, &-zoom-appear, &-zoom-leave {
+      .effect();
+      opacity: 0;
+      animation-play-state: paused;
+      animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    &-zoom-leave {
+      opacity: 1;
+      animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+    }
+
+    &-zoom-enter.@{selectPrefixCls}-selection__choice-zoom-enter-active,
+    &-zoom-appear.@{selectPrefixCls}-selection__choice-zoom-appear-active {
+      animation-play-state: running;
+      animation-name: rcSelectChoiceZoomIn;
+    }
+
+    &-zoom-leave.@{selectPrefixCls}-selection__choice-zoom-leave-active {
+      animation-play-state: running;
+      animation-name: rcSelectChoiceZoomOut;
+    }
+
+    @keyframes rcSelectChoiceZoomIn {
+      0% {
+        transform: scale(0.6);
         opacity: 0;
-        animation-play-state: paused;
-        animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
       }
-
-      &-zoom-leave {
+      100% {
+        transform: scale(1);
         opacity: 1;
-        animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);
-      }
-
-      &-zoom-enter.@{selectPrefixCls}-selection__choice-zoom-enter-active,
-      &-zoom-appear.@{selectPrefixCls}-selection__choice-zoom-appear-active {
-        animation-play-state: running;
-        animation-name: rcSelectChoiceZoomIn;
-      }
-
-      &-zoom-leave.@{selectPrefixCls}-selection__choice-zoom-leave-active {
-        animation-play-state: running;
-        animation-name: rcSelectChoiceZoomOut;
-      }
-
-      @keyframes rcSelectChoiceZoomIn {
-        0% {
-          transform: scale(0.6);
-          opacity: 0;
-        }
-        100% {
-          transform: scale(1);
-          opacity: 1;
-        }
-      }
-
-      @keyframes rcSelectChoiceZoomOut {
-        to {
-          transform: scale(0);
-          opacity: 0;
-        }
       }
     }
 
-    .@{selectPrefixCls}-selection__choice__remove {
+    @keyframes rcSelectChoiceZoomOut {
+      to {
+        transform: scale(0);
+        opacity: 0;
+      }
+    }
+
+    &__remove {
       color: #919191;
       cursor: pointer;
       font-weight: bold;
@@ -329,12 +332,12 @@
         &-active {
           background-color: #5897fb;
           color: white;
+          cursor: pointer;
         }
 
         &-disabled {
           color: #ccc;
           cursor: not-allowed;
-          pointer-events: none;
         }
 
         &-divider {

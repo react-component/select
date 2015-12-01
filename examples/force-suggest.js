@@ -1,4 +1,4 @@
-
+/* eslint no-console: 0 */
 
 import React from 'react';
 import Select, {Option} from 'rc-select';
@@ -10,10 +10,16 @@ const Search = React.createClass({
   getInitialState() {
     return {
       loading: false,
+      disabled: false,
       data: [],
       value: '',
       label: '',
     };
+  },
+
+  onChange(value, label) {
+    console.log('select ', value, label);
+    this.setState({value, label});
   },
 
   fetchData(value) {
@@ -28,9 +34,10 @@ const Search = React.createClass({
     });
   },
 
-  handleChange(value, label) {
-    console.log('select ', value, label);
-    this.setState({value, label});
+  toggleDisabled() {
+    this.setState({
+      disabled: !this.state.disabled,
+    });
   },
 
   render() {
@@ -45,14 +52,17 @@ const Search = React.createClass({
     }
     return (<div>
       <h2>force suggest</h2>
-
+      <p>
+        <button onClick={this.toggleDisabled}>toggle disabled</button>
+      </p>
       <div>
         <Select onSearch={this.fetchData}
+                disabled={this.state.disabled}
                 value={this.state.value}
                 label={this.state.label}
                 optionLabelProp="children"
                 style={{width: 500}}
-                onChange={this.handleChange}
+                onChange={this.onChange}
                 filterOption={false}>
           {options}
         </Select>

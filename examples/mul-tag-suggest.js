@@ -1,4 +1,4 @@
-
+/* eslint no-console: 0 */
 
 import React from 'react';
 import Select, {Option} from 'rc-select';

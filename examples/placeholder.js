@@ -1,11 +1,11 @@
-
+/* eslint no-console: 0 */
 
 import React from 'react';
 import Select, {Option} from 'rc-select';
 import 'rc-select/assets/index.less';
 import ReactDOM from 'react-dom';
 
-function handleChange(value) {
+function onChange(value) {
   console.log('selected ' + value);
 }
 
@@ -17,7 +17,7 @@ const c1 = (
         placeholder={<i>请下拉选择</i>}
         searchPlaceholder="输入过滤"
         style={{width: 500}}
-        onChange={handleChange}>
+        onChange={onChange}>
         <Option value="jack">
           <b style={{
             color: 'red',
