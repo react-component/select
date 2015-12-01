@@ -141,6 +141,10 @@ const Select = React.createClass({
   },
 
   onDropdownVisibleChange(open) {
+    const props = this.props;
+    if (props.disabled) {
+      return;
+    }
     this.setOpenState(open);
   },
 

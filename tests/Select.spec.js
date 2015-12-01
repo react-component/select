@@ -89,6 +89,18 @@ describe('Select', () => {
     expect(TestUtils.scryRenderedDOMComponentsWithClass(instance, 'rc-select-selection__clear').length).to.be(1);
   });
 
+  it.only('should not response click event when select is disabled', (done) => {
+    instance = ReactDOM.render(
+      <Select disabled defaultValue="2">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>, div);
+    Simulate.click(ReactDOM.findDOMNode(instance.refs.selection));
+    console.log(instance.state);
+    expect(instance.state.open).to.be(undefined);
+    done();
+  });
+
   describe('when open', function test() {
     this.timeout(400000);
 
