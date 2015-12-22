@@ -63,6 +63,7 @@ const SelectTrigger = React.createClass({
       onMenuSelect={props.onMenuSelect}
       onMenuDeselect={props.onMenuDeselect}
       value={props.value}
+      defaultActiveFirstOption={props.defaultActiveFirstOption}
       dropdownMenuStyle={props.dropdownMenuStyle}
     />);
   },

@@ -24,6 +24,7 @@ function saveRef(name, component) {
 
 const Select = React.createClass({
   propTypes: {
+    defaultActiveFirstOption: PropTypes.bool,
     multiple: PropTypes.bool,
     filterOption: PropTypes.any,
     showSearch: PropTypes.bool,
@@ -53,6 +54,7 @@ const Select = React.createClass({
     return {
       prefixCls: 'rc-select',
       filterOption: filterFn,
+      defaultActiveFirstOption: true,
       showSearch: true,
       allowClear: false,
       placeholder: '',

@@ -1,6 +1,10 @@
 # History
 ----
 
+## 5.5.0 / 2015-12-22
+
+- add defaultActiveFirstOption prop
+
 ## 5.4.0 / 2015-12-01
 
 - fix disabled for old ie

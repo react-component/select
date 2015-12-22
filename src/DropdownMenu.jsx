@@ -16,33 +16,34 @@ const DropdownMenu = React.createClass({
 
   renderMenu() {
     const props = this.props;
-    const menuItems = props.menuItems;
+    const { menuItems,
+      defaultActiveFirstOption, value,
+      dropdownMenuStyle, prefixCls,
+      multiple, onMenuDeselect,
+      onMenuSelect } = props;
     if (menuItems && menuItems.length) {
       const menuProps = {};
-      if (props.multiple) {
-        menuProps.onDeselect = props.onMenuDeselect;
-        menuProps.onSelect = props.onMenuSelect;
+      if (multiple) {
+        menuProps.onDeselect = onMenuDeselect;
+        menuProps.onSelect = onMenuSelect;
       } else {
-        menuProps.onClick = props.onMenuSelect;
+        menuProps.onClick = onMenuSelect;
       }
-      const value = props.value;
       const selectedKeys = getSelectKeys(menuItems, value);
       const activeKeyProps = {};
-      if (!props.multiple) {
-        if (selectedKeys.length === 1) {
-          activeKeyProps.activeKey = selectedKeys[0];
-        }
+      if (!multiple) {
+        activeKeyProps.activeKey = selectedKeys[0];
       }
       return (<Menu
         ref="menu"
-        defaultActiveFirst
-        style={props.dropdownMenuStyle}
+        defaultActiveFirst={defaultActiveFirstOption}
+        style={dropdownMenuStyle}
         {...activeKeyProps}
-        multiple={props.multiple}
+        multiple={multiple}
         focusable={false}
         {...menuProps}
         selectedKeys={selectedKeys}
-        prefixCls={`${props.prefixCls}-menu`}>
+        prefixCls={`${prefixCls}-menu`}>
         {menuItems}
       </Menu>);
     }

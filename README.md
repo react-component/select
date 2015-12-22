@@ -83,6 +83,12 @@ React.render(c, container);
           <td>additional css class of root dom node</td>
         </tr>
         <tr>
+          <td>defaultActiveFirstOption</td>
+          <td></td>
+          <td>true</td>
+          <td>whether active first option by default</td>
+        </tr>
+        <tr>
           <td>filterOption</td>
           <td></td>
           <td>true|Function(inputValue:string, option:Option)</td>
