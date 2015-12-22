@@ -927,6 +927,7 @@ webpackJsonp([11],{
 	          {
 	            style: { width: 500 },
 	            combobox: true,
+	            defaultActiveFirstOption: false,
 	            showArrow: false,
 	            notFoundContent: '',
 	            onChange: this.fetchData, onSelect: this.handleSelect, filterOption: false },

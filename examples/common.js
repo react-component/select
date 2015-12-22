@@ -19775,6 +19775,7 @@
 	  displayName: 'Select',
 	
 	  propTypes: {
+	    defaultActiveFirstOption: _react.PropTypes.bool,
 	    multiple: _react.PropTypes.bool,
 	    filterOption: _react.PropTypes.any,
 	    showSearch: _react.PropTypes.bool,
@@ -19804,6 +19805,7 @@
 	    return {
 	      prefixCls: 'rc-select',
 	      filterOption: filterFn,
+	      defaultActiveFirstOption: true,
 	      showSearch: true,
 	      allowClear: false,
 	      placeholder: '',
@@ -23701,13 +23703,12 @@
 	
 	var _DOMWrap2 = _interopRequireDefault(_DOMWrap);
 	
-	function getActiveKey(props) {
-	  var activeKey = props.activeKey;
+	function getActiveKey(props, activeKey) {
 	  var children = props.children;
 	  var eventKey = props.eventKey;
 	  if (activeKey) {
 	    var found = undefined;
-	    _react2['default'].Children.forEach(children, function (c, i) {
+	    _react.Children.forEach(children, function (c, i) {
 	      if (!c.props.disabled && activeKey === (0, _util.getKeyFromChildrenIndex)(c, eventKey, i)) {
 	        found = true;
 	      }
@@ -23718,7 +23719,7 @@
 	  }
 	  activeKey = null;
 	  if (props.defaultActiveFirst) {
-	    _react2['default'].Children.forEach(children, function (c, i) {
+	    _react.Children.forEach(children, function (c, i) {
 	      if (!activeKey && !c.props.disabled) {
 	        activeKey = (0, _util.getKeyFromChildrenIndex)(c, eventKey, i);
 	      }
@@ -23741,17 +23742,17 @@
 	
 	var MenuMixin = {
 	  propTypes: {
-	    focusable: _react2['default'].PropTypes.bool,
-	    multiple: _react2['default'].PropTypes.bool,
-	    style: _react2['default'].PropTypes.object,
-	    defaultActiveFirst: _react2['default'].PropTypes.bool,
-	    visible: _react2['default'].PropTypes.bool,
-	    activeKey: _react2['default'].PropTypes.string,
-	    selectedKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
-	    defaultSelectedKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
-	    defaultOpenKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
-	    openKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
-	    children: _react2['default'].PropTypes.any
+	    focusable: _react.PropTypes.bool,
+	    multiple: _react.PropTypes.bool,
+	    style: _react.PropTypes.object,
+	    defaultActiveFirst: _react.PropTypes.bool,
+	    visible: _react.PropTypes.bool,
+	    activeKey: _react.PropTypes.string,
+	    selectedKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
+	    defaultSelectedKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
+	    defaultOpenKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
+	    openKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
+	    children: _react.PropTypes.any
 	  },
 	
 	  getDefaultProps: function getDefaultProps() {
@@ -23770,15 +23771,14 @@
 	  getInitialState: function getInitialState() {
 	    var props = this.props;
 	    return {
-	      activeKey: getActiveKey(props)
+	      activeKey: getActiveKey(props, props.activeKey)
 	    };
 	  },
 	
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	    var props = {};
-	    if ('activeKey' in nextProps) {
-	      props.activeKey = getActiveKey(nextProps);
-	    }
+	    var props = {
+	      activeKey: getActiveKey(nextProps, nextProps.activeKey || this.state.activeKey)
+	    };
 	    this.setState(props);
 	  },
 	
@@ -23935,7 +23935,7 @@
 	          hiddenClassName: props.prefixCls + '-hidden',
 	          visible: props.visible
 	        }, domProps),
-	        _react2['default'].Children.map(props.children, this.renderMenuItem)
+	        _react.Children.map(props.children, this.renderMenuItem)
 	      )
 	      /*eslint-enable */
 	
@@ -25566,6 +25566,7 @@
 	      onMenuSelect: props.onMenuSelect,
 	      onMenuDeselect: props.onMenuDeselect,
 	      value: props.value,
+	      defaultActiveFirstOption: props.defaultActiveFirstOption,
 	      dropdownMenuStyle: props.dropdownMenuStyle
 	    }));
 	  },
@@ -27595,34 +27596,39 @@
 	  renderMenu: function renderMenu() {
 	    var props = this.props;
 	    var menuItems = props.menuItems;
+	    var defaultActiveFirstOption = props.defaultActiveFirstOption;
+	    var value = props.value;
+	    var dropdownMenuStyle = props.dropdownMenuStyle;
+	    var prefixCls = props.prefixCls;
+	    var multiple = props.multiple;
+	    var onMenuDeselect = props.onMenuDeselect;
+	    var onMenuSelect = props.onMenuSelect;
+	
 	    if (menuItems && menuItems.length) {
 	      var menuProps = {};
-	      if (props.multiple) {
-	        menuProps.onDeselect = props.onMenuDeselect;
-	        menuProps.onSelect = props.onMenuSelect;
+	      if (multiple) {
+	        menuProps.onDeselect = onMenuDeselect;
+	        menuProps.onSelect = onMenuSelect;
 	      } else {
-	        menuProps.onClick = props.onMenuSelect;
+	        menuProps.onClick = onMenuSelect;
 	      }
-	      var value = props.value;
 	      var selectedKeys = (0, _util.getSelectKeys)(menuItems, value);
 	      var activeKeyProps = {};
-	      if (!props.multiple) {
-	        if (selectedKeys.length === 1) {
-	          activeKeyProps.activeKey = selectedKeys[0];
-	        }
+	      if (!multiple) {
+	        activeKeyProps.activeKey = selectedKeys[0];
 	      }
 	      return _react2['default'].createElement(
 	        _rcMenu2['default'],
 	        _extends({
 	          ref: 'menu',
-	          defaultActiveFirst: true,
-	          style: props.dropdownMenuStyle
+	          defaultActiveFirst: defaultActiveFirstOption,
+	          style: dropdownMenuStyle
 	        }, activeKeyProps, {
-	          multiple: props.multiple,
+	          multiple: multiple,
 	          focusable: false
 	        }, menuProps, {
 	          selectedKeys: selectedKeys,
-	          prefixCls: props.prefixCls + '-menu' }),
+	          prefixCls: prefixCls + '-menu' }),
 	        menuItems
 	      );
 	    }
