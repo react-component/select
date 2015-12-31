@@ -1,4 +1,5 @@
 import React from 'react';
+import {findDOMNode} from 'react-dom';
 import {getSelectKeys} from './util';
 import Menu from 'rc-menu';
 
@@ -9,9 +10,29 @@ const DropdownMenu = React.createClass({
     search: React.PropTypes.any,
   },
 
+  componentDidMount() {
+    this.scrollActiveItemToView();
+  },
+
   shouldComponentUpdate(nextProps) {
     // freeze when hide
     return nextProps.visible;
+  },
+
+  componentDidUpdate(prevProps) {
+    const props = this.props;
+    if (!prevProps.visible && props.visible) {
+      this.scrollActiveItemToView();
+    }
+  },
+
+  scrollActiveItemToView() {
+    // scroll into view
+    const itemComponent = findDOMNode(this).querySelectorAll('[aria-selected=true]')[0];
+    if (itemComponent) {
+      const target = findDOMNode(itemComponent);
+      target.parentNode.scrollTop = target.offsetTop;
+    }
   },
 
   renderMenu() {
