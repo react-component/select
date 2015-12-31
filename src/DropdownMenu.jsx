@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {cloneElement} from 'react';
 import {findDOMNode} from 'react-dom';
 import {getSelectKeys} from './util';
 import Menu from 'rc-menu';
@@ -28,7 +28,7 @@ const DropdownMenu = React.createClass({
 
   scrollActiveItemToView() {
     // scroll into view
-    const itemComponent = findDOMNode(this).querySelectorAll('[aria-selected=true]')[0];
+    const itemComponent = findDOMNode(this.firstActiveItem);
     if (itemComponent) {
       const target = findDOMNode(itemComponent);
       target.parentNode.scrollTop = target.offsetTop;
@@ -55,6 +55,16 @@ const DropdownMenu = React.createClass({
       if (!multiple) {
         activeKeyProps.activeKey = selectedKeys[0];
       }
+      // set firstActiveItem via cloning menus
+      // for scroll into view
+      const clonedMenuItems = menuItems.map(item => {
+        if (selectedKeys.indexOf(item.key) === 0) {
+          return cloneElement(item, {
+            ref: (ref) => { this.firstActiveItem = ref; },
+          });
+        }
+        return item;
+      });
       return (<Menu
         ref="menu"
         defaultActiveFirst={defaultActiveFirstOption}
@@ -65,7 +75,7 @@ const DropdownMenu = React.createClass({
         {...menuProps}
         selectedKeys={selectedKeys}
         prefixCls={`${prefixCls}-menu`}>
-        {menuItems}
+        {clonedMenuItems}
       </Menu>);
     }
     return null;
