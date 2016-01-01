@@ -1,7 +1,8 @@
 import React, {cloneElement} from 'react';
 import {findDOMNode} from 'react-dom';
 import {getSelectKeys} from './util';
-import Menu from 'rc-menu';
+import Menu, {ItemGroup as MenuItemGroup} from 'rc-menu';
+import scrollIntoView from 'dom-scroll-into-view';
 
 const DropdownMenu = React.createClass({
   propTypes: {
@@ -30,8 +31,9 @@ const DropdownMenu = React.createClass({
     // scroll into view
     const itemComponent = findDOMNode(this.firstActiveItem);
     if (itemComponent) {
-      const target = findDOMNode(itemComponent);
-      target.parentNode.scrollTop = target.offsetTop;
+      scrollIntoView(itemComponent, findDOMNode(this.refs.menu), {
+        onlyScrollIfNeeded: true,
+      });
     }
   },
 
@@ -52,19 +54,34 @@ const DropdownMenu = React.createClass({
       }
       const selectedKeys = getSelectKeys(menuItems, value);
       const activeKeyProps = {};
+
+      let clonedMenuItems = menuItems;
       if (!multiple) {
         activeKeyProps.activeKey = selectedKeys[0];
+        let foundFirst = false;
+        // set firstActiveItem via cloning menus
+        // for scroll into view
+        const clone = (item) => {
+          if (!foundFirst && selectedKeys.indexOf(item.key) !== -1) {
+            foundFirst = true;
+            return cloneElement(item, {
+              ref: (ref) => {
+                this.firstActiveItem = ref;
+              },
+            });
+          }
+          return item;
+        };
+
+        clonedMenuItems = menuItems.map(item => {
+          if (item.type === MenuItemGroup) {
+            const children = item.props.children.map(clone);
+            return cloneElement(item, {}, children);
+          }
+          return clone(item);
+        });
       }
-      // set firstActiveItem via cloning menus
-      // for scroll into view
-      const clonedMenuItems = menuItems.map(item => {
-        if (selectedKeys.indexOf(item.key) === 0) {
-          return cloneElement(item, {
-            ref: (ref) => { this.firstActiveItem = ref; },
-          });
-        }
-        return item;
-      });
+
       return (<Menu
         ref="menu"
         defaultActiveFirst={defaultActiveFirstOption}
@@ -80,6 +97,7 @@ const DropdownMenu = React.createClass({
     }
     return null;
   },
+
   render() {
     return (<div>
       {this.props.search}
