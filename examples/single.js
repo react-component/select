@@ -9,7 +9,7 @@ const Test = React.createClass({
   getInitialState() {
     return {
       destroy: false,
-      value: '1',
+      value: '9',
     };
   },
 

@@ -1,6 +1,10 @@
 # History
 ----
 
+## 5.6.0 / 2016-01-01
+
+- scroll to active item when open menu on single mode
+
 ## 5.5.0 / 2015-12-22
 
 - add defaultActiveFirstOption prop
