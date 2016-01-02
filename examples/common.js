@@ -27633,7 +27633,7 @@
 	        var activeKeyProps = {};
 	
 	        var clonedMenuItems = menuItems;
-	        if (!multiple && selectedKeys.length) {
+	        if (selectedKeys.length) {
 	          (function () {
 	            activeKeyProps.activeKey = selectedKeys[0];
 	            var foundFirst = false;

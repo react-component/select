@@ -99,7 +99,6 @@ webpackJsonp([5],{
 	            dropdownMenuStyle: dropdownMenuStyle,
 	            style: { width: 500 },
 	            multiple: true,
-	            defaultValue: ['name2', 'name3'],
 	            onSelect: onSelect,
 	            onDeselect: onDeselect,
 	            onChange: onChange },
