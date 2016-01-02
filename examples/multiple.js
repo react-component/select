@@ -53,7 +53,6 @@ const Test = React.createClass({
             dropdownMenuStyle={dropdownMenuStyle}
             style={{width: 500}}
             multiple
-            defaultValue={['name2', 'name3']}
             onSelect={onSelect}
             onDeselect={onDeselect}
             onChange={onChange}>

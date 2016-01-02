@@ -56,7 +56,7 @@ const DropdownMenu = React.createClass({
       const activeKeyProps = {};
 
       let clonedMenuItems = menuItems;
-      if (!multiple && selectedKeys.length) {
+      if (selectedKeys.length) {
         activeKeyProps.activeKey = selectedKeys[0];
         let foundFirst = false;
         // set firstActiveItem via cloning menus
