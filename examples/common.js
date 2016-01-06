@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		13:0
+/******/ 		14:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"combobox","1":"email","2":"force-suggest","3":"mul-suggest","4":"mul-tag-suggest","5":"multiple","6":"optgroup","7":"optionFilterProp","8":"placeholder","9":"single","10":"single-animation","11":"suggest","12":"tags"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"combobox","1":"email","2":"force-suggest","3":"getPopupContainer","4":"mul-suggest","5":"mul-tag-suggest","6":"multiple","7":"optgroup","8":"optionFilterProp","9":"placeholder","10":"single","11":"single-animation","12":"suggest","13":"tags"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -25696,6 +25696,7 @@
 	      _rcTrigger2['default'],
 	      { action: props.disabled ? [] : ['click'],
 	        ref: 'trigger',
+	        getPopupContainer: props.getPopupContainer,
 	        popupPlacement: 'bottomLeft',
 	        builtinPlacements: BUILT_IN_PLACEMENTS,
 	        prefixCls: dropdownPrefixCls,
@@ -25833,7 +25834,7 @@
 	        var self = _this;
 	        _reactDom2['default'].unstable_renderSubtreeIntoContainer(_this, _this.getPopupElement(), _this.getPopupContainer(), function renderPopup() {
 	          if (this.isMounted()) {
-	            self.popupDomNode = _reactDom2['default'].findDOMNode(this);
+	            self.popupDomNode = (0, _reactDom.findDOMNode)(this);
 	          } else {
 	            self.popupDomNode = null;
 	          }
@@ -25869,7 +25870,7 @@
 	    if (popupContainer) {
 	      _reactDom2['default'].unmountComponentAtNode(popupContainer);
 	      if (this.props.getPopupContainer) {
-	        var mountNode = this.props.getPopupContainer();
+	        var mountNode = this.props.getPopupContainer((0, _reactDom.findDOMNode)(this));
 	        mountNode.removeChild(popupContainer);
 	      } else {
 	        document.body.removeChild(popupContainer);
@@ -25937,7 +25938,7 @@
 	
 	  onDocumentClick: function onDocumentClick(event) {
 	    var target = event.target;
-	    var root = _reactDom2['default'].findDOMNode(this);
+	    var root = (0, _reactDom.findDOMNode)(this);
 	    var popupNode = this.getPopupDomNode();
 	    if (!_rcUtil.Dom.contains(root, target) && !_rcUtil.Dom.contains(popupNode, target)) {
 	      this.setPopupVisible(false);
@@ -25953,7 +25954,7 @@
 	    if (!this.popupContainer) {
 	      this.popupContainer = document.createElement('div');
 	      if (this.props.getPopupContainer) {
-	        var mountNode = this.props.getPopupContainer();
+	        var mountNode = this.props.getPopupContainer((0, _reactDom.findDOMNode)(this));
 	        mountNode.appendChild(this.popupContainer);
 	      } else {
 	        document.body.appendChild(this.popupContainer);

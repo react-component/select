@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>mul-tag-suggest.js - example - rc-select@5.7.0</title>
+  <title>getPopupContainer.js - example - rc-select@5.7.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -251,7 +251,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   <!--[if lt IE 9]>
   <script src="https://a.alipayobjects.com/??es5-shim/4.0.5/es5-shim.js,es5-shim/4.0.5/es5-sham.js,html5shiv/3.7.2/src/html5shiv.js"></script>
   <![endif]-->
-  <link rel="stylesheet" href="common.css" />
+  <link rel="stylesheet" href="getPopupContainer.css" /><link rel="stylesheet" href="common.css" />
 </head>
 
 <body>
@@ -263,58 +263,63 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   </div>
   <div class="example" id="__react-content"></div>
   <script src="common.js?nowrap"></script>
-  <script src="mul-tag-suggest.js?nowrap"></script>
-  <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint no-console: 0 */</span>
-
-import React from <span class="hljs-string">'react'</span>;
+  <script src="getPopupContainer.js?nowrap"></script>
+  <div class="highlight"><pre><code language="js">import React from <span class="hljs-string">'react'</span>;
+import ReactDOM from <span class="hljs-string">'react-dom'</span>;
 import Select, {Option} from <span class="hljs-string">'rc-select'</span>;
 import <span class="hljs-string">'rc-select/assets/index.css'</span>;
-import {fetch} from <span class="hljs-string">'./common/tbFetchSuggest'</span>;
-import ReactDOM from <span class="hljs-string">'react-dom'</span>;
+import Dialog from <span class="hljs-string">'rc-dialog'</span>;
+import <span class="hljs-string">'rc-dialog/assets/index.css'</span>;
 
-<span class="hljs-keyword">const</span> Search = React.createClass({
+<span class="hljs-keyword">const</span> Test = React.createClass({
   getInitialState() {
     <span class="hljs-keyword">return</span> {
-      data: [],
+      open: <span class="hljs-literal">false</span>,
+      destroy: <span class="hljs-literal">false</span>,
     };
   },
-
-  fetchData(value) {
-    fetch(value, (data) =&gt; {
-      <span class="hljs-keyword">this</span>.setState({
-        data,
-      });
+  getPopupContainer(node) {
+    <span class="hljs-keyword">return</span> node.parentNode;
+  },
+  setVisible(open) {
+    <span class="hljs-keyword">this</span>.setState({
+      open,
     });
   },
-
-  handleSelect(value) {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'select '</span>, value);
+  open() {
+    <span class="hljs-keyword">this</span>.setVisible(<span class="hljs-literal">true</span>);
   },
-
+  close() {
+    <span class="hljs-keyword">this</span>.setVisible(<span class="hljs-literal">false</span>);
+  },
+  destroy() {
+    <span class="hljs-keyword">this</span>.setState({
+      destroy: <span class="hljs-literal">true</span>,
+    });
+  },
   render() {
-    <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">this</span>.state.data;
-    <span class="hljs-keyword">const</span> options = data.map((d) =&gt; {
-      <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{d.value}</span>&gt;</span>{d.text}<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>;</span>
-    });
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.state.destroy) {
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+    }
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>multiple suggest<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
-
-      <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Select</span>
-          <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">500</span>}}
-          <span class="hljs-attribute">tags</span>
-          <span class="hljs-attribute">notFoundContent</span>=<span class="hljs-value">""</span>
-          <span class="hljs-attribute">onSearch</span>=<span class="hljs-value">{this.fetchData}</span>
-          <span class="hljs-attribute">onSelect</span>=<span class="hljs-value">{this.handleSelect}</span>
-          <span class="hljs-attribute">filterOption</span>=<span class="hljs-value">{false}</span>&gt;</span>
-          {options}
-        <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
+      <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.open}</span>&gt;</span>open<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
+      &amp;nbsp;
+      <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.destroy}</span>&gt;</span>destroy<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">Dialog</span> <span class="hljs-attribute">visible</span>=<span class="hljs-value">{this.state.open}</span> <span class="hljs-attribute">onClose</span>=<span class="hljs-value">{this.close}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{marginTop:</span> <span class="hljs-attribute">20</span>, <span class="hljs-attribute">position:</span> '<span class="hljs-attribute">relative</span>'}}&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">Select</span>
+            <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">200</span>}}
+            <span class="hljs-attribute">getPopupContainer</span>=<span class="hljs-value">{this.getPopupContainer}</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"1"</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"2"</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"3"</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-title">Dialog</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
   },
 });
 
-ReactDOM.render(<span class="hljs-tag">&lt;<span class="hljs-title">Search</span> /&gt;</span>, document.getElementById('__react-content'));
+ReactDOM.render(<span class="hljs-tag">&lt;<span class="hljs-title">Test</span> /&gt;</span>, document.getElementById('__react-content'));
 </span></code></pre></div>
 </div>
 <a href="http://github.com/react-component/select">
