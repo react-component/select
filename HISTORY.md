@@ -1,6 +1,10 @@
 # History
 ----
 
+## 5.7.0 / 2016-01-06
+
+- add getPopupContainer prop
+
 ## 5.6.0 / 2016-01-01
 
 - scroll to active item when open menu on single mode

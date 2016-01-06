@@ -188,6 +188,7 @@ const SelectTrigger = React.createClass({
     });
     return (<Trigger action={props.disabled ? [] : ['click']}
                      ref="trigger"
+                     getPopupContainer={props.getPopupContainer}
                      popupPlacement="bottomLeft"
                      builtinPlacements={BUILT_IN_PLACEMENTS}
                      prefixCls={dropdownPrefixCls}
