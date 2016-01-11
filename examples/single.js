@@ -37,7 +37,7 @@ webpackJsonp([10],{
 	  getInitialState: function getInitialState() {
 	    return {
 	      destroy: false,
-	      value: '9'
+	      value: String(9)
 	    };
 	  },
 	
@@ -105,11 +105,11 @@ webpackJsonp([10],{
 	            { value: 'yiminghe' },
 	            'yiminghe'
 	          ),
-	          [1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (i) {
+	          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (i) {
 	            return _react2['default'].createElement(
 	              _rcSelect.Option,
-	              { key: i + '' },
-	              i + ''
+	              { key: i },
+	              i
 	            );
 	          })
 	        )
@@ -147,7 +147,7 @@ webpackJsonp([10],{
 	        [1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (i) {
 	          return _react2['default'].createElement(
 	            'option',
-	            { value: i + '', key: i + '' },
+	            { value: i, key: i },
 	            i
 	          );
 	        })

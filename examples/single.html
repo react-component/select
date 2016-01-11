@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>single.js - example - rc-select@5.7.0</title>
+  <title>single.js - example - rc-select@5.8.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-select@5.7.0</h1>
+    <h1>rc-select@5.8.0</h1>
 
     <p>select ui component for react</p>
   </div>
@@ -275,7 +275,7 @@ const Test = React.createClass({
   getInitialState() {
     return {
       destroy: false,
-      value: '9',
+      value: String(9),
     };
   },
 
@@ -318,8 +318,8 @@ const Test = React.createClass({
             &lt;Option value="lucy"&gt;lucy&lt;/Option&gt;
             &lt;Option value="disabled" disabled&gt;disabled&lt;/Option&gt;
             &lt;Option value="yiminghe"&gt;yiminghe&lt;/Option&gt;
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) =&gt; {
-              return &lt;Option key={i + ''}&gt;{i + ''}&lt;/Option&gt;;
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) =&gt; {
+              return &lt;Option key={i}&gt;{i}&lt;/Option&gt;;
             })}
           &lt;/Select&gt;
         &lt;/div&gt;
@@ -333,7 +333,7 @@ const Test = React.createClass({
           &lt;option value="disabled" disabled&gt;disabled&lt;/option&gt;
           &lt;option value="yiminghe"&gt;yiminghe&lt;/option&gt;
           {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) =&gt; {
-            return &lt;option value={i + ''} key={i + ''}&gt;{i}&lt;/option&gt;;
+            return &lt;option value={i} key={i}&gt;{i}&lt;/option&gt;;
           })}
         &lt;/select&gt;
 

@@ -19793,8 +19793,8 @@
 	    searchPlaceholder: _react.PropTypes.string,
 	    placeholder: _react.PropTypes.any,
 	    onDeselect: _react.PropTypes.func,
-	    value: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.string]),
-	    defaultValue: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.string]),
+	    value: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.any]),
+	    defaultValue: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.any]),
 	    label: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.any]),
 	    defaultLabel: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.any]),
 	    dropdownStyle: _react.PropTypes.object,
@@ -19836,7 +19836,7 @@
 	    var label = this.getLabelFromProps(props, value, 1);
 	    var inputValue = '';
 	    if (props.combobox) {
-	      inputValue = value[0] || '';
+	      inputValue = value.length ? String(value[0]) : '';
 	    }
 	    this.saveInputRef = saveRef.bind(this, 'inputInstance');
 	    return { value: value, inputValue: inputValue, label: label };
@@ -19852,7 +19852,7 @@
 	      });
 	      if (nextProps.combobox) {
 	        this.setState({
-	          inputValue: value[0] || ''
+	          inputValue: value.length ? String(value[0]) : ''
 	        });
 	      }
 	    }
@@ -20185,8 +20185,10 @@
 	  renderTopControlNode: function renderTopControlNode() {
 	    var _this4 = this;
 	
-	    var value = this.state.value;
-	    var label = this.state.label;
+	    var _state = this.state;
+	    var value = _state.value;
+	    var label = _state.label;
+	
 	    var props = this.props;
 	    var choiceTransitionName = props.choiceTransitionName;
 	    var prefixCls = props.prefixCls;
@@ -20201,11 +20203,11 @@
 	        props.placeholder
 	      );
 	      var innerNode = placeholder;
-	      if (this.state.label[0]) {
+	      if (label.length) {
 	        innerNode = _react2['default'].createElement(
 	          'span',
 	          { key: 'value' },
-	          this.state.label[0]
+	          label[0]
 	        );
 	      }
 	      return _react2['default'].createElement(
@@ -25635,7 +25637,7 @@
 	      // tags value must be string
 	      var value = props.value;
 	      value = value.filter(function (singleValue) {
-	        return childrenKeys.indexOf(singleValue) === -1 && (!inputValue || singleValue.indexOf(inputValue) > -1);
+	        return childrenKeys.indexOf(singleValue) === -1 && (!inputValue || String(singleValue).indexOf(String(inputValue)) > -1);
 	      });
 	      sel = sel.concat(value.map(function (singleValue) {
 	        return _react2['default'].createElement(
