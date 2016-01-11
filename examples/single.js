@@ -9,7 +9,7 @@ const Test = React.createClass({
   getInitialState() {
     return {
       destroy: false,
-      value: '9',
+      value: String(9),
     };
   },
 
@@ -52,8 +52,8 @@ const Test = React.createClass({
             <Option value="lucy">lucy</Option>
             <Option value="disabled" disabled>disabled</Option>
             <Option value="yiminghe">yiminghe</Option>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => {
-              return <Option key={i + ''}>{i + ''}</Option>;
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => {
+              return <Option key={i}>{i}</Option>;
             })}
           </Select>
         </div>
@@ -67,7 +67,7 @@ const Test = React.createClass({
           <option value="disabled" disabled>disabled</option>
           <option value="yiminghe">yiminghe</option>
           {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => {
-            return <option value={i + ''} key={i + ''}>{i}</option>;
+            return <option value={i} key={i}>{i}</option>;
           })}
         </select>
 

@@ -1,6 +1,10 @@
 # History
 ----
 
+## 5.8.0 / 2016-01-11
+
+- support value type to be number
+
 ## 5.7.0 / 2016-01-06
 
 - add getPopupContainer prop

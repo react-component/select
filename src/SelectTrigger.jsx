@@ -141,8 +141,8 @@ const SelectTrigger = React.createClass({
     if (tags) {
       // tags value must be string
       let value = props.value;
-      value = value.filter((singleValue)=> {
-        return childrenKeys.indexOf(singleValue) === -1 && (!inputValue || singleValue.indexOf(inputValue) > -1);
+      value = value.filter((singleValue) => {
+        return childrenKeys.indexOf(singleValue) === -1 && (!inputValue || String(singleValue).indexOf(String(inputValue)) > -1);
       });
       sel = sel.concat(value.map((singleValue)=> {
         return <MenuItem value={singleValue} key={singleValue}>{singleValue}</MenuItem>;

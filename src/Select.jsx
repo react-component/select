@@ -42,8 +42,8 @@ const Select = React.createClass({
     searchPlaceholder: PropTypes.string,
     placeholder: PropTypes.any,
     onDeselect: PropTypes.func,
-    value: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
-    defaultValue: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
+    value: PropTypes.oneOfType([PropTypes.array, PropTypes.any]),
+    defaultValue: PropTypes.oneOfType([PropTypes.array, PropTypes.any]),
     label: PropTypes.oneOfType([PropTypes.array, PropTypes.any]),
     defaultLabel: PropTypes.oneOfType([PropTypes.array, PropTypes.any]),
     dropdownStyle: PropTypes.object,
@@ -85,7 +85,7 @@ const Select = React.createClass({
     const label = this.getLabelFromProps(props, value, 1);
     let inputValue = '';
     if (props.combobox) {
-      inputValue = value[0] || '';
+      inputValue = value.length ? String(value[0]) : '';
     }
     this.saveInputRef = saveRef.bind(this, 'inputInstance');
     return {value, inputValue, label};
@@ -101,7 +101,7 @@ const Select = React.createClass({
       });
       if (nextProps.combobox) {
         this.setState({
-          inputValue: value[0] || '',
+          inputValue: value.length ? String(value[0]) : '',
         });
       }
     }
@@ -415,8 +415,7 @@ const Select = React.createClass({
     props.onChange(this.getVLForOnChange(value), this.getVLForOnChange(label));
   },
   renderTopControlNode() {
-    const value = this.state.value;
-    const label = this.state.label;
+    const {value, label} = this.state;
     const props = this.props;
     const { choiceTransitionName, prefixCls, maxTagTextLength } = props;
     // single and not combobox, input is inside dropdown
@@ -426,8 +425,8 @@ const Select = React.createClass({
                            {props.placeholder}
       </span>);
       let innerNode = placeholder;
-      if (this.state.label[0]) {
-        innerNode = <span key="value">{this.state.label[0]}</span>;
+      if (label.length) {
+        innerNode = <span key="value">{label[0]}</span>;
       }
       return (<span className={prefixCls + '-selection__rendered'}>
         {innerNode}

@@ -38,6 +38,28 @@ describe('Select', () => {
     });
   });
 
+  it('allow number value', (done) => {
+    function onChange(v) {
+      expect(v).to.be(1);
+      done();
+    }
+    instance = ReactDOM.render(
+      <Select
+        onChange={onChange}
+        value={2}>
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>,
+      div);
+    instance.setState({
+      open: true,
+    });
+    let activeItem = $(instance.getPopupDOMNode()).find('.rc-select-dropdown-menu-item-active')[0];
+    expect(activeItem.innerHTML).to.be('2');
+    activeItem = $(instance.getPopupDOMNode()).find('.rc-select-dropdown-menu-item')[0];
+    Simulate.click(activeItem);
+  });
+
   it('should add css class of root dom node', () => {
     instance = ReactDOM.render(
       <Select className="forTest" openClassName="my-open" value="2">
