@@ -1,11 +1,9 @@
-const expect = require('expect.js');
-const React = require('react');
-const ReactDOM = require('react-dom');
-const TestUtils = require('react-addons-test-utils');
-const Simulate = TestUtils.Simulate;
-const KeyCode = require('rc-util').KeyCode;
-const Select = require('../');
-const Option = Select.Option;
+import expect from 'expect.js';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {Simulate} from 'react-addons-test-utils';
+import Select, {Option} from 'rc-select';
+import {KeyCode} from 'rc-util';
 
 describe('tags', function test() {
   let div;

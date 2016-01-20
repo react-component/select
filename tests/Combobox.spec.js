@@ -1,11 +1,9 @@
-const expect = require('expect.js');
-const React = require('react');
-const ReactDOM = require('react-dom');
-const TestUtils = require('react-addons-test-utils');
-const Simulate = TestUtils.Simulate;
-const Select = require('../');
-const Option = Select.Option;
-const $ = require('jquery');
+import expect from 'expect.js';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import TestUtils, {Simulate} from 'react-addons-test-utils';
+import Select, {Option} from 'rc-select';
+import $ from 'jquery';
 
 describe('Combobox', () => {
   let div = null;

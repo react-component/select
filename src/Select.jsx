@@ -42,7 +42,6 @@ const Select = React.createClass({
     searchPlaceholder: PropTypes.string,
     placeholder: PropTypes.any,
     onDeselect: PropTypes.func,
-    onInputKeyDown: PropTypes.func,
     value: PropTypes.oneOfType([PropTypes.array, PropTypes.any]),
     defaultValue: PropTypes.oneOfType([PropTypes.array, PropTypes.any]),
     label: PropTypes.oneOfType([PropTypes.array, PropTypes.any]),
@@ -65,7 +64,6 @@ const Select = React.createClass({
       onSelect: noop,
       onSearch: noop,
       onDeselect: noop,
-      onInputKeyDown: noop,
       showArrow: true,
       dropdownMatchSelectWidth: true,
       dropdownStyle: {},
@@ -167,7 +165,6 @@ const Select = React.createClass({
     const props = this.props;
     const state = this.state;
     const keyCode = event.keyCode;
-    props.onInputKeyDown(event);
     if (isMultipleOrTags(props) && !event.target.value && keyCode === KeyCode.BACKSPACE) {
       const value = state.value.concat();
       if (value.length) {
@@ -179,7 +176,6 @@ const Select = React.createClass({
       }
       return;
     }
-
     if (keyCode === KeyCode.DOWN) {
       if (!state.open) {
         this.openIfHasChildren();
