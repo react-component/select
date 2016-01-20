@@ -1,7 +1,7 @@
 {
   "name": "rc-select",
-  "version": "5.8.0",
-  "description": "select ui component for react",
+  "version": "5.9.0",
+  "description": "React Select",
   "keywords": [
     "react",
     "react-component",
@@ -14,10 +14,6 @@
     "lib"
   ],
   "homepage": "http://github.com/react-component/select",
-  "maintainers": [
-    "hualei5280@gmail.com",
-    "yiminghe@gmail.com"
-  ],
   "repository": {
     "type": "git",
     "url": "git@github.com:react-component/select.git"

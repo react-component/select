@@ -48,15 +48,13 @@ React Select
 ### basic use
 
 ```js
-var React = require('react');
-var Select = require('../');
-var Option = Select.Option;
+import Select, {Option, OptGroup} from 'rc-select';
 
 var c = (
   <Select>
     <Option value="jack">jack</Option>
     <Option value="lucy">lucy</Option>
-    <Option value="jim">jim</Option>
+    <Option value="yiminghe">yiminghe</Option>
   </Select>
 );
 React.render(c, container);
