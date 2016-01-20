@@ -34,12 +34,25 @@ webpackJsonp([0],[
 	
 	  getInitialState: function getInitialState() {
 	    return {
-	      disabled: false
+	      disabled: false,
+	      value: 'l'
 	    };
 	  },
 	
 	  onChange: function onChange(value) {
-	    console.log(value);
+	    this.setState({
+	      value: value
+	    });
+	  },
+	
+	  onKeyDown: function onKeyDown(e) {
+	    if (e.keyCode === 13) {
+	      console.log('onEnter', this.state.value);
+	    }
+	  },
+	
+	  onSelect: function onSelect(v) {
+	    console.log('onSelect', v);
 	  },
 	
 	  toggleDisabled: function toggleDisabled() {
@@ -68,24 +81,24 @@ webpackJsonp([0],[
 	      ),
 	      _react2['default'].createElement(
 	        'div',
-	        { style: { width: 300 } },
+	        { style: { width: 300 }, onKeyDown: this.onKeyDown },
 	        _react2['default'].createElement(
 	          _rcSelect2['default'],
 	          {
 	            disabled: this.state.disabled,
 	            style: { width: 500 },
 	            onChange: this.onChange,
+	            onSelect: this.onSelect,
+	            defaultActiveFirstOption: false,
 	            allowClear: true,
-	            defaultValue: 'l',
+	            value: this.state.value,
 	            combobox: true },
 	          _react2['default'].createElement(
 	            _rcSelect.Option,
 	            { value: 'jack' },
 	            _react2['default'].createElement(
 	              'b',
-	              { style: {
-	                  color: 'red'
-	                } },
+	              { style: { color: 'red' } },
 	              'jack'
 	            )
 	          ),

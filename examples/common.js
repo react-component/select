@@ -19712,10 +19712,9 @@
 	
 	var _OptGroup2 = _interopRequireDefault(_OptGroup);
 	
-	_Select2['default'].Option = _Option2['default'];
-	_Select2['default'].OptGroup = _OptGroup2['default'];
+	exports.Option = _Option2['default'];
+	exports.OptGroup = _OptGroup2['default'];
 	exports['default'] = _Select2['default'];
-	module.exports = exports['default'];
 
 /***/ },
 /* 162 */
@@ -19927,7 +19926,6 @@
 	      }
 	      return;
 	    }
-	
 	    if (keyCode === _rcUtil.KeyCode.DOWN) {
 	      if (!state.open) {
 	        this.openIfHasChildren();
@@ -23393,13 +23391,13 @@
 	
 	var _Divider2 = _interopRequireDefault(_Divider);
 	
-	_Menu2['default'].SubMenu = _SubMenu2['default'];
-	_Menu2['default'].Item = _MenuItem2['default'];
-	_Menu2['default'].ItemGroup = _MenuItemGroup2['default'];
-	_Menu2['default'].Divider = _Divider2['default'];
-	
+	exports.SubMenu = _SubMenu2['default'];
+	exports.Item = _MenuItem2['default'];
+	exports.MenuItem = _MenuItem2['default'];
+	exports.MenuItemGroup = _MenuItemGroup2['default'];
+	exports.ItemGroup = _MenuItemGroup2['default'];
+	exports.Divider = _Divider2['default'];
 	exports['default'] = _Menu2['default'];
-	module.exports = exports['default'];
 
 /***/ },
 /* 197 */
@@ -23705,6 +23703,15 @@
 	
 	var _DOMWrap2 = _interopRequireDefault(_DOMWrap);
 	
+	function allDisabled(arr) {
+	  if (!arr.length) {
+	    return true;
+	  }
+	  return arr.every(function (c) {
+	    return !!c.props.disabled;
+	  });
+	}
+	
 	function getActiveKey(props, originalActiveKey) {
 	  var activeKey = originalActiveKey;
 	  var children = props.children;
@@ -23821,15 +23828,9 @@
 	    if (handled) {
 	      return 1;
 	    }
-	    var activeItem = undefined;
-	    switch (keyCode) {
-	      case _rcUtil.KeyCode.UP:
-	        activeItem = this.step(-1);
-	        break;
-	      case _rcUtil.KeyCode.DOWN:
-	        activeItem = this.step(1);
-	        break;
-	      default:
+	    var activeItem = null;
+	    if (keyCode === _rcUtil.KeyCode.UP || keyCode === _rcUtil.KeyCode.DOWN) {
+	      activeItem = this.step(keyCode === _rcUtil.KeyCode.UP ? -1 : 1);
 	    }
 	    if (activeItem) {
 	      e.preventDefault();
@@ -23839,6 +23840,12 @@
 	        (0, _domScrollIntoView2['default'])(_reactDom2['default'].findDOMNode(activeItem), _reactDom2['default'].findDOMNode(_this), {
 	          onlyScrollIfNeeded: true
 	        });
+	      });
+	      return 1;
+	    } else if (activeItem === undefined) {
+	      e.preventDefault();
+	      this.setState({
+	        activeKey: null
 	      });
 	      return 1;
 	    }
@@ -23976,6 +23983,11 @@
 	      }
 	      return true;
 	    });
+	    if (!this.props.defaultActiveFirst && activeIndex !== -1) {
+	      if (allDisabled(children.slice(activeIndex, len - 1))) {
+	        return undefined;
+	      }
+	    }
 	    var start = (activeIndex + 1) % len;
 	    var i = start;
 	    for (;;) {
@@ -24767,7 +24779,7 @@
 	  },
 	
 	  onOpenChange: function onOpenChange(e) {
-	    this.props.onOpenChange(e);
+	    this.props.onOpenChange(this.addKeyPath(e));
 	  },
 	
 	  onMouseEnter: function onMouseEnter() {
@@ -24862,7 +24874,7 @@
 	
 	  addKeyPath: function addKeyPath(info) {
 	    return (0, _objectAssign2['default'])({}, info, {
-	      keyPath: info.keyPath.concat(this.props.eventKey)
+	      keyPath: (info.keyPath || []).concat(this.props.eventKey)
 	    });
 	  },
 	
