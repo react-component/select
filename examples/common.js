@@ -25708,9 +25708,9 @@
 	    });
 	    return _react2['default'].createElement(
 	      _rcTrigger2['default'],
-	      { action: props.disabled ? [] : ['click'],
+	      _extends({}, props, {
+	        action: props.disabled ? [] : ['click'],
 	        ref: 'trigger',
-	        getPopupContainer: props.getPopupContainer,
 	        popupPlacement: 'bottomLeft',
 	        builtinPlacements: BUILT_IN_PLACEMENTS,
 	        prefixCls: dropdownPrefixCls,
@@ -25720,8 +25720,8 @@
 	        popupVisible: visible,
 	        popupClassName: (0, _classnames2['default'])(popupClassName),
 	        popupStyle: props.dropdownStyle
-	      },
-	      this.props.children
+	      }),
+	      props.children
 	    );
 	  }
 	});
