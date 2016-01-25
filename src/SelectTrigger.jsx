@@ -198,6 +198,7 @@ const SelectTrigger = React.createClass({
                      popupVisible={visible}
                      popupClassName={classnames(popupClassName)}
                      popupStyle={props.dropdownStyle}
+                     {...props}
     >{this.props.children}</Trigger>);
   },
 });
