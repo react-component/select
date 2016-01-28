@@ -177,8 +177,10 @@ const SelectTrigger = React.createClass({
     search = multiple || props.combobox || !props.showSearch ? null : (
       <span className={`${dropdownPrefixCls}-search`}>{props.inputElement}</span>
     );
+    let onDropdownVisibleChange = props.onDropdownVisibleChange;
     if (!search && !menuItems.length) {
       visible = false;
+      onDropdownVisibleChange = () => {};  // no visible no visibleChange
     }
     const popupElement = this.getDropdownElement({
       menuItems,
@@ -193,7 +195,7 @@ const SelectTrigger = React.createClass({
       builtinPlacements={BUILT_IN_PLACEMENTS}
       prefixCls={dropdownPrefixCls}
       popupTransitionName={this.getDropdownTransitionName()}
-      onPopupVisibleChange={props.onDropdownVisibleChange}
+      onPopupVisibleChange={onDropdownVisibleChange}
       popup={popupElement}
       popupVisible={visible}
       popupClassName={classnames(popupClassName)}
