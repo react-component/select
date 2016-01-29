@@ -19704,7 +19704,7 @@
 	
 	var _Select2 = _interopRequireDefault(_Select);
 	
-	var _Option = __webpack_require__(228);
+	var _Option = __webpack_require__(229);
 	
 	var _Option2 = _interopRequireDefault(_Option);
 	
@@ -19760,6 +19760,10 @@
 	
 	var _SelectTrigger2 = _interopRequireDefault(_SelectTrigger);
 	
+	var _FilterMixin = __webpack_require__(228);
+	
+	var _FilterMixin2 = _interopRequireDefault(_FilterMixin);
+	
 	function noop() {}
 	
 	function filterFn(input, child) {
@@ -19799,11 +19803,13 @@
 	    dropdownStyle: _react.PropTypes.object,
 	    maxTagTextLength: _react.PropTypes.number
 	  },
+	  mixins: [_FilterMixin2['default']],
 	
 	  getDefaultProps: function getDefaultProps() {
 	    return {
 	      prefixCls: 'rc-select',
 	      filterOption: filterFn,
+	      defaultOpen: false,
 	      defaultActiveFirstOption: true,
 	      showSearch: true,
 	      allowClear: false,
@@ -19838,7 +19844,11 @@
 	      inputValue = value.length ? String(value[0]) : '';
 	    }
 	    this.saveInputRef = saveRef.bind(this, 'inputInstance');
-	    return { value: value, inputValue: inputValue, label: label };
+	    var open = props.open;
+	    if (open === undefined) {
+	      open = props.defaultOpen;
+	    }
+	    return { value: value, inputValue: inputValue, label: label, open: open };
 	  },
 	
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
@@ -19882,6 +19892,7 @@
 	  onInputChange: function onInputChange(event) {
 	    var val = event.target.value;
 	    var props = this.props;
+	
 	    this.setState({
 	      inputValue: val,
 	      open: true
@@ -20130,11 +20141,13 @@
 	  setOpenState: function setOpenState(open) {
 	    var _this3 = this;
 	
+	    var props = this.props;
 	    var refs = this.refs;
+	
 	    this.setState({
 	      open: open
 	    }, function () {
-	      if (open || (0, _util.isMultipleOrTagsOrCombobox)(_this3.props)) {
+	      if (open || (0, _util.isMultipleOrTagsOrCombobox)(props)) {
 	        if (_this3.getInputDOMNode()) {
 	          _this3.getInputDOMNode().focus();
 	        }
@@ -20180,6 +20193,7 @@
 	    }
 	    props.onChange(this.getVLForOnChange(value), this.getVLForOnChange(label));
 	  },
+	
 	  renderTopControlNode: function renderTopControlNode() {
 	    var _this4 = this;
 	
@@ -20194,13 +20208,12 @@
 	
 	    // single and not combobox, input is inside dropdown
 	    if ((0, _util.isSingleMode)(props)) {
-	      var placeholder = _react2['default'].createElement(
+	      var innerNode = _react2['default'].createElement(
 	        'span',
 	        { key: 'placeholder',
 	          className: prefixCls + '-selection__placeholder' },
 	        props.placeholder
 	      );
-	      var innerNode = placeholder;
 	      if (label.length) {
 	        innerNode = _react2['default'].createElement(
 	          'span',
@@ -20273,13 +20286,22 @@
 	
 	    var ctrlNode = this.renderTopControlNode();
 	    var extraSelectionProps = {};
+	    var open = this.state.open;
+	
+	    var options = [];
+	    if (open) {
+	      options = this.renderFilterOptions();
+	    }
+	    if (open && ((0, _util.isMultipleOrTagsOrCombobox)(props) || !props.showSearch) && !options.length) {
+	      open = false;
+	    }
 	    if (!(0, _util.isCombobox)(props)) {
 	      extraSelectionProps = {
 	        onKeyDown: this.onKeyDown,
 	        tabIndex: 0
 	      };
 	    }
-	    var rootCls = (_rootCls = {}, _defineProperty(_rootCls, className, !!className), _defineProperty(_rootCls, prefixCls, 1), _defineProperty(_rootCls, prefixCls + '-open', state.open), _defineProperty(_rootCls, prefixCls + '-combobox', (0, _util.isCombobox)(props)), _defineProperty(_rootCls, prefixCls + '-disabled', disabled), _defineProperty(_rootCls, prefixCls + '-enabled', !disabled), _rootCls);
+	    var rootCls = (_rootCls = {}, _defineProperty(_rootCls, className, !!className), _defineProperty(_rootCls, prefixCls, 1), _defineProperty(_rootCls, prefixCls + '-open', open), _defineProperty(_rootCls, prefixCls + '-combobox', (0, _util.isCombobox)(props)), _defineProperty(_rootCls, prefixCls + '-disabled', disabled), _defineProperty(_rootCls, prefixCls + '-enabled', !disabled), _rootCls);
 	
 	    var clear = _react2['default'].createElement('span', { key: 'clear',
 	      className: prefixCls + '-selection__clear',
@@ -20287,10 +20309,10 @@
 	    return _react2['default'].createElement(
 	      _SelectTrigger2['default'],
 	      _extends({}, props, {
-	        options: props.children,
+	        options: options,
 	        multiple: multiple,
 	        disabled: disabled,
-	        visible: state.open,
+	        visible: open,
 	        inputValue: state.inputValue,
 	        inputElement: this.getInputElement(),
 	        value: state.value,
@@ -20311,7 +20333,7 @@
 	            role: 'combobox',
 	            'aria-autocomplete': 'list',
 	            'aria-haspopup': 'true',
-	            'aria-expanded': state.open
+	            'aria-expanded': open
 	          }, extraSelectionProps),
 	          ctrlNode,
 	          allowClear && !(0, _util.isMultipleOrTags)(props) ? clear : null,
@@ -22522,13 +22544,19 @@
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	    var _this2 = this;
 	
+	    this.nextProps = nextProps;
 	    var nextChildren = (0, _ChildrenUtils.toArrayChildren)(getChildrenFromProps(nextProps));
 	    var props = this.props;
+	    // exclusive needs immediate response
+	    if (props.exclusive) {
+	      Object.keys(this.currentlyAnimatingKeys).forEach(function (key) {
+	        _this2.stop(key);
+	      });
+	    }
 	    var showProp = props.showProp;
 	    var currentlyAnimatingKeys = this.currentlyAnimatingKeys;
 	    // last props children if exclusive
-	    // exclusive needs immediate response
-	    var currentChildren = this.state.children;
+	    var currentChildren = props.exclusive ? (0, _ChildrenUtils.toArrayChildren)(getChildrenFromProps(props)) : this.state.children;
 	    // in case destroy in showProp mode
 	    var newChildren = [];
 	    if (showProp) {
@@ -22601,15 +22629,7 @@
 	    });
 	  },
 	
-	  componentDidUpdate: function componentDidUpdate(prevProps) {
-	    var _this3 = this;
-	
-	    // exclusive needs immediate response
-	    if (this.props.exclusive && this.props !== prevProps) {
-	      Object.keys(this.currentlyAnimatingKeys).forEach(function (key) {
-	        _this3.stop(key);
-	      });
-	    }
+	  componentDidUpdate: function componentDidUpdate() {
 	    if (this.isMounted()) {
 	      var keysToEnter = this.keysToEnter;
 	      this.keysToEnter = [];
@@ -22638,6 +22658,10 @@
 	  handleDoneAdding: function handleDoneAdding(key, type) {
 	    var props = this.props;
 	    delete this.currentlyAnimatingKeys[key];
+	    // if update on exclusive mode, skip check
+	    if (props.exclusive && props !== this.nextProps) {
+	      return;
+	    }
 	    var currentChildren = (0, _ChildrenUtils.toArrayChildren)(getChildrenFromProps(props));
 	    if (!this.isValidChildByKey(currentChildren, key)) {
 	      // exclusive will not need this
@@ -22668,6 +22692,10 @@
 	  handleDoneLeaving: function handleDoneLeaving(key) {
 	    var props = this.props;
 	    delete this.currentlyAnimatingKeys[key];
+	    // if update on exclusive mode, skip check
+	    if (props.exclusive && props !== this.nextProps) {
+	      return;
+	    }
 	    var currentChildren = (0, _ChildrenUtils.toArrayChildren)(getChildrenFromProps(props));
 	    // in case state change is too fast
 	    if (this.isValidChildByKey(currentChildren, key)) {
@@ -22703,10 +22731,14 @@
 	
 	  render: function render() {
 	    var props = this.props;
+	    this.nextProps = props;
 	    var stateChildren = this.state.children;
 	    var children = null;
 	    if (stateChildren) {
 	      children = stateChildren.map(function (child) {
+	        if (child === null) {
+	          return child;
+	        }
 	        if (!child.key) {
 	          throw new Error('must set key for <rc-animate> children');
 	        }
@@ -23718,7 +23750,7 @@
 	  var eventKey = props.eventKey;
 	  if (activeKey) {
 	    var found = undefined;
-	    _react2['default'].Children.forEach(children, function (c, i) {
+	    (0, _util.loopMenuItem)(children, function (c, i) {
 	      if (!c.props.disabled && activeKey === (0, _util.getKeyFromChildrenIndex)(c, eventKey, i)) {
 	        found = true;
 	      }
@@ -23729,7 +23761,7 @@
 	  }
 	  activeKey = null;
 	  if (props.defaultActiveFirst) {
-	    _react2['default'].Children.forEach(children, function (c, i) {
+	    (0, _util.loopMenuItem)(children, function (c, i) {
 	      if (!activeKey && !c.props.disabled) {
 	        activeKey = (0, _util.getKeyFromChildrenIndex)(c, eventKey, i);
 	      }
@@ -24582,7 +24614,7 @@
 
 /***/ },
 /* 202 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -24591,6 +24623,14 @@
 	});
 	exports.noop = noop;
 	exports.getKeyFromChildrenIndex = getKeyFromChildrenIndex;
+	exports.loopMenuItem = loopMenuItem;
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
 	var now = Date.now();
 	
 	function noop() {}
@@ -24598,6 +24638,21 @@
 	function getKeyFromChildrenIndex(child, menuEventKey, index) {
 	  var prefix = menuEventKey || '';
 	  return child.key || prefix + 'item_' + now + '_' + index;
+	}
+	
+	function loopMenuItem(children, cb) {
+	  var index = -1;
+	  _react2['default'].Children.forEach(children, function (c, i) {
+	    index++;
+	    if (c && c.type.isMenuItemGroup) {
+	      _react2['default'].Children.forEach(c.props.children, function (c2, i2) {
+	        index++;
+	        cb(c2, index);
+	      });
+	    } else {
+	      cb(c, i);
+	    }
+	  });
 	}
 
 /***/ },
@@ -25423,6 +25478,8 @@
 	  }
 	});
 	
+	MenuItemGroup.isMenuItemGroup = true;
+	
 	exports['default'] = MenuItemGroup;
 	module.exports = exports['default'];
 
@@ -25501,14 +25558,6 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _OptGroup = __webpack_require__(186);
-	
-	var _OptGroup2 = _interopRequireDefault(_OptGroup);
-	
-	var _util = __webpack_require__(195);
-	
-	var _rcMenu = __webpack_require__(196);
-	
 	var BUILT_IN_PLACEMENTS = {
 	  bottomLeft: {
 	    points: ['tl', 'bl'],
@@ -25585,123 +25634,25 @@
 	    return this.props.prefixCls + '-dropdown';
 	  },
 	
-	  filterOption: function filterOption(input, child) {
-	    if (!input) {
-	      return true;
-	    }
-	    var filterOption = this.props.filterOption;
-	    if (!filterOption) {
-	      return true;
-	    }
-	    if (child.props.disabled) {
-	      return false;
-	    }
-	    return filterOption.call(this, input, child);
-	  },
-	
 	  saveMenu: function saveMenu(menu) {
 	    this.popupMenu = menu;
 	  },
-	
-	  renderFilterOptions: function renderFilterOptions() {
-	    return this.renderFilterOptionsFromChildren(this.props.options, true);
-	  },
-	
-	  renderFilterOptionsFromChildren: function renderFilterOptionsFromChildren(children, showNotFound) {
-	    var _this = this;
-	
-	    var sel = [];
-	    var props = this.props;
-	    var inputValue = props.inputValue;
-	    var childrenKeys = [];
-	    var tags = props.tags;
-	    _react2['default'].Children.forEach(children, function (child) {
-	      if (child.type === _OptGroup2['default']) {
-	        var innerItems = _this.renderFilterOptionsFromChildren(child.props.children, false);
-	        if (innerItems.length) {
-	          var label = child.props.label;
-	          var key = child.key;
-	          if (!key && typeof label === 'string') {
-	            key = label;
-	          } else if (!label && key) {
-	            label = key;
-	          }
-	          sel.push(_react2['default'].createElement(
-	            _rcMenu.ItemGroup,
-	            { key: key, title: label },
-	            innerItems
-	          ));
-	        }
-	        return;
-	      }
-	      var childValue = (0, _util.getValuePropValue)(child);
-	      if (_this.filterOption(inputValue, child)) {
-	        sel.push(_react2['default'].createElement(_rcMenu.Item, _extends({
-	          value: childValue,
-	          key: childValue
-	        }, child.props)));
-	      }
-	      if (tags && !child.props.disabled) {
-	        childrenKeys.push(childValue);
-	      }
-	    });
-	    if (tags) {
-	      // tags value must be string
-	      var value = props.value;
-	      value = value.filter(function (singleValue) {
-	        return childrenKeys.indexOf(singleValue) === -1 && (!inputValue || String(singleValue).indexOf(String(inputValue)) > -1);
-	      });
-	      sel = sel.concat(value.map(function (singleValue) {
-	        return _react2['default'].createElement(
-	          _rcMenu.Item,
-	          { value: singleValue, key: singleValue },
-	          singleValue
-	        );
-	      }));
-	      if (inputValue) {
-	        var notFindInputItem = sel.every(function (option) {
-	          return (0, _util.getValuePropValue)(option) !== inputValue;
-	        });
-	        if (notFindInputItem) {
-	          sel.unshift(_react2['default'].createElement(
-	            _rcMenu.Item,
-	            { value: inputValue, key: inputValue },
-	            inputValue
-	          ));
-	        }
-	      }
-	    }
-	    if (!sel.length && showNotFound && props.notFoundContent) {
-	      sel = [_react2['default'].createElement(
-	        _rcMenu.Item,
-	        { disabled: true, value: 'NOT_FOUND', key: 'NOT_FOUND' },
-	        props.notFoundContent
-	      )];
-	    }
-	    return sel;
-	  },
-	
 	  render: function render() {
 	    var _popupClassName;
 	
 	    var props = this.props;
 	    var multiple = props.multiple;
+	    var visible = props.visible;
+	
 	    var dropdownPrefixCls = this.getDropdownPrefixCls();
 	    var popupClassName = (_popupClassName = {}, _defineProperty(_popupClassName, props.dropdownClassName, !!props.dropdownClassName), _defineProperty(_popupClassName, dropdownPrefixCls + '--' + (multiple ? 'multiple' : 'single'), 1), _popupClassName);
-	    var visible = props.visible;
-	    var menuItems = undefined;
-	    var search = undefined;
-	    menuItems = this.renderFilterOptions();
-	    search = multiple || props.combobox || !props.showSearch ? null : _react2['default'].createElement(
+	    var search = multiple || props.combobox || !props.showSearch ? null : _react2['default'].createElement(
 	      'span',
 	      { className: dropdownPrefixCls + '-search' },
 	      props.inputElement
 	    );
-	    if (!search && !menuItems.length) {
-	      visible = false;
-	    }
 	    var popupElement = this.getDropdownElement({
-	      menuItems: menuItems,
+	      menuItems: props.options,
 	      search: search,
 	      multiple: multiple,
 	      visible: visible
@@ -27591,16 +27542,21 @@
 	  displayName: 'DropdownMenu',
 	
 	  propTypes: {
-	    prefixCls: _react2['default'].PropTypes.string,
-	    menuItems: _react2['default'].PropTypes.any,
-	    search: _react2['default'].PropTypes.any
+	    prefixCls: _react.PropTypes.string,
+	    menuItems: _react.PropTypes.any,
+	    search: _react.PropTypes.any,
+	    visible: _react.PropTypes.bool
 	  },
 	
 	  componentDidMount: function componentDidMount() {
 	    this.scrollActiveItemToView();
+	    this.lastVisible = this.props.visible;
 	  },
 	
 	  shouldComponentUpdate: function shouldComponentUpdate(nextProps) {
+	    if (!nextProps.visible) {
+	      this.lastVisible = false;
+	    }
 	    // freeze when hide
 	    return nextProps.visible;
 	  },
@@ -27610,6 +27566,7 @@
 	    if (!prevProps.visible && props.visible) {
 	      this.scrollActiveItemToView();
 	    }
+	    this.lastVisible = props.visible;
 	  },
 	
 	  scrollActiveItemToView: function scrollActiveItemToView() {
@@ -27650,7 +27607,9 @@
 	        var clonedMenuItems = menuItems;
 	        if (selectedKeys.length) {
 	          (function () {
-	            activeKeyProps.activeKey = selectedKeys[0];
+	            if (props.visible && !_this.lastVisible) {
+	              activeKeyProps.activeKey = selectedKeys[0];
+	            }
 	            var foundFirst = false;
 	            // set firstActiveItem via cloning menus
 	            // for scroll into view
@@ -27722,6 +27681,126 @@
 	  value: true
 	});
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _OptGroup = __webpack_require__(186);
+	
+	var _OptGroup2 = _interopRequireDefault(_OptGroup);
+	
+	var _util = __webpack_require__(195);
+	
+	var _rcMenu = __webpack_require__(196);
+	
+	exports['default'] = {
+	  filterOption: function filterOption(input, child) {
+	    if (!input) {
+	      return true;
+	    }
+	    var filterOption = this.props.filterOption;
+	    if (!filterOption) {
+	      return true;
+	    }
+	    if (child.props.disabled) {
+	      return false;
+	    }
+	    return filterOption.call(this, input, child);
+	  },
+	  renderFilterOptions: function renderFilterOptions(inputValue) {
+	    return this.renderFilterOptionsFromChildren(this.props.children, true, inputValue);
+	  },
+	
+	  renderFilterOptionsFromChildren: function renderFilterOptionsFromChildren(children, showNotFound, iv) {
+	    var _this = this;
+	
+	    var sel = [];
+	    var props = this.props;
+	    var inputValue = iv === undefined ? this.state.inputValue : iv;
+	    var childrenKeys = [];
+	    var tags = props.tags;
+	    _react2['default'].Children.forEach(children, function (child) {
+	      if (child.type === _OptGroup2['default']) {
+	        var innerItems = _this.renderFilterOptionsFromChildren(child.props.children, false);
+	        if (innerItems.length) {
+	          var label = child.props.label;
+	          var key = child.key;
+	          if (!key && typeof label === 'string') {
+	            key = label;
+	          } else if (!label && key) {
+	            label = key;
+	          }
+	          sel.push(_react2['default'].createElement(
+	            _rcMenu.ItemGroup,
+	            { key: key, title: label },
+	            innerItems
+	          ));
+	        }
+	        return;
+	      }
+	      var childValue = (0, _util.getValuePropValue)(child);
+	      if (_this.filterOption(inputValue, child)) {
+	        sel.push(_react2['default'].createElement(_rcMenu.Item, _extends({
+	          value: childValue,
+	          key: childValue
+	        }, child.props)));
+	      }
+	      if (tags && !child.props.disabled) {
+	        childrenKeys.push(childValue);
+	      }
+	    });
+	    if (tags) {
+	      // tags value must be string
+	      var value = this.state.value || [];
+	      value = value.filter(function (singleValue) {
+	        return childrenKeys.indexOf(singleValue) === -1 && (!inputValue || String(singleValue).indexOf(String(inputValue)) > -1);
+	      });
+	      sel = sel.concat(value.map(function (singleValue) {
+	        return _react2['default'].createElement(
+	          _rcMenu.Item,
+	          { value: singleValue, key: singleValue },
+	          singleValue
+	        );
+	      }));
+	      if (inputValue) {
+	        var notFindInputItem = sel.every(function (option) {
+	          return (0, _util.getValuePropValue)(option) !== inputValue;
+	        });
+	        if (notFindInputItem) {
+	          sel.unshift(_react2['default'].createElement(
+	            _rcMenu.Item,
+	            { value: inputValue, key: inputValue },
+	            inputValue
+	          ));
+	        }
+	      }
+	    }
+	    if (!sel.length && showNotFound && props.notFoundContent) {
+	      sel = [_react2['default'].createElement(
+	        _rcMenu.Item,
+	        { disabled: true, value: 'NOT_FOUND', key: 'NOT_FOUND' },
+	        props.notFoundContent
+	      )];
+	    }
+	    return sel;
+	  }
+	};
+	module.exports = exports['default'];
+
+/***/ },
+/* 229 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
 	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -27750,7 +27829,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 229 */
+/* 230 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

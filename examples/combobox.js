@@ -27,7 +27,7 @@ webpackJsonp([0],[
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(229);
+	__webpack_require__(230);
 	
 	var Test = _react2['default'].createClass({
 	  displayName: 'Test',

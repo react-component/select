@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>force-suggest.js - example - rc-select@5.9.1</title>
+  <title>force-suggest.js - example - rc-select@5.9.2</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-select@5.9.1</h1>
+    <h1>rc-select@5.9.2</h1>
 
     <p>React Select</p>
   </div>
@@ -275,7 +275,6 @@ import ReactDOM from <span class="hljs-string">'react-dom'</span>;
 <span class="hljs-keyword">const</span> Search = React.createClass({
   getInitialState() {
     <span class="hljs-keyword">return</span> {
-      loading: <span class="hljs-literal">false</span>,
       disabled: <span class="hljs-literal">false</span>,
       data: [],
       value: <span class="hljs-string">''</span>,
@@ -289,13 +288,9 @@ import ReactDOM from <span class="hljs-string">'react-dom'</span>;
   },
 
   fetchData(value) {
-    <span class="hljs-keyword">this</span>.setState({
-      loading: <span class="hljs-literal">true</span>,
-    });
     fetch(value, (data)=&gt; {
       <span class="hljs-keyword">this</span>.setState({
         data,
-        loading: <span class="hljs-literal">false</span>,
       });
     });
   },
@@ -309,13 +304,9 @@ import ReactDOM from <span class="hljs-string">'react-dom'</span>;
   render() {
     <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">this</span>.state.data;
     <span class="hljs-keyword">let</span> options;
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.state.loading) {
-      options = <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">disabled</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">"disabled"</span>&gt;</span>loading<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>;</span>
-    } <span class="hljs-keyword">else</span> {
-      options = data.map((d) =&gt; {
-        <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{d.value}</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">i</span>&gt;</span>{d.text}<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>;</span>
-      });
-    }
+    options = data.map((d) =&gt; {
+      <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{d.value}</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">i</span>&gt;</span>{d.text}<span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>;</span>
+    });
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>force suggest<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>

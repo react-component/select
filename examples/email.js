@@ -3,12 +3,12 @@ webpackJsonp([1],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(230);
+	module.exports = __webpack_require__(231);
 
 
 /***/ },
 
-/***/ 230:
+/***/ 231:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint no-console: 0 */
@@ -25,7 +25,7 @@ webpackJsonp([1],{
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(229);
+	__webpack_require__(230);
 	
 	var _reactDom = __webpack_require__(159);
 	
@@ -44,22 +44,24 @@ webpackJsonp([1],{
 	  },
 	  onChange: function onChange(value) {
 	    console.log('onChange', value);
-	    var options = undefined;
-	    if (!value || value.indexOf('@') >= 0) {
-	      options = _react2['default'].createElement(
-	        _rcSelect.Option,
-	        { key: value },
-	        value
-	      );
-	    } else {
-	      options = ['gmail.com', 'yahoo.com', 'outlook.com'].map(function (domain) {
-	        var email = value + '@' + domain;
-	        return _react2['default'].createElement(
+	    var options = [];
+	    if (value) {
+	      if (value.indexOf('@') >= 0) {
+	        options = _react2['default'].createElement(
 	          _rcSelect.Option,
-	          { key: email },
-	          email
+	          { key: value },
+	          value
 	        );
-	      });
+	      } else {
+	        options = ['gmail.com', 'yahoo.com', 'outlook.com'].map(function (domain) {
+	          var email = value + '@' + domain;
+	          return _react2['default'].createElement(
+	            _rcSelect.Option,
+	            { key: email },
+	            email
+	          );
+	        });
+	      }
 	    }
 	    this.setState({
 	      options: options
@@ -69,6 +71,7 @@ webpackJsonp([1],{
 	    return _react2['default'].createElement(
 	      _rcSelect2['default'],
 	      { combobox: true,
+	        notFoundContent: false,
 	        style: { width: 200 },
 	        onChange: this.onChange,
 	        onSelect: this.onSelect,
