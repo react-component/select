@@ -10,6 +10,7 @@ import {
   isSingleMode, toArray,
 } from './util';
 import SelectTrigger from './SelectTrigger';
+import FilterMixin from './FilterMixin';
 
 function noop() {
 }
@@ -49,11 +50,13 @@ const Select = React.createClass({
     dropdownStyle: PropTypes.object,
     maxTagTextLength: PropTypes.number,
   },
+  mixins: [FilterMixin],
 
   getDefaultProps() {
     return {
       prefixCls: 'rc-select',
       filterOption: filterFn,
+      defaultOpen: false,
       defaultActiveFirstOption: true,
       showSearch: true,
       allowClear: false,
@@ -88,7 +91,11 @@ const Select = React.createClass({
       inputValue = value.length ? String(value[0]) : '';
     }
     this.saveInputRef = saveRef.bind(this, 'inputInstance');
-    return {value, inputValue, label};
+    let open = props.open;
+    if (open === undefined) {
+      open = props.defaultOpen;
+    }
+    return {value, inputValue, label, open};
   },
 
   componentWillReceiveProps(nextProps) {
@@ -131,7 +138,7 @@ const Select = React.createClass({
 
   onInputChange(event) {
     const val = event.target.value;
-    const props = this.props;
+    const {props} = this;
     this.setState({
       inputValue: val,
       open: true,
@@ -363,11 +370,11 @@ const Select = React.createClass({
   },
 
   setOpenState(open) {
-    const refs = this.refs;
+    const {props, refs} = this;
     this.setState({
       open,
     }, ()=> {
-      if (open || isMultipleOrTagsOrCombobox(this.props)) {
+      if (open || isMultipleOrTagsOrCombobox(props)) {
         if (this.getInputDOMNode()) {
           this.getInputDOMNode().focus();
         }
@@ -413,17 +420,17 @@ const Select = React.createClass({
     }
     props.onChange(this.getVLForOnChange(value), this.getVLForOnChange(label));
   },
+
   renderTopControlNode() {
     const {value, label} = this.state;
     const props = this.props;
     const { choiceTransitionName, prefixCls, maxTagTextLength } = props;
     // single and not combobox, input is inside dropdown
     if (isSingleMode(props)) {
-      const placeholder = (<span key="placeholder"
-                                 className={prefixCls + '-selection__placeholder'}>
+      let innerNode = (<span key="placeholder"
+                             className={prefixCls + '-selection__placeholder'}>
                            {props.placeholder}
       </span>);
-      let innerNode = placeholder;
       if (label.length) {
         innerNode = <span key="value">{label[0]}</span>;
       }
@@ -472,6 +479,14 @@ const Select = React.createClass({
     const {className, disabled, allowClear, prefixCls} = props;
     const ctrlNode = this.renderTopControlNode();
     let extraSelectionProps = {};
+    let {open} = this.state;
+    let options = [];
+    if (open) {
+      options = this.renderFilterOptions();
+    }
+    if (open && (isMultipleOrTagsOrCombobox(props) || !props.showSearch) && !options.length) {
+      open = false;
+    }
     if (!isCombobox(props)) {
       extraSelectionProps = {
         onKeyDown: this.onKeyDown,
@@ -481,7 +496,7 @@ const Select = React.createClass({
     const rootCls = {
       [className]: !!className,
       [prefixCls]: 1,
-      [prefixCls + '-open']: state.open,
+      [prefixCls + '-open']: open,
       [prefixCls + '-combobox']: isCombobox(props),
       [prefixCls + '-disabled']: disabled,
       [prefixCls + '-enabled']: !disabled,
@@ -492,10 +507,10 @@ const Select = React.createClass({
                          onClick={this.onClearSelection}/>);
     return (
       <SelectTrigger {...props}
-        options={props.children}
+        options={options}
         multiple={multiple}
         disabled={disabled}
-        visible={state.open}
+        visible={open}
         inputValue={state.inputValue}
         inputElement={this.getInputElement()}
         value={state.value}
@@ -512,7 +527,7 @@ const Select = React.createClass({
                 role="combobox"
                 aria-autocomplete="list"
                 aria-haspopup="true"
-                aria-expanded={state.open}
+                aria-expanded={open}
             {...extraSelectionProps}
           >
         {ctrlNode}

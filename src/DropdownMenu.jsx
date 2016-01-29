@@ -1,4 +1,4 @@
-import React, {cloneElement} from 'react';
+import React, {cloneElement, PropTypes} from 'react';
 import {findDOMNode} from 'react-dom';
 import {getSelectKeys} from './util';
 import Menu, {ItemGroup as MenuItemGroup} from 'rc-menu';
@@ -6,16 +6,21 @@ import scrollIntoView from 'dom-scroll-into-view';
 
 const DropdownMenu = React.createClass({
   propTypes: {
-    prefixCls: React.PropTypes.string,
-    menuItems: React.PropTypes.any,
-    search: React.PropTypes.any,
+    prefixCls: PropTypes.string,
+    menuItems: PropTypes.any,
+    search: PropTypes.any,
+    visible: PropTypes.bool,
   },
 
   componentDidMount() {
     this.scrollActiveItemToView();
+    this.lastVisible = this.props.visible;
   },
 
   shouldComponentUpdate(nextProps) {
+    if (!nextProps.visible) {
+      this.lastVisible = false;
+    }
     // freeze when hide
     return nextProps.visible;
   },
@@ -25,6 +30,7 @@ const DropdownMenu = React.createClass({
     if (!prevProps.visible && props.visible) {
       this.scrollActiveItemToView();
     }
+    this.lastVisible = props.visible;
   },
 
   scrollActiveItemToView() {
@@ -57,7 +63,9 @@ const DropdownMenu = React.createClass({
 
       let clonedMenuItems = menuItems;
       if (selectedKeys.length) {
-        activeKeyProps.activeKey = selectedKeys[0];
+        if (props.visible && !this.lastVisible) {
+          activeKeyProps.activeKey = selectedKeys[0];
+        }
         let foundFirst = false;
         // set firstActiveItem via cloning menus
         // for scroll into view

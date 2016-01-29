@@ -9,7 +9,6 @@ import ReactDOM from 'react-dom';
 const Search = React.createClass({
   getInitialState() {
     return {
-      loading: false,
       disabled: false,
       data: [],
       value: '',
@@ -23,13 +22,9 @@ const Search = React.createClass({
   },
 
   fetchData(value) {
-    this.setState({
-      loading: true,
-    });
     fetch(value, (data)=> {
       this.setState({
         data,
-        loading: false,
       });
     });
   },
@@ -43,13 +38,9 @@ const Search = React.createClass({
   render() {
     const data = this.state.data;
     let options;
-    if (this.state.loading) {
-      options = <Option disabled key="disabled">loading</Option>;
-    } else {
-      options = data.map((d) => {
-        return <Option key={d.value}><i>{d.text}</i></Option>;
-      });
-    }
+    options = data.map((d) => {
+      return <Option key={d.value}><i>{d.text}</i></Option>;
+    });
     return (<div>
       <h2>force suggest</h2>
       <p>

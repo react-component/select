@@ -28,6 +28,14 @@ describe('Combobox', () => {
     expect(!!ReactDOM.findDOMNode(instance.refs.selection).getAttribute('tabindex')).to.be(false);
   });
 
+  it('should has no open className', () => {
+    const instance = ReactDOM.render(
+      <Select combobox notFoundContent={false}/>, div
+    );
+    Simulate.click(instance.getInputDOMNode());
+    expect(ReactDOM.findDOMNode(instance).className).not.to.contain('-open');
+  });
+
   it('support defaultValue', () => {
     const instance = ReactDOM.render(
       <Select combobox defaultValue="1">

@@ -16,14 +16,16 @@ const Test = React.createClass({
   },
   onChange(value) {
     console.log('onChange', value);
-    let options;
-    if (!value || value.indexOf('@') >= 0) {
-      options = <Option key={value}>{value}</Option>;
-    } else {
-      options = ['gmail.com', 'yahoo.com', 'outlook.com'].map((domain) => {
-        const email = value + '@' + domain;
-        return <Option key={email}>{email}</Option>;
-      });
+    let options = [];
+    if (value) {
+      if (value.indexOf('@') >= 0) {
+        options = <Option key={value}>{value}</Option>;
+      } else {
+        options = ['gmail.com', 'yahoo.com', 'outlook.com'].map((domain) => {
+          const email = value + '@' + domain;
+          return <Option key={email}>{email}</Option>;
+        });
+      }
     }
     this.setState({
       options: options,
@@ -31,10 +33,11 @@ const Test = React.createClass({
   },
   render() {
     return (<Select combobox
-                   style={{width: 200}}
-                   onChange={this.onChange}
-                   onSelect={this.onSelect}
-                   searchPlaceholder="请输入账户名">
+                    notFoundContent={false}
+                    style={{width: 200}}
+                    onChange={this.onChange}
+                    onSelect={this.onSelect}
+                    searchPlaceholder="请输入账户名">
       {this.state.options}
     </Select>);
   },
