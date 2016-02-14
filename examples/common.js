@@ -19712,6 +19712,8 @@
 	
 	var _OptGroup2 = _interopRequireDefault(_OptGroup);
 	
+	_Select2['default'].Option = _Option2['default'];
+	_Select2['default'].OptGroup = _OptGroup2['default'];
 	exports.Option = _Option2['default'];
 	exports.OptGroup = _OptGroup2['default'];
 	exports['default'] = _Select2['default'];
