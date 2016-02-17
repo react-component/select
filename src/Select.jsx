@@ -19,6 +19,14 @@ function filterFn(input, child) {
   return String(getPropValue(child, this.props.optionFilterProp)).indexOf(input) > -1;
 }
 
+function renderSelectionFn(value, label, maxTagTextLength) {
+  if (maxTagTextLength && typeof label === 'string' && label.length > maxTagTextLength) {
+    label = label.slice(0, maxTagTextLength) + '...';
+  }
+
+  return label;
+};
+
 function saveRef(name, component) {
   this[name] = component;
 }
@@ -49,6 +57,7 @@ const Select = React.createClass({
     defaultLabel: PropTypes.oneOfType([PropTypes.array, PropTypes.any]),
     dropdownStyle: PropTypes.object,
     maxTagTextLength: PropTypes.number,
+    renderSelection: PropTypes.func,
   },
   mixins: [FilterMixin],
 
@@ -74,6 +83,7 @@ const Select = React.createClass({
       optionFilterProp: 'value',
       optionLabelProp: 'value',
       notFoundContent: 'Not Found',
+      renderSelection: renderSelectionFn
     };
   },
 
@@ -424,7 +434,8 @@ const Select = React.createClass({
   renderTopControlNode() {
     const {value, label} = this.state;
     const props = this.props;
-    const { choiceTransitionName, prefixCls, maxTagTextLength } = props;
+    const { choiceTransitionName, prefixCls, maxTagTextLength, renderSelection } = props;
+
     // single and not combobox, input is inside dropdown
     if (isSingleMode(props)) {
       let innerNode = (<span key="placeholder"
@@ -432,7 +443,7 @@ const Select = React.createClass({
                            {props.placeholder}
       </span>);
       if (label.length) {
-        innerNode = <span key="value">{label[0]}</span>;
+        innerNode = <span key="value">{renderSelection(value[0], label[0])}</span>;
       }
       return (<span className={prefixCls + '-selection__rendered'}>
         {innerNode}
@@ -444,14 +455,11 @@ const Select = React.createClass({
       selectedValueNodes = value.map((singleValue, index) => {
         let content = label[index];
         const title = content;
-        if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
-          content = content.slice(0, maxTagTextLength) + '...';
-        }
         return (
           <li className={`${prefixCls}-selection__choice`}
               key={singleValue}
               title={title}>
-            <span className={prefixCls + '-selection__choice__content'}>{content}</span>
+            <span className={prefixCls + '-selection__choice__content'}>{renderSelection(singleValue, content, maxTagTextLength)}</span>
             <span className={prefixCls + '-selection__choice__remove'}
                   onClick={this.removeSelected.bind(this, singleValue)}/>
           </li>
