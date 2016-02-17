@@ -21,11 +21,11 @@ function filterFn(input, child) {
 
 function renderSelectionFn(value, label, maxTagTextLength) {
   if (maxTagTextLength && typeof label === 'string' && label.length > maxTagTextLength) {
-    label = label.slice(0, maxTagTextLength) + '...';
+    return label.slice(0, maxTagTextLength) + '...';
   }
 
   return label;
-};
+}
 
 function saveRef(name, component) {
   this[name] = component;
@@ -83,7 +83,7 @@ const Select = React.createClass({
       optionFilterProp: 'value',
       optionLabelProp: 'value',
       notFoundContent: 'Not Found',
-      renderSelection: renderSelectionFn
+      renderSelection: renderSelectionFn,
     };
   },
 
@@ -453,13 +453,12 @@ const Select = React.createClass({
     let selectedValueNodes = [];
     if (isMultipleOrTags(props)) {
       selectedValueNodes = value.map((singleValue, index) => {
-        let content = label[index];
-        const title = content;
+        const title = label[index];
         return (
           <li className={`${prefixCls}-selection__choice`}
               key={singleValue}
               title={title}>
-            <span className={prefixCls + '-selection__choice__content'}>{renderSelection(singleValue, content, maxTagTextLength)}</span>
+            <span className={prefixCls + '-selection__choice__content'}>{renderSelection(singleValue, title, maxTagTextLength)}</span>
             <span className={prefixCls + '-selection__choice__remove'}
                   onClick={this.removeSelected.bind(this, singleValue)}/>
           </li>
