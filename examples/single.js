@@ -43,17 +43,19 @@ const Test = React.createClass({
           <Select value={this.state.value}
                   dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
                   style={{width: 500}}
+                  optionLabelProp="children"
+                  optionFilterProp="text"
                   onChange={this.onChange}>
-            <Option value="jack">
+            <Option value="01" text="jack">
               <b style={{
                 color: 'red',
               }}>jack</b>
             </Option>
-            <Option value="lucy">lucy</Option>
-            <Option value="disabled" disabled>disabled</Option>
-            <Option value="yiminghe">yiminghe</Option>
+            <Option value="11" text="lucy">lucy</Option>
+            <Option value="21" disabled text="disabled">disabled</Option>
+            <Option value="31" text="yiminghe">yiminghe</Option>
             {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => {
-              return <Option key={i}>{i}</Option>;
+              return <Option key={i} text={i + ''}>{i}</Option>;
             })}
           </Select>
         </div>
@@ -62,10 +64,10 @@ const Test = React.createClass({
         <select value={this.state.value}
                 style={{width: 500}}
                 onChange={this.onChange}>
-          <option value="jack">jack</option>
-          <option value="lucy">lucy</option>
-          <option value="disabled" disabled>disabled</option>
-          <option value="yiminghe">yiminghe</option>
+          <option value="01">jack</option>
+          <option value="11">lucy</option>
+          <option value="21" disabled>disabled</option>
+          <option value="31">yiminghe</option>
           {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => {
             return <option value={i} key={i}>{i}</option>;
           })}
