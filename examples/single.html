@@ -309,17 +309,19 @@ const Test = React.createClass({
           &lt;Select value={this.state.value}
                   dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
                   style={{width: 500}}
+                  optionLabelProp="children"
+                  optionFilterProp="text"
                   onChange={this.onChange}&gt;
-            &lt;Option value="jack"&gt;
+            &lt;Option value="01" text="jack"&gt;
               &lt;b style={{
                 color: 'red',
               }}&gt;jack&lt;/b&gt;
             &lt;/Option&gt;
-            &lt;Option value="lucy"&gt;lucy&lt;/Option&gt;
-            &lt;Option value="disabled" disabled&gt;disabled&lt;/Option&gt;
-            &lt;Option value="yiminghe"&gt;yiminghe&lt;/Option&gt;
+            &lt;Option value="11" text="lucy"&gt;lucy&lt;/Option&gt;
+            &lt;Option value="21" disabled text="disabled"&gt;disabled&lt;/Option&gt;
+            &lt;Option value="31" text="yiminghe"&gt;yiminghe&lt;/Option&gt;
             {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) =&gt; {
-              return &lt;Option key={i}&gt;{i}&lt;/Option&gt;;
+              return &lt;Option key={i} text={i + ''}&gt;{i}&lt;/Option&gt;;
             })}
           &lt;/Select&gt;
         &lt;/div&gt;
@@ -328,10 +330,10 @@ const Test = React.createClass({
         &lt;select value={this.state.value}
                 style={{width: 500}}
                 onChange={this.onChange}&gt;
-          &lt;option value="jack"&gt;jack&lt;/option&gt;
-          &lt;option value="lucy"&gt;lucy&lt;/option&gt;
-          &lt;option value="disabled" disabled&gt;disabled&lt;/option&gt;
-          &lt;option value="yiminghe"&gt;yiminghe&lt;/option&gt;
+          &lt;option value="01"&gt;jack&lt;/option&gt;
+          &lt;option value="11"&gt;lucy&lt;/option&gt;
+          &lt;option value="21" disabled&gt;disabled&lt;/option&gt;
+          &lt;option value="31"&gt;yiminghe&lt;/option&gt;
           {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) =&gt; {
             return &lt;option value={i} key={i}&gt;{i}&lt;/option&gt;;
           })}

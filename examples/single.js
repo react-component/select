@@ -78,10 +78,12 @@ webpackJsonp([10],{
 	          { value: this.state.value,
 	            dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
 	            style: { width: 500 },
+	            optionLabelProp: 'children',
+	            optionFilterProp: 'text',
 	            onChange: this.onChange },
 	          _react2['default'].createElement(
 	            _rcSelect.Option,
-	            { value: 'jack' },
+	            { value: '01', text: 'jack' },
 	            _react2['default'].createElement(
 	              'b',
 	              { style: {
@@ -92,23 +94,23 @@ webpackJsonp([10],{
 	          ),
 	          _react2['default'].createElement(
 	            _rcSelect.Option,
-	            { value: 'lucy' },
+	            { value: '11', text: 'lucy' },
 	            'lucy'
 	          ),
 	          _react2['default'].createElement(
 	            _rcSelect.Option,
-	            { value: 'disabled', disabled: true },
+	            { value: '21', disabled: true, text: 'disabled' },
 	            'disabled'
 	          ),
 	          _react2['default'].createElement(
 	            _rcSelect.Option,
-	            { value: 'yiminghe' },
+	            { value: '31', text: 'yiminghe' },
 	            'yiminghe'
 	          ),
 	          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (i) {
 	            return _react2['default'].createElement(
 	              _rcSelect.Option,
-	              { key: i },
+	              { key: i, text: i + '' },
 	              i
 	            );
 	          })
@@ -126,22 +128,22 @@ webpackJsonp([10],{
 	          onChange: this.onChange },
 	        _react2['default'].createElement(
 	          'option',
-	          { value: 'jack' },
+	          { value: '01' },
 	          'jack'
 	        ),
 	        _react2['default'].createElement(
 	          'option',
-	          { value: 'lucy' },
+	          { value: '11' },
 	          'lucy'
 	        ),
 	        _react2['default'].createElement(
 	          'option',
-	          { value: 'disabled', disabled: true },
+	          { value: '21', disabled: true },
 	          'disabled'
 	        ),
 	        _react2['default'].createElement(
 	          'option',
-	          { value: 'yiminghe' },
+	          { value: '31' },
 	          'yiminghe'
 	        ),
 	        [1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (i) {

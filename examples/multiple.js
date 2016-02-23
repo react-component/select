@@ -36,12 +36,9 @@ webpackJsonp([6],{
 	  children.push(_react2['default'].createElement(
 	    _rcSelect.Option,
 	    { key: i.toString(36) + i },
-	    i.toString(36) + i
+	    '中文',
+	    i
 	  ));
-	}
-	
-	function onChange(value) {
-	  console.log('selected ' + value);
 	}
 	
 	function onSelect() {
@@ -57,8 +54,13 @@ webpackJsonp([6],{
 	
 	  getInitialState: function getInitialState() {
 	    return {
-	      useAnim: 0
+	      useAnim: 0,
+	      value: []
 	    };
+	  },
+	  onChange: function onChange(value) {
+	    console.log('onChange', value);
+	    this.setState({ value: value });
 	  },
 	  useAnim: function useAnim(e) {
 	    this.setState({
@@ -94,14 +96,17 @@ webpackJsonp([6],{
 	        _react2['default'].createElement(
 	          _rcSelect2['default'],
 	          {
+	            value: this.state.value,
 	            animation: this.state.useAnim ? 'slide-up' : null,
 	            choiceTransitionName: 'rc-select-selection__choice-zoom',
 	            dropdownMenuStyle: dropdownMenuStyle,
 	            style: { width: 500 },
 	            multiple: true,
+	            optionFilterProp: 'children',
+	            optionLabelProp: 'children',
 	            onSelect: onSelect,
 	            onDeselect: onDeselect,
-	            onChange: onChange },
+	            onChange: this.onChange },
 	          children
 	        )
 	      )
