@@ -1,14 +1,14 @@
-webpackJsonp([10],{
+webpackJsonp([9],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(253);
+	module.exports = __webpack_require__(252);
 
 
 /***/ },
 
-/***/ 253:
+/***/ 252:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint no-console: 0 */
@@ -43,7 +43,7 @@ webpackJsonp([10],{
 	
 	  onChange: function onChange(e) {
 	    var value = undefined;
-	    if (e.target) {
+	    if (e && e.target) {
 	      value = e.target.value;
 	    } else {
 	      value = e;
@@ -76,8 +76,11 @@ webpackJsonp([10],{
 	        _react2['default'].createElement(
 	          _rcSelect2['default'],
 	          { value: this.state.value,
+	            placeholder: 'placeholder',
+	            searchPlaceholder: 'searchPlaceholder',
 	            dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
 	            style: { width: 500 },
+	            allowClear: true,
 	            optionLabelProp: 'children',
 	            optionFilterProp: 'text',
 	            onChange: this.onChange },

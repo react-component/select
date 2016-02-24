@@ -40,8 +40,8 @@ webpackJsonp([2],{
 	    return {
 	      disabled: false,
 	      data: [],
-	      value: '',
-	      label: ''
+	      value: undefined,
+	      label: undefined
 	    };
 	  },
 	
@@ -102,11 +102,14 @@ webpackJsonp([2],{
 	        null,
 	        _react2['default'].createElement(
 	          _rcSelect2['default'],
-	          { onSearch: this.fetchData,
+	          {
+	            onSearch: this.fetchData,
 	            disabled: this.state.disabled,
 	            value: this.state.value,
 	            label: this.state.label,
 	            optionLabelProp: 'children',
+	            placeholder: 'placeholder',
+	            searchPlaceholder: 'searchPlaceholder',
 	            style: { width: 500 },
 	            onChange: this.onChange,
 	            filterOption: false },

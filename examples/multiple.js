@@ -106,6 +106,7 @@ webpackJsonp([6],{
 	            optionLabelProp: 'children',
 	            onSelect: onSelect,
 	            onDeselect: onDeselect,
+	            placeholder: 'please select',
 	            onChange: this.onChange },
 	          children
 	        )

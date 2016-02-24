@@ -927,6 +927,7 @@ webpackJsonp([5],{
 	          {
 	            style: { width: 500 },
 	            tags: true,
+	            placeholder: 'placeholder',
 	            notFoundContent: '',
 	            onSearch: this.fetchData,
 	            onSelect: this.handleSelect,

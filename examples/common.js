@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		14:0
+/******/ 		13:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"combobox","1":"email","2":"force-suggest","3":"getPopupContainer","4":"mul-suggest","5":"mul-tag-suggest","6":"multiple","7":"optgroup","8":"optionFilterProp","9":"placeholder","10":"single","11":"single-animation","12":"suggest","13":"tags"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"combobox","1":"email","2":"force-suggest","3":"getPopupContainer","4":"mul-suggest","5":"mul-tag-suggest","6":"multiple","7":"optgroup","8":"optionFilterProp","9":"single","10":"single-animation","11":"suggest","12":"tags"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -20099,14 +20099,20 @@
 	
 	  getSearchPlaceholderElement: function getSearchPlaceholderElement(hidden) {
 	    var props = this.props;
-	    if (props.searchPlaceholder) {
+	    var placeholder = undefined;
+	    if ((0, _util.isMultipleOrTagsOrCombobox)(props)) {
+	      placeholder = props.placeholder || props.searchPlaceholder;
+	    } else {
+	      placeholder = props.searchPlaceholder;
+	    }
+	    if (placeholder) {
 	      return _react2['default'].createElement(
 	        'span',
 	        {
 	          style: { display: hidden ? 'none' : 'block' },
 	          onClick: this.onPlaceholderClick,
 	          className: props.prefixCls + '-search__field__placeholder' },
-	        props.searchPlaceholder
+	        placeholder
 	      );
 	    }
 	    return null;
@@ -20117,7 +20123,8 @@
 	    return _react2['default'].createElement(
 	      'span',
 	      { className: props.prefixCls + '-search__field__wrap' },
-	      _react2['default'].createElement('input', { ref: this.saveInputRef,
+	      _react2['default'].createElement('input', {
+	        ref: this.saveInputRef,
 	        onChange: this.onInputChange,
 	        onKeyDown: this.onInputKeyDown,
 	        value: this.state.inputValue,
@@ -20212,7 +20219,8 @@
 	    if ((0, _util.isSingleMode)(props)) {
 	      var innerNode = _react2['default'].createElement(
 	        'span',
-	        { key: 'placeholder',
+	        {
+	          key: 'placeholder',
 	          className: prefixCls + '-selection__placeholder' },
 	        props.placeholder
 	      );
@@ -20240,7 +20248,8 @@
 	        }
 	        return _react2['default'].createElement(
 	          'li',
-	          { className: prefixCls + '-selection__choice',
+	          {
+	            className: prefixCls + '-selection__choice',
 	            key: singleValue,
 	            title: title },
 	          _react2['default'].createElement(
@@ -20248,7 +20257,8 @@
 	            { className: prefixCls + '-selection__choice__content' },
 	            content
 	          ),
-	          _react2['default'].createElement('span', { className: prefixCls + '-selection__choice__remove',
+	          _react2['default'].createElement('span', {
+	            className: prefixCls + '-selection__choice__remove',
 	            onClick: _this4.removeSelected.bind(_this4, singleValue) })
 	        );
 	      });
@@ -20262,7 +20272,8 @@
 	    if ((0, _util.isMultipleOrTags)(props) && choiceTransitionName) {
 	      return _react2['default'].createElement(
 	        _rcAnimate2['default'],
-	        { className: className,
+	        {
+	          className: className,
 	          component: 'ul',
 	          transitionName: choiceTransitionName },
 	        selectedValueNodes
@@ -20305,7 +20316,8 @@
 	    }
 	    var rootCls = (_rootCls = {}, _defineProperty(_rootCls, className, !!className), _defineProperty(_rootCls, prefixCls, 1), _defineProperty(_rootCls, prefixCls + '-open', open), _defineProperty(_rootCls, prefixCls + '-combobox', (0, _util.isCombobox)(props)), _defineProperty(_rootCls, prefixCls + '-disabled', disabled), _defineProperty(_rootCls, prefixCls + '-enabled', !disabled), _rootCls);
 	
-	    var clear = _react2['default'].createElement('span', { key: 'clear',
+	    var clear = _react2['default'].createElement('span', {
+	      key: 'clear',
 	      className: prefixCls + '-selection__clear',
 	      onClick: this.onClearSelection });
 	    return _react2['default'].createElement(
@@ -20329,7 +20341,8 @@
 	          className: (0, _classnames2['default'])(rootCls) },
 	        _react2['default'].createElement(
 	          'span',
-	          _extends({ ref: 'selection',
+	          _extends({
+	            ref: 'selection',
 	            key: 'selection',
 	            className: prefixCls + '-selection ' + prefixCls + '-selection--' + (multiple ? 'multiple' : 'single'),
 	            role: 'combobox',
@@ -20338,7 +20351,7 @@
 	            'aria-expanded': open
 	          }, extraSelectionProps),
 	          ctrlNode,
-	          allowClear && !(0, _util.isMultipleOrTags)(props) ? clear : null,
+	          allowClear && !multiple ? clear : null,
 	          multiple || !props.showArrow ? null : _react2['default'].createElement(
 	            'span',
 	            { key: 'arrow', className: prefixCls + '-arrow', tabIndex: '-1', style: { outline: 'none' } },

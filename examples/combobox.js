@@ -91,6 +91,7 @@ webpackJsonp([0],[
 	            onSelect: this.onSelect,
 	            defaultActiveFirstOption: false,
 	            allowClear: true,
+	            placeholder: 'please select',
 	            value: this.state.value,
 	            combobox: true },
 	          _react2['default'].createElement(

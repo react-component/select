@@ -1,9 +1,9 @@
-webpackJsonp([12],{
+webpackJsonp([11],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(255);
+	module.exports = __webpack_require__(254);
 
 
 /***/ },
@@ -854,7 +854,7 @@ webpackJsonp([12],{
 
 /***/ },
 
-/***/ 255:
+/***/ 254:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint no-console: 0 */
@@ -927,6 +927,8 @@ webpackJsonp([12],{
 	          {
 	            style: { width: 500 },
 	            combobox: true,
+	            placeholder: 'placeholder',
+	            searchPlaceholder: 'searchPlaceholder',
 	            defaultActiveFirstOption: false,
 	            showArrow: false,
 	            notFoundContent: '',

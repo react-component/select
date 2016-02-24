@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>force-suggest.js - example - rc-select@5.9.3</title>
+  <title>force-suggest.js - example - rc-select@5.9.4</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-select@5.9.3</h1>
+    <h1>rc-select@5.9.4</h1>
 
     <p>React Select</p>
   </div>
@@ -277,8 +277,8 @@ import ReactDOM from <span class="hljs-string">'react-dom'</span>;
     <span class="hljs-keyword">return</span> {
       disabled: <span class="hljs-literal">false</span>,
       data: [],
-      value: <span class="hljs-string">''</span>,
-      label: <span class="hljs-string">''</span>,
+      value: <span class="hljs-literal">undefined</span>,
+      label: <span class="hljs-literal">undefined</span>,
     };
   },
 
@@ -313,14 +313,17 @@ import ReactDOM from <span class="hljs-string">'react-dom'</span>;
         <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.toggleDisabled}</span>&gt;</span>toggle disabled<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Select</span> <span class="hljs-attribute">onSearch</span>=<span class="hljs-value">{this.fetchData}</span>
-                <span class="hljs-attribute">disabled</span>=<span class="hljs-value">{this.state.disabled}</span>
-                <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value}</span>
-                <span class="hljs-attribute">label</span>=<span class="hljs-value">{this.state.label}</span>
-                <span class="hljs-attribute">optionLabelProp</span>=<span class="hljs-value">"children"</span>
-                <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">500</span>}}
-                <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>
-                <span class="hljs-attribute">filterOption</span>=<span class="hljs-value">{false}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">Select</span>
+          <span class="hljs-attribute">onSearch</span>=<span class="hljs-value">{this.fetchData}</span>
+          <span class="hljs-attribute">disabled</span>=<span class="hljs-value">{this.state.disabled}</span>
+          <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value}</span>
+          <span class="hljs-attribute">label</span>=<span class="hljs-value">{this.state.label}</span>
+          <span class="hljs-attribute">optionLabelProp</span>=<span class="hljs-value">"children"</span>
+          <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"placeholder"</span>
+          <span class="hljs-attribute">searchPlaceholder</span>=<span class="hljs-value">"searchPlaceholder"</span>
+          <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">500</span>}}
+          <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>
+          <span class="hljs-attribute">filterOption</span>=<span class="hljs-value">{false}</span>&gt;</span>
           {options}
         <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>

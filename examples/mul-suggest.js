@@ -939,7 +939,7 @@ webpackJsonp([4],{
 	            label: this.state.label,
 	            style: { width: 500 },
 	            animation: 'slide-up',
-	            searchPlaceholder: '搜索下',
+	            placeholder: '搜索下',
 	            optionLabelProp: 'children',
 	            multiple: true,
 	            notFoundContent: '',

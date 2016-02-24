@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>single-animation.js - example - rc-select@5.9.3</title>
+  <title>single-animation.js - example - rc-select@5.9.4</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-select@5.9.3</h1>
+    <h1>rc-select@5.9.4</h1>
 
     <p>React Select</p>
   </div>
@@ -281,11 +281,15 @@ import ReactDOM from <span class="hljs-string">'react-dom'</span>;
     <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>Single Select<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
 
     <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">300</span>}}&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">Select</span> <span class="hljs-attribute">defaultValue</span>=<span class="hljs-value">"lucy"</span>
-              <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">500</span>}}
-              <span class="hljs-attribute">animation</span>=<span class="hljs-value">"slide-up"</span>
-              <span class="hljs-attribute">showSearch</span>=<span class="hljs-value">{false}</span>
-              <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{onChange}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">Select</span>
+        <span class="hljs-attribute">allowClear</span>
+        <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"placeholder"</span>
+        <span class="hljs-attribute">searchPlaceholder</span>=<span class="hljs-value">"searchPlaceholder"</span>
+        <span class="hljs-attribute">defaultValue</span>=<span class="hljs-value">"lucy"</span>
+        <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">500</span>}}
+        <span class="hljs-attribute">animation</span>=<span class="hljs-value">"slide-up"</span>
+        <span class="hljs-attribute">showSearch</span>=<span class="hljs-value">{false}</span>
+        <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{onChange}</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"jack"</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">b</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span>
             <span class="hljs-attribute">color:</span> '<span class="hljs-attribute">red</span>',

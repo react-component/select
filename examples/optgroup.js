@@ -48,7 +48,10 @@ webpackJsonp([7],{
 	    { style: { width: 300 } },
 	    _react2['default'].createElement(
 	      _rcSelect2['default'],
-	      { defaultValue: 'lucy',
+	      {
+	        placeholder: 'placeholder',
+	        searchPlaceholder: 'searchPlaceholder',
+	        defaultValue: 'lucy',
 	        showSearch: false,
 	        style: { width: 500 },
 	        onChange: onChange },

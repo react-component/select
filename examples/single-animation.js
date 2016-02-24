@@ -1,14 +1,14 @@
-webpackJsonp([11],{
+webpackJsonp([10],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(254);
+	module.exports = __webpack_require__(253);
 
 
 /***/ },
 
-/***/ 254:
+/***/ 253:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint no-console: 0 */
@@ -49,7 +49,11 @@ webpackJsonp([11],{
 	    { style: { width: 300 } },
 	    _react2['default'].createElement(
 	      _rcSelect2['default'],
-	      { defaultValue: 'lucy',
+	      {
+	        allowClear: true,
+	        placeholder: 'placeholder',
+	        searchPlaceholder: 'searchPlaceholder',
+	        defaultValue: 'lucy',
 	        style: { width: 500 },
 	        animation: 'slide-up',
 	        showSearch: false,

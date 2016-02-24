@@ -70,12 +70,13 @@ webpackJsonp([1],{
 	  render: function render() {
 	    return _react2['default'].createElement(
 	      _rcSelect2['default'],
-	      { combobox: true,
+	      {
+	        combobox: true,
 	        notFoundContent: false,
 	        style: { width: 200 },
 	        onChange: this.onChange,
 	        onSelect: this.onSelect,
-	        searchPlaceholder: '请输入账户名' },
+	        placeholder: '请输入账户名' },
 	      this.state.options
 	    );
 	  }
