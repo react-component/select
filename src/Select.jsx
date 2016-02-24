@@ -117,7 +117,7 @@ const Select = React.createClass({
   componentDidUpdate() {
     const state = this.state;
     const props = this.props;
-    if (state.open && isMultipleOrTags(props)) {
+    if (state.open && isMultipleOrTags(props) && state.value && state.value.length > 0) {
       const inputNode = this.getInputDOMNode();
       if (inputNode.value) {
         inputNode.style.width = '';
@@ -345,6 +345,18 @@ const Select = React.createClass({
 
   getInputElement() {
     const props = this.props;
+    const { value = [] } = this.state;
+    let initialInputProps;
+
+    if (value.length === 0) {
+      initialInputProps = {
+        style: {
+          width: '100%',
+        },
+        placeholder: props.placeholder,
+      };
+    }
+
     return (<span className={props.prefixCls + '-search__field__wrap'}>
       <input ref={this.saveInputRef}
              onChange={this.onInputChange}
@@ -352,7 +364,8 @@ const Select = React.createClass({
              value={this.state.inputValue}
              disabled={props.disabled}
              className={props.prefixCls + '-search__field'}
-             role="textbox"/>
+             role="textbox"
+             {...initialInputProps} />
       {isMultipleOrTags(props) ? null : this.getSearchPlaceholderElement(!!this.state.inputValue)}
     </span>);
   },
