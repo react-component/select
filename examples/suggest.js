@@ -37,6 +37,8 @@ const Search = React.createClass({
         <Select
           style={{width: 500}}
           combobox
+          placeholder="placeholder"
+          searchPlaceholder="searchPlaceholder"
           defaultActiveFirstOption={false}
           showArrow={false}
           notFoundContent=""

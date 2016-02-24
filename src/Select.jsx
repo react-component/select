@@ -334,11 +334,19 @@ const Select = React.createClass({
 
   getSearchPlaceholderElement(hidden) {
     const props = this.props;
-    if (props.searchPlaceholder) {
+    let placeholder;
+    if (isMultipleOrTagsOrCombobox(props)) {
+      placeholder = props.placeholder || props.searchPlaceholder;
+    } else {
+      placeholder = props.searchPlaceholder;
+    }
+    if (placeholder) {
       return (<span
         style={{display: hidden ? 'none' : 'block'}}
         onClick={this.onPlaceholderClick}
-        className={props.prefixCls + '-search__field__placeholder'}>{props.searchPlaceholder}</span>);
+        className={props.prefixCls + '-search__field__placeholder'}>
+        {placeholder}
+      </span>);
     }
     return null;
   },
@@ -346,13 +354,14 @@ const Select = React.createClass({
   getInputElement() {
     const props = this.props;
     return (<span className={props.prefixCls + '-search__field__wrap'}>
-      <input ref={this.saveInputRef}
-             onChange={this.onInputChange}
-             onKeyDown={this.onInputKeyDown}
-             value={this.state.inputValue}
-             disabled={props.disabled}
-             className={props.prefixCls + '-search__field'}
-             role="textbox"/>
+      <input
+        ref={this.saveInputRef}
+        onChange={this.onInputChange}
+        onKeyDown={this.onInputKeyDown}
+        value={this.state.inputValue}
+        disabled={props.disabled}
+        className={props.prefixCls + '-search__field'}
+        role="textbox"/>
       {isMultipleOrTags(props) ? null : this.getSearchPlaceholderElement(!!this.state.inputValue)}
     </span>);
   },
@@ -427,8 +436,9 @@ const Select = React.createClass({
     const { choiceTransitionName, prefixCls, maxTagTextLength } = props;
     // single and not combobox, input is inside dropdown
     if (isSingleMode(props)) {
-      let innerNode = (<span key="placeholder"
-                             className={prefixCls + '-selection__placeholder'}>
+      let innerNode = (<span
+        key="placeholder"
+        className={prefixCls + '-selection__placeholder'}>
                            {props.placeholder}
       </span>);
       if (label.length) {
@@ -448,12 +458,14 @@ const Select = React.createClass({
           content = content.slice(0, maxTagTextLength) + '...';
         }
         return (
-          <li className={`${prefixCls}-selection__choice`}
-              key={singleValue}
-              title={title}>
+          <li
+            className={`${prefixCls}-selection__choice`}
+            key={singleValue}
+            title={title}>
             <span className={prefixCls + '-selection__choice__content'}>{content}</span>
-            <span className={prefixCls + '-selection__choice__remove'}
-                  onClick={this.removeSelected.bind(this, singleValue)}/>
+            <span
+              className={prefixCls + '-selection__choice__remove'}
+              onClick={this.removeSelected.bind(this, singleValue)}/>
           </li>
         );
       });
@@ -463,9 +475,10 @@ const Select = React.createClass({
     </li>);
     const className = prefixCls + '-selection__rendered';
     if (isMultipleOrTags(props) && choiceTransitionName) {
-      return (<Animate className={className}
-                       component="ul"
-                       transitionName={choiceTransitionName}>
+      return (<Animate
+        className={className}
+        component="ul"
+        transitionName={choiceTransitionName}>
         {selectedValueNodes}
       </Animate>);
     }
@@ -502,11 +515,13 @@ const Select = React.createClass({
       [prefixCls + '-enabled']: !disabled,
     };
 
-    const clear = (<span key="clear"
-                         className={prefixCls + '-selection__clear'}
-                         onClick={this.onClearSelection}/>);
+    const clear = (<span
+      key="clear"
+      className={prefixCls + '-selection__clear'}
+      onClick={this.onClearSelection}/>);
     return (
-      <SelectTrigger {...props}
+      <SelectTrigger
+        {...props}
         options={options}
         multiple={multiple}
         disabled={disabled}
@@ -521,17 +536,18 @@ const Select = React.createClass({
         <span
           style={props.style}
           className={classnames(rootCls)}>
-          <span ref="selection"
-                key="selection"
-                className={`${prefixCls}-selection ${prefixCls}-selection--${multiple ? 'multiple' : 'single'}`}
-                role="combobox"
-                aria-autocomplete="list"
-                aria-haspopup="true"
-                aria-expanded={open}
+          <span
+            ref="selection"
+            key="selection"
+            className={`${prefixCls}-selection ${prefixCls}-selection--${multiple ? 'multiple' : 'single'}`}
+            role="combobox"
+            aria-autocomplete="list"
+            aria-haspopup="true"
+            aria-expanded={open}
             {...extraSelectionProps}
           >
         {ctrlNode}
-            {allowClear && !isMultipleOrTags(props) ? clear : null}
+            {allowClear && !multiple ? clear : null}
             {multiple || !props.showArrow ? null :
               (<span key="arrow" className={prefixCls + '-arrow'} tabIndex="-1" style={{outline: 'none'}}>
               <b/>

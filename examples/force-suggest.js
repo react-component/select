@@ -11,8 +11,8 @@ const Search = React.createClass({
     return {
       disabled: false,
       data: [],
-      value: '',
-      label: '',
+      value: undefined,
+      label: undefined,
     };
   },
 
@@ -47,14 +47,17 @@ const Search = React.createClass({
         <button onClick={this.toggleDisabled}>toggle disabled</button>
       </p>
       <div>
-        <Select onSearch={this.fetchData}
-                disabled={this.state.disabled}
-                value={this.state.value}
-                label={this.state.label}
-                optionLabelProp="children"
-                style={{width: 500}}
-                onChange={this.onChange}
-                filterOption={false}>
+        <Select
+          onSearch={this.fetchData}
+          disabled={this.state.disabled}
+          value={this.state.value}
+          label={this.state.label}
+          optionLabelProp="children"
+          placeholder="placeholder"
+          searchPlaceholder="searchPlaceholder"
+          style={{width: 500}}
+          onChange={this.onChange}
+          filterOption={false}>
           {options}
         </Select>
       </div>

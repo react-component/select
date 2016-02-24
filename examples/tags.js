@@ -34,13 +34,16 @@ const Test = React.createClass({
         <h2>tags select（scroll the menu）</h2>
 
         <div>
-          <Select tags
-                  dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
-                  style={{width: 500}}
-                  disabled={this.state.disabled}
-                  maxTagTextLength={10}
-                  value={this.state.value}
-                  onChange={this.onChange}>
+          <Select
+            placeholder="placeholder"
+            searchPlaceholder="searchPlaceholder"
+            tags
+            dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
+            style={{width: 500}}
+            disabled={this.state.disabled}
+            maxTagTextLength={10}
+            value={this.state.value}
+            onChange={this.onChange}>
             {children}
           </Select>
         </div>

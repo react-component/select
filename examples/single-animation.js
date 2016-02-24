@@ -15,11 +15,15 @@ const c1 = (
     <h2>Single Select</h2>
 
     <div style={{width: 300}}>
-      <Select defaultValue="lucy"
-              style={{width: 500}}
-              animation="slide-up"
-              showSearch={false}
-              onChange={onChange}>
+      <Select
+        allowClear
+        placeholder="placeholder"
+        searchPlaceholder="searchPlaceholder"
+        defaultValue="lucy"
+        style={{width: 500}}
+        animation="slide-up"
+        showSearch={false}
+        onChange={onChange}>
         <Option value="jack">
           <b style={{
             color: 'red',

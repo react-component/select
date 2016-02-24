@@ -32,12 +32,13 @@ const Test = React.createClass({
     });
   },
   render() {
-    return (<Select combobox
-                    notFoundContent={false}
-                    style={{width: 200}}
-                    onChange={this.onChange}
-                    onSelect={this.onSelect}
-                    searchPlaceholder="请输入账户名">
+    return (<Select
+      combobox
+      notFoundContent={false}
+      style={{width: 200}}
+      onChange={this.onChange}
+      onSelect={this.onSelect}
+      placeholder="请输入账户名">
       {this.state.options}
     </Select>);
   },

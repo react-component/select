@@ -13,7 +13,10 @@ const c1 = (
   <div>
     <h2>Select OptGroup</h2>
     <div style={{width: 300}}>
-      <Select defaultValue="lucy"
+      <Select
+        placeholder="placeholder"
+        searchPlaceholder="searchPlaceholder"
+        defaultValue="lucy"
         showSearch={false}
         style={{width: 500}}
         onChange={onChange}>

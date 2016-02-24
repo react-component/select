@@ -49,6 +49,7 @@ const Test = React.createClass({
           onSelect={this.onSelect}
           defaultActiveFirstOption={false}
           allowClear
+          placeholder="please select"
           value={this.state.value}
           combobox>
           <Option value="jack">

@@ -42,6 +42,8 @@ const Test = React.createClass({
       <Dialog visible={this.state.open} onClose={this.close}>
         <div style={{marginTop: 20, position: 'relative'}}>
           <Select
+            placeholder="placeholder"
+            searchPlaceholder="searchPlaceholder"
             style={{width: 200}}
             getPopupContainer={this.getPopupContainer}>
             <Option value="1">1</Option>

@@ -15,7 +15,7 @@ const Test = React.createClass({
 
   onChange(e) {
     let value;
-    if (e.target) {
+    if (e && e.target) {
       value = e.target.value;
     } else {
       value = e;
@@ -41,8 +41,11 @@ const Test = React.createClass({
 
         <div style={{width: 300}}>
           <Select value={this.state.value}
+                  placeholder="placeholder"
+                  searchPlaceholder="searchPlaceholder"
                   dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
                   style={{width: 500}}
+                  allowClear
                   optionLabelProp="children"
                   optionFilterProp="text"
                   onChange={this.onChange}>

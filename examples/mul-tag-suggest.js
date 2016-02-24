@@ -37,6 +37,7 @@ const Search = React.createClass({
         <Select
           style={{width: 500}}
           tags
+          placeholder="placeholder"
           notFoundContent=""
           onSearch={this.fetchData}
           onSelect={this.handleSelect}

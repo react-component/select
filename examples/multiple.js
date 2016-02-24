@@ -59,6 +59,7 @@ const Test = React.createClass({
             optionLabelProp="children"
             onSelect={onSelect}
             onDeselect={onDeselect}
+            placeholder="please select"
             onChange={this.onChange}>
             {children}
           </Select>
