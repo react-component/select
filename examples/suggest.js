@@ -884,22 +884,39 @@ webpackJsonp([11],{
 	
 	  getInitialState: function getInitialState() {
 	    return {
-	      data: []
+	      data: [],
+	      value: ''
 	    };
+	  },
+	
+	  onKeyDown: function onKeyDown(e) {
+	    if (e.keyCode === 13) {
+	      console.log('onEnter', this.state.value);
+	      this.jump(this.state.value);
+	    }
+	  },
+	
+	  onSelect: function onSelect(value) {
+	    console.log('select ', value);
+	    this.jump(value);
+	  },
+	
+	  jump: function jump(v) {
+	    console.log('jump ', v);
+	    // location.href = 'https://s.taobao.com/search?q=' + encodeURIComponent(v);
 	  },
 	
 	  fetchData: function fetchData(value) {
 	    var _this = this;
 	
+	    this.setState({
+	      value: value
+	    });
 	    (0, _commonTbFetchSuggest.fetch)(value, function (data) {
 	      _this.setState({
 	        data: data
 	      });
 	    });
-	  },
-	
-	  handleSelect: function handleSelect(value) {
-	    console.log('select ', value);
 	  },
 	
 	  render: function render() {
@@ -921,18 +938,21 @@ webpackJsonp([11],{
 	      ),
 	      _react2['default'].createElement(
 	        'div',
-	        null,
+	        { onKeyDown: this.onKeyDown },
 	        _react2['default'].createElement(
 	          _rcSelect2['default'],
 	          {
 	            style: { width: 500 },
 	            combobox: true,
+	            value: this.state.value,
 	            placeholder: 'placeholder',
 	            searchPlaceholder: 'searchPlaceholder',
 	            defaultActiveFirstOption: false,
 	            showArrow: false,
 	            notFoundContent: '',
-	            onChange: this.fetchData, onSelect: this.handleSelect, filterOption: false },
+	            onChange: this.fetchData,
+	            onSelect: this.onSelect,
+	            filterOption: false },
 	          options
 	        )
 	      )
