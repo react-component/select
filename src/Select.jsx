@@ -150,7 +150,12 @@ const Select = React.createClass({
   },
 
   onDropdownVisibleChange(open) {
-    this.setOpenState(open);
+    if (open) {
+      this.setOpenState(open);
+    } else {
+      // Delay overlay hide for fixing combobox selection
+      setTimeout(() => this.setOpenState(open), 10);
+    }
   },
 
   // combobox ignore
@@ -382,8 +387,11 @@ const Select = React.createClass({
     const {props, refs} = this;
     this.setState({
       open,
-    }, ()=> {
-      if (open || isMultipleOrTagsOrCombobox(props)) {
+    }, () => {
+      if (isCombobox(props)) {
+        return;
+      }
+      if (open || isMultipleOrTags(props)) {
         if (this.getInputDOMNode()) {
           this.getInputDOMNode().focus();
         }
