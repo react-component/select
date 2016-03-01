@@ -99,8 +99,14 @@ const SelectTrigger = React.createClass({
       inputValue,
       visible,
     });
+
+    let action = props.combobox ? ['focus'] : ['click'];
+    if (props.disabled) {
+      action = [];
+    }
+
     return (<Trigger {...props}
-      action={props.disabled ? [] : ['click']}
+      action={action}
       ref="trigger"
       popupPlacement="bottomLeft"
       builtinPlacements={BUILT_IN_PLACEMENTS}
