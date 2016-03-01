@@ -49,7 +49,7 @@ const DropdownMenu = React.createClass({
       defaultActiveFirstOption, value,
       dropdownMenuStyle, prefixCls,
       multiple, onMenuDeselect,
-      onMenuSelect } = props;
+      onMenuSelect, combobox } = props;
     if (menuItems && menuItems.length) {
       const menuProps = {};
       if (multiple) {
@@ -58,6 +58,7 @@ const DropdownMenu = React.createClass({
       } else {
         menuProps.onClick = onMenuSelect;
       }
+
       const selectedKeys = getSelectKeys(menuItems, value);
       const activeKeyProps = {};
 
@@ -88,6 +89,11 @@ const DropdownMenu = React.createClass({
           }
           return clone(item);
         });
+      }
+
+      // clear activeKey when combobox mode
+      if (combobox) {
+        activeKeyProps.activeKey = '';
       }
 
       return (<Menu

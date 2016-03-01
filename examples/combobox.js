@@ -48,6 +48,7 @@ const Test = React.createClass({
           onChange={this.onChange}
           onSelect={this.onSelect}
           defaultActiveFirstOption={false}
+          notFoundContent=""
           allowClear
           placeholder="please select"
           value={this.state.value}

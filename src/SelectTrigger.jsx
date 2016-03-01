@@ -83,7 +83,7 @@ const SelectTrigger = React.createClass({
   },
   render() {
     const props = this.props;
-    const { multiple, visible } = props;
+    const { multiple, visible, combobox } = props;
     const dropdownPrefixCls = this.getDropdownPrefixCls();
     const popupClassName = {
       [props.dropdownClassName]: !!props.dropdownClassName,
@@ -96,6 +96,7 @@ const SelectTrigger = React.createClass({
       menuItems: props.options,
       search,
       multiple,
+      combobox,
       visible,
     });
     return (<Trigger {...props}
