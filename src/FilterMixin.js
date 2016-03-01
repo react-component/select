@@ -3,6 +3,15 @@ import OptGroup from './OptGroup';
 import {getValuePropValue} from './util';
 import {Item as MenuItem, ItemGroup as MenuItemGroup} from 'rc-menu';
 
+const MENU_ITEM_STYLE = {
+  userSelect: 'none',
+  WebkitUserSelect: 'none',
+};
+
+const MENU_ITEM_ATTRIBUTE = {
+  unselectable: 'unselectable',
+};
+
 export default {
   filterOption(input, child) {
     if (!input) {
@@ -47,6 +56,8 @@ export default {
       const childValue = getValuePropValue(child);
       if (this.filterOption(inputValue, child)) {
         sel.push(<MenuItem
+          style={MENU_ITEM_STYLE}
+          attribute={MENU_ITEM_ATTRIBUTE}
           value={childValue}
           key={childValue}
           {...child.props}
@@ -63,19 +74,41 @@ export default {
         return childrenKeys.indexOf(singleValue) === -1 && (!inputValue || String(singleValue).indexOf(String(inputValue)) > -1);
       });
       sel = sel.concat(value.map((singleValue)=> {
-        return <MenuItem value={singleValue} key={singleValue}>{singleValue}</MenuItem>;
+        return (<MenuItem
+          style={MENU_ITEM_STYLE}
+          attribute={MENU_ITEM_ATTRIBUTE}
+          value={singleValue}
+          key={singleValue}
+        >
+          {singleValue}
+        </MenuItem>);
       }));
       if (inputValue) {
         const notFindInputItem = sel.every((option)=> {
           return getValuePropValue(option) !== inputValue;
         });
         if (notFindInputItem) {
-          sel.unshift(<MenuItem value={inputValue} key={inputValue}>{inputValue}</MenuItem>);
+          sel.unshift(<MenuItem
+            style={MENU_ITEM_STYLE}
+            attribute={MENU_ITEM_ATTRIBUTE}
+            value={inputValue}
+            key={inputValue}
+          >
+            {inputValue}
+          </MenuItem>);
         }
       }
     }
     if (!sel.length && showNotFound && props.notFoundContent) {
-      sel = [<MenuItem disabled value="NOT_FOUND" key="NOT_FOUND">{props.notFoundContent}</MenuItem>];
+      sel = [<MenuItem
+        style={MENU_ITEM_STYLE}
+        attribute={MENU_ITEM_ATTRIBUTE}
+        disabled
+        value="NOT_FOUND"
+        key="NOT_FOUND"
+      >
+        {props.notFoundContent}
+      </MenuItem>];
     }
     return sel;
   },

@@ -129,6 +129,7 @@ const Select = React.createClass({
   },
 
   componentWillUnmount() {
+    this.clearDelayTimer();
     if (this.dropdownContainer) {
       ReactDOM.unmountComponentAtNode(this.dropdownContainer);
       document.body.removeChild(this.dropdownContainer);
@@ -150,6 +151,10 @@ const Select = React.createClass({
   },
 
   onDropdownVisibleChange(open) {
+    // selection inside combobox cause click
+    if (!open && document.activeElement === this.getInputDOMNode()) {
+      return;
+    }
     this.setOpenState(open);
   },
 
@@ -166,6 +171,16 @@ const Select = React.createClass({
       this.setOpenState(true);
       event.preventDefault();
     }
+  },
+
+  onInputBlur() {
+    if (isMultipleOrTagsOrCombobox(this.props)) {
+      return;
+    }
+    this.clearDelayTimer();
+    this.delayTimer = setTimeout(() => {
+      this.setOpenState(false);
+    }, 150);
   },
 
   onInputKeyDown(event) {
@@ -356,6 +371,7 @@ const Select = React.createClass({
     return (<span className={props.prefixCls + '-search__field__wrap'}>
       <input
         ref={this.saveInputRef}
+        onBlur={this.onInputBlur}
         onChange={this.onInputChange}
         onKeyDown={this.onInputKeyDown}
         value={this.state.inputValue}
@@ -379,18 +395,29 @@ const Select = React.createClass({
   },
 
   setOpenState(open) {
+    this.clearDelayTimer();
     const {props, refs} = this;
+    if (this.state.open === open) {
+      return;
+    }
     this.setState({
       open,
     }, ()=> {
       if (open || isMultipleOrTagsOrCombobox(props)) {
-        if (this.getInputDOMNode()) {
-          this.getInputDOMNode().focus();
+        const input = this.getInputDOMNode();
+        if (input && document.activeElement !== input) {
+          input.focus();
         }
       } else if (refs.selection) {
         refs.selection.focus();
       }
     });
+  },
+  clearDelayTimer() {
+    if (this.delayTimer) {
+      clearTimeout(this.delayTimer);
+      this.delayTimer = null;
+    }
   },
 
   removeSelected(selectedValue) {

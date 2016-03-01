@@ -101,6 +101,7 @@ const SelectTrigger = React.createClass({
     });
     return (<Trigger {...props}
       action={props.disabled ? [] : ['click']}
+      hideAction={props.disabled ? [] : ['blur']}
       ref="trigger"
       popupPlacement="bottomLeft"
       builtinPlacements={BUILT_IN_PLACEMENTS}
