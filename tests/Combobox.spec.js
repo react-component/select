@@ -45,7 +45,7 @@ describe('Combobox', () => {
     );
     const input = ReactDOM.findDOMNode(TestUtils.scryRenderedDOMComponentsWithClass(instance, 'rc-select-search__field')[0]);
     expect(input.value).to.be('1');
-    Simulate.click(input);
+    Simulate.focus(input);
     const activeItem = $(instance.getPopupDOMNode()).find('.rc-select-dropdown-menu-item-active')[0];
     expect(activeItem.innerHTML).to.be('11111');
     Simulate.click(activeItem);
