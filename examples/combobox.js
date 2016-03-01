@@ -90,6 +90,7 @@ webpackJsonp([0],[
 	            onChange: this.onChange,
 	            onSelect: this.onSelect,
 	            defaultActiveFirstOption: false,
+	            notFoundContent: '',
 	            allowClear: true,
 	            placeholder: 'please select',
 	            value: this.state.value,

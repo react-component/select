@@ -23834,7 +23834,7 @@
 	
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	    var props = undefined;
-	    if (nextProps.activeKey) {
+	    if ('activeKey' in nextProps) {
 	      props = {
 	        activeKey: getActiveKey(nextProps, nextProps.activeKey)
 	      };
@@ -24657,15 +24657,15 @@
 	
 	function loopMenuItem(children, cb) {
 	  var index = -1;
-	  _react2['default'].Children.forEach(children, function (c, i) {
+	  _react2['default'].Children.forEach(children, function (c) {
 	    index++;
 	    if (c && c.type.isMenuItemGroup) {
-	      _react2['default'].Children.forEach(c.props.children, function (c2, i2) {
+	      _react2['default'].Children.forEach(c.props.children, function (c2) {
 	        index++;
 	        cb(c2, index);
 	      });
 	    } else {
-	      cb(c, i);
+	      cb(c, index);
 	    }
 	  });
 	}
@@ -25658,6 +25658,7 @@
 	    var props = this.props;
 	    var multiple = props.multiple;
 	    var visible = props.visible;
+	    var inputValue = props.inputValue;
 	
 	    var dropdownPrefixCls = this.getDropdownPrefixCls();
 	    var popupClassName = (_popupClassName = {}, _defineProperty(_popupClassName, props.dropdownClassName, !!props.dropdownClassName), _defineProperty(_popupClassName, dropdownPrefixCls + '--' + (multiple ? 'multiple' : 'single'), 1), _popupClassName);
@@ -25670,6 +25671,7 @@
 	      menuItems: props.options,
 	      search: search,
 	      multiple: multiple,
+	      inputValue: inputValue,
 	      visible: visible
 	    });
 	    return _react2['default'].createElement(
@@ -27560,7 +27562,12 @@
 	    prefixCls: _react.PropTypes.string,
 	    menuItems: _react.PropTypes.any,
 	    search: _react.PropTypes.any,
+	    inputValue: _react.PropTypes.string,
 	    visible: _react.PropTypes.bool
+	  },
+	
+	  componentWillMount: function componentWillMount() {
+	    this.lastInputValue = this.props.inputValue;
 	  },
 	
 	  componentDidMount: function componentDidMount() {
@@ -27582,6 +27589,7 @@
 	      this.scrollActiveItemToView();
 	    }
 	    this.lastVisible = props.visible;
+	    this.lastInputValue = props.inputValue;
 	  },
 	
 	  scrollActiveItemToView: function scrollActiveItemToView() {
@@ -27606,6 +27614,7 @@
 	    var multiple = props.multiple;
 	    var onMenuDeselect = props.onMenuDeselect;
 	    var onMenuSelect = props.onMenuSelect;
+	    var inputValue = props.inputValue;
 	
 	    if (menuItems && menuItems.length) {
 	      var _ret = (function () {
@@ -27616,6 +27625,7 @@
 	        } else {
 	          menuProps.onClick = onMenuSelect;
 	        }
+	
 	        var selectedKeys = (0, _util.getSelectKeys)(menuItems, value);
 	        var activeKeyProps = {};
 	
@@ -27648,6 +27658,11 @@
 	              return clone(item);
 	            });
 	          })();
+	        }
+	
+	        // clear activeKey when inputValue change
+	        if (inputValue !== _this.lastInputValue) {
+	          activeKeyProps.activeKey = '';
 	        }
 	
 	        return {
