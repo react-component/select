@@ -9,7 +9,12 @@ const DropdownMenu = React.createClass({
     prefixCls: PropTypes.string,
     menuItems: PropTypes.any,
     search: PropTypes.any,
+    inputValue: PropTypes.string,
     visible: PropTypes.bool,
+  },
+
+  componentWillMount() {
+    this.lastInputValue = this.props.inputValue;
   },
 
   componentDidMount() {
@@ -31,6 +36,7 @@ const DropdownMenu = React.createClass({
       this.scrollActiveItemToView();
     }
     this.lastVisible = props.visible;
+    this.lastInputValue = props.inputValue;
   },
 
   scrollActiveItemToView() {
@@ -49,7 +55,7 @@ const DropdownMenu = React.createClass({
       defaultActiveFirstOption, value,
       dropdownMenuStyle, prefixCls,
       multiple, onMenuDeselect,
-      onMenuSelect, combobox } = props;
+      onMenuSelect, inputValue } = props;
     if (menuItems && menuItems.length) {
       const menuProps = {};
       if (multiple) {
@@ -91,8 +97,8 @@ const DropdownMenu = React.createClass({
         });
       }
 
-      // clear activeKey when combobox mode
-      if (combobox) {
+      // clear activeKey when inputValue change
+      if (inputValue !== this.lastInputValue) {
         activeKeyProps.activeKey = '';
       }
 

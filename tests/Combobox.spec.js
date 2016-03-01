@@ -51,4 +51,22 @@ describe('Combobox', () => {
     Simulate.click(activeItem);
     expect(input.value).to.be('11111');
   });
+
+  it('do not keep active item', () => {
+    const instance = ReactDOM.render(
+      <Select combobox>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>, div
+    );
+    const input = instance.getInputDOMNode();
+    input.value = '2';
+    Simulate.change(input);
+    let activeItem = $(instance.getPopupDOMNode()).find('.rc-select-dropdown-menu-item-active')[0];
+    expect(activeItem.innerHTML).to.be('2');
+    input.value = '';
+    Simulate.change(input);
+    activeItem = $(instance.getPopupDOMNode()).find('.rc-select-dropdown-menu-item-active')[0];
+    expect(activeItem.innerHTML).to.be('1');
+  });
 });
