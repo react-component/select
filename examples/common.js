@@ -19943,6 +19943,9 @@
 	
 	  onInputKeyDown: function onInputKeyDown(event) {
 	    var props = this.props;
+	    if (props.disabled) {
+	      return;
+	    }
 	    var state = this.state;
 	    var keyCode = event.keyCode;
 	    if ((0, _util.isMultipleOrTags)(props) && !event.target.value && keyCode === _rcUtil.KeyCode.BACKSPACE) {
@@ -20277,10 +20280,14 @@
 	        }
 	        return _react2['default'].createElement(
 	          'li',
-	          {
+	          _extends({
+	            style: _util.UNSELECTABLE_STYLE
+	          }, _util.UNSELECTABLE_ATTRIBUTE, {
+	            onMouseDown: _util.preventDefaultEvent,
 	            className: prefixCls + '-selection__choice',
 	            key: singleValue,
-	            title: title },
+	            title: title
+	          }),
 	          _react2['default'].createElement(
 	            'span',
 	            { className: prefixCls + '-selection__choice__content' },
@@ -20337,7 +20344,7 @@
 	    if (open && ((0, _util.isMultipleOrTagsOrCombobox)(props) || !props.showSearch) && !options.length) {
 	      open = false;
 	    }
-	    if (!(0, _util.isCombobox)(props)) {
+	    if (!(0, _util.isMultipleOrTagsOrCombobox)(props)) {
 	      extraSelectionProps = {
 	        onKeyDown: this.onKeyDown,
 	        tabIndex: 0
@@ -20383,7 +20390,11 @@
 	          allowClear && !multiple ? clear : null,
 	          multiple || !props.showArrow ? null : _react2['default'].createElement(
 	            'span',
-	            { key: 'arrow', className: prefixCls + '-arrow', tabIndex: '-1', style: { outline: 'none' } },
+	            {
+	              key: 'arrow',
+	              className: prefixCls + '-arrow',
+	              style: { outline: 'none' }
+	            },
 	            _react2['default'].createElement('b', null)
 	          ),
 	          multiple ? this.getSearchPlaceholderElement(!!this.state.inputValue || this.state.value.length) : null
@@ -23362,6 +23373,7 @@
 	exports.isMultipleOrTagsOrCombobox = isMultipleOrTagsOrCombobox;
 	exports.isSingleMode = isSingleMode;
 	exports.toArray = toArray;
+	exports.preventDefaultEvent = preventDefaultEvent;
 	exports.getSelectKeys = getSelectKeys;
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -23416,6 +23428,10 @@
 	  return ret;
 	}
 	
+	function preventDefaultEvent(e) {
+	  e.preventDefault();
+	}
+	
 	function getSelectKeys(menuItems, value) {
 	  if (value === null || value === undefined) {
 	    return [];
@@ -23434,6 +23450,17 @@
 	  });
 	  return selectedKeys;
 	}
+	
+	var UNSELECTABLE_STYLE = {
+	  userSelect: 'none',
+	  WebkitUserSelect: 'none'
+	};
+	
+	exports.UNSELECTABLE_STYLE = UNSELECTABLE_STYLE;
+	var UNSELECTABLE_ATTRIBUTE = {
+	  unselectable: 'unselectable'
+	};
+	exports.UNSELECTABLE_ATTRIBUTE = UNSELECTABLE_ATTRIBUTE;
 
 /***/ },
 /* 196 */
@@ -25927,7 +25954,8 @@
 	    this.preTouchTime = Date.now();
 	  },
 	
-	  onBlur: function onBlur() {
+	  onBlur: function onBlur(e) {
+	    console.log('onBlyr', e.target)
 	    this.delaySetPopupVisible(false, this.props.blurDelay);
 	  },
 	
@@ -27803,7 +27831,11 @@
 	      'div',
 	      null,
 	      this.props.search,
-	      this.renderMenu()
+	      _react2['default'].createElement(
+	        'div',
+	        { onMouseDown: _util.preventDefaultEvent },
+	        this.renderMenu()
+	      )
 	    );
 	  }
 	});
@@ -27836,15 +27868,6 @@
 	var _util = __webpack_require__(195);
 	
 	var _rcMenu = __webpack_require__(196);
-	
-	var MENU_ITEM_STYLE = {
-	  userSelect: 'none',
-	  WebkitUserSelect: 'none'
-	};
-	
-	var MENU_ITEM_ATTRIBUTE = {
-	  unselectable: 'unselectable'
-	};
 	
 	exports['default'] = {
 	  filterOption: function filterOption(input, child) {
@@ -27894,8 +27917,8 @@
 	      var childValue = (0, _util.getValuePropValue)(child);
 	      if (_this.filterOption(inputValue, child)) {
 	        sel.push(_react2['default'].createElement(_rcMenu.Item, _extends({
-	          style: MENU_ITEM_STYLE,
-	          attribute: MENU_ITEM_ATTRIBUTE,
+	          style: _util.UNSELECTABLE_STYLE,
+	          attribute: _util.UNSELECTABLE_ATTRIBUTE,
 	          value: childValue,
 	          key: childValue
 	        }, child.props)));
@@ -27914,8 +27937,8 @@
 	        return _react2['default'].createElement(
 	          _rcMenu.Item,
 	          {
-	            style: MENU_ITEM_STYLE,
-	            attribute: MENU_ITEM_ATTRIBUTE,
+	            style: _util.UNSELECTABLE_STYLE,
+	            attribute: _util.UNSELECTABLE_ATTRIBUTE,
 	            value: singleValue,
 	            key: singleValue
 	          },
@@ -27930,8 +27953,8 @@
 	          sel.unshift(_react2['default'].createElement(
 	            _rcMenu.Item,
 	            {
-	              style: MENU_ITEM_STYLE,
-	              attribute: MENU_ITEM_ATTRIBUTE,
+	              style: _util.UNSELECTABLE_STYLE,
+	              attribute: _util.UNSELECTABLE_ATTRIBUTE,
 	              value: inputValue,
 	              key: inputValue
 	            },
@@ -27944,8 +27967,8 @@
 	      sel = [_react2['default'].createElement(
 	        _rcMenu.Item,
 	        {
-	          style: MENU_ITEM_STYLE,
-	          attribute: MENU_ITEM_ATTRIBUTE,
+	          style: _util.UNSELECTABLE_STYLE,
+	          attribute: _util.UNSELECTABLE_ATTRIBUTE,
 	          disabled: true,
 	          value: 'NOT_FOUND',
 	          key: 'NOT_FOUND'
