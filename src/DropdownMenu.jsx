@@ -1,6 +1,6 @@
 import React, {cloneElement, PropTypes} from 'react';
 import {findDOMNode} from 'react-dom';
-import {getSelectKeys} from './util';
+import { getSelectKeys, preventDefaultEvent } from './util';
 import Menu, {ItemGroup as MenuItemGroup} from 'rc-menu';
 import scrollIntoView from 'dom-scroll-into-view';
 
@@ -121,7 +121,9 @@ const DropdownMenu = React.createClass({
   render() {
     return (<div>
       {this.props.search}
-      {this.renderMenu()}
+      <div onMouseDown={preventDefaultEvent}>
+        {this.renderMenu()}
+      </div>
     </div>);
   },
 });

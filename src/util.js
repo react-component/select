@@ -45,6 +45,10 @@ export function toArray(value) {
   return ret;
 }
 
+export function preventDefaultEvent(e) {
+  e.preventDefault();
+}
+
 export function getSelectKeys(menuItems, value) {
   if (value === null || value === undefined) {
     return [];
@@ -63,3 +67,13 @@ export function getSelectKeys(menuItems, value) {
   });
   return selectedKeys;
 }
+
+
+export const UNSELECTABLE_STYLE = {
+  userSelect: 'none',
+  WebkitUserSelect: 'none',
+};
+
+export const UNSELECTABLE_ATTRIBUTE = {
+  unselectable: 'unselectable',
+};

@@ -8,6 +8,8 @@ import {
   getPropValue, getValuePropValue, isCombobox,
   isMultipleOrTags, isMultipleOrTagsOrCombobox,
   isSingleMode, toArray,
+  UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE,
+  preventDefaultEvent,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import FilterMixin from './FilterMixin';
@@ -185,6 +187,9 @@ const Select = React.createClass({
 
   onInputKeyDown(event) {
     const props = this.props;
+    if (props.disabled) {
+      return;
+    }
     const state = this.state;
     const keyCode = event.keyCode;
     if (isMultipleOrTags(props) && !event.target.value && keyCode === KeyCode.BACKSPACE) {
@@ -486,9 +491,13 @@ const Select = React.createClass({
         }
         return (
           <li
+            style={UNSELECTABLE_STYLE}
+            {...UNSELECTABLE_ATTRIBUTE}
+            onMouseDown={preventDefaultEvent}
             className={`${prefixCls}-selection__choice`}
             key={singleValue}
-            title={title}>
+            title={title}
+          >
             <span className={prefixCls + '-selection__choice__content'}>{content}</span>
             <span
               className={prefixCls + '-selection__choice__remove'}
@@ -527,7 +536,7 @@ const Select = React.createClass({
     if (open && (isMultipleOrTagsOrCombobox(props) || !props.showSearch) && !options.length) {
       open = false;
     }
-    if (!isCombobox(props)) {
+    if (!isMultipleOrTagsOrCombobox(props)) {
       extraSelectionProps = {
         onKeyDown: this.onKeyDown,
         tabIndex: 0,
@@ -576,7 +585,11 @@ const Select = React.createClass({
         {ctrlNode}
             {allowClear && !multiple ? clear : null}
             {multiple || !props.showArrow ? null :
-              (<span key="arrow" className={prefixCls + '-arrow'} tabIndex="-1" style={{outline: 'none'}}>
+              (<span
+                key="arrow"
+                className={prefixCls + '-arrow'}
+                style={{outline: 'none'}}
+              >
               <b/>
             </span>)}
             {multiple ? this.getSearchPlaceholderElement(!!this.state.inputValue || this.state.value.length) : null}

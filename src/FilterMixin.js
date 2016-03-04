@@ -1,16 +1,7 @@
 import React from 'react';
 import OptGroup from './OptGroup';
-import {getValuePropValue} from './util';
+import {getValuePropValue, UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE} from './util';
 import {Item as MenuItem, ItemGroup as MenuItemGroup} from 'rc-menu';
-
-const MENU_ITEM_STYLE = {
-  userSelect: 'none',
-  WebkitUserSelect: 'none',
-};
-
-const MENU_ITEM_ATTRIBUTE = {
-  unselectable: 'unselectable',
-};
 
 export default {
   filterOption(input, child) {
@@ -56,8 +47,8 @@ export default {
       const childValue = getValuePropValue(child);
       if (this.filterOption(inputValue, child)) {
         sel.push(<MenuItem
-          style={MENU_ITEM_STYLE}
-          attribute={MENU_ITEM_ATTRIBUTE}
+          style={UNSELECTABLE_STYLE}
+          attribute={UNSELECTABLE_ATTRIBUTE}
           value={childValue}
           key={childValue}
           {...child.props}
@@ -75,8 +66,8 @@ export default {
       });
       sel = sel.concat(value.map((singleValue)=> {
         return (<MenuItem
-          style={MENU_ITEM_STYLE}
-          attribute={MENU_ITEM_ATTRIBUTE}
+          style={UNSELECTABLE_STYLE}
+          attribute={UNSELECTABLE_ATTRIBUTE}
           value={singleValue}
           key={singleValue}
         >
@@ -89,8 +80,8 @@ export default {
         });
         if (notFindInputItem) {
           sel.unshift(<MenuItem
-            style={MENU_ITEM_STYLE}
-            attribute={MENU_ITEM_ATTRIBUTE}
+            style={UNSELECTABLE_STYLE}
+            attribute={UNSELECTABLE_ATTRIBUTE}
             value={inputValue}
             key={inputValue}
           >
@@ -101,8 +92,8 @@ export default {
     }
     if (!sel.length && showNotFound && props.notFoundContent) {
       sel = [<MenuItem
-        style={MENU_ITEM_STYLE}
-        attribute={MENU_ITEM_ATTRIBUTE}
+        style={UNSELECTABLE_STYLE}
+        attribute={UNSELECTABLE_ATTRIBUTE}
         disabled
         value="NOT_FOUND"
         key="NOT_FOUND"
