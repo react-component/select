@@ -3,12 +3,12 @@ webpackJsonp([3],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(241);
+	module.exports = __webpack_require__(240);
 
 
 /***/ },
 
-/***/ 241:
+/***/ 240:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27,13 +27,13 @@ webpackJsonp([3],{
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(230);
+	__webpack_require__(229);
 	
-	var _rcDialog = __webpack_require__(242);
+	var _rcDialog = __webpack_require__(241);
 	
 	var _rcDialog2 = _interopRequireDefault(_rcDialog);
 	
-	__webpack_require__(246);
+	__webpack_require__(245);
 	
 	var Test = _react2['default'].createClass({
 	  displayName: 'Test',
@@ -120,16 +120,16 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 242:
+/***/ 241:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(243);
+	module.exports = __webpack_require__(242);
 
 /***/ },
 
-/***/ 243:
+/***/ 242:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -158,13 +158,9 @@ webpackJsonp([3],{
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _Dialog = __webpack_require__(244);
+	var _Dialog = __webpack_require__(243);
 	
 	var _Dialog2 = _interopRequireDefault(_Dialog);
-	
-	var _objectAssign = __webpack_require__(182);
-	
-	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 	
 	function noop() {}
 	
@@ -218,7 +214,7 @@ webpackJsonp([3],{
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate() {
 	      if (this.dialogRendered) {
-	        _reactDom2['default'].unstable_renderSubtreeIntoContainer(this, this.getDialogElement(), this.getDialogContainer());
+	        this.dialogInstance = _reactDom2['default'].unstable_renderSubtreeIntoContainer(this, this.getDialogElement(), this.getDialogContainer());
 	      }
 	    }
 	  }, {
@@ -238,8 +234,8 @@ webpackJsonp([3],{
 	    }
 	  }, {
 	    key: 'onClose',
-	    value: function onClose() {
-	      this.props.onClose();
+	    value: function onClose(e) {
+	      this.props.onClose(e);
 	    }
 	  }, {
 	    key: 'getDialogContainer',
@@ -255,9 +251,8 @@ webpackJsonp([3],{
 	    key: 'getDialogElement',
 	    value: function getDialogElement(extra) {
 	      var props = this.props;
-	      var dialogProps = copy(props, ['className', 'closable', 'align', 'title', 'footer', 'mask', 'animation', 'transitionName', 'maskAnimation', 'maskTransitionName', 'mousePosition', 'prefixCls', 'style', 'width', 'height', 'zIndex']);
-	
-	      (0, _objectAssign2['default'])(dialogProps, {
+	      var dialogProps = copy(props, ['className', 'closable', 'maskClosable', 'align', 'title', 'footer', 'mask', 'animation', 'transitionName', 'maskAnimation', 'maskTransitionName', 'mousePosition', 'prefixCls', 'style', 'width', 'height', 'zIndex', 'bodyStyle']);
+	      dialogProps = _extends({}, dialogProps, {
 	        onClose: this.onClose,
 	        visible: this.state.visible
 	      }, extra);
@@ -266,6 +261,11 @@ webpackJsonp([3],{
 	        _extends({}, dialogProps, { key: 'dialog' }),
 	        props.children
 	      );
+	    }
+	  }, {
+	    key: 'getElement',
+	    value: function getElement(part) {
+	      return this.dialogInstance.getElement(part);
 	    }
 	  }, {
 	    key: 'cleanDialogContainer',
@@ -293,6 +293,7 @@ webpackJsonp([3],{
 	  },
 	  mask: true,
 	  closable: true,
+	  maskClosable: true,
 	  prefixCls: 'rc-dialog',
 	  onClose: noop
 	};
@@ -305,6 +306,7 @@ webpackJsonp([3],{
 	  }),
 	  mask: _react2['default'].PropTypes.bool,
 	  closable: _react2['default'].PropTypes.bool,
+	  maskClosable: _react2['default'].PropTypes.bool,
 	  prefixCls: _react2['default'].PropTypes.string,
 	  visible: _react2['default'].PropTypes.bool,
 	  onClose: _react2['default'].PropTypes.func
@@ -315,7 +317,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 244:
+/***/ 243:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -338,23 +340,25 @@ webpackJsonp([3],{
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _rcAlign = __webpack_require__(214);
+	var _rcAlign = __webpack_require__(213);
 	
 	var _rcAlign2 = _interopRequireDefault(_rcAlign);
 	
-	var _rcUtil = __webpack_require__(163);
+	var _rcUtilLibKeyCode = __webpack_require__(169);
 	
-	var _objectAssign = __webpack_require__(182);
+	var _rcUtilLibKeyCode2 = _interopRequireDefault(_rcUtilLibKeyCode);
 	
-	var _objectAssign2 = _interopRequireDefault(_objectAssign);
-	
-	var _rcAnimate = __webpack_require__(187);
+	var _rcAnimate = __webpack_require__(186);
 	
 	var _rcAnimate2 = _interopRequireDefault(_rcAnimate);
 	
-	var _DOMWrap = __webpack_require__(245);
+	var _DOMWrap = __webpack_require__(244);
 	
 	var _DOMWrap2 = _interopRequireDefault(_DOMWrap);
+	
+	var _classnames = __webpack_require__(167);
+	
+	var _classnames2 = _interopRequireDefault(_classnames);
 	
 	function noop() {}
 	
@@ -399,6 +403,7 @@ webpackJsonp([3],{
 	    onAfterClose: _react.PropTypes.func,
 	    onClose: _react.PropTypes.func,
 	    closable: _react.PropTypes.bool,
+	    maskClosable: _react.PropTypes.bool,
 	    visible: _react.PropTypes.bool,
 	    mousePosition: _react.PropTypes.object
 	  },
@@ -438,9 +443,9 @@ webpackJsonp([3],{
 	    this.props.onAfterClose();
 	  },
 	
-	  onMaskClick: function onMaskClick() {
-	    if (this.props.closable) {
-	      this.close();
+	  onMaskClick: function onMaskClick(e) {
+	    if (this.props.closable && this.props.maskClosable) {
+	      this.close(e);
 	    }
 	    _reactDom2['default'].findDOMNode(this.refs.dialog).focus();
 	  },
@@ -448,13 +453,13 @@ webpackJsonp([3],{
 	  onKeyDown: function onKeyDown(e) {
 	    var props = this.props;
 	    if (props.closable) {
-	      if (e.keyCode === _rcUtil.KeyCode.ESC) {
-	        this.close();
+	      if (e.keyCode === _rcUtilLibKeyCode2['default'].ESC) {
+	        this.close(e);
 	      }
 	    }
 	    // keep focus inside dialog
 	    if (props.visible) {
-	      if (e.keyCode === _rcUtil.KeyCode.TAB) {
+	      if (e.keyCode === _rcUtilLibKeyCode2['default'].TAB) {
 	        var activeElement = document.activeElement;
 	        var dialogRoot = _reactDom2['default'].findDOMNode(this.refs.dialog);
 	        var sentinel = this.refs.sentinel;
@@ -500,7 +505,7 @@ webpackJsonp([3],{
 	    if (props.footer) {
 	      footer = _react2['default'].createElement(
 	        'div',
-	        { className: prefixCls + '-footer' },
+	        { className: prefixCls + '-footer', ref: 'footer' },
 	        props.footer
 	      );
 	    }
@@ -509,7 +514,7 @@ webpackJsonp([3],{
 	    if (props.title) {
 	      header = _react2['default'].createElement(
 	        'div',
-	        { className: prefixCls + '-header' },
+	        { className: prefixCls + '-header', ref: 'header' },
 	        _react2['default'].createElement(
 	          'div',
 	          { className: prefixCls + '-title' },
@@ -527,7 +532,7 @@ webpackJsonp([3],{
 	      );
 	    }
 	
-	    var style = (0, _objectAssign2['default'])({}, props.style, dest);
+	    var style = _extends({}, props.style, dest);
 	    var dialogProps = {
 	      className: [props.prefixCls, props.className].join(' '),
 	      tabIndex: '0',
@@ -548,7 +553,7 @@ webpackJsonp([3],{
 	        header,
 	        _react2['default'].createElement(
 	          'div',
-	          { className: prefixCls + '-body' },
+	          { className: prefixCls + '-body', style: props.bodyStyle, ref: 'body' },
 	          props.children
 	        ),
 	        footer
@@ -634,8 +639,12 @@ webpackJsonp([3],{
 	    return transitionName;
 	  },
 	
-	  close: function close() {
-	    this.props.onClose();
+	  getElement: function getElement(part) {
+	    return this.refs[part];
+	  },
+	
+	  close: function close(e) {
+	    this.props.onClose(e);
 	  },
 	
 	  render: function render() {
@@ -645,7 +654,7 @@ webpackJsonp([3],{
 	
 	    return _react2['default'].createElement(
 	      'div',
-	      { className: (0, _rcUtil.classSet)(className) },
+	      { className: (0, _classnames2['default'])(className), ref: 'root' },
 	      [this.getMaskElement(), this.getDialogElement()]
 	    );
 	  }
@@ -656,7 +665,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 245:
+/***/ 244:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -665,15 +674,13 @@ webpackJsonp([3],{
 	  value: true
 	});
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	var _react = __webpack_require__(2);
 	
 	var _react2 = _interopRequireDefault(_react);
-	
-	var _objectAssign = __webpack_require__(182);
-	
-	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 	
 	var DOMWrap = _react2['default'].createClass({
 	  displayName: 'DOMWrap',
@@ -689,7 +696,7 @@ webpackJsonp([3],{
 	  },
 	
 	  render: function render() {
-	    var props = (0, _objectAssign2['default'])({}, this.props);
+	    var props = _extends({}, this.props);
 	    if (!props.visible) {
 	      props.className = props.className || '';
 	      props.className += ' ' + props.hiddenClassName;
@@ -704,7 +711,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 246:
+/***/ 245:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
