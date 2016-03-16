@@ -25832,6 +25832,7 @@
 	
 	  propTypes: {
 	    dropdownMatchSelectWidth: _react.PropTypes.bool,
+	    dropdownAlign: _react.PropTypes.object,
 	    visible: _react.PropTypes.bool,
 	    multiple: _react.PropTypes.bool,
 	    inputValue: _react.PropTypes.string,
@@ -25890,6 +25891,7 @@
 	    var multiple = props.multiple;
 	    var visible = props.visible;
 	    var inputValue = props.inputValue;
+	    var dropdownAlign = props.dropdownAlign;
 	
 	    var dropdownPrefixCls = this.getDropdownPrefixCls();
 	    var popupClassName = (_popupClassName = {}, _defineProperty(_popupClassName, props.dropdownClassName, !!props.dropdownClassName), _defineProperty(_popupClassName, dropdownPrefixCls + '--' + (multiple ? 'multiple' : 'single'), 1), _popupClassName);
@@ -25917,6 +25919,7 @@
 	        popupTransitionName: this.getDropdownTransitionName(),
 	        onPopupVisibleChange: props.onDropdownVisibleChange,
 	        popup: popupElement,
+	        popupAlign: dropdownAlign,
 	        popupVisible: visible,
 	        popupClassName: (0, _classnames2["default"])(popupClassName),
 	        popupStyle: props.dropdownStyle
