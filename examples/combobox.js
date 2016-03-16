@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Select, {Option} from 'rc-select';
+import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.less';
 
 const Test = React.createClass({
@@ -41,10 +41,10 @@ const Test = React.createClass({
       <p>
         <button onClick={this.toggleDisabled}>toggle disabled</button>
       </p>
-      <div style={{width: 300}} onKeyDown={this.onKeyDown}>
+      <div style={{ width: 300 }} onKeyDown={this.onKeyDown}>
         <Select
           disabled={this.state.disabled}
-          style={{width: 500}}
+          style={{ width: 500 }}
           onChange={this.onChange}
           onSelect={this.onSelect}
           defaultActiveFirstOption={false}
@@ -52,9 +52,10 @@ const Test = React.createClass({
           allowClear
           placeholder="please select"
           value={this.state.value}
-          combobox>
+          combobox
+        >
           <Option value="jack">
-            <b style={{color: 'red'}}>jack</b>
+            <b style={{ color: 'red' }}>jack</b>
           </Option>
           <Option value="lucy">lucy</Option>
           <Option value="disabled" disabled>disabled</Option>

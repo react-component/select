@@ -1,4 +1,4 @@
-import {ItemGroup as MenuItemGroup} from 'rc-menu';
+import { ItemGroup as MenuItemGroup } from 'rc-menu';
 import React from 'react';
 
 export function getValuePropValue(child) {
@@ -9,7 +9,7 @@ export function getValuePropValue(child) {
   if (child.key) {
     return child.key;
   }
-  throw new Error('no key or value for ' + child);
+  throw new Error(`no key or value for ${child}`);
 }
 
 export function getPropValue(child, prop) {
@@ -49,6 +49,17 @@ export function preventDefaultEvent(e) {
   e.preventDefault();
 }
 
+export function findIndexInValueByKey(value, key) {
+  let index = -1;
+  for (let i = 0; i < value.length; i++) {
+    if (value[i].key === key) {
+      index = i;
+      break;
+    }
+  }
+  return index;
+}
+
 export function getSelectKeys(menuItems, value) {
   if (value === null || value === undefined) {
     return [];
@@ -60,7 +71,7 @@ export function getSelectKeys(menuItems, value) {
     } else {
       const itemValue = getValuePropValue(item);
       const itemKey = item.key;
-      if (value.indexOf(itemValue) !== -1 && itemKey) {
+      if (findIndexInValueByKey(value, itemValue) !== -1 && itemKey) {
         selectedKeys.push(itemKey);
       }
     }

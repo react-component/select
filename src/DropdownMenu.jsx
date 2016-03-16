@@ -1,11 +1,17 @@
-import React, {cloneElement, PropTypes} from 'react';
-import {findDOMNode} from 'react-dom';
+import React, { cloneElement, PropTypes } from 'react';
+import { findDOMNode } from 'react-dom';
 import { getSelectKeys, preventDefaultEvent } from './util';
-import Menu, {ItemGroup as MenuItemGroup} from 'rc-menu';
+import Menu, { ItemGroup as MenuItemGroup } from 'rc-menu';
 import scrollIntoView from 'dom-scroll-into-view';
 
 const DropdownMenu = React.createClass({
   propTypes: {
+    defaultActiveFirstOption: PropTypes.bool,
+    value: PropTypes.any,
+    dropdownMenuStyle: PropTypes.object,
+    multiple: PropTypes.bool,
+    onMenuDeSelect: PropTypes.func,
+    onMenuSelect: PropTypes.func,
     prefixCls: PropTypes.string,
     menuItems: PropTypes.any,
     search: PropTypes.any,
@@ -54,12 +60,12 @@ const DropdownMenu = React.createClass({
     const { menuItems,
       defaultActiveFirstOption, value,
       dropdownMenuStyle, prefixCls,
-      multiple, onMenuDeselect,
+      multiple,
       onMenuSelect, inputValue } = props;
     if (menuItems && menuItems.length) {
       const menuProps = {};
       if (multiple) {
-        menuProps.onDeselect = onMenuDeselect;
+        menuProps.onDeselect = props.onMenuDeselect;
         menuProps.onSelect = onMenuSelect;
       } else {
         menuProps.onClick = onMenuSelect;
@@ -111,7 +117,8 @@ const DropdownMenu = React.createClass({
         focusable={false}
         {...menuProps}
         selectedKeys={selectedKeys}
-        prefixCls={`${prefixCls}-menu`}>
+        prefixCls={`${prefixCls}-menu`}
+      >
         {clonedMenuItems}
       </Menu>);
     }

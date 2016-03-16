@@ -1,9 +1,9 @@
 /* eslint no-console: 0 */
 
 import React from 'react';
-import Select, {Option} from 'rc-select';
+import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.less';
-import {fetch} from './common/tbFetchSuggest';
+import { fetch } from './common/tbFetchSuggest';
 import ReactDOM from 'react-dom';
 
 const Search = React.createClass({
@@ -52,7 +52,7 @@ const Search = React.createClass({
 
       <div onKeyDown={this.onKeyDown}>
         <Select
-          style={{width: 500}}
+          style={{ width: 500 }}
           combobox
           value={this.state.value}
           placeholder="placeholder"
@@ -62,7 +62,8 @@ const Search = React.createClass({
           notFoundContent=""
           onChange={this.fetchData}
           onSelect={this.onSelect}
-          filterOption={false}>
+          filterOption={false}
+        >
           {options}
         </Select>
       </div>

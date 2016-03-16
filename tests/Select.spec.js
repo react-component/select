@@ -1,8 +1,8 @@
 import expect from 'expect.js';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import TestUtils, {Simulate} from 'react-addons-test-utils';
-import Select, {Option} from 'rc-select';
+import TestUtils, { Simulate } from 'react-addons-test-utils';
+import Select, { Option } from 'rc-select';
 import $ from 'jquery';
 
 describe('Select', () => {
@@ -22,7 +22,8 @@ describe('Select', () => {
   it('render to body works', (done) => {
     instance = ReactDOM.render(
       <Select
-        value="2">
+        value="2"
+      >
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -44,7 +45,8 @@ describe('Select', () => {
     instance = ReactDOM.render(
       <Select
         onChange={onChange}
-        value={2}>
+        value={2}
+      >
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
       </Select>,
@@ -106,7 +108,8 @@ describe('Select', () => {
         <Option value="2">2</Option>
       </Select>,
       div);
-    expect(TestUtils.scryRenderedDOMComponentsWithClass(instance, 'rc-select-selection__clear').length).to.be(1);
+    expect(TestUtils.scryRenderedDOMComponentsWithClass(instance,
+      'rc-select-selection__clear').length).to.be(1);
   });
 
   it('should not response click event when select is disabled', (done) => {
@@ -145,8 +148,10 @@ describe('Select', () => {
       instance.getInputDOMNode().value = '4';
       Simulate.change(instance.getInputDOMNode());
       setTimeout(() => {
-        expect($(instance.getPopupDOMNode()).find('.rc-select-dropdown-menu-item').length).to.be(1);
-        expect($(instance.getPopupDOMNode()).find('.rc-select-dropdown-menu-item')[0].innerHTML).to.be('Not Found');
+        expect($(instance.getPopupDOMNode())
+          .find('.rc-select-dropdown-menu-item').length).to.be(1);
+        expect($(instance.getPopupDOMNode())
+          .find('.rc-select-dropdown-menu-item')[0].innerHTML).to.be('Not Found');
         done();
       }, 100);
     });

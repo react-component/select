@@ -1,8 +1,8 @@
 import expect from 'expect.js';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import TestUtils, {Simulate} from 'react-addons-test-utils';
-import Select, {Option} from 'rc-select';
+import TestUtils, { Simulate } from 'react-addons-test-utils';
+import Select, { Option } from 'rc-select';
 import $ from 'jquery';
 
 describe('Combobox', () => {
@@ -43,10 +43,12 @@ describe('Combobox', () => {
         <Option value="11111">11111</Option>
       </Select>, div
     );
-    const input = ReactDOM.findDOMNode(TestUtils.scryRenderedDOMComponentsWithClass(instance, 'rc-select-search__field')[0]);
+    const input = ReactDOM.findDOMNode(TestUtils.scryRenderedDOMComponentsWithClass(instance,
+      'rc-select-search__field')[0]);
     expect(input.value).to.be('1');
     Simulate.click(input);
-    const activeItem = $(instance.getPopupDOMNode()).find('.rc-select-dropdown-menu-item-active')[0];
+    const activeItem = $(instance.getPopupDOMNode())
+      .find('.rc-select-dropdown-menu-item-active')[0];
     expect(activeItem.innerHTML).to.be('11111');
     Simulate.click(activeItem);
     expect(input.value).to.be('11111');

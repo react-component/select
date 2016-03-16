@@ -1,7 +1,7 @@
 /* eslint no-console: 0 */
 
 import React from 'react';
-import Select, {Option} from 'rc-select';
+import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.less';
 import ReactDOM from 'react-dom';
 
@@ -27,7 +27,9 @@ const Test = React.createClass({
   },
   onChange(value) {
     console.log('onChange', value);
-    this.setState({value});
+    this.setState({
+      value,
+    });
   },
   useAnim(e) {
     this.setState({
@@ -44,23 +46,27 @@ const Test = React.createClass({
         <h2>multiple select（scroll the menu）</h2>
 
         <p>
-          <label>anim <input checked={this.state.useAnim} type="checkbox" onChange={this.useAnim}/></label>
+          <label>
+            anim
+            <input checked={this.state.useAnim} type="checkbox" onChange={this.useAnim}/>
+          </label>
         </p>
 
-        <div style={{width: 300}}>
+        <div style={{ width: 300 }}>
           <Select
             value={this.state.value}
             animation={this.state.useAnim ? 'slide-up' : null}
             choiceTransitionName="rc-select-selection__choice-zoom"
             dropdownMenuStyle={dropdownMenuStyle}
-            style={{width: 500}}
+            style={{ width: 500 }}
             multiple
             optionFilterProp="children"
             optionLabelProp="children"
             onSelect={onSelect}
             onDeselect={onDeselect}
             placeholder="please select"
-            onChange={this.onChange}>
+            onChange={this.onChange}
+          >
             {children}
           </Select>
         </div>

@@ -1,9 +1,9 @@
 /* eslint no-console: 0 */
 
 import React from 'react';
-import Select, {Option} from 'rc-select';
+import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.less';
-import {fetch} from './common/tbFetchSuggest';
+import { fetch } from './common/tbFetchSuggest';
 import ReactDOM from 'react-dom';
 
 const Search = React.createClass({
@@ -11,15 +11,13 @@ const Search = React.createClass({
     return {
       data: [],
       value: [],
-      label: [],
     };
   },
 
-  onChange(value, label) {
-    console.log('onChange ', value, label);
+  onChange(value) {
+    console.log('onChange ', value);
     this.setState({
       value,
-      label,
     });
   },
 
@@ -42,8 +40,8 @@ const Search = React.createClass({
       <div>
         <Select
           value={this.state.value}
-          label={this.state.label}
-          style={{width: 500}}
+          labelInValue
+          style={{ width: 500 }}
           animation="slide-up"
           placeholder="搜索下"
           optionLabelProp="children"
@@ -51,7 +49,8 @@ const Search = React.createClass({
           notFoundContent=""
           onSearch={this.fetchData}
           onChange={this.onChange}
-          filterOption={false}>
+          filterOption={false}
+        >
           {options}
         </Select>
       </div>

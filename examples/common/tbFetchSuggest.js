@@ -15,11 +15,11 @@ export function fetch(value, callback) {
       code: 'utf-8',
       q: value,
     });
-    jsonp('http://suggest.taobao.com/sug?' + str, (err, d) => {
+    jsonp(`http://suggest.taobao.com/sug?${str}`, (err, d) => {
       if (currentValue === value) {
         const result = d.result;
         const data = [];
-        result.forEach((r)=> {
+        result.forEach((r) => {
           data.push({
             value: r[0],
             text: r[0],

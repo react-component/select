@@ -1,30 +1,35 @@
 /* eslint no-console: 0 */
 
 import React from 'react';
-import Select, {Option, OptGroup} from 'rc-select';
+import Select, { Option, OptGroup } from 'rc-select';
 import 'rc-select/assets/index.less';
 import ReactDOM from 'react-dom';
 
 function onChange(value) {
-  console.log('selected ' + value);
+  console.log(`selected ${value}`);
 }
 
 const c1 = (
   <div>
     <h2>Select OptGroup</h2>
-    <div style={{width: 300}}>
+    <div style={{ width: 300 }}>
       <Select
         placeholder="placeholder"
         searchPlaceholder="searchPlaceholder"
         defaultValue="lucy"
         showSearch={false}
-        style={{width: 500}}
-        onChange={onChange}>
+        style={{ width: 500 }}
+        onChange={onChange}
+      >
         <OptGroup label="manager">
           <Option value="jack">
-            <b style={{
-              color: 'red',
-            }}>jack</b>
+            <b
+              style={{
+                color: 'red',
+              }}
+            >
+              jack
+            </b>
           </Option>
           <Option value="lucy">lucy</Option>
         </OptGroup>

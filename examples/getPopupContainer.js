@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Select, {Option} from 'rc-select';
+import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.less';
 import Dialog from 'rc-dialog';
 import 'rc-dialog/assets/index.css';
@@ -40,12 +40,13 @@ const Test = React.createClass({
       &nbsp;
       <button onClick={this.destroy}>destroy</button>
       <Dialog visible={this.state.open} onClose={this.close}>
-        <div style={{marginTop: 20, position: 'relative'}}>
+        <div style={{ marginTop: 20, position: 'relative' }}>
           <Select
             placeholder="placeholder"
             searchPlaceholder="searchPlaceholder"
-            style={{width: 200}}
-            getPopupContainer={this.getPopupContainer}>
+            style={{ width: 200 }}
+            getPopupContainer={this.getPopupContainer}
+          >
             <Option value="1">1</Option>
             <Option value="2">2</Option>
             <Option value="3">3</Option>

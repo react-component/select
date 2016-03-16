@@ -1,5 +1,9 @@
 # History
 ----
+## 6.0.0 / 2016-03-16
+
+- remove defaultLabel/label
+- add labelInValue prop to control label
 
 ## 5.8.0 / 2016-01-11
 

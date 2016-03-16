@@ -1,9 +1,9 @@
 import expect from 'expect.js';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Simulate} from 'react-addons-test-utils';
-import Select, {Option} from 'rc-select';
-import {KeyCode} from 'rc-util';
+import { Simulate } from 'react-addons-test-utils';
+import Select, { Option } from 'rc-select';
+import { KeyCode } from 'rc-util';
 
 describe('tags', function test() {
   let div;
@@ -18,7 +18,6 @@ describe('tags', function test() {
     ReactDOM.unmountComponentAtNode(div);
     document.body.removeChild(div);
   });
-
 
   this.timeout(400000);
 
@@ -51,7 +50,7 @@ describe('tags', function test() {
         keyCode: KeyCode.ENTER,
       });
       setTimeout(() => {
-        expect(instance.state.value).to.contain('A');
+        expect(instance.state.value.map(v => v.key)).to.contain('A');
         done();
       }, 100);
     }, 100);

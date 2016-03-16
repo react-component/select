@@ -1,6 +1,6 @@
 {
   "name": "rc-select",
-  "version": "5.10.2",
+  "version": "6.0.0-beta.1",
   "description": "React Select",
   "keywords": [
     "react",
@@ -28,13 +28,14 @@
   "scripts": {
     "build": "rc-tools run build",
     "gh-pages": "rc-tools run gh-pages",
-    "start": "rc-server",
+    "start": "rc-tools run server",
     "pub": "rc-tools run pub",
     "lint": "rc-tools run lint",
     "karma": "rc-tools run karma",
     "saucelabs": "rc-tools run saucelabs",
-    "browser-test": "rc-tools run browser-test",
-    "browser-test-cover": "rc-tools run browser-test-cover"
+    "test": "rc-tools run test",
+    "chrome-test": "rc-tools run chrome-test",
+    "coverage": "rc-tools run coverage"
   },
   "devDependencies": {
     "expect.js": "~0.3.1",
@@ -43,8 +44,7 @@
     "pre-commit": "1.x",
     "querystring": "^0.2.0",
     "rc-dialog": "^5.3.1",
-    "rc-server": "3.x",
-    "rc-tools": "4.x",
+    "rc-tools": "5.x",
     "react": "~0.14.0",
     "react-addons-test-utils": "~0.14.0",
     "react-dom": "~0.14.0"

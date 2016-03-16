@@ -1,7 +1,7 @@
 /* eslint no-console: 0 */
 
 import React from 'react';
-import Select, {Option} from 'rc-select';
+import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.less';
 import ReactDOM from 'react-dom';
 
@@ -22,23 +22,24 @@ const Test = React.createClass({
         options = <Option key={value}>{value}</Option>;
       } else {
         options = ['gmail.com', 'yahoo.com', 'outlook.com'].map((domain) => {
-          const email = value + '@' + domain;
+          const email = `${value}@${domain}`;
           return <Option key={email}>{email}</Option>;
         });
       }
     }
     this.setState({
-      options: options,
+      options,
     });
   },
   render() {
     return (<Select
       combobox
       notFoundContent={false}
-      style={{width: 200}}
+      style={{ width: 200 }}
       onChange={this.onChange}
       onSelect={this.onSelect}
-      placeholder="请输入账户名">
+      placeholder="请输入账户名"
+    >
       {this.state.options}
     </Select>);
   },

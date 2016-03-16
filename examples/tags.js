@@ -1,7 +1,7 @@
 /* eslint no-console: 0 */
 
 import React from 'react';
-import Select, {Option} from 'rc-select';
+import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.less';
 import ReactDOM from 'react-dom';
 
@@ -18,9 +18,9 @@ const Test = React.createClass({
     };
   },
   onChange(value) {
-    console.log('selected ' + value);
+    console.log(`selected ${value}`);
     this.setState({
-      value: value,
+      value,
     });
   },
   toggleDisabled() {
@@ -38,12 +38,13 @@ const Test = React.createClass({
             placeholder="placeholder"
             searchPlaceholder="searchPlaceholder"
             tags
-            dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
-            style={{width: 500}}
+            dropdownMenuStyle={{ maxHeight: 200, overflow: 'auto' }}
+            style={{ width: 500 }}
             disabled={this.state.disabled}
             maxTagTextLength={10}
             value={this.state.value}
-            onChange={this.onChange}>
+            onChange={this.onChange}
+          >
             {children}
           </Select>
         </div>

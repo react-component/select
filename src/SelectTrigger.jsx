@@ -1,5 +1,5 @@
 import Trigger from 'rc-trigger';
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import DropdownMenu from './DropdownMenu';
 import ReactDOM from 'react-dom';
@@ -27,6 +27,8 @@ const SelectTrigger = React.createClass({
   propTypes: {
     dropdownMatchSelectWidth: PropTypes.bool,
     visible: PropTypes.bool,
+    multiple: PropTypes.bool,
+    inputValue: PropTypes.string,
     filterOption: PropTypes.any,
     options: PropTypes.any,
     prefixCls: PropTypes.string,
@@ -38,7 +40,7 @@ const SelectTrigger = React.createClass({
     if (this.props.dropdownMatchSelectWidth && this.props.visible) {
       const dropdownDOMNode = this.getPopupDOMNode();
       if (dropdownDOMNode) {
-        dropdownDOMNode.style.width = ReactDOM.findDOMNode(this).offsetWidth + 'px';
+        dropdownDOMNode.style.width = `${ReactDOM.findDOMNode(this).offsetWidth}px`;
       }
     }
   },

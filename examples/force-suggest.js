@@ -1,9 +1,9 @@
 /* eslint no-console: 0 */
 
 import React from 'react';
-import Select, {Option} from 'rc-select';
+import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.less';
-import {fetch} from './common/tbFetchSuggest';
+import { fetch } from './common/tbFetchSuggest';
 import ReactDOM from 'react-dom';
 
 const Search = React.createClass({
@@ -12,17 +12,18 @@ const Search = React.createClass({
       disabled: false,
       data: [],
       value: undefined,
-      label: undefined,
     };
   },
 
-  onChange(value, label) {
-    console.log('select ', value, label);
-    this.setState({value, label});
+  onChange(value) {
+    console.log('select ', value);
+    this.setState({
+      value,
+    });
   },
 
   fetchData(value) {
-    fetch(value, (data)=> {
+    fetch(value, (data) => {
       this.setState({
         data,
       });
@@ -48,16 +49,17 @@ const Search = React.createClass({
       </p>
       <div>
         <Select
+          labelInValue
           onSearch={this.fetchData}
           disabled={this.state.disabled}
           value={this.state.value}
-          label={this.state.label}
           optionLabelProp="children"
           placeholder="placeholder"
           searchPlaceholder="searchPlaceholder"
-          style={{width: 500}}
+          style={{ width: 500 }}
           onChange={this.onChange}
-          filterOption={false}>
+          filterOption={false}
+        >
           {options}
         </Select>
       </div>

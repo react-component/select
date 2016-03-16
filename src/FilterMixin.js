@@ -1,7 +1,7 @@
 import React from 'react';
 import OptGroup from './OptGroup';
-import {getValuePropValue, UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE} from './util';
-import {Item as MenuItem, ItemGroup as MenuItemGroup} from 'rc-menu';
+import { getValuePropValue, UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE } from './util';
+import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
 
 export default {
   filterOption(input, child) {
@@ -27,7 +27,7 @@ export default {
     const inputValue = iv === undefined ? this.state.inputValue : iv;
     const childrenKeys = [];
     const tags = props.tags;
-    React.Children.forEach(children, (child)=> {
+    React.Children.forEach(children, (child) => {
       if (child.type === OptGroup) {
         const innerItems = this.renderFilterOptionsFromChildren(child.props.children, false);
         if (innerItems.length) {
@@ -62,20 +62,22 @@ export default {
       // tags value must be string
       let value = this.state.value || [];
       value = value.filter((singleValue) => {
-        return childrenKeys.indexOf(singleValue) === -1 && (!inputValue || String(singleValue).indexOf(String(inputValue)) > -1);
+        return childrenKeys.indexOf(singleValue.key) === -1 &&
+          (!inputValue || String(singleValue.key).indexOf(String(inputValue)) > -1);
       });
-      sel = sel.concat(value.map((singleValue)=> {
+      sel = sel.concat(value.map((singleValue) => {
+        const key = singleValue.key;
         return (<MenuItem
           style={UNSELECTABLE_STYLE}
           attribute={UNSELECTABLE_ATTRIBUTE}
-          value={singleValue}
-          key={singleValue}
+          value={key}
+          key={key}
         >
-          {singleValue}
+          {key}
         </MenuItem>);
       }));
       if (inputValue) {
-        const notFindInputItem = sel.every((option)=> {
+        const notFindInputItem = sel.every((option) => {
           return getValuePropValue(option) !== inputValue;
         });
         if (notFindInputItem) {

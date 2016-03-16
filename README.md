@@ -7,11 +7,7 @@ React Select
 [![build status][travis-image]][travis-url]
 [![Test coverage][coveralls-image]][coveralls-url]
 [![gemnasium deps][gemnasium-image]][gemnasium-url]
-[![node version][node-image]][node-url]
 [![npm download][download-image]][download-url]
-[![Sauce Test Status](https://saucelabs.com/buildstatus/rc_select)](https://saucelabs.com/u/rc_select)
-
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/rc_select.svg)](https://saucelabs.com/u/rc_select)
 
 [npm-image]: http://img.shields.io/npm/v/rc-select.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/rc-select
@@ -87,12 +83,12 @@ React.render(c, container);
 |optionFilterProp | which prop value of option will be used for filter if filterOption is true | String | 'value' |
 |optionLabelProp | which prop value of option will render as content of select | String | 'value' |
 |defaultValue | initial selected option(s) | String/Array<String> | - |
-|value | current selected option(s) | String/Array<String> | - |
-|onChange | called when select an option or input value change(combobox) | function(value, label) | - |
+|value | current selected option(s) | String/Array<String>/{key:String, label:React.Node}/Array<{key, label}> | - |
+|labelInValue| whether to embed label in value, see above value type | Bool | false |
+|onChange | called when select an option or input value change(combobox) | function(value) | - |
 |onSearch | called when input changed | function | - |
-|onSelect | called when a option is selected. param is option's value and option instance | Function(value:string, option:Option) | - |
-|onDeselect | called when a option is deselected. param is option's value. only called for multiple or tags | Function | - |
-|defaultLabel | specify the default selected option(s) | String/Array<String> | - |
+|onSelect | called when a option is selected. param is option's value and option instance | Function(value, option:Option) | - |
+|onDeselect | called when a option is deselected. param is option's value. only called for multiple or tags | Function(value) | - |
 |defaultActiveFirstOption | whether active first option by default | bool | true |
 |getPopupContainer | container which popup select menu rendered into | function(trigger:Node):Node | function(){return document.body;} |
 
