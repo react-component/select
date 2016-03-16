@@ -4,6 +4,7 @@
 
 - remove defaultLabel/label
 - add labelInValue prop to control label
+- support dropdownAlign
 
 ## 5.8.0 / 2016-01-11
 

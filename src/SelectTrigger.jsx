@@ -26,6 +26,7 @@ const BUILT_IN_PLACEMENTS = {
 const SelectTrigger = React.createClass({
   propTypes: {
     dropdownMatchSelectWidth: PropTypes.bool,
+    dropdownAlign: PropTypes.object,
     visible: PropTypes.bool,
     multiple: PropTypes.bool,
     inputValue: PropTypes.string,
@@ -85,7 +86,7 @@ const SelectTrigger = React.createClass({
   },
   render() {
     const props = this.props;
-    const { multiple, visible, inputValue } = props;
+    const { multiple, visible, inputValue, dropdownAlign } = props;
     const dropdownPrefixCls = this.getDropdownPrefixCls();
     const popupClassName = {
       [props.dropdownClassName]: !!props.dropdownClassName,
@@ -111,6 +112,7 @@ const SelectTrigger = React.createClass({
       popupTransitionName={this.getDropdownTransitionName()}
       onPopupVisibleChange={props.onDropdownVisibleChange}
       popup={popupElement}
+      popupAlign={dropdownAlign}
       popupVisible={visible}
       popupClassName={classnames(popupClassName)}
       popupStyle={props.dropdownStyle}

@@ -70,6 +70,7 @@ React.render(c, container);
 |dropdownMatchSelectWidth | whether dropdown's with is same with select | bool | true |
 |dropdownClassName | additional className applied to dropdown | String | - |
 |dropdownStyle | additional style applied to dropdown | Object | {} |
+|dropdownAlign | additional align applied to dropdown | Object | {} |
 |dropdownMenuStyle | additional style applied to dropdown menu | Object | {} |
 |notFoundContent | specify content to show when no result matches. | String | 'Not Found' |
 |showSearch | whether show search input in single mode | bool | true |
