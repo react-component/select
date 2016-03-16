@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>getPopupContainer.js - example - rc-select@5.10.2</title>
+  <title>getPopupContainer.js - example - rc-select@6.0.0-beta.1</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,19 +257,19 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-select@5.10.2</h1>
+    <h1>rc-select@6.0.0-beta.1</h1>
 
     <p>React Select</p>
   </div>
   <div class="example" id="__react-content"></div>
   <script src="common.js?nowrap"></script>
   <script src="getPopupContainer.js?nowrap"></script>
-  <div class="highlight"><pre><code language="js">import React from <span class="hljs-string">'react'</span>;
-import ReactDOM from <span class="hljs-string">'react-dom'</span>;
-import Select, {Option} from <span class="hljs-string">'rc-select'</span>;
-import <span class="hljs-string">'rc-select/assets/index.css'</span>;
-import Dialog from <span class="hljs-string">'rc-dialog'</span>;
-import <span class="hljs-string">'rc-dialog/assets/index.css'</span>;
+  <div class="highlight"><pre><code language="js"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
+<span class="hljs-keyword">import</span> Select, { Option } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-select'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-select/assets/index.css'</span>;
+<span class="hljs-keyword">import</span> Dialog <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-dialog'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-dialog/assets/index.css'</span>;
 
 <span class="hljs-keyword">const</span> Test = React.createClass({
   getInitialState() {
@@ -306,22 +306,23 @@ import <span class="hljs-string">'rc-dialog/assets/index.css'</span>;
       &amp;nbsp;
       <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.destroy}</span>&gt;</span>destroy<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">Dialog</span> <span class="hljs-attribute">visible</span>=<span class="hljs-value">{this.state.open}</span> <span class="hljs-attribute">onClose</span>=<span class="hljs-value">{this.close}</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{marginTop:</span> <span class="hljs-attribute">20</span>, <span class="hljs-attribute">position:</span> '<span class="hljs-attribute">relative</span>'}}&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">marginTop:</span> <span class="hljs-attribute">20</span>, <span class="hljs-attribute">position:</span> '<span class="hljs-attribute">relative</span>' }}&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">Select</span>
             <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"placeholder"</span>
             <span class="hljs-attribute">searchPlaceholder</span>=<span class="hljs-value">"searchPlaceholder"</span>
-            <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">200</span>}}
-            <span class="hljs-attribute">getPopupContainer</span>=<span class="hljs-value">{this.getPopupContainer}</span>&gt;</span>
+            <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">200</span> }}
+            <span class="hljs-attribute">getPopupContainer</span>=<span class="hljs-value">{this.getPopupContainer}</span>
+          &gt;</span>
             <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"1"</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
             <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"2"</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
             <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"3"</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
           <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-title">Dialog</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
+      <span class="hljs-tag">&lt;/<span class="hljs-title">Dialog</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
   },
 });
 
-ReactDOM.render(<span class="hljs-tag">&lt;<span class="hljs-title">Test</span> /&gt;</span>, document.getElementById('__react-content'));
+ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Test</span> /&gt;</span>, document.getElementById('__react-content'));
 </span></code></pre></div>
 </div>
 <a href="http://github.com/react-component/select">

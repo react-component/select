@@ -3,19 +3,15 @@ webpackJsonp([2],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(231);
+	module.exports = __webpack_require__(232);
 
 
 /***/ },
 
-/***/ 231:
+/***/ 232:
 /***/ function(module, exports, __webpack_require__) {
 
-	/* eslint no-console: 0 */
-	
 	'use strict';
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	var _react = __webpack_require__(2);
 	
@@ -25,127 +21,126 @@ webpackJsonp([2],{
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(229);
+	__webpack_require__(230);
 	
-	var _commonTbFetchSuggest = __webpack_require__(232);
+	var _tbFetchSuggest = __webpack_require__(233);
 	
 	var _reactDom = __webpack_require__(159);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var Search = _react2['default'].createClass({
-	  displayName: 'Search',
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
+	var Search = _react2["default"].createClass({
+	  displayName: 'Search',
 	  getInitialState: function getInitialState() {
 	    return {
 	      disabled: false,
 	      data: [],
-	      value: undefined,
-	      label: undefined
+	      value: undefined
 	    };
 	  },
-	
-	  onChange: function onChange(value, label) {
-	    console.log('select ', value, label);
-	    this.setState({ value: value, label: label });
+	  onChange: function onChange(value) {
+	    console.log('select ', value);
+	    this.setState({
+	      value: value
+	    });
 	  },
-	
 	  fetchData: function fetchData(value) {
 	    var _this = this;
 	
-	    (0, _commonTbFetchSuggest.fetch)(value, function (data) {
+	    (0, _tbFetchSuggest.fetch)(value, function (data) {
 	      _this.setState({
 	        data: data
 	      });
 	    });
 	  },
-	
 	  toggleDisabled: function toggleDisabled() {
 	    this.setState({
 	      disabled: !this.state.disabled
 	    });
 	  },
-	
 	  render: function render() {
 	    var data = this.state.data;
-	    var options = undefined;
+	    var options = void 0;
 	    options = data.map(function (d) {
-	      return _react2['default'].createElement(
+	      return _react2["default"].createElement(
 	        _rcSelect.Option,
 	        { key: d.value },
-	        _react2['default'].createElement(
+	        _react2["default"].createElement(
 	          'i',
 	          null,
 	          d.text
 	        )
 	      );
 	    });
-	    return _react2['default'].createElement(
+	    return _react2["default"].createElement(
 	      'div',
 	      null,
-	      _react2['default'].createElement(
+	      _react2["default"].createElement(
 	        'h2',
 	        null,
 	        'force suggest'
 	      ),
-	      _react2['default'].createElement(
+	      _react2["default"].createElement(
 	        'p',
 	        null,
-	        _react2['default'].createElement(
+	        _react2["default"].createElement(
 	          'button',
 	          { onClick: this.toggleDisabled },
 	          'toggle disabled'
 	        )
 	      ),
-	      _react2['default'].createElement(
+	      _react2["default"].createElement(
 	        'div',
 	        null,
-	        _react2['default'].createElement(
-	          _rcSelect2['default'],
+	        _react2["default"].createElement(
+	          _rcSelect2["default"],
 	          {
+	            labelInValue: true,
 	            onSearch: this.fetchData,
 	            disabled: this.state.disabled,
 	            value: this.state.value,
-	            label: this.state.label,
 	            optionLabelProp: 'children',
 	            placeholder: 'placeholder',
 	            searchPlaceholder: 'searchPlaceholder',
 	            style: { width: 500 },
 	            onChange: this.onChange,
-	            filterOption: false },
+	            filterOption: false
+	          },
 	          options
 	        )
 	      )
 	    );
 	  }
-	});
+	}); /* eslint no-console: 0 */
 	
-	_reactDom2['default'].render(_react2['default'].createElement(Search, null), document.getElementById('__react-content'));
+	_reactDom2["default"].render(_react2["default"].createElement(Search, null), document.getElementById('__react-content'));
 
 /***/ },
 
-/***/ 232:
+/***/ 233:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	exports.fetch = fetch;
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _jsonp = __webpack_require__(233);
+	var _jsonp = __webpack_require__(234);
 	
 	var _jsonp2 = _interopRequireDefault(_jsonp);
 	
-	var _querystring = __webpack_require__(237);
+	var _querystring = __webpack_require__(238);
 	
 	var _querystring2 = _interopRequireDefault(_querystring);
 	
-	var timeout = undefined;
-	var currentValue = undefined;
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	var timeout = void 0;
+	var currentValue = void 0;
 	
 	function fetch(value, callback) {
 	  if (timeout) {
@@ -155,11 +150,11 @@ webpackJsonp([2],{
 	  currentValue = value;
 	
 	  function fake() {
-	    var str = _querystring2['default'].encode({
+	    var str = _querystring2["default"].encode({
 	      code: 'utf-8',
 	      q: value
 	    });
-	    (0, _jsonp2['default'])('http://suggest.taobao.com/sug?' + str, function (err, d) {
+	    (0, _jsonp2["default"])('http://suggest.taobao.com/sug?' + str, function (err, d) {
 	      if (currentValue === value) {
 	        (function () {
 	          var result = d.result;
@@ -181,14 +176,14 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 233:
+/***/ 234:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies
 	 */
 	
-	var debug = __webpack_require__(234)('jsonp');
+	var debug = __webpack_require__(235)('jsonp');
 	
 	/**
 	 * Module exports.
@@ -285,7 +280,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 234:
+/***/ 235:
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -295,7 +290,7 @@ webpackJsonp([2],{
 	 * Expose `debug()` as the module.
 	 */
 	
-	exports = module.exports = __webpack_require__(235);
+	exports = module.exports = __webpack_require__(236);
 	exports.log = log;
 	exports.formatArgs = formatArgs;
 	exports.save = save;
@@ -467,7 +462,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 235:
+/***/ 236:
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -483,7 +478,7 @@ webpackJsonp([2],{
 	exports.disable = disable;
 	exports.enable = enable;
 	exports.enabled = enabled;
-	exports.humanize = __webpack_require__(236);
+	exports.humanize = __webpack_require__(237);
 	
 	/**
 	 * The currently active debug mode names, and names to skip.
@@ -671,7 +666,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 236:
+/***/ 237:
 /***/ function(module, exports) {
 
 	/**
@@ -801,18 +796,18 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 237:
+/***/ 238:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	exports.decode = exports.parse = __webpack_require__(238);
-	exports.encode = exports.stringify = __webpack_require__(239);
+	exports.decode = exports.parse = __webpack_require__(239);
+	exports.encode = exports.stringify = __webpack_require__(240);
 
 
 /***/ },
 
-/***/ 238:
+/***/ 239:
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -899,7 +894,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 239:
+/***/ 240:
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.

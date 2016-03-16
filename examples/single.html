@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>single.js - example - rc-select@5.10.2</title>
+  <title>single.js - example - rc-select@6.0.0-beta.1</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-select@5.10.2</h1>
+    <h1>rc-select@6.0.0-beta.1</h1>
 
     <p>React Select</p>
   </div>
@@ -267,7 +267,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   <div class="highlight"><pre><code language="undefined">/* eslint no-console: 0 */
 
 import React from 'react';
-import Select, {Option} from 'rc-select';
+import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.css';
 import ReactDOM from 'react-dom';
 
@@ -286,10 +286,12 @@ const Test = React.createClass({
     } else {
       value = e;
     }
-    this.setState({value});
+    this.setState({
+      value,
+    });
   },
 
-  handleDestroy() {
+  onDestroy() {
     this.setState({
       destroy: 1,
     });
@@ -300,39 +302,47 @@ const Test = React.createClass({
       return null;
     }
     return (
-      &lt;div style={{margin: 20}}&gt;
-        &lt;div style={{height: 150}}/&gt;
+      &lt;div style={{ margin: 20 }}&gt;
+        &lt;div style={{ height: 150 }}/&gt;
 
         &lt;h2&gt;Single Select&lt;/h2&gt;
 
-        &lt;div style={{width: 300}}&gt;
-          &lt;Select value={this.state.value}
-                  placeholder="placeholder"
-                  searchPlaceholder="searchPlaceholder"
-                  dropdownMenuStyle={{maxHeight: 200, overflow: 'auto'}}
-                  style={{width: 500}}
-                  allowClear
-                  optionLabelProp="children"
-                  optionFilterProp="text"
-                  onChange={this.onChange}&gt;
+        &lt;div style={{ width: 300 }}&gt;
+          &lt;Select
+            value={this.state.value}
+            placeholder="placeholder"
+            searchPlaceholder="searchPlaceholder"
+            dropdownMenuStyle={{ maxHeight: 200, overflow: 'auto' }}
+            style={{ width: 500 }}
+            allowClear
+            optionLabelProp="children"
+            optionFilterProp="text"
+            onChange={this.onChange}
+          &gt;
             &lt;Option value="01" text="jack"&gt;
-              &lt;b style={{
-                color: 'red',
-              }}&gt;jack&lt;/b&gt;
+              &lt;b
+                style={{
+                  color: 'red',
+                }}
+              &gt;
+                jack
+              &lt;/b&gt;
             &lt;/Option&gt;
             &lt;Option value="11" text="lucy"&gt;lucy&lt;/Option&gt;
             &lt;Option value="21" disabled text="disabled"&gt;disabled&lt;/Option&gt;
             &lt;Option value="31" text="yiminghe"&gt;yiminghe&lt;/Option&gt;
             {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) =&gt; {
-              return &lt;Option key={i} text={i + ''}&gt;{i}&lt;/Option&gt;;
+              return &lt;Option key={i} text={String(i)}&gt;{i}&lt;/Option&gt;;
             })}
           &lt;/Select&gt;
         &lt;/div&gt;
 
         &lt;h2&gt;native select&lt;/h2&gt;
-        &lt;select value={this.state.value}
-                style={{width: 500}}
-                onChange={this.onChange}&gt;
+        &lt;select
+          value={this.state.value}
+          style={{ width: 500 }}
+          onChange={this.onChange}
+        &gt;
           &lt;option value="01"&gt;jack&lt;/option&gt;
           &lt;option value="11"&gt;lucy&lt;/option&gt;
           &lt;option value="21" disabled&gt;disabled&lt;/option&gt;
@@ -343,7 +353,7 @@ const Test = React.createClass({
         &lt;/select&gt;
 
         &lt;p&gt;
-          &lt;button onClick={this.handleDestroy}&gt;destroy&lt;/button&gt;
+          &lt;button onClick={this.onDestroy}&gt;destroy&lt;/button&gt;
         &lt;/p&gt;
       &lt;/div&gt;
     );

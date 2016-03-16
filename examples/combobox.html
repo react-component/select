@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>combobox.js - example - rc-select@5.10.2</title>
+  <title>combobox.js - example - rc-select@6.0.0-beta.1</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-select@5.10.2</h1>
+    <h1>rc-select@6.0.0-beta.1</h1>
 
     <p>React Select</p>
   </div>
@@ -266,10 +266,10 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   <script src="combobox.js?nowrap"></script>
   <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint no-console: 0 */</span>
 
-import React from <span class="hljs-string">'react'</span>;
-import ReactDOM from <span class="hljs-string">'react-dom'</span>;
-import Select, {Option} from <span class="hljs-string">'rc-select'</span>;
-import <span class="hljs-string">'rc-select/assets/index.css'</span>;
+<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
+<span class="hljs-keyword">import</span> Select, { Option } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-select'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-select/assets/index.css'</span>;
 
 <span class="hljs-keyword">const</span> Test = React.createClass({
   getInitialState() {
@@ -307,10 +307,10 @@ import <span class="hljs-string">'rc-select/assets/index.css'</span>;
       <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.toggleDisabled}</span>&gt;</span>toggle disabled<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">300</span>}} <span class="hljs-attribute">onKeyDown</span>=<span class="hljs-value">{this.onKeyDown}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">300</span> }} <span class="hljs-attribute">onKeyDown</span>=<span class="hljs-value">{this.onKeyDown}</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">Select</span>
           <span class="hljs-attribute">disabled</span>=<span class="hljs-value">{this.state.disabled}</span>
-          <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">500</span>}}
+          <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">500</span> }}
           <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>
           <span class="hljs-attribute">onSelect</span>=<span class="hljs-value">{this.onSelect}</span>
           <span class="hljs-attribute">defaultActiveFirstOption</span>=<span class="hljs-value">{false}</span>
@@ -318,20 +318,21 @@ import <span class="hljs-string">'rc-select/assets/index.css'</span>;
           <span class="hljs-attribute">allowClear</span>
           <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"please select"</span>
           <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value}</span>
-          <span class="hljs-attribute">combobox</span>&gt;</span>
+          <span class="hljs-attribute">combobox</span>
+        &gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"jack"</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">b</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{color:</span> '<span class="hljs-attribute">red</span>'}}&gt;</span>jack<span class="hljs-tag">&lt;/<span class="hljs-title">b</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">b</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">color:</span> '<span class="hljs-attribute">red</span>' }}&gt;</span>jack<span class="hljs-tag">&lt;/<span class="hljs-title">b</span>&gt;</span>
           <span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"lucy"</span>&gt;</span>lucy<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"disabled"</span> <span class="hljs-attribute">disabled</span>&gt;</span>disabled<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"yiminghe"</span>&gt;</span>yiminghe<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
   },
 });
 
-ReactDOM.render(<span class="hljs-tag">&lt;<span class="hljs-title">Test</span> /&gt;</span>, document.getElementById('__react-content'));
+ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Test</span> /&gt;</span>, document.getElementById('__react-content'));
 </span></code></pre></div>
 </div>
 <a href="http://github.com/react-component/select">

@@ -3,19 +3,15 @@ webpackJsonp([12],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(254);
+	module.exports = __webpack_require__(255);
 
 
 /***/ },
 
-/***/ 254:
+/***/ 255:
 /***/ function(module, exports, __webpack_require__) {
 
-	/* eslint no-console: 0 */
-	
 	'use strict';
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	var _react = __webpack_require__(2);
 	
@@ -25,24 +21,27 @@ webpackJsonp([12],{
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(229);
+	__webpack_require__(230);
 	
 	var _reactDom = __webpack_require__(159);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	/* eslint no-console: 0 */
+	
 	var children = [];
 	for (var i = 10; i < 36; i++) {
-	  children.push(_react2['default'].createElement(
+	  children.push(_react2["default"].createElement(
 	    _rcSelect.Option,
 	    { key: i.toString(36) + i },
 	    i.toString(36) + i
 	  ));
 	}
 	
-	var Test = _react2['default'].createClass({
+	var Test = _react2["default"].createClass({
 	  displayName: 'Test',
-	
 	  getInitialState: function getInitialState() {
 	    return {
 	      disabled: false,
@@ -61,19 +60,19 @@ webpackJsonp([12],{
 	    });
 	  },
 	  render: function render() {
-	    return _react2['default'].createElement(
+	    return _react2["default"].createElement(
 	      'div',
 	      null,
-	      _react2['default'].createElement(
+	      _react2["default"].createElement(
 	        'h2',
 	        null,
 	        'tags select（scroll the menu）'
 	      ),
-	      _react2['default'].createElement(
+	      _react2["default"].createElement(
 	        'div',
 	        null,
-	        _react2['default'].createElement(
-	          _rcSelect2['default'],
+	        _react2["default"].createElement(
+	          _rcSelect2["default"],
 	          {
 	            placeholder: 'placeholder',
 	            searchPlaceholder: 'searchPlaceholder',
@@ -83,14 +82,15 @@ webpackJsonp([12],{
 	            disabled: this.state.disabled,
 	            maxTagTextLength: 10,
 	            value: this.state.value,
-	            onChange: this.onChange },
+	            onChange: this.onChange
+	          },
 	          children
 	        )
 	      ),
-	      _react2['default'].createElement(
+	      _react2["default"].createElement(
 	        'p',
 	        null,
-	        _react2['default'].createElement(
+	        _react2["default"].createElement(
 	          'button',
 	          { onClick: this.toggleDisabled },
 	          'toggle disabled'
@@ -100,7 +100,7 @@ webpackJsonp([12],{
 	  }
 	});
 	
-	_reactDom2['default'].render(_react2['default'].createElement(Test, null), document.getElementById('__react-content'));
+	_reactDom2["default"].render(_react2["default"].createElement(Test, null), document.getElementById('__react-content'));
 
 /***/ }
 

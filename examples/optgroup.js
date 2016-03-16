@@ -3,19 +3,15 @@ webpackJsonp([7],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(249);
+	module.exports = __webpack_require__(250);
 
 
 /***/ },
 
-/***/ 249:
+/***/ 250:
 /***/ function(module, exports, __webpack_require__) {
 
-	/* eslint no-console: 0 */
-	
 	'use strict';
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	var _react = __webpack_require__(2);
 	
@@ -25,60 +21,67 @@ webpackJsonp([7],{
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(229);
+	__webpack_require__(230);
 	
 	var _reactDom = __webpack_require__(159);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	/* eslint no-console: 0 */
+	
 	function onChange(value) {
 	  console.log('selected ' + value);
 	}
 	
-	var c1 = _react2['default'].createElement(
+	var c1 = _react2["default"].createElement(
 	  'div',
 	  null,
-	  _react2['default'].createElement(
+	  _react2["default"].createElement(
 	    'h2',
 	    null,
 	    'Select OptGroup'
 	  ),
-	  _react2['default'].createElement(
+	  _react2["default"].createElement(
 	    'div',
 	    { style: { width: 300 } },
-	    _react2['default'].createElement(
-	      _rcSelect2['default'],
+	    _react2["default"].createElement(
+	      _rcSelect2["default"],
 	      {
 	        placeholder: 'placeholder',
 	        searchPlaceholder: 'searchPlaceholder',
 	        defaultValue: 'lucy',
 	        showSearch: false,
 	        style: { width: 500 },
-	        onChange: onChange },
-	      _react2['default'].createElement(
+	        onChange: onChange
+	      },
+	      _react2["default"].createElement(
 	        _rcSelect.OptGroup,
 	        { label: 'manager' },
-	        _react2['default'].createElement(
+	        _react2["default"].createElement(
 	          _rcSelect.Option,
 	          { value: 'jack' },
-	          _react2['default'].createElement(
+	          _react2["default"].createElement(
 	            'b',
-	            { style: {
+	            {
+	              style: {
 	                color: 'red'
-	              } },
+	              }
+	            },
 	            'jack'
 	          )
 	        ),
-	        _react2['default'].createElement(
+	        _react2["default"].createElement(
 	          _rcSelect.Option,
 	          { value: 'lucy' },
 	          'lucy'
 	        )
 	      ),
-	      _react2['default'].createElement(
+	      _react2["default"].createElement(
 	        _rcSelect.OptGroup,
 	        { label: 'engineer' },
-	        _react2['default'].createElement(
+	        _react2["default"].createElement(
 	          _rcSelect.Option,
 	          { value: 'yiminghe' },
 	          'yiminghe'
@@ -88,7 +91,7 @@ webpackJsonp([7],{
 	  )
 	);
 	
-	_reactDom2['default'].render(c1, document.getElementById('__react-content'));
+	_reactDom2["default"].render(c1, document.getElementById('__react-content'));
 
 /***/ }
 

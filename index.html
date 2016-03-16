@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-select@5.10.2 - React Select</title>
+  <title>rc-select@6.0.0-beta.1 - React Select</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,7 +737,7 @@
 
 <body>
 <div class="header">
-  <h1>rc-select@5.10.2</h1>
+  <h1>rc-select@6.0.0-beta.1</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
@@ -782,10 +782,7 @@
 <a href="https://travis-ci.org/react-component/select" title="null"><img src="https://img.shields.io/travis/react-component/select.svg?style=flat-square" alt="build status"></a>
 <a href="https://coveralls.io/r/react-component/select?branch=master" title="null"><img src="https://img.shields.io/coveralls/react-component/select.svg?style=flat-square" alt="Test coverage"></a>
 <a href="https://gemnasium.com/react-component/select" title="null"><img src="http://img.shields.io/gemnasium/react-component/select.svg?style=flat-square" alt="gemnasium deps"></a>
-<a href="http://nodejs.org/download/" title="null"><img src="https://img.shields.io/badge/node.js-%3E=_0.10-green.svg?style=flat-square" alt="node version"></a>
-<a href="https://npmjs.org/package/rc-select" title="null"><img src="https://img.shields.io/npm/dm/rc-select.svg?style=flat-square" alt="npm download"></a>
-<a href="https://saucelabs.com/u/rc_select" title="null"><img src="https://saucelabs.com/buildstatus/rc_select" alt="Sauce Test Status"></a></p>
-<p><a href="https://saucelabs.com/u/rc_select" title="null"><img src="https://saucelabs.com/browser-matrix/rc_select.svg" alt="Sauce Test Status"></a></p>
+<a href="https://npmjs.org/package/rc-select" title="null"><img src="https://img.shields.io/npm/dm/rc-select.svg?style=flat-square" alt="npm download"></a></p>
 <h2>Screenshots<a id="user-content-screenshots" name="screenshots" class="anchor" aria-hidden="true" href="#screenshots"><span class="octicon octicon-link"></span></a></h2><p><img src="https://tfsimg.alipay.com/images/T1CUBeXa0kXXXXXXXX.png" /></p>
 <h2>Feature<a id="user-content-feature" name="feature" class="anchor" aria-hidden="true" href="#feature"><span class="octicon octicon-link"></span></a></h2><ul>
 <li>support ie8,ie8+,chrome,firefox,safari</li>
@@ -795,7 +792,7 @@
 <li>KeyDown/KeyUp/Enter to navigate menu</li>
 </ul>
 <h2>install<a id="user-content-install" name="install" class="anchor" aria-hidden="true" href="#install"><span class="octicon octicon-link"></span></a></h2><p><a href="https://npmjs.org/package/rc-select" title="null"><img src="https://nodei.co/npm/rc-select.png" alt="rc-select"></a></p>
-<h2>Usage<a id="user-content-usage" name="usage" class="anchor" aria-hidden="true" href="#usage"><span class="octicon octicon-link"></span></a></h2><h3>basic use<a id="user-content-basic-use" name="basic-use" class="anchor" aria-hidden="true" href="#basic-use"><span class="octicon octicon-link"></span></a></h3><div class="highlight"><pre><code language="js">import Select, {Option, OptGroup} from <span class="hljs-string">'rc-select'</span>;
+<h2>Usage<a id="user-content-usage" name="usage" class="anchor" aria-hidden="true" href="#usage"><span class="octicon octicon-link"></span></a></h2><h3>basic use<a id="user-content-basic-use" name="basic-use" class="anchor" aria-hidden="true" href="#basic-use"><span class="octicon octicon-link"></span></a></h3><div class="highlight"><pre><code language="js"><span class="hljs-keyword">import</span> Select, {Option, OptGroup} <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-select'</span>;
 
 <span class="hljs-keyword">var</span> c = (
   <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Select</span>&gt;</span>
@@ -803,8 +800,8 @@
     <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"lucy"</span>&gt;</span>lucy<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"yiminghe"</span>&gt;</span>yiminghe<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
-);
-React.render(c, container);</span></code></pre></div><h2>API<a id="user-content-api" name="api" class="anchor" aria-hidden="true" href="#api"><span class="octicon octicon-link"></span></a></h2><h3>Select props<a id="user-content-select-props" name="select-props" class="anchor" aria-hidden="true" href="#select-props"><span class="octicon octicon-link"></span></a></h3><table>
+)</span>;
+React.render(c, container);</code></pre></div><h2>API<a id="user-content-api" name="api" class="anchor" aria-hidden="true" href="#api"><span class="octicon octicon-link"></span></a></h2><h3>Select props<a id="user-content-select-props" name="select-props" class="anchor" aria-hidden="true" href="#select-props"><span class="octicon octicon-link"></span></a></h3><table>
 <thead>
 <tr>
 <th>name</th>
@@ -943,13 +940,19 @@ React.render(c, container);</span></code></pre></div><h2>API<a id="user-content-
 <tr>
 <td>value</td>
 <td>current selected option(s)</td>
-<td>String/Array<String></td>
+<td>String/Array<String>/{key:String, label:React.Node}/Array&lt;{key, label}&gt;</td>
 <td>-</td>
+</tr>
+<tr>
+<td>labelInValue</td>
+<td>whether to embed label in value, see above value type</td>
+<td>Bool</td>
+<td>false</td>
 </tr>
 <tr>
 <td>onChange</td>
 <td>called when select an option or input value change(combobox)</td>
-<td>function(value, label)</td>
+<td>function(value)</td>
 <td>-</td>
 </tr>
 <tr>
@@ -961,19 +964,13 @@ React.render(c, container);</span></code></pre></div><h2>API<a id="user-content-
 <tr>
 <td>onSelect</td>
 <td>called when a option is selected. param is option&#39;s value and option instance</td>
-<td>Function(value:string, option:Option)</td>
+<td>Function(value, option:Option)</td>
 <td>-</td>
 </tr>
 <tr>
 <td>onDeselect</td>
 <td>called when a option is deselected. param is option&#39;s value. only called for multiple or tags</td>
-<td>Function</td>
-<td>-</td>
-</tr>
-<tr>
-<td>defaultLabel</td>
-<td>specify the default selected option(s)</td>
-<td>String/Array<String></td>
+<td>Function(value)</td>
 <td>-</td>
 </tr>
 <tr>

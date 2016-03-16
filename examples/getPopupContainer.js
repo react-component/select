@@ -3,17 +3,15 @@ webpackJsonp([3],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(240);
+	module.exports = __webpack_require__(241);
 
 
 /***/ },
 
-/***/ 240:
+/***/ 241:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	var _react = __webpack_require__(2);
 	
@@ -27,17 +25,18 @@ webpackJsonp([3],{
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(229);
+	__webpack_require__(230);
 	
-	var _rcDialog = __webpack_require__(241);
+	var _rcDialog = __webpack_require__(242);
 	
 	var _rcDialog2 = _interopRequireDefault(_rcDialog);
 	
-	__webpack_require__(245);
+	__webpack_require__(246);
 	
-	var Test = _react2['default'].createClass({
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	var Test = _react2["default"].createClass({
 	  displayName: 'Test',
-	
 	  getInitialState: function getInitialState() {
 	    return {
 	      open: false,
@@ -67,44 +66,45 @@ webpackJsonp([3],{
 	    if (this.state.destroy) {
 	      return null;
 	    }
-	    return _react2['default'].createElement(
+	    return _react2["default"].createElement(
 	      'div',
 	      null,
-	      _react2['default'].createElement(
+	      _react2["default"].createElement(
 	        'button',
 	        { onClick: this.open },
 	        'open'
 	      ),
 	      ' ',
-	      _react2['default'].createElement(
+	      _react2["default"].createElement(
 	        'button',
 	        { onClick: this.destroy },
 	        'destroy'
 	      ),
-	      _react2['default'].createElement(
-	        _rcDialog2['default'],
+	      _react2["default"].createElement(
+	        _rcDialog2["default"],
 	        { visible: this.state.open, onClose: this.close },
-	        _react2['default'].createElement(
+	        _react2["default"].createElement(
 	          'div',
 	          { style: { marginTop: 20, position: 'relative' } },
-	          _react2['default'].createElement(
-	            _rcSelect2['default'],
+	          _react2["default"].createElement(
+	            _rcSelect2["default"],
 	            {
 	              placeholder: 'placeholder',
 	              searchPlaceholder: 'searchPlaceholder',
 	              style: { width: 200 },
-	              getPopupContainer: this.getPopupContainer },
-	            _react2['default'].createElement(
+	              getPopupContainer: this.getPopupContainer
+	            },
+	            _react2["default"].createElement(
 	              _rcSelect.Option,
 	              { value: '1' },
 	              '1'
 	            ),
-	            _react2['default'].createElement(
+	            _react2["default"].createElement(
 	              _rcSelect.Option,
 	              { value: '2' },
 	              '2'
 	            ),
-	            _react2['default'].createElement(
+	            _react2["default"].createElement(
 	              _rcSelect.Option,
 	              { value: '3' },
 	              '3'
@@ -116,20 +116,20 @@ webpackJsonp([3],{
 	  }
 	});
 	
-	_reactDom2['default'].render(_react2['default'].createElement(Test, null), document.getElementById('__react-content'));
-
-/***/ },
-
-/***/ 241:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	module.exports = __webpack_require__(242);
+	_reactDom2["default"].render(_react2["default"].createElement(Test, null), document.getElementById('__react-content'));
 
 /***/ },
 
 /***/ 242:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	module.exports = __webpack_require__(243);
+
+/***/ },
+
+/***/ 243:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -158,7 +158,7 @@ webpackJsonp([3],{
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _Dialog = __webpack_require__(243);
+	var _Dialog = __webpack_require__(244);
 	
 	var _Dialog2 = _interopRequireDefault(_Dialog);
 	
@@ -317,7 +317,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 243:
+/***/ 244:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -352,7 +352,7 @@ webpackJsonp([3],{
 	
 	var _rcAnimate2 = _interopRequireDefault(_rcAnimate);
 	
-	var _DOMWrap = __webpack_require__(244);
+	var _DOMWrap = __webpack_require__(245);
 	
 	var _DOMWrap2 = _interopRequireDefault(_DOMWrap);
 	
@@ -665,7 +665,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 244:
+/***/ 245:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -711,7 +711,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 245:
+/***/ 246:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
