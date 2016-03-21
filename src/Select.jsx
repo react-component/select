@@ -601,7 +601,17 @@ const Select = React.createClass({
     />);
     return (
       <SelectTrigger
-        {...props}
+        dropdownAlign={props.dropdownAlign}
+        dropdownClassName={props.dropdownClassName}
+        dropdownMatchSelectWidth={props.dropdownMatchSelectWidth}
+        defaultActiveFirstOption={props.defaultActiveFirstOption}
+        dropdownMenuStyle={props.dropdownMenuStyle}
+        transitionName={props.transitionName}
+        animation={props.animation}
+        prefixCls={props.prefixCls}
+        dropdownStyle={props.dropdownStyle}
+        combobox={props.combobox}
+        showSearch={props.showSearch}
         options={options}
         multiple={multiple}
         disabled={disabled}
