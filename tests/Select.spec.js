@@ -31,7 +31,8 @@ describe('Select', () => {
     instance.setState({
       open: true,
     }, () => {
-      expect(instance.getPopupDOMNode().parentNode.parentNode.nodeName.toLowerCase()).to.be('body');
+      expect(instance.getPopupDOMNode().parentNode
+        .parentNode.parentNode.nodeName.toLowerCase()).to.be('body');
       expect(instance.getPopupDOMNode().className).not.to.contain('hidden');
       done();
     });
