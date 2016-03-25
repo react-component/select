@@ -20387,7 +20387,18 @@
 	    });
 	    return _react2["default"].createElement(
 	      _SelectTrigger2["default"],
-	      _extends({}, props, {
+	      {
+	        dropdownAlign: props.dropdownAlign,
+	        dropdownClassName: props.dropdownClassName,
+	        dropdownMatchSelectWidth: props.dropdownMatchSelectWidth,
+	        defaultActiveFirstOption: props.defaultActiveFirstOption,
+	        dropdownMenuStyle: props.dropdownMenuStyle,
+	        transitionName: props.transitionName,
+	        animation: props.animation,
+	        prefixCls: props.prefixCls,
+	        dropdownStyle: props.dropdownStyle,
+	        combobox: props.combobox,
+	        showSearch: props.showSearch,
 	        options: options,
 	        multiple: multiple,
 	        disabled: disabled,
@@ -20399,7 +20410,7 @@
 	        onMenuSelect: this.onMenuSelect,
 	        onMenuDeselect: this.onMenuDeselect,
 	        ref: 'trigger'
-	      }),
+	      },
 	      _react2["default"].createElement(
 	        'span',
 	        {
