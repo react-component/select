@@ -20175,10 +20175,11 @@
 	    this.clearDelayTimer();
 	    var props = this.props;
 	    var refs = this.refs;
+	    // can not optimize, if children is empty
+	    // if (this.state.open === open) {
+	    //   return;
+	    // }
 	
-	    if (this.state.open === open) {
-	      return;
-	    }
 	    this.setState({
 	      open: open
 	    }, function () {
