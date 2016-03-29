@@ -183,8 +183,11 @@ const Select = React.createClass({
     }
   },
 
-  onInputBlur() {
+  onInputBlur(e) {
     if (isMultipleOrTagsOrCombobox(this.props)) {
+      return;
+    }
+    if(e.target == this.getInputDOMNode()){
       return;
     }
     this.clearDelayTimer();
