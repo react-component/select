@@ -183,17 +183,18 @@ const Select = React.createClass({
     }
   },
 
-  onInputBlur(e) {
+  onInputBlur() {
     if (isMultipleOrTagsOrCombobox(this.props)) {
-      return;
-    }
-    if(e.target == this.getInputDOMNode()){
       return;
     }
     this.clearDelayTimer();
     this.delayTimer = setTimeout(() => {
       this.setOpenState(false);
     }, 150);
+  },
+
+  onInputFocus() {
+    this.clearDelayTimer();
   },
 
   onInputKeyDown(event) {
@@ -388,6 +389,7 @@ const Select = React.createClass({
       <input
         ref={this.saveInputRef}
         onBlur={this.onInputBlur}
+        onFocus={this.onInputFocus}
         onChange={this.onInputChange}
         onKeyDown={this.onInputKeyDown}
         value={this.state.inputValue}
