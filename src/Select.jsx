@@ -257,14 +257,14 @@ const Select = React.createClass({
       }]);
     } else {
       if (value.length && value[0].key === selectedValue) {
-        this.setOpenState(false);
+        this.setOpenState(false, true);
         return;
       }
       value = [{
         key: selectedValue,
         label: selectedLabel,
       }];
-      this.setOpenState(false);
+      this.setOpenState(false, true);
     }
     this.fireChange(value);
     this.setState({
@@ -280,9 +280,6 @@ const Select = React.createClass({
   onMenuDeselect({ item, domEvent }) {
     if (domEvent.type === 'click') {
       this.removeSelected(getValuePropValue(item));
-    }
-    if (!isMultipleOrTags(this.props)) {
-      this.setOpenState(false);
     }
     this.setState({
       inputValue: '',
@@ -411,7 +408,7 @@ const Select = React.createClass({
     return this.refs.trigger.getInnerMenu();
   },
 
-  setOpenState(open) {
+  setOpenState(open, needFocus) {
     this.clearDelayTimer();
     const { props, refs } = this;
     if (this.state.open === open) {
@@ -420,13 +417,15 @@ const Select = React.createClass({
     this.setState({
       open,
     }, () => {
-      if (open || isMultipleOrTagsOrCombobox(props)) {
-        const input = this.getInputDOMNode();
-        if (input && document.activeElement !== input) {
-          input.focus();
+      if (needFocus || open) {
+        if (open || isMultipleOrTagsOrCombobox(props)) {
+          const input = this.getInputDOMNode();
+          if (input && document.activeElement !== input) {
+            input.focus();
+          }
+        } else if (refs.selection) {
+          refs.selection.focus();
         }
-      } else if (refs.selection) {
-        refs.selection.focus();
       }
     });
   },
