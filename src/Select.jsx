@@ -411,9 +411,10 @@ const Select = React.createClass({
   setOpenState(open, needFocus) {
     this.clearDelayTimer();
     const { props, refs } = this;
-    if (this.state.open === open) {
-      return;
-    }
+    // can not optimize, if children is empty
+    // if (this.state.open === open) {
+    //   return;
+    // }
     this.setState({
       open,
     }, () => {
