@@ -20132,11 +20132,15 @@
 	    if (placeholder) {
 	      return _react2["default"].createElement(
 	        'span',
-	        {
-	          style: { display: hidden ? 'none' : 'block' },
+	        _extends({
+	          onMouseDown: _util.preventDefaultEvent,
+	          style: _extends({
+	            display: hidden ? 'none' : 'block'
+	          }, _util.UNSELECTABLE_STYLE)
+	        }, _util.UNSELECTABLE_ATTRIBUTE, {
 	          onClick: this.onPlaceholderClick,
 	          className: props.prefixCls + '-search__field__placeholder'
-	        },
+	        }),
 	        placeholder
 	      );
 	    }
