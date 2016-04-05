@@ -369,7 +369,12 @@ const Select = React.createClass({
     }
     if (placeholder) {
       return (<span
-        style={{ display: hidden ? 'none' : 'block' }}
+        onMouseDown={preventDefaultEvent}
+        style={{
+          display: hidden ? 'none' : 'block',
+          ...UNSELECTABLE_STYLE,
+        }}
+        {...UNSELECTABLE_ATTRIBUTE}
         onClick={this.onPlaceholderClick}
         className={`${props.prefixCls}-search__field__placeholder`}
       >
