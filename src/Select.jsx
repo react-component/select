@@ -193,6 +193,10 @@ const Select = React.createClass({
     }, 150);
   },
 
+  onInputFocus() {
+    this.clearDelayTimer();
+  },
+
   onInputKeyDown(event) {
     const props = this.props;
     if (props.disabled) {
@@ -390,6 +394,7 @@ const Select = React.createClass({
       <input
         ref={this.saveInputRef}
         onBlur={this.onInputBlur}
+        onFocus={this.onInputFocus}
         onChange={this.onInputChange}
         onKeyDown={this.onInputKeyDown}
         value={this.state.inputValue}
