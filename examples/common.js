@@ -25859,10 +25859,15 @@
 	  },
 	
 	  componentDidUpdate: function componentDidUpdate() {
-	    if (this.props.dropdownMatchSelectWidth && this.props.visible) {
+	    var _props = this.props;
+	    var visible = _props.visible;
+	    var dropdownMatchSelectWidth = _props.dropdownMatchSelectWidth;
+	
+	    if (visible) {
 	      var dropdownDOMNode = this.getPopupDOMNode();
 	      if (dropdownDOMNode) {
-	        dropdownDOMNode.style.width = _reactDom2["default"].findDOMNode(this).offsetWidth + 'px';
+	        var widthProp = dropdownMatchSelectWidth ? 'width' : 'minWidth';
+	        dropdownDOMNode.style[widthProp] = _reactDom2["default"].findDOMNode(this).offsetWidth + 'px';
 	      }
 	    }
 	  },
