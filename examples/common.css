@@ -46,6 +46,10 @@
   border-radius: 6px;
   border: 1px solid #d9d9d9;
 }
+.rc-select-focused .rc-select-selection {
+  border-color: #23c0fa;
+  box-shadow: 0 0 2px rgba(45, 183, 245, 0.8);
+}
 .rc-select-enabled .rc-select-selection:hover {
   border-color: #23c0fa;
   box-shadow: 0 0 2px rgba(45, 183, 245, 0.8);
