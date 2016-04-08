@@ -625,6 +625,7 @@ const Select = React.createClass({
         inputElement={this.getInputElement()}
         value={state.value}
         onDropdownVisibleChange={this.onDropdownVisibleChange}
+        getPopupContainer={props.getPopupContainer}
         onMenuSelect={this.onMenuSelect}
         onMenuDeselect={this.onMenuDeselect}
         ref="trigger"
