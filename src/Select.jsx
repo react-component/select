@@ -104,6 +104,7 @@ const Select = React.createClass({
       value,
       inputValue,
       open,
+      focused: false,
     };
   },
 
@@ -288,6 +289,18 @@ const Select = React.createClass({
 
   onPlaceholderClick() {
     this.getInputDOMNode().focus();
+  },
+
+  onOuterFocus() {
+    this.setState({
+      focused: true,
+    });
+  },
+
+  onOuterBlur() {
+    this.setState({
+      focused: false,
+    });
   },
 
   onClearSelection(event) {
@@ -594,6 +607,7 @@ const Select = React.createClass({
       [className]: !!className,
       [prefixCls]: 1,
       [`${prefixCls}-open`]: open,
+      [`${prefixCls}-focused`]: open || this.state.focused,
       [`${prefixCls}-combobox`]: isCombobox(props),
       [`${prefixCls}-disabled`]: disabled,
       [`${prefixCls}-enabled`]: !disabled,
@@ -632,6 +646,8 @@ const Select = React.createClass({
       >
         <span
           style={props.style}
+          onBlur={this.onOuterBlur}
+          onFocus={this.onOuterFocus}
           className={classnames(rootCls)}
         >
           <span
