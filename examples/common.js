@@ -20411,6 +20411,7 @@
 	        inputElement: this.getInputElement(),
 	        value: state.value,
 	        onDropdownVisibleChange: this.onDropdownVisibleChange,
+	        getPopupContainer: props.getPopupContainer,
 	        onMenuSelect: this.onMenuSelect,
 	        onMenuDeselect: this.onMenuDeselect,
 	        ref: 'trigger'
@@ -25941,6 +25942,7 @@
 	        popup: popupElement,
 	        popupAlign: dropdownAlign,
 	        popupVisible: visible,
+	        getPopupContainer: props.getPopupContainer,
 	        popupClassName: (0, _classnames2["default"])(popupClassName),
 	        popupStyle: props.dropdownStyle
 	      }),
