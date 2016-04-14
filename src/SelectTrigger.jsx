@@ -94,12 +94,8 @@ const SelectTrigger = React.createClass({
       [props.dropdownClassName]: !!props.dropdownClassName,
       [`${dropdownPrefixCls}--${multiple ? 'multiple' : 'single'}`]: 1,
     };
-    const search = multiple || props.combobox || !props.showSearch ? null : (
-      <span className={`${dropdownPrefixCls}-search`}>{props.inputElement}</span>
-    );
     const popupElement = this.getDropdownElement({
       menuItems: props.options,
-      search,
       multiple,
       inputValue,
       visible,
