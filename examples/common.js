@@ -19891,7 +19891,7 @@
 	  componentDidUpdate: function componentDidUpdate() {
 	    var state = this.state;
 	    var props = this.props;
-	    if (state.open && (0, _util.isMultipleOrTags)(props)) {
+	    if (state.open && ((0, _util.isMultipleOrTags)(props) || props.showSearch)) {
 	      var inputNode = this.getInputDOMNode();
 	      if (inputNode.value) {
 	        inputNode.style.width = '';
@@ -19925,6 +19925,7 @@
 	    props.onSearch(val);
 	  },
 	  onDropdownVisibleChange: function onDropdownVisibleChange(open) {
+	    // debugger
 	    // selection inside combobox cause click
 	    if (!open && document.activeElement === this.getInputDOMNode()) {
 	      return;
@@ -20142,7 +20143,7 @@
 	    }
 	    if (placeholder) {
 	      return _react2["default"].createElement(
-	        'span',
+	        'div',
 	        _extends({
 	          onMouseDown: _util.preventDefaultEvent,
 	          style: _extends({
@@ -20159,8 +20160,9 @@
 	  },
 	  getInputElement: function getInputElement() {
 	    var props = this.props;
+	    var shouldShowPlaceholder = (0, _util.isMultipleOrTags)(props) || props.showSearch;
 	    return _react2["default"].createElement(
-	      'span',
+	      'div',
 	      { className: props.prefixCls + '-search__field__wrap' },
 	      _react2["default"].createElement('input', {
 	        ref: this.saveInputRef,
@@ -20172,7 +20174,7 @@
 	        className: props.prefixCls + '-search__field',
 	        role: 'textbox'
 	      }),
-	      (0, _util.isMultipleOrTags)(props) ? null : this.getSearchPlaceholderElement(!!this.state.inputValue)
+	      shouldShowPlaceholder ? null : this.getSearchPlaceholderElement(!!this.state.inputValue)
 	    );
 	  },
 	  getInputDOMNode: function getInputDOMNode() {
@@ -20207,6 +20209,12 @@
 	        } else if (refs.selection) {
 	          refs.selection.focus();
 	        }
+	      }
+	      // clear search input value when open is false in singleMode.
+	      if (!open && (0, _util.isSingleMode)(_this3.props) && _this3.props.showSearch) {
+	        _this3.setState({
+	          inputValue: ''
+	        });
 	      }
 	    });
 	  },
@@ -20278,32 +20286,52 @@
 	  renderTopControlNode: function renderTopControlNode() {
 	    var _this5 = this;
 	
-	    var value = this.state.value;
+	    var _state = this.state;
+	    var value = _state.value;
+	    var open = _state.open;
+	    var inputValue = _state.inputValue;
 	
 	    var props = this.props;
 	    var choiceTransitionName = props.choiceTransitionName;
 	    var prefixCls = props.prefixCls;
 	    var maxTagTextLength = props.maxTagTextLength;
-	    // single and not combobox, input is inside dropdown
+	    var showSearch = props.showSearch;
+	    // search input is inside topControlNode in single, multiple & combobox. 2016/04/13
 	
 	    if ((0, _util.isSingleMode)(props)) {
-	      var innerNode = _react2["default"].createElement(
-	        'span',
-	        {
-	          key: 'placeholder',
-	          className: prefixCls + '-selection__placeholder'
-	        },
-	        props.placeholder
-	      );
-	      if (value.length) {
-	        innerNode = _react2["default"].createElement(
-	          'span',
-	          { key: 'value' },
+	      var innerNode = null;
+	      var selectedValue = null;
+	      if (!value.length) {
+	        selectedValue = _react2["default"].createElement(
+	          'div',
+	          {
+	            key: 'placeholder',
+	            className: prefixCls + '-selection__placeholder'
+	          },
+	          props.placeholder
+	        );
+	      } else {
+	        selectedValue = _react2["default"].createElement(
+	          'div',
+	          { key: 'value', className: prefixCls + '-selection-selected-value' },
 	          value[0].label
 	        );
 	      }
+	      if (!showSearch || !open) {
+	        innerNode = selectedValue;
+	      } else {
+	        innerNode = _react2["default"].createElement(
+	          'div',
+	          {
+	            className: prefixCls + '-search ' + prefixCls + '-search--inline',
+	            key: 'input'
+	          },
+	          !!inputValue ? null : selectedValue,
+	          this.getInputElement()
+	        );
+	      }
 	      return _react2["default"].createElement(
-	        'span',
+	        'div',
 	        { className: prefixCls + '-selection__rendered' },
 	        innerNode
 	      );
@@ -20328,7 +20356,7 @@
 	            title: title
 	          }),
 	          _react2["default"].createElement(
-	            'span',
+	            'div',
 	            { className: prefixCls + '-selection__choice__content' },
 	            content
 	          ),
@@ -20419,7 +20447,6 @@
 	        disabled: disabled,
 	        visible: open,
 	        inputValue: state.inputValue,
-	        inputElement: this.getInputElement(),
 	        value: state.value,
 	        onDropdownVisibleChange: this.onDropdownVisibleChange,
 	        getPopupContainer: props.getPopupContainer,
@@ -20428,7 +20455,7 @@
 	        ref: 'trigger'
 	      },
 	      _react2["default"].createElement(
-	        'span',
+	        'div',
 	        {
 	          style: props.style,
 	          onBlur: this.onOuterBlur,
@@ -20436,7 +20463,7 @@
 	          className: (0, _classnames2["default"])(rootCls)
 	        },
 	        _react2["default"].createElement(
-	          'span',
+	          'div',
 	          _extends({
 	            ref: 'selection',
 	            key: 'selection',
@@ -25929,14 +25956,8 @@
 	
 	    var dropdownPrefixCls = this.getDropdownPrefixCls();
 	    var popupClassName = (_popupClassName = {}, _defineProperty(_popupClassName, props.dropdownClassName, !!props.dropdownClassName), _defineProperty(_popupClassName, dropdownPrefixCls + '--' + (multiple ? 'multiple' : 'single'), 1), _popupClassName);
-	    var search = multiple || props.combobox || !props.showSearch ? null : _react2["default"].createElement(
-	      'span',
-	      { className: dropdownPrefixCls + '-search' },
-	      props.inputElement
-	    );
 	    var popupElement = this.getDropdownElement({
 	      menuItems: props.options,
-	      search: search,
 	      multiple: multiple,
 	      inputValue: inputValue,
 	      visible: visible
@@ -28027,7 +28048,6 @@
 	    onMenuSelect: _react.PropTypes.func,
 	    prefixCls: _react.PropTypes.string,
 	    menuItems: _react.PropTypes.any,
-	    search: _react.PropTypes.any,
 	    inputValue: _react.PropTypes.string,
 	    visible: _react.PropTypes.bool
 	  },
@@ -28152,7 +28172,6 @@
 	    return _react2["default"].createElement(
 	      'div',
 	      null,
-	      this.props.search,
 	      _react2["default"].createElement(
 	        'div',
 	        { onMouseDown: _util.preventDefaultEvent },
