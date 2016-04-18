@@ -126,7 +126,7 @@ const Select = React.createClass({
   componentDidUpdate() {
     const state = this.state;
     const props = this.props;
-    if (state.open && isMultipleOrTags(props)) {
+    if (state.open && (isMultipleOrTags(props) || props.showSearch)) {
       const inputNode = this.getInputDOMNode();
       if (inputNode.value) {
         inputNode.style.width = '';
@@ -399,6 +399,7 @@ const Select = React.createClass({
 
   getInputElement() {
     const props = this.props;
+    const shouldShowPlaceholder = isMultipleOrTags(props) || props.showSearch;
     return (<span className={`${props.prefixCls}-search__field__wrap`}>
       <input
         ref={this.saveInputRef}
@@ -410,7 +411,7 @@ const Select = React.createClass({
         className={`${props.prefixCls}-search__field`}
         role="textbox"
       />
-      {isMultipleOrTags(props) ? null : this.getSearchPlaceholderElement(!!this.state.inputValue)}
+      {shouldShowPlaceholder ? null : this.getSearchPlaceholderElement(!!this.state.inputValue)}
     </span>);
   },
 
@@ -445,6 +446,12 @@ const Select = React.createClass({
         } else if (refs.selection) {
           refs.selection.focus();
         }
+      }
+      // clear search input value when open is false in singleMode.
+      if (!open && isSingleMode(this.props) && this.props.showSearch) {
+        this.setState({
+          inputValue: '',
+        });
       }
     });
   },
@@ -518,19 +525,36 @@ const Select = React.createClass({
   },
 
   renderTopControlNode() {
-    const { value } = this.state;
+    const { value, open, inputValue } = this.state;
     const props = this.props;
-    const { choiceTransitionName, prefixCls, maxTagTextLength } = props;
-    // single and not combobox, input is inside dropdown
+    const { choiceTransitionName, prefixCls, maxTagTextLength, showSearch } = props;
+    // search input is inside topControlNode in single, multiple & combobox. 2016/04/13
     if (isSingleMode(props)) {
-      let innerNode = (<span
-        key="placeholder"
-        className={`${prefixCls}-selection__placeholder`}
-      >
-        {props.placeholder}
-      </span>);
-      if (value.length) {
-        innerNode = <span key="value">{value[0].label}</span>;
+      let innerNode = null;
+      let selectedValue = null;
+      if (!value.length) {
+        selectedValue = (<span
+          key="placeholder"
+          className={`${prefixCls}-selection__placeholder`}
+        >
+          {props.placeholder}
+        </span>);
+      } else {
+        selectedValue = (
+          <span key="value" className={`${prefixCls}-selection-selected-value`}>
+            {value[0].label}
+          </span>);
+      }
+      if (!showSearch || !open) {
+        innerNode = selectedValue;
+      } else {
+        innerNode = (<li
+          className={`${prefixCls}-search ${prefixCls}-search--inline`}
+          key="__input"
+        >
+          {this.getInputElement()}
+          {(!inputValue || inputValue === 0) && selectedValue}
+        </li>);
       }
       return (<span className={`${prefixCls}-selection__rendered`}>
         {innerNode}
@@ -636,7 +660,6 @@ const Select = React.createClass({
         disabled={disabled}
         visible={open}
         inputValue={state.inputValue}
-        inputElement={this.getInputElement()}
         value={state.value}
         onDropdownVisibleChange={this.onDropdownVisibleChange}
         getPopupContainer={props.getPopupContainer}

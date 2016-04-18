@@ -14,7 +14,6 @@ const DropdownMenu = React.createClass({
     onMenuSelect: PropTypes.func,
     prefixCls: PropTypes.string,
     menuItems: PropTypes.any,
-    search: PropTypes.any,
     inputValue: PropTypes.string,
     visible: PropTypes.bool,
   },
@@ -127,7 +126,6 @@ const DropdownMenu = React.createClass({
 
   render() {
     return (<div>
-      {this.props.search}
       <div onMouseDown={preventDefaultEvent}>
         {this.renderMenu()}
       </div>
