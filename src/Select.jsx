@@ -4,6 +4,7 @@ import { KeyCode } from 'rc-util';
 import classnames from 'classnames';
 import OptGroup from './OptGroup';
 import Animate from 'rc-animate';
+import classes from 'component-classes';
 import {
   getPropValue, getValuePropValue, isCombobox,
   isMultipleOrTags, isMultipleOrTagsOrCombobox,
@@ -104,7 +105,6 @@ const Select = React.createClass({
       value,
       inputValue,
       open,
-      focused: false,
     };
   },
 
@@ -124,8 +124,7 @@ const Select = React.createClass({
   },
 
   componentDidUpdate() {
-    const state = this.state;
-    const props = this.props;
+    const { state, props } = this;
     if (state.open && (isMultipleOrTags(props) || props.showSearch)) {
       const inputNode = this.getInputDOMNode();
       if (inputNode.value) {
@@ -162,7 +161,6 @@ const Select = React.createClass({
   },
 
   onDropdownVisibleChange(open) {
-    // debugger
     // selection inside combobox cause click
     if (!open && document.activeElement === this.getInputDOMNode()) {
       return;
@@ -293,15 +291,13 @@ const Select = React.createClass({
   },
 
   onOuterFocus() {
-    this.setState({
-      focused: true,
-    });
+    this._focused = true;
+    this.updateFocusClassName();
   },
 
   onOuterBlur() {
-    this.setState({
-      focused: false,
-    });
+    this._focused = false;
+    this.updateFocusClassName();
   },
 
   onClearSelection(event) {
@@ -430,31 +426,45 @@ const Select = React.createClass({
 
   setOpenState(open, needFocus) {
     this.clearDelayTimer();
-    const { props, refs } = this;
-    // can not optimize, if children is empty
-    // if (this.state.open === open) {
-    //   return;
-    // }
-    this.setState({
+    const { props, state } = this;
+    if (state.open === open) {
+      this.afterOpen(open, needFocus);
+      return;
+    }
+    const nextState = {
       open,
-    }, () => {
-      if (needFocus || open) {
-        if (open || isMultipleOrTagsOrCombobox(props)) {
-          const input = this.getInputDOMNode();
-          if (input && document.activeElement !== input) {
-            input.focus();
-          }
-        } else if (refs.selection) {
-          refs.selection.focus();
-        }
-      }
-      // clear search input value when open is false in singleMode.
-      if (!open && isSingleMode(this.props) && this.props.showSearch) {
-        this.setState({
-          inputValue: '',
-        });
-      }
+    };
+    // clear search input value when open is false in singleMode.
+    if (!open && isSingleMode(props) && props.showSearch) {
+      nextState.inputValue = '';
+    }
+    this.setState(nextState, () => {
+      this.afterOpen(open, needFocus);
     });
+  },
+
+  updateFocusClassName() {
+    const { refs, props } = this;
+    // avoid setState and its side effect
+    if (this._focused || this.state.open) {
+      classes(refs.root).add(`${props.prefixCls}-focused`);
+    } else {
+      classes(refs.root).remove(`${props.prefixCls}-focused`);
+    }
+  },
+
+  afterOpen(open, needFocus) {
+    const { props, refs } = this;
+    if (needFocus || open) {
+      if (open || isMultipleOrTagsOrCombobox(props)) {
+        const input = this.getInputDOMNode();
+        if (input && document.activeElement !== input) {
+          input.focus();
+        }
+      } else if (refs.selection) {
+        refs.selection.focus();
+      }
+    }
   },
 
   addLabelToValue(props, value_) {
@@ -632,7 +642,7 @@ const Select = React.createClass({
       [className]: !!className,
       [prefixCls]: 1,
       [`${prefixCls}-open`]: open,
-      [`${prefixCls}-focused`]: open || this.state.focused,
+      [`${prefixCls}-focused`]: open || !!this._focused,
       [`${prefixCls}-combobox`]: isCombobox(props),
       [`${prefixCls}-disabled`]: disabled,
       [`${prefixCls}-enabled`]: !disabled,
@@ -670,6 +680,7 @@ const Select = React.createClass({
       >
         <div
           style={props.style}
+          ref="root"
           onBlur={this.onOuterBlur}
           onFocus={this.onOuterFocus}
           className={classnames(rootCls)}

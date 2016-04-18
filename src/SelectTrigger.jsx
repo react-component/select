@@ -101,7 +101,7 @@ const SelectTrigger = React.createClass({
       visible,
     });
     return (<Trigger {...props}
-      action={props.disabled ? [] : ['click']}
+      showAction={props.disabled ? [] : ['click']}
       hideAction={props.disabled ? [] : ['blur']}
       ref="trigger"
       popupPlacement="bottomLeft"
