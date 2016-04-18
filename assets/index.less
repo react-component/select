@@ -78,6 +78,12 @@
     cursor: pointer;
     position: relative;
 
+    .@{selectPrefixCls}-selection__placeholder {
+      position: absolute;
+      top: 0;
+      color: #aaa;
+    }
+
     .@{selectPrefixCls}-selection__rendered {
       display: block;
       overflow: hidden;
@@ -129,7 +135,6 @@
   }
 
   &-search--inline {
-    float: left;
     width: 100%;
     position: relative;
     .@{selectPrefixCls}-search__field__wrap {
@@ -146,6 +151,7 @@
     .@{selectPrefixCls}-selection-selected-value {
       position: absolute;
       left: 0;
+      top: 0;
       opacity: 0.4;
       filter: "alpha(opacity=40)";
     }
@@ -162,8 +168,12 @@
     min-height: 28px;
 
     .@{selectPrefixCls}-search--inline {
+      float: left;
       width: auto;
       .@{selectPrefixCls}-search__field {
+        &__wrap {
+          width: auto;
+        }
         width: 0.75em;
       }
     }
@@ -291,9 +301,6 @@
     z-index: 100;
     left: -9999px;
     top: -9999px;
-    //border-top: none;
-    //border-top-left-radius: 0;
-    //border-top-right-radius: 0;
     position: absolute;
     outline: none;
 

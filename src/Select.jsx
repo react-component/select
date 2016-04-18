@@ -162,6 +162,7 @@ const Select = React.createClass({
   },
 
   onDropdownVisibleChange(open) {
+    // debugger
     // selection inside combobox cause click
     if (!open && document.activeElement === this.getInputDOMNode()) {
       return;
@@ -381,7 +382,7 @@ const Select = React.createClass({
       placeholder = props.searchPlaceholder;
     }
     if (placeholder) {
-      return (<span
+      return (<div
         onMouseDown={preventDefaultEvent}
         style={{
           display: hidden ? 'none' : 'block',
@@ -392,7 +393,7 @@ const Select = React.createClass({
         className={`${props.prefixCls}-search__field__placeholder`}
       >
         {placeholder}
-      </span>);
+      </div>);
     }
     return null;
   },
@@ -400,7 +401,7 @@ const Select = React.createClass({
   getInputElement() {
     const props = this.props;
     const shouldShowPlaceholder = isMultipleOrTags(props) || props.showSearch;
-    return (<span className={`${props.prefixCls}-search__field__wrap`}>
+    return (<div className={`${props.prefixCls}-search__field__wrap`}>
       <input
         ref={this.saveInputRef}
         onBlur={this.onInputBlur}
@@ -412,7 +413,7 @@ const Select = React.createClass({
         role="textbox"
       />
       {shouldShowPlaceholder ? null : this.getSearchPlaceholderElement(!!this.state.inputValue)}
-    </span>);
+    </div>);
   },
 
   getInputDOMNode() {
@@ -533,32 +534,32 @@ const Select = React.createClass({
       let innerNode = null;
       let selectedValue = null;
       if (!value.length) {
-        selectedValue = (<span
+        selectedValue = (<div
           key="placeholder"
           className={`${prefixCls}-selection__placeholder`}
         >
           {props.placeholder}
-        </span>);
+        </div>);
       } else {
         selectedValue = (
-          <span key="value" className={`${prefixCls}-selection-selected-value`}>
+          <div key="value" className={`${prefixCls}-selection-selected-value`}>
             {value[0].label}
-          </span>);
+          </div>);
       }
       if (!showSearch || !open) {
         innerNode = selectedValue;
       } else {
-        innerNode = (<li
+        innerNode = (<div
           className={`${prefixCls}-search ${prefixCls}-search--inline`}
-          key="__input"
+          key="input"
         >
+          {!!inputValue ? null : selectedValue}
           {this.getInputElement()}
-          {(!inputValue || inputValue === 0) && selectedValue}
-        </li>);
+        </div>);
       }
-      return (<span className={`${prefixCls}-selection__rendered`}>
+      return (<div className={`${prefixCls}-selection__rendered`}>
         {innerNode}
-      </span>);
+      </div>);
     }
 
     let selectedValueNodes = [];
@@ -578,7 +579,7 @@ const Select = React.createClass({
             key={singleValue.key}
             title={title}
           >
-            <span className={`${prefixCls}-selection__choice__content`}>{content}</span>
+            <div className={`${prefixCls}-selection__choice__content`}>{content}</div>
             <span
               className={`${prefixCls}-selection__choice__remove`}
               onClick={this.removeSelected.bind(this, singleValue.key)}
@@ -667,13 +668,13 @@ const Select = React.createClass({
         onMenuDeselect={this.onMenuDeselect}
         ref="trigger"
       >
-        <span
+        <div
           style={props.style}
           onBlur={this.onOuterBlur}
           onFocus={this.onOuterFocus}
           className={classnames(rootCls)}
         >
-          <span
+          <div
             ref="selection"
             key="selection"
             className={`${prefixCls}-selection
@@ -684,7 +685,7 @@ const Select = React.createClass({
             aria-expanded={open}
             {...extraSelectionProps}
           >
-        {ctrlNode}
+            {ctrlNode}
             {allowClear && !multiple ? clear : null}
             {multiple || !props.showArrow ? null :
               (<span
@@ -697,8 +698,8 @@ const Select = React.createClass({
             {multiple ?
               this.getSearchPlaceholderElement(!!this.state.inputValue || this.state.value.length) :
               null}
-          </span>
-        </span>
+          </div>
+        </div>
       </SelectTrigger>
     );
   },
