@@ -137,7 +137,6 @@ const Select = React.createClass({
   },
 
   componentWillUnmount() {
-    this.clearDelayTimer();
     if (this.dropdownContainer) {
       ReactDOM.unmountComponentAtNode(this.dropdownContainer);
       document.body.removeChild(this.dropdownContainer);
@@ -161,10 +160,6 @@ const Select = React.createClass({
   },
 
   onDropdownVisibleChange(open) {
-    // selection inside combobox cause click
-    if (!open && document.activeElement === this.getInputDOMNode()) {
-      return;
-    }
     this.setOpenState(open);
   },
 
@@ -181,16 +176,6 @@ const Select = React.createClass({
       this.setOpenState(true);
       event.preventDefault();
     }
-  },
-
-  onInputBlur() {
-    if (isMultipleOrTagsOrCombobox(this.props)) {
-      return;
-    }
-    this.clearDelayTimer();
-    this.delayTimer = setTimeout(() => {
-      this.setOpenState(false);
-    }, 150);
   },
 
   onInputKeyDown(event) {
@@ -293,6 +278,12 @@ const Select = React.createClass({
   onOuterFocus() {
     this._focused = true;
     this.updateFocusClassName();
+  },
+
+  onPopupFocus() {
+    console.log('1111');
+    // fix ie scrollbar, focus element again
+    this.afterOpen(true, true);
   },
 
   onOuterBlur() {
@@ -400,7 +391,6 @@ const Select = React.createClass({
     return (<div className={`${props.prefixCls}-search__field__wrap`}>
       <input
         ref={this.saveInputRef}
-        onBlur={this.onInputBlur}
         onChange={this.onInputChange}
         onKeyDown={this.onInputKeyDown}
         value={this.state.inputValue}
@@ -425,7 +415,6 @@ const Select = React.createClass({
   },
 
   setOpenState(open, needFocus) {
-    this.clearDelayTimer();
     const { props, state } = this;
     if (state.open === open) {
       this.afterOpen(open, needFocus);
@@ -454,15 +443,12 @@ const Select = React.createClass({
   },
 
   afterOpen(open, needFocus) {
-    const { props, refs } = this;
     if (needFocus || open) {
-      if (open || isMultipleOrTagsOrCombobox(props)) {
-        const input = this.getInputDOMNode();
-        if (input && document.activeElement !== input) {
-          input.focus();
-        }
-      } else if (refs.selection) {
-        refs.selection.focus();
+      const input = this.getInputDOMNode();
+      if (input) {
+        input.focus();
+      } else {
+        this.refs.selection.focus();
       }
     }
   },
@@ -482,13 +468,6 @@ const Select = React.createClass({
       });
     }
     return value;
-  },
-
-  clearDelayTimer() {
-    if (this.delayTimer) {
-      clearTimeout(this.delayTimer);
-      this.delayTimer = null;
-    }
   },
 
   removeSelected(selectedKey) {
@@ -655,6 +634,7 @@ const Select = React.createClass({
     />);
     return (
       <SelectTrigger
+        onPopupFocus={this.onPopupFocus}
         dropdownAlign={props.dropdownAlign}
         dropdownClassName={props.dropdownClassName}
         dropdownMatchSelectWidth={props.dropdownMatchSelectWidth}
