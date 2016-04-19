@@ -31,6 +31,7 @@
     top: 1px;
     right: 1px;
     width: 20px;
+    outline: none;
     b {
       border-color: #999999 transparent transparent transparent;
       border-style: solid;
@@ -97,8 +98,9 @@
     .@{selectPrefixCls}-selection__clear {
       font-weight: bold;
       position: absolute;
-      top: 5px;
+      top: 0;
       right: 20px;
+      line-height: 28px;
 
       &:after {
         content: '×'
@@ -147,6 +149,9 @@
       background: transparent;
       outline: 0;
       width: 100%;
+      &::-ms-clear {
+        display: none;
+      }
     }
     .@{selectPrefixCls}-selection-selected-value {
       position: absolute;

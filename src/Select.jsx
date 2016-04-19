@@ -55,6 +55,7 @@ const Select = React.createClass({
     dropdownStyle: PropTypes.object,
     maxTagTextLength: PropTypes.number,
   },
+
   mixins: [FilterMixin],
 
   getDefaultProps() {
@@ -271,6 +272,11 @@ const Select = React.createClass({
     });
   },
 
+  onArrowClick(e) {
+    e.stopPropagation();
+    this.setOpenState(!this.state.open, true);
+  },
+
   onPlaceholderClick() {
     this.getInputDOMNode().focus();
   },
@@ -281,9 +287,8 @@ const Select = React.createClass({
   },
 
   onPopupFocus() {
-    console.log('1111');
     // fix ie scrollbar, focus element again
-    this.afterOpen(true, true);
+    this.maybeFocus(true, true);
   },
 
   onOuterBlur() {
@@ -396,7 +401,6 @@ const Select = React.createClass({
         value={this.state.inputValue}
         disabled={props.disabled}
         className={`${props.prefixCls}-search__field`}
-        role="textbox"
       />
       {shouldShowPlaceholder ? null : this.getSearchPlaceholderElement(!!this.state.inputValue)}
     </div>);
@@ -417,7 +421,7 @@ const Select = React.createClass({
   setOpenState(open, needFocus) {
     const { props, state } = this;
     if (state.open === open) {
-      this.afterOpen(open, needFocus);
+      this.maybeFocus(open, needFocus);
       return;
     }
     const nextState = {
@@ -427,8 +431,13 @@ const Select = React.createClass({
     if (!open && isSingleMode(props) && props.showSearch) {
       nextState.inputValue = '';
     }
+    if (!open) {
+      this.maybeFocus(open, needFocus);
+    }
     this.setState(nextState, () => {
-      this.afterOpen(open, needFocus);
+      if (open) {
+        this.maybeFocus(open, needFocus);
+      }
     });
   },
 
@@ -442,13 +451,19 @@ const Select = React.createClass({
     }
   },
 
-  afterOpen(open, needFocus) {
+  maybeFocus(open, needFocus) {
     if (needFocus || open) {
       const input = this.getInputDOMNode();
-      if (input) {
-        input.focus();
+      const { activeElement } = document;
+      if (input && (open || isMultipleOrTagsOrCombobox(this.props))) {
+        if (activeElement !== input) {
+          input.focus();
+        }
       } else {
-        this.refs.selection.focus();
+        const selection = this.refs.selection;
+        if (activeElement !== selection) {
+          selection.focus();
+        }
       }
     }
   },
@@ -629,6 +644,9 @@ const Select = React.createClass({
 
     const clear = (<span
       key="clear"
+      onMouseDown={preventDefaultEvent}
+      style={UNSELECTABLE_STYLE}
+      {...UNSELECTABLE_ATTRIBUTE}
       className={`${prefixCls}-selection__clear`}
       onClick={this.onClearSelection}
     />);
@@ -682,7 +700,10 @@ const Select = React.createClass({
               (<span
                 key="arrow"
                 className={`${prefixCls}-arrow`}
-                style={{ outline: 'none' }}
+                style={UNSELECTABLE_STYLE}
+                {...UNSELECTABLE_ATTRIBUTE}
+                onMouseDown={preventDefaultEvent}
+                onClick={this.onArrowClick}
               >
               <b/>
             </span>)}

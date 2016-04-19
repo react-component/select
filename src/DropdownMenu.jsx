@@ -111,6 +111,7 @@ const DropdownMenu = React.createClass({
 
       return (<Menu
         ref="menu"
+        style={this.props.dropdownMenuStyle}
         defaultActiveFirst={defaultActiveFirstOption}
         {...activeKeyProps}
         multiple={multiple}
@@ -127,7 +128,7 @@ const DropdownMenu = React.createClass({
 
   render() {
     return (<div
-      style={this.props.dropdownMenuStyle}
+      style={{ overflow: 'auto' }}
       onFocus={this.props.onPopupFocus}
       onMouseDown={preventDefaultEvent}
     >
