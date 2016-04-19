@@ -20180,6 +20180,7 @@
 	    dropdownStyle: _react.PropTypes.object,
 	    maxTagTextLength: _react.PropTypes.number
 	  },
+	
 	  mixins: [_FilterMixin2["default"]],
 	
 	  getDefaultProps: function getDefaultProps() {
@@ -20260,7 +20261,6 @@
 	    }
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
-	    this.clearDelayTimer();
 	    if (this.dropdownContainer) {
 	      _reactDom2["default"].unmountComponentAtNode(this.dropdownContainer);
 	      document.body.removeChild(this.dropdownContainer);
@@ -20283,10 +20283,6 @@
 	    props.onSearch(val);
 	  },
 	  onDropdownVisibleChange: function onDropdownVisibleChange(open) {
-	    // selection inside combobox cause click
-	    if (!open && document.activeElement === this.getInputDOMNode()) {
-	      return;
-	    }
 	    this.setOpenState(open);
 	  },
 	
@@ -20304,17 +20300,6 @@
 	      this.setOpenState(true);
 	      event.preventDefault();
 	    }
-	  },
-	  onInputBlur: function onInputBlur() {
-	    var _this = this;
-	
-	    if ((0, _util.isMultipleOrTagsOrCombobox)(this.props)) {
-	      return;
-	    }
-	    this.clearDelayTimer();
-	    this.delayTimer = setTimeout(function () {
-	      _this.setOpenState(false);
-	    }, 150);
 	  },
 	  onInputKeyDown: function onInputKeyDown(event) {
 	    var props = this.props;
@@ -20411,12 +20396,20 @@
 	      inputValue: ''
 	    });
 	  },
+	  onArrowClick: function onArrowClick(e) {
+	    e.stopPropagation();
+	    this.setOpenState(!this.state.open, true);
+	  },
 	  onPlaceholderClick: function onPlaceholderClick() {
 	    this.getInputDOMNode().focus();
 	  },
 	  onOuterFocus: function onOuterFocus() {
 	    this._focused = true;
 	    this.updateFocusClassName();
+	  },
+	  onPopupFocus: function onPopupFocus() {
+	    // fix ie scrollbar, focus element again
+	    this.maybeFocus(true, true);
 	  },
 	  onOuterBlur: function onOuterBlur() {
 	    this._focused = false;
@@ -20438,7 +20431,7 @@
 	    }
 	  },
 	  getLabelBySingleValue: function getLabelBySingleValue(children, value) {
-	    var _this2 = this;
+	    var _this = this;
 	
 	    if (value === undefined) {
 	      return null;
@@ -20446,12 +20439,12 @@
 	    var label = null;
 	    _react2["default"].Children.forEach(children, function (child) {
 	      if (child.type === _OptGroup2["default"]) {
-	        var maybe = _this2.getLabelBySingleValue(child.props.children, value);
+	        var maybe = _this.getLabelBySingleValue(child.props.children, value);
 	        if (maybe !== null) {
 	          label = maybe;
 	        }
 	      } else if ((0, _util.getValuePropValue)(child) === value) {
-	        label = _this2.getLabelFromOption(child);
+	        label = _this.getLabelFromOption(child);
 	      }
 	    });
 	    return label;
@@ -20521,13 +20514,11 @@
 	      { className: props.prefixCls + '-search__field__wrap' },
 	      _react2["default"].createElement('input', {
 	        ref: this.saveInputRef,
-	        onBlur: this.onInputBlur,
 	        onChange: this.onInputChange,
 	        onKeyDown: this.onInputKeyDown,
 	        value: this.state.inputValue,
 	        disabled: props.disabled,
-	        className: props.prefixCls + '-search__field',
-	        role: 'textbox'
+	        className: props.prefixCls + '-search__field'
 	      }),
 	      shouldShowPlaceholder ? null : this.getSearchPlaceholderElement(!!this.state.inputValue)
 	    );
@@ -20542,14 +20533,13 @@
 	    return this.refs.trigger.getInnerMenu();
 	  },
 	  setOpenState: function setOpenState(open, needFocus) {
-	    var _this3 = this;
+	    var _this2 = this;
 	
-	    this.clearDelayTimer();
 	    var props = this.props;
 	    var state = this.state;
 	
 	    if (state.open === open) {
-	      this.afterOpen(open, needFocus);
+	      this.maybeFocus(open, needFocus);
 	      return;
 	    }
 	    var nextState = {
@@ -20559,8 +20549,13 @@
 	    if (!open && (0, _util.isSingleMode)(props) && props.showSearch) {
 	      nextState.inputValue = '';
 	    }
+	    if (!open) {
+	      this.maybeFocus(open, needFocus);
+	    }
 	    this.setState(nextState, function () {
-	      _this3.afterOpen(open, needFocus);
+	      if (open) {
+	        _this2.maybeFocus(open, needFocus);
+	      }
 	    });
 	  },
 	  updateFocusClassName: function updateFocusClassName() {
@@ -20574,44 +20569,41 @@
 	      (0, _componentClasses2["default"])(refs.root).remove(props.prefixCls + '-focused');
 	    }
 	  },
-	  afterOpen: function afterOpen(open, needFocus) {
-	    var props = this.props;
-	    var refs = this.refs;
-	
+	  maybeFocus: function maybeFocus(open, needFocus) {
 	    if (needFocus || open) {
-	      if (open || (0, _util.isMultipleOrTagsOrCombobox)(props)) {
-	        var input = this.getInputDOMNode();
-	        if (input && document.activeElement !== input) {
+	      var input = this.getInputDOMNode();
+	      var _document = document;
+	      var activeElement = _document.activeElement;
+	
+	      if (input && (open || (0, _util.isMultipleOrTagsOrCombobox)(this.props))) {
+	        if (activeElement !== input) {
 	          input.focus();
 	        }
-	      } else if (refs.selection) {
-	        refs.selection.focus();
+	      } else {
+	        var selection = this.refs.selection;
+	        if (activeElement !== selection) {
+	          selection.focus();
+	        }
 	      }
 	    }
 	  },
 	  addLabelToValue: function addLabelToValue(props, value_) {
-	    var _this4 = this;
+	    var _this3 = this;
 	
 	    var value = value_;
 	    if (props.labelInValue) {
 	      value.forEach(function (v) {
-	        v.label = v.label || _this4.getLabelFromProps(props, v.key);
+	        v.label = v.label || _this3.getLabelFromProps(props, v.key);
 	      });
 	    } else {
 	      value = value.map(function (v) {
 	        return {
 	          key: v,
-	          label: _this4.getLabelFromProps(props, v)
+	          label: _this3.getLabelFromProps(props, v)
 	        };
 	      });
 	    }
 	    return value;
-	  },
-	  clearDelayTimer: function clearDelayTimer() {
-	    if (this.delayTimer) {
-	      clearTimeout(this.delayTimer);
-	      this.delayTimer = null;
-	    }
 	  },
 	  removeSelected: function removeSelected(selectedKey) {
 	    var props = this.props;
@@ -20655,7 +20647,7 @@
 	    props.onChange(this.getVLForOnChange(value));
 	  },
 	  renderTopControlNode: function renderTopControlNode() {
-	    var _this5 = this;
+	    var _this4 = this;
 	
 	    var _state = this.state;
 	    var value = _state.value;
@@ -20733,7 +20725,7 @@
 	          ),
 	          _react2["default"].createElement('span', {
 	            className: prefixCls + '-selection__choice__remove',
-	            onClick: _this5.removeSelected.bind(_this5, singleValue.key)
+	            onClick: _this4.removeSelected.bind(_this4, singleValue.key)
 	          })
 	        );
 	      });
@@ -20794,14 +20786,18 @@
 	    }
 	    var rootCls = (_rootCls = {}, _defineProperty(_rootCls, className, !!className), _defineProperty(_rootCls, prefixCls, 1), _defineProperty(_rootCls, prefixCls + '-open', open), _defineProperty(_rootCls, prefixCls + '-focused', open || !!this._focused), _defineProperty(_rootCls, prefixCls + '-combobox', (0, _util.isCombobox)(props)), _defineProperty(_rootCls, prefixCls + '-disabled', disabled), _defineProperty(_rootCls, prefixCls + '-enabled', !disabled), _rootCls);
 	
-	    var clear = _react2["default"].createElement('span', {
+	    var clear = _react2["default"].createElement('span', _extends({
 	      key: 'clear',
+	      onMouseDown: _util.preventDefaultEvent,
+	      style: _util.UNSELECTABLE_STYLE
+	    }, _util.UNSELECTABLE_ATTRIBUTE, {
 	      className: prefixCls + '-selection__clear',
 	      onClick: this.onClearSelection
-	    });
+	    }));
 	    return _react2["default"].createElement(
 	      _SelectTrigger2["default"],
 	      {
+	        onPopupFocus: this.onPopupFocus,
 	        dropdownAlign: props.dropdownAlign,
 	        dropdownClassName: props.dropdownClassName,
 	        dropdownMatchSelectWidth: props.dropdownMatchSelectWidth,
@@ -20849,11 +20845,14 @@
 	          allowClear && !multiple ? clear : null,
 	          multiple || !props.showArrow ? null : _react2["default"].createElement(
 	            'span',
-	            {
+	            _extends({
 	              key: 'arrow',
 	              className: prefixCls + '-arrow',
-	              style: { outline: 'none' }
-	            },
+	              style: _util.UNSELECTABLE_STYLE
+	            }, _util.UNSELECTABLE_ATTRIBUTE, {
+	              onMouseDown: _util.preventDefaultEvent,
+	              onClick: this.onArrowClick
+	            }),
 	            _react2["default"].createElement('b', null)
 	          ),
 	          multiple ? this.getSearchPlaceholderElement(!!this.state.inputValue || this.state.value.length) : null
@@ -26406,6 +26405,8 @@
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
 	var BUILT_IN_PLACEMENTS = {
 	  bottomLeft: {
 	    points: ['tl', 'bl'],
@@ -26429,6 +26430,7 @@
 	  displayName: 'SelectTrigger',
 	
 	  propTypes: {
+	    onPopupFocus: _react.PropTypes.func,
 	    dropdownMatchSelectWidth: _react.PropTypes.bool,
 	    dropdownAlign: _react.PropTypes.object,
 	    visible: _react.PropTypes.bool,
@@ -26490,7 +26492,11 @@
 	  render: function render() {
 	    var _popupClassName;
 	
-	    var props = this.props;
+	    var _props2 = this.props;
+	    var onPopupFocus = _props2.onPopupFocus;
+	
+	    var props = _objectWithoutProperties(_props2, ['onPopupFocus']);
+	
 	    var multiple = props.multiple;
 	    var visible = props.visible;
 	    var inputValue = props.inputValue;
@@ -26500,6 +26506,7 @@
 	    var popupClassName = (_popupClassName = {}, _defineProperty(_popupClassName, props.dropdownClassName, !!props.dropdownClassName), _defineProperty(_popupClassName, dropdownPrefixCls + '--' + (multiple ? 'multiple' : 'single'), 1), _popupClassName);
 	    var popupElement = this.getDropdownElement({
 	      menuItems: props.options,
+	      onPopupFocus: onPopupFocus,
 	      multiple: multiple,
 	      inputValue: inputValue,
 	      visible: visible
@@ -26676,7 +26683,7 @@
 	            props.afterPopupVisibleChange(state.popupVisible);
 	          }
 	        });
-	        if (props.action.indexOf('click') !== -1) {
+	        if (_this.isClickToHide()) {
 	          if (state.popupVisible) {
 	            if (!_this.clickOutsideHandler) {
 	              _this.clickOutsideHandler = _rcUtil.Dom.addEventListener(document, 'mousedown', _this.onDocumentClick);
@@ -26720,8 +26727,13 @@
 	    this.delaySetPopupVisible(false, this.props.mouseLeaveDelay);
 	  },
 	  onFocus: function onFocus() {
-	    this.focusTime = Date.now();
-	    this.delaySetPopupVisible(true, this.props.focusDelay);
+	    // incase focusin and focusout
+	    this.clearDelayTimer();
+	    console.log('focus')
+	    if (this.isFocusToShow()) {
+	      this.focusTime = Date.now();
+	      this.delaySetPopupVisible(true, this.props.focusDelay);
+	    }
 	  },
 	  onMouseDown: function onMouseDown() {
 	    this.preClickTime = Date.now();
@@ -26730,7 +26742,11 @@
 	    this.preTouchTime = Date.now();
 	  },
 	  onBlur: function onBlur() {
-	    this.delaySetPopupVisible(false, this.props.blurDelay);
+	    this.clearDelayTimer();
+	    if (this.isBlurToHide()) {
+	      console.log('blur')
+	      this.delaySetPopupVisible(false, this.props.blurDelay);
+	    }
 	  },
 	  onClick: function onClick(event) {
 	    // focus will trigger click
@@ -26929,10 +26945,8 @@
 	    if (this.isMouseLeaveToHide()) {
 	      newChildProps.onMouseLeave = (0, _rcUtil.createChainedFunction)(this.onMouseLeave, childProps.onMouseLeave);
 	    }
-	    if (this.isFocusToShow()) {
+	    if (this.isFocusToShow() || this.isBlurToHide()) {
 	      newChildProps.onFocus = (0, _rcUtil.createChainedFunction)(this.onFocus, childProps.onFocus);
-	    }
-	    if (this.isBlurToHide()) {
 	      newChildProps.onBlur = (0, _rcUtil.createChainedFunction)(this.onBlur, childProps.onBlur);
 	    }
 	
@@ -28582,6 +28596,7 @@
 	    value: _react.PropTypes.any,
 	    dropdownMenuStyle: _react.PropTypes.object,
 	    multiple: _react.PropTypes.bool,
+	    onPopupFocus: _react.PropTypes.func,
 	    onMenuDeSelect: _react.PropTypes.func,
 	    onMenuSelect: _react.PropTypes.func,
 	    prefixCls: _react.PropTypes.string,
@@ -28628,7 +28643,6 @@
 	    var menuItems = props.menuItems;
 	    var defaultActiveFirstOption = props.defaultActiveFirstOption;
 	    var value = props.value;
-	    var dropdownMenuStyle = props.dropdownMenuStyle;
 	    var prefixCls = props.prefixCls;
 	    var multiple = props.multiple;
 	    var onMenuSelect = props.onMenuSelect;
@@ -28688,8 +28702,8 @@
 	            _rcMenu2["default"],
 	            _extends({
 	              ref: 'menu',
-	              defaultActiveFirst: defaultActiveFirstOption,
-	              style: dropdownMenuStyle
+	              style: _this.props.dropdownMenuStyle,
+	              defaultActiveFirst: defaultActiveFirstOption
 	            }, activeKeyProps, {
 	              multiple: multiple,
 	              focusable: false
@@ -28709,12 +28723,12 @@
 	  render: function render() {
 	    return _react2["default"].createElement(
 	      'div',
-	      null,
-	      _react2["default"].createElement(
-	        'div',
-	        { onMouseDown: _util.preventDefaultEvent },
-	        this.renderMenu()
-	      )
+	      {
+	        style: { overflow: 'auto' },
+	        onFocus: this.props.onPopupFocus,
+	        onMouseDown: _util.preventDefaultEvent
+	      },
+	      this.renderMenu()
 	    );
 	  }
 	});

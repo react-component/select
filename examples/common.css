@@ -21,6 +21,7 @@
   top: 1px;
   right: 1px;
   width: 20px;
+  outline: none;
 }
 .rc-select-arrow b {
   border-color: #999999 transparent transparent transparent;
@@ -79,8 +80,9 @@
 .rc-select-selection--single .rc-select-selection__clear {
   font-weight: bold;
   position: absolute;
-  top: 5px;
+  top: 0;
   right: 20px;
+  line-height: 28px;
 }
 .rc-select-selection--single .rc-select-selection__clear:after {
   content: '×';
@@ -122,6 +124,9 @@
   background: transparent;
   outline: 0;
   width: 100%;
+}
+.rc-select-search--inline .rc-select-search__field::-ms-clear {
+  display: none;
 }
 .rc-select-search--inline .rc-select-selection-selected-value {
   position: absolute;
