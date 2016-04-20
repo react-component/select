@@ -124,7 +124,7 @@ const Select = React.createClass({
 
   componentDidUpdate() {
     const { state, props } = this;
-    if (state.open && (isMultipleOrTags(props) || props.showSearch)) {
+    if (state.open && isMultipleOrTags(props)) {
       const inputNode = this.getInputDOMNode();
       if (inputNode.value) {
         inputNode.style.width = '';
@@ -658,6 +658,7 @@ const Select = React.createClass({
       [`${prefixCls}-combobox`]: isCombobox(props),
       [`${prefixCls}-disabled`]: disabled,
       [`${prefixCls}-enabled`]: !disabled,
+      [`${prefixCls}-allow-clear`]: !!props.allowClear,
     };
 
     const clear = (<span
