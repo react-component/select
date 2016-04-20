@@ -10,7 +10,7 @@ import {
   isMultipleOrTags, isMultipleOrTagsOrCombobox,
   isSingleMode, toArray, findIndexInValueByKey,
   UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE,
-  preventDefaultEvent,
+  preventDefaultEvent, findFirstMenuItem,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import FilterMixin from './FilterMixin';
@@ -292,6 +292,20 @@ const Select = React.createClass({
   onOuterBlur() {
     this._focused = false;
     this.updateFocusClassName();
+    const props = this.props;
+    if (isSingleMode(props) && props.showSearch &&
+      this.state.inputValue && props.defaultActiveFirstOption) {
+      const options = this._options || [];
+      if (options.length) {
+        const firstOption = findFirstMenuItem(options);
+        if (firstOption) {
+          this.fireChange([{
+            key: firstOption.key,
+            label: this.getLabelFromOption(firstOption),
+          }]);
+        }
+      }
+    }
   },
 
   onClearSelection(event) {
@@ -641,6 +655,7 @@ const Select = React.createClass({
     if (open) {
       options = this.renderFilterOptions();
     }
+    this._options = options;
     if (open && (isMultipleOrTagsOrCombobox(props) || !props.showSearch) && !options.length) {
       open = false;
     }
