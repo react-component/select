@@ -18,7 +18,6 @@ const c1 = (
       <Select
         allowClear
         placeholder="placeholder"
-        searchPlaceholder="searchPlaceholder"
         defaultValue="lucy"
         style={{ width: 500 }}
         animation="slide-up"

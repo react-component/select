@@ -15,7 +15,6 @@ const c1 = (
     <div style={{ width: 300 }}>
       <Select
         placeholder="placeholder"
-        searchPlaceholder="searchPlaceholder"
         defaultValue="lucy"
         showSearch={false}
         style={{ width: 500 }}

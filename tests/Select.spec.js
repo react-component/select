@@ -137,7 +137,7 @@ describe('Select', () => {
 
   it('should show placeholder in singleMode when value is undefined', (done) => {
     instance = ReactDOM.render(
-      <Select>
+      <Select placeholder="aaa">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>, div);

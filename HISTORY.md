@@ -1,5 +1,9 @@
 # History
 ----
+## 6.2.0 / 2016-04-20
+
+- remove searchPlaceholder
+
 ## 6.1.0 / 2016-04-18
 
 - go with http://semantic-ui.com/modules/dropdown.html#search-selection
