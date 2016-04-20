@@ -20412,6 +20412,19 @@
 	  onOuterBlur: function onOuterBlur() {
 	    this._focused = false;
 	    this.updateFocusClassName();
+	    var props = this.props;
+	    if ((0, _util.isSingleMode)(props) && props.showSearch && this.state.inputValue && props.defaultActiveFirstOption) {
+	      var options = this._options || [];
+	      if (options.length) {
+	        var firstOption = (0, _util.findFirstMenuItem)(options);
+	        if (firstOption) {
+	          this.fireChange([{
+	            key: firstOption.key,
+	            label: this.getLabelFromOption(firstOption)
+	          }]);
+	        }
+	      }
+	    }
 	  },
 	  onClearSelection: function onClearSelection(event) {
 	    var props = this.props;
@@ -20794,6 +20807,7 @@
 	    if (open) {
 	      options = this.renderFilterOptions();
 	    }
+	    this._options = options;
 	    if (open && ((0, _util.isMultipleOrTagsOrCombobox)(props) || !props.showSearch) && !options.length) {
 	      open = false;
 	    }
@@ -24150,6 +24164,7 @@
 	exports.preventDefaultEvent = preventDefaultEvent;
 	exports.findIndexInValueByKey = findIndexInValueByKey;
 	exports.getSelectKeys = getSelectKeys;
+	exports.findFirstMenuItem = findFirstMenuItem;
 	
 	var _rcMenu = __webpack_require__(202);
 	
@@ -24245,6 +24260,21 @@
 	var UNSELECTABLE_ATTRIBUTE = exports.UNSELECTABLE_ATTRIBUTE = {
 	  unselectable: 'unselectable'
 	};
+	
+	function findFirstMenuItem(children) {
+	  for (var i = 0; i < children.length; i++) {
+	    var child = children[i];
+	    if (child.type === _rcMenu.ItemGroup) {
+	      var found = findFirstMenuItem(child.props.children);
+	      if (found) {
+	        return found;
+	      }
+	    } else if (!child.props.disabled) {
+	      return child;
+	    }
+	  }
+	  return null;
+	}
 
 /***/ },
 /* 202 */
