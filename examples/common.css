@@ -6,6 +6,9 @@
   color: #666;
   line-height: 28px;
 }
+.rc-select-allow-clear .rc-select-selection--single .rc-select-selection__rendered {
+  padding-right: 40px;
+}
 .rc-select ul,
 .rc-select li {
   margin: 0;
