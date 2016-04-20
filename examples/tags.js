@@ -75,7 +75,6 @@ webpackJsonp([12],{
 	          _rcSelect2["default"],
 	          {
 	            placeholder: 'placeholder',
-	            searchPlaceholder: 'searchPlaceholder',
 	            tags: true,
 	            dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
 	            style: { width: 500 },

@@ -76,7 +76,6 @@ webpackJsonp([9],{
 	          {
 	            value: this.state.value,
 	            placeholder: 'placeholder',
-	            searchPlaceholder: 'searchPlaceholder',
 	            dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
 	            style: { width: 500 },
 	            allowClear: true,

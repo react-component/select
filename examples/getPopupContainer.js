@@ -90,7 +90,6 @@ webpackJsonp([3],{
 	            _rcSelect2["default"],
 	            {
 	              placeholder: 'placeholder',
-	              searchPlaceholder: 'searchPlaceholder',
 	              style: { width: 200 },
 	              getPopupContainer: this.getPopupContainer
 	            },

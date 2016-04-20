@@ -20171,7 +20171,6 @@
 	    onChange: _react.PropTypes.func,
 	    onSelect: _react.PropTypes.func,
 	    onSearch: _react.PropTypes.func,
-	    searchPlaceholder: _react.PropTypes.string,
 	    placeholder: _react.PropTypes.any,
 	    onDeselect: _react.PropTypes.func,
 	    labelInValue: _react.PropTypes.bool,
@@ -20193,7 +20192,6 @@
 	      showSearch: true,
 	      allowClear: false,
 	      placeholder: '',
-	      searchPlaceholder: '',
 	      defaultValue: [],
 	      onChange: noop,
 	      onSelect: noop,
@@ -20481,14 +20479,21 @@
 	    }
 	    return this.dropdownContainer;
 	  },
-	  getSearchPlaceholderElement: function getSearchPlaceholderElement(hidden) {
+	  getPlaceholderElement: function getPlaceholderElement() {
 	    var props = this.props;
-	    var placeholder = void 0;
-	    if ((0, _util.isMultipleOrTagsOrCombobox)(props)) {
-	      placeholder = props.placeholder || props.searchPlaceholder;
-	    } else {
-	      placeholder = props.searchPlaceholder;
+	    var state = this.state;
+	
+	    var hidden = false;
+	    if (state.inputValue) {
+	      hidden = true;
 	    }
+	    if (state.value.length) {
+	      hidden = true;
+	    }
+	    if ((0, _util.isCombobox)(props) && state.value.length === 1 && !state.value[0].key) {
+	      hidden = false;
+	    }
+	    var placeholder = props.placeholder;
 	    if (placeholder) {
 	      return _react2["default"].createElement(
 	        'div',
@@ -20499,7 +20504,7 @@
 	          }, _util.UNSELECTABLE_STYLE)
 	        }, _util.UNSELECTABLE_ATTRIBUTE, {
 	          onClick: this.onPlaceholderClick,
-	          className: props.prefixCls + '-search__field__placeholder'
+	          className: props.prefixCls + '-selection__placeholder'
 	        }),
 	        placeholder
 	      );
@@ -20508,7 +20513,6 @@
 	  },
 	  getInputElement: function getInputElement() {
 	    var props = this.props;
-	    var shouldShowPlaceholder = (0, _util.isMultipleOrTags)(props) || props.showSearch;
 	    return _react2["default"].createElement(
 	      'div',
 	      { className: props.prefixCls + '-search__field__wrap' },
@@ -20519,8 +20523,7 @@
 	        value: this.state.inputValue,
 	        disabled: props.disabled,
 	        className: props.prefixCls + '-search__field'
-	      }),
-	      shouldShowPlaceholder ? null : this.getSearchPlaceholderElement(!!this.state.inputValue)
+	      })
 	    );
 	  },
 	  getInputDOMNode: function getInputDOMNode() {
@@ -20659,101 +20662,117 @@
 	    var prefixCls = props.prefixCls;
 	    var maxTagTextLength = props.maxTagTextLength;
 	    var showSearch = props.showSearch;
-	    // search input is inside topControlNode in single, multiple & combobox. 2016/04/13
 	
+	    var className = prefixCls + '-selection__rendered';
+	    // search input is inside topControlNode in single, multiple & combobox. 2016/04/13
+	    var innerNode = null;
 	    if ((0, _util.isSingleMode)(props)) {
-	      var innerNode = null;
 	      var selectedValue = null;
-	      if (!value.length) {
+	      if (value.length) {
+	        var showSelectedValue = false;
+	        var opacity = 1;
+	        if (!showSearch) {
+	          showSelectedValue = true;
+	        } else {
+	          if (open) {
+	            showSelectedValue = !inputValue;
+	            if (showSelectedValue) {
+	              opacity = 0.4;
+	            }
+	          } else {
+	            showSelectedValue = true;
+	          }
+	        }
 	        selectedValue = _react2["default"].createElement(
 	          'div',
 	          {
-	            key: 'placeholder',
-	            className: prefixCls + '-selection__placeholder'
+	            key: 'value',
+	            className: prefixCls + '-selection-selected-value',
+	            style: {
+	              display: showSelectedValue ? 'block' : 'none',
+	              opacity: opacity
+	            }
 	          },
-	          props.placeholder
-	        );
-	      } else {
-	        selectedValue = _react2["default"].createElement(
-	          'div',
-	          { key: 'value', className: prefixCls + '-selection-selected-value' },
 	          value[0].label
 	        );
 	      }
-	      if (!showSearch || !open) {
-	        innerNode = selectedValue;
+	      if (!showSearch) {
+	        innerNode = [selectedValue];
 	      } else {
-	        innerNode = _react2["default"].createElement(
+	        innerNode = [selectedValue, _react2["default"].createElement(
 	          'div',
 	          {
 	            className: prefixCls + '-search ' + prefixCls + '-search--inline',
-	            key: 'input'
+	            key: 'input',
+	            style: {
+	              display: open ? 'block' : 'none'
+	            }
 	          },
-	          !!inputValue ? null : selectedValue,
 	          this.getInputElement()
+	        )];
+	      }
+	    } else {
+	      var selectedValueNodes = [];
+	      if ((0, _util.isMultipleOrTags)(props)) {
+	        selectedValueNodes = value.map(function (singleValue) {
+	          var content = singleValue.label;
+	          var title = content;
+	          if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
+	            content = content.slice(0, maxTagTextLength) + '...';
+	          }
+	          return _react2["default"].createElement(
+	            'li',
+	            _extends({
+	              style: _util.UNSELECTABLE_STYLE
+	            }, _util.UNSELECTABLE_ATTRIBUTE, {
+	              onMouseDown: _util.preventDefaultEvent,
+	              className: prefixCls + '-selection__choice',
+	              key: singleValue.key,
+	              title: title
+	            }),
+	            _react2["default"].createElement(
+	              'div',
+	              { className: prefixCls + '-selection__choice__content' },
+	              content
+	            ),
+	            _react2["default"].createElement('span', {
+	              className: prefixCls + '-selection__choice__remove',
+	              onClick: _this4.removeSelected.bind(_this4, singleValue.key)
+	            })
+	          );
+	        });
+	      }
+	      selectedValueNodes.push(_react2["default"].createElement(
+	        'li',
+	        {
+	          className: prefixCls + '-search ' + prefixCls + '-search--inline',
+	          key: '__input'
+	        },
+	        this.getInputElement()
+	      ));
+	
+	      if ((0, _util.isMultipleOrTags)(props) && choiceTransitionName) {
+	        innerNode = _react2["default"].createElement(
+	          _rcAnimate2["default"],
+	          {
+	            component: 'ul',
+	            transitionName: choiceTransitionName
+	          },
+	          selectedValueNodes
+	        );
+	      } else {
+	        innerNode = _react2["default"].createElement(
+	          'ul',
+	          null,
+	          selectedValueNodes
 	        );
 	      }
-	      return _react2["default"].createElement(
-	        'div',
-	        { className: prefixCls + '-selection__rendered' },
-	        innerNode
-	      );
-	    }
-	
-	    var selectedValueNodes = [];
-	    if ((0, _util.isMultipleOrTags)(props)) {
-	      selectedValueNodes = value.map(function (singleValue) {
-	        var content = singleValue.label;
-	        var title = content;
-	        if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
-	          content = content.slice(0, maxTagTextLength) + '...';
-	        }
-	        return _react2["default"].createElement(
-	          'li',
-	          _extends({
-	            style: _util.UNSELECTABLE_STYLE
-	          }, _util.UNSELECTABLE_ATTRIBUTE, {
-	            onMouseDown: _util.preventDefaultEvent,
-	            className: prefixCls + '-selection__choice',
-	            key: singleValue.key,
-	            title: title
-	          }),
-	          _react2["default"].createElement(
-	            'div',
-	            { className: prefixCls + '-selection__choice__content' },
-	            content
-	          ),
-	          _react2["default"].createElement('span', {
-	            className: prefixCls + '-selection__choice__remove',
-	            onClick: _this4.removeSelected.bind(_this4, singleValue.key)
-	          })
-	        );
-	      });
-	    }
-	    selectedValueNodes.push(_react2["default"].createElement(
-	      'li',
-	      {
-	        className: prefixCls + '-search ' + prefixCls + '-search--inline',
-	        key: '__input'
-	      },
-	      this.getInputElement()
-	    ));
-	    var className = prefixCls + '-selection__rendered';
-	    if ((0, _util.isMultipleOrTags)(props) && choiceTransitionName) {
-	      return _react2["default"].createElement(
-	        _rcAnimate2["default"],
-	        {
-	          className: className,
-	          component: 'ul',
-	          transitionName: choiceTransitionName
-	        },
-	        selectedValueNodes
-	      );
 	    }
 	    return _react2["default"].createElement(
-	      'ul',
+	      'div',
 	      { className: className },
-	      selectedValueNodes
+	      this.getPlaceholderElement(),
+	      innerNode
 	    );
 	  },
 	  render: function render() {
@@ -20854,8 +20873,7 @@
 	              onClick: this.onArrowClick
 	            }),
 	            _react2["default"].createElement('b', null)
-	          ),
-	          multiple ? this.getSearchPlaceholderElement(!!this.state.inputValue || this.state.value.length) : null
+	          )
 	        )
 	      )
 	    );
@@ -26729,7 +26747,6 @@
 	  onFocus: function onFocus() {
 	    // incase focusin and focusout
 	    this.clearDelayTimer();
-	    console.log('focus')
 	    if (this.isFocusToShow()) {
 	      this.focusTime = Date.now();
 	      this.delaySetPopupVisible(true, this.props.focusDelay);
@@ -26744,7 +26761,6 @@
 	  onBlur: function onBlur() {
 	    this.clearDelayTimer();
 	    if (this.isBlurToHide()) {
-	      console.log('blur')
 	      this.delaySetPopupVisible(false, this.props.blurDelay);
 	    }
 	  },

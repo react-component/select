@@ -938,7 +938,6 @@ webpackJsonp([11],{
 	            combobox: true,
 	            value: this.state.value,
 	            placeholder: 'placeholder',
-	            searchPlaceholder: 'searchPlaceholder',
 	            defaultActiveFirstOption: false,
 	            showArrow: false,
 	            notFoundContent: '',

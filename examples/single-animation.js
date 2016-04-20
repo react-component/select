@@ -52,7 +52,6 @@ webpackJsonp([10],{
 	      {
 	        allowClear: true,
 	        placeholder: 'placeholder',
-	        searchPlaceholder: 'searchPlaceholder',
 	        defaultValue: 'lucy',
 	        style: { width: 500 },
 	        animation: 'slide-up',

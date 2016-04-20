@@ -50,7 +50,6 @@ webpackJsonp([7],{
 	      _rcSelect2["default"],
 	      {
 	        placeholder: 'placeholder',
-	        searchPlaceholder: 'searchPlaceholder',
 	        defaultValue: 'lucy',
 	        showSearch: false,
 	        style: { width: 500 },
