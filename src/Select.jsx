@@ -276,7 +276,9 @@ const Select = React.createClass({
   },
 
   onPlaceholderClick() {
-    this.getInputDOMNode().focus();
+    if (this.props.showSearch) {
+      this.getInputDOMNode().focus();
+    }
   },
 
   onOuterFocus() {
