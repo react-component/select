@@ -20399,7 +20399,9 @@
 	    this.setOpenState(!this.state.open, true);
 	  },
 	  onPlaceholderClick: function onPlaceholderClick() {
-	    this.getInputDOMNode().focus();
+	    if (this.getInputDOMNode()) {
+	      this.getInputDOMNode().focus();
+	    }
 	  },
 	  onOuterFocus: function onOuterFocus() {
 	    this._focused = true;
