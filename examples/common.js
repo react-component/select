@@ -20169,6 +20169,7 @@
 	    animation: _react.PropTypes.string,
 	    choiceTransitionName: _react.PropTypes.string,
 	    onChange: _react.PropTypes.func,
+	    onBlur: _react.PropTypes.func,
 	    onSelect: _react.PropTypes.func,
 	    onSearch: _react.PropTypes.func,
 	    placeholder: _react.PropTypes.any,
@@ -20194,6 +20195,7 @@
 	      placeholder: '',
 	      defaultValue: [],
 	      onChange: noop,
+	      onBlur: noop,
 	      onSelect: noop,
 	      onSearch: noop,
 	      onDeselect: noop,
@@ -20259,6 +20261,7 @@
 	    }
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
+	    this.clearBlurTime();
 	    if (this.dropdownContainer) {
 	      _reactDom2["default"].unmountComponentAtNode(this.dropdownContainer);
 	      document.body.removeChild(this.dropdownContainer);
@@ -20404,6 +20407,7 @@
 	    }
 	  },
 	  onOuterFocus: function onOuterFocus() {
+	    this.clearBlurTime();
 	    this._focused = true;
 	    this.updateFocusClassName();
 	  },
@@ -20412,21 +20416,29 @@
 	    this.maybeFocus(true, true);
 	  },
 	  onOuterBlur: function onOuterBlur() {
-	    this._focused = false;
-	    this.updateFocusClassName();
-	    var props = this.props;
-	    if ((0, _util.isSingleMode)(props) && props.showSearch && this.state.inputValue && props.defaultActiveFirstOption) {
-	      var options = this._options || [];
-	      if (options.length) {
-	        var firstOption = (0, _util.findFirstMenuItem)(options);
-	        if (firstOption) {
-	          this.fireChange([{
-	            key: firstOption.key,
-	            label: this.getLabelFromOption(firstOption)
-	          }]);
+	    var _this = this;
+	
+	    this.blurTimer = setTimeout(function () {
+	      _this._focused = false;
+	      _this.updateFocusClassName();
+	      var props = _this.props;
+	      var value = _this.state.value;
+	
+	      if ((0, _util.isSingleMode)(props) && props.showSearch && _this.state.inputValue && props.defaultActiveFirstOption) {
+	        var options = _this._options || [];
+	        if (options.length) {
+	          var firstOption = (0, _util.findFirstMenuItem)(options);
+	          if (firstOption) {
+	            value = [{
+	              key: firstOption.key,
+	              label: _this.getLabelFromOption(firstOption)
+	            }];
+	            _this.fireChange(value);
+	          }
 	        }
 	      }
-	    }
+	      props.onBlur(_this.getVLForOnChange(value));
+	    }, 10);
 	  },
 	  onClearSelection: function onClearSelection(event) {
 	    var props = this.props;
@@ -20436,15 +20448,19 @@
 	    }
 	    event.stopPropagation();
 	    if (state.inputValue || state.value.length) {
-	      this.fireChange([]);
-	      this.setOpenState(false);
-	      this.setState({
-	        inputValue: ''
-	      });
+	      if (this.state.value.length) {
+	        this.fireChange([]);
+	      }
+	      this.setOpenState(false, true);
+	      if (this.state.inputValue) {
+	        this.setState({
+	          inputValue: ''
+	        });
+	      }
 	    }
 	  },
 	  getLabelBySingleValue: function getLabelBySingleValue(children, value) {
-	    var _this = this;
+	    var _this2 = this;
 	
 	    if (value === undefined) {
 	      return null;
@@ -20452,12 +20468,12 @@
 	    var label = null;
 	    _react2["default"].Children.forEach(children, function (child) {
 	      if (child.type === _OptGroup2["default"]) {
-	        var maybe = _this.getLabelBySingleValue(child.props.children, value);
+	        var maybe = _this2.getLabelBySingleValue(child.props.children, value);
 	        if (maybe !== null) {
 	          label = maybe;
 	        }
 	      } else if ((0, _util.getValuePropValue)(child) === value) {
-	        label = _this.getLabelFromOption(child);
+	        label = _this2.getLabelFromOption(child);
 	      }
 	    });
 	    return label;
@@ -20551,7 +20567,7 @@
 	    return this.refs.trigger.getInnerMenu();
 	  },
 	  setOpenState: function setOpenState(open, needFocus) {
-	    var _this2 = this;
+	    var _this3 = this;
 	
 	    var props = this.props;
 	    var state = this.state;
@@ -20572,9 +20588,15 @@
 	    }
 	    this.setState(nextState, function () {
 	      if (open) {
-	        _this2.maybeFocus(open, needFocus);
+	        _this3.maybeFocus(open, needFocus);
 	      }
 	    });
+	  },
+	  clearBlurTime: function clearBlurTime() {
+	    if (this.blurTimer) {
+	      clearTimeout(this.blurTimer);
+	      this.blurTimer = null;
+	    }
 	  },
 	  updateFocusClassName: function updateFocusClassName() {
 	    var refs = this.refs;
@@ -20606,18 +20628,18 @@
 	    }
 	  },
 	  addLabelToValue: function addLabelToValue(props, value_) {
-	    var _this3 = this;
+	    var _this4 = this;
 	
 	    var value = value_;
 	    if (props.labelInValue) {
 	      value.forEach(function (v) {
-	        v.label = v.label || _this3.getLabelFromProps(props, v.key);
+	        v.label = v.label || _this4.getLabelFromProps(props, v.key);
 	      });
 	    } else {
 	      value = value.map(function (v) {
 	        return {
 	          key: v,
-	          label: _this3.getLabelFromProps(props, v)
+	          label: _this4.getLabelFromProps(props, v)
 	        };
 	      });
 	    }
@@ -20665,7 +20687,7 @@
 	    props.onChange(this.getVLForOnChange(value));
 	  },
 	  renderTopControlNode: function renderTopControlNode() {
-	    var _this4 = this;
+	    var _this5 = this;
 	
 	    var _state = this.state;
 	    var value = _state.value;
@@ -20752,7 +20774,7 @@
 	            ),
 	            _react2["default"].createElement('span', {
 	              className: prefixCls + '-selection__choice__remove',
-	              onClick: _this4.removeSelected.bind(_this4, singleValue.key)
+	              onClick: _this5.removeSelected.bind(_this5, singleValue.key)
 	            })
 	          );
 	        });
@@ -20820,11 +20842,16 @@
 	      };
 	    }
 	    var rootCls = (_rootCls = {}, _defineProperty(_rootCls, className, !!className), _defineProperty(_rootCls, prefixCls, 1), _defineProperty(_rootCls, prefixCls + '-open', open), _defineProperty(_rootCls, prefixCls + '-focused', open || !!this._focused), _defineProperty(_rootCls, prefixCls + '-combobox', (0, _util.isCombobox)(props)), _defineProperty(_rootCls, prefixCls + '-disabled', disabled), _defineProperty(_rootCls, prefixCls + '-enabled', !disabled), _defineProperty(_rootCls, prefixCls + '-allow-clear', !!props.allowClear), _rootCls);
-	
+	    var clearStyle = _extends({}, _util.UNSELECTABLE_STYLE, {
+	      display: 'none'
+	    });
+	    if (this.state.inputValue || this.state.value.length) {
+	      clearStyle.display = 'block';
+	    }
 	    var clear = _react2["default"].createElement('span', _extends({
 	      key: 'clear',
 	      onMouseDown: _util.preventDefaultEvent,
-	      style: _util.UNSELECTABLE_STYLE
+	      style: clearStyle
 	    }, _util.UNSELECTABLE_ATTRIBUTE, {
 	      className: prefixCls + '-selection__clear',
 	      onClick: this.onClearSelection
@@ -24348,23 +24375,23 @@
 	  displayName: 'Menu',
 	
 	  propTypes: {
-	    openSubMenuOnMouseEnter: _react2['default'].PropTypes.bool,
-	    closeSubMenuOnMouseLeave: _react2['default'].PropTypes.bool,
-	    selectedKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
-	    defaultSelectedKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
-	    defaultOpenKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
-	    openKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
-	    mode: _react2['default'].PropTypes.string,
-	    onClick: _react2['default'].PropTypes.func,
-	    onSelect: _react2['default'].PropTypes.func,
-	    onDeselect: _react2['default'].PropTypes.func,
-	    onDestroy: _react2['default'].PropTypes.func,
-	    openTransitionName: _react2['default'].PropTypes.string,
-	    openAnimation: _react2['default'].PropTypes.oneOfType([_react2['default'].PropTypes.string, _react2['default'].PropTypes.object]),
-	    level: _react2['default'].PropTypes.number,
-	    eventKey: _react2['default'].PropTypes.string,
-	    selectable: _react2['default'].PropTypes.bool,
-	    children: _react2['default'].PropTypes.any
+	    openSubMenuOnMouseEnter: _react.PropTypes.bool,
+	    closeSubMenuOnMouseLeave: _react.PropTypes.bool,
+	    selectedKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
+	    defaultSelectedKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
+	    defaultOpenKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
+	    openKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
+	    mode: _react.PropTypes.string,
+	    onClick: _react.PropTypes.func,
+	    onSelect: _react.PropTypes.func,
+	    onDeselect: _react.PropTypes.func,
+	    onDestroy: _react.PropTypes.func,
+	    openTransitionName: _react.PropTypes.string,
+	    openAnimation: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.object]),
+	    level: _react.PropTypes.number,
+	    eventKey: _react.PropTypes.string,
+	    selectable: _react.PropTypes.bool,
+	    children: _react.PropTypes.any
 	  },
 	
 	  mixins: [_MenuMixin2['default']],
@@ -24671,17 +24698,17 @@
 	
 	var MenuMixin = {
 	  propTypes: {
-	    focusable: _react2['default'].PropTypes.bool,
-	    multiple: _react2['default'].PropTypes.bool,
-	    style: _react2['default'].PropTypes.object,
-	    defaultActiveFirst: _react2['default'].PropTypes.bool,
-	    visible: _react2['default'].PropTypes.bool,
-	    activeKey: _react2['default'].PropTypes.string,
-	    selectedKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
-	    defaultSelectedKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
-	    defaultOpenKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
-	    openKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
-	    children: _react2['default'].PropTypes.any
+	    focusable: _react.PropTypes.bool,
+	    multiple: _react.PropTypes.bool,
+	    style: _react.PropTypes.object,
+	    defaultActiveFirst: _react.PropTypes.bool,
+	    visible: _react.PropTypes.bool,
+	    activeKey: _react.PropTypes.string,
+	    selectedKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
+	    defaultSelectedKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
+	    defaultOpenKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
+	    openKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
+	    children: _react.PropTypes.any
 	  },
 	
 	  getDefaultProps: function getDefaultProps() {
@@ -24890,6 +24917,9 @@
 	    var children = this.getFlatInstanceArray();
 	    var activeKey = this.state.activeKey;
 	    var len = children.length;
+	    if(!len){
+	      return null;
+	    }
 	    if (direction < 0) {
 	      children = children.concat().reverse();
 	    }
@@ -25576,7 +25606,7 @@
 	  displayName: 'DOMWrap',
 	
 	  propTypes: {
-	    tag: _react2['default'].PropTypes.string
+	    tag: _react.PropTypes.string
 	  },
 	
 	  getDefaultProps: function getDefaultProps() {
@@ -25633,32 +25663,43 @@
 	
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 	
+	var _util = __webpack_require__(208);
+	
 	var SubMenu = _react2['default'].createClass({
 	  displayName: 'SubMenu',
 	
 	  propTypes: {
-	    parentMenu: _react2['default'].PropTypes.object,
-	    title: _react2['default'].PropTypes.node,
-	    onClick: _react2['default'].PropTypes.func,
-	    onOpenChange: _react2['default'].PropTypes.func,
-	    rootPrefixCls: _react2['default'].PropTypes.string,
-	    eventKey: _react2['default'].PropTypes.string,
-	    multiple: _react2['default'].PropTypes.bool,
-	    active: _react2['default'].PropTypes.bool,
-	    open: _react2['default'].PropTypes.bool,
-	    onSelect: _react2['default'].PropTypes.func,
-	    closeSubMenuOnMouseLeave: _react2['default'].PropTypes.bool,
-	    openSubMenuOnMouseEnter: _react2['default'].PropTypes.bool,
-	    onDeselect: _react2['default'].PropTypes.func,
-	    onDestroy: _react2['default'].PropTypes.func,
-	    onItemHover: _react2['default'].PropTypes.func
+	    parentMenu: _react.PropTypes.object,
+	    title: _react.PropTypes.node,
+	    onClick: _react.PropTypes.func,
+	    onOpenChange: _react.PropTypes.func,
+	    rootPrefixCls: _react.PropTypes.string,
+	    eventKey: _react.PropTypes.string,
+	    multiple: _react.PropTypes.bool,
+	    active: _react.PropTypes.bool,
+	    open: _react.PropTypes.bool,
+	    onSelect: _react.PropTypes.func,
+	    closeSubMenuOnMouseLeave: _react.PropTypes.bool,
+	    openSubMenuOnMouseEnter: _react.PropTypes.bool,
+	    onDeselect: _react.PropTypes.func,
+	    onDestroy: _react.PropTypes.func,
+	    onItemHover: _react.PropTypes.func,
+	    onMouseEnter: _react.PropTypes.func,
+	    onMouseLeave: _react.PropTypes.func,
+	    onTitleMouseEnter: _react.PropTypes.func,
+	    onTitleMouseLeave: _react.PropTypes.func,
+	    onTitleClick: _react.PropTypes.func
 	  },
 	
 	  mixins: [__webpack_require__(212)],
 	
 	  getDefaultProps: function getDefaultProps() {
 	    return {
-	      onMouseEnter: function onMouseEnter() {},
+	      onMouseEnter: _util.noop,
+	      onMouseLeave: _util.noop,
+	      onTitleMouseEnter: _util.noop,
+	      onTitleMouseLeave: _util.noop,
+	      onTitleClick: _util.noop,
 	      title: ''
 	    };
 	  },
@@ -25723,18 +25764,24 @@
 	    }
 	  },
 	
-	  onSubTreeMouseEnter: function onSubTreeMouseEnter() {
-	    if (this.leaveTimer) {
-	      clearTimeout(this.leaveTimer);
-	      this.leaveTimer = null;
-	    }
-	  },
-	
 	  onOpenChange: function onOpenChange(e) {
 	    this.props.onOpenChange(this.addKeyPath(e));
 	  },
 	
-	  onMouseEnter: function onMouseEnter() {
+	  onMouseEnter: function onMouseEnter(e) {
+	    if (this.leaveTimer) {
+	      clearTimeout(this.leaveTimer);
+	      this.leaveTimer = null;
+	    }
+	    var props = this.props;
+	    var eventKey = props.eventKey;
+	    props.onMouseEnter({
+	      key: eventKey,
+	      domEvent: e
+	    });
+	  },
+	
+	  onTitleMouseEnter: function onTitleMouseEnter(e) {
 	    if (this.leaveTimer) {
 	      clearTimeout(this.leaveTimer);
 	      this.leaveTimer = null;
@@ -25746,7 +25793,7 @@
 	      parentMenu.menuItemMouseLeaveTimer = null;
 	    }
 	    props.onItemHover({
-	      key: this.props.eventKey,
+	      key: props.eventKey,
 	      item: this,
 	      hover: true,
 	      trigger: 'mouseenter'
@@ -25757,27 +25804,58 @@
 	    this.setState({
 	      defaultActiveFirst: false
 	    });
+	    props.onTitleMouseEnter({
+	      key: props.eventKey,
+	      domEvent: e
+	    });
 	  },
 	
-	  onMouseLeave: function onMouseLeave() {
+	  onTitleClick: function onTitleClick(e) {
+	    var props = this.props;
+	
+	    props.onTitleClick({
+	      key: props.eventKey,
+	      domEvent: e
+	    });
+	  },
+	
+	  onTitleMouseLeave: function onTitleMouseLeave(e) {
+	    var props = this.props;
+	
+	    props.onTitleMouseLeave({
+	      key: props.eventKey,
+	      domEvent: e
+	    });
+	  },
+	
+	  onMouseLeave: function onMouseLeave(e) {
 	    var _this = this;
 	
 	    // prevent popup menu and submenu gap
 	    this.leaveTimer = setTimeout(function () {
-	      // leave whole sub tree
-	      // still active
-	      if (_this.isMounted() && _this.props.active) {
-	        _this.props.onItemHover({
-	          key: _this.props.eventKey,
-	          item: _this,
-	          hover: false,
-	          trigger: 'mouseleave'
-	        });
-	      }
-	      if (_this.isMounted() && _this.props.open) {
-	        if (_this.props.closeSubMenuOnMouseLeave) {
-	          _this.triggerOpenChange(false);
+	      var props = _this.props;
+	      var eventKey = props.eventKey;
+	      if (_this.isMounted()) {
+	        // leave whole sub tree
+	        // still active
+	        if (props.active) {
+	          props.onItemHover({
+	            key: eventKey,
+	            item: _this,
+	            hover: false,
+	            trigger: 'mouseleave'
+	          });
 	        }
+	        if (props.open) {
+	          if (props.closeSubMenuOnMouseLeave) {
+	            _this.triggerOpenChange(false);
+	          }
+	        }
+	        // trigger mouseleave
+	        props.onMouseLeave({
+	          key: eventKey,
+	          domEvent: e
+	        });
 	      }
 	    }, 100);
 	  },
@@ -25895,11 +25973,13 @@
 	      };
 	      mouseEvents = {
 	        onMouseLeave: this.onMouseLeave,
-	        onMouseEnter: this.onSubTreeMouseEnter
+	        onMouseEnter: this.onMouseEnter
 	      };
 	      // only works in title, not outer li
 	      titleMouseEvents = {
-	        onMouseEnter: this.onMouseEnter
+	        onMouseEnter: this.onTitleMouseEnter,
+	        onClick: this.onTitleClick,
+	        onMouseLeave: this.onTitleMouseLeave
 	      };
 	    }
 	    var style = {};
@@ -25965,17 +26045,17 @@
 	  displayName: 'SubPopupMenu',
 	
 	  propTypes: {
-	    onSelect: _react2['default'].PropTypes.func,
-	    onClick: _react2['default'].PropTypes.func,
-	    onDeselect: _react2['default'].PropTypes.func,
-	    onOpenChange: _react2['default'].PropTypes.func,
-	    onDestroy: _react2['default'].PropTypes.func,
-	    openTransitionName: _react2['default'].PropTypes.string,
-	    openAnimation: _react2['default'].PropTypes.oneOfType([_react2['default'].PropTypes.string, _react2['default'].PropTypes.object]),
-	    openKeys: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.string),
-	    closeSubMenuOnMouseLeave: _react2['default'].PropTypes.bool,
-	    visible: _react2['default'].PropTypes.bool,
-	    children: _react2['default'].PropTypes.any
+	    onSelect: _react.PropTypes.func,
+	    onClick: _react.PropTypes.func,
+	    onDeselect: _react.PropTypes.func,
+	    onOpenChange: _react.PropTypes.func,
+	    onDestroy: _react.PropTypes.func,
+	    openTransitionName: _react.PropTypes.string,
+	    openAnimation: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.object]),
+	    openKeys: _react.PropTypes.arrayOf(_react.PropTypes.string),
+	    closeSubMenuOnMouseLeave: _react.PropTypes.bool,
+	    visible: _react.PropTypes.bool,
+	    children: _react.PropTypes.any
 	  },
 	
 	  mixins: [_MenuMixin2['default']],
@@ -26166,28 +26246,33 @@
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
+	var _util = __webpack_require__(208);
+	
 	var MenuItem = _react2['default'].createClass({
 	  displayName: 'MenuItem',
 	
 	  propTypes: {
-	    rootPrefixCls: _react2['default'].PropTypes.string,
-	    eventKey: _react2['default'].PropTypes.string,
-	    active: _react2['default'].PropTypes.bool,
-	    selected: _react2['default'].PropTypes.bool,
-	    disabled: _react2['default'].PropTypes.bool,
-	    title: _react2['default'].PropTypes.string,
-	    onSelect: _react2['default'].PropTypes.func,
-	    onClick: _react2['default'].PropTypes.func,
-	    onDeselect: _react2['default'].PropTypes.func,
-	    parentMenu: _react2['default'].PropTypes.object,
-	    onItemHover: _react2['default'].PropTypes.func,
-	    onDestroy: _react2['default'].PropTypes.func
+	    rootPrefixCls: _react.PropTypes.string,
+	    eventKey: _react.PropTypes.string,
+	    active: _react.PropTypes.bool,
+	    selected: _react.PropTypes.bool,
+	    disabled: _react.PropTypes.bool,
+	    title: _react.PropTypes.string,
+	    onSelect: _react.PropTypes.func,
+	    onClick: _react.PropTypes.func,
+	    onDeselect: _react.PropTypes.func,
+	    parentMenu: _react.PropTypes.object,
+	    onItemHover: _react.PropTypes.func,
+	    onDestroy: _react.PropTypes.func,
+	    onMouseEnter: _react.PropTypes.func,
+	    onMouseLeave: _react.PropTypes.func
 	  },
 	
 	  getDefaultProps: function getDefaultProps() {
 	    return {
-	      onSelect: function onSelect() {},
-	      onMouseEnter: function onMouseEnter() {}
+	      onSelect: _util.noop,
+	      onMouseEnter: _util.noop,
+	      onMouseLeave: _util.noop
 	    };
 	  },
 	
@@ -26206,14 +26291,15 @@
 	    }
 	  },
 	
-	  onMouseLeave: function onMouseLeave() {
+	  onMouseLeave: function onMouseLeave(e) {
 	    var _this = this;
 	
-	    var eventKey = this.props.eventKey;
-	    var parentMenu = this.props.parentMenu;
+	    var props = this.props;
+	    var eventKey = props.eventKey;
+	    var parentMenu = props.parentMenu;
 	    parentMenu.menuItemMouseLeaveTimer = setTimeout(function () {
-	      if (_this.isMounted() && _this.props.active) {
-	        _this.props.onItemHover({
+	      if (_this.isMounted() && props.active) {
+	        props.onItemHover({
 	          key: eventKey,
 	          item: _this,
 	          hover: false,
@@ -26221,11 +26307,15 @@
 	        });
 	      }
 	    }, 30);
+	    props.onMouseLeave({
+	      key: eventKey,
+	      domEvent: e
+	    });
 	  },
 	
-	  onMouseEnter: function onMouseEnter() {
+	  onMouseEnter: function onMouseEnter(e) {
 	    var props = this.props;
-	    var parentMenu = this.props.parentMenu;
+	    var parentMenu = props.parentMenu;
 	    if (parentMenu.menuItemMouseLeaveTimer) {
 	      clearTimeout(parentMenu.menuItemMouseLeaveTimer);
 	      parentMenu.menuItemMouseLeaveTimer = null;
@@ -26236,6 +26326,10 @@
 	      item: this,
 	      hover: true,
 	      trigger: 'mouseenter'
+	    });
+	    props.onMouseEnter({
+	      key: eventKey,
+	      domEvent: e
 	    });
 	  },
 	

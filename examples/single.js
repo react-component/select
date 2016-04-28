@@ -46,6 +46,7 @@ webpackJsonp([9],{
 	    } else {
 	      value = e;
 	    }
+	    console.log('onChange', value);
 	    this.setState({
 	      value: value
 	    });
@@ -54,6 +55,9 @@ webpackJsonp([9],{
 	    this.setState({
 	      destroy: 1
 	    });
+	  },
+	  onBlur: function onBlur(v) {
+	    console.log('onBlur', v);
 	  },
 	  render: function render() {
 	    if (this.state.destroy) {
@@ -78,6 +82,7 @@ webpackJsonp([9],{
 	            placeholder: 'placeholder',
 	            dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
 	            style: { width: 500 },
+	            onBlur: this.onBlur,
 	            allowClear: true,
 	            optionLabelProp: 'children',
 	            optionFilterProp: 'text',
