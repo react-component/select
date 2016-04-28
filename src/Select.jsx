@@ -44,6 +44,7 @@ const Select = React.createClass({
     animation: PropTypes.string,
     choiceTransitionName: PropTypes.string,
     onChange: PropTypes.func,
+    onBlur: PropTypes.func,
     onSelect: PropTypes.func,
     onSearch: PropTypes.func,
     placeholder: PropTypes.any,
@@ -69,6 +70,7 @@ const Select = React.createClass({
       placeholder: '',
       defaultValue: [],
       onChange: noop,
+      onBlur: noop,
       onSelect: noop,
       onSearch: noop,
       onDeselect: noop,
@@ -136,6 +138,7 @@ const Select = React.createClass({
   },
 
   componentWillUnmount() {
+    this.clearBlurTime();
     if (this.dropdownContainer) {
       ReactDOM.unmountComponentAtNode(this.dropdownContainer);
       document.body.removeChild(this.dropdownContainer);
@@ -282,6 +285,7 @@ const Select = React.createClass({
   },
 
   onOuterFocus() {
+    this.clearBlurTime();
     this._focused = true;
     this.updateFocusClassName();
   },
@@ -292,22 +296,27 @@ const Select = React.createClass({
   },
 
   onOuterBlur() {
-    this._focused = false;
-    this.updateFocusClassName();
-    const props = this.props;
-    if (isSingleMode(props) && props.showSearch &&
-      this.state.inputValue && props.defaultActiveFirstOption) {
-      const options = this._options || [];
-      if (options.length) {
-        const firstOption = findFirstMenuItem(options);
-        if (firstOption) {
-          this.fireChange([{
-            key: firstOption.key,
-            label: this.getLabelFromOption(firstOption),
-          }]);
+    this.blurTimer = setTimeout(() => {
+      this._focused = false;
+      this.updateFocusClassName();
+      const props = this.props;
+      let { value } = this.state;
+      if (isSingleMode(props) && props.showSearch &&
+        this.state.inputValue && props.defaultActiveFirstOption) {
+        const options = this._options || [];
+        if (options.length) {
+          const firstOption = findFirstMenuItem(options);
+          if (firstOption) {
+            value = [{
+              key: firstOption.key,
+              label: this.getLabelFromOption(firstOption),
+            }];
+            this.fireChange(value);
+          }
         }
       }
-    }
+      props.onBlur(this.getVLForOnChange(value));
+    }, 10);
   },
 
   onClearSelection(event) {
@@ -318,11 +327,15 @@ const Select = React.createClass({
     }
     event.stopPropagation();
     if (state.inputValue || state.value.length) {
-      this.fireChange([]);
-      this.setOpenState(false);
-      this.setState({
-        inputValue: '',
-      });
+      if (this.state.value.length) {
+        this.fireChange([]);
+      }
+      this.setOpenState(false, true);
+      if (this.state.inputValue) {
+        this.setState({
+          inputValue: '',
+        });
+      }
     }
   },
 
@@ -457,7 +470,12 @@ const Select = React.createClass({
       }
     });
   },
-
+  clearBlurTime() {
+    if (this.blurTimer) {
+      clearTimeout(this.blurTimer);
+      this.blurTimer = null;
+    }
+  },
   updateFocusClassName() {
     const { refs, props } = this;
     // avoid setState and its side effect
@@ -677,11 +695,17 @@ const Select = React.createClass({
       [`${prefixCls}-enabled`]: !disabled,
       [`${prefixCls}-allow-clear`]: !!props.allowClear,
     };
-
+    const clearStyle = {
+      ...UNSELECTABLE_STYLE,
+      display: 'none',
+    };
+    if (this.state.inputValue || this.state.value.length) {
+      clearStyle.display = 'block';
+    }
     const clear = (<span
       key="clear"
       onMouseDown={preventDefaultEvent}
-      style={UNSELECTABLE_STYLE}
+      style={clearStyle}
       {...UNSELECTABLE_ATTRIBUTE}
       className={`${prefixCls}-selection__clear`}
       onClick={this.onClearSelection}

@@ -20,6 +20,7 @@ const Test = React.createClass({
     } else {
       value = e;
     }
+    console.log('onChange', value);
     this.setState({
       value,
     });
@@ -29,6 +30,10 @@ const Test = React.createClass({
     this.setState({
       destroy: 1,
     });
+  },
+
+  onBlur(v) {
+    console.log('onBlur', v);
   },
 
   render() {
@@ -47,6 +52,7 @@ const Test = React.createClass({
             placeholder="placeholder"
             dropdownMenuStyle={{ maxHeight: 200, overflow: 'auto' }}
             style={{ width: 500 }}
+            onBlur={this.onBlur}
             allowClear
             optionLabelProp="children"
             optionFilterProp="text"

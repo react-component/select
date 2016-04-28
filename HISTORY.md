@@ -1,5 +1,10 @@
 # History
 ----
+
+## 6.3.0 / 2016-04-28
+
+- support onBlur
+
 ## 6.2.0 / 2016-04-20
 
 - remove searchPlaceholder
