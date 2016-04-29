@@ -20603,7 +20603,7 @@
 	    var props = this.props;
 	    // avoid setState and its side effect
 	
-	    if (this._focused || this.state.open) {
+	    if (this._focused) {
 	      (0, _componentClasses2["default"])(refs.root).add(props.prefixCls + '-focused');
 	    } else {
 	      (0, _componentClasses2["default"])(refs.root).remove(props.prefixCls + '-focused');
