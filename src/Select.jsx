@@ -479,7 +479,7 @@ const Select = React.createClass({
   updateFocusClassName() {
     const { refs, props } = this;
     // avoid setState and its side effect
-    if (this._focused || this.state.open) {
+    if (this._focused) {
       classes(refs.root).add(`${props.prefixCls}-focused`);
     } else {
       classes(refs.root).remove(`${props.prefixCls}-focused`);
