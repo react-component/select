@@ -94,13 +94,17 @@ const Select = React.createClass({
     } else {
       value = toArray(props.defaultValue);
     }
+    let open = props.open;
+    if(isExceededMaxCount(props, value.length)) {
+      value = value.slice(0, props.maxValueCount);
+      open && (open = false);
+    }
     value = this.addLabelToValue(props, value);
     let inputValue = '';
     if (props.combobox) {
       inputValue = value.length ? String(value[0].key) : '';
     }
     this.saveInputRef = saveRef.bind(this, 'inputInstance');
-    let open = props.open;
     if (open === undefined) {
       open = props.defaultOpen;
     }
