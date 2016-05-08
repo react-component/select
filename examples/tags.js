@@ -9,11 +9,13 @@ const children = [];
 for (let i = 10; i < 36; i++) {
   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
 }
+const maxValueCountSelect = [0,1,2,3,4,5,6,7,8,9,10,20,26]
 
 const Test = React.createClass({
   getInitialState() {
     return {
       disabled: false,
+      maxValueCount: 0,
       value: ['name2', 'name3'],
     };
   },
@@ -21,6 +23,11 @@ const Test = React.createClass({
     console.log(`selected ${value}`);
     this.setState({
       value,
+    });
+  },
+  onMaxValueCountChange(e) {
+    this.setState({
+      maxValueCount: +e.target.value,
     });
   },
   toggleDisabled() {
@@ -33,6 +40,16 @@ const Test = React.createClass({
       <div>
         <h2>tags select（scroll the menu）</h2>
 
+        <p>
+          <label>
+            maxValueCount
+            <select onChange={this.onMaxValueCountChange} defaultValue={this.state.maxValueCount}>
+              {
+                maxValueCountSelect.map(i => <option key={i} value={i}>{i}</option>)
+              }
+            </select>
+          </label>
+        </p>
         <div>
           <Select
             placeholder="placeholder"
@@ -41,6 +58,7 @@ const Test = React.createClass({
             style={{ width: 500 }}
             disabled={this.state.disabled}
             maxTagTextLength={10}
+            maxValueCount={this.state.maxValueCount}
             value={this.state.value}
             onChange={this.onChange}
           >

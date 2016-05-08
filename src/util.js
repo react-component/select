@@ -31,6 +31,10 @@ export function isMultipleOrTagsOrCombobox(props) {
   return isMultipleOrTags(props) || isCombobox(props);
 }
 
+export function isExceededMaxCount(props, count) {
+  return isMultipleOrTags(props) && props.maxValueCount && count >= props.maxValueCount;
+}
+
 export function isSingleMode(props) {
   return !isMultipleOrTagsOrCombobox(props);
 }
