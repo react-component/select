@@ -11,6 +11,7 @@ import {
   isSingleMode, toArray, findIndexInValueByKey,
   UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE,
   preventDefaultEvent, findFirstMenuItem,
+  isExceededMaxCount,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import FilterMixin from './FilterMixin';
@@ -54,6 +55,7 @@ const Select = React.createClass({
     defaultValue: PropTypes.any,
     dropdownStyle: PropTypes.object,
     maxTagTextLength: PropTypes.number,
+    maxValueCount: PropTypes.number,
   },
 
   mixins: [FilterMixin],
@@ -92,13 +94,19 @@ const Select = React.createClass({
     } else {
       value = toArray(props.defaultValue);
     }
+    let open = props.open;
+    if (isExceededMaxCount(props, value.length)) {
+      value = value.slice(0, props.maxValueCount);
+      if (open) {
+        open = false;
+      }
+    }
     value = this.addLabelToValue(props, value);
     let inputValue = '';
     if (props.combobox) {
       inputValue = value.length ? String(value[0].key) : '';
     }
     this.saveInputRef = saveRef.bind(this, 'inputInstance');
-    let open = props.open;
     if (open === undefined) {
       open = props.defaultOpen;
     }
@@ -112,6 +120,11 @@ const Select = React.createClass({
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
       let value = toArray(nextProps.value);
+      let fireChange = false;
+      if (isExceededMaxCount(nextProps, value.length - 1)) {
+        value = value.slice(0, nextProps.maxValueCount);
+        fireChange = true;
+      }
       value = this.addLabelToValue(nextProps, value);
       this.setState({
         value,
@@ -121,12 +134,19 @@ const Select = React.createClass({
           inputValue: value.length ? String(value[0].key) : '',
         });
       }
+      if (fireChange) {
+        this.fireChange(value);
+      }
+    } else {
+      if (isExceededMaxCount(nextProps, this.state.value.length - 1)) {
+        this.fireChange(this.state.value.slice(0, nextProps.maxValueCount));
+      }
     }
   },
 
   componentDidUpdate() {
     const { state, props } = this;
-    if (state.open && isMultipleOrTags(props)) {
+    if (state.open && isMultipleOrTags(props) && !isExceededMaxCount(props, state.value.length)) {
       const inputNode = this.getInputDOMNode();
       if (inputNode.value) {
         inputNode.style.width = '';
@@ -450,6 +470,7 @@ const Select = React.createClass({
 
   setOpenState(open, needFocus) {
     const { props, state } = this;
+    open = open && !isExceededMaxCount(props, state.value.length);
     if (state.open === open) {
       this.maybeFocus(open, needFocus);
       return;
@@ -556,10 +577,20 @@ const Select = React.createClass({
 
   fireChange(value) {
     const props = this.props;
+    const exceededMaxCount = isExceededMaxCount(props, value.length);
     if (!('value' in props)) {
-      this.setState({
-        value,
-      });
+      if (exceededMaxCount) {
+        this.setState({
+          value,
+          open: false,
+        });
+      } else {
+        this.setState({
+          value,
+        });
+      }
+    } else if (exceededMaxCount) {
+      this.setState({ open: false });
     }
     props.onChange(this.getVLForOnChange(value));
   },
@@ -642,12 +673,14 @@ const Select = React.createClass({
           );
         });
       }
-      selectedValueNodes.push(<li
-        className={`${prefixCls}-search ${prefixCls}-search--inline`}
-        key="__input"
-      >
-        {this.getInputElement()}
-      </li>);
+      if (!isExceededMaxCount(props, value.length)) {
+        selectedValueNodes.push(<li
+          className={`${prefixCls}-search ${prefixCls}-search--inline`}
+          key="__input"
+        >
+          {this.getInputElement()}
+        </li>);
+      }
 
       if (isMultipleOrTags(props) && choiceTransitionName) {
         innerNode = (<Animate

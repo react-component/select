@@ -102,6 +102,25 @@ describe('Select', () => {
     });
   });
 
+  it('should limit multiple items', (done) => {
+    instance = ReactDOM.render(
+      <Select multiple value={['2', '3', '4', '1']} maxValueCount={3}>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+        <Option value="3">3</Option>
+        <Option value="4">4</Option>
+      </Select>, div);
+    instance.setState({
+      open: true,
+    }, () => {
+      expect(instance.getPopupMenuComponent().instanceArray[0].props.selected).to.be(false);
+      expect(instance.getPopupMenuComponent().instanceArray[1].props.selected).to.be(true);
+      expect(instance.getPopupMenuComponent().instanceArray[2].props.selected).to.be(true);
+      expect(instance.getPopupMenuComponent().instanceArray[3].props.selected).to.be(true);
+      done();
+    });
+  });
+
   it('should have clear button', () => {
     instance = ReactDOM.render(
       <Select allowClear>
