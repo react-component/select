@@ -11,7 +11,7 @@ import {
   isSingleMode, toArray, findIndexInValueByKey,
   UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE,
   preventDefaultEvent, findFirstMenuItem,
-  isExceededMaxCount
+  isExceededMaxCount,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import FilterMixin from './FilterMixin';
@@ -95,9 +95,11 @@ const Select = React.createClass({
       value = toArray(props.defaultValue);
     }
     let open = props.open;
-    if(isExceededMaxCount(props, value.length)) {
+    if (isExceededMaxCount(props, value.length)) {
       value = value.slice(0, props.maxValueCount);
-      open && (open = false);
+      if (open) {
+        open = false;
+      }
     }
     value = this.addLabelToValue(props, value);
     let inputValue = '';
@@ -119,9 +121,9 @@ const Select = React.createClass({
     if ('value' in nextProps) {
       let value = toArray(nextProps.value);
       let fireChange = false;
-      if(isExceededMaxCount(nextProps, value.length-1)) {
+      if (isExceededMaxCount(nextProps, value.length - 1)) {
         value = value.slice(0, nextProps.maxValueCount);
-        fireChange = true
+        fireChange = true;
       }
       value = this.addLabelToValue(nextProps, value);
       this.setState({
@@ -132,11 +134,11 @@ const Select = React.createClass({
           inputValue: value.length ? String(value[0].key) : '',
         });
       }
-      if(fireChange) {
+      if (fireChange) {
         this.fireChange(value);
       }
     } else {
-      if(isExceededMaxCount(nextProps, this.state.value.length-1)) {
+      if (isExceededMaxCount(nextProps, this.state.value.length - 1)) {
         this.fireChange(this.state.value.slice(0, nextProps.maxValueCount));
       }
     }
@@ -575,14 +577,20 @@ const Select = React.createClass({
 
   fireChange(value) {
     const props = this.props;
-    const open = isExceededMaxCount(props, value.length) ? false: this.state.open;
+    const exceededMaxCount = isExceededMaxCount(props, value.length);
     if (!('value' in props)) {
-      this.setState({
-        value,
-        open
-      });
-    } else {
-      this.setState({open});
+      if (exceededMaxCount) {
+        this.setState({
+          value,
+          open: false,
+        });
+      } else {
+        this.setState({
+          value,
+        });
+      }
+    } else if (exceededMaxCount) {
+      this.setState({ open: false });
     }
     props.onChange(this.getVLForOnChange(value));
   },
@@ -665,11 +673,11 @@ const Select = React.createClass({
           );
         });
       }
-      if(!isExceededMaxCount(props, value.length)) {
+      if (!isExceededMaxCount(props, value.length)) {
         selectedValueNodes.push(<li
           className={`${prefixCls}-search ${prefixCls}-search--inline`}
           key="__input"
-          >
+        >
           {this.getInputElement()}
         </li>);
       }

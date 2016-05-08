@@ -10,7 +10,7 @@ for (let i = 10; i < 36; i++) {
   children.push(<Option key={i.toString(36) + i}>中文{i}</Option>);
 }
 
-const maxValueCountSelect = [0,1,2,3,4,5,6,7,8,9,10,20,26]
+const maxValueCountSelect = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 26];
 
 function onSelect() {
   console.log(arguments);
@@ -34,14 +34,14 @@ const Test = React.createClass({
       value,
     });
   },
-  useAnim(e) {
-    this.setState({
-      useAnim: e.target.checked,
-    });
-  },
   onMaxValueCountChange(e) {
     this.setState({
       maxValueCount: +e.target.value,
+    });
+  },
+  useAnim(e) {
+    this.setState({
+      useAnim: e.target.checked,
     });
   },
   render() {
@@ -58,7 +58,7 @@ const Test = React.createClass({
             anim
             <input checked={this.state.useAnim} type="checkbox" onChange={this.useAnim}/>
           </label>
-          <label style={{marginLeft:"2em"}}>
+          <label style={{ marginLeft: '2em' }}>
             maxValueCount
             <select onChange={this.onMaxValueCountChange} defaultValue={this.state.maxValueCount}>
               {
