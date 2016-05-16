@@ -56,7 +56,8 @@
     "rc-animate": "2.x",
     "rc-menu": "4.x",
     "rc-trigger": "1.x",
-    "rc-util": "3.x"
+    "rc-util": "3.x",
+    "warning": "^2.1.0"
   },
   "pre-commit": [
     "lint"
