@@ -1,7 +1,9 @@
 import React from 'react';
-import OptGroup from './OptGroup';
 import { getValuePropValue, UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE } from './util';
 import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
+import warning from 'warning';
+import OptGroup from './OptGroup';
+import Option from './Option';
 
 export default {
   filterOption(input, child) {
@@ -44,6 +46,13 @@ export default {
         }
         return;
       }
+
+      warning(
+        child.type === Option,
+        'the children of `Select` should be `Select.Option` or `Select.OptGroup`, ' +
+          `instead of \`${child.type.name || child.type.displayName || child.type}\`.`
+      );
+
       const childValue = getValuePropValue(child);
       if (this.filterOption(inputValue, child)) {
         sel.push(<MenuItem
