@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { KeyCode } from 'rc-util';
 import classnames from 'classnames';
+import domAlign from 'dom-align';
 import OptGroup from './OptGroup';
 import Animate from 'rc-animate';
 import classes from 'component-classes';
@@ -133,6 +134,15 @@ const Select = React.createClass({
         inputNode.style.width = `${inputNode.scrollWidth}px`;
       } else {
         inputNode.style.width = '';
+      }
+      // fix for https://github.com/ant-design/ant-design/issues/1827
+      if (props.choiceTransitionName) {
+        // wait animation completed
+        setTimeout(() => {
+          this.alignPopupMenu();
+        }, 400);
+      } else {
+        this.alignPopupMenu();
       }
     }
   },
@@ -339,6 +349,14 @@ const Select = React.createClass({
     }
   },
 
+  getPopupMenuAlign() {
+    const selectTrigger = this.refs.trigger;
+    const trigger = selectTrigger.refs.trigger;
+    const builtinPlacements = trigger.props.builtinPlacements;
+    const popupPlacement = trigger.props.popupPlacement;
+    return { ...builtinPlacements[popupPlacement] };
+  },
+
   getLabelBySingleValue(children, value) {
     if (value === undefined) {
       return null;
@@ -470,12 +488,14 @@ const Select = React.createClass({
       }
     });
   },
+
   clearBlurTime() {
     if (this.blurTimer) {
       clearTimeout(this.blurTimer);
       this.blurTimer = null;
     }
   },
+
   updateFocusClassName() {
     const { refs, props } = this;
     // avoid setState and its side effect
@@ -518,6 +538,14 @@ const Select = React.createClass({
       });
     }
     return value;
+  },
+
+  alignPopupMenu() {
+    const popupMenu = this.refs.trigger.popupMenu;
+    const source = ReactDOM.findDOMNode(popupMenu).parentNode;
+    const target = this.refs.selection;
+    const popupMenuAlign = this.getPopupMenuAlign();
+    domAlign(source, target, popupMenuAlign);
   },
 
   removeSelected(selectedKey) {
