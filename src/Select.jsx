@@ -87,7 +87,7 @@ const Select = React.createClass({
   getInitialState() {
     const props = this.props;
     let value = [];
-    if ('value' in props) {
+    if ('value' in props && props.value !== null) {
       value = toArray(props.value);
     } else {
       value = toArray(props.defaultValue);
