@@ -124,19 +124,45 @@ describe('Select', () => {
     done();
   });
 
+  it('should show selected value in singleMode when close', (done) => {
+    instance = ReactDOM.render(
+      <Select value="1">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>, div);
+    expect($(ReactDOM.findDOMNode(instance))
+      .find('.rc-select-selection-selected-value').length).to.be(1);
+    done();
+  });
+
+  it('should show placeholder in singleMode when value is undefined', (done) => {
+    instance = ReactDOM.render(
+      <Select placeholder="aaa">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>, div);
+    expect($(ReactDOM.findDOMNode(instance))
+      .find('.rc-select-selection__placeholder').length).to.be(1);
+    done();
+  });
+
   describe('when open', function test() {
     this.timeout(400000);
 
     beforeEach((done) => {
       div = document.createElement('div');
+
       div.tabIndex = 0;
       document.body.appendChild(div);
+
       instance = ReactDOM.render(
         <Select>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
         </Select>,
         div);
+
+
       Simulate.click(ReactDOM.findDOMNode(instance.refs.selection));
       done();
     });
@@ -155,6 +181,11 @@ describe('Select', () => {
           .find('.rc-select-dropdown-menu-item')[0].innerHTML).to.be('Not Found');
         done();
       }, 100);
+    });
+
+    it('should show search input in single selection trigger', (done) => {
+      expect($(instance.getInputDOMNode()).parents('.rc-select-open').length).to.be(1);
+      done();
     });
   });
 });

@@ -12,6 +12,13 @@
   position: relative;
   vertical-align: middle;
   color: #666;
+  line-height: 28px;
+
+  &-allow-clear {
+    .@{selectPrefixCls}-selection--single .@{selectPrefixCls}-selection__rendered {
+      padding-right: 40px;
+    }
+  }
 
   ul, li {
     margin: 0;
@@ -31,6 +38,7 @@
     top: 1px;
     right: 1px;
     width: 20px;
+    outline: none;
     b {
       border-color: #999999 transparent transparent transparent;
       border-style: solid;
@@ -56,6 +64,12 @@
     background-color: #fff;
     border-radius: 6px;
     border: 1px solid #d9d9d9;
+
+    &__placeholder {
+      position: absolute;
+      top: 0;
+      color: #aaa;
+    }
   }
 
   &-focused &-selection {
@@ -75,15 +89,24 @@
 
   &-selection--single {
     height: 28px;
+    line-height: 28px;
     cursor: pointer;
     position: relative;
 
+    .@{selectPrefixCls}-selection-selected-value {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
     .@{selectPrefixCls}-selection__rendered {
+      height: 28px;
+      position: relative;
       display: block;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
-      padding-left: 10px;
+      margin-left: 10px;
       padding-right: 20px;
       line-height: 28px;
     }
@@ -91,8 +114,9 @@
     .@{selectPrefixCls}-selection__clear {
       font-weight: bold;
       position: absolute;
-      top: 5px;
+      top: 0;
       right: 20px;
+      line-height: 28px;
 
       &:after {
         content: '×'
@@ -118,7 +142,6 @@
 
   &-search__field__wrap {
     display: inline-block;
-    position: relative;
   }
 
   &-search__field__placeholder {
@@ -129,7 +152,6 @@
   }
 
   &-search--inline {
-    float: left;
     width: 100%;
     .@{selectPrefixCls}-search__field__wrap {
       width: 100%;
@@ -141,6 +163,9 @@
       background: transparent;
       outline: 0;
       width: 100%;
+      &::-ms-clear {
+        display: none;
+      }
     }
     > i {
       float: right;
@@ -155,8 +180,12 @@
     min-height: 28px;
 
     .@{selectPrefixCls}-search--inline {
+      float: left;
       width: auto;
       .@{selectPrefixCls}-search__field {
+        &__wrap {
+          width: auto;
+        }
         width: 0.75em;
       }
     }
@@ -167,17 +196,16 @@
     }
 
     .@{selectPrefixCls}-selection__rendered {
-      //display: inline-block;
+      position: relative;
       overflow: hidden;
       text-overflow: ellipsis;
-      padding-left: 8px;
+      margin-left: 8px;
       padding-bottom: 2px;
-    }
 
-    > ul > li {
-      margin-top: 4px;
-      height: 20px;
-      line-height: 20px;
+      .@{selectPrefixCls}-selection__choice {
+        margin-top: 4px;
+        line-height: 20px;
+      }
     }
   }
 
@@ -284,9 +312,6 @@
     z-index: 100;
     left: -9999px;
     top: -9999px;
-    //border-top: none;
-    //border-top-left-radius: 0;
-    //border-top-right-radius: 0;
     position: absolute;
     outline: none;
 
@@ -438,28 +463,6 @@
         transform-origin: 0% 100%;
         transform: scaleY(0);
       }
-    }
-  }
-
-  &-dropdown-search {
-    display: block;
-    padding: 4px;
-    .@{selectPrefixCls}-search__field__wrap {
-      width: 100%;
-    }
-    .@{selectPrefixCls}-search__field__placeholder {
-      top: 4px;
-    }
-    .@{selectPrefixCls}-search__field {
-      padding: 4px;
-      width: 100%;
-      box-sizing: border-box;
-      border: 1px solid #d9d9d9;
-      border-radius: 4px;
-      outline: none;
-    }
-    &.@{selectPrefixCls}-search--hide {
-      display: none;
     }
   }
 

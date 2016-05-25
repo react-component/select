@@ -43,7 +43,6 @@ const Test = React.createClass({
         <div style={{ marginTop: 20, position: 'relative' }}>
           <Select
             placeholder="placeholder"
-            searchPlaceholder="searchPlaceholder"
             style={{ width: 200 }}
             getPopupContainer={this.getPopupContainer}
           >

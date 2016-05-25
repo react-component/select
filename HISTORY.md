@@ -1,5 +1,18 @@
 # History
 ----
+
+## 6.3.0 / 2016-04-28
+
+- support onBlur
+
+## 6.2.0 / 2016-04-20
+
+- remove searchPlaceholder
+
+## 6.1.0 / 2016-04-18
+
+- go with http://semantic-ui.com/modules/dropdown.html#search-selection
+
 ## 6.0.0 / 2016-03-16
 
 - remove defaultLabel/label

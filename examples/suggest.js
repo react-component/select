@@ -56,7 +56,6 @@ const Search = React.createClass({
           combobox
           value={this.state.value}
           placeholder="placeholder"
-          searchPlaceholder="searchPlaceholder"
           defaultActiveFirstOption={false}
           showArrow={false}
           notFoundContent=""

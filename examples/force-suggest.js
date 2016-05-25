@@ -55,7 +55,6 @@ const Search = React.createClass({
           value={this.state.value}
           optionLabelProp="children"
           placeholder="placeholder"
-          searchPlaceholder="searchPlaceholder"
           style={{ width: 500 }}
           onChange={this.onChange}
           filterOption={false}

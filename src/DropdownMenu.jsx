@@ -10,11 +10,11 @@ const DropdownMenu = React.createClass({
     value: PropTypes.any,
     dropdownMenuStyle: PropTypes.object,
     multiple: PropTypes.bool,
+    onPopupFocus: PropTypes.func,
     onMenuDeSelect: PropTypes.func,
     onMenuSelect: PropTypes.func,
     prefixCls: PropTypes.string,
     menuItems: PropTypes.any,
-    search: PropTypes.any,
     inputValue: PropTypes.string,
     visible: PropTypes.bool,
   },
@@ -57,11 +57,12 @@ const DropdownMenu = React.createClass({
 
   renderMenu() {
     const props = this.props;
-    const { menuItems,
+    const {
+      menuItems,
       defaultActiveFirstOption, value,
-      dropdownMenuStyle, prefixCls,
-      multiple,
-      onMenuSelect, inputValue } = props;
+      prefixCls, multiple,
+      onMenuSelect, inputValue,
+    } = props;
     if (menuItems && menuItems.length) {
       const menuProps = {};
       if (multiple) {
@@ -110,8 +111,8 @@ const DropdownMenu = React.createClass({
 
       return (<Menu
         ref="menu"
+        style={this.props.dropdownMenuStyle}
         defaultActiveFirst={defaultActiveFirstOption}
-        style={dropdownMenuStyle}
         {...activeKeyProps}
         multiple={multiple}
         focusable={false}
@@ -126,11 +127,12 @@ const DropdownMenu = React.createClass({
   },
 
   render() {
-    return (<div>
-      {this.props.search}
-      <div onMouseDown={preventDefaultEvent}>
-        {this.renderMenu()}
-      </div>
+    return (<div
+      style={{ overflow: 'auto' }}
+      onFocus={this.props.onPopupFocus}
+      onMouseDown={preventDefaultEvent}
+    >
+      {this.renderMenu()}
     </div>);
   },
 });

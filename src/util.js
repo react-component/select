@@ -88,3 +88,18 @@ export const UNSELECTABLE_STYLE = {
 export const UNSELECTABLE_ATTRIBUTE = {
   unselectable: 'unselectable',
 };
+
+export function findFirstMenuItem(children) {
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i];
+    if (child.type === MenuItemGroup) {
+      const found = findFirstMenuItem(child.props.children);
+      if (found) {
+        return found;
+      }
+    } else if (!child.props.disabled) {
+      return child;
+    }
+  }
+  return null;
+}

@@ -25,6 +25,7 @@ const BUILT_IN_PLACEMENTS = {
 
 const SelectTrigger = React.createClass({
   propTypes: {
+    onPopupFocus: PropTypes.func,
     dropdownMatchSelectWidth: PropTypes.bool,
     dropdownAlign: PropTypes.object,
     visible: PropTypes.bool,
@@ -87,25 +88,22 @@ const SelectTrigger = React.createClass({
     this.popupMenu = menu;
   },
   render() {
-    const props = this.props;
+    const { onPopupFocus, ...props } = this.props;
     const { multiple, visible, inputValue, dropdownAlign } = props;
     const dropdownPrefixCls = this.getDropdownPrefixCls();
     const popupClassName = {
       [props.dropdownClassName]: !!props.dropdownClassName,
       [`${dropdownPrefixCls}--${multiple ? 'multiple' : 'single'}`]: 1,
     };
-    const search = multiple || props.combobox || !props.showSearch ? null : (
-      <span className={`${dropdownPrefixCls}-search`}>{props.inputElement}</span>
-    );
     const popupElement = this.getDropdownElement({
       menuItems: props.options,
-      search,
+      onPopupFocus,
       multiple,
       inputValue,
       visible,
     });
     return (<Trigger {...props}
-      action={props.disabled ? [] : ['click']}
+      showAction={props.disabled ? [] : ['click']}
       hideAction={props.disabled ? [] : ['blur']}
       ref="trigger"
       popupPlacement="bottomLeft"

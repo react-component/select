@@ -17,7 +17,6 @@ const c1 = (
         defaultValue="张三"
         style={{ width: 500 }}
         placeholder="placeholder"
-        searchPlaceholder="searchPlaceholder"
         optionFilterProp="desc"
         onChange={onChange}
       >

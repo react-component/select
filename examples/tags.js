@@ -36,7 +36,6 @@ const Test = React.createClass({
         <div>
           <Select
             placeholder="placeholder"
-            searchPlaceholder="searchPlaceholder"
             tags
             dropdownMenuStyle={{ maxHeight: 200, overflow: 'auto' }}
             style={{ width: 500 }}
