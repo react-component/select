@@ -98,6 +98,7 @@ const Select = React.createClass({
       inputValue = value.length ? String(value[0].key) : '';
     }
     this.saveInputRef = saveRef.bind(this, 'inputInstance');
+    this.saveInputMirrorRef = saveRef.bind(this, 'inputMirrorInstance');
     let open = props.open;
     if (open === undefined) {
       open = props.defaultOpen;
@@ -128,9 +129,10 @@ const Select = React.createClass({
     const { state, props } = this;
     if (state.open && isMultipleOrTags(props)) {
       const inputNode = this.getInputDOMNode();
+      const mirrorNode = this.getInputMirrorDOMNode();
       if (inputNode.value) {
         inputNode.style.width = '';
-        inputNode.style.width = `${inputNode.scrollWidth}px`;
+        inputNode.style.width = `${mirrorNode.clientWidth}px`;
       } else {
         inputNode.style.width = '';
       }
@@ -433,11 +435,20 @@ const Select = React.createClass({
         disabled={props.disabled}
         className={`${props.prefixCls}-search__field`}
       />
+      <span ref={this.saveInputMirrorRef}
+        className={`${props.prefixCls}-search__field__mirror`}
+      >
+        {this.state.inputValue}
+      </span>
     </div>);
   },
 
   getInputDOMNode() {
     return this.inputInstance;
+  },
+
+  getInputMirrorDOMNode() {
+    return this.inputMirrorInstance;
   },
 
   getPopupDOMNode() {
