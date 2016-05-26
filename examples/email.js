@@ -3,12 +3,12 @@ webpackJsonp([1],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(239);
+	module.exports = __webpack_require__(241);
 
 
 /***/ },
 
-/***/ 239:
+/***/ 241:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17,21 +17,21 @@ webpackJsonp([1],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _rcSelect = __webpack_require__(167);
+	var _rcSelect = __webpack_require__(169);
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(238);
+	__webpack_require__(240);
 	
-	var _reactDom = __webpack_require__(33);
+	var _reactDom = __webpack_require__(39);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	/* eslint no-console: 0 */
 	
-	var Test = _react2["default"].createClass({
+	var Test = _react2.default.createClass({
 	  displayName: 'Test',
 	  getInitialState: function getInitialState() {
 	    return {
@@ -46,7 +46,7 @@ webpackJsonp([1],{
 	    var options = [];
 	    if (value) {
 	      if (value.indexOf('@') >= 0) {
-	        options = _react2["default"].createElement(
+	        options = _react2.default.createElement(
 	          _rcSelect.Option,
 	          { key: value },
 	          value
@@ -54,7 +54,7 @@ webpackJsonp([1],{
 	      } else {
 	        options = ['gmail.com', 'yahoo.com', 'outlook.com'].map(function (domain) {
 	          var email = value + '@' + domain;
-	          return _react2["default"].createElement(
+	          return _react2.default.createElement(
 	            _rcSelect.Option,
 	            { key: email },
 	            email
@@ -67,8 +67,8 @@ webpackJsonp([1],{
 	    });
 	  },
 	  render: function render() {
-	    return _react2["default"].createElement(
-	      _rcSelect2["default"],
+	    return _react2.default.createElement(
+	      _rcSelect2.default,
 	      {
 	        combobox: true,
 	        notFoundContent: false,
@@ -82,7 +82,7 @@ webpackJsonp([1],{
 	  }
 	});
 	
-	_reactDom2["default"].render(_react2["default"].createElement(Test, null), document.getElementById('__react-content'));
+	_reactDom2.default.render(_react2.default.createElement(Test, null), document.getElementById('__react-content'));
 
 /***/ }
 

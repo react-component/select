@@ -3,12 +3,12 @@ webpackJsonp([2],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(240);
+	module.exports = __webpack_require__(242);
 
 
 /***/ },
 
-/***/ 240:
+/***/ 242:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17,21 +17,21 @@ webpackJsonp([2],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _rcSelect = __webpack_require__(167);
+	var _rcSelect = __webpack_require__(169);
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(238);
+	__webpack_require__(240);
 	
-	var _tbFetchSuggest = __webpack_require__(241);
+	var _tbFetchSuggest = __webpack_require__(243);
 	
-	var _reactDom = __webpack_require__(33);
+	var _reactDom = __webpack_require__(39);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Search = _react2["default"].createClass({
+	var Search = _react2.default.createClass({
 	  displayName: 'Search',
 	  getInitialState: function getInitialState() {
 	    return {
@@ -64,38 +64,38 @@ webpackJsonp([2],{
 	    var data = this.state.data;
 	    var options = void 0;
 	    options = data.map(function (d) {
-	      return _react2["default"].createElement(
+	      return _react2.default.createElement(
 	        _rcSelect.Option,
 	        { key: d.value },
-	        _react2["default"].createElement(
+	        _react2.default.createElement(
 	          'i',
 	          null,
 	          d.text
 	        )
 	      );
 	    });
-	    return _react2["default"].createElement(
+	    return _react2.default.createElement(
 	      'div',
 	      null,
-	      _react2["default"].createElement(
+	      _react2.default.createElement(
 	        'h2',
 	        null,
 	        'force suggest'
 	      ),
-	      _react2["default"].createElement(
+	      _react2.default.createElement(
 	        'p',
 	        null,
-	        _react2["default"].createElement(
+	        _react2.default.createElement(
 	          'button',
 	          { onClick: this.toggleDisabled },
 	          'toggle disabled'
 	        )
 	      ),
-	      _react2["default"].createElement(
+	      _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2["default"].createElement(
-	          _rcSelect2["default"],
+	        _react2.default.createElement(
+	          _rcSelect2.default,
 	          {
 	            labelInValue: true,
 	            onSearch: this.fetchData,
@@ -114,11 +114,11 @@ webpackJsonp([2],{
 	  }
 	}); /* eslint no-console: 0 */
 	
-	_reactDom2["default"].render(_react2["default"].createElement(Search, null), document.getElementById('__react-content'));
+	_reactDom2.default.render(_react2.default.createElement(Search, null), document.getElementById('__react-content'));
 
 /***/ },
 
-/***/ 241:
+/***/ 243:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -128,15 +128,15 @@ webpackJsonp([2],{
 	});
 	exports.fetch = fetch;
 	
-	var _jsonp = __webpack_require__(242);
+	var _jsonp = __webpack_require__(244);
 	
 	var _jsonp2 = _interopRequireDefault(_jsonp);
 	
-	var _querystring = __webpack_require__(246);
+	var _querystring = __webpack_require__(248);
 	
 	var _querystring2 = _interopRequireDefault(_querystring);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var timeout = void 0;
 	var currentValue = void 0;
@@ -149,11 +149,11 @@ webpackJsonp([2],{
 	  currentValue = value;
 	
 	  function fake() {
-	    var str = _querystring2["default"].encode({
+	    var str = _querystring2.default.encode({
 	      code: 'utf-8',
 	      q: value
 	    });
-	    (0, _jsonp2["default"])('http://suggest.taobao.com/sug?' + str, function (err, d) {
+	    (0, _jsonp2.default)('http://suggest.taobao.com/sug?' + str, function (err, d) {
 	      if (currentValue === value) {
 	        (function () {
 	          var result = d.result;
@@ -175,14 +175,14 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 242:
+/***/ 244:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies
 	 */
 	
-	var debug = __webpack_require__(243)('jsonp');
+	var debug = __webpack_require__(245)('jsonp');
 	
 	/**
 	 * Module exports.
@@ -279,7 +279,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 243:
+/***/ 245:
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -289,7 +289,7 @@ webpackJsonp([2],{
 	 * Expose `debug()` as the module.
 	 */
 	
-	exports = module.exports = __webpack_require__(244);
+	exports = module.exports = __webpack_require__(246);
 	exports.log = log;
 	exports.formatArgs = formatArgs;
 	exports.save = save;
@@ -461,7 +461,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 244:
+/***/ 246:
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -477,7 +477,7 @@ webpackJsonp([2],{
 	exports.disable = disable;
 	exports.enable = enable;
 	exports.enabled = enabled;
-	exports.humanize = __webpack_require__(245);
+	exports.humanize = __webpack_require__(247);
 	
 	/**
 	 * The currently active debug mode names, and names to skip.
@@ -665,7 +665,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 245:
+/***/ 247:
 /***/ function(module, exports) {
 
 	/**
@@ -795,18 +795,18 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 246:
+/***/ 248:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	exports.decode = exports.parse = __webpack_require__(247);
-	exports.encode = exports.stringify = __webpack_require__(248);
+	exports.decode = exports.parse = __webpack_require__(249);
+	exports.encode = exports.stringify = __webpack_require__(250);
 
 
 /***/ },
 
-/***/ 247:
+/***/ 249:
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -893,7 +893,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 248:
+/***/ 250:
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.

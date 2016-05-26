@@ -3,12 +3,12 @@ webpackJsonp([3],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(249);
+	module.exports = __webpack_require__(251);
 
 
 /***/ },
 
-/***/ 249:
+/***/ 251:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17,25 +17,25 @@ webpackJsonp([3],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(33);
+	var _reactDom = __webpack_require__(39);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _rcSelect = __webpack_require__(167);
+	var _rcSelect = __webpack_require__(169);
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(238);
+	__webpack_require__(240);
 	
-	var _rcDialog = __webpack_require__(250);
+	var _rcDialog = __webpack_require__(252);
 	
 	var _rcDialog2 = _interopRequireDefault(_rcDialog);
 	
-	__webpack_require__(254);
+	__webpack_require__(256);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Test = _react2["default"].createClass({
+	var Test = _react2.default.createClass({
 	  displayName: 'Test',
 	  getInitialState: function getInitialState() {
 	    return {
@@ -66,44 +66,44 @@ webpackJsonp([3],{
 	    if (this.state.destroy) {
 	      return null;
 	    }
-	    return _react2["default"].createElement(
+	    return _react2.default.createElement(
 	      'div',
 	      null,
-	      _react2["default"].createElement(
+	      _react2.default.createElement(
 	        'button',
 	        { onClick: this.open },
 	        'open'
 	      ),
 	      ' ',
-	      _react2["default"].createElement(
+	      _react2.default.createElement(
 	        'button',
 	        { onClick: this.destroy },
 	        'destroy'
 	      ),
-	      _react2["default"].createElement(
-	        _rcDialog2["default"],
+	      _react2.default.createElement(
+	        _rcDialog2.default,
 	        { visible: this.state.open, onClose: this.close },
-	        _react2["default"].createElement(
+	        _react2.default.createElement(
 	          'div',
 	          { style: { marginTop: 20, position: 'relative' } },
-	          _react2["default"].createElement(
-	            _rcSelect2["default"],
+	          _react2.default.createElement(
+	            _rcSelect2.default,
 	            {
 	              placeholder: 'placeholder',
 	              style: { width: 200 },
 	              getPopupContainer: this.getPopupContainer
 	            },
-	            _react2["default"].createElement(
+	            _react2.default.createElement(
 	              _rcSelect.Option,
 	              { value: '1' },
 	              '1'
 	            ),
-	            _react2["default"].createElement(
+	            _react2.default.createElement(
 	              _rcSelect.Option,
 	              { value: '2' },
 	              '2'
 	            ),
-	            _react2["default"].createElement(
+	            _react2.default.createElement(
 	              _rcSelect.Option,
 	              { value: '3' },
 	              '3'
@@ -115,20 +115,20 @@ webpackJsonp([3],{
 	  }
 	});
 	
-	_reactDom2["default"].render(_react2["default"].createElement(Test, null), document.getElementById('__react-content'));
+	_reactDom2.default.render(_react2.default.createElement(Test, null), document.getElementById('__react-content'));
 
 /***/ },
 
-/***/ 250:
+/***/ 252:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(251);
+	module.exports = __webpack_require__(253);
 
 /***/ },
 
-/***/ 251:
+/***/ 253:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -153,11 +153,11 @@ webpackJsonp([3],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(33);
+	var _reactDom = __webpack_require__(39);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _Dialog = __webpack_require__(252);
+	var _Dialog = __webpack_require__(254);
 	
 	var _Dialog2 = _interopRequireDefault(_Dialog);
 	
@@ -316,7 +316,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 252:
+/***/ 254:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -335,27 +335,27 @@ webpackJsonp([3],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(33);
+	var _reactDom = __webpack_require__(39);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _rcAlign = __webpack_require__(220);
+	var _rcAlign = __webpack_require__(222);
 	
 	var _rcAlign2 = _interopRequireDefault(_rcAlign);
 	
-	var _rcUtilLibKeyCode = __webpack_require__(176);
+	var _rcUtilLibKeyCode = __webpack_require__(178);
 	
 	var _rcUtilLibKeyCode2 = _interopRequireDefault(_rcUtilLibKeyCode);
 	
-	var _rcAnimate = __webpack_require__(192);
+	var _rcAnimate = __webpack_require__(194);
 	
 	var _rcAnimate2 = _interopRequireDefault(_rcAnimate);
 	
-	var _DOMWrap = __webpack_require__(253);
+	var _DOMWrap = __webpack_require__(255);
 	
 	var _DOMWrap2 = _interopRequireDefault(_DOMWrap);
 	
-	var _classnames = __webpack_require__(174);
+	var _classnames = __webpack_require__(176);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -664,7 +664,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 253:
+/***/ 255:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -710,7 +710,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 254:
+/***/ 256:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

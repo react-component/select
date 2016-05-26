@@ -138,6 +138,12 @@
 .rc-select-search--inline .rc-select-search__field::-ms-clear {
   display: none;
 }
+.rc-select-search--inline .rc-select-search__field__mirror {
+  position: absolute;
+  top: -999px;
+  left: 0;
+  white-space: pre;
+}
 .rc-select-search--inline > i {
   float: right;
 }
