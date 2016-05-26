@@ -341,6 +341,10 @@ const Select = React.createClass({
     }
   },
 
+  onChoiceAnimationLeave() {
+    this.refs.trigger.refs.trigger.forcePopupAlign();
+  },
+
   getLabelBySingleValue(children, value) {
     if (value === undefined) {
       return null;
@@ -662,6 +666,7 @@ const Select = React.createClass({
 
       if (isMultipleOrTags(props) && choiceTransitionName) {
         innerNode = (<Animate
+          onLeave={this.onChoiceAnimationLeave}
           component="ul"
           transitionName={choiceTransitionName}
         >
