@@ -20714,7 +20714,9 @@
 	  },
 	  onArrowClick: function onArrowClick(e) {
 	    e.stopPropagation();
-	    this.setOpenState(!this.state.open, true);
+	    if (!this.props.disabled) {
+	      this.setOpenState(!this.state.open, true);
+	    }
 	  },
 	  onPlaceholderClick: function onPlaceholderClick() {
 	    if (this.getInputDOMNode()) {
