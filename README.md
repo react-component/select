@@ -75,6 +75,7 @@ React.render(c, container);
 |notFoundContent | specify content to show when no result matches. | String | 'Not Found' |
 |placeholder | select placeholder | React Node | |
 |showSearch | whether show search input in single mode | bool | true |
+|showArrow | whether show arrow in single mode | bool | true |
 |allowClear | whether allowClear | bool | false |
 |tags | when tagging is enabled the user can select from pre-existing options or create a new tag by picking the first choice, which is what the user has typed into the search box so far. | bool | false |
 |maxTagTextLength | max tag text length to show | number | - |
