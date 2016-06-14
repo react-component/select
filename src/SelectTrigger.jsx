@@ -30,6 +30,7 @@ const SelectTrigger = React.createClass({
     dropdownAlign: PropTypes.object,
     visible: PropTypes.bool,
     multiple: PropTypes.bool,
+    combobox: PropTypes.bool,
     inputValue: PropTypes.string,
     filterOption: PropTypes.any,
     options: PropTypes.any,
@@ -89,7 +90,7 @@ const SelectTrigger = React.createClass({
   },
   render() {
     const { onPopupFocus, ...props } = this.props;
-    const { multiple, visible, inputValue, dropdownAlign } = props;
+    const { multiple, combobox, visible, inputValue, dropdownAlign } = props;
     const dropdownPrefixCls = this.getDropdownPrefixCls();
     const popupClassName = {
       [props.dropdownClassName]: !!props.dropdownClassName,
@@ -104,7 +105,7 @@ const SelectTrigger = React.createClass({
     });
     return (<Trigger {...props}
       showAction={props.disabled ? [] : ['click']}
-      hideAction={props.disabled ? [] : ['blur']}
+      hideAction={props.disabled ? [] : [combobox ? 'blur' : 'click']}
       ref="trigger"
       popupPlacement="bottomLeft"
       builtinPlacements={BUILT_IN_PLACEMENTS}
