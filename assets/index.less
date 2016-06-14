@@ -218,7 +218,7 @@
   &-enabled {
     .@{selectPrefixCls}-selection__choice {
       cursor: default;
-      &:not(&-disabled):hover {
+      &:hover {
         .@{selectPrefixCls}-selection__choice__remove {
           opacity: 1;
           transform: scale(1);
@@ -226,6 +226,16 @@
         .@{selectPrefixCls}-selection__choice__content {
           margin-left: -8px;
           margin-right: 8px;
+        }
+      }
+    }
+
+    .@{selectPrefixCls}-selection__choice__disabled {
+      cursor: not-allowed;
+      &:hover {
+        .@{selectPrefixCls}-selection__choice__content {
+          margin-left: 0;
+          margin-right: 0;
         }
       }
     }
@@ -479,4 +489,5 @@
       border-width: 0 4px 5px 4px;
     }
   }
+
 }
