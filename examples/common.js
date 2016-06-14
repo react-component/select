@@ -20587,8 +20587,8 @@
 	    var val = event.target.value;
 	    var props = this.props;
 	
+	    this.setInputValueAndFireOnSearch(val);
 	    this.setState({
-	      inputValue: val,
 	      open: true
 	    });
 	    if ((0, _util.isCombobox)(props)) {
@@ -20596,7 +20596,6 @@
 	        key: val
 	      }]);
 	    }
-	    props.onSearch(val);
 	  },
 	  onDropdownVisibleChange: function onDropdownVisibleChange(open) {
 	    this.setOpenState(open);
@@ -20692,14 +20691,13 @@
 	      this.setOpenState(false, true);
 	    }
 	    this.fireChange(value);
-	    this.setState({
-	      inputValue: ''
-	    });
+	    var inputValue = void 0;
 	    if ((0, _util.isCombobox)(props)) {
-	      this.setState({
-	        inputValue: (0, _util.getPropValue)(item, props.optionLabelProp)
-	      });
+	      inputValue = (0, _util.getPropValue)(item, props.optionLabelProp);
+	    } else {
+	      inputValue = '';
 	    }
+	    this.setInputValueAndFireOnSearch(inputValue);
 	  },
 	  onMenuDeselect: function onMenuDeselect(_ref2) {
 	    var item = _ref2.item;
@@ -20708,9 +20706,7 @@
 	    if (domEvent.type === 'click') {
 	      this.removeSelected((0, _util.getValuePropValue)(item));
 	    }
-	    this.setState({
-	      inputValue: ''
-	    });
+	    this.setInputValueAndFireOnSearch('');
 	  },
 	  onArrowClick: function onArrowClick(e) {
 	    e.stopPropagation();
@@ -20763,16 +20759,17 @@
 	    if (props.disabled) {
 	      return;
 	    }
+	    var inputValue = state.inputValue;
+	    var value = state.value;
+	
 	    event.stopPropagation();
-	    if (state.inputValue || state.value.length) {
-	      if (this.state.value.length) {
+	    if (inputValue || value.length) {
+	      if (value.length) {
 	        this.fireChange([]);
 	      }
 	      this.setOpenState(false, true);
-	      if (this.state.inputValue) {
-	        this.setState({
-	          inputValue: ''
-	        });
+	      if (inputValue) {
+	        this.setInputValueAndFireOnSearch('');
 	      }
 	    }
 	  },
@@ -20912,8 +20909,7 @@
 	    };
 	    // clear search input value when open is false in singleMode.
 	    if (!open && (0, _util.isSingleMode)(props) && props.showSearch) {
-	      nextState.inputValue = '';
-	      props.onSearch('');
+	      this.setInputValueAndFireOnSearch('');
 	    }
 	    if (!open) {
 	      this.maybeFocus(open, needFocus);
@@ -20923,6 +20919,14 @@
 	        _this3.maybeFocus(open, needFocus);
 	      }
 	    });
+	  },
+	  setInputValueAndFireOnSearch: function setInputValueAndFireOnSearch(inputValue) {
+	    this.setState({
+	      inputValue: inputValue
+	    });
+	    if (this.props.showSearch) {
+	      this.props.onSearch(inputValue);
+	    }
 	  },
 	  clearBlurTime: function clearBlurTime() {
 	    if (this.blurTimer) {
@@ -21183,7 +21187,7 @@
 	    var clearStyle = _extends({}, _util.UNSELECTABLE_STYLE, {
 	      display: 'none'
 	    });
-	    if (this.state.inputValue || this.state.value.length) {
+	    if (state.inputValue || state.value.length) {
 	      clearStyle.display = 'block';
 	    }
 	    var clear = _react2.default.createElement('span', _extends({
