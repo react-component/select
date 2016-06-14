@@ -441,7 +441,8 @@ const Select = React.createClass({
         disabled={props.disabled}
         className={`${props.prefixCls}-search__field`}
       />
-      <span ref={this.saveInputMirrorRef}
+      <span
+        ref={this.saveInputMirrorRef}
         className={`${props.prefixCls}-search__field__mirror`}
       >
         {this.state.inputValue}
@@ -477,6 +478,7 @@ const Select = React.createClass({
     // clear search input value when open is false in singleMode.
     if (!open && isSingleMode(props) && props.showSearch) {
       nextState.inputValue = '';
+      props.onSearch('');
     }
     if (!open) {
       this.maybeFocus(open, needFocus);

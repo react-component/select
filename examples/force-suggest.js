@@ -23,11 +23,17 @@ const Search = React.createClass({
   },
 
   fetchData(value) {
-    fetch(value, (data) => {
-      this.setState({
-        data,
+    if (value) {
+      fetch(value, (data) => {
+        this.setState({
+          data,
+        });
       });
-    });
+    } else {
+      this.setState({
+        data: [],
+      });
+    }
   },
 
   toggleDisabled() {
@@ -55,6 +61,7 @@ const Search = React.createClass({
           value={this.state.value}
           optionLabelProp="children"
           placeholder="placeholder"
+          defaultActiveFirstOption
           style={{ width: 500 }}
           onChange={this.onChange}
           filterOption={false}
