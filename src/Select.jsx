@@ -151,8 +151,8 @@ const Select = React.createClass({
   onInputChange(event) {
     const val = event.target.value;
     const { props } = this;
+    this.setInputValueAndFireOnSearch(val);
     this.setState({
-      inputValue: val,
       open: true,
     });
     if (isCombobox(props)) {
@@ -160,7 +160,6 @@ const Select = React.createClass({
         key: val,
       }]);
     }
-    props.onSearch(val);
   },
 
   onDropdownVisibleChange(open) {
@@ -256,23 +255,20 @@ const Select = React.createClass({
       this.setOpenState(false, true);
     }
     this.fireChange(value);
-    this.setState({
-      inputValue: '',
-    });
+    let inputValue;
     if (isCombobox(props)) {
-      this.setState({
-        inputValue: getPropValue(item, props.optionLabelProp),
-      });
+      inputValue = getPropValue(item, props.optionLabelProp);
+    } else {
+      inputValue = '';
     }
+    this.setInputValueAndFireOnSearch(inputValue);
   },
 
   onMenuDeselect({ item, domEvent }) {
     if (domEvent.type === 'click') {
       this.removeSelected(getValuePropValue(item));
     }
-    this.setState({
-      inputValue: '',
-    });
+    this.setInputValueAndFireOnSearch('');
   },
 
   onArrowClick(e) {
@@ -329,16 +325,15 @@ const Select = React.createClass({
     if (props.disabled) {
       return;
     }
+    const { inputValue, value } = state;
     event.stopPropagation();
-    if (state.inputValue || state.value.length) {
-      if (this.state.value.length) {
+    if (inputValue || value.length) {
+      if (value.length) {
         this.fireChange([]);
       }
       this.setOpenState(false, true);
-      if (this.state.inputValue) {
-        this.setState({
-          inputValue: '',
-        });
+      if (inputValue) {
+        this.setInputValueAndFireOnSearch('');
       }
     }
   },
@@ -477,8 +472,7 @@ const Select = React.createClass({
     };
     // clear search input value when open is false in singleMode.
     if (!open && isSingleMode(props) && props.showSearch) {
-      nextState.inputValue = '';
-      props.onSearch('');
+      this.setInputValueAndFireOnSearch('');
     }
     if (!open) {
       this.maybeFocus(open, needFocus);
@@ -488,6 +482,14 @@ const Select = React.createClass({
         this.maybeFocus(open, needFocus);
       }
     });
+  },
+  setInputValueAndFireOnSearch(inputValue) {
+    this.setState({
+      inputValue,
+    });
+    if (this.props.showSearch) {
+      this.props.onSearch(inputValue);
+    }
   },
   clearBlurTime() {
     if (this.blurTimer) {
@@ -572,7 +574,6 @@ const Select = React.createClass({
       this.setOpenState(true);
     }
   },
-
   fireChange(value) {
     const props = this.props;
     if (!('value' in props)) {
@@ -728,7 +729,7 @@ const Select = React.createClass({
       ...UNSELECTABLE_STYLE,
       display: 'none',
     };
-    if (this.state.inputValue || this.state.value.length) {
+    if (state.inputValue || state.value.length) {
       clearStyle.display = 'block';
     }
     const clear = (<span
