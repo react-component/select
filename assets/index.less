@@ -170,7 +170,7 @@
     .@{selectPrefixCls}-search__field__mirror {
       position: absolute;
       top: -999px;
-      left: 0; 
+      left: 0;
       white-space: pre;
     }
     > i {
@@ -218,7 +218,7 @@
   &-enabled {
     .@{selectPrefixCls}-selection__choice {
       cursor: default;
-      &:hover {
+      &:not(&-disabled):hover {
         .@{selectPrefixCls}-selection__choice__remove {
           opacity: 1;
           transform: scale(1);
@@ -359,10 +359,16 @@
         display: block;
         padding: 7px 10px;
         font-weight: normal;
-        color: #666666;
+        color: #666;
         white-space: nowrap;
 
+        &-disabled {
+          color: #ccc;
+          cursor: not-allowed;
+        }
+
         &-selected {
+          color: #666;
           background-color: #ddd;
         }
 
@@ -370,11 +376,6 @@
           background-color: #5897fb;
           color: white;
           cursor: pointer;
-        }
-
-        &-disabled {
-          color: #ccc;
-          cursor: not-allowed;
         }
 
         &-divider {
