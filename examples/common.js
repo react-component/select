@@ -20587,7 +20587,7 @@
 	    var val = event.target.value;
 	    var props = this.props;
 	
-	    this.setInputValueAndFireOnSearch(val);
+	    this.setInputValue(val);
 	    this.setState({
 	      open: true
 	    });
@@ -20697,7 +20697,7 @@
 	    } else {
 	      inputValue = '';
 	    }
-	    this.setInputValueAndFireOnSearch(inputValue);
+	    this.setInputValue(inputValue, false);
 	  },
 	  onMenuDeselect: function onMenuDeselect(_ref2) {
 	    var item = _ref2.item;
@@ -20706,7 +20706,7 @@
 	    if (domEvent.type === 'click') {
 	      this.removeSelected((0, _util.getValuePropValue)(item));
 	    }
-	    this.setInputValueAndFireOnSearch('');
+	    this.setInputValue('', false);
 	  },
 	  onArrowClick: function onArrowClick(e) {
 	    e.stopPropagation();
@@ -20769,7 +20769,7 @@
 	      }
 	      this.setOpenState(false, true);
 	      if (inputValue) {
-	        this.setInputValueAndFireOnSearch('');
+	        this.setInputValue('');
 	      }
 	    }
 	  },
@@ -20909,7 +20909,7 @@
 	    };
 	    // clear search input value when open is false in singleMode.
 	    if (!open && (0, _util.isSingleMode)(props) && props.showSearch) {
-	      this.setInputValueAndFireOnSearch('');
+	      this.setInputValue('');
 	    }
 	    if (!open) {
 	      this.maybeFocus(open, needFocus);
@@ -20920,11 +20920,13 @@
 	      }
 	    });
 	  },
-	  setInputValueAndFireOnSearch: function setInputValueAndFireOnSearch(inputValue) {
+	  setInputValue: function setInputValue(inputValue) {
+	    var fireSearch = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+	
 	    this.setState({
 	      inputValue: inputValue
 	    });
-	    if (this.props.showSearch) {
+	    if (fireSearch) {
 	      this.props.onSearch(inputValue);
 	    }
 	  },
