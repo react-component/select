@@ -49,11 +49,17 @@ webpackJsonp([2],{
 	  fetchData: function fetchData(value) {
 	    var _this = this;
 	
-	    (0, _tbFetchSuggest.fetch)(value, function (data) {
-	      _this.setState({
-	        data: data
+	    if (value) {
+	      (0, _tbFetchSuggest.fetch)(value, function (data) {
+	        _this.setState({
+	          data: data
+	        });
 	      });
-	    });
+	    } else {
+	      this.setState({
+	        data: []
+	      });
+	    }
 	  },
 	  toggleDisabled: function toggleDisabled() {
 	    this.setState({
@@ -103,6 +109,7 @@ webpackJsonp([2],{
 	            value: this.state.value,
 	            optionLabelProp: 'children',
 	            placeholder: 'placeholder',
+	            defaultActiveFirstOption: true,
 	            style: { width: 500 },
 	            onChange: this.onChange,
 	            filterOption: false

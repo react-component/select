@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>force-suggest.js - example - rc-select@6.4.2</title>
+  <title>force-suggest.js - example - rc-select@6.4.3</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -258,7 +258,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-select@6.4.2</h1>
+      <h1>rc-select@6.4.3</h1>
 
       <p>React Select</p>
     </div>
@@ -289,11 +289,17 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   },
 
   fetchData(value) {
-    fetch(value, (data) =&gt; {
-      <span class="hljs-keyword">this</span>.setState({
-        data,
+    <span class="hljs-keyword">if</span> (value) {
+      fetch(value, (data) =&gt; {
+        <span class="hljs-keyword">this</span>.setState({
+          data,
+        });
       });
-    });
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">this</span>.setState({
+        data: [],
+      });
+    }
   },
 
   toggleDisabled() {
@@ -321,6 +327,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
           <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value}</span>
           <span class="hljs-attribute">optionLabelProp</span>=<span class="hljs-value">"children"</span>
           <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"placeholder"</span>
+          <span class="hljs-attribute">defaultActiveFirstOption</span>
           <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">500</span> }}
           <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>
           <span class="hljs-attribute">filterOption</span>=<span class="hljs-value">{false}</span>

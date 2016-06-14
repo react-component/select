@@ -20877,7 +20877,8 @@
 	      }),
 	      _react2.default.createElement(
 	        'span',
-	        { ref: this.saveInputMirrorRef,
+	        {
+	          ref: this.saveInputMirrorRef,
 	          className: props.prefixCls + '-search__field__mirror'
 	        },
 	        this.state.inputValue
@@ -20912,6 +20913,7 @@
 	    // clear search input value when open is false in singleMode.
 	    if (!open && (0, _util.isSingleMode)(props) && props.showSearch) {
 	      nextState.inputValue = '';
+	      props.onSearch('');
 	    }
 	    if (!open) {
 	      this.maybeFocus(open, needFocus);
