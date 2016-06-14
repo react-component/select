@@ -1,14 +1,14 @@
-webpackJsonp([13],{
+webpackJsonp([7],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(266);
+	module.exports = __webpack_require__(260);
 
 
 /***/ },
 
-/***/ 266:
+/***/ 260:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31,12 +31,15 @@ webpackJsonp([13],{
 	
 	/* eslint no-console: 0 */
 	
+	
 	var children = [];
 	for (var i = 10; i < 36; i++) {
+	  // 11 => readonly selected item
 	  children.push(_react2.default.createElement(
 	    _rcSelect.Option,
-	    { key: i.toString(36) + i },
-	    i.toString(36) + i
+	    { disabled: i === 11, key: i.toString(36) + i },
+	    '中文',
+	    i
 	  ));
 	}
 	
@@ -44,55 +47,44 @@ webpackJsonp([13],{
 	  displayName: 'Test',
 	  getInitialState: function getInitialState() {
 	    return {
-	      disabled: false,
-	      value: ['name2', 'name3']
+	      value: ['b11']
 	    };
 	  },
 	  onChange: function onChange(value) {
-	    console.log('selected ' + value);
-	    this.setState({
-	      value: value
-	    });
-	  },
-	  toggleDisabled: function toggleDisabled() {
-	    this.setState({
-	      disabled: !this.state.disabled
-	    });
+	    console.log('onChange', value);
+	    this.setState({ value: value });
 	  },
 	  render: function render() {
+	    var dropdownMenuStyle = {
+	      maxHeight: 200,
+	      overflow: 'auto'
+	    };
 	    return _react2.default.createElement(
 	      'div',
 	      null,
 	      _react2.default.createElement(
 	        'h2',
 	        null,
-	        'tags select（scroll the menu）'
+	        'multiple readonly default selected item'
 	      ),
 	      _react2.default.createElement(
 	        'div',
-	        null,
+	        { style: { width: 300 } },
 	        _react2.default.createElement(
 	          _rcSelect2.default,
 	          {
-	            placeholder: 'placeholder',
-	            tags: true,
-	            dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
-	            style: { width: 500 },
-	            disabled: this.state.disabled,
-	            maxTagTextLength: 10,
+	            multiple: true,
 	            value: this.state.value,
+	            animation: 'slide-up',
+	            choiceTransitionName: 'rc-select-selection__choice-zoom',
+	            dropdownMenuStyle: dropdownMenuStyle,
+	            style: { width: 500 },
+	            optionFilterProp: 'children',
+	            optionLabelProp: 'children',
+	            placeholder: 'please select',
 	            onChange: this.onChange
 	          },
 	          children
-	        )
-	      ),
-	      _react2.default.createElement(
-	        'p',
-	        null,
-	        _react2.default.createElement(
-	          'button',
-	          { onClick: this.toggleDisabled },
-	          'toggle disabled'
 	        )
 	      )
 	    );
@@ -104,4 +96,4 @@ webpackJsonp([13],{
 /***/ }
 
 });
-//# sourceMappingURL=tags.js.map
+//# sourceMappingURL=multiple-readonly.js.map

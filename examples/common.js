@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		13:0
+/******/ 		14:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"combobox","1":"email","2":"force-suggest","3":"getPopupContainer","4":"mul-suggest","5":"mul-tag-suggest","6":"multiple","7":"optgroup","8":"optionFilterProp","9":"single","10":"single-animation","11":"suggest","12":"tags"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"combobox","1":"email","2":"force-suggest","3":"getPopupContainer","4":"mul-suggest","5":"mul-tag-suggest","6":"multiple","7":"multiple-readonly","8":"optgroup","9":"optionFilterProp","10":"single","11":"single-animation","12":"suggest","13":"tags"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -21087,13 +21087,18 @@
 	          if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
 	            content = content.slice(0, maxTagTextLength) + '...';
 	          }
+	          var disabled = (0, _util.toArray)(props.children).some(function (child) {
+	            var childValue = (0, _util.getValuePropValue)(child);
+	            return childValue === singleValue.key && child.props && child.props.disabled;
+	          });
+	          var choiceClassName = disabled ? prefixCls + '-selection__choice ' + prefixCls + '-selection__choice__disabled' : prefixCls + '-selection__choice';
 	          return _react2.default.createElement(
 	            'li',
 	            _extends({
 	              style: _util.UNSELECTABLE_STYLE
 	            }, _util.UNSELECTABLE_ATTRIBUTE, {
 	              onMouseDown: _util.preventDefaultEvent,
-	              className: prefixCls + '-selection__choice',
+	              className: choiceClassName,
 	              key: singleValue.key,
 	              title: title
 	            }),
@@ -21102,7 +21107,7 @@
 	              { className: prefixCls + '-selection__choice__content' },
 	              content
 	            ),
-	            _react2.default.createElement('span', {
+	            disabled ? null : _react2.default.createElement('span', {
 	              className: prefixCls + '-selection__choice__remove',
 	              onClick: _this5.removeSelected.bind(_this5, singleValue.key)
 	            })
@@ -26878,6 +26883,8 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
+	var _util = __webpack_require__(203);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -26911,6 +26918,9 @@
 	    dropdownMatchSelectWidth: _react.PropTypes.bool,
 	    dropdownAlign: _react.PropTypes.object,
 	    visible: _react.PropTypes.bool,
+	    disabled: _react.PropTypes.bool,
+	    showSearch: _react.PropTypes.bool,
+	    dropdownClassName: _react.PropTypes.bool,
 	    multiple: _react.PropTypes.bool,
 	    inputValue: _react.PropTypes.string,
 	    filterOption: _react.PropTypes.any,
@@ -26978,9 +26988,12 @@
 	    var visible = props.visible;
 	    var inputValue = props.inputValue;
 	    var dropdownAlign = props.dropdownAlign;
+	    var disabled = props.disabled;
+	    var showSearch = props.showSearch;
+	    var dropdownClassName = props.dropdownClassName;
 	
 	    var dropdownPrefixCls = this.getDropdownPrefixCls();
-	    var popupClassName = (_popupClassName = {}, _defineProperty(_popupClassName, props.dropdownClassName, !!props.dropdownClassName), _defineProperty(_popupClassName, dropdownPrefixCls + '--' + (multiple ? 'multiple' : 'single'), 1), _popupClassName);
+	    var popupClassName = (_popupClassName = {}, _defineProperty(_popupClassName, dropdownClassName, !!dropdownClassName), _defineProperty(_popupClassName, dropdownPrefixCls + '--' + (multiple ? 'multiple' : 'single'), 1), _popupClassName);
 	    var popupElement = this.getDropdownElement({
 	      menuItems: props.options,
 	      onPopupFocus: onPopupFocus,
@@ -26988,11 +27001,19 @@
 	      inputValue: inputValue,
 	      visible: visible
 	    });
+	    var hideAction = void 0;
+	    if (disabled) {
+	      hideAction = [];
+	    } else if ((0, _util.isSingleMode)(props) && !showSearch) {
+	      hideAction = ['click'];
+	    } else {
+	      hideAction = ['blur'];
+	    }
 	    return _react2.default.createElement(
 	      _rcTrigger2.default,
 	      _extends({}, props, {
-	        showAction: props.disabled ? [] : ['click'],
-	        hideAction: props.disabled ? [] : ['blur'],
+	        showAction: disabled ? [] : ['click'],
+	        hideAction: hideAction,
 	        ref: 'trigger',
 	        popupPlacement: 'bottomLeft',
 	        builtinPlacements: BUILT_IN_PLACEMENTS,
