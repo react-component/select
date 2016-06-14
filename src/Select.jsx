@@ -151,7 +151,7 @@ const Select = React.createClass({
   onInputChange(event) {
     const val = event.target.value;
     const { props } = this;
-    this.setInputValueAndFireOnSearch(val);
+    this.setInputValue(val);
     this.setState({
       open: true,
     });
@@ -261,14 +261,14 @@ const Select = React.createClass({
     } else {
       inputValue = '';
     }
-    this.setInputValueAndFireOnSearch(inputValue);
+    this.setInputValue(inputValue, false);
   },
 
   onMenuDeselect({ item, domEvent }) {
     if (domEvent.type === 'click') {
       this.removeSelected(getValuePropValue(item));
     }
-    this.setInputValueAndFireOnSearch('');
+    this.setInputValue('', false);
   },
 
   onArrowClick(e) {
@@ -333,7 +333,7 @@ const Select = React.createClass({
       }
       this.setOpenState(false, true);
       if (inputValue) {
-        this.setInputValueAndFireOnSearch('');
+        this.setInputValue('');
       }
     }
   },
@@ -472,7 +472,7 @@ const Select = React.createClass({
     };
     // clear search input value when open is false in singleMode.
     if (!open && isSingleMode(props) && props.showSearch) {
-      this.setInputValueAndFireOnSearch('');
+      this.setInputValue('');
     }
     if (!open) {
       this.maybeFocus(open, needFocus);
@@ -483,11 +483,11 @@ const Select = React.createClass({
       }
     });
   },
-  setInputValueAndFireOnSearch(inputValue) {
+  setInputValue(inputValue, fireSearch = true) {
     this.setState({
       inputValue,
     });
-    if (this.props.showSearch) {
+    if (fireSearch) {
       this.props.onSearch(inputValue);
     }
   },
