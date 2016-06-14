@@ -641,20 +641,29 @@ const Select = React.createClass({
             content.length > maxTagTextLength) {
             content = `${content.slice(0, maxTagTextLength)}...`;
           }
+          const disabled = toArray(props.children).some(child => {
+            const childValue = getValuePropValue(child);
+            return childValue === singleValue.key && child.props && child.props.disabled;
+          });
+          const choiceClassName = disabled
+            ? `${prefixCls}-selection__choice ${prefixCls}-selection__choice__disabled`
+            : `${prefixCls}-selection__choice`;
           return (
             <li
               style={UNSELECTABLE_STYLE}
               {...UNSELECTABLE_ATTRIBUTE}
               onMouseDown={preventDefaultEvent}
-              className={`${prefixCls}-selection__choice`}
+              className={choiceClassName}
               key={singleValue.key}
               title={title}
             >
               <div className={`${prefixCls}-selection__choice__content`}>{content}</div>
-            <span
-              className={`${prefixCls}-selection__choice__remove`}
-              onClick={this.removeSelected.bind(this, singleValue.key)}
-            />
+              {
+                disabled ? null : <span
+                  className={`${prefixCls}-selection__choice__remove`}
+                  onClick={this.removeSelected.bind(this, singleValue.key)}
+                />
+              }
             </li>
           );
         });
