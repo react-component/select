@@ -32,7 +32,7 @@ const SelectTrigger = React.createClass({
     visible: PropTypes.bool,
     disabled: PropTypes.bool,
     showSearch: PropTypes.bool,
-    dropdownClassName: PropTypes.bool,
+    dropdownClassName: PropTypes.string,
     multiple: PropTypes.bool,
     inputValue: PropTypes.string,
     filterOption: PropTypes.any,
