@@ -26928,7 +26928,7 @@
 	    visible: _react.PropTypes.bool,
 	    disabled: _react.PropTypes.bool,
 	    showSearch: _react.PropTypes.bool,
-	    dropdownClassName: _react.PropTypes.bool,
+	    dropdownClassName: _react.PropTypes.string,
 	    multiple: _react.PropTypes.bool,
 	    inputValue: _react.PropTypes.string,
 	    filterOption: _react.PropTypes.any,
