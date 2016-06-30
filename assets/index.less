@@ -170,7 +170,7 @@
     .@{selectPrefixCls}-search__field__mirror {
       position: absolute;
       top: -999px;
-      left: 0; 
+      left: 0;
       white-space: pre;
     }
     > i {
@@ -226,6 +226,16 @@
         .@{selectPrefixCls}-selection__choice__content {
           margin-left: -8px;
           margin-right: 8px;
+        }
+      }
+    }
+
+    .@{selectPrefixCls}-selection__choice__disabled {
+      cursor: not-allowed;
+      &:hover {
+        .@{selectPrefixCls}-selection__choice__content {
+          margin-left: 0;
+          margin-right: 0;
         }
       }
     }
@@ -359,10 +369,16 @@
         display: block;
         padding: 7px 10px;
         font-weight: normal;
-        color: #666666;
+        color: #666;
         white-space: nowrap;
 
+        &-disabled {
+          color: #ccc;
+          cursor: not-allowed;
+        }
+
         &-selected {
+          color: #666;
           background-color: #ddd;
         }
 
@@ -370,11 +386,6 @@
           background-color: #5897fb;
           color: white;
           cursor: pointer;
-        }
-
-        &-disabled {
-          color: #ccc;
-          cursor: not-allowed;
         }
 
         &-divider {
@@ -478,4 +489,5 @@
       border-width: 0 4px 5px 4px;
     }
   }
+
 }

@@ -1,6 +1,11 @@
 # History
 ----
 
+## 6.4.0 / 2016-05-26
+
+- auto expand input in ie10/11 https://github.com/react-component/select/pull/93
+- realign when value change. https://github.com/react-component/select/pull/92
+
 ## 6.3.0 / 2016-04-28
 
 - support onBlur

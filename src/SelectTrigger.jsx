@@ -3,6 +3,7 @@ import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import DropdownMenu from './DropdownMenu';
 import ReactDOM from 'react-dom';
+import { isSingleMode } from './util';
 
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
@@ -29,6 +30,9 @@ const SelectTrigger = React.createClass({
     dropdownMatchSelectWidth: PropTypes.bool,
     dropdownAlign: PropTypes.object,
     visible: PropTypes.bool,
+    disabled: PropTypes.bool,
+    showSearch: PropTypes.bool,
+    dropdownClassName: PropTypes.string,
     multiple: PropTypes.bool,
     inputValue: PropTypes.string,
     filterOption: PropTypes.any,
@@ -89,10 +93,11 @@ const SelectTrigger = React.createClass({
   },
   render() {
     const { onPopupFocus, ...props } = this.props;
-    const { multiple, visible, inputValue, dropdownAlign } = props;
+    const { multiple, visible, inputValue, dropdownAlign,
+      disabled, showSearch, dropdownClassName } = props;
     const dropdownPrefixCls = this.getDropdownPrefixCls();
     const popupClassName = {
-      [props.dropdownClassName]: !!props.dropdownClassName,
+      [dropdownClassName]: !!dropdownClassName,
       [`${dropdownPrefixCls}--${multiple ? 'multiple' : 'single'}`]: 1,
     };
     const popupElement = this.getDropdownElement({
@@ -102,9 +107,17 @@ const SelectTrigger = React.createClass({
       inputValue,
       visible,
     });
+    let hideAction;
+    if (disabled) {
+      hideAction = [];
+    } else if (isSingleMode(props) && !showSearch) {
+      hideAction = ['click'];
+    } else {
+      hideAction = ['blur'];
+    }
     return (<Trigger {...props}
-      showAction={props.disabled ? [] : ['click']}
-      hideAction={props.disabled ? [] : ['blur']}
+      showAction={disabled ? [] : ['click']}
+      hideAction={hideAction}
       ref="trigger"
       popupPlacement="bottomLeft"
       builtinPlacements={BUILT_IN_PLACEMENTS}

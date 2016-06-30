@@ -151,8 +151,8 @@ const Select = React.createClass({
   onInputChange(event) {
     const val = event.target.value;
     const { props } = this;
+    this.setInputValue(val);
     this.setState({
-      inputValue: val,
       open: true,
     });
     if (isCombobox(props)) {
@@ -160,7 +160,6 @@ const Select = React.createClass({
         key: val,
       }]);
     }
-    props.onSearch(val);
   },
 
   onDropdownVisibleChange(open) {
@@ -256,28 +255,27 @@ const Select = React.createClass({
       this.setOpenState(false, true);
     }
     this.fireChange(value);
-    this.setState({
-      inputValue: '',
-    });
+    let inputValue;
     if (isCombobox(props)) {
-      this.setState({
-        inputValue: getPropValue(item, props.optionLabelProp),
-      });
+      inputValue = getPropValue(item, props.optionLabelProp);
+    } else {
+      inputValue = '';
     }
+    this.setInputValue(inputValue, false);
   },
 
   onMenuDeselect({ item, domEvent }) {
     if (domEvent.type === 'click') {
       this.removeSelected(getValuePropValue(item));
     }
-    this.setState({
-      inputValue: '',
-    });
+    this.setInputValue('', false);
   },
 
   onArrowClick(e) {
     e.stopPropagation();
-    this.setOpenState(!this.state.open, true);
+    if (!this.props.disabled) {
+      this.setOpenState(!this.state.open, true);
+    }
   },
 
   onPlaceholderClick() {
@@ -327,18 +325,21 @@ const Select = React.createClass({
     if (props.disabled) {
       return;
     }
+    const { inputValue, value } = state;
     event.stopPropagation();
-    if (state.inputValue || state.value.length) {
-      if (this.state.value.length) {
+    if (inputValue || value.length) {
+      if (value.length) {
         this.fireChange([]);
       }
       this.setOpenState(false, true);
-      if (this.state.inputValue) {
-        this.setState({
-          inputValue: '',
-        });
+      if (inputValue) {
+        this.setInputValue('');
       }
     }
+  },
+
+  onChoiceAnimationLeave() {
+    this.refs.trigger.refs.trigger.forcePopupAlign();
   },
 
   getLabelBySingleValue(children, value) {
@@ -435,7 +436,8 @@ const Select = React.createClass({
         disabled={props.disabled}
         className={`${props.prefixCls}-search__field`}
       />
-      <span ref={this.saveInputMirrorRef}
+      <span
+        ref={this.saveInputMirrorRef}
         className={`${props.prefixCls}-search__field__mirror`}
       >
         {this.state.inputValue}
@@ -470,7 +472,7 @@ const Select = React.createClass({
     };
     // clear search input value when open is false in singleMode.
     if (!open && isSingleMode(props) && props.showSearch) {
-      nextState.inputValue = '';
+      this.setInputValue('');
     }
     if (!open) {
       this.maybeFocus(open, needFocus);
@@ -480,6 +482,14 @@ const Select = React.createClass({
         this.maybeFocus(open, needFocus);
       }
     });
+  },
+  setInputValue(inputValue, fireSearch = true) {
+    this.setState({
+      inputValue,
+    });
+    if (fireSearch) {
+      this.props.onSearch(inputValue);
+    }
   },
   clearBlurTime() {
     if (this.blurTimer) {
@@ -564,7 +574,6 @@ const Select = React.createClass({
       this.setOpenState(true);
     }
   },
-
   fireChange(value) {
     const props = this.props;
     if (!('value' in props)) {
@@ -635,20 +644,29 @@ const Select = React.createClass({
             content.length > maxTagTextLength) {
             content = `${content.slice(0, maxTagTextLength)}...`;
           }
+          const disabled = toArray(props.children).some(child => {
+            const childValue = getValuePropValue(child);
+            return childValue === singleValue.key && child.props && child.props.disabled;
+          });
+          const choiceClassName = disabled
+            ? `${prefixCls}-selection__choice ${prefixCls}-selection__choice__disabled`
+            : `${prefixCls}-selection__choice`;
           return (
             <li
               style={UNSELECTABLE_STYLE}
               {...UNSELECTABLE_ATTRIBUTE}
               onMouseDown={preventDefaultEvent}
-              className={`${prefixCls}-selection__choice`}
+              className={choiceClassName}
               key={singleValue.key}
               title={title}
             >
               <div className={`${prefixCls}-selection__choice__content`}>{content}</div>
-            <span
-              className={`${prefixCls}-selection__choice__remove`}
-              onClick={this.removeSelected.bind(this, singleValue.key)}
-            />
+              {
+                disabled ? null : <span
+                  className={`${prefixCls}-selection__choice__remove`}
+                  onClick={this.removeSelected.bind(this, singleValue.key)}
+                />
+              }
             </li>
           );
         });
@@ -662,6 +680,7 @@ const Select = React.createClass({
 
       if (isMultipleOrTags(props) && choiceTransitionName) {
         innerNode = (<Animate
+          onLeave={this.onChoiceAnimationLeave}
           component="ul"
           transitionName={choiceTransitionName}
         >
@@ -710,7 +729,7 @@ const Select = React.createClass({
       ...UNSELECTABLE_STYLE,
       display: 'none',
     };
-    if (this.state.inputValue || this.state.value.length) {
+    if (state.inputValue || state.value.length) {
       clearStyle.display = 'block';
     }
     const clear = (<span
