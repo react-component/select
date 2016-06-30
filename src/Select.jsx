@@ -612,6 +612,7 @@ const Select = React.createClass({
           <div
             key="value"
             className={`${prefixCls}-selection-selected-value`}
+            title={value[0].label}
             style={{
               display: showSelectedValue ? 'block' : 'none',
               opacity,
