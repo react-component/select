@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Simulate } from 'react-addons-test-utils';
 import Select, { Option } from 'rc-select';
-import { KeyCode } from 'rc-util';
+import KeyCode from 'rc-util/lib/KeyCode';
 
 describe('tags', function test() {
   let div;
