@@ -189,6 +189,7 @@ const Select = React.createClass({
     const state = this.state;
     const keyCode = event.keyCode;
     if (isMultipleOrTags(props) && !event.target.value && keyCode === KeyCode.BACKSPACE) {
+      event.preventDefault();
       const value = state.value.concat();
       if (value.length) {
         const popValue = value.pop();
