@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { KeyCode } from 'rc-util';
+import KeyCode from 'rc-util/lib/KeyCode';
 import classnames from 'classnames';
 import OptGroup from './OptGroup';
 import Animate from 'rc-animate';
