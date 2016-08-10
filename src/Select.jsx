@@ -309,7 +309,7 @@ const Select = React.createClass({
           const firstOption = findFirstMenuItem(options);
           if (firstOption) {
             value = [{
-              key: firstOption.key,
+              key: firstOption.props.value || firstOption.key,
               label: this.getLabelFromOption(firstOption),
             }];
             this.fireChange(value);
