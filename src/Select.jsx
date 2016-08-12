@@ -26,6 +26,18 @@ function saveRef(name, component) {
   this[name] = component;
 }
 
+let valueObjectShape;
+
+if (PropTypes) {
+  valueObjectShape = PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.shape({
+      key: PropTypes.string,
+      label: PropTypes.node,
+    }),
+  ]);
+}
+
 const Select = React.createClass({
   propTypes: {
     defaultActiveFirstOption: PropTypes.bool,
@@ -50,8 +62,14 @@ const Select = React.createClass({
     placeholder: PropTypes.any,
     onDeselect: PropTypes.func,
     labelInValue: PropTypes.bool,
-    value: PropTypes.any,
-    defaultValue: PropTypes.any,
+    value: PropTypes.oneOfType([
+      valueObjectShape,
+      PropTypes.arrayOf(valueObjectShape),
+    ]),
+    defaultValue: PropTypes.oneOfType([
+      valueObjectShape,
+      PropTypes.arrayOf(valueObjectShape),
+    ]),
     dropdownStyle: PropTypes.object,
     maxTagTextLength: PropTypes.number,
   },
@@ -302,8 +320,9 @@ const Select = React.createClass({
       this.updateFocusClassName();
       const props = this.props;
       let { value } = this.state;
+      const { inputValue } = this.state;
       if (isSingleMode(props) && props.showSearch &&
-        this.state.inputValue && props.defaultActiveFirstOption) {
+        inputValue && props.defaultActiveFirstOption) {
         const options = this._options || [];
         if (options.length) {
           const firstOption = findFirstMenuItem(options);
@@ -315,6 +334,8 @@ const Select = React.createClass({
             this.fireChange(value);
           }
         }
+      } else if (isMultipleOrTags(props) && inputValue) {
+        this.state.inputValue = this.getInputDOMNode().value = '';
       }
       props.onBlur(this.getVLForOnChange(value));
     }, 10);
