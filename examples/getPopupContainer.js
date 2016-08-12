@@ -3,12 +3,12 @@ webpackJsonp([3],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(251);
+	module.exports = __webpack_require__(335);
 
 
 /***/ },
 
-/***/ 251:
+/***/ 335:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17,21 +17,21 @@ webpackJsonp([3],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(39);
+	var _reactDom = __webpack_require__(36);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _rcSelect = __webpack_require__(169);
+	var _rcSelect = __webpack_require__(176);
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(240);
+	__webpack_require__(324);
 	
-	var _rcDialog = __webpack_require__(252);
+	var _rcDialog = __webpack_require__(336);
 	
 	var _rcDialog2 = _interopRequireDefault(_rcDialog);
 	
-	__webpack_require__(256);
+	__webpack_require__(340);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -119,245 +119,144 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 252:
+/***/ 336:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(253);
+	module.exports = __webpack_require__(337);
 
 /***/ },
 
-/***/ 253:
+/***/ 337:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	var _extends2 = __webpack_require__(198);
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	var _extends3 = _interopRequireDefault(_extends2);
 	
 	var _react = __webpack_require__(2);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(39);
-	
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-	
-	var _Dialog = __webpack_require__(254);
+	var _Dialog = __webpack_require__(338);
 	
 	var _Dialog2 = _interopRequireDefault(_Dialog);
 	
-	function noop() {}
+	var _getContainerRenderMixin = __webpack_require__(319);
 	
-	function copy(obj, fields) {
-	  var ret = {};
-	  fields.forEach(function (f) {
-	    if (obj[f] !== undefined) {
-	      ret[f] = obj[f];
-	    }
-	  });
-	  return ret;
-	}
+	var _getContainerRenderMixin2 = _interopRequireDefault(_getContainerRenderMixin);
 	
-	var DialogWrap = (function (_React$Component) {
-	  _inherits(DialogWrap, _React$Component);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
-	  function DialogWrap(props) {
-	    var _this = this;
+	var DialogWrap = _react2["default"].createClass({
+	  displayName: 'DialogWrap',
 	
-	    _classCallCheck(this, DialogWrap);
-	
-	    _get(Object.getPrototypeOf(DialogWrap.prototype), 'constructor', this).call(this, props);
-	    this.state = {
-	      visible: props.visible
-	    };
-	    ['onClose', 'cleanDialogContainer'].forEach(function (m) {
-	      _this[m] = _this[m].bind(_this);
-	    });
-	  }
-	
-	  _createClass(DialogWrap, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      this.componentDidUpdate();
-	    }
-	  }, {
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(props) {
-	      if ('visible' in props) {
-	        this.setState({
-	          visible: props.visible
-	        });
-	      }
-	    }
-	  }, {
-	    key: 'shouldComponentUpdate',
-	    value: function shouldComponentUpdate(nextProps, nextState) {
-	      return !!(this.state.visible || nextState.visible);
-	    }
-	  }, {
-	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate() {
-	      if (this.dialogRendered) {
-	        this.dialogInstance = _reactDom2['default'].unstable_renderSubtreeIntoContainer(this, this.getDialogElement(), this.getDialogContainer());
-	      }
-	    }
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      if (this.dialogContainer) {
-	        if (this.state.visible) {
-	          _reactDom2['default'].unstable_renderSubtreeIntoContainer(this, this.getDialogElement({
-	            onAfterClose: this.cleanDialogContainer,
-	            onClose: noop,
-	            visible: false
-	          }), this.dialogContainer);
-	        } else {
-	          this.cleanDialogContainer();
-	        }
-	      }
-	    }
-	  }, {
-	    key: 'onClose',
-	    value: function onClose(e) {
-	      this.props.onClose(e);
-	    }
-	  }, {
-	    key: 'getDialogContainer',
-	    value: function getDialogContainer() {
-	      if (!this.dialogContainer) {
-	        this.dialogContainer = document.createElement('div');
-	        this.dialogContainer.className = this.props.prefixCls + '-container';
-	        document.body.appendChild(this.dialogContainer);
-	      }
-	      return this.dialogContainer;
-	    }
-	  }, {
-	    key: 'getDialogElement',
-	    value: function getDialogElement(extra) {
-	      var props = this.props;
-	      var dialogProps = copy(props, ['className', 'closable', 'maskClosable', 'align', 'title', 'footer', 'mask', 'animation', 'transitionName', 'maskAnimation', 'maskTransitionName', 'mousePosition', 'prefixCls', 'style', 'width', 'height', 'zIndex', 'bodyStyle']);
-	      dialogProps = _extends({}, dialogProps, {
-	        onClose: this.onClose,
-	        visible: this.state.visible
-	      }, extra);
-	      return _react2['default'].createElement(
-	        _Dialog2['default'],
-	        _extends({}, dialogProps, { key: 'dialog' }),
-	        props.children
-	      );
-	    }
-	  }, {
-	    key: 'getElement',
-	    value: function getElement(part) {
-	      return this.dialogInstance.getElement(part);
-	    }
-	  }, {
-	    key: 'cleanDialogContainer',
-	    value: function cleanDialogContainer() {
-	      _reactDom2['default'].unmountComponentAtNode(this.getDialogContainer());
-	      document.body.removeChild(this.dialogContainer);
-	      this.dialogContainer = null;
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      this.dialogRendered = this.dialogRendered || this.state.visible;
-	      return null;
-	    }
-	  }]);
-	
-	  return DialogWrap;
-	})(_react2['default'].Component);
-	
-	DialogWrap.defaultProps = {
-	  className: '',
-	  align: {
-	    points: ['tc', 'tc'],
-	    offset: [0, 100]
+	  propTypes: {
+	    visible: _react.PropTypes.bool
 	  },
-	  mask: true,
-	  closable: true,
-	  maskClosable: true,
-	  prefixCls: 'rc-dialog',
-	  onClose: noop
-	};
+	  mixins: [(0, _getContainerRenderMixin2["default"])({
+	    isVisible: function isVisible(instance) {
+	      return instance.props.visible;
+	    },
 	
-	DialogWrap.propTypes = {
-	  className: _react2['default'].PropTypes.string,
-	  align: _react2['default'].PropTypes.shape({
-	    align: _react2['default'].PropTypes.array,
-	    offset: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.number)
-	  }),
-	  mask: _react2['default'].PropTypes.bool,
-	  closable: _react2['default'].PropTypes.bool,
-	  maskClosable: _react2['default'].PropTypes.bool,
-	  prefixCls: _react2['default'].PropTypes.string,
-	  visible: _react2['default'].PropTypes.bool,
-	  onClose: _react2['default'].PropTypes.func
-	};
+	    autoDestroy: false,
+	    getComponent: function getComponent(instance, extra) {
+	      return _react2["default"].createElement(_Dialog2["default"], (0, _extends3["default"])({}, instance.props, extra, {
+	        key: 'dialog'
+	      }));
+	    }
+	  })],
 	
-	exports['default'] = DialogWrap;
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      visible: false
+	    };
+	  },
+	  shouldComponentUpdate: function shouldComponentUpdate(_ref) {
+	    var visible = _ref.visible;
+	
+	    return !!(this.props.visible || visible);
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    if (this.props.visible) {
+	      this.renderComponent({
+	        onAfterClose: this.removeContainer,
+	        onClose: function onClose() {},
+	
+	        visible: false
+	      });
+	    } else {
+	      this.removeContainer();
+	    }
+	  },
+	  getElement: function getElement(part) {
+	    return this._component.getElement(part);
+	  },
+	  render: function render() {
+	    return null;
+	  }
+	});
+	
+	exports["default"] = DialogWrap;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 254:
+/***/ 338:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	var _extends2 = __webpack_require__(198);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	var _extends3 = _interopRequireDefault(_extends2);
 	
 	var _react = __webpack_require__(2);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(39);
+	var _reactDom = __webpack_require__(36);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _rcAlign = __webpack_require__(222);
+	var _KeyCode = __webpack_require__(221);
 	
-	var _rcAlign2 = _interopRequireDefault(_rcAlign);
+	var _KeyCode2 = _interopRequireDefault(_KeyCode);
 	
-	var _rcUtilLibKeyCode = __webpack_require__(172);
-	
-	var _rcUtilLibKeyCode2 = _interopRequireDefault(_rcUtilLibKeyCode);
-	
-	var _rcAnimate = __webpack_require__(175);
+	var _rcAnimate = __webpack_require__(269);
 	
 	var _rcAnimate2 = _interopRequireDefault(_rcAnimate);
 	
-	var _DOMWrap = __webpack_require__(255);
+	var _LazyRenderBox = __webpack_require__(339);
 	
-	var _DOMWrap2 = _interopRequireDefault(_DOMWrap);
+	var _LazyRenderBox2 = _interopRequireDefault(_LazyRenderBox);
 	
-	var _classnames = __webpack_require__(173);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
-	var _classnames2 = _interopRequireDefault(_classnames);
+	var uuid = 0;
+	var openCount = 0;
+	
+	// Measure scrollbar width for padding body during modal show/hide
+	var scrollbarMeasure = {
+	  position: 'absolute',
+	  top: '-9999px',
+	  width: '50px',
+	  height: '50px',
+	  overflow: 'scroll'
+	};
+	
+	/* eslint react/no-is-mounted:0 */
 	
 	function noop() {}
 	
@@ -395,36 +294,62 @@ webpackJsonp([3],{
 	  return pos;
 	}
 	
-	var Dialog = _react2['default'].createClass({
+	var Dialog = _react2["default"].createClass({
 	  displayName: 'Dialog',
 	
 	  propTypes: {
+	    className: _react.PropTypes.string,
+	    keyboard: _react.PropTypes.bool,
+	    style: _react.PropTypes.object,
+	    mask: _react.PropTypes.bool,
+	    children: _react.PropTypes.any,
 	    onAfterClose: _react.PropTypes.func,
 	    onClose: _react.PropTypes.func,
 	    closable: _react.PropTypes.bool,
 	    maskClosable: _react.PropTypes.bool,
 	    visible: _react.PropTypes.bool,
-	    mousePosition: _react.PropTypes.object
+	    mousePosition: _react.PropTypes.object,
+	    wrapStyle: _react.PropTypes.object,
+	    maskStyle: _react.PropTypes.object,
+	    prefixCls: _react.PropTypes.string,
+	    wrapClassName: _react.PropTypes.string
 	  },
 	
 	  getDefaultProps: function getDefaultProps() {
 	    return {
 	      onAfterClose: noop,
+	      className: '',
+	      mask: true,
+	      visible: false,
+	      keyboard: true,
+	      closable: true,
+	      maskClosable: true,
+	      prefixCls: 'rc-dialog',
 	      onClose: noop
 	    };
 	  },
-	
+	  componentWillMount: function componentWillMount() {
+	    this.titleId = 'rcDialogTitle' + uuid++;
+	  },
 	  componentDidMount: function componentDidMount() {
 	    this.componentDidUpdate({});
 	  },
-	
 	  componentDidUpdate: function componentDidUpdate(prevProps) {
 	    var props = this.props;
+	    var mousePosition = this.props.mousePosition;
 	    if (props.visible) {
 	      // first show
 	      if (!prevProps.visible) {
 	        this.lastOutSideFocusNode = document.activeElement;
-	        _reactDom2['default'].findDOMNode(this.refs.dialog).focus();
+	        this.addScrollingEffect();
+	        this.refs.wrap.focus();
+	        var dialogNode = _reactDom2["default"].findDOMNode(this.refs.dialog);
+	        if (mousePosition) {
+	          var elOffset = offset(dialogNode);
+	          setTransformOrigin(dialogNode, mousePosition.x - elOffset.left + 'px ' + (mousePosition.y - elOffset.top) + 'px');
+	        } else {
+	          setTransformOrigin(dialogNode, '');
+	        }
 	      }
 	    } else if (prevProps.visible) {
 	      if (props.mask && this.lastOutSideFocusNode) {
@@ -437,30 +362,32 @@ webpackJsonp([3],{
 	      }
 	    }
 	  },
-	
 	  onAnimateLeave: function onAnimateLeave() {
+	    // need demo?
+	    // https://github.com/react-component/dialog/pull/28
+	    if (this.refs.wrap) {
+	      this.refs.wrap.style.display = 'none';
+	    }
+	    this.removeScrollingEffect();
 	    this.props.onAfterClose();
 	  },
-	
 	  onMaskClick: function onMaskClick(e) {
-	    if (this.props.closable && this.props.maskClosable) {
+	    if (e.target === e.currentTarget && this.props.closable && this.props.maskClosable) {
 	      this.close(e);
 	    }
-	    _reactDom2['default'].findDOMNode(this.refs.dialog).focus();
 	  },
-	
 	  onKeyDown: function onKeyDown(e) {
 	    var props = this.props;
-	    if (props.closable) {
-	      if (e.keyCode === _rcUtilLibKeyCode2['default'].ESC) {
+	    if (props.closable && props.keyboard) {
+	      if (e.keyCode === _KeyCode2["default"].ESC) {
 	        this.close(e);
 	      }
 	    }
 	    // keep focus inside dialog
 	    if (props.visible) {
-	      if (e.keyCode === _rcUtilLibKeyCode2['default'].TAB) {
+	      if (e.keyCode === _KeyCode2["default"].TAB) {
 	        var activeElement = document.activeElement;
-	        var dialogRoot = _reactDom2['default'].findDOMNode(this.refs.dialog);
+	        var dialogRoot = this.refs.wrap;
 	        var sentinel = this.refs.sentinel;
 	        if (e.shiftKey) {
 	          if (activeElement === dialogRoot) {
@@ -472,19 +399,6 @@ webpackJsonp([3],{
 	      }
 	    }
 	  },
-	
-	  onAlign: function onAlign(dialogNode) {
-	    var mousePosition = this.props.mousePosition;
-	    if (this.props.visible) {
-	      if (mousePosition) {
-	        var elOffset = offset(dialogNode);
-	        setTransformOrigin(dialogNode, mousePosition.x - elOffset.left + 'px ' + (mousePosition.y - elOffset.top) + 'px');
-	      } else {
-	        setTransformOrigin(dialogNode, '');
-	      }
-	    }
-	  },
-	
 	  getDialogElement: function getDialogElement() {
 	    var props = this.props;
 	    var closable = props.closable;
@@ -496,128 +410,126 @@ webpackJsonp([3],{
 	    if (props.height !== undefined) {
 	      dest.height = props.height;
 	    }
-	    if (props.zIndex !== undefined) {
-	      dest.zIndex = props.zIndex;
-	    }
 	
-	    var footer = undefined;
+	    var footer = void 0;
 	    if (props.footer) {
-	      footer = _react2['default'].createElement(
+	      footer = _react2["default"].createElement(
 	        'div',
 	        { className: prefixCls + '-footer', ref: 'footer' },
 	        props.footer
 	      );
 	    }
 	
-	    var header = undefined;
+	    var header = void 0;
 	    if (props.title) {
-	      header = _react2['default'].createElement(
+	      header = _react2["default"].createElement(
 	        'div',
 	        { className: prefixCls + '-header', ref: 'header' },
-	        _react2['default'].createElement(
+	        _react2["default"].createElement(
 	          'div',
-	          { className: prefixCls + '-title' },
+	          { className: prefixCls + '-title', id: this.titleId },
 	          props.title
 	        )
 	      );
 	    }
 	
-	    var closer = undefined;
+	    var closer = void 0;
 	    if (closable) {
-	      closer = _react2['default'].createElement(
-	        'a',
-	        { tabIndex: '0', onClick: this.close, className: prefixCls + '-close' },
-	        _react2['default'].createElement('span', { className: prefixCls + '-close-x' })
+	      closer = _react2["default"].createElement(
+	        'button',
+	        {
+	          onClick: this.close,
+	          'aria-label': 'Close',
+	          className: prefixCls + '-close'
+	        },
+	        _react2["default"].createElement('span', { className: prefixCls + '-close-x' })
 	      );
 	    }
 	
-	    var style = _extends({}, props.style, dest);
-	    var dialogProps = {
-	      className: [props.prefixCls, props.className].join(' '),
-	      tabIndex: '0',
-	      role: 'dialog',
-	      ref: 'dialog',
-	      style: style,
-	      onKeyDown: this.onKeyDown
-	    };
+	    var style = (0, _extends3["default"])({}, props.style, dest);
 	    var transitionName = this.getTransitionName();
-	    var dialogElement = _react2['default'].createElement(
-	      _DOMWrap2['default'],
-	      _extends({}, dialogProps, {
-	        hiddenClassName: prefixCls + '-hidden' }),
-	      _react2['default'].createElement(
+	    var dialogElement = _react2["default"].createElement(
+	      _LazyRenderBox2["default"],
+	      {
+	        role: 'document',
+	        ref: 'dialog',
+	        style: style,
+	        className: prefixCls + ' ' + (props.className || ''),
+	        visible: props.visible
+	      },
+	      _react2["default"].createElement(
 	        'div',
 	        { className: prefixCls + '-content' },
 	        closer,
 	        header,
-	        _react2['default'].createElement(
+	        _react2["default"].createElement(
 	          'div',
 	          { className: prefixCls + '-body', style: props.bodyStyle, ref: 'body' },
 	          props.children
 	        ),
 	        footer
 	      ),
-	      _react2['default'].createElement(
+	      _react2["default"].createElement(
 	        'div',
 	        { tabIndex: '0', ref: 'sentinel', style: { width: 0, height: 0, overflow: 'hidden' } },
 	        'sentinel'
 	      )
 	    );
-	    // add key for align to keep animate children stable
-	    return _react2['default'].createElement(
-	      _rcAnimate2['default'],
-	      { key: 'dialog',
-	        showProp: 'dialogVisible',
+	    return _react2["default"].createElement(
+	      _rcAnimate2["default"],
+	      {
+	        key: 'dialog',
+	        showProp: 'visible',
 	        onLeave: this.onAnimateLeave,
 	        transitionName: transitionName,
 	        component: '',
-	        transitionAppear: true },
-	      _react2['default'].createElement(
-	        _rcAlign2['default'],
-	        { align: props.align,
-	          key: 'dialog',
-	          onAlign: this.onAlign,
-	          dialogVisible: props.visible,
-	          childrenProps: {
-	            visible: 'dialogVisible'
-	          },
-	          monitorBufferTime: 80,
-	          monitorWindowResize: true,
-	          disabled: !props.visible },
-	        dialogElement
-	      )
+	        transitionAppear: true
+	      },
+	      dialogElement
 	    );
 	  },
-	
+	  getZIndexStyle: function getZIndexStyle() {
+	    var style = {};
+	    var props = this.props;
+	    if (props.zIndex !== undefined) {
+	      style.zIndex = props.zIndex;
+	    }
+	    return style;
+	  },
+	  getWrapStyle: function getWrapStyle() {
+	    return (0, _extends3["default"])({}, this.getZIndexStyle(), this.props.wrapStyle);
+	  },
+	  getMaskStyle: function getMaskStyle() {
+	    return (0, _extends3["default"])({}, this.getZIndexStyle(), this.props.maskStyle);
+	  },
 	  getMaskElement: function getMaskElement() {
 	    var props = this.props;
-	    var maskProps = {
-	      onClick: this.onMaskClick
-	    };
-	
-	    if (props.zIndex) {
-	      maskProps.style = { zIndex: props.zIndex };
-	    }
-	    var maskElement = undefined;
+	    var maskElement = void 0;
 	    if (props.mask) {
 	      var maskTransition = this.getMaskTransitionName();
-	      maskElement = _react2['default'].createElement(_DOMWrap2['default'], _extends({}, maskProps, { key: 'mask',
+	      maskElement = _react2["default"].createElement(_LazyRenderBox2["default"], {
+	        style: this.getMaskStyle(),
+	        key: 'mask',
 	        className: props.prefixCls + '-mask',
-	        visible: props.visible,
-	        hiddenClassName: props.prefixCls + '-mask-hidden' }));
+	        hiddenClassName: props.prefixCls + '-mask-hidden',
+	        visible: props.visible
+	      });
 	      if (maskTransition) {
-	        maskElement = _react2['default'].createElement(
-	          _rcAnimate2['default'],
-	          { key: 'mask', showProp: 'visible',
-	            transitionAppear: true, component: '',
-	            transitionName: maskTransition },
+	        maskElement = _react2["default"].createElement(
+	          _rcAnimate2["default"],
+	          {
+	            key: 'mask',
+	            showProp: 'visible',
+	            transitionAppear: true,
+	            component: '',
+	            transitionName: maskTransition
+	          },
 	          maskElement
 	        );
 	      }
 	    }
 	    return maskElement;
 	  },
-	
 	  getMaskTransitionName: function getMaskTransitionName() {
 	    var props = this.props;
 	    var transitionName = props.maskTransitionName;
@@ -627,7 +539,6 @@ webpackJsonp([3],{
 	    }
 	    return transitionName;
 	  },
-	
 	  getTransitionName: function getTransitionName() {
 	    var props = this.props;
 	    var transitionName = props.transitionName;
@@ -637,85 +548,165 @@ webpackJsonp([3],{
 	    }
 	    return transitionName;
 	  },
-	
 	  getElement: function getElement(part) {
 	    return this.refs[part];
 	  },
-	
+	  setScrollbar: function setScrollbar() {
+	    if (this.bodyIsOverflowing && this.scrollbarWidth) {
+	      document.body.style.paddingRight = this.scrollbarWidth + 'px';
+	    }
+	  },
+	  addScrollingEffect: function addScrollingEffect() {
+	    openCount++;
+	    if (openCount !== 1) {
+	      return;
+	    }
+	    this.checkScrollbar();
+	    this.setScrollbar();
+	    document.body.style.overflow = 'hidden';
+	    // this.adjustDialog();
+	  },
+	  removeScrollingEffect: function removeScrollingEffect() {
+	    openCount--;
+	    if (openCount !== 0) {
+	      return;
+	    }
+	    document.body.style.overflow = '';
+	    this.resetScrollbar();
+	    // this.resetAdjustments();
+	  },
 	  close: function close(e) {
 	    this.props.onClose(e);
 	  },
-	
+	  checkScrollbar: function checkScrollbar() {
+	    var fullWindowWidth = window.innerWidth;
+	    if (!fullWindowWidth) {
+	      // workaround for missing window.innerWidth in IE8
+	      var documentElementRect = document.documentElement.getBoundingClientRect();
+	      fullWindowWidth = documentElementRect.right - Math.abs(documentElementRect.left);
+	    }
+	    this.bodyIsOverflowing = document.body.clientWidth < fullWindowWidth;
+	    if (this.bodyIsOverflowing) {
+	      this.scrollbarWidth = this.measureScrollbar();
+	    }
+	  },
+	  resetScrollbar: function resetScrollbar() {
+	    document.body.style.paddingRight = '';
+	  },
+	  measureScrollbar: function measureScrollbar() {
+	    if (this.scrollbarWidth !== undefined) {
+	      return this.scrollbarWidth;
+	    }
+	    var scrollDiv = document.createElement('div');
+	    for (var scrollProp in scrollbarMeasure) {
+	      if (scrollbarMeasure.hasOwnProperty(scrollProp)) {
+	        scrollDiv.style[scrollProp] = scrollbarMeasure[scrollProp];
+	      }
+	    }
+	    document.body.appendChild(scrollDiv);
+	    var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+	    document.body.removeChild(scrollDiv);
+	    this.scrollbarWidth = scrollbarWidth;
+	    return scrollbarWidth;
+	  },
+	  adjustDialog: function adjustDialog() {
+	    if (this.refs.wrap && this.scrollbarWidth) {
+	      var modalIsOverflowing = this.refs.wrap.scrollHeight > document.documentElement.clientHeight;
+	      this.refs.wrap.style.paddingLeft = (!this.bodyIsOverflowing && modalIsOverflowing ? this.scrollbarWidth : '') + 'px';
+	      this.refs.wrap.style.paddingRight = (this.bodyIsOverflowing && !modalIsOverflowing ? this.scrollbarWidth : '') + 'px';
+	    }
+	  },
+	  resetAdjustments: function resetAdjustments() {
+	    if (this.refs.wrap) {
+	      this.refs.wrap.style.paddingLeft = this.refs.wrap.style.paddingLeft = '';
+	    }
+	  },
 	  render: function render() {
 	    var props = this.props;
 	    var prefixCls = props.prefixCls;
-	    var className = _defineProperty({}, prefixCls + '-wrap', 1);
-	
-	    return _react2['default'].createElement(
+	    var style = this.getWrapStyle();
+	    // clear hide display
+	    // and only set display after async anim, not here for hide
+	    if (props.visible) {
+	      style.display = null;
+	    }
+	    return _react2["default"].createElement(
 	      'div',
-	      { className: (0, _classnames2['default'])(className), ref: 'root' },
-	      [this.getMaskElement(), this.getDialogElement()]
+	      null,
+	      this.getMaskElement(),
+	      _react2["default"].createElement(
+	        'div',
+	        {
+	          tabIndex: '-1',
+	          onKeyDown: this.onKeyDown,
+	          className: prefixCls + '-wrap ' + (props.wrapClassName || ''),
+	          ref: 'wrap',
+	          onClick: this.onMaskClick,
+	          role: 'dialog',
+	          'aria-labelledby': props.title ? this.titleId : null,
+	          style: style
+	        },
+	        this.getDialogElement()
+	      )
 	    );
 	  }
 	});
 	
-	exports['default'] = Dialog;
+	exports["default"] = Dialog;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 255:
+/***/ 339:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	var _extends2 = __webpack_require__(198);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	var _extends3 = _interopRequireDefault(_extends2);
 	
 	var _react = __webpack_require__(2);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var DOMWrap = _react2['default'].createClass({
-	  displayName: 'DOMWrap',
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	var LazyRenderBox = _react2["default"].createClass({
+	  displayName: 'LazyRenderBox',
 	
 	  propTypes: {
-	    tag: _react2['default'].PropTypes.string
+	    className: _react.PropTypes.string,
+	    visible: _react.PropTypes.bool,
+	    hiddenClassName: _react.PropTypes.string
 	  },
-	
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      tag: 'div'
-	    };
+	  shouldComponentUpdate: function shouldComponentUpdate(nextProps) {
+	    return nextProps.hiddenClassName || nextProps.visible;
 	  },
-	
 	  render: function render() {
-	    var props = _extends({}, this.props);
-	    if (!props.visible) {
-	      props.className = props.className || '';
-	      props.className += ' ' + props.hiddenClassName;
+	    var className = this.props.className;
+	    if (this.props.hiddenClassName && !this.props.visible) {
+	      className += ' ' + this.props.hiddenClassName;
 	    }
-	    var Tag = props.tag;
-	    return _react2['default'].createElement(Tag, props);
+	    var props = (0, _extends3["default"])({}, this.props);
+	    delete props.hiddenClassName;
+	    delete props.visible;
+	    props.className = className;
+	    return _react2["default"].createElement('div', props);
 	  }
 	});
 	
-	exports['default'] = DOMWrap;
+	exports["default"] = LazyRenderBox;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 256:
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ }
+/***/ 340:
+324
 
 });
 //# sourceMappingURL=getPopupContainer.js.map
