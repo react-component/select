@@ -57,6 +57,7 @@ const Select = React.createClass({
     choiceTransitionName: PropTypes.string,
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
+    onFocus: PropTypes.func,
     onSelect: PropTypes.func,
     onSearch: PropTypes.func,
     placeholder: PropTypes.any,
@@ -89,6 +90,7 @@ const Select = React.createClass({
       defaultValue: [],
       onChange: noop,
       onBlur: noop,
+      onFocus: noop,
       onSelect: noop,
       onSearch: noop,
       onDeselect: noop,
@@ -307,6 +309,7 @@ const Select = React.createClass({
     this.clearBlurTime();
     this._focused = true;
     this.updateFocusClassName();
+    this.props.onFocus();
   },
 
   onPopupFocus() {
