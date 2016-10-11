@@ -72,6 +72,7 @@ const Select = React.createClass({
     ]),
     dropdownStyle: PropTypes.object,
     maxTagTextLength: PropTypes.number,
+    children: PropTypes.node,
   },
 
   mixins: [FilterMixin],
@@ -211,6 +212,9 @@ const Select = React.createClass({
       const value = state.value.concat();
       if (value.length) {
         const popValue = value.pop();
+        if (this.getDisabledFromValue(popValue)) {
+          return;
+        }
         props.onDeselect(props.labelInValue ? popValue : popValue.key);
         this.fireChange(value);
       }
@@ -483,6 +487,13 @@ const Select = React.createClass({
     return this.refs.trigger.getInnerMenu();
   },
 
+  getDisabledFromValue(value) {
+    return toArray(this.props.children).some(child => {
+      const childValue = getValuePropValue(child);
+      return childValue === value.key && child.props && child.props.disabled;
+    });
+  },
+
   setOpenState(open, needFocus) {
     const { props, state } = this;
     if (state.open === open) {
@@ -596,6 +607,7 @@ const Select = React.createClass({
       this.setOpenState(true);
     }
   },
+
   fireChange(value) {
     const props = this.props;
     if (!('value' in props)) {
@@ -667,10 +679,7 @@ const Select = React.createClass({
             content.length > maxTagTextLength) {
             content = `${content.slice(0, maxTagTextLength)}...`;
           }
-          const disabled = toArray(props.children).some(child => {
-            const childValue = getValuePropValue(child);
-            return childValue === singleValue.key && child.props && child.props.disabled;
-          });
+          const disabled = this.getDisabledFromValue(singleValue);
           const choiceClassName = disabled
             ? `${prefixCls}-selection__choice ${prefixCls}-selection__choice__disabled`
             : `${prefixCls}-selection__choice`;
