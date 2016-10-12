@@ -127,13 +127,16 @@ const DropdownMenu = React.createClass({
   },
 
   render() {
-    return (<div
-      style={{ overflow: 'auto' }}
-      onFocus={this.props.onPopupFocus}
-      onMouseDown={preventDefaultEvent}
-    >
-      {this.renderMenu()}
-    </div>);
+    const renderMenu = this.renderMenu();
+    return renderMenu ? (
+      <div
+        style={{ overflow: 'auto' }}
+        onFocus={this.props.onPopupFocus}
+        onMouseDown={preventDefaultEvent}
+      >
+        {renderMenu}
+      </div>
+    ) : null;
   },
 });
 
