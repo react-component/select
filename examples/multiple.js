@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
 
 const children = [];
 for (let i = 10; i < 36; i++) {
-  children.push(<Option key={i.toString(36) + i}>中文{i}</Option>);
+  children.push(<Option key={i.toString(36) + i} disabled={i === 10}>中文{i}</Option>);
 }
 
 function onSelect() {
@@ -22,7 +22,7 @@ const Test = React.createClass({
   getInitialState() {
     return {
       useAnim: 0,
-      value: [],
+      value: ['a10'],
     };
   },
   onChange(value) {
@@ -48,7 +48,7 @@ const Test = React.createClass({
         <p>
           <label>
             anim
-            <input checked={this.state.useAnim} type="checkbox" onChange={this.useAnim}/>
+            <input checked={this.state.useAnim} type="checkbox" onChange={this.useAnim} />
           </label>
         </p>
 

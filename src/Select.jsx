@@ -43,6 +43,7 @@ const Select = React.createClass({
     defaultActiveFirstOption: PropTypes.bool,
     multiple: PropTypes.bool,
     filterOption: PropTypes.any,
+    children: PropTypes.any,
     showSearch: PropTypes.bool,
     disabled: PropTypes.bool,
     allowClear: PropTypes.bool,
@@ -208,11 +209,9 @@ const Select = React.createClass({
     const keyCode = event.keyCode;
     if (isMultipleOrTags(props) && !event.target.value && keyCode === KeyCode.BACKSPACE) {
       event.preventDefault();
-      const value = state.value.concat();
+      const { value } = state;
       if (value.length) {
-        const popValue = value.pop();
-        props.onDeselect(props.labelInValue ? popValue : popValue.key);
-        this.fireChange(value);
+        this.removeSelected(value[value.length - 1].key);
       }
       return;
     }
@@ -565,7 +564,7 @@ const Select = React.createClass({
 
   removeSelected(selectedKey) {
     const props = this.props;
-    if (props.disabled) {
+    if (props.disabled || this.isChildDisabled(selectedKey)) {
       return;
     }
     let label;
@@ -604,6 +603,13 @@ const Select = React.createClass({
       });
     }
     props.onChange(this.getVLForOnChange(value));
+  },
+
+  isChildDisabled(key) {
+    return toArray(this.props.children).some(child => {
+      const childValue = getValuePropValue(child);
+      return childValue === key && child.props && child.props.disabled;
+    });
   },
 
   renderTopControlNode() {
@@ -667,10 +673,7 @@ const Select = React.createClass({
             content.length > maxTagTextLength) {
             content = `${content.slice(0, maxTagTextLength)}...`;
           }
-          const disabled = toArray(props.children).some(child => {
-            const childValue = getValuePropValue(child);
-            return childValue === singleValue.key && child.props && child.props.disabled;
-          });
+          const disabled = this.isChildDisabled(singleValue.key);
           const choiceClassName = disabled
             ? `${prefixCls}-selection__choice ${prefixCls}-selection__choice__disabled`
             : `${prefixCls}-selection__choice`;
@@ -818,7 +821,7 @@ const Select = React.createClass({
                 onMouseDown={preventDefaultEvent}
                 onClick={this.onArrowClick}
               >
-              <b/>
+              <b />
             </span>)}
           </div>
         </div>
