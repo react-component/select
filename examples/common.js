@@ -21666,6 +21666,7 @@
 	    defaultActiveFirstOption: _react.PropTypes.bool,
 	    multiple: _react.PropTypes.bool,
 	    filterOption: _react.PropTypes.any,
+	    children: _react.PropTypes.any,
 	    showSearch: _react.PropTypes.bool,
 	    disabled: _react.PropTypes.bool,
 	    allowClear: _react.PropTypes.bool,
@@ -21822,11 +21823,10 @@
 	    var keyCode = event.keyCode;
 	    if ((0, _util.isMultipleOrTags)(props) && !event.target.value && keyCode === _KeyCode2.default.BACKSPACE) {
 	      event.preventDefault();
-	      var value = state.value.concat();
+	      var value = state.value;
+	
 	      if (value.length) {
-	        var popValue = value.pop();
-	        props.onDeselect(props.labelInValue ? popValue : popValue.key);
-	        this.fireChange(value);
+	        this.removeSelected(value[value.length - 1].key);
 	      }
 	      return;
 	    }
@@ -22186,7 +22186,7 @@
 	  },
 	  removeSelected: function removeSelected(selectedKey) {
 	    var props = this.props;
-	    if (props.disabled) {
+	    if (props.disabled || this.isChildDisabled(selectedKey)) {
 	      return;
 	    }
 	    var label = void 0;
@@ -22224,6 +22224,12 @@
 	      });
 	    }
 	    props.onChange(this.getVLForOnChange(value));
+	  },
+	  isChildDisabled: function isChildDisabled(key) {
+	    return (0, _util.toArray)(this.props.children).some(function (child) {
+	      var childValue = (0, _util.getValuePropValue)(child);
+	      return childValue === key && child.props && child.props.disabled;
+	    });
 	  },
 	  renderTopControlNode: function renderTopControlNode() {
 	    var _this5 = this;
@@ -22297,10 +22303,7 @@
 	          if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
 	            content = content.slice(0, maxTagTextLength) + '...';
 	          }
-	          var disabled = (0, _util.toArray)(props.children).some(function (child) {
-	            var childValue = (0, _util.getValuePropValue)(child);
-	            return childValue === singleValue.key && child.props && child.props.disabled;
-	          });
+	          var disabled = _this5.isChildDisabled(singleValue.key);
 	          var choiceClassName = disabled ? prefixCls + '-selection__choice ' + prefixCls + '-selection__choice__disabled' : prefixCls + '-selection__choice';
 	          return _react2.default.createElement(
 	            'li',
@@ -31298,15 +31301,16 @@
 	    return null;
 	  },
 	  render: function render() {
-	    return _react2.default.createElement(
+	    var renderMenu = this.renderMenu();
+	    return renderMenu ? _react2.default.createElement(
 	      'div',
 	      {
 	        style: { overflow: 'auto' },
 	        onFocus: this.props.onPopupFocus,
 	        onMouseDown: _util.preventDefaultEvent
 	      },
-	      this.renderMenu()
-	    );
+	      renderMenu
+	    ) : null;
 	  }
 	});
 	

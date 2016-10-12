@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>multiple.js - example - rc-select@6.5.1</title>
+  <title>multiple.js - example - rc-select@6.5.2</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -258,7 +258,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-select@6.5.1</h1>
+      <h1>rc-select@6.5.2</h1>
 
       <p>React Select</p>
     </div>
@@ -273,7 +273,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 
 <span class="hljs-keyword">const</span> children = [];
 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">10</span>; i &lt; <span class="hljs-number">36</span>; i++) {
-  children.push(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{i.toString(36)</span> + <span class="hljs-attribute">i</span>}&gt;</span>中文{i}<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>)</span>;
+  children.push(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{i.toString(36)</span> + <span class="hljs-attribute">i</span>} <span class="hljs-attribute">disabled</span>=<span class="hljs-value">{i</span> =<span class="hljs-value">==</span> <span class="hljs-attribute">10</span>}&gt;</span>中文{i}<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>)</span>;
 }
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onSelect</span>(<span class="hljs-params"></span>) </span>{
@@ -288,7 +288,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   getInitialState() {
     <span class="hljs-keyword">return</span> {
       useAnim: <span class="hljs-number">0</span>,
-      value: [],
+      value: [<span class="hljs-string">'a10'</span>],
     };
   },
   onChange(value) {
@@ -314,7 +314,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
         <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">label</span>&gt;</span>
             anim
-            <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">checked</span>=<span class="hljs-value">{this.state.useAnim}</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"checkbox"</span> <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.useAnim}</span>/&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">checked</span>=<span class="hljs-value">{this.state.useAnim}</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"checkbox"</span> <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.useAnim}</span> /&gt;</span>
           <span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
 

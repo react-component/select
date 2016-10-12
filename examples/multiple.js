@@ -35,7 +35,7 @@ webpackJsonp([6],{
 	for (var i = 10; i < 36; i++) {
 	  children.push(_react2.default.createElement(
 	    _rcSelect.Option,
-	    { key: i.toString(36) + i },
+	    { key: i.toString(36) + i, disabled: i === 10 },
 	    '中文',
 	    i
 	  ));
@@ -54,7 +54,7 @@ webpackJsonp([6],{
 	  getInitialState: function getInitialState() {
 	    return {
 	      useAnim: 0,
-	      value: []
+	      value: ['a10']
 	    };
 	  },
 	  onChange: function onChange(value) {
