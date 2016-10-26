@@ -36,6 +36,10 @@ const Test = React.createClass({
     console.log('onBlur', v);
   },
 
+  onFocus() {
+    console.log('onFocus');
+  },
+
   render() {
     if (this.state.destroy) {
       return null;
@@ -53,6 +57,7 @@ const Test = React.createClass({
             dropdownMenuStyle={{ maxHeight: 200, overflow: 'auto' }}
             style={{ width: 500 }}
             onBlur={this.onBlur}
+            onFocus={this.onFocus}
             allowClear
             optionLabelProp="children"
             optionFilterProp="text"
