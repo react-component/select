@@ -11,6 +11,7 @@ import {
   isSingleMode, toArray, findIndexInValueByKey,
   UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE,
   preventDefaultEvent, findFirstMenuItem,
+  includesSeparators, splitBySeparators,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import FilterMixin from './FilterMixin';
@@ -73,6 +74,7 @@ const Select = React.createClass({
     ]),
     dropdownStyle: PropTypes.object,
     maxTagTextLength: PropTypes.number,
+    tokenSeparators: PropTypes.arrayOf(PropTypes.string),
   },
 
   mixins: [FilterMixin],
@@ -168,13 +170,25 @@ const Select = React.createClass({
   },
 
   onInputChange(event) {
+    const { tags, tokenSeparators } = this.props;
     const val = event.target.value;
-    const { props } = this;
+    if (tags && tokenSeparators && includesSeparators(val, tokenSeparators)) {
+      let nextValue = this.state.value;
+      splitBySeparators(val, tokenSeparators).forEach(value => {
+        const selectedValue = { key: value, label: value };
+        if (findIndexInValueByKey(nextValue, value) === -1) {
+          nextValue = nextValue.concat(selectedValue);
+        }
+      });
+      this.fireChange(nextValue);
+      this.setOpenState(false, true);
+      return;
+    }
     this.setInputValue(val);
     this.setState({
       open: true,
     });
-    if (isCombobox(props)) {
+    if (isCombobox(this.props)) {
       this.fireChange([{
         key: val,
       }]);

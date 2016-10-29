@@ -103,3 +103,20 @@ export function findFirstMenuItem(children) {
   }
   return null;
 }
+
+export function includesSeparators(string, separators) {
+  if (~separators.indexOf(string)) {
+    return false;
+  }
+  for (let i = 0; i < separators.length; ++i) {
+    if (~string.indexOf(separators[i])) {
+      return true;
+    }
+  }
+  return false;
+}
+
+export function splitBySeparators(string, separators) {
+  const reg = new RegExp(`[${separators.join()}]`);
+  return string.split(reg);
+}
