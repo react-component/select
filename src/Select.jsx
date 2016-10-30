@@ -171,29 +171,12 @@ const Select = React.createClass({
   },
 
   onInputChange(event) {
-    const { multiple, tokenSeparators } = this.props;
+    const { tokenSeparators } = this.props;
     const val = event.target.value;
     if (isMultipleOrTags(this.props) &&
-        tokenSeparators &&
-        includesSeparators(val, tokenSeparators)) {
-      let nextValue = this.state.value;
-      splitBySeparators(val, tokenSeparators).forEach(value => {
-        const selectedValue = { key: value, label: value };
-        if (findIndexInValueByLabel(nextValue, value) === -1) {
-          if (multiple) {
-            for (let i = 0; i < this._options.length; i++) {
-              if (this.getLabelFromOption(this._options[i]).join('') === value) {
-                selectedValue.key = this._options[i].key;
-                nextValue = nextValue.concat(selectedValue);
-                return;
-              }
-            }
-          } else {
-            nextValue = nextValue.concat(selectedValue);
-            return;
-          }
-        }
-      });
+      tokenSeparators &&
+      includesSeparators(val, tokenSeparators)) {
+      const nextValue = this.tokenize(val);
       this.fireChange(nextValue);
       this.setOpenState(false, true);
       this.setInputValue('', false);
@@ -639,6 +622,29 @@ const Select = React.createClass({
       const childValue = getValuePropValue(child);
       return childValue === key && child.props && child.props.disabled;
     });
+  },
+
+  tokenize(string) {
+    const { multiple, tokenSeparators } = this.props;
+    let nextValue = this.state.value;
+    splitBySeparators(string, tokenSeparators).forEach(value => {
+      const selectedValue = { key: value, label: value };
+      if (findIndexInValueByLabel(nextValue, value) === -1) {
+        if (multiple) {
+          for (let i = 0; i < this._options.length; i++) {
+            if (this.getLabelFromOption(this._options[i]).join('') === value) {
+              selectedValue.key = this._options[i].key;
+              nextValue = nextValue.concat(selectedValue);
+              return;
+            }
+          }
+        } else {
+          nextValue = nextValue.concat(selectedValue);
+          return;
+        }
+      }
+    });
+    return nextValue;
   },
 
   renderTopControlNode() {
