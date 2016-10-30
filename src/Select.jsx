@@ -393,6 +393,24 @@ const Select = React.createClass({
     return label;
   },
 
+  getValueByLabel(children, label) {
+    if (label === undefined) {
+      return null;
+    }
+    let value = null;
+    React.Children.forEach(children, (child) => {
+      if (child.type === OptGroup) {
+        const maybe = this.getValueByLabel(child.props.children, label);
+        if (maybe !== null) {
+          value = maybe;
+        }
+      } else if (toArray(this.getLabelFromOption(child)).join('') === label) {
+        value = getValuePropValue(child);
+      }
+    });
+    return value;
+  },
+
   getLabelFromOption(child) {
     return getPropValue(child, this.props.optionLabelProp);
   },
@@ -625,18 +643,17 @@ const Select = React.createClass({
   },
 
   tokenize(string) {
-    const { multiple, tokenSeparators } = this.props;
+    const { multiple, tokenSeparators, children } = this.props;
     let nextValue = this.state.value;
-    splitBySeparators(string, tokenSeparators).forEach(value => {
-      const selectedValue = { key: value, label: value };
-      if (findIndexInValueByLabel(nextValue, value) === -1) {
+    splitBySeparators(string, tokenSeparators).forEach(label => {
+      const selectedValue = { key: label, label };
+      if (findIndexInValueByLabel(nextValue, label) === -1) {
         if (multiple) {
-          for (let i = 0; i < this._options.length; i++) {
-            if (this.getLabelFromOption(this._options[i]).join('') === value) {
-              selectedValue.key = this._options[i].key;
-              nextValue = nextValue.concat(selectedValue);
-              return;
-            }
+          const value = this.getValueByLabel(children, label);
+          if (value) {
+            selectedValue.key = value;
+            nextValue = nextValue.concat(selectedValue);
+            return;
           }
         } else {
           nextValue = nextValue.concat(selectedValue);
