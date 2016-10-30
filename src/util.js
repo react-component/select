@@ -105,11 +105,8 @@ export function findFirstMenuItem(children) {
 }
 
 export function includesSeparators(string, separators) {
-  if (~separators.indexOf(string)) {
-    return false;
-  }
   for (let i = 0; i < separators.length; ++i) {
-    if (~string.indexOf(separators[i])) {
+    if (string.lastIndexOf(separators[i]) > 0) {
       return true;
     }
   }
@@ -118,5 +115,12 @@ export function includesSeparators(string, separators) {
 
 export function splitBySeparators(string, separators) {
   const reg = new RegExp(`[${separators.join()}]`);
-  return string.split(reg);
+  const array = string.split(reg);
+  if (array[0] === '') {
+    array.shift();
+  }
+  if (array[array.length - 1] === '') {
+    array.pop();
+  }
+  return array;
 }

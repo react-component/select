@@ -182,6 +182,7 @@ const Select = React.createClass({
       });
       this.fireChange(nextValue);
       this.setOpenState(false, true);
+      this.setInputValue('', false);
       return;
     }
     this.setInputValue(val);
