@@ -12,6 +12,7 @@ import {
   UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE,
   preventDefaultEvent, findFirstMenuItem,
   includesSeparators, splitBySeparators,
+  findIndexInValueByLabel,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import FilterMixin from './FilterMixin';
@@ -170,14 +171,27 @@ const Select = React.createClass({
   },
 
   onInputChange(event) {
-    const { tags, tokenSeparators } = this.props;
+    const { multiple, tokenSeparators } = this.props;
     const val = event.target.value;
-    if (tags && tokenSeparators && includesSeparators(val, tokenSeparators)) {
+    if (isMultipleOrTags(this.props) &&
+        tokenSeparators &&
+        includesSeparators(val, tokenSeparators)) {
       let nextValue = this.state.value;
       splitBySeparators(val, tokenSeparators).forEach(value => {
         const selectedValue = { key: value, label: value };
-        if (findIndexInValueByKey(nextValue, value) === -1) {
-          nextValue = nextValue.concat(selectedValue);
+        if (findIndexInValueByLabel(nextValue, value) === -1) {
+          if (multiple) {
+            for (let i = 0; i < this._options.length; i++) {
+              if (this.getLabelFromOption(this._options[i]).join('') === value) {
+                selectedValue.key = this._options[i].key;
+                nextValue = nextValue.concat(selectedValue);
+                return;
+              }
+            }
+          } else {
+            nextValue = nextValue.concat(selectedValue);
+            return;
+          }
         }
       });
       this.fireChange(nextValue);

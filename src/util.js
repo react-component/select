@@ -60,6 +60,17 @@ export function findIndexInValueByKey(value, key) {
   return index;
 }
 
+export function findIndexInValueByLabel(value, label) {
+  let index = -1;
+  for (let i = 0; i < value.length; i++) {
+    if (toArray(value[i].label).join('') === label) {
+      index = i;
+      break;
+    }
+  }
+  return index;
+}
+
 export function getSelectKeys(menuItems, value) {
   if (value === null || value === undefined) {
     return [];
