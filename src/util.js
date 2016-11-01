@@ -60,6 +60,17 @@ export function findIndexInValueByKey(value, key) {
   return index;
 }
 
+export function findIndexInValueByLabel(value, label) {
+  let index = -1;
+  for (let i = 0; i < value.length; i++) {
+    if (toArray(value[i].label).join('') === label) {
+      index = i;
+      break;
+    }
+  }
+  return index;
+}
+
 export function getSelectKeys(menuItems, value) {
   if (value === null || value === undefined) {
     return [];
@@ -102,4 +113,25 @@ export function findFirstMenuItem(children) {
     }
   }
   return null;
+}
+
+export function includesSeparators(string, separators) {
+  for (let i = 0; i < separators.length; ++i) {
+    if (string.lastIndexOf(separators[i]) > 0) {
+      return true;
+    }
+  }
+  return false;
+}
+
+export function splitBySeparators(string, separators) {
+  const reg = new RegExp(`[${separators.join()}]`);
+  const array = string.split(reg);
+  if (array[0] === '') {
+    array.shift();
+  }
+  if (array[array.length - 1] === '') {
+    array.pop();
+  }
+  return array;
 }

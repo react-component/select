@@ -176,4 +176,45 @@ describe('Select', () => {
       done();
     });
   });
+
+  describe('automatic tokenization ', () => {
+    it('tokenize tag select', () => {
+      instance = ReactDOM.render(
+        <Select tags tokenSeparators={[',']}>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+        div);
+      const input = TestUtils.findRenderedDOMComponentWithTag(instance, 'input');
+
+      input.value = '2,3,4';
+      Simulate.change(input);
+
+      expect(instance.state.value).to.eql([
+        { key: '2', label: '2' },
+        { key: '3', label: '3' },
+        { key: '4', label: '4' },
+      ]);
+    });
+
+    it('tokenize multiple select', () => {
+      instance = ReactDOM.render(
+        <Select multiple optionLabelProp="children" tokenSeparators={[',']}>
+          <Option value="1">One</Option>
+          <Option value="2">Two</Option>
+        </Select>,
+        div);
+      const input = TestUtils.findRenderedDOMComponentWithTag(instance, 'input');
+
+      input.value = 'One,';
+      Simulate.change(input);
+      input.value = 'One,Two,Three';
+      Simulate.change(input);
+
+      expect(instance.state.value).to.eql([
+        { key: '1', label: 'One' },
+        { key: '2', label: 'Two' },
+      ]);
+    });
+  });
 });

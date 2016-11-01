@@ -66,6 +66,7 @@ const Test = React.createClass({
             onDeselect={onDeselect}
             placeholder="please select"
             onChange={this.onChange}
+            tokenSeparators={[' ', ',']}
           >
             {children}
           </Select>

@@ -11,6 +11,8 @@ import {
   isSingleMode, toArray, findIndexInValueByKey,
   UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE,
   preventDefaultEvent, findFirstMenuItem,
+  includesSeparators, splitBySeparators,
+  findIndexInValueByLabel,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import FilterMixin from './FilterMixin';
@@ -74,6 +76,7 @@ const Select = React.createClass({
     ]),
     dropdownStyle: PropTypes.object,
     maxTagTextLength: PropTypes.number,
+    tokenSeparators: PropTypes.arrayOf(PropTypes.string),
   },
 
   mixins: [FilterMixin],
@@ -170,13 +173,22 @@ const Select = React.createClass({
   },
 
   onInputChange(event) {
+    const { tokenSeparators } = this.props;
     const val = event.target.value;
-    const { props } = this;
+    if (isMultipleOrTags(this.props) &&
+      tokenSeparators &&
+      includesSeparators(val, tokenSeparators)) {
+      const nextValue = this.tokenize(val);
+      this.fireChange(nextValue);
+      this.setOpenState(false, true);
+      this.setInputValue('', false);
+      return;
+    }
     this.setInputValue(val);
     this.setState({
       open: true,
     });
-    if (isCombobox(props)) {
+    if (isCombobox(this.props)) {
       this.fireChange([{
         key: val,
       }]);
@@ -382,6 +394,24 @@ const Select = React.createClass({
       }
     });
     return label;
+  },
+
+  getValueByLabel(children, label) {
+    if (label === undefined) {
+      return null;
+    }
+    let value = null;
+    React.Children.forEach(children, (child) => {
+      if (child.type === OptGroup) {
+        const maybe = this.getValueByLabel(child.props.children, label);
+        if (maybe !== null) {
+          value = maybe;
+        }
+      } else if (toArray(this.getLabelFromOption(child)).join('') === label) {
+        value = getValuePropValue(child);
+      }
+    });
+    return value;
   },
 
   getLabelFromOption(child) {
@@ -613,6 +643,28 @@ const Select = React.createClass({
       const childValue = getValuePropValue(child);
       return childValue === key && child.props && child.props.disabled;
     });
+  },
+
+  tokenize(string) {
+    const { multiple, tokenSeparators, children } = this.props;
+    let nextValue = this.state.value;
+    splitBySeparators(string, tokenSeparators).forEach(label => {
+      const selectedValue = { key: label, label };
+      if (findIndexInValueByLabel(nextValue, label) === -1) {
+        if (multiple) {
+          const value = this.getValueByLabel(children, label);
+          if (value) {
+            selectedValue.key = value;
+            nextValue = nextValue.concat(selectedValue);
+            return;
+          }
+        } else {
+          nextValue = nextValue.concat(selectedValue);
+          return;
+        }
+      }
+    });
+    return nextValue;
   },
 
   renderTopControlNode() {

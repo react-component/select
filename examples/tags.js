@@ -43,6 +43,7 @@ const Test = React.createClass({
             maxTagTextLength={10}
             value={this.state.value}
             onChange={this.onChange}
+            tokenSeparators={[' ', ',']}
           >
             {children}
           </Select>
