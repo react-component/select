@@ -113,7 +113,7 @@ const Select = React.createClass({
     value = this.addLabelToValue(props, value);
     let inputValue = '';
     if (props.combobox) {
-      inputValue = value.length ? String(value[0].key) : '';
+      inputValue = value.length ? this.getLabelFromProps(props, value[0].key) : '';
     }
     this.saveInputRef = saveRef.bind(this, 'inputInstance');
     this.saveInputMirrorRef = saveRef.bind(this, 'inputMirrorInstance');
@@ -137,7 +137,7 @@ const Select = React.createClass({
       });
       if (nextProps.combobox) {
         this.setState({
-          inputValue: value.length ? String(value[0].key) : '',
+          inputValue: value.length ? this.getLabelFromProps(nextProps, value[0].key) : '',
         });
       }
     }
