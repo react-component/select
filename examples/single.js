@@ -3,12 +3,12 @@ webpackJsonp([10],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(347);
+	module.exports = __webpack_require__(345);
 
 
 /***/ },
 
-/***/ 347:
+/***/ 345:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17,13 +17,13 @@ webpackJsonp([10],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _rcSelect = __webpack_require__(176);
+	var _rcSelect = __webpack_require__(173);
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(324);
+	__webpack_require__(322);
 	
-	var _reactDom = __webpack_require__(36);
+	var _reactDom = __webpack_require__(35);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
@@ -59,6 +59,9 @@ webpackJsonp([10],{
 	  onBlur: function onBlur(v) {
 	    console.log('onBlur', v);
 	  },
+	  onFocus: function onFocus() {
+	    console.log('onFocus');
+	  },
 	  render: function render() {
 	    if (this.state.destroy) {
 	      return null;
@@ -83,6 +86,7 @@ webpackJsonp([10],{
 	            dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
 	            style: { width: 500 },
 	            onBlur: this.onBlur,
+	            onFocus: this.onFocus,
 	            allowClear: true,
 	            optionLabelProp: 'children',
 	            optionFilterProp: 'text',

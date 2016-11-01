@@ -3,12 +3,12 @@ webpackJsonp([13],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(350);
+	module.exports = __webpack_require__(348);
 
 
 /***/ },
 
-/***/ 350:
+/***/ 348:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17,13 +17,13 @@ webpackJsonp([13],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _rcSelect = __webpack_require__(176);
+	var _rcSelect = __webpack_require__(173);
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(324);
+	__webpack_require__(322);
 	
-	var _reactDom = __webpack_require__(36);
+	var _reactDom = __webpack_require__(35);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
@@ -66,7 +66,7 @@ webpackJsonp([13],{
 	      _react2.default.createElement(
 	        'h2',
 	        null,
-	        'tags select（scroll the menu）'
+	        'tags select\uFF08scroll the menu\uFF09'
 	      ),
 	      _react2.default.createElement(
 	        'div',
@@ -81,7 +81,8 @@ webpackJsonp([13],{
 	            disabled: this.state.disabled,
 	            maxTagTextLength: 10,
 	            value: this.state.value,
-	            onChange: this.onChange
+	            onChange: this.onChange,
+	            tokenSeparators: [' ', ',']
 	          },
 	          children
 	        )
