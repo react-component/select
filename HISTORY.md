@@ -1,5 +1,8 @@
 # History
 ----
+## 6.6.0 / 2016-11-01
+
+- add tokenSeparators for multiple and tag mode
 
 ## 6.4.0 / 2016-05-26
 

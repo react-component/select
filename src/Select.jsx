@@ -656,11 +656,9 @@ const Select = React.createClass({
           if (value) {
             selectedValue.key = value;
             nextValue = nextValue.concat(selectedValue);
-            return;
           }
         } else {
           nextValue = nextValue.concat(selectedValue);
-          return;
         }
       }
     });

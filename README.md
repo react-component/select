@@ -73,6 +73,7 @@ React.render(c, container);
 |dropdownAlign | additional align applied to dropdown | Object | {} |
 |dropdownMenuStyle | additional style applied to dropdown menu | Object | {} |
 |notFoundContent | specify content to show when no result matches. | String | 'Not Found' |
+|tokenSeparators | separator used to tokenize on tag/multiple mode | string[]? |  |
 |placeholder | select placeholder | React Node | |
 |showSearch | whether show search input in single mode | bool | true |
 |showArrow | whether show arrow in single mode | bool | true |
@@ -90,6 +91,8 @@ React.render(c, container);
 |labelInValue| whether to embed label in value, see above value type | Bool | false |
 |onChange | called when select an option or input value change(combobox) | function(value) | - |
 |onSearch | called when input changed | function | - |
+|onBlur | called when blur | function | - |
+|onFocus | called when focus | function | - |
 |onSelect | called when a option is selected. param is option's value and option instance | Function(value, option:Option) | - |
 |onDeselect | called when a option is deselected. param is option's value. only called for multiple or tags | Function(value) | - |
 |defaultActiveFirstOption | whether active first option by default | bool | true |
