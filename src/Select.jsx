@@ -143,7 +143,7 @@ const Select = React.createClass({
       });
       if (nextProps.combobox) {
         this.setState({
-          inputValue: value.length ? String(value[0].key) : '',
+          inputValue: value.length ? this.getLabelFromProps(nextProps, value[0].key) : '',
         });
       }
     }
