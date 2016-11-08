@@ -63,7 +63,7 @@ const Test = React.createClass({
             optionFilterProp="text"
             onChange={this.onChange}
           >
-            <Option value="01" text="jack">
+            <Option value="01" text="jack" title="jack">
               <b
                 style={{
                   color: 'red',
