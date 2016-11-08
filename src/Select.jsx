@@ -329,6 +329,7 @@ const Select = React.createClass({
   },
 
   onOuterBlur() {
+    this.setOpenState(false);
     this.blurTimer = setTimeout(() => {
       this._focused = false;
       this.updateFocusClassName();
