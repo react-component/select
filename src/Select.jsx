@@ -117,6 +117,7 @@ const Select = React.createClass({
       value = toArray(props.defaultValue);
     }
     value = this.addLabelToValue(props, value);
+    value = this.addTitleToValue(props, value);
     let inputValue = '';
     if (props.combobox) {
       inputValue = value.length ? String(value[0].key) : '';
@@ -138,6 +139,7 @@ const Select = React.createClass({
     if ('value' in nextProps) {
       let value = toArray(nextProps.value);
       value = this.addLabelToValue(nextProps, value);
+      value = this.addTitleToValue(nextProps, value);
       this.setState({
         value,
       });
@@ -269,6 +271,7 @@ const Select = React.createClass({
       };
     }
     props.onSelect(event, item);
+    const selectedTitle = item.props.title;
     if (isMultipleOrTags(props)) {
       if (findIndexInValueByKey(value, selectedValue) !== -1) {
         return;
@@ -276,6 +279,7 @@ const Select = React.createClass({
       value = value.concat([{
         key: selectedValue,
         label: selectedLabel,
+        title: selectedTitle,
       }]);
     } else {
       if (value.length && value[0].key === selectedValue) {
@@ -285,6 +289,7 @@ const Select = React.createClass({
       value = [{
         key: selectedValue,
         label: selectedLabel,
+        title: selectedTitle,
       }];
       this.setOpenState(false, true);
     }
@@ -429,6 +434,8 @@ const Select = React.createClass({
     if (vls !== undefined) {
       if (!this.props.labelInValue) {
         vls = vls.map(v => v.key);
+      } else {
+        vls = vls.map(vl => ({ key: vl.key, label: vl.label }));
       }
       return isMultipleOrTags(this.props) ? vls : vls[0];
     }
@@ -597,6 +604,23 @@ const Select = React.createClass({
     return value;
   },
 
+  addTitleToValue(props, values) {
+    let nextValues = values;
+    const keys = values.map(v => v.key);
+    React.Children.forEach(props.children, (child) => {
+      if (child.type === OptGroup) {
+        nextValues = this.addTitleToValue(child.props, nextValues);
+      } else {
+        const value = getValuePropValue(child);
+        const valueIndex = keys.indexOf(value);
+        if (valueIndex > -1) {
+          nextValues[valueIndex].title = child.props.title;
+        }
+      }
+    });
+    return nextValues;
+  },
+
   removeSelected(selectedKey) {
     const props = this.props;
     if (props.disabled || this.isChildDisabled(selectedKey)) {
@@ -691,11 +715,12 @@ const Select = React.createClass({
             showSelectedValue = true;
           }
         }
+        const singleValue = value[0];
         selectedValue = (
           <div
             key="value"
             className={`${prefixCls}-selection-selected-value`}
-            title={value[0].label}
+            title={singleValue.title || singleValue.label}
             style={{
               display: showSelectedValue ? 'block' : 'none',
               opacity,
@@ -722,7 +747,7 @@ const Select = React.createClass({
       if (isMultipleOrTags(props)) {
         selectedValueNodes = value.map((singleValue) => {
           let content = singleValue.label;
-          const title = content;
+          const title = singleValue.title || content;
           if (maxTagTextLength &&
             typeof content === 'string' &&
             content.length > maxTagTextLength) {

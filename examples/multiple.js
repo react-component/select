@@ -7,7 +7,11 @@ import ReactDOM from 'react-dom';
 
 const children = [];
 for (let i = 10; i < 36; i++) {
-  children.push(<Option key={i.toString(36) + i} disabled={i === 10}>中文{i}</Option>);
+  children.push(
+    <Option key={i.toString(36) + i} disabled={i === 10} title={`中文${i}`}>
+      中文{i}
+    </Option>
+  );
 }
 
 function onSelect() {

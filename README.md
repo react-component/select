@@ -106,6 +106,7 @@ React.render(c, container);
 |disabled | no effect for click or keydown for this item | bool | false |
 |key | if react want you to set key, then key is same as value, you can omit value | String | - |
 |value | default filter by this attribute. if react want you to set key, then key is same as value, you can omit value | String | - |
+|title | if you are not satisfied with auto-generated `title` which is show while hovering on selected value, you can customize it with this property | String | - |
 
 
 ### OptGroup props
