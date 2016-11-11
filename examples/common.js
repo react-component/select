@@ -21709,6 +21709,9 @@
 	      open: open
 	    };
 	  },
+	  componentWillMount: function componentWillMount() {
+	    this.adjustOpenState();
+	  },
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	    if ('value' in nextProps) {
 	      var value = (0, _util.toArray)(nextProps.value);
@@ -21718,13 +21721,16 @@
 	        value: value
 	      });
 	      if (nextProps.combobox) {
-	        var options = this.renderFilterOptions();
 	        this.setState({
-	          inputValue: value.length ? this.getLabelFromProps(nextProps, value[0].key) : '',
-	          open: this.state.open && !!options.length
+	          inputValue: value.length ? this.getLabelFromProps(nextProps, value[0].key) : ''
 	        });
 	      }
 	    }
+	  },
+	  componentWillUpdate: function componentWillUpdate(nextProps, nextState) {
+	    this.props = nextProps;
+	    this.state = nextState;
+	    this.adjustOpenState();
 	  },
 	  componentDidUpdate: function componentDidUpdate() {
 	    var state = this.state,
@@ -22278,6 +22284,19 @@
 	    });
 	    return nextValue;
 	  },
+	  adjustOpenState: function adjustOpenState() {
+	    var open = this.state.open;
+	
+	    var options = [];
+	    if (open) {
+	      options = this.renderFilterOptions();
+	    }
+	    this._options = options;
+	    if (open && ((0, _util.isMultipleOrTagsOrCombobox)(this.props) || !this.props.showSearch) && !options.length) {
+	      open = false;
+	    }
+	    this.state.open = open;
+	  },
 	  renderTopControlNode: function renderTopControlNode() {
 	    var _this8 = this;
 	
@@ -22424,14 +22443,7 @@
 	    var extraSelectionProps = {};
 	    var open = this.state.open;
 	
-	    var options = [];
-	    if (open) {
-	      options = this.renderFilterOptions();
-	    }
-	    this._options = options;
-	    if (open && ((0, _util.isMultipleOrTagsOrCombobox)(props) || !props.showSearch) && !options.length) {
-	      open = false;
-	    }
+	    var options = this._options;
 	    if (!(0, _util.isMultipleOrTagsOrCombobox)(props)) {
 	      extraSelectionProps = {
 	        onKeyDown: this.onKeyDown,
