@@ -142,8 +142,10 @@ const Select = React.createClass({
         value,
       });
       if (nextProps.combobox) {
+        const options = this.renderFilterOptions();
         this.setState({
           inputValue: value.length ? this.getLabelFromProps(nextProps, value[0].key) : '',
+          open: !!options.length,
         });
       }
     }
@@ -329,7 +331,6 @@ const Select = React.createClass({
   },
 
   onOuterBlur() {
-    this.setOpenState(false);
     this.blurTimer = setTimeout(() => {
       this._focused = false;
       this.updateFocusClassName();
