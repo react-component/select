@@ -21716,8 +21716,10 @@
 	        value: value
 	      });
 	      if (nextProps.combobox) {
+	        var options = this.renderFilterOptions();
 	        this.setState({
-	          inputValue: value.length ? this.getLabelFromProps(nextProps, value[0].key) : ''
+	          inputValue: value.length ? this.getLabelFromProps(nextProps, value[0].key) : '',
+	          open: !!options.length
 	        });
 	      }
 	    }
