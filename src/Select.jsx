@@ -135,6 +135,10 @@ const Select = React.createClass({
     };
   },
 
+  componentWillMount() {
+    this.adjustOpenState();
+  },
+
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
       let value = toArray(nextProps.value);
@@ -144,13 +148,17 @@ const Select = React.createClass({
         value,
       });
       if (nextProps.combobox) {
-        const options = this.renderFilterOptions();
         this.setState({
           inputValue: value.length ? this.getLabelFromProps(nextProps, value[0].key) : '',
-          open: this.state.open && !!options.length,
         });
       }
     }
+  },
+
+  componentWillUpdate(nextProps, nextState) {
+    this.props = nextProps;
+    this.state = nextState;
+    this.adjustOpenState();
   },
 
   componentDidUpdate() {
@@ -691,6 +699,20 @@ const Select = React.createClass({
     return nextValue;
   },
 
+  adjustOpenState() {
+    let { open } = this.state;
+    let options = [];
+    if (open) {
+      options = this.renderFilterOptions();
+    }
+    this._options = options;
+    if (open &&
+      (isMultipleOrTagsOrCombobox(this.props) || !this.props.showSearch) && !options.length) {
+      open = false;
+    }
+    this.state.open = open;
+  },
+
   renderTopControlNode() {
     const { value, open, inputValue } = this.state;
     const props = this.props;
@@ -806,15 +828,8 @@ const Select = React.createClass({
     const { className, disabled, allowClear, prefixCls } = props;
     const ctrlNode = this.renderTopControlNode();
     let extraSelectionProps = {};
-    let { open } = this.state;
-    let options = [];
-    if (open) {
-      options = this.renderFilterOptions();
-    }
-    this._options = options;
-    if (open && (isMultipleOrTagsOrCombobox(props) || !props.showSearch) && !options.length) {
-      open = false;
-    }
+    const { open } = this.state;
+    const options = this._options;
     if (!isMultipleOrTagsOrCombobox(props)) {
       extraSelectionProps = {
         onKeyDown: this.onKeyDown,
