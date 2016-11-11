@@ -35,7 +35,7 @@ webpackJsonp([6],{
 	for (var i = 10; i < 36; i++) {
 	  children.push(_react2.default.createElement(
 	    _rcSelect.Option,
-	    { key: i.toString(36) + i, disabled: i === 10 },
+	    { key: i.toString(36) + i, disabled: i === 10, title: '\u4E2D\u6587' + i },
 	    '\u4E2D\u6587',
 	    i
 	  ));

@@ -21692,6 +21692,7 @@
 	      value = (0, _util.toArray)(props.defaultValue);
 	    }
 	    value = this.addLabelToValue(props, value);
+	    value = this.addTitleToValue(props, value);
 	    var inputValue = '';
 	    if (props.combobox) {
 	      inputValue = value.length ? String(value[0].key) : '';
@@ -21712,6 +21713,7 @@
 	    if ('value' in nextProps) {
 	      var value = (0, _util.toArray)(nextProps.value);
 	      value = this.addLabelToValue(nextProps, value);
+	      value = this.addTitleToValue(nextProps, value);
 	      this.setState({
 	        value: value
 	      });
@@ -21842,13 +21844,15 @@
 	      };
 	    }
 	    props.onSelect(event, item);
+	    var selectedTitle = item.props.title;
 	    if ((0, _util.isMultipleOrTags)(props)) {
 	      if ((0, _util.findIndexInValueByKey)(value, selectedValue) !== -1) {
 	        return;
 	      }
 	      value = value.concat([{
 	        key: selectedValue,
-	        label: selectedLabel
+	        label: selectedLabel,
+	        title: selectedTitle
 	      }]);
 	    } else {
 	      if (value.length && value[0].key === selectedValue) {
@@ -21857,7 +21861,8 @@
 	      }
 	      value = [{
 	        key: selectedValue,
-	        label: selectedLabel
+	        label: selectedLabel,
+	        title: selectedTitle
 	      }];
 	      this.setOpenState(false, true);
 	    }
@@ -22001,6 +22006,10 @@
 	      if (!this.props.labelInValue) {
 	        vls = vls.map(function (v) {
 	          return v.key;
+	        });
+	      } else {
+	        vls = vls.map(function (vl) {
+	          return { key: vl.key, label: vl.label };
 	        });
 	      }
 	      return (0, _util.isMultipleOrTags)(this.props) ? vls : vls[0];
@@ -22177,6 +22186,26 @@
 	    }
 	    return value;
 	  },
+	  addTitleToValue: function addTitleToValue(props, values) {
+	    var _this6 = this;
+	
+	    var nextValues = values;
+	    var keys = values.map(function (v) {
+	      return v.key;
+	    });
+	    _react2.default.Children.forEach(props.children, function (child) {
+	      if (child.type === _OptGroup2.default) {
+	        nextValues = _this6.addTitleToValue(child.props, nextValues);
+	      } else {
+	        var value = (0, _util.getValuePropValue)(child);
+	        var valueIndex = keys.indexOf(value);
+	        if (valueIndex > -1) {
+	          nextValues[valueIndex].title = child.props.title;
+	        }
+	      }
+	    });
+	    return nextValues;
+	  },
 	  removeSelected: function removeSelected(selectedKey) {
 	    var props = this.props;
 	    if (props.disabled || this.isChildDisabled(selectedKey)) {
@@ -22225,7 +22254,7 @@
 	    });
 	  },
 	  tokenize: function tokenize(string) {
-	    var _this6 = this;
+	    var _this7 = this;
 	
 	    var _props = this.props,
 	        multiple = _props.multiple,
@@ -22237,7 +22266,7 @@
 	      var selectedValue = { key: label, label: label };
 	      if ((0, _util.findIndexInValueByLabel)(nextValue, label) === -1) {
 	        if (multiple) {
-	          var value = _this6.getValueByLabel(children, label);
+	          var value = _this7.getValueByLabel(children, label);
 	          if (value) {
 	            selectedValue.key = value;
 	            nextValue = nextValue.concat(selectedValue);
@@ -22250,7 +22279,7 @@
 	    return nextValue;
 	  },
 	  renderTopControlNode: function renderTopControlNode() {
-	    var _this7 = this;
+	    var _this8 = this;
 	
 	    var _state = this.state,
 	        value = _state.value,
@@ -22283,12 +22312,13 @@
 	            showSelectedValue = true;
 	          }
 	        }
+	        var singleValue = value[0];
 	        selectedValue = _react2.default.createElement(
 	          'div',
 	          {
 	            key: 'value',
 	            className: prefixCls + '-selection-selected-value',
-	            title: value[0].label,
+	            title: singleValue.title || singleValue.label,
 	            style: {
 	              display: showSelectedValue ? 'block' : 'none',
 	              opacity: opacity
@@ -22317,11 +22347,11 @@
 	      if ((0, _util.isMultipleOrTags)(props)) {
 	        selectedValueNodes = value.map(function (singleValue) {
 	          var content = singleValue.label;
-	          var title = content;
+	          var title = singleValue.title || content;
 	          if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
 	            content = content.slice(0, maxTagTextLength) + '...';
 	          }
-	          var disabled = _this7.isChildDisabled(singleValue.key);
+	          var disabled = _this8.isChildDisabled(singleValue.key);
 	          var choiceClassName = disabled ? prefixCls + '-selection__choice ' + prefixCls + '-selection__choice__disabled' : prefixCls + '-selection__choice';
 	          return _react2.default.createElement(
 	            'li',
@@ -22340,7 +22370,7 @@
 	            ),
 	            disabled ? null : _react2.default.createElement('span', {
 	              className: prefixCls + '-selection__choice__remove',
-	              onClick: _this7.removeSelected.bind(_this7, singleValue.key)
+	              onClick: _this8.removeSelected.bind(_this8, singleValue.key)
 	            })
 	          );
 	        });

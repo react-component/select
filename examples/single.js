@@ -94,7 +94,7 @@ webpackJsonp([10],{
 	          },
 	          _react2.default.createElement(
 	            _rcSelect.Option,
-	            { value: '01', text: 'jack' },
+	            { value: '01', text: 'jack', title: 'jack' },
 	            _react2.default.createElement(
 	              'b',
 	              {
