@@ -1,4 +1,4 @@
-import expect from 'expect.js';
+/* eslint-disable no-undef */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Simulate } from 'react-addons-test-utils';
@@ -28,10 +28,10 @@ describe('optionFilterProp', () => {
     Simulate.click(ReactDOM.findDOMNode(select.refs.selection));
     select.getInputDOMNode().value = 1;
     Simulate.change(select.getInputDOMNode());
-    expect($(select.getPopupDOMNode()).find('.rc-select-dropdown-menu-item').length).to.be(2);
+    expect($(select.getPopupDOMNode()).find('.rc-select-dropdown-menu-item').length).toBe(2);
     select.getInputDOMNode().value = 2;
     Simulate.change(select.getInputDOMNode());
-    expect($(select.getPopupDOMNode()).find('.rc-select-dropdown-menu-item').length).to.be(1);
+    expect($(select.getPopupDOMNode()).find('.rc-select-dropdown-menu-item').length).toBe(1);
   });
 
   it('can set optionFilterProp', () => {
@@ -49,15 +49,15 @@ describe('optionFilterProp', () => {
     Simulate.click(ReactDOM.findDOMNode(select.refs.selection));
     select.getInputDOMNode().value = 1;
     Simulate.change(select.getInputDOMNode());
-    expect($(select.getPopupDOMNode()).find('.rc-select-dropdown-menu-item').length).to.be(0);
+    expect($(select.getPopupDOMNode()).find('.rc-select-dropdown-menu-item').length).toBe(0);
     select.getInputDOMNode().value = 2;
     Simulate.change(select.getInputDOMNode());
-    expect($(select.getPopupDOMNode()).find('.rc-select-dropdown-menu-item').length).to.be(0);
+    expect($(select.getPopupDOMNode()).find('.rc-select-dropdown-menu-item').length).toBe(0);
     select.getInputDOMNode().value = '一';
     Simulate.change(select.getInputDOMNode());
-    expect($(select.getPopupDOMNode()).find('.rc-select-dropdown-menu-item').length).to.be(2);
+    expect($(select.getPopupDOMNode()).find('.rc-select-dropdown-menu-item').length).toBe(2);
     select.getInputDOMNode().value = '二';
     Simulate.change(select.getInputDOMNode());
-    expect($(select.getPopupDOMNode()).find('.rc-select-dropdown-menu-item').length).to.be(1);
+    expect($(select.getPopupDOMNode()).find('.rc-select-dropdown-menu-item').length).toBe(1);
   });
 });

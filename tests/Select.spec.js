@@ -1,9 +1,11 @@
-import expect from 'expect.js';
+/* eslint-disable no-undef */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import TestUtils, { Simulate } from 'react-addons-test-utils';
 import Select, { Option } from 'rc-select';
 import $ from 'jquery';
+import { mount, render } from 'enzyme';
+import { renderToJson } from 'enzyme-to-json';
 
 describe('Select', () => {
   let instance;
@@ -32,19 +34,21 @@ describe('Select', () => {
       open: true,
     }, () => {
       expect(instance.getPopupDOMNode().parentNode
-        .parentNode.parentNode.nodeName.toLowerCase()).to.be('body');
-      expect(instance.getPopupDOMNode().className).not.to.contain('hidden');
+        .parentNode.parentNode.nodeName.toLowerCase()).toBe('body');
+      expect(instance.getPopupDOMNode().className).not.toContain('hidden');
       done();
     });
   });
 
-  it('should add css class of root dom node', () => {
-    instance = ReactDOM.render(
+  it('renders correctly', () => {
+    const wrapper = render(
       <Select className="forTest" openClassName="my-open" value="2">
         <Option value="1">1</Option>
         <Option value="2" disabled>2</Option>
-      </Select>, div);
-    expect(ReactDOM.findDOMNode(instance).className.indexOf('forTest') !== -1).to.be(true);
+      </Select>
+    );
+
+    expect(renderToJson(wrapper)).toMatchSnapshot();
   });
 
   it('should default select the right option', (done) => {
@@ -56,8 +60,8 @@ describe('Select', () => {
     instance.setState({
       open: true,
     }, () => {
-      expect(instance.getPopupMenuComponent().instanceArray[0].isSelected()).to.be(false);
-      expect(instance.getPopupMenuComponent().instanceArray[1].isSelected()).to.be(true);
+      expect(instance.getPopupMenuComponent().instanceArray[0].isSelected()).toBe(false);
+      expect(instance.getPopupMenuComponent().instanceArray[1].isSelected()).toBe(true);
       done();
     });
   });
@@ -72,9 +76,9 @@ describe('Select', () => {
     instance.setState({
       open: true,
     }, () => {
-      expect(instance.getPopupMenuComponent().instanceArray[0].isSelected()).to.be(true);
-      expect(instance.getPopupMenuComponent().instanceArray[1].isSelected()).to.be(true);
-      expect(instance.getPopupMenuComponent().instanceArray[2].isSelected()).to.be(false);
+      expect(instance.getPopupMenuComponent().instanceArray[0].isSelected()).toBe(true);
+      expect(instance.getPopupMenuComponent().instanceArray[1].isSelected()).toBe(true);
+      expect(instance.getPopupMenuComponent().instanceArray[2].isSelected()).toBe(false);
       done();
     });
   });
@@ -87,7 +91,7 @@ describe('Select', () => {
       </Select>,
       div);
     expect(TestUtils.scryRenderedDOMComponentsWithClass(instance,
-      'rc-select-selection__clear')[0].style.display).to.be('block');
+      'rc-select-selection__clear')[0].style.display).toBe('block');
   });
 
   it('should hide clear button', () => {
@@ -98,7 +102,7 @@ describe('Select', () => {
       </Select>,
       div);
     expect(TestUtils.scryRenderedDOMComponentsWithClass(instance,
-      'rc-select-selection__clear')[0].style.display).to.be('none');
+      'rc-select-selection__clear')[0].style.display).toBe('none');
   });
 
   it('should not response click event when select is disabled', (done) => {
@@ -108,7 +112,7 @@ describe('Select', () => {
         <Option value="2">2</Option>
       </Select>, div);
     Simulate.click(ReactDOM.findDOMNode(instance.refs.selection));
-    expect(instance.state.open).not.to.be.ok();
+    expect(instance.state.open).not.toBeTruthy();
     done();
   });
 
@@ -119,7 +123,7 @@ describe('Select', () => {
         <Option value="2">2</Option>
       </Select>, div);
     expect($(ReactDOM.findDOMNode(instance))
-      .find('.rc-select-selection-selected-value').length).to.be(1);
+      .find('.rc-select-selection-selected-value').length).toBe(1);
     done();
   });
 
@@ -130,12 +134,12 @@ describe('Select', () => {
         <Option value="2">2</Option>
       </Select>, div);
     expect($(ReactDOM.findDOMNode(instance))
-      .find('.rc-select-selection__placeholder').length).to.be(1);
+      .find('.rc-select-selection__placeholder').length).toBe(1);
     done();
   });
 
-  describe('when open', function test() {
-    this.timeout(400000);
+  describe('when open', () => {
+    // this.timeout(400000);
 
     beforeEach((done) => {
       div = document.createElement('div');
@@ -164,33 +168,33 @@ describe('Select', () => {
       Simulate.change(instance.getInputDOMNode());
       setTimeout(() => {
         expect($(instance.getPopupDOMNode())
-          .find('.rc-select-dropdown-menu-item').length).to.be(1);
+          .find('.rc-select-dropdown-menu-item').length).toBe(1);
         expect($(instance.getPopupDOMNode())
-          .find('.rc-select-dropdown-menu-item')[0].innerHTML).to.be('Not Found');
+          .find('.rc-select-dropdown-menu-item')[0].innerHTML).toBe('Not Found');
         done();
       }, 100);
     });
 
     it('should show search input in single selection trigger', (done) => {
-      expect($(instance.getInputDOMNode()).parents('.rc-select-open').length).to.be(1);
+      expect($(instance.getInputDOMNode()).parents('.rc-select-open').length).toBe(1);
       done();
     });
   });
 
   describe('automatic tokenization ', () => {
     it('tokenize tag select', () => {
-      instance = ReactDOM.render(
+      const wrapper = mount(
         <Select tags tokenSeparators={[',']}>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
         </Select>,
         div);
-      const input = TestUtils.findRenderedDOMComponentWithTag(instance, 'input');
 
-      input.value = '2,3,4';
-      Simulate.change(input);
+      wrapper.find('input').simulate('change', { target: {
+        value: '2,3,4',
+      } });
 
-      expect(instance.state.value).to.eql([
+      expect(wrapper.state().value).toEqual([
         { key: '2', label: '2' },
         { key: '3', label: '3' },
         { key: '4', label: '4' },
@@ -198,20 +202,24 @@ describe('Select', () => {
     });
 
     it('tokenize multiple select', () => {
-      instance = ReactDOM.render(
+      const wrapper = mount(
         <Select multiple optionLabelProp="children" tokenSeparators={[',']}>
           <Option value="1">One</Option>
           <Option value="2">Two</Option>
         </Select>,
-        div);
-      const input = TestUtils.findRenderedDOMComponentWithTag(instance, 'input');
+      );
 
-      input.value = 'One,';
-      Simulate.change(input);
-      input.value = 'One,Two,Three';
-      Simulate.change(input);
+      const input = wrapper.find('input');
 
-      expect(instance.state.value).to.eql([
+      input.simulate('change', { target: {
+        value: 'One',
+      } });
+
+      input.simulate('change', { target: {
+        value: 'One,Two,Three',
+      } });
+
+      expect(wrapper.state().value).toEqual([
         { key: '1', label: 'One' },
         { key: '2', label: 'Two' },
       ]);
@@ -242,10 +250,10 @@ describe('Select', () => {
       }
     }
 
-    instance = ReactDOM.render(<App />, div);
-    instance.setState({ value: { label: 'One', key: '1' } }, () => {
-      const input = TestUtils.findRenderedDOMComponentWithTag(instance, 'input');
-      expect(input.value).to.be('One');
+    const wrapper = mount(<App />);
+
+    wrapper.setState({ value: { label: 'One', key: '1' } }, () => {
+      expect(wrapper.find('input').props().value).toBe('One');
       done();
     });
   });

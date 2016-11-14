@@ -33,13 +33,20 @@
     "lint": "rc-tools run lint",
     "karma": "rc-tools run karma",
     "saucelabs": "rc-tools run saucelabs",
-    "test": "rc-tools run test",
+    "test": "jest",
     "prepublish": "rc-tools run guard",
     "chrome-test": "rc-tools run chrome-test",
-    "coverage": "rc-tools run coverage"
+    "coverage": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "devDependencies": {
-    "expect.js": "~0.3.1",
+    "babel-jest": "^17.0.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "coveralls": "^2.11.15",
+    "enzyme": "^2.6.0",
+    "enzyme-to-json": "^1.3.0",
+    "jest": "^17.0.1",
     "jquery": "~1.11.3",
     "jsonp": "^0.2.0",
     "pre-commit": "1.x",
@@ -48,7 +55,8 @@
     "rc-tools": "5.x",
     "react": "15.x",
     "react-addons-test-utils": "15.x",
-    "react-dom": "15.x"
+    "react-dom": "15.x",
+    "react-test-renderer": "^15.3.2"
   },
   "dependencies": {
     "babel-runtime": "6.x",
