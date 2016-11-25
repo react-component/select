@@ -133,11 +133,16 @@ online example: http://react-component.github.io/select/examples/
 
 ## Test Case
 
-http://localhost:8003/tests/runner.html?coverage
+```
+npm test
+```
 
 ## Coverage
 
-http://localhost:8003/node_modules/rc-server/node_modules/node-jscover/lib/front-end/jscoverage.html?w=http://localhost:8003/tests/runner.html?coverage
+```
+npm run coverage
+```
+
 
 ## License
 
