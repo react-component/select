@@ -132,6 +132,7 @@ const Select = React.createClass({
       value,
       inputValue,
       open,
+      adJustOpen: true,
     };
   },
 
@@ -700,17 +701,19 @@ const Select = React.createClass({
   },
 
   adjustOpenState() {
-    let { open } = this.state;
+    let { adJustOpen } = this.state;
+    const { open } = this.state;
     let options = [];
     if (open) {
       options = this.renderFilterOptions();
     }
     this._options = options;
-    if (open &&
-      (isMultipleOrTagsOrCombobox(this.props) || !this.props.showSearch) && !options.length) {
-      open = false;
+    if ((isMultipleOrTagsOrCombobox(this.props) || !this.props.showSearch) && !options.length) {
+      adJustOpen = false;
+    } else {
+      adJustOpen = true;
     }
-    this.state.open = open;
+    this.state.adJustOpen = adJustOpen;
   },
 
   renderTopControlNode() {
@@ -828,7 +831,7 @@ const Select = React.createClass({
     const { className, disabled, allowClear, prefixCls } = props;
     const ctrlNode = this.renderTopControlNode();
     let extraSelectionProps = {};
-    const { open } = this.state;
+    const open = this.state.open && this.state.adJustOpen;
     const options = this._options;
     if (!isMultipleOrTagsOrCombobox(props)) {
       extraSelectionProps = {
