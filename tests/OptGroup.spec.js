@@ -1,4 +1,4 @@
-import expect from 'expect.js';
+/* eslint-disable no-undef */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TestUtils, { Simulate } from 'react-addons-test-utils';
@@ -45,8 +45,8 @@ describe('OptGroup', () => {
 
     Simulate.click(TestUtils.scryRenderedDOMComponentsWithClass(select, 'rc-select-selection')[0]);
 
-    expect($(select.getPopupDOMNode()).find('.rc-select-dropdown-menu-item-group').length).to.be(2);
-    expect($(select.getPopupDOMNode()).find('.rc-select-dropdown-menu-item').length).to.be(3);
+    expect($(select.getPopupDOMNode()).find('.rc-select-dropdown-menu-item-group').length).toBe(2);
+    expect($(select.getPopupDOMNode()).find('.rc-select-dropdown-menu-item').length).toBe(3);
 
     done();
   });

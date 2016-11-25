@@ -1,11 +1,11 @@
-import expect from 'expect.js';
+/* eslint-disable no-undef */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Simulate } from 'react-addons-test-utils';
 import Select, { Option } from 'rc-select';
 import KeyCode from 'rc-util/lib/KeyCode';
 
-describe('tags', function test() {
+describe('tags', () => {
   let div;
   let instance;
 
@@ -19,7 +19,7 @@ describe('tags', function test() {
     document.body.removeChild(div);
   });
 
-  this.timeout(400000);
+  // this.timeout(400000);
 
   beforeEach(() => {
     div.tabIndex = 0;
@@ -50,7 +50,7 @@ describe('tags', function test() {
         keyCode: KeyCode.ENTER,
       });
       setTimeout(() => {
-        expect(instance.state.value.map(v => v.key)).to.contain('A');
+        expect(instance.state.value.map(v => v.key)).toContain('A');
         done();
       }, 100);
     }, 100);

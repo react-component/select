@@ -1,4 +1,4 @@
-import expect from 'expect.js';
+/* eslint-disable no-undef */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TestUtils, { Simulate } from 'react-addons-test-utils';
@@ -25,7 +25,7 @@ describe('Combobox', () => {
         <Option value="2">2</Option>
       </Select>, div
     );
-    expect(!!ReactDOM.findDOMNode(instance.refs.selection).getAttribute('tabindex')).to.be(false);
+    expect(!!ReactDOM.findDOMNode(instance.refs.selection).getAttribute('tabindex')).toBe(false);
   });
 
   it('should has no open className', () => {
@@ -33,7 +33,7 @@ describe('Combobox', () => {
       <Select combobox notFoundContent={false}/>, div
     );
     Simulate.click(instance.getInputDOMNode());
-    expect(ReactDOM.findDOMNode(instance).className).not.to.contain('-open');
+    expect(ReactDOM.findDOMNode(instance).className).not.toContain('-open');
   });
 
   it('support defaultValue', () => {
@@ -45,13 +45,13 @@ describe('Combobox', () => {
     );
     const input = ReactDOM.findDOMNode(TestUtils.scryRenderedDOMComponentsWithClass(instance,
       'rc-select-search__field')[0]);
-    expect(input.value).to.be('1');
+    expect(input.value).toBe('1');
     Simulate.click(input);
     const activeItem = $(instance.getPopupDOMNode())
       .find('.rc-select-dropdown-menu-item-active')[0];
-    expect(activeItem.innerHTML).to.be('11111');
+    expect(activeItem.innerHTML).toBe('11111');
     Simulate.click(activeItem);
-    expect(input.value).to.be('11111');
+    expect(input.value).toBe('11111');
   });
 
   it('do not keep active item', () => {
@@ -65,10 +65,10 @@ describe('Combobox', () => {
     input.value = '2';
     Simulate.change(input);
     let activeItem = $(instance.getPopupDOMNode()).find('.rc-select-dropdown-menu-item-active')[0];
-    expect(activeItem.innerHTML).to.be('2');
+    expect(activeItem.innerHTML).toBe('2');
     input.value = '';
     Simulate.change(input);
     activeItem = $(instance.getPopupDOMNode()).find('.rc-select-dropdown-menu-item-active')[0];
-    expect(activeItem.innerHTML).to.be('1');
+    expect(activeItem.innerHTML).toBe('1');
   });
 });
