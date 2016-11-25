@@ -22287,6 +22287,9 @@
 	  adjustOpenState: function adjustOpenState() {
 	    var open = this.state.open;
 	
+	    if (typeof document !== 'undefined' && this.getInputDOMNode() && document.activeElement === this.getInputDOMNode()) {
+	      open = true;
+	    }
 	    var options = [];
 	    if (open) {
 	      options = this.renderFilterOptions();
