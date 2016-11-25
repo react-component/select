@@ -701,6 +701,11 @@ const Select = React.createClass({
 
   adjustOpenState() {
     let { open } = this.state;
+    if (typeof document !== 'undefined' &&
+      this.getInputDOMNode() &&
+      document.activeElement === this.getInputDOMNode()) {
+      open = true;
+    }
     let options = [];
     if (open) {
       options = this.renderFilterOptions();
