@@ -97,7 +97,7 @@ const DropdownMenu = React.createClass({
 
         clonedMenuItems = menuItems.map(item => {
           if (item.type === MenuItemGroup) {
-            const children = item.props.children.map(clone);
+            const children = React.Children.map(item.props.children, clone);
             return cloneElement(item, {}, children);
           }
           return clone(item);

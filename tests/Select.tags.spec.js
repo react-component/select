@@ -1,0 +1,57 @@
+/* eslint-disable no-undef */
+import React from 'react';
+import { mount } from 'enzyme';
+import KeyCode from 'rc-util/lib/KeyCode';
+import Select, { Option } from '../src';
+import blurTest from './shared/blurTest';
+import renderTest from './shared/renderTest';
+import removeSelectedTest from './shared/removeSelectedTest';
+
+jest.unmock('react-dom');
+
+describe('Select.tags', () => {
+  blurTest('tags');
+  renderTest('tags');
+  removeSelectedTest('tags');
+
+  it('allow user input tags', () => {
+    const wrapper = mount(
+      <Select tags />
+    );
+
+    wrapper.find('input')
+      .simulate('change', { target: { value: 'foo' } })
+      .simulate('keyDown', { keyCode: KeyCode.ENTER });
+
+    expect(wrapper.state().value).toEqual([{ key: 'foo', label: 'foo', title: undefined }]);
+  });
+
+  it('tokenize input', () => {
+    const handleChange = jest.fn();
+    const wrapper = mount(
+      <Select
+        tags
+        tokenSeparators={[',']}
+        onChange={handleChange}
+      >
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+
+    const input = wrapper.find('input');
+    input.node.focus = jest.fn();
+
+    input.simulate('change', { target: { value: '2,3,4' } });
+
+    expect(handleChange).toBeCalledWith(['2', '3', '4']);
+    expect(wrapper.state().value).toEqual([
+      { key: '2', label: '2' },
+      { key: '3', label: '3' },
+      { key: '4', label: '4' },
+    ]);
+    expect(wrapper.state().inputValue).toBe('');
+    expect(wrapper.state().open).toBe(false);
+    expect(input.node.focus).toBeCalled();
+  });
+});
