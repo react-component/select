@@ -177,6 +177,7 @@ const Select = React.createClass({
 
   componentWillUnmount() {
     this.clearBlurTime();
+    this.clearAdjustTimer();
     if (this.dropdownContainer) {
       ReactDOM.unmountComponentAtNode(this.dropdownContainer);
       document.body.removeChild(this.dropdownContainer);
@@ -290,6 +291,13 @@ const Select = React.createClass({
         title: selectedTitle,
       }]);
     } else {
+      if (isCombobox(props)) {
+        this.skipAdjustOpen = true;
+        this.clearAdjustTimer();
+        this.skipAdjustOpenTimer = setTimeout(() => {
+          this.skipAdjustOpen = false;
+        }, 0);
+      }
       if (value.length && value[0].key === selectedValue) {
         this.setOpenState(false, true);
         return;
@@ -568,6 +576,12 @@ const Select = React.createClass({
       this.blurTimer = null;
     }
   },
+  clearAdjustTimer() {
+    if (this.skipAdjustOpenTimer) {
+      clearTimeout(this.skipAdjustOpenTimer);
+      this.skipAdjustOpenTimer = null;
+    }
+  },
   updateFocusClassName() {
     const { refs, props } = this;
     // avoid setState and its side effect
@@ -700,6 +714,9 @@ const Select = React.createClass({
   },
 
   adjustOpenState() {
+    if (this.skipAdjustOpen) {
+      return;
+    }
     let { open } = this.state;
     if (typeof document !== 'undefined' &&
       this.getInputDOMNode() &&
