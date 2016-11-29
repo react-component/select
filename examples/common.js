@@ -21749,6 +21749,7 @@
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
 	    this.clearBlurTime();
+	    this.clearAdjustTimer();
 	    if (this.dropdownContainer) {
 	      _reactDom2.default.unmountComponentAtNode(this.dropdownContainer);
 	      document.body.removeChild(this.dropdownContainer);
@@ -21836,6 +21837,8 @@
 	    }
 	  },
 	  onMenuSelect: function onMenuSelect(_ref) {
+	    var _this = this;
+	
 	    var item = _ref.item;
 	
 	    var value = this.state.value;
@@ -21861,6 +21864,13 @@
 	        title: selectedTitle
 	      }]);
 	    } else {
+	      if ((0, _util.isCombobox)(props)) {
+	        this.skipAdjustOpen = true;
+	        this.clearAdjustTimer();
+	        this.skipAdjustOpenTimer = setTimeout(function () {
+	          _this.skipAdjustOpen = false;
+	        }, 0);
+	      }
 	      if (value.length && value[0].key === selectedValue) {
 	        this.setOpenState(false, true);
 	        return;
@@ -21912,31 +21922,31 @@
 	    this.maybeFocus(true, true);
 	  },
 	  onOuterBlur: function onOuterBlur() {
-	    var _this = this;
+	    var _this2 = this;
 	
 	    this.blurTimer = setTimeout(function () {
-	      _this._focused = false;
-	      _this.updateFocusClassName();
-	      var props = _this.props;
-	      var value = _this.state.value;
-	      var inputValue = _this.state.inputValue;
+	      _this2._focused = false;
+	      _this2.updateFocusClassName();
+	      var props = _this2.props;
+	      var value = _this2.state.value;
+	      var inputValue = _this2.state.inputValue;
 	
 	      if ((0, _util.isSingleMode)(props) && props.showSearch && inputValue && props.defaultActiveFirstOption) {
-	        var options = _this._options || [];
+	        var options = _this2._options || [];
 	        if (options.length) {
 	          var firstOption = (0, _util.findFirstMenuItem)(options);
 	          if (firstOption) {
 	            value = [{
 	              key: firstOption.key,
-	              label: _this.getLabelFromOption(firstOption)
+	              label: _this2.getLabelFromOption(firstOption)
 	            }];
-	            _this.fireChange(value);
+	            _this2.fireChange(value);
 	          }
 	        }
 	      } else if ((0, _util.isMultipleOrTags)(props) && inputValue) {
-	        _this.state.inputValue = _this.getInputDOMNode().value = '';
+	        _this2.state.inputValue = _this2.getInputDOMNode().value = '';
 	      }
-	      props.onBlur(_this.getVLForOnChange(value));
+	      props.onBlur(_this2.getVLForOnChange(value));
 	    }, 10);
 	  },
 	  onClearSelection: function onClearSelection(event) {
@@ -21963,7 +21973,7 @@
 	    this.refs.trigger.refs.trigger.forcePopupAlign();
 	  },
 	  getLabelBySingleValue: function getLabelBySingleValue(children, value) {
-	    var _this2 = this;
+	    var _this3 = this;
 	
 	    if (value === undefined) {
 	      return null;
@@ -21971,18 +21981,18 @@
 	    var label = null;
 	    _react2.default.Children.forEach(children, function (child) {
 	      if (child.type === _OptGroup2.default) {
-	        var maybe = _this2.getLabelBySingleValue(child.props.children, value);
+	        var maybe = _this3.getLabelBySingleValue(child.props.children, value);
 	        if (maybe !== null) {
 	          label = maybe;
 	        }
 	      } else if ((0, _util.getValuePropValue)(child) === value) {
-	        label = _this2.getLabelFromOption(child);
+	        label = _this3.getLabelFromOption(child);
 	      }
 	    });
 	    return label;
 	  },
 	  getValueByLabel: function getValueByLabel(children, label) {
-	    var _this3 = this;
+	    var _this4 = this;
 	
 	    if (label === undefined) {
 	      return null;
@@ -21990,11 +22000,11 @@
 	    var value = null;
 	    _react2.default.Children.forEach(children, function (child) {
 	      if (child.type === _OptGroup2.default) {
-	        var maybe = _this3.getValueByLabel(child.props.children, label);
+	        var maybe = _this4.getValueByLabel(child.props.children, label);
 	        if (maybe !== null) {
 	          value = maybe;
 	        }
-	      } else if ((0, _util.toArray)(_this3.getLabelFromOption(child)).join('') === label) {
+	      } else if ((0, _util.toArray)(_this4.getLabelFromOption(child)).join('') === label) {
 	        value = (0, _util.getValuePropValue)(child);
 	      }
 	    });
@@ -22104,7 +22114,7 @@
 	    return this.refs.trigger.getInnerMenu();
 	  },
 	  setOpenState: function setOpenState(open, needFocus) {
-	    var _this4 = this;
+	    var _this5 = this;
 	
 	    var props = this.props,
 	        state = this.state;
@@ -22125,7 +22135,7 @@
 	    }
 	    this.setState(nextState, function () {
 	      if (open) {
-	        _this4.maybeFocus(open, needFocus);
+	        _this5.maybeFocus(open, needFocus);
 	      }
 	    });
 	  },
@@ -22143,6 +22153,12 @@
 	    if (this.blurTimer) {
 	      clearTimeout(this.blurTimer);
 	      this.blurTimer = null;
+	    }
+	  },
+	  clearAdjustTimer: function clearAdjustTimer() {
+	    if (this.skipAdjustOpenTimer) {
+	      clearTimeout(this.skipAdjustOpenTimer);
+	      this.skipAdjustOpenTimer = null;
 	    }
 	  },
 	  updateFocusClassName: function updateFocusClassName() {
@@ -22175,25 +22191,25 @@
 	    }
 	  },
 	  addLabelToValue: function addLabelToValue(props, value_) {
-	    var _this5 = this;
+	    var _this6 = this;
 	
 	    var value = value_;
 	    if (props.labelInValue) {
 	      value.forEach(function (v) {
-	        v.label = v.label || _this5.getLabelFromProps(props, v.key);
+	        v.label = v.label || _this6.getLabelFromProps(props, v.key);
 	      });
 	    } else {
 	      value = value.map(function (v) {
 	        return {
 	          key: v,
-	          label: _this5.getLabelFromProps(props, v)
+	          label: _this6.getLabelFromProps(props, v)
 	        };
 	      });
 	    }
 	    return value;
 	  },
 	  addTitleToValue: function addTitleToValue(props, values) {
-	    var _this6 = this;
+	    var _this7 = this;
 	
 	    var nextValues = values;
 	    var keys = values.map(function (v) {
@@ -22201,7 +22217,7 @@
 	    });
 	    _react2.default.Children.forEach(props.children, function (child) {
 	      if (child.type === _OptGroup2.default) {
-	        nextValues = _this6.addTitleToValue(child.props, nextValues);
+	        nextValues = _this7.addTitleToValue(child.props, nextValues);
 	      } else {
 	        var value = (0, _util.getValuePropValue)(child);
 	        var valueIndex = keys.indexOf(value);
@@ -22260,7 +22276,7 @@
 	    });
 	  },
 	  tokenize: function tokenize(string) {
-	    var _this7 = this;
+	    var _this8 = this;
 	
 	    var _props = this.props,
 	        multiple = _props.multiple,
@@ -22272,7 +22288,7 @@
 	      var selectedValue = { key: label, label: label };
 	      if ((0, _util.findIndexInValueByLabel)(nextValue, label) === -1) {
 	        if (multiple) {
-	          var value = _this7.getValueByLabel(children, label);
+	          var value = _this8.getValueByLabel(children, label);
 	          if (value) {
 	            selectedValue.key = value;
 	            nextValue = nextValue.concat(selectedValue);
@@ -22285,6 +22301,9 @@
 	    return nextValue;
 	  },
 	  adjustOpenState: function adjustOpenState() {
+	    if (this.skipAdjustOpen) {
+	      return;
+	    }
 	    var open = this.state.open;
 	
 	    if (typeof document !== 'undefined' && this.getInputDOMNode() && document.activeElement === this.getInputDOMNode()) {
@@ -22301,7 +22320,7 @@
 	    this.state.open = open;
 	  },
 	  renderTopControlNode: function renderTopControlNode() {
-	    var _this8 = this;
+	    var _this9 = this;
 	
 	    var _state = this.state,
 	        value = _state.value,
@@ -22373,7 +22392,7 @@
 	          if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
 	            content = content.slice(0, maxTagTextLength) + '...';
 	          }
-	          var disabled = _this8.isChildDisabled(singleValue.key);
+	          var disabled = _this9.isChildDisabled(singleValue.key);
 	          var choiceClassName = disabled ? prefixCls + '-selection__choice ' + prefixCls + '-selection__choice__disabled' : prefixCls + '-selection__choice';
 	          return _react2.default.createElement(
 	            'li',
@@ -22392,7 +22411,7 @@
 	            ),
 	            disabled ? null : _react2.default.createElement('span', {
 	              className: prefixCls + '-selection__choice__remove',
-	              onClick: _this8.removeSelected.bind(_this8, singleValue.key)
+	              onClick: _this9.removeSelected.bind(_this9, singleValue.key)
 	            })
 	          );
 	        });
