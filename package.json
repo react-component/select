@@ -35,6 +35,14 @@
     "prepublish": "rc-tools run guard",
     "coverage": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
+  "jest": {
+    "setupFiles": [
+      "tests/setup.js"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*"
+    ]
+  },
   "devDependencies": {
     "babel-jest": "^17.0.0",
     "babel-preset-es2015": "^6.18.0",
