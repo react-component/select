@@ -4,6 +4,7 @@ import { mount, render } from 'enzyme';
 import { renderToJson } from 'enzyme-to-json';
 import KeyCode from 'rc-util/lib/KeyCode';
 import Select, { Option, OptGroup } from '../src';
+import { castNumber } from './util';
 
 describe('Select', () => {
   describe('render', () => {
@@ -12,7 +13,7 @@ describe('Select', () => {
         prefixCls="antd"
         className="select-test"
         openClassName="open-test"
-        value="2"
+        value={castNumber('2')}
         placeholder="Select a number"
         showArrow
         allowClear
@@ -45,28 +46,47 @@ describe('Select', () => {
       const dropdownWrapper = render(wrapper.find('Trigger').node.getComponent());
       expect(renderToJson(dropdownWrapper)).toMatchSnapshot();
     });
+
+    it('renders default value correctly', () => {
+      const wrapper = render(
+        <Select defaultValue={castNumber('2')}>
+          <Option value={castNumber('1')}>1</Option>
+          <Option value={castNumber('2')}>2</Option>
+        </Select>
+      );
+
+      expect(renderToJson(wrapper)).toMatchSnapshot();
+    });
   });
 
   it('convert value to array', () => {
     const wrapper = mount(
-      <Select value="1">
+      <Select value={castNumber('1')}>
         <OptGroup>
-          <Option value="1" title="一">1</Option>
+          <Option value={castNumber('1')} title="一">1</Option>
         </OptGroup>
       </Select>
     );
-    expect(wrapper.state().value).toEqual([{ key: '1', label: '1', title: '一' }]);
+    expect(wrapper.state().value).toEqual([{
+      key: castNumber('1'),
+      label: castNumber('1'),
+      title: '一',
+    }]);
   });
 
   it('convert defaultValue to array', () => {
     const wrapper = mount(
-      <Select defaultValue="1">
+      <Select defaultValue={castNumber('1')}>
         <OptGroup>
-          <Option value="1" title="一">1</Option>
+          <Option value={castNumber('1')} title="一">1</Option>
         </OptGroup>
       </Select>
     );
-    expect(wrapper.state().value).toEqual([{ key: '1', label: '1', title: '一' }]);
+    expect(wrapper.state().value).toEqual([{
+      key: castNumber('1'),
+      label: castNumber('1'),
+      title: '一',
+    }]);
   });
 
   it('not add open className when result is empty and no notFoundContent given', () => {
@@ -78,36 +98,11 @@ describe('Select', () => {
     expect(select.props().className).not.toContain('-open');
   });
 
-  it('should default select the right option', () => {
-    const wrapper = mount(
-      <Select defaultValue="2">
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
-      </Select>
-    );
-    wrapper.find('.rc-select').simulate('click');
-    const dropdownWrapper = mount(wrapper.find('Trigger').node.getComponent());
-    expect(dropdownWrapper.find('Menu').props().selectedKeys).toEqual(['2']);
-  });
-
-  it('should can select multiple items', () => {
-    const wrapper = mount(
-      <Select multiple value={['1', '2']}>
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
-        <Option value="3">2</Option>
-      </Select>
-    );
-    wrapper.find('.rc-select').simulate('click');
-    const dropdownWrapper = mount(wrapper.find('Trigger').node.getComponent());
-    expect(dropdownWrapper.find('Menu').props().selectedKeys).toEqual(['1', '2']);
-  });
-
   it('should hide clear button', () => {
     const wrapper = mount(
       <Select allowClear>
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+        <Option value={castNumber('1')}>1</Option>
+        <Option value={castNumber('2')}>2</Option>
       </Select>
     );
     expect(wrapper.find('.rc-select-selection__clear').props().style.display).toBe('none');
@@ -116,8 +111,8 @@ describe('Select', () => {
   it('should not response click event when select is disabled', () => {
     const wrapper = mount(
       <Select disabled defaultValue="2">
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+        <Option value={castNumber('1')}>1</Option>
+        <Option value={castNumber('2')}>2</Option>
       </Select>
     );
     wrapper.find('.rc-select').simulate('click');
@@ -126,34 +121,34 @@ describe('Select', () => {
 
   it('should show selected value in singleMode when close', () => {
     const wrapper = mount(
-      <Select value="1">
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+      <Select value={castNumber('1')}>
+        <Option value={castNumber('1')}>1</Option>
+        <Option value={castNumber('2')}>2</Option>
       </Select>
     );
-
-    expect(wrapper.find('.rc-select-selection-selected-value').props().children).toBe('1');
+    const selected = wrapper.find('.rc-select-selection-selected-value');
+    expect(selected.props().children).toBe(castNumber('1'));
   });
 
   it('filter options by values', () => {
     const wrapper = mount(
       <Select>
-        <Option value="1">One</Option>
-        <Option value="2">Two</Option>
+        <Option value={castNumber('1')}>One</Option>
+        <Option value={castNumber('2')}>Two</Option>
       </Select>
     );
 
     wrapper.find('input').simulate('change', { target: { value: '1' } });
     const dropdownWrapper = mount(wrapper.find('Trigger').node.getComponent());
     expect(dropdownWrapper.find('MenuItem').length).toBe(1);
-    expect(dropdownWrapper.find('MenuItem').props().value).toBe('1');
+    expect(dropdownWrapper.find('MenuItem').props().value).toBe(castNumber('1'));
   });
 
   it('specify which prop to filter', () => {
     const wrapper = mount(
       <Select optionFilterProp="label">
-        <Option value="1" label="One">1</Option>
-        <Option value="2" label="Two">2</Option>
+        <Option value={castNumber('1')} label="One">1</Option>
+        <Option value={castNumber('2')} label="Two">2</Option>
       </Select>
     );
 
@@ -161,14 +156,14 @@ describe('Select', () => {
     const dropdownWrapper = mount(wrapper.find('Trigger').node.getComponent());
 
     expect(dropdownWrapper.find('MenuItem').length).toBe(1);
-    expect(dropdownWrapper.find('MenuItem').props().value).toBe('2');
+    expect(dropdownWrapper.find('MenuItem').props().value).toBe(castNumber('2'));
   });
 
   it('no search', () => {
     const wrapper = render(
-      <Select showSearch={false} value="1">
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+      <Select showSearch={false} value={castNumber('1')}>
+        <Option value={castNumber('1')}>1</Option>
+        <Option value={castNumber('2')}>2</Option>
       </Select>
     );
 
@@ -177,9 +172,9 @@ describe('Select', () => {
 
   it('open dropdown on down key press', () => {
     const wrapper = mount(
-      <Select value="1">
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+      <Select value={castNumber('1')}>
+        <Option value={castNumber('1')}>1</Option>
+        <Option value={castNumber('2')}>2</Option>
       </Select>
     );
 
@@ -191,12 +186,12 @@ describe('Select', () => {
     const handleChange = jest.fn();
     const wrapper = mount(
       <Select
-        value="1"
+        value={castNumber('1')}
         allowClear
         onChange={handleChange}
       >
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+        <Option value={castNumber('1')}>1</Option>
+        <Option value={castNumber('2')}>2</Option>
       </Select>
     );
 
@@ -214,15 +209,15 @@ describe('Select', () => {
         labelInValue
         optionLabelProp="children"
       >
-        <Option value="1">One</Option>
-        <Option value="2">Two</Option>
+        <Option value={castNumber('1')}>One</Option>
+        <Option value={castNumber('2')}>Two</Option>
       </Select>
     );
 
     wrapper.find('.rc-select').simulate('click');
     const dropdownWrapper = mount(wrapper.find('Trigger').node.getComponent());
     dropdownWrapper.find('MenuItem').first().simulate('click');
-    expect(handleChange).toBeCalledWith({ key: '1', label: 'One' });
+    expect(handleChange).toBeCalledWith({ key: castNumber('1'), label: 'One' });
   });
 
   it('fires search event when user input', () => {
@@ -232,8 +227,8 @@ describe('Select', () => {
         showSearch
         onSearch={handleSearch}
       >
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+        <Option value={castNumber('1')}>1</Option>
+        <Option value={castNumber('2')}>2</Option>
       </Select>
     );
 
@@ -248,8 +243,8 @@ describe('Select', () => {
       handleFocus = jest.fn();
       wrapper = mount(
         <Select onFocus={handleFocus}>
-          <Option value="1">1</Option>
-          <Option value="2">2</Option>
+          <Option value={castNumber('1')}>1</Option>
+          <Option value={castNumber('2')}>2</Option>
         </Select>
       );
       wrapper.find('div').first().simulate('focus');
@@ -282,8 +277,8 @@ describe('Select', () => {
           onBlur={handleBlur}
           showSearch
         >
-          <Option value="1">1</Option>
-          <Option value="2">2</Option>
+          <Option value={castNumber('1')}>1</Option>
+          <Option value={castNumber('2')}>2</Option>
         </Select>
       );
       jest.useFakeTimers();
@@ -316,8 +311,8 @@ describe('Select', () => {
     beforeEach(() => {
       wrapper = mount(
         <Select>
-          <Option value="1">1</Option>
-          <Option value="2">2</Option>
+          <Option value={castNumber('1')}>1</Option>
+          <Option value={castNumber('2')}>2</Option>
         </Select>
       );
       instance = wrapper.instance();
@@ -372,7 +367,7 @@ describe('Select', () => {
   it('close after select', () => {
     const wrapper = mount(
       <Select>
-        <Option value="1">1</Option>
+        <Option value={castNumber('1')}>1</Option>
       </Select>
     );
 
@@ -387,7 +382,7 @@ describe('Select', () => {
   it('open by arrow click', () => {
     const wrapper = mount(
       <Select>
-        <Option value="1">1</Option>
+        <Option value={castNumber('1')}>1</Option>
       </Select>
     );
 
@@ -398,7 +393,7 @@ describe('Select', () => {
   it('focus input when placeholder is clicked', () => {
     const wrapper = mount(
       <Select placeholder="select">
-        <Option value="1">1</Option>
+        <Option value={castNumber('1')}>1</Option>
       </Select>
     );
 

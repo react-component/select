@@ -52,7 +52,7 @@ export function preventDefaultEvent(e) {
 export function findIndexInValueByKey(value, key) {
   let index = -1;
   for (let i = 0; i < value.length; i++) {
-    if (value[i].key === key) {
+    if (String(value[i].key) === String(key)) {
       index = i;
       break;
     }

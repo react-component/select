@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 export default class Option extends React.Component {
   static propTypes = {
-    value: React.PropTypes.string,
+    value: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
   };
 }
