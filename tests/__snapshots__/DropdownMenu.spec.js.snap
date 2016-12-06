@@ -12,8 +12,8 @@ exports[`DropdownMenu renders correctly 1`] = `
       <ul
         class="undefined-menu-item-group-list">
         <li
-          aria-selected="false"
-          class="undefined-menu-item"
+          aria-selected="true"
+          class="undefined-menu-item-selected undefined-menu-item"
           role="menuitem">
           1
         </li>

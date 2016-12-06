@@ -70,7 +70,7 @@
     "rc-animate": "2.x",
     "rc-menu": "5.x || 4.x",
     "rc-trigger": "1.x",
-    "rc-util": "3.x",
+    "rc-util": "4.x",
     "warning": "2.x"
   },
   "pre-commit": [
