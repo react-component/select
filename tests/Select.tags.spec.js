@@ -26,6 +26,20 @@ describe('Select.tags', () => {
     expect(wrapper.state().value).toEqual([{ key: 'foo', label: 'foo', title: undefined }]);
   });
 
+  it('tags could comstomize input element', () => {
+    const wrapper = mount(
+      <Select tags getInputElement={() => <textarea />} />
+    );
+
+    expect(wrapper.find('textarea').length).toBe(1);
+
+    wrapper.find('textarea')
+      .simulate('change', { target: { value: 'foo' } })
+      .simulate('keyDown', { keyCode: KeyCode.ENTER });
+
+    expect(wrapper.state().value).toEqual([{ key: 'foo', label: 'foo', title: undefined }]);
+  });
+
   it('tokenize input', () => {
     const handleChange = jest.fn();
     const wrapper = mount(
