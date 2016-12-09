@@ -329,7 +329,7 @@ const Select = React.createClass({
   onArrowClick(e) {
     e.stopPropagation();
     if (!this.props.disabled) {
-      this.setOpenState(!this.state.open, true);
+      this.setOpenState(!this.state.open, !this.state.open);
     }
   },
 
@@ -936,7 +936,6 @@ const Select = React.createClass({
                 className={`${prefixCls}-arrow`}
                 style={UNSELECTABLE_STYLE}
                 {...UNSELECTABLE_ATTRIBUTE}
-                onMouseDown={preventDefaultEvent}
                 onClick={this.onArrowClick}
               >
               <b />
