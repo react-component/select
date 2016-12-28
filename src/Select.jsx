@@ -266,6 +266,10 @@ const Select = React.createClass({
     }
   },
 
+  onInputBlur() {
+    this.setState({ open: false });
+  },
+
   onMenuSelect({ item }) {
     let value = this.state.value;
     const props = this.props;
@@ -511,6 +515,7 @@ const Select = React.createClass({
         ref={this.saveInputRef}
         onChange={this.onInputChange}
         onKeyDown={this.onInputKeyDown}
+        onBlur={this.onInputBlur}
         value={this.state.inputValue}
         disabled={props.disabled}
         className={`${props.prefixCls}-search__field`}
