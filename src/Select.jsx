@@ -162,8 +162,7 @@ const Select = React.createClass({
   },
 
   componentDidUpdate() {
-    const { state, props } = this;
-    if (state.open && isMultipleOrTags(props)) {
+    if (isMultipleOrTags(this.props)) {
       const inputNode = this.getInputDOMNode();
       const mirrorNode = this.getInputMirrorDOMNode();
       if (inputNode.value) {
