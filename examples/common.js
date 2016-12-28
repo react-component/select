@@ -21289,10 +21289,7 @@
 	    this.adjustOpenState();
 	  },
 	  componentDidUpdate: function componentDidUpdate() {
-	    var state = this.state,
-	        props = this.props;
-	
-	    if (state.open && (0, _util.isMultipleOrTags)(props)) {
+	    if ((0, _util.isMultipleOrTags)(this.props)) {
 	      var inputNode = this.getInputDOMNode();
 	      var mirrorNode = this.getInputMirrorDOMNode();
 	      if (inputNode.value) {
