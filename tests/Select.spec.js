@@ -408,4 +408,20 @@ describe('Select', () => {
 
     expect(input.focus).toBeCalled();
   });
+
+  it('combox could comstomize input element', () => {
+    const wrapper = mount(
+      <Select combobox getInputElement={() => <textarea />}>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>
+    );
+
+    expect(wrapper.find('textarea').length).toBe(1);
+    wrapper.find('.rc-select').simulate('click');
+    const dropdownWrapper = mount(wrapper.find('Trigger').node.getComponent());
+
+    dropdownWrapper.find('MenuItem').first().simulate('click');
+    expect(wrapper.state().inputValue).toBe('1');
+  });
 });

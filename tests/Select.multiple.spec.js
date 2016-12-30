@@ -49,43 +49,4 @@ describe('Select.multiple', () => {
     expect(wrapper.state().open).toBe(false);
     expect(input.node.focus).toBeCalled();
   });
-
-  it('multiple could comstomize input element', () => {
-    const handleChange = jest.fn();
-    const wrapper = mount(
-      <Select
-        multiple
-        optionLabelProp="children"
-        tokenSeparators={[',']}
-        onChange={handleChange}
-        getInputElement={() => <textarea />}
-      >
-        <OptGroup key="group1">
-          <Option value="1">One</Option>
-        </OptGroup>
-        <OptGroup key="group2">
-          <Option value="2">Two</Option>
-        </OptGroup>
-      </Select>,
-    );
-    const input = wrapper.find('textarea');
-    input.node.focus = jest.fn();
-
-    input.simulate('change', { target: {
-      value: 'One',
-    } });
-
-    input.simulate('change', { target: {
-      value: 'One,Two,Three',
-    } });
-
-    expect(handleChange).toBeCalledWith(['1', '2']);
-    expect(wrapper.state().value).toEqual([
-      { key: '1', label: 'One' },
-      { key: '2', label: 'Two' },
-    ]);
-    expect(wrapper.state().inputValue).toBe('');
-    expect(wrapper.state().open).toBe(false);
-    expect(input.node.focus).toBeCalled();
-  });
 });
