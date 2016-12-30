@@ -77,6 +77,7 @@ const Select = React.createClass({
     dropdownStyle: PropTypes.object,
     maxTagTextLength: PropTypes.number,
     tokenSeparators: PropTypes.arrayOf(PropTypes.string),
+    getInputElement: PropTypes.func,
   },
 
   mixins: [FilterMixin],
