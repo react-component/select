@@ -97,6 +97,7 @@ React.render(c, container);
 |onDeselect | called when a option is deselected. param is option's value. only called for multiple or tags | Function(value) | - |
 |defaultActiveFirstOption | whether active first option by default | bool | true |
 |getPopupContainer | container which popup select menu rendered into | function(trigger:Node):Node | function(){return document.body;} |
+|getInputElement| customize input element | function(): Element | - |
 
 ### Option props
 

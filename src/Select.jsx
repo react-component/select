@@ -77,6 +77,7 @@ const Select = React.createClass({
     dropdownStyle: PropTypes.object,
     maxTagTextLength: PropTypes.number,
     tokenSeparators: PropTypes.arrayOf(PropTypes.string),
+    getInputElement: PropTypes.func,
   },
 
   mixins: [FilterMixin],
@@ -506,15 +507,19 @@ const Select = React.createClass({
 
   getInputElement() {
     const props = this.props;
+    const inputElement = props.getInputElement ? props.getInputElement() : <input />;
+    const inputCls = classnames(inputElement.props.className, {
+      [`${props.prefixCls}-search__field`]: true,
+    });
     return (<div className={`${props.prefixCls}-search__field__wrap`}>
-      <input
-        ref={this.saveInputRef}
-        onChange={this.onInputChange}
-        onKeyDown={this.onInputKeyDown}
-        value={this.state.inputValue}
-        disabled={props.disabled}
-        className={`${props.prefixCls}-search__field`}
-      />
+      {React.cloneElement(inputElement, {
+        ref: this.saveInputRef,
+        onChange: this.onInputChange,
+        onKeyDown: this.onInputKeyDown,
+        value: this.state.inputValue,
+        disabled: props.disabled,
+        className: inputCls,
+      })}
       <span
         ref={this.saveInputMirrorRef}
         className={`${props.prefixCls}-search__field__mirror`}
