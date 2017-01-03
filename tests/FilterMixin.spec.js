@@ -6,6 +6,7 @@ import OptGroup from '../src/OptGroup';
 import Option from '../src/Option';
 import { render, mount } from 'enzyme';
 import { renderToJson } from 'enzyme-to-json';
+import { castNumber } from './util';
 
 describe('FilterMixin', () => {
   const Select = React.createClass({
@@ -35,19 +36,19 @@ describe('FilterMixin', () => {
 
   describe('renderFilterOptionsFromChildren', () => {
     const filterFn = (input, child) => {
-      return child.props.value.includes(input);
+      return String(child.props.value).includes(input);
     };
 
     it('renders options correctly', () => {
       const wrapper = render(
         <Select inputValue="1">
           <OptGroup label="group1">
-            <Option value="1">1</Option>
-            <Option value="2">2</Option>
+            <Option value={castNumber('1')}>1</Option>
+            <Option value={castNumber('2')}>2</Option>
           </OptGroup>
           <OptGroup label="group2">
-            <Option value="3" disabled>3</Option>
-            <Option value="4">4</Option>
+            <Option value={castNumber('3')} disabled>3</Option>
+            <Option value={castNumber('4')}>4</Option>
           </OptGroup>
         </Select>
       );
@@ -59,8 +60,8 @@ describe('FilterMixin', () => {
       const wrapper = mount(
         <Select>
           <OptGroup key="group1">
-            <Option value="1">1</Option>
-            <Option value="2">2</Option>
+            <Option value={castNumber('1')}>1</Option>
+            <Option value={castNumber('2')}>2</Option>
           </OptGroup>
         </Select>
       );
@@ -71,9 +72,9 @@ describe('FilterMixin', () => {
     it('filters children by inputValue', () => {
       const wrapper = render(
         <Select inputValue="1" filterOption={filterFn}>
-          <Option value="1">1</Option>
-          <Option value="2">2</Option>
-          <Option value="11" disabled>11</Option>
+          <Option value={castNumber('1')}>1</Option>
+          <Option value={castNumber('2')}>2</Option>
+          <Option value={castNumber('11')} disabled>11</Option>
         </Select>
       );
 
@@ -83,8 +84,8 @@ describe('FilterMixin', () => {
     it('renders not found when search result is empty', () => {
       const wrapper = render(
         <Select inputValue="3" filterOption={filterFn} notFoundContent="not found">
-          <Option value="1">1</Option>
-          <Option value="2">2</Option>
+          <Option value={castNumber('1')}>1</Option>
+          <Option value={castNumber('2')}>2</Option>
         </Select>
       );
 
@@ -94,9 +95,9 @@ describe('FilterMixin', () => {
     describe('tag mode', () => {
       it('renders unlisted item in value', () => {
         const wrapper = render(
-          <Select tags value="3">
-            <Option value="1">1</Option>
-            <Option value="2">2</Option>
+          <Select tags value={castNumber('3')}>
+            <Option value={castNumber('1')}>1</Option>
+            <Option value={castNumber('2')}>2</Option>
           </Select>
         );
 
@@ -105,8 +106,8 @@ describe('FilterMixin', () => {
 
       it('renders search value when not fount', () => {
         const wrapper = render(
-          <Select tags value="22" inputValue="2" filterOption={filterFn}>
-            <Option value="1">1</Option>
+          <Select tags value={castNumber('22')} inputValue="2" filterOption={filterFn}>
+            <Option value={castNumber('1')}>1</Option>
           </Select>
         );
 

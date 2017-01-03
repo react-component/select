@@ -5,6 +5,7 @@ import Select, { Option, OptGroup } from '../src';
 import blurTest from './shared/blurTest';
 import renderTest from './shared/renderTest';
 import removeSelectedTest from './shared/removeSelectedTest';
+import { castNumber } from './util';
 
 describe('Select.multiple', () => {
   blurTest('multiple');
@@ -21,10 +22,10 @@ describe('Select.multiple', () => {
         onChange={handleChange}
       >
         <OptGroup key="group1">
-          <Option value="1">One</Option>
+          <Option value={castNumber('1')}>One</Option>
         </OptGroup>
         <OptGroup key="group2">
-          <Option value="2">Two</Option>
+          <Option value={castNumber('2')}>Two</Option>
         </OptGroup>
       </Select>,
     );
@@ -40,10 +41,10 @@ describe('Select.multiple', () => {
       value: 'One,Two,Three',
     } });
 
-    expect(handleChange).toBeCalledWith(['1', '2']);
+    expect(handleChange).toBeCalledWith([castNumber('1'), castNumber('2')]);
     expect(wrapper.state().value).toEqual([
-      { key: '1', label: 'One' },
-      { key: '2', label: 'Two' },
+      { key: castNumber('1'), label: 'One' },
+      { key: castNumber('2'), label: 'Two' },
     ]);
     expect(wrapper.state().inputValue).toBe('');
     expect(wrapper.state().open).toBe(false);

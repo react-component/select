@@ -87,7 +87,7 @@ export default {
       }));
       if (inputValue) {
         const notFindInputItem = sel.every((option) => {
-          return getValuePropValue(option) !== inputValue;
+          return String(getValuePropValue(option)) !== inputValue;
         });
         if (notFindInputItem) {
           sel.unshift(<MenuItem

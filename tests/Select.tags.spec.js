@@ -6,6 +6,7 @@ import Select, { Option } from '../src';
 import blurTest from './shared/blurTest';
 import renderTest from './shared/renderTest';
 import removeSelectedTest from './shared/removeSelectedTest';
+import { castNumber } from './util';
 
 jest.unmock('react-dom');
 
@@ -34,8 +35,8 @@ describe('Select.tags', () => {
         tokenSeparators={[',']}
         onChange={handleChange}
       >
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+        <Option value={castNumber('1')}>1</Option>
+        <Option value={castNumber('2')}>2</Option>
       </Select>,
     );
 
@@ -53,5 +54,24 @@ describe('Select.tags', () => {
     expect(wrapper.state().inputValue).toBe('');
     expect(wrapper.state().open).toBe(false);
     expect(input.node.focus).toBeCalled();
+  });
+
+  it('treats number as string', () => {
+    const wrapper = mount(
+      <Select tags>
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>
+    );
+
+    wrapper.find('input')
+      .simulate('change', { target: { value: '1' } })
+      .simulate('keyDown', { keyCode: KeyCode.ENTER });
+
+    expect(wrapper.state().value).toEqual([{
+      key: 1,
+      label: 1,
+      title: undefined,
+    }]);
   });
 });

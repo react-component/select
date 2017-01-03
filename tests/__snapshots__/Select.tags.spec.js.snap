@@ -1,4 +1,4 @@
-exports[`Select.tags render render animation 1`] = `
+exports[`Select.tags render renders animation correctly 1`] = `
 <SelectTrigger
   defaultActiveFirstOption={true}
   dropdownMatchSelectWidth={true}
@@ -57,6 +57,60 @@ exports[`Select.tags render render animation 1`] = `
     </div>
   </div>
 </SelectTrigger>
+`;
+
+exports[`Select.tags render renders value correctly 1`] = `
+<div
+  class="rc-select rc-select-enabled">
+  <div
+    aria-autocomplete="list"
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="rc-select-selection
+              rc-select-selection--multiple"
+    role="combobox">
+    <div
+      class="rc-select-selection__rendered">
+      <ul>
+        <li
+          class="rc-select-selection__choice"
+          style="user-select:none;-webkit-user-select:none;"
+          title="1"
+          unselectable="unselectable">
+          <div
+            class="rc-select-selection__choice__content">
+            1
+          </div>
+          <span
+            class="rc-select-selection__choice__remove" />
+        </li>
+        <li
+          class="rc-select-selection__choice"
+          style="user-select:none;-webkit-user-select:none;"
+          title="2"
+          unselectable="unselectable">
+          <div
+            class="rc-select-selection__choice__content">
+            2
+          </div>
+          <span
+            class="rc-select-selection__choice__remove" />
+        </li>
+        <li
+          class="rc-select-search rc-select-search--inline">
+          <div
+            class="rc-select-search__field__wrap">
+            <input
+              class="rc-select-search__field"
+              value="" />
+            <span
+              class="rc-select-search__field__mirror" />
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`Select.tags render truncates values by maxTagTextLength 1`] = `

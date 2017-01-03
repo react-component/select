@@ -3,13 +3,14 @@ import React from 'react';
 import Select, { Option } from '../src';
 import { mount, render } from 'enzyme';
 import { renderToJson } from 'enzyme-to-json';
+import { castNumber } from './util';
 
 describe('Select.combobox', () => {
   it('renders correctly', () => {
     const wrapper = render(
       <Select combobox placeholder="Search">
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+        <Option value={castNumber('1')}>1</Option>
+        <Option value={castNumber('2')}>2</Option>
       </Select>
     );
 
@@ -18,9 +19,9 @@ describe('Select.combobox', () => {
 
   it('set inputValue based on value', () => {
     const wrapper = mount(
-      <Select combobox value="1">
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+      <Select combobox value={castNumber('1')}>
+        <Option value={castNumber('1')}>1</Option>
+        <Option value={castNumber('2')}>2</Option>
       </Select>
     );
 
@@ -35,12 +36,12 @@ describe('Select.combobox', () => {
         value={{ value: '', key: '' }}
         optionLabelProp="children"
       >
-        <Option value="1">One</Option>
-        <Option value="2">Two</Option>
+        <Option value={castNumber('1')}>One</Option>
+        <Option value={castNumber('2')}>Two</Option>
       </Select>
     );
 
-    wrapper.setProps({ value: { label: 'One', key: '1' } });
+    wrapper.setProps({ value: { label: 'One', key: castNumber('1') } });
     expect(wrapper.find('input').props().value).toBe('One');
   });
 
@@ -48,8 +49,8 @@ describe('Select.combobox', () => {
     const handleChange = jest.fn();
     const wrapper = mount(
       <Select combobox onChange={handleChange}>
-        <Option value="11">11</Option>
-        <Option value="22">22</Option>
+        <Option value={castNumber('11')}>11</Option>
+        <Option value={castNumber('22')}>22</Option>
       </Select>
     );
 
@@ -61,8 +62,8 @@ describe('Select.combobox', () => {
   it('set inputValue when user select a option', () => {
     const wrapper = mount(
       <Select combobox>
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+        <Option value={castNumber('1')}>1</Option>
+        <Option value={castNumber('2')}>2</Option>
       </Select>
     );
 

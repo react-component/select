@@ -33,8 +33,13 @@ let valueObjectShape;
 if (PropTypes) {
   valueObjectShape = PropTypes.oneOfType([
     PropTypes.string,
+    PropTypes.number,
     PropTypes.shape({
       key: PropTypes.string,
+      label: PropTypes.node,
+    }),
+    PropTypes.shape({
+      key: PropTypes.number,
       label: PropTypes.node,
     }),
   ]);
@@ -312,7 +317,7 @@ const Select = React.createClass({
     this.fireChange(value);
     let inputValue;
     if (isCombobox(props)) {
-      inputValue = getPropValue(item, props.optionLabelProp);
+      inputValue = String(getPropValue(item, props.optionLabelProp));
     } else {
       inputValue = '';
     }
