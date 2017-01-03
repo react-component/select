@@ -21129,9 +21129,9 @@
 	
 	var _KeyCode2 = _interopRequireDefault(_KeyCode);
 	
-	var _classnames = __webpack_require__(225);
+	var _classnames2 = __webpack_require__(225);
 	
-	var _classnames2 = _interopRequireDefault(_classnames);
+	var _classnames3 = _interopRequireDefault(_classnames2);
 	
 	var _OptGroup = __webpack_require__(226);
 	
@@ -21208,7 +21208,8 @@
 	    defaultValue: _react.PropTypes.oneOfType([valueObjectShape, _react.PropTypes.arrayOf(valueObjectShape)]),
 	    dropdownStyle: _react.PropTypes.object,
 	    maxTagTextLength: _react.PropTypes.number,
-	    tokenSeparators: _react.PropTypes.arrayOf(_react.PropTypes.string)
+	    tokenSeparators: _react.PropTypes.arrayOf(_react.PropTypes.string),
+	    getInputElement: _react.PropTypes.func
 	  },
 	
 	  mixins: [_FilterMixin2.default],
@@ -21634,16 +21635,18 @@
 	  },
 	  getInputElement: function getInputElement() {
 	    var props = this.props;
+	    var inputElement = props.getInputElement ? props.getInputElement() : _react2.default.createElement('input', null);
+	    var inputCls = (0, _classnames3.default)(inputElement.props.className, (0, _defineProperty3.default)({}, props.prefixCls + '-search__field', true));
 	    return _react2.default.createElement(
 	      'div',
 	      { className: props.prefixCls + '-search__field__wrap' },
-	      _react2.default.createElement('input', {
+	      _react2.default.cloneElement(inputElement, {
 	        ref: this.saveInputRef,
 	        onChange: this.onInputChange,
 	        onKeyDown: this.onInputKeyDown,
 	        value: this.state.inputValue,
 	        disabled: props.disabled,
-	        className: props.prefixCls + '-search__field'
+	        className: inputCls
 	      }),
 	      _react2.default.createElement(
 	        'span',
@@ -22075,7 +22078,7 @@
 	          ref: 'root',
 	          onBlur: this.onOuterBlur,
 	          onFocus: this.onOuterFocus,
-	          className: (0, _classnames2.default)(rootCls)
+	          className: (0, _classnames3.default)(rootCls)
 	        },
 	        _react2.default.createElement(
 	          'div',
