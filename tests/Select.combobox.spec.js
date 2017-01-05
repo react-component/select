@@ -27,23 +27,6 @@ describe('Select.combobox', () => {
     expect(wrapper.state().inputValue).toBe('1');
   });
 
-  it('display correct label when value changes', () => {
-    const wrapper = mount(
-      <Select
-        combobox
-        labelInValue
-        value={{ value: '', key: '' }}
-        optionLabelProp="children"
-      >
-        <Option value="1">One</Option>
-        <Option value="2">Two</Option>
-      </Select>
-    );
-
-    wrapper.setProps({ value: { label: 'One', key: '1' } });
-    expect(wrapper.find('input').props().value).toBe('One');
-  });
-
   it('fire change event immediately when user inputing', () => {
     const handleChange = jest.fn();
     const wrapper = mount(
@@ -71,5 +54,61 @@ describe('Select.combobox', () => {
 
     dropdownWrapper.find('MenuItem').first().simulate('click');
     expect(wrapper.state().inputValue).toBe('1');
+  });
+
+  describe('input value', () => {
+    const createSelect = (props) => mount(
+      <Select
+        combobox
+        optionLabelProp="children"
+        {...props}
+      >
+        <Option value="1">One</Option>
+        <Option value="2">Two</Option>
+      </Select>
+    );
+
+    describe('labelInValue is false', () => {
+      it('displays correct input value for defaultValue', () => {
+        const wrapper = createSelect({
+          defaultValue: '1',
+        });
+        expect(wrapper.find('input').props().value).toBe('One');
+      });
+
+      it('displays correct input value for value', () => {
+        const wrapper = createSelect({
+          value: '1',
+        });
+        expect(wrapper.find('input').props().value).toBe('One');
+      });
+    });
+
+    describe('labelInValue is true', () => {
+      it('displays correct input value for defaultValue', () => {
+        const wrapper = createSelect({
+          labelInValue: true,
+          defaultValue: { key: '1', label: 'One' },
+        });
+        expect(wrapper.find('input').props().value).toBe('One');
+      });
+
+      it('displays correct input value for value', () => {
+        const wrapper = createSelect({
+          labelInValue: true,
+          value: { key: '1', label: 'One' },
+        });
+        expect(wrapper.find('input').props().value).toBe('One');
+      });
+
+      it('displays correct input value when value changes', () => {
+        const wrapper = createSelect({
+          labelInValue: true,
+          value: { key: '' },
+        });
+        wrapper.setProps({ value: { key: '1', label: 'One' } });
+        expect(wrapper.find('input').props().value).toBe('One');
+      });
+    });
   });
 });
