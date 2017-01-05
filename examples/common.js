@@ -21252,7 +21252,7 @@
 	    value = this.addTitleToValue(props, value);
 	    var inputValue = '';
 	    if (props.combobox) {
-	      inputValue = value.length ? String(value[0].key) : '';
+	      inputValue = value.length ? this.getLabelFromProps(props, value[0].key) : '';
 	    }
 	    this.saveInputRef = saveRef.bind(this, 'inputInstance');
 	    this.saveInputMirrorRef = saveRef.bind(this, 'inputMirrorInstance');
