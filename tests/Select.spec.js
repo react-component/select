@@ -202,7 +202,7 @@ describe('Select', () => {
 
     wrapper.find('input').simulate('change', { target: { value: 'foo' } });
     wrapper.find('.rc-select-selection__clear').simulate('click');
-    expect(handleChange).toBeCalledWith(undefined);
+    expect(handleChange).toBeCalledWith(undefined, undefined);
     expect(wrapper.state().inputValue).toBe('');
   });
 
@@ -297,7 +297,7 @@ describe('Select', () => {
     });
 
     it('fires change event', () => {
-      expect(handleChange).toBeCalledWith('1');
+      expect(handleChange).toBeCalledWith('1', { key: '1', label: '1' });
     });
 
     it('fires blur event', () => {

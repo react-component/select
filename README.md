@@ -89,7 +89,7 @@ React.render(c, container);
 |defaultValue | initial selected option(s) | String/Array<String> | - |
 |value | current selected option(s) | String/Array<String>/{key:String, label:React.Node}/Array<{key, label}> | - |
 |labelInValue| whether to embed label in value, see above value type | Bool | false |
-|onChange | called when select an option or input value change(combobox) | function(value) | - |
+|onChange | called when select an option or input value change(combobox) | function(value, option: Option | Array<Option>) | - |
 |onSearch | called when input changed | function | - |
 |onBlur | called when blur | function | - |
 |onFocus | called when focus | function | - |

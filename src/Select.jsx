@@ -690,7 +690,16 @@ const Select = React.createClass({
         value,
       });
     }
-    props.onChange(this.getVLForOnChange(value));
+    if (isSingleMode(props) && !props.labelInValue) {
+      props.onChange(
+        this.getVLForOnChange(value),
+        value[0],
+      );
+    } else {
+      props.onChange(
+        this.getVLForOnChange(value),
+      );
+    }
   },
 
   isChildDisabled(key) {
