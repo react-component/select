@@ -134,3 +134,13 @@ export function splitBySeparators(string, separators) {
   }
   return array;
 }
+
+export function findChildByKey(children, key) {
+  let child = null;
+  React.Children.forEach(children, child_ => {
+    if (child_.key === key || child_.props.value === key) {
+      child = child_;
+    }
+  });
+  return child;
+}

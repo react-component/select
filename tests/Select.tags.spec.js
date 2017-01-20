@@ -44,7 +44,7 @@ describe('Select.tags', () => {
 
     input.simulate('change', { target: { value: '2,3,4' } });
 
-    expect(handleChange).toBeCalledWith(['2', '3', '4']);
+    expect(handleChange).toBeCalledWith(['2', '3', '4'], <Option value="2">2</Option>);
     expect(wrapper.state().value).toEqual([
       { key: '2', label: '2' },
       { key: '3', label: '3' },

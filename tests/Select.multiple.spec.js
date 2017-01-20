@@ -40,7 +40,7 @@ describe('Select.multiple', () => {
       value: 'One,Two,Three',
     } });
 
-    expect(handleChange).toBeCalledWith(['1', '2']);
+    expect(handleChange).toBeCalledWith(['1', '2'], [null, null]);
     expect(wrapper.state().value).toEqual([
       { key: '1', label: 'One' },
       { key: '2', label: 'Two' },
