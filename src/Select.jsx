@@ -339,7 +339,10 @@ const Select = React.createClass({
     }
   },
 
-  onOuterFocus() {
+  onOuterFocus(e) {
+    if (e.target === this.getInputDOMNode()) {
+      return;
+    }
     this.clearBlurTime();
     this._focused = true;
     this.updateFocusClassName();
