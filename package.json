@@ -37,7 +37,7 @@
   },
   "jest": {
     "setupFiles": [
-      "tests/setup.js"
+      "./tests/setup.js"
     ],
     "collectCoverageFrom": [
       "src/**/*"
@@ -51,7 +51,7 @@
     "coveralls": "^2.11.15",
     "enzyme": "^2.6.0",
     "enzyme-to-json": "^1.3.0",
-    "jest": "^17.0.1",
+    "jest": "^18.1.0",
     "jsonp": "^0.2.0",
     "pre-commit": "1.x",
     "querystring": "^0.2.0",
