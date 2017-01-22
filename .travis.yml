@@ -8,6 +8,7 @@ notifications:
 
 node_js:
 - 4.0.0
+- node
 
 before_install:
 - |
