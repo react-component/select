@@ -46,6 +46,8 @@ exports[`Select.tags render render animation 1`] = `
               <input
                 className="rc-select-search__field"
                 onChange={[Function]}
+                onCompositionEnd={[Function]}
+                onCompositionStart={[Function]}
                 onKeyDown={[Function]}
                 value="" />
               <span
