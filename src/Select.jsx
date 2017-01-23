@@ -536,8 +536,8 @@ const Select = React.createClass({
         value: this.state.inputValue,
         disabled: props.disabled,
         className: inputCls,
-        onCompositionStart: props.dumbOnComposition ? this.onCompositionStart : null,
-        onCompositionEnd: props.dumbOnComposition ? this.onCompositionEnd : null,
+        onCompositionStart: props.dumbOnComposition ? this.onCompositionStart : noop,
+        onCompositionEnd: props.dumbOnComposition ? this.onCompositionEnd : noop,
       })}
       <span
         ref={this.saveInputMirrorRef}
