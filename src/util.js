@@ -1,4 +1,3 @@
-import { ItemGroup as MenuItemGroup } from 'rc-menu';
 import React from 'react';
 
 export function getValuePropValue(child) {
@@ -77,7 +76,7 @@ export function getSelectKeys(menuItems, value) {
   }
   let selectedKeys = [];
   React.Children.forEach(menuItems, (item) => {
-    if (item.type === MenuItemGroup) {
+    if (item.type.isMenuItemGroup) {
       selectedKeys = selectedKeys.concat(getSelectKeys(item.props.children, value));
     } else {
       const itemValue = getValuePropValue(item);
@@ -103,7 +102,7 @@ export const UNSELECTABLE_ATTRIBUTE = {
 export function findFirstMenuItem(children) {
   for (let i = 0; i < children.length; i++) {
     const child = children[i];
-    if (child.type === MenuItemGroup) {
+    if (child.type.isMenuItemGroup) {
       const found = findFirstMenuItem(child.props.children);
       if (found) {
         return found;

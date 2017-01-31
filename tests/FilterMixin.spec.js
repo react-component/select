@@ -91,6 +91,21 @@ describe('FilterMixin', () => {
       expect(renderToJson(wrapper)).toMatchSnapshot();
     });
 
+    it('warns on invalid children', () => {
+      const Foo = () => <div>foo</div>;
+      spyOn(console, 'error');
+      mount(
+        <Select>
+          <Foo value="1" />
+        </Select>
+      );
+      expect(console.error.calls.count()).toBe(1);
+      expect(console.error.calls.argsFor(0)[0]).toContain(
+        'the children of `Select` should be `Select.Option` or `Select.OptGroup`, ' +
+          `instead of \`Foo\`.`
+      );
+    });
+
     describe('tag mode', () => {
       it('renders unlisted item in value', () => {
         const wrapper = render(
