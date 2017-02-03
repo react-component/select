@@ -2,8 +2,6 @@ import React from 'react';
 import { getValuePropValue, UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE } from './util';
 import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
 import warning from 'warning';
-import OptGroup from './OptGroup';
-import Option from './Option';
 
 export default {
   filterOption(input, child) {
@@ -30,7 +28,7 @@ export default {
     const childrenKeys = [];
     const tags = props.tags;
     React.Children.forEach(children, (child) => {
-      if (child.type === OptGroup) {
+      if (child.type.isSelectOptGroup) {
         const innerItems = this.renderFilterOptionsFromChildren(child.props.children, false);
         if (innerItems.length) {
           let label = child.props.label;
@@ -48,7 +46,7 @@ export default {
       }
 
       warning(
-        child.type === Option,
+        child.type.isSelectOption,
         'the children of `Select` should be `Select.Option` or `Select.OptGroup`, ' +
           `instead of \`${child.type.name || child.type.displayName || child.type}\`.`
       );

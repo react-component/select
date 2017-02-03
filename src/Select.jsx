@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classnames from 'classnames';
-import OptGroup from './OptGroup';
 import Animate from 'rc-animate';
 import classes from 'component-classes';
 import {
@@ -411,7 +410,7 @@ const Select = React.createClass({
     }
     let label = null;
     React.Children.forEach(children, (child) => {
-      if (child.type === OptGroup) {
+      if (child.type.isSelectOptGroup) {
         const maybe = this.getLabelBySingleValue(child.props.children, value);
         if (maybe !== null) {
           label = maybe;
@@ -429,7 +428,7 @@ const Select = React.createClass({
     }
     let value = null;
     React.Children.forEach(children, (child) => {
-      if (child.type === OptGroup) {
+      if (child.type.isSelectOptGroup) {
         const maybe = this.getValueByLabel(child.props.children, label);
         if (maybe !== null) {
           value = maybe;
@@ -638,7 +637,7 @@ const Select = React.createClass({
     let nextValues = values;
     const keys = values.map(v => v.key);
     React.Children.forEach(props.children, (child) => {
-      if (child.type === OptGroup) {
+      if (child.type.isSelectOptGroup) {
         nextValues = this.addTitleToValue(child.props, nextValues);
       } else {
         const value = getValuePropValue(child);
