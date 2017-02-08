@@ -650,7 +650,11 @@ const Select = React.createClass({
     return nextValues;
   },
 
-  removeSelected(selectedKey) {
+  removeSelected(selectedKey, e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     const props = this.props;
     if (props.disabled || this.isChildDisabled(selectedKey)) {
       return;

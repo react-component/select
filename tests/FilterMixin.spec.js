@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-undef, no-console */
 import React, { PropTypes } from 'react';
 import FilterMixin from '../src/FilterMixin';
 import Menu from 'rc-menu';
