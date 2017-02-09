@@ -339,7 +339,7 @@ const Select = React.createClass({
   },
 
   onOuterFocus(e) {
-    if (e.target === this.getInputDOMNode()) {
+    if (!isMultipleOrTagsOrCombobox(this.props) && e.target === this.getInputDOMNode()) {
       return;
     }
     this.clearBlurTime();

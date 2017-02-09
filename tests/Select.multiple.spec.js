@@ -49,4 +49,20 @@ describe('Select.multiple', () => {
     expect(wrapper.state().open).toBe(false);
     expect(input.node.focus).toBeCalled();
   });
+
+  it('focus', () => {
+    const handleFocus = jest.fn();
+    const wrapper = mount(
+      <Select
+        multiple
+      >
+        <Option value="1">One</Option>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
+    wrapper.find('div').first().simulate('focus');
+    it('fires focus event', () => {
+      expect(handleFocus).toBeCalled();
+    });
+  });
 });

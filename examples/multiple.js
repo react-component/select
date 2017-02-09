@@ -70,6 +70,7 @@ const Test = React.createClass({
             onDeselect={onDeselect}
             placeholder="please select"
             onChange={this.onChange}
+            onFocus={() => console.log('focus')}
             tokenSeparators={[' ', ',']}
           >
             {children}
