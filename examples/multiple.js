@@ -3,12 +3,12 @@ webpackJsonp([6],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(353);
+	module.exports = __webpack_require__(352);
 
 
 /***/ },
 
-/***/ 353:
+/***/ 352:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21,7 +21,7 @@ webpackJsonp([6],{
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(332);
+	__webpack_require__(331);
 	
 	var _reactDom = __webpack_require__(33);
 	
@@ -109,6 +109,9 @@ webpackJsonp([6],{
 	            onDeselect: onDeselect,
 	            placeholder: 'please select',
 	            onChange: this.onChange,
+	            onFocus: function onFocus() {
+	              return console.log('focus');
+	            },
 	            tokenSeparators: [' ', ',']
 	          },
 	          children

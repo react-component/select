@@ -3,12 +3,12 @@ webpackJsonp([3],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(343);
+	module.exports = __webpack_require__(342);
 
 
 /***/ },
 
-/***/ 343:
+/***/ 342:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25,13 +25,13 @@ webpackJsonp([3],{
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(332);
+	__webpack_require__(331);
 	
-	var _rcDialog = __webpack_require__(344);
+	var _rcDialog = __webpack_require__(343);
 	
 	var _rcDialog2 = _interopRequireDefault(_rcDialog);
 	
-	__webpack_require__(350);
+	__webpack_require__(349);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -119,7 +119,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 344:
+/***/ 343:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -132,11 +132,11 @@ webpackJsonp([3],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _Dialog = __webpack_require__(345);
+	var _Dialog = __webpack_require__(344);
 	
 	var _Dialog2 = _interopRequireDefault(_Dialog);
 	
-	var _getContainerRenderMixin = __webpack_require__(349);
+	var _getContainerRenderMixin = __webpack_require__(348);
 	
 	var _getContainerRenderMixin2 = _interopRequireDefault(_getContainerRenderMixin);
 	
@@ -199,7 +199,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 345:
+/***/ 344:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -216,7 +216,7 @@ webpackJsonp([3],{
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _KeyCode = __webpack_require__(346);
+	var _KeyCode = __webpack_require__(345);
 	
 	var _KeyCode2 = _interopRequireDefault(_KeyCode);
 	
@@ -224,11 +224,11 @@ webpackJsonp([3],{
 	
 	var _rcAnimate2 = _interopRequireDefault(_rcAnimate);
 	
-	var _LazyRenderBox = __webpack_require__(347);
+	var _LazyRenderBox = __webpack_require__(346);
 	
 	var _LazyRenderBox2 = _interopRequireDefault(_LazyRenderBox);
 	
-	var _getScrollBarSize = __webpack_require__(348);
+	var _getScrollBarSize = __webpack_require__(347);
 	
 	var _getScrollBarSize2 = _interopRequireDefault(_getScrollBarSize);
 	
@@ -299,6 +299,7 @@ webpackJsonp([3],{
 	        };
 	    },
 	    componentWillMount: function componentWillMount() {
+	        this.inTransition = false;
 	        this.titleId = 'rcDialogTitle' + uuid++;
 	    },
 	    componentDidMount: function componentDidMount() {
@@ -310,6 +311,7 @@ webpackJsonp([3],{
 	        if (props.visible) {
 	            // first show
 	            if (!prevProps.visible) {
+	                this.openTime = Date.now();
 	                this.lastOutSideFocusNode = document.activeElement;
 	                this.addScrollingEffect();
 	                this.refs.wrap.focus();
@@ -322,6 +324,7 @@ webpackJsonp([3],{
 	                }
 	            }
 	        } else if (prevProps.visible) {
+	            this.inTransition = true;
 	            if (props.mask && this.lastOutSideFocusNode) {
 	                try {
 	                    this.lastOutSideFocusNode.focus();
@@ -332,16 +335,26 @@ webpackJsonp([3],{
 	            }
 	        }
 	    },
+	    componentWillUnmount: function componentWillUnmount() {
+	        if (this.props.visible || this.inTransition) {
+	            this.removeScrollingEffect();
+	        }
+	    },
 	    onAnimateLeave: function onAnimateLeave() {
 	        // need demo?
 	        // https://github.com/react-component/dialog/pull/28
 	        if (this.refs.wrap) {
 	            this.refs.wrap.style.display = 'none';
 	        }
+	        this.inTransition = false;
 	        this.removeScrollingEffect();
 	        this.props.afterClose();
 	    },
 	    onMaskClick: function onMaskClick(e) {
+	        // android trigger click on open (fastclick??)
+	        if (Date.now() - this.openTime < 300) {
+	            return;
+	        }
 	        if (e.target === e.currentTarget) {
 	            this.close(e);
 	        }
@@ -506,7 +519,7 @@ webpackJsonp([3],{
 	        if (props.visible) {
 	            style.display = null;
 	        }
-	        return _react2["default"].createElement("div", null, this.getMaskElement(), _react2["default"].createElement("div", __assign({ tabIndex: -1, onKeyDown: this.onKeyDown, className: prefixCls + '-wrap ' + (props.wrapClassName || ''), ref: "wrap", onMouseDown: maskClosable ? this.onMaskClick : undefined, onTouchStart: maskClosable ? this.onMaskClick : undefined, role: "dialog", "aria-labelledby": props.title ? this.titleId : null, style: style }, props.wrapProps), this.getDialogElement()));
+	        return _react2["default"].createElement("div", null, this.getMaskElement(), _react2["default"].createElement("div", __assign({ tabIndex: -1, onKeyDown: this.onKeyDown, className: prefixCls + '-wrap ' + (props.wrapClassName || ''), ref: "wrap", onClick: maskClosable ? this.onMaskClick : undefined, role: "dialog", "aria-labelledby": props.title ? this.titleId : null, style: style }, props.wrapProps), this.getDialogElement()));
 	    }
 	});
 	exports["default"] = Dialog;
@@ -514,10 +527,10 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 346:
-303,
+/***/ 345:
+302,
 
-/***/ 347:
+/***/ 346:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -568,7 +581,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 348:
+/***/ 347:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -616,7 +629,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 349:
+/***/ 348:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -716,8 +729,8 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 350:
-332
+/***/ 349:
+331
 
 });
 //# sourceMappingURL=getPopupContainer.js.map
