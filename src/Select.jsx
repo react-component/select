@@ -11,7 +11,7 @@ import {
   UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE,
   preventDefaultEvent, findFirstMenuItem,
   includesSeparators, splitBySeparators,
-  findIndexInValueByLabel, findChildByKey,
+  findIndexInValueByLabel, findChildBy,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import FilterMixin from './FilterMixin';
@@ -463,7 +463,10 @@ const Select = React.createClass({
 
   getEleForOnChange(vls_) {
     return vls_ && vls_
-      .map(v => findChildByKey(this.props.children, v.key));
+      .map(v => findChildBy(
+        this.props.labelInValue ? 'value' : this.props.optionLabelProp,
+        this.props.children, v.key)
+      );
   },
 
   getLabelByValue(children, value) {
