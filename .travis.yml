@@ -7,7 +7,6 @@ notifications:
   - yiminghe@gmail.com
 
 node_js:
-- 4.0.0
 - node
 
 before_install:
