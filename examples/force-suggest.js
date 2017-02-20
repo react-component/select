@@ -3,12 +3,12 @@ webpackJsonp([2],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(333);
+	module.exports = __webpack_require__(343);
 
 
 /***/ },
 
-/***/ 333:
+/***/ 343:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17,13 +17,13 @@ webpackJsonp([2],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _rcSelect = __webpack_require__(179);
+	var _rcSelect = __webpack_require__(184);
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(331);
+	__webpack_require__(341);
 	
-	var _tbFetchSuggest = __webpack_require__(334);
+	var _tbFetchSuggest = __webpack_require__(344);
 	
 	var _reactDom = __webpack_require__(33);
 	
@@ -125,7 +125,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 334:
+/***/ 344:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -135,11 +135,11 @@ webpackJsonp([2],{
 	});
 	exports.fetch = fetch;
 	
-	var _jsonp = __webpack_require__(335);
+	var _jsonp = __webpack_require__(345);
 	
 	var _jsonp2 = _interopRequireDefault(_jsonp);
 	
-	var _querystring = __webpack_require__(339);
+	var _querystring = __webpack_require__(349);
 	
 	var _querystring2 = _interopRequireDefault(_querystring);
 	
@@ -162,17 +162,15 @@ webpackJsonp([2],{
 	    });
 	    (0, _jsonp2.default)('http://suggest.taobao.com/sug?' + str, function (err, d) {
 	      if (currentValue === value) {
-	        (function () {
-	          var result = d.result;
-	          var data = [];
-	          result.forEach(function (r) {
-	            data.push({
-	              value: r[0],
-	              text: r[0]
-	            });
+	        var result = d.result;
+	        var data = [];
+	        result.forEach(function (r) {
+	          data.push({
+	            value: r[0],
+	            text: r[0]
 	          });
-	          callback(data);
-	        })();
+	        });
+	        callback(data);
 	      }
 	    });
 	  }
@@ -182,14 +180,14 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 335:
+/***/ 345:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies
 	 */
 	
-	var debug = __webpack_require__(336)('jsonp');
+	var debug = __webpack_require__(346)('jsonp');
 	
 	/**
 	 * Module exports.
@@ -286,7 +284,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 336:
+/***/ 346:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -295,7 +293,7 @@ webpackJsonp([2],{
 	 * Expose `debug()` as the module.
 	 */
 	
-	exports = module.exports = __webpack_require__(337);
+	exports = module.exports = __webpack_require__(347);
 	exports.log = log;
 	exports.formatArgs = formatArgs;
 	exports.save = save;
@@ -476,7 +474,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 337:
+/***/ 347:
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -487,12 +485,12 @@ webpackJsonp([2],{
 	 * Expose `debug()` as the module.
 	 */
 	
-	exports = module.exports = createDebug.debug = createDebug.default = createDebug;
+	exports = module.exports = createDebug.debug = createDebug['default'] = createDebug;
 	exports.coerce = coerce;
 	exports.disable = disable;
 	exports.enable = enable;
 	exports.enabled = enabled;
-	exports.humanize = __webpack_require__(338);
+	exports.humanize = __webpack_require__(348);
 	
 	/**
 	 * The currently active debug mode names, and names to skip.
@@ -619,6 +617,9 @@ webpackJsonp([2],{
 	function enable(namespaces) {
 	  exports.save(namespaces);
 	
+	  exports.names = [];
+	  exports.skips = [];
+	
 	  var split = (namespaces || '').split(/[\s,]+/);
 	  var len = split.length;
 	
@@ -682,7 +683,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 338:
+/***/ 348:
 /***/ function(module, exports) {
 
 	/**
@@ -838,18 +839,18 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 339:
+/***/ 349:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	exports.decode = exports.parse = __webpack_require__(340);
-	exports.encode = exports.stringify = __webpack_require__(341);
+	exports.decode = exports.parse = __webpack_require__(350);
+	exports.encode = exports.stringify = __webpack_require__(351);
 
 
 /***/ },
 
-/***/ 340:
+/***/ 350:
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -936,7 +937,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 341:
+/***/ 351:
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
