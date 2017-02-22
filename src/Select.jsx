@@ -526,7 +526,11 @@ const Select = React.createClass({
         ref={this.saveInputMirrorRef}
         className={`${props.prefixCls}-search__field__mirror`}
       >
-        {this.state.inputValue}
+        {
+			// https://github.com/ant-design/ant-design/issues/4992#issuecomment-281542159
+			// Add space to the end of the value as the width measurement tolerance
+			`${this.state.inputValue} `
+		}
       </span>
     </div>);
   },

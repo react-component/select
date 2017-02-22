@@ -25,7 +25,9 @@ exports[`Select.combobox renders correctly 1`] = `
               class="rc-select-search__field"
               value="" />
             <span
-              class="rc-select-search__field__mirror" />
+              class="rc-select-search__field__mirror">
+               
+            </span>
           </div>
         </li>
       </ul>

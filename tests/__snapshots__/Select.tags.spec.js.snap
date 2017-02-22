@@ -49,7 +49,9 @@ exports[`Select.tags render render animation 1`] = `
                 onKeyDown={[Function]}
                 value="" />
               <span
-                className="rc-select-search__field__mirror" />
+                className="rc-select-search__field__mirror">
+                 
+              </span>
             </div>
           </li>
         </Animate>
@@ -104,7 +106,9 @@ exports[`Select.tags render truncates values by maxTagTextLength 1`] = `
               class="rc-select-search__field"
               value="" />
             <span
-              class="rc-select-search__field__mirror" />
+              class="rc-select-search__field__mirror">
+               
+            </span>
           </div>
         </li>
       </ul>
