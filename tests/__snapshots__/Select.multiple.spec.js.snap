@@ -50,7 +50,7 @@ exports[`Select.multiple render render animation 1`] = `
                 value="" />
               <span
                 className="rc-select-search__field__mirror">
-                 
+                 
               </span>
             </div>
           </li>
@@ -107,7 +107,7 @@ exports[`Select.multiple render truncates values by maxTagTextLength 1`] = `
               value="" />
             <span
               class="rc-select-search__field__mirror">
-               
+               
             </span>
           </div>
         </li>

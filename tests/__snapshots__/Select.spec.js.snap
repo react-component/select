@@ -63,7 +63,7 @@ exports[`Select render renders correctly 1`] = `
             value="" />
           <span
             class="antd-search__field__mirror">
-             
+             
           </span>
         </div>
       </div>
