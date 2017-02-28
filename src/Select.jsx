@@ -77,6 +77,7 @@ const Select = React.createClass({
     maxTagTextLength: PropTypes.number,
     tokenSeparators: PropTypes.arrayOf(PropTypes.string),
     getInputElement: PropTypes.func,
+    creatable: PropTypes.bool,
   },
 
   mixins: [FilterMixin],
@@ -105,6 +106,7 @@ const Select = React.createClass({
       optionFilterProp: 'value',
       optionLabelProp: 'value',
       notFoundContent: 'Not Found',
+      creatable: false,
     };
   },
 
