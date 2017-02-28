@@ -241,6 +241,23 @@ describe('Select', () => {
     expect(handleSearch).toBeCalledWith('1');
   });
 
+  it('not fires search event when user select', () => {
+    const handleSearch = jest.fn();
+    const wrapper = mount(
+      <Select
+        showSearch
+        onSearch={handleSearch}
+      >
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>
+    );
+    wrapper.find('.rc-select').simulate('click');
+    const dropdownWrapper = mount(wrapper.find('Trigger').node.getComponent());
+    dropdownWrapper.find('MenuItem').first().simulate('click');
+    expect(handleSearch).not.toBeCalled();
+  });
+
   describe('focus', () => {
     let handleFocus;
     let wrapper;
