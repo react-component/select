@@ -31,6 +31,7 @@ exports[`Select.tags render render animation 1`] = `
         <Animate
           animation={Object {}}
           component="ul"
+          componentProps={Object {}}
           onAppear={[Function]}
           onEnd={[Function]}
           onEnter={[Function]}

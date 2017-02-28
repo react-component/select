@@ -41,6 +41,7 @@ exports[`SelectTrigger renders correctly 1`] = `
     defaultPopupVisible={false}
     destroyPopupOnHide={false}
     focusDelay={0}
+    getDocument={[Function]}
     getPopupClassNameFromAlign={[Function]}
     hideAction={
       Array [
