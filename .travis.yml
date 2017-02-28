@@ -5,6 +5,7 @@ sudo: false
 notifications:
   email:
   - yiminghe@gmail.com
+  - yesmeck@gmail.com
 
 node_js:
 - node
