@@ -572,11 +572,13 @@ const Select = React.createClass({
     });
   },
   setInputValue(inputValue, fireSearch = true) {
-    this.setState({
-      inputValue,
-    });
-    if (fireSearch) {
-      this.props.onSearch(inputValue);
+    if (inputValue !== this.state.inputValue) {
+      this.setState({
+        inputValue,
+      });
+      if (fireSearch) {
+        this.props.onSearch(inputValue);
+      }
     }
   },
   clearBlurTime() {
