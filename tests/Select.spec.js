@@ -441,4 +441,38 @@ describe('Select', () => {
     dropdownWrapper.find('MenuItem').first().simulate('click');
     expect(wrapper.state().inputValue).toBe('1');
   });
+
+  describe('propTypes', () => {
+    const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    beforeEach(() => {
+      spy.mockReset();
+    });
+
+    afterAll(() => {
+      spy.mockRestore();
+    });
+
+    it('warns on invalid value when labelInValue', () => {
+      expect(() => {
+        mount(
+          <Select labelInValue value="foo" />
+        );
+      }).toThrow();
+      expect(spy.mock.calls[0][0]).toMatch(
+        'Invalid prop `value` supplied to `Select`, when you set `labelInValue` ' +
+        'to `true`, `value` should in shape of `{ key: string, label?: string }`'
+      );
+    });
+
+    it('warns on invalid value when multiple', () => {
+      mount(
+        <Select multiple value="" />
+      );
+      expect(spy.mock.calls[0][0]).toMatch(
+        'Invalid prop `value` of type `string` supplied to `Select`, ' +
+        'expected `array` when `multiple` is `true`'
+      );
+    });
+  });
 });
