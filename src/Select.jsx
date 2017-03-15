@@ -77,6 +77,7 @@ const Select = React.createClass({
     maxTagTextLength: PropTypes.number,
     tokenSeparators: PropTypes.arrayOf(PropTypes.string),
     getInputElement: PropTypes.func,
+    dumbOnComposition: PropTypes.bool,
   },
 
   mixins: [FilterMixin],
@@ -105,6 +106,7 @@ const Select = React.createClass({
       optionFilterProp: 'value',
       optionLabelProp: 'value',
       notFoundContent: 'Not Found',
+      dumbOnComposition: false,
     };
   },
 
@@ -184,6 +186,15 @@ const Select = React.createClass({
     }
   },
 
+  onCompositionStart() {
+    this.stillComposing = true;
+  },
+
+  onCompositionEnd(event) {
+    this.stillComposing = false;
+    this.onInputChange(event);
+  },
+
   onInputChange(event) {
     const { tokenSeparators } = this.props;
     const val = event.target.value;
@@ -196,14 +207,17 @@ const Select = React.createClass({
       this.setInputValue('', false);
       return;
     }
-    this.setInputValue(val);
-    this.setState({
-      open: true,
-    });
-    if (isCombobox(this.props)) {
-      this.fireChange([{
-        key: val,
-      }]);
+
+    this.setInputValue(val, !this.stillComposing);
+    if (!this.stillComposing) {
+      this.setState({
+        open: true,
+      });
+      if (isCombobox(this.props)) {
+        this.fireChange([{
+          key: val,
+        }]);
+      }
     }
   },
 
@@ -523,6 +537,8 @@ const Select = React.createClass({
         value: this.state.inputValue,
         disabled: props.disabled,
         className: inputCls,
+        onCompositionStart: props.dumbOnComposition ? this.onCompositionStart : noop,
+        onCompositionEnd: props.dumbOnComposition ? this.onCompositionEnd : noop,
       })}
       <span
         ref={this.saveInputMirrorRef}
@@ -725,7 +741,7 @@ const Select = React.createClass({
   },
 
   adjustOpenState() {
-    if (this.skipAdjustOpen) {
+    if (this.skipAdjustOpen || this.stillComposing) {
       return;
     }
     let { open } = this.state;
