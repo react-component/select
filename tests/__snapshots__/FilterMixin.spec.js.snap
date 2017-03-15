@@ -1,15 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`FilterMixin renderFilterOptionsFromChildren filters children by inputValue 1`] = `
 <ul
   aria-activedescendant=""
   class="rc-menu rc-menu-vertical  rc-menu-root"
   role="menu"
-  tabindex="0">
+  tabindex="0"
+>
   <li
     aria-selected="false"
     class="rc-menu-item"
     role="menuitem"
     style="user-select:none;-webkit-user-select:none;"
-    unselectable="unselectable">
+    unselectable="unselectable"
+  >
     1
   </li>
 </ul>
@@ -20,14 +24,16 @@ exports[`FilterMixin renderFilterOptionsFromChildren renders not found when sear
   aria-activedescendant=""
   class="rc-menu rc-menu-vertical  rc-menu-root"
   role="menu"
-  tabindex="0">
+  tabindex="0"
+>
   <li
     aria-disabled="true"
     aria-selected="false"
     class="rc-menu-item-disabled rc-menu-item"
     role="menuitem"
     style="user-select:none;-webkit-user-select:none;"
-    unselectable="unselectable">
+    unselectable="unselectable"
+  >
     not found
   </li>
 </ul>
@@ -38,21 +44,26 @@ exports[`FilterMixin renderFilterOptionsFromChildren renders options correctly 1
   aria-activedescendant=""
   class="rc-menu rc-menu-vertical  rc-menu-root"
   role="menu"
-  tabindex="0">
+  tabindex="0"
+>
   <li
-    class=" rc-menu-item-group">
+    class=" rc-menu-item-group"
+  >
     <div
-      class="rc-menu-item-group-title">
+      class="rc-menu-item-group-title"
+    >
       group1
     </div>
     <ul
-      class="rc-menu-item-group-list">
+      class="rc-menu-item-group-list"
+    >
       <li
         aria-selected="false"
         class="rc-menu-item"
         role="menuitem"
         style="user-select:none;-webkit-user-select:none;"
-        unselectable="unselectable">
+        unselectable="unselectable"
+      >
         1
       </li>
       <li
@@ -60,26 +71,31 @@ exports[`FilterMixin renderFilterOptionsFromChildren renders options correctly 1
         class="rc-menu-item"
         role="menuitem"
         style="user-select:none;-webkit-user-select:none;"
-        unselectable="unselectable">
+        unselectable="unselectable"
+      >
         2
       </li>
     </ul>
   </li>
   <li
-    class=" rc-menu-item-group">
+    class=" rc-menu-item-group"
+  >
     <div
-      class="rc-menu-item-group-title">
+      class="rc-menu-item-group-title"
+    >
       group2
     </div>
     <ul
-      class="rc-menu-item-group-list">
+      class="rc-menu-item-group-list"
+    >
       <li
         aria-disabled="true"
         aria-selected="false"
         class="rc-menu-item-disabled rc-menu-item"
         role="menuitem"
         style="user-select:none;-webkit-user-select:none;"
-        unselectable="unselectable">
+        unselectable="unselectable"
+      >
         3
       </li>
       <li
@@ -87,7 +103,8 @@ exports[`FilterMixin renderFilterOptionsFromChildren renders options correctly 1
         class="rc-menu-item"
         role="menuitem"
         style="user-select:none;-webkit-user-select:none;"
-        unselectable="unselectable">
+        unselectable="unselectable"
+      >
         4
       </li>
     </ul>
@@ -100,13 +117,15 @@ exports[`FilterMixin renderFilterOptionsFromChildren tag mode renders search val
   aria-activedescendant=""
   class="rc-menu rc-menu-vertical  rc-menu-root"
   role="menu"
-  tabindex="0">
+  tabindex="0"
+>
   <li
     aria-selected="false"
     class="rc-menu-item"
     role="menuitem"
     style="user-select:none;-webkit-user-select:none;"
-    unselectable="unselectable">
+    unselectable="unselectable"
+  >
     2
   </li>
   <li
@@ -114,7 +133,8 @@ exports[`FilterMixin renderFilterOptionsFromChildren tag mode renders search val
     class="rc-menu-item"
     role="menuitem"
     style="user-select:none;-webkit-user-select:none;"
-    unselectable="unselectable">
+    unselectable="unselectable"
+  >
     22
   </li>
 </ul>
@@ -125,13 +145,15 @@ exports[`FilterMixin renderFilterOptionsFromChildren tag mode renders unlisted i
   aria-activedescendant=""
   class="rc-menu rc-menu-vertical  rc-menu-root"
   role="menu"
-  tabindex="0">
+  tabindex="0"
+>
   <li
     aria-selected="false"
     class="rc-menu-item"
     role="menuitem"
     style="user-select:none;-webkit-user-select:none;"
-    unselectable="unselectable">
+    unselectable="unselectable"
+  >
     1
   </li>
   <li
@@ -139,7 +161,8 @@ exports[`FilterMixin renderFilterOptionsFromChildren tag mode renders unlisted i
     class="rc-menu-item"
     role="menuitem"
     style="user-select:none;-webkit-user-select:none;"
-    unselectable="unselectable">
+    unselectable="unselectable"
+  >
     2
   </li>
   <li
@@ -147,7 +170,8 @@ exports[`FilterMixin renderFilterOptionsFromChildren tag mode renders unlisted i
     class="rc-menu-item"
     role="menuitem"
     style="user-select:none;-webkit-user-select:none;"
-    unselectable="unselectable">
+    unselectable="unselectable"
+  >
     3
   </li>
 </ul>

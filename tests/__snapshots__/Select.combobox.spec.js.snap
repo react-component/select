@@ -1,31 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`Select.combobox renders correctly 1`] = `
 <div
-  class="rc-select rc-select-combobox rc-select-enabled">
+  class="rc-select rc-select-combobox rc-select-enabled"
+>
   <div
     aria-autocomplete="list"
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
               rc-select-selection--single"
-    role="combobox">
+    role="combobox"
+  >
     <div
-      class="rc-select-selection__rendered">
+      class="rc-select-selection__rendered"
+    >
       <div
         class="rc-select-selection__placeholder"
         style="display:block;user-select:none;-webkit-user-select:none;"
-        unselectable="unselectable">
+        unselectable="unselectable"
+      >
         Search
       </div>
       <ul>
         <li
-          class="rc-select-search rc-select-search--inline">
+          class="rc-select-search rc-select-search--inline"
+        >
           <div
-            class="rc-select-search__field__wrap">
+            class="rc-select-search__field__wrap"
+          >
             <input
               class="rc-select-search__field"
-              value="" />
+              value=""
+            />
             <span
-              class="rc-select-search__field__mirror">
+              class="rc-select-search__field__mirror"
+            >
                
             </span>
           </div>
@@ -35,7 +45,8 @@ exports[`Select.combobox renders correctly 1`] = `
     <span
       class="rc-select-arrow"
       style="user-select:none;-webkit-user-select:none;"
-      unselectable="unselectable">
+      unselectable="unselectable"
+    >
       <b />
     </span>
   </div>

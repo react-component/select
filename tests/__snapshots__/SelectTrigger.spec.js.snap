@@ -1,7 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`SelectTrigger renders correctly 1`] = `
 <SelectTrigger
   prefixCls="rc-select"
-  transitionName="slide">
+  transitionName="slide"
+>
   <Trigger
     action={Array []}
     afterPopupVisibleChange={[Function]}
@@ -66,7 +69,8 @@ exports[`SelectTrigger renders correctly 1`] = `
         onPopupFocus={undefined}
         prefixCls="rc-select-dropdown"
         value={undefined}
-        visible={undefined} />
+        visible={undefined}
+      />
     }
     popupAlign={Object {}}
     popupClassName="rc-select-dropdown--single"
@@ -79,11 +83,13 @@ exports[`SelectTrigger renders correctly 1`] = `
         "click",
       ]
     }
-    transitionName="slide">
+    transitionName="slide"
+  >
     <div
       onClick={[Function]}
       onMouseDown={[Function]}
-      onTouchStart={[Function]}>
+      onTouchStart={[Function]}
+    >
       foo
     </div>
   </Trigger>

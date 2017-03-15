@@ -1,34 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`DropdownMenu renders correctly 1`] = `
 <div
-  style="overflow:auto;">
+  style="overflow:auto;"
+>
   <ul
     aria-activedescendant=""
     class="undefined-menu undefined-menu-vertical  undefined-menu-root"
-    role="menu">
+    role="menu"
+  >
     <li
-      class=" undefined-menu-item-group">
+      class=" undefined-menu-item-group"
+    >
       <div
-        class="undefined-menu-item-group-title" />
+        class="undefined-menu-item-group-title"
+      />
       <ul
-        class="undefined-menu-item-group-list">
+        class="undefined-menu-item-group-list"
+      >
         <li
           aria-selected="true"
           class="undefined-menu-item-selected undefined-menu-item"
-          role="menuitem">
+          role="menuitem"
+        >
           1
         </li>
       </ul>
     </li>
     <li
-      class=" undefined-menu-item-group">
+      class=" undefined-menu-item-group"
+    >
       <div
-        class="undefined-menu-item-group-title" />
+        class="undefined-menu-item-group-title"
+      />
       <ul
-        class="undefined-menu-item-group-list">
+        class="undefined-menu-item-group-list"
+      >
         <li
           aria-selected="false"
           class="undefined-menu-item"
-          role="menuitem">
+          role="menuitem"
+        >
           2
         </li>
       </ul>

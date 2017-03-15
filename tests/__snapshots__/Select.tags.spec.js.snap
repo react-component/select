@@ -1,3 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`Select.tags render render animation 1`] = `
 <SelectTrigger
   defaultActiveFirstOption={true}
@@ -14,20 +16,24 @@ exports[`Select.tags render render animation 1`] = `
   prefixCls="rc-select"
   showSearch={true}
   value={Array []}
-  visible={false}>
+  visible={false}
+>
   <div
     className="rc-select rc-select-enabled"
     onBlur={[Function]}
-    onFocus={[Function]}>
+    onFocus={[Function]}
+  >
     <div
       aria-autocomplete="list"
       aria-expanded={false}
       aria-haspopup="true"
       className="rc-select-selection
                 rc-select-selection--multiple"
-      role="combobox">
+      role="combobox"
+    >
       <div
-        className="rc-select-selection__rendered">
+        className="rc-select-selection__rendered"
+      >
         <Animate
           animation={Object {}}
           component="ul"
@@ -39,18 +45,23 @@ exports[`Select.tags render render animation 1`] = `
           transitionAppear={false}
           transitionEnter={true}
           transitionLeave={true}
-          transitionName="slide-up">
+          transitionName="slide-up"
+        >
           <li
-            className="rc-select-search rc-select-search--inline">
+            className="rc-select-search rc-select-search--inline"
+          >
             <div
-              className="rc-select-search__field__wrap">
+              className="rc-select-search__field__wrap"
+            >
               <input
                 className="rc-select-search__field"
                 onChange={[Function]}
                 onKeyDown={[Function]}
-                value="" />
+                value=""
+              />
               <span
-                className="rc-select-search__field__mirror">
+                className="rc-select-search__field__mirror"
+              >
                  
               </span>
             </div>
@@ -64,50 +75,63 @@ exports[`Select.tags render render animation 1`] = `
 
 exports[`Select.tags render truncates values by maxTagTextLength 1`] = `
 <div
-  class="rc-select rc-select-enabled">
+  class="rc-select rc-select-enabled"
+>
   <div
     aria-autocomplete="list"
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
               rc-select-selection--multiple"
-    role="combobox">
+    role="combobox"
+  >
     <div
-      class="rc-select-selection__rendered">
+      class="rc-select-selection__rendered"
+    >
       <ul>
         <li
           class="rc-select-selection__choice"
           style="user-select:none;-webkit-user-select:none;"
           title="one"
-          unselectable="unselectable">
+          unselectable="unselectable"
+        >
           <div
-            class="rc-select-selection__choice__content">
+            class="rc-select-selection__choice__content"
+          >
             on...
           </div>
           <span
-            class="rc-select-selection__choice__remove" />
+            class="rc-select-selection__choice__remove"
+          />
         </li>
         <li
           class="rc-select-selection__choice"
           style="user-select:none;-webkit-user-select:none;"
           title="two"
-          unselectable="unselectable">
+          unselectable="unselectable"
+        >
           <div
-            class="rc-select-selection__choice__content">
+            class="rc-select-selection__choice__content"
+          >
             tw...
           </div>
           <span
-            class="rc-select-selection__choice__remove" />
+            class="rc-select-selection__choice__remove"
+          />
         </li>
         <li
-          class="rc-select-search rc-select-search--inline">
+          class="rc-select-search rc-select-search--inline"
+        >
           <div
-            class="rc-select-search__field__wrap">
+            class="rc-select-search__field__wrap"
+          >
             <input
               class="rc-select-search__field"
-              value="" />
+              value=""
+            />
             <span
-              class="rc-select-search__field__mirror">
+              class="rc-select-search__field__mirror"
+            >
                
             </span>
           </div>
