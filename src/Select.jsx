@@ -95,6 +95,7 @@ const Select = React.createClass({
       onChange: noop,
       onFocus: noop,
       onBlur: noop,
+      onFocus: noop,
       onSelect: noop,
       onSearch: noop,
       onDeselect: noop,
