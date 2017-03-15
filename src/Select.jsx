@@ -64,6 +64,7 @@ const Select = React.createClass({
     onSearch: PropTypes.func,
     placeholder: PropTypes.any,
     onDeselect: PropTypes.func,
+    onDropdownVisibleChange: PropTypes.func,
     labelInValue: PropTypes.bool,
     value: PropTypes.oneOfType([
       valueObjectShape,
@@ -98,6 +99,7 @@ const Select = React.createClass({
       onSelect: noop,
       onSearch: noop,
       onDeselect: noop,
+      onDropdownVisibleChange: noop,
       showArrow: true,
       dropdownMatchSelectWidth: true,
       dropdownStyle: {},
@@ -208,7 +210,9 @@ const Select = React.createClass({
   },
 
   onDropdownVisibleChange(open) {
+    const props = this.props;
     this.setOpenState(open);
+    props.onDropdownVisibleChange(open);
   },
 
   // combobox ignore
