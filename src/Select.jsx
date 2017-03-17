@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classnames from 'classnames';
@@ -15,6 +15,7 @@ import {
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import FilterMixin from './FilterMixin';
+import { SelectPropTypes } from './PropTypes';
 
 function noop() {
 }
@@ -27,57 +28,8 @@ function saveRef(name, component) {
   this[name] = component;
 }
 
-let valueObjectShape;
-
-if (PropTypes) {
-  valueObjectShape = PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.shape({
-      key: PropTypes.string,
-      label: PropTypes.node,
-    }),
-  ]);
-}
-
 const Select = React.createClass({
-  propTypes: {
-    defaultActiveFirstOption: PropTypes.bool,
-    multiple: PropTypes.bool,
-    filterOption: PropTypes.any,
-    children: PropTypes.any,
-    showSearch: PropTypes.bool,
-    disabled: PropTypes.bool,
-    allowClear: PropTypes.bool,
-    showArrow: PropTypes.bool,
-    tags: PropTypes.bool,
-    prefixCls: PropTypes.string,
-    className: PropTypes.string,
-    transitionName: PropTypes.string,
-    optionLabelProp: PropTypes.string,
-    optionFilterProp: PropTypes.string,
-    animation: PropTypes.string,
-    choiceTransitionName: PropTypes.string,
-    onChange: PropTypes.func,
-    onBlur: PropTypes.func,
-    onFocus: PropTypes.func,
-    onSelect: PropTypes.func,
-    onSearch: PropTypes.func,
-    placeholder: PropTypes.any,
-    onDeselect: PropTypes.func,
-    labelInValue: PropTypes.bool,
-    value: PropTypes.oneOfType([
-      valueObjectShape,
-      PropTypes.arrayOf(valueObjectShape),
-    ]),
-    defaultValue: PropTypes.oneOfType([
-      valueObjectShape,
-      PropTypes.arrayOf(valueObjectShape),
-    ]),
-    dropdownStyle: PropTypes.object,
-    maxTagTextLength: PropTypes.number,
-    tokenSeparators: PropTypes.arrayOf(PropTypes.string),
-    getInputElement: PropTypes.func,
-  },
+  propTypes: SelectPropTypes,
 
   mixins: [FilterMixin],
 
@@ -91,7 +43,6 @@ const Select = React.createClass({
       showSearch: true,
       allowClear: false,
       placeholder: '',
-      defaultValue: [],
       onChange: noop,
       onFocus: noop,
       onBlur: noop,
