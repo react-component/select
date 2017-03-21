@@ -719,7 +719,7 @@
 
 /***/ },
 /* 7 */
-[360, 8],
+[359, 8],
 /* 8 */
 /***/ function(module, exports) {
 
@@ -6431,7 +6431,7 @@
 
 /***/ },
 /* 51 */
-[360, 36],
+[359, 36],
 /* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -21134,11 +21134,11 @@
 	
 	var _Select2 = _interopRequireDefault(_Select);
 	
-	var _Option = __webpack_require__(319);
+	var _Option = __webpack_require__(320);
 	
 	var _Option2 = _interopRequireDefault(_Option);
 	
-	var _OptGroup = __webpack_require__(330);
+	var _OptGroup = __webpack_require__(331);
 	
 	var _OptGroup2 = _interopRequireDefault(_OptGroup);
 	
@@ -21202,6 +21202,8 @@
 	
 	var _FilterMixin2 = _interopRequireDefault(_FilterMixin);
 	
+	var _PropTypes = __webpack_require__(319);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function noop() {}
@@ -21214,50 +21216,10 @@
 	  this[name] = component;
 	}
 	
-	var valueObjectShape = void 0;
-	
-	if (_react.PropTypes) {
-	  valueObjectShape = _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.shape({
-	    key: _react.PropTypes.string,
-	    label: _react.PropTypes.node
-	  })]);
-	}
-	
 	var Select = _react2.default.createClass({
 	  displayName: 'Select',
 	
-	  propTypes: {
-	    defaultActiveFirstOption: _react.PropTypes.bool,
-	    multiple: _react.PropTypes.bool,
-	    filterOption: _react.PropTypes.any,
-	    children: _react.PropTypes.any,
-	    showSearch: _react.PropTypes.bool,
-	    disabled: _react.PropTypes.bool,
-	    allowClear: _react.PropTypes.bool,
-	    showArrow: _react.PropTypes.bool,
-	    tags: _react.PropTypes.bool,
-	    prefixCls: _react.PropTypes.string,
-	    className: _react.PropTypes.string,
-	    transitionName: _react.PropTypes.string,
-	    optionLabelProp: _react.PropTypes.string,
-	    optionFilterProp: _react.PropTypes.string,
-	    animation: _react.PropTypes.string,
-	    choiceTransitionName: _react.PropTypes.string,
-	    onChange: _react.PropTypes.func,
-	    onBlur: _react.PropTypes.func,
-	    onFocus: _react.PropTypes.func,
-	    onSelect: _react.PropTypes.func,
-	    onSearch: _react.PropTypes.func,
-	    placeholder: _react.PropTypes.any,
-	    onDeselect: _react.PropTypes.func,
-	    labelInValue: _react.PropTypes.bool,
-	    value: _react.PropTypes.oneOfType([valueObjectShape, _react.PropTypes.arrayOf(valueObjectShape)]),
-	    defaultValue: _react.PropTypes.oneOfType([valueObjectShape, _react.PropTypes.arrayOf(valueObjectShape)]),
-	    dropdownStyle: _react.PropTypes.object,
-	    maxTagTextLength: _react.PropTypes.number,
-	    tokenSeparators: _react.PropTypes.arrayOf(_react.PropTypes.string),
-	    getInputElement: _react.PropTypes.func
-	  },
+	  propTypes: _PropTypes.SelectPropTypes,
 	
 	  mixins: [_FilterMixin2.default],
 	
@@ -21271,7 +21233,6 @@
 	      showSearch: true,
 	      allowClear: false,
 	      placeholder: '',
-	      defaultValue: [],
 	      onChange: noop,
 	      onFocus: noop,
 	      onBlur: noop,
@@ -31862,16 +31823,81 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.SelectPropTypes = undefined;
 	
-	var _classCallCheck2 = __webpack_require__(320);
+	var _react = __webpack_require__(2);
+	
+	function valueType(props, propName, componentName) {
+	  var labelInValueShape = _react.PropTypes.shape({
+	    key: _react.PropTypes.string.isRequired,
+	    label: _react.PropTypes.string
+	  });
+	  if (props.labelInValue) {
+	    var validate = _react.PropTypes.oneOfType([_react.PropTypes.arrayOf(labelInValueShape), labelInValueShape]);
+	    var error = validate.apply(undefined, arguments);
+	    if (error) {
+	      return new Error('Invalid prop `' + propName + '` supplied to `' + componentName + '`, ' + ('when you set `labelInValue` to `true`, `' + propName + '` should in ') + 'shape of `{ key: string, label?: string }`.');
+	    }
+	  } else if (props.multiple && props[propName] === '') {
+	    return new Error('Invalid prop `' + propName + '` of type `string` supplied to `' + componentName + '`, ' + 'expected `array` when `multiple` is `true`.');
+	  } else {
+	    var _validate = _react.PropTypes.oneOfType([_react.PropTypes.arrayOf(_react.PropTypes.string), _react.PropTypes.string]);
+	    return _validate.apply(undefined, arguments);
+	  }
+	}
+	
+	var SelectPropTypes = exports.SelectPropTypes = {
+	  defaultActiveFirstOption: _react.PropTypes.bool,
+	  multiple: _react.PropTypes.bool,
+	  filterOption: _react.PropTypes.any,
+	  children: _react.PropTypes.any,
+	  showSearch: _react.PropTypes.bool,
+	  disabled: _react.PropTypes.bool,
+	  allowClear: _react.PropTypes.bool,
+	  showArrow: _react.PropTypes.bool,
+	  tags: _react.PropTypes.bool,
+	  prefixCls: _react.PropTypes.string,
+	  className: _react.PropTypes.string,
+	  transitionName: _react.PropTypes.string,
+	  optionLabelProp: _react.PropTypes.string,
+	  optionFilterProp: _react.PropTypes.string,
+	  animation: _react.PropTypes.string,
+	  choiceTransitionName: _react.PropTypes.string,
+	  onChange: _react.PropTypes.func,
+	  onBlur: _react.PropTypes.func,
+	  onFocus: _react.PropTypes.func,
+	  onSelect: _react.PropTypes.func,
+	  onSearch: _react.PropTypes.func,
+	  placeholder: _react.PropTypes.any,
+	  onDeselect: _react.PropTypes.func,
+	  labelInValue: _react.PropTypes.bool,
+	  value: valueType,
+	  defaultValue: valueType,
+	  dropdownStyle: _react.PropTypes.object,
+	  maxTagTextLength: _react.PropTypes.number,
+	  tokenSeparators: _react.PropTypes.arrayOf(_react.PropTypes.string),
+	  getInputElement: _react.PropTypes.func
+	};
+
+/***/ },
+/* 320 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _classCallCheck2 = __webpack_require__(321);
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
+	var _possibleConstructorReturn2 = __webpack_require__(322);
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _inherits2 = __webpack_require__(322);
+	var _inherits2 = __webpack_require__(323);
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
@@ -31900,7 +31926,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 320 */
+/* 321 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -31914,7 +31940,7 @@
 	};
 
 /***/ },
-/* 321 */
+/* 322 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -31936,18 +31962,18 @@
 	};
 
 /***/ },
-/* 322 */
+/* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
 	exports.__esModule = true;
 	
-	var _setPrototypeOf = __webpack_require__(323);
+	var _setPrototypeOf = __webpack_require__(324);
 	
 	var _setPrototypeOf2 = _interopRequireDefault(_setPrototypeOf);
 	
-	var _create = __webpack_require__(327);
+	var _create = __webpack_require__(328);
 	
 	var _create2 = _interopRequireDefault(_create);
 	
@@ -31974,28 +32000,28 @@
 	};
 
 /***/ },
-/* 323 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(324), __esModule: true };
-
-/***/ },
 /* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(325);
-	module.exports = __webpack_require__(188).Object.setPrototypeOf;
+	module.exports = { "default": __webpack_require__(325), __esModule: true };
 
 /***/ },
 /* 325 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// 19.1.3.19 Object.setPrototypeOf(O, proto)
-	var $export = __webpack_require__(186);
-	$export($export.S, 'Object', {setPrototypeOf: __webpack_require__(326).set});
+	__webpack_require__(326);
+	module.exports = __webpack_require__(188).Object.setPrototypeOf;
 
 /***/ },
 /* 326 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.3.19 Object.setPrototypeOf(O, proto)
+	var $export = __webpack_require__(186);
+	$export($export.S, 'Object', {setPrototypeOf: __webpack_require__(327).set});
+
+/***/ },
+/* 327 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Works with __proto__ only. Old v8 can't work with null proto objects.
@@ -32025,23 +32051,23 @@
 	};
 
 /***/ },
-/* 327 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(328), __esModule: true };
-
-/***/ },
 /* 328 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(329);
+	module.exports = { "default": __webpack_require__(329), __esModule: true };
+
+/***/ },
+/* 329 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(330);
 	var $Object = __webpack_require__(188).Object;
 	module.exports = function create(P, D){
 	  return $Object.create(P, D);
 	};
 
 /***/ },
-/* 329 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var $export = __webpack_require__(186)
@@ -32049,7 +32075,7 @@
 	$export($export.S, 'Object', {create: __webpack_require__(286)});
 
 /***/ },
-/* 330 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32058,15 +32084,15 @@
 	  value: true
 	});
 	
-	var _classCallCheck2 = __webpack_require__(320);
+	var _classCallCheck2 = __webpack_require__(321);
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
+	var _possibleConstructorReturn2 = __webpack_require__(322);
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _inherits2 = __webpack_require__(322);
+	var _inherits2 = __webpack_require__(323);
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
@@ -32092,13 +32118,12 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 331 */
+/* 332 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 332 */,
 /* 333 */,
 /* 334 */,
 /* 335 */,
@@ -32125,8 +32150,7 @@
 /* 356 */,
 /* 357 */,
 /* 358 */,
-/* 359 */,
-/* 360 */
+/* 359 */
 /***/ function(module, exports, __webpack_require__, __webpack_module_template_argument_0__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**

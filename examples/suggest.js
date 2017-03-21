@@ -3,12 +3,12 @@ webpackJsonp([12],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(358);
+	module.exports = __webpack_require__(357);
 
 
 /***/ },
 
-/***/ 334:
+/***/ 335:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18,11 +18,11 @@ webpackJsonp([12],{
 	});
 	exports.fetch = fetch;
 	
-	var _jsonp = __webpack_require__(335);
+	var _jsonp = __webpack_require__(336);
 	
 	var _jsonp2 = _interopRequireDefault(_jsonp);
 	
-	var _querystring = __webpack_require__(339);
+	var _querystring = __webpack_require__(340);
 	
 	var _querystring2 = _interopRequireDefault(_querystring);
 	
@@ -63,14 +63,14 @@ webpackJsonp([12],{
 
 /***/ },
 
-/***/ 335:
+/***/ 336:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies
 	 */
 	
-	var debug = __webpack_require__(336)('jsonp');
+	var debug = __webpack_require__(337)('jsonp');
 	
 	/**
 	 * Module exports.
@@ -167,7 +167,7 @@ webpackJsonp([12],{
 
 /***/ },
 
-/***/ 336:
+/***/ 337:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -176,7 +176,7 @@ webpackJsonp([12],{
 	 * Expose `debug()` as the module.
 	 */
 	
-	exports = module.exports = __webpack_require__(337);
+	exports = module.exports = __webpack_require__(338);
 	exports.log = log;
 	exports.formatArgs = formatArgs;
 	exports.save = save;
@@ -320,14 +320,17 @@ webpackJsonp([12],{
 	 */
 	
 	function load() {
+	  var r;
 	  try {
-	    return exports.storage.debug;
+	    r = exports.storage.debug;
 	  } catch(e) {}
 	
 	  // If debug isn't set in LS, and we're in Electron, try to load $DEBUG
-	  if (typeof process !== 'undefined' && 'env' in process) {
-	    return process.env.DEBUG;
+	  if (!r && typeof process !== 'undefined' && 'env' in process) {
+	    r = process.env.DEBUG;
 	  }
+	
+	  return r;
 	}
 	
 	/**
@@ -357,7 +360,7 @@ webpackJsonp([12],{
 
 /***/ },
 
-/***/ 337:
+/***/ 338:
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -373,7 +376,7 @@ webpackJsonp([12],{
 	exports.disable = disable;
 	exports.enable = enable;
 	exports.enabled = enabled;
-	exports.humanize = __webpack_require__(338);
+	exports.humanize = __webpack_require__(339);
 	
 	/**
 	 * The currently active debug mode names, and names to skip.
@@ -566,7 +569,7 @@ webpackJsonp([12],{
 
 /***/ },
 
-/***/ 338:
+/***/ 339:
 /***/ function(module, exports) {
 
 	/**
@@ -722,18 +725,18 @@ webpackJsonp([12],{
 
 /***/ },
 
-/***/ 339:
+/***/ 340:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	exports.decode = exports.parse = __webpack_require__(340);
-	exports.encode = exports.stringify = __webpack_require__(341);
+	exports.decode = exports.parse = __webpack_require__(341);
+	exports.encode = exports.stringify = __webpack_require__(342);
 
 
 /***/ },
 
-/***/ 340:
+/***/ 341:
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -820,7 +823,7 @@ webpackJsonp([12],{
 
 /***/ },
 
-/***/ 341:
+/***/ 342:
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -891,7 +894,7 @@ webpackJsonp([12],{
 
 /***/ },
 
-/***/ 358:
+/***/ 357:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -904,9 +907,9 @@ webpackJsonp([12],{
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(331);
+	__webpack_require__(332);
 	
-	var _tbFetchSuggest = __webpack_require__(334);
+	var _tbFetchSuggest = __webpack_require__(335);
 	
 	var _reactDom = __webpack_require__(33);
 	
