@@ -890,7 +890,7 @@ const Select = React.createClass({
             {...extraSelectionProps}
           >
             {ctrlNode}
-            {allowClear && !multiple ? clear : null}
+            {allowClear ? clear : null}
             {multiple || !props.showArrow ? null :
               (<span
                 key="arrow"

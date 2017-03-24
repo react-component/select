@@ -70,6 +70,16 @@
       top: 0;
       color: #aaa;
     }
+
+    &__clear {
+      font-weight: bold;
+      position: absolute;
+      line-height: 28px;
+
+      &:after {
+        content: '×'
+      }
+    }
   }
 
   &-focused &-selection {
@@ -112,15 +122,8 @@
     }
 
     .@{selectPrefixCls}-selection__clear {
-      font-weight: bold;
-      position: absolute;
       top: 0;
       right: 20px;
-      line-height: 28px;
-
-      &:after {
-        content: '×'
-      }
     }
   }
 
@@ -212,6 +215,11 @@
         margin-top: 4px;
         line-height: 20px;
       }
+    }
+
+    .@{selectPrefixCls}-selection__clear {
+      top: 1px;
+      right: 8px;
     }
   }
 
