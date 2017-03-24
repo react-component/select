@@ -103,6 +103,7 @@ webpackJsonp([6],{
 	            dropdownMenuStyle: dropdownMenuStyle,
 	            style: { width: 500 },
 	            multiple: true,
+	            allowClear: true,
 	            optionFilterProp: 'children',
 	            optionLabelProp: 'children',
 	            onSelect: onSelect,
