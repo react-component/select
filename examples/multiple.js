@@ -64,6 +64,7 @@ const Test = React.createClass({
             dropdownMenuStyle={dropdownMenuStyle}
             style={{ width: 500 }}
             multiple
+            allowClear
             optionFilterProp="children"
             optionLabelProp="children"
             onSelect={onSelect}
