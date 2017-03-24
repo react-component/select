@@ -3,6 +3,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import Select, { Option } from '../src';
+import allowClearTest from './shared/allowClearTest';
 import blurTest from './shared/blurTest';
 import renderTest from './shared/renderTest';
 import removeSelectedTest from './shared/removeSelectedTest';
@@ -10,6 +11,7 @@ import removeSelectedTest from './shared/removeSelectedTest';
 jest.unmock('react-dom');
 
 describe('Select.tags', () => {
+  allowClearTest('tags');
   blurTest('tags');
   renderTest('tags');
   removeSelectedTest('tags');

@@ -32,7 +32,6 @@ describe('Select', () => {
 
     it('renders correctly', () => {
       const wrapper = render(select);
-
       expect(renderToJson(wrapper)).toMatchSnapshot();
     });
 

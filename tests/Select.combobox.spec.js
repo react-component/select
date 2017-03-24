@@ -3,8 +3,11 @@ import React from 'react';
 import Select, { Option } from '../src';
 import { mount, render } from 'enzyme';
 import { renderToJson } from 'enzyme-to-json';
+import allowClearTest from './shared/allowClearTest';
 
 describe('Select.combobox', () => {
+  allowClearTest('combobox');
+
   it('renders correctly', () => {
     const wrapper = render(
       <Select combobox placeholder="Search">
