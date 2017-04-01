@@ -8,6 +8,9 @@ export function getValuePropValue(child) {
   if (child.key) {
     return child.key;
   }
+  if (child.type && child.type.isSelectOptGroup && props.label) {
+    return props.label;
+  }
   throw new Error(`no key or value for ${child}`);
 }
 
