@@ -28,6 +28,16 @@ function saveRef(name, component) {
   this[name] = component;
 }
 
+function chaining(...fns) {
+  return function (...args) {
+    for (let i = 0; i < fns.length; i++) {
+      if (fns[i] && typeof fns[i] === 'function') {
+        fns[i].apply(this, args);
+      }
+    }
+  };
+}
+
 const Select = React.createClass({
   propTypes: SelectPropTypes,
 
@@ -470,7 +480,7 @@ const Select = React.createClass({
       {React.cloneElement(inputElement, {
         ref: this.saveInputRef,
         onChange: this.onInputChange,
-        onKeyDown: this.onInputKeyDown,
+        onKeyDown: chaining(this.onInputKeyDown, inputElement.props.onKeyDown),
         value: this.state.inputValue,
         disabled: props.disabled,
         className: inputCls,

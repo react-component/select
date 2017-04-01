@@ -427,8 +427,9 @@ describe('Select', () => {
   });
 
   it('combox could comstomize input element', () => {
+    const handleKeyDown = jest.fn();
     const wrapper = mount(
-      <Select combobox getInputElement={() => <textarea />}>
+      <Select combobox getInputElement={() => <textarea onKeyDown={handleKeyDown} />}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>
@@ -436,10 +437,12 @@ describe('Select', () => {
 
     expect(wrapper.find('textarea').length).toBe(1);
     wrapper.find('.rc-select').simulate('click');
+    wrapper.find('.rc-select').find('textarea').simulate('keyDown', { keyCode: KeyCode.NUM_ONE });
     const dropdownWrapper = mount(wrapper.find('Trigger').node.getComponent());
 
     dropdownWrapper.find('MenuItem').first().simulate('click');
     expect(wrapper.state().inputValue).toBe('1');
+    expect(handleKeyDown).toBeCalled();
   });
 
   describe('propTypes', () => {
