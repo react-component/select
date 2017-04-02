@@ -201,7 +201,7 @@ describe('Select', () => {
 
     wrapper.find('input').simulate('change', { target: { value: 'foo' } });
     wrapper.find('.rc-select-selection__clear').simulate('click');
-    expect(handleChange).toBeCalledWith(undefined);
+    expect(handleChange).toBeCalledWith(undefined, undefined);
     expect(wrapper.state().inputValue).toBe('');
   });
 
@@ -221,7 +221,7 @@ describe('Select', () => {
     wrapper.find('.rc-select').simulate('click');
     const dropdownWrapper = mount(wrapper.find('Trigger').node.getComponent());
     dropdownWrapper.find('MenuItem').first().simulate('click');
-    expect(handleChange).toBeCalledWith({ key: '1', label: 'One' });
+    expect(handleChange).toBeCalledWith({ key: '1', label: 'One' }, <Option value="1">One</Option>);
   });
 
   it('fires search event when user input', () => {
@@ -313,7 +313,7 @@ describe('Select', () => {
     });
 
     it('fires change event', () => {
-      expect(handleChange).toBeCalledWith('1');
+      expect(handleChange).toBeCalledWith('1', <Option value="1">1</Option>);
     });
 
     it('fires blur event', () => {

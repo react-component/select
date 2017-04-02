@@ -11,7 +11,7 @@ import {
   UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE,
   preventDefaultEvent, findFirstMenuItem,
   includesSeparators, splitBySeparators,
-  findIndexInValueByLabel,
+  findIndexInValueByLabel, findChildBy,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import FilterMixin from './FilterMixin';
@@ -269,7 +269,7 @@ const Select = React.createClass({
       }];
       this.setOpenState(false, true);
     }
-    this.fireChange(value);
+    this.fireChange(value, item);
     let inputValue;
     if (isCombobox(props)) {
       inputValue = getPropValue(item, props.optionLabelProp);
@@ -420,6 +420,14 @@ const Select = React.createClass({
       return isMultipleOrTags(this.props) ? vls : vls[0];
     }
     return vls;
+  },
+
+  getEleForOnChange(vls_) {
+    return vls_ && vls_
+      .map(v => findChildBy(
+        this.props.labelInValue ? 'value' : this.props.optionLabelProp,
+        this.props.children, v.key)
+      );
   },
 
   getLabelByValue(children, value) {
@@ -655,7 +663,18 @@ const Select = React.createClass({
         value,
       });
     }
-    props.onChange(this.getVLForOnChange(value));
+    const elements = this.getEleForOnChange(value);
+    if (props.multiple) {
+      props.onChange(
+        this.getVLForOnChange(value),
+        elements,
+      );
+    } else {
+      props.onChange(
+        this.getVLForOnChange(value),
+        elements[0],
+      );
+    }
   },
 
   isChildDisabled(key) {

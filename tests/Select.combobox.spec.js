@@ -41,7 +41,7 @@ describe('Select.combobox', () => {
 
     wrapper.find('input').simulate('change', { target: { value: '1' } });
 
-    expect(handleChange).toBeCalledWith('1');
+    expect(handleChange).toBeCalledWith('1', null);
   });
 
   it('set inputValue when user select a option', () => {

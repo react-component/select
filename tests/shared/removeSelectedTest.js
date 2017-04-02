@@ -22,9 +22,9 @@ export default function removeSelectedTest(mode) {
         </Select>
       );
       wrapper.find('.rc-select-selection__choice__remove').first().simulate('click');
-
       expect(handleDeselect).toBeCalledWith('1');
-      expect(handleChange).toBeCalledWith(['2']);
+      expect(handleChange).toBeCalledWith(['2'],
+       mode === 'multiple' ? [<Option value="2">2</Option>] : <Option value="2">2</Option>);
     });
 
     it('noop if select is disabled', () => {
@@ -66,7 +66,8 @@ export default function removeSelectedTest(mode) {
       wrapper.find('.rc-select-selection__choice__remove').first().simulate('click');
 
       expect(handleDeselect).toHaveBeenCalledWith({ key: '1', label: '1' });
-      expect(handleChange).toHaveBeenCalledWith([{ key: '2', label: '2' }]);
+      expect(handleChange).toHaveBeenCalledWith([{ key: '2', label: '2' }],
+        mode === 'multiple' ? [<Option value="2">2</Option>] : <Option value="2">2</Option>);
     });
 
     it('remove by backspace key', () => {

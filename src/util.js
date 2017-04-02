@@ -1,4 +1,6 @@
 import React from 'react';
+import Option from './Option';
+import OptGroup from './OptGroup';
 
 export function getValuePropValue(child) {
   const props = child.props;
@@ -133,4 +135,16 @@ export function splitBySeparators(string, separators) {
     array.pop();
   }
   return array;
+}
+
+export function findChildBy(optionLabelProp, children, key) {
+  let child = null;
+  React.Children.forEach(children, child_ => {
+    if (child_.type === OptGroup) {
+      child = child || findChildBy(optionLabelProp, child_.props.children, key);
+    } else if (child_.type === Option && (child_.key === key || child_.props.value === key)) {
+      child = child_;
+    }
+  });
+  return child;
 }
