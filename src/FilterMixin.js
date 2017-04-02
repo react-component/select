@@ -18,6 +18,7 @@ export default {
     }
     return true;
   },
+
   renderFilterOptions(inputValue) {
     return this.renderFilterOptionsFromChildren(this.props.children, true, inputValue);
   },
