@@ -2,11 +2,13 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import Select, { Option, OptGroup } from '../src';
+import allowClearTest from './shared/allowClearTest';
 import blurTest from './shared/blurTest';
 import renderTest from './shared/renderTest';
 import removeSelectedTest from './shared/removeSelectedTest';
 
 describe('Select.multiple', () => {
+  allowClearTest('multiple');
   blurTest('multiple');
   renderTest('multiple');
   removeSelectedTest('multiple');

@@ -1,5 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Select.tags allowClear renders correctly 1`] = `
+<div
+  class="rc-select rc-select-enabled rc-select-allow-clear"
+>
+  <div
+    aria-autocomplete="list"
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="rc-select-selection
+              rc-select-selection--multiple"
+    role="combobox"
+  >
+    <div
+      class="rc-select-selection__rendered"
+    >
+      <ul>
+        <li
+          class="rc-select-search rc-select-search--inline"
+        >
+          <div
+            class="rc-select-search__field__wrap"
+          >
+            <input
+              class="rc-select-search__field"
+              value=""
+            />
+            <span
+              class="rc-select-search__field__mirror"
+            >
+               
+            </span>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <span
+      class="rc-select-selection__clear"
+      style="user-select:none;-webkit-user-select:none;display:none;"
+      unselectable="unselectable"
+    />
+  </div>
+</div>
+`;
+
 exports[`Select.tags render render animation 1`] = `
 <SelectTrigger
   defaultActiveFirstOption={true}
