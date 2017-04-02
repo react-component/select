@@ -106,6 +106,17 @@ describe('FilterMixin', () => {
       );
     });
 
+    it('filterOption could be true as described in default value', () => {
+      const wrapper = render(
+        <Select inputValue="3" filterOption>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>
+      );
+
+      expect(renderToJson(wrapper)).toMatchSnapshot();
+    });
+
     describe('tag mode', () => {
       it('renders unlisted item in value', () => {
         const wrapper = render(

@@ -8,15 +8,17 @@ export default {
     if (!input) {
       return true;
     }
-    const filterOption = this.props.filterOption;
+    const { filterOption } = this.props;
     if (!filterOption) {
       return true;
-    }
-    if (child.props.disabled) {
+    } else if (child.props.disabled) {
       return false;
+    } else if (typeof filterOption === 'function') {
+      return filterOption.call(this, input, child);
     }
-    return filterOption.call(this, input, child);
+    return true;
   },
+
   renderFilterOptions(inputValue) {
     return this.renderFilterOptionsFromChildren(this.props.children, true, inputValue);
   },

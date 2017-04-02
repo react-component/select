@@ -1,5 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`FilterMixin renderFilterOptionsFromChildren filterOption could be true as described in default value 1`] = `
+<ul
+  aria-activedescendant=""
+  class="rc-menu rc-menu-vertical  rc-menu-root"
+  role="menu"
+  tabindex="0"
+>
+  <li
+    aria-selected="false"
+    class="rc-menu-item"
+    role="menuitem"
+    style="user-select:none;-webkit-user-select:none;"
+    unselectable="unselectable"
+  >
+    1
+  </li>
+  <li
+    aria-selected="false"
+    class="rc-menu-item"
+    role="menuitem"
+    style="user-select:none;-webkit-user-select:none;"
+    unselectable="unselectable"
+  >
+    2
+  </li>
+</ul>
+`;
+
 exports[`FilterMixin renderFilterOptionsFromChildren filters children by inputValue 1`] = `
 <ul
   aria-activedescendant=""
