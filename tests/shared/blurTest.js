@@ -15,7 +15,7 @@ export default function blurTest(mode) {
 
     jest.useFakeTimers();
     wrapper.find('input').simulate('change', { target: { value: '1' } });
-    wrapper.find('div').first().simulate('blur');
+    wrapper.find('.rc-select').simulate('blur');
     jest.runAllTimers();
 
     expect(wrapper.find('input').node.value).toBe('');

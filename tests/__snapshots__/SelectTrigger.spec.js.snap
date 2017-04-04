@@ -86,11 +86,15 @@ exports[`SelectTrigger renders correctly 1`] = `
     transitionName="slide"
   >
     <div
-      onClick={[Function]}
-      onMouseDown={[Function]}
-      onTouchStart={[Function]}
+      id="TriggerContainer"
     >
-      foo
+      <div
+        onClick={[Function]}
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
+      >
+        foo
+      </div>
     </div>
   </Trigger>
 </SelectTrigger>

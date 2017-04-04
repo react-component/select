@@ -2,175 +2,249 @@
 
 exports[`Select no search 1`] = `
 <div
-  class="rc-select rc-select-enabled"
+  id="TriggerContainer"
 >
   <div
-    aria-autocomplete="list"
-    aria-expanded="false"
-    aria-haspopup="true"
-    class="rc-select-selection
-              rc-select-selection--single"
-    role="combobox"
-    tabindex="0"
+    class="rc-select rc-select-enabled"
   >
     <div
-      class="rc-select-selection__rendered"
+      aria-autocomplete="list"
+      aria-expanded="false"
+      aria-haspopup="true"
+      class="rc-select-selection
+                rc-select-selection--single"
+      role="combobox"
+      tabindex="0"
     >
       <div
-        class="rc-select-selection-selected-value"
-        style="display:block;opacity:1;"
-        title="1"
+        class="rc-select-selection__rendered"
       >
-        1
+        <div
+          class="rc-select-selection-selected-value"
+          style="display:block;opacity:1;"
+          title="1"
+        >
+          1
+        </div>
       </div>
+      <span
+        class="rc-select-arrow"
+        style="user-select:none;-webkit-user-select:none;"
+        unselectable="unselectable"
+      >
+        <b />
+      </span>
     </div>
-    <span
-      class="rc-select-arrow"
-      style="user-select:none;-webkit-user-select:none;"
-      unselectable="unselectable"
-    >
-      <b />
-    </span>
   </div>
 </div>
 `;
 
 exports[`Select render renders correctly 1`] = `
 <div
-  class="select-test antd antd-enabled antd-allow-clear"
+  id="TriggerContainer"
 >
   <div
-    aria-autocomplete="list"
-    aria-expanded="false"
-    aria-haspopup="true"
-    class="antd-selection
-              antd-selection--single"
-    role="combobox"
-    tabindex="0"
+    class="select-test antd antd-enabled antd-allow-clear"
   >
     <div
-      class="antd-selection__rendered"
+      aria-autocomplete="list"
+      aria-expanded="false"
+      aria-haspopup="true"
+      class="antd-selection
+                antd-selection--single"
+      role="combobox"
+      tabindex="0"
     >
       <div
-        class="antd-selection__placeholder"
-        style="display:none;user-select:none;-webkit-user-select:none;"
-        unselectable="unselectable"
-      >
-        Select a number
-      </div>
-      <div
-        class="antd-selection-selected-value"
-        style="display:block;opacity:1;"
-        title="2"
-      >
-        2
-      </div>
-      <div
-        class="antd-search antd-search--inline"
-        style="display:none;"
+        class="antd-selection__rendered"
       >
         <div
-          class="antd-search__field__wrap"
+          class="antd-selection__placeholder"
+          style="display:none;user-select:none;-webkit-user-select:none;"
+          unselectable="unselectable"
         >
-          <input
-            class="antd-search__field"
-            value=""
-          />
-          <span
-            class="antd-search__field__mirror"
+          Select a number
+        </div>
+        <div
+          class="antd-selection-selected-value"
+          style="display:block;opacity:1;"
+          title="2"
+        >
+          2
+        </div>
+        <div
+          class="antd-search antd-search--inline"
+          style="display:none;"
+        >
+          <div
+            class="antd-search__field__wrap"
           >
-             
-          </span>
+            <input
+              class="antd-search__field"
+              value=""
+            />
+            <span
+              class="antd-search__field__mirror"
+            >
+               
+            </span>
+          </div>
         </div>
       </div>
+      <span
+        class="antd-selection__clear"
+        style="user-select:none;-webkit-user-select:none;display:block;"
+        unselectable="unselectable"
+      />
+      <span
+        class="antd-arrow"
+        style="user-select:none;-webkit-user-select:none;"
+        unselectable="unselectable"
+      >
+        <b />
+      </span>
     </div>
-    <span
-      class="antd-selection__clear"
-      style="user-select:none;-webkit-user-select:none;display:block;"
-      unselectable="unselectable"
-    />
-    <span
-      class="antd-arrow"
-      style="user-select:none;-webkit-user-select:none;"
-      unselectable="unselectable"
-    >
-      <b />
-    </span>
   </div>
 </div>
 `;
 
 exports[`Select render renders dropdown correctly 1`] = `
-<div>
+<div
+  id="TriggerContainer"
+>
   <div
-    class="antd-dropdown antd-dropdown--single antd-dropdown-placement-bottomLeft "
+    class="select-test antd antd-open antd-focused antd-enabled antd-allow-clear"
   >
     <div
-      style="overflow:auto;"
+      aria-autocomplete="list"
+      aria-expanded="true"
+      aria-haspopup="true"
+      class="antd-selection
+                antd-selection--single"
+      role="combobox"
+      tabindex="0"
     >
-      <ul
-        aria-activedescendant=""
-        class="antd-dropdown-menu antd-dropdown-menu-vertical  antd-dropdown-menu-root"
-        role="menu"
+      <div
+        class="antd-selection__rendered"
       >
-        <li
-          class=" antd-dropdown-menu-item-group"
+        <div
+          class="antd-selection__placeholder"
+          style="display:none;user-select:none;-webkit-user-select:none;"
+          unselectable="unselectable"
+        >
+          Select a number
+        </div>
+        <div
+          class="antd-selection-selected-value"
+          style="display:block;opacity:0.4;"
+          title="2"
+        >
+          2
+        </div>
+        <div
+          class="antd-search antd-search--inline"
+          style="display:block;"
         >
           <div
-            class="antd-dropdown-menu-item-group-title"
+            class="antd-search__field__wrap"
           >
-            manager
-          </div>
-          <ul
-            class="antd-dropdown-menu-item-group-list"
-          >
-            <li
-              aria-selected="false"
-              class="antd-dropdown-menu-item-active antd-dropdown-menu-item option-test"
-              role="menuitem"
-              style="user-select:none;-webkit-user-select:none;"
-              unselectable="unselectable"
+            <input
+              class="antd-search__field"
+              value=""
+            />
+            <span
+              class="antd-search__field__mirror"
             >
-              <b
-                style="color:red;"
+               
+            </span>
+          </div>
+        </div>
+      </div>
+      <span
+        class="antd-selection__clear"
+        style="user-select:none;-webkit-user-select:none;display:block;"
+        unselectable="unselectable"
+      />
+      <span
+        class="antd-arrow"
+        style="user-select:none;-webkit-user-select:none;"
+        unselectable="unselectable"
+      >
+        <b />
+      </span>
+    </div>
+  </div>
+  <div>
+    <div
+      class="antd-dropdown antd-dropdown--single antd-dropdown-placement-bottomLeft "
+    >
+      <div
+        style="overflow:auto;"
+      >
+        <ul
+          aria-activedescendant=""
+          class="antd-dropdown-menu antd-dropdown-menu-vertical  antd-dropdown-menu-root"
+          role="menu"
+        >
+          <li
+            class=" antd-dropdown-menu-item-group"
+          >
+            <div
+              class="antd-dropdown-menu-item-group-title"
+            >
+              manager
+            </div>
+            <ul
+              class="antd-dropdown-menu-item-group-list"
+            >
+              <li
+                aria-selected="false"
+                class="antd-dropdown-menu-item-active antd-dropdown-menu-item option-test"
+                role="menuitem"
+                style="user-select:none;-webkit-user-select:none;"
+                unselectable="unselectable"
               >
-                jack
-              </b>
-            </li>
-            <li
-              aria-selected="false"
-              class="antd-dropdown-menu-item"
-              role="menuitem"
-              style="user-select:none;-webkit-user-select:none;"
-              unselectable="unselectable"
-            >
-              lucy
-            </li>
-          </ul>
-        </li>
-        <li
-          class=" antd-dropdown-menu-item-group"
-        >
-          <div
-            class="antd-dropdown-menu-item-group-title"
+                <b
+                  style="color:red;"
+                >
+                  jack
+                </b>
+              </li>
+              <li
+                aria-selected="false"
+                class="antd-dropdown-menu-item"
+                role="menuitem"
+                style="user-select:none;-webkit-user-select:none;"
+                unselectable="unselectable"
+              >
+                lucy
+              </li>
+            </ul>
+          </li>
+          <li
+            class=" antd-dropdown-menu-item-group"
           >
-            engineer
-          </div>
-          <ul
-            class="antd-dropdown-menu-item-group-list"
-          >
-            <li
-              aria-selected="false"
-              class="antd-dropdown-menu-item"
-              role="menuitem"
-              style="user-select:none;-webkit-user-select:none;"
-              unselectable="unselectable"
+            <div
+              class="antd-dropdown-menu-item-group-title"
             >
-              yiminghe
-            </li>
-          </ul>
-        </li>
-      </ul>
+              engineer
+            </div>
+            <ul
+              class="antd-dropdown-menu-item-group-list"
+            >
+              <li
+                aria-selected="false"
+                class="antd-dropdown-menu-item"
+                role="menuitem"
+                style="user-select:none;-webkit-user-select:none;"
+                unselectable="unselectable"
+              >
+                yiminghe
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>

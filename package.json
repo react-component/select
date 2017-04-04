@@ -36,9 +36,6 @@
     "coverage": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "jest": {
-    "setupFiles": [
-      "./tests/setup.js"
-    ],
     "collectCoverageFrom": [
       "src/**/*"
     ]

@@ -36,13 +36,8 @@ describe('Select', () => {
     });
 
     it('renders dropdown correctly', () => {
-      const wrapper = mount(select);
-
-      wrapper.find('.select-test').simulate('click');
-      expect(wrapper.find('.select-test').props().className).toContain('-open');
-
-      const dropdownWrapper = render(wrapper.find('Trigger').node.getComponent());
-      expect(renderToJson(dropdownWrapper)).toMatchSnapshot();
+      const wrapper = render(React.cloneElement(select, { open: true }));
+      expect(renderToJson(wrapper)).toMatchSnapshot();
     });
   });
 
@@ -85,8 +80,7 @@ describe('Select', () => {
       </Select>
     );
     wrapper.find('.rc-select').simulate('click');
-    const dropdownWrapper = mount(wrapper.find('Trigger').node.getComponent());
-    expect(dropdownWrapper.find('Menu').props().selectedKeys).toEqual(['2']);
+    expect(wrapper.find('Menu').props().selectedKeys).toEqual(['2']);
   });
 
   it('should can select multiple items', () => {
@@ -98,8 +92,7 @@ describe('Select', () => {
       </Select>
     );
     wrapper.find('.rc-select').simulate('click');
-    const dropdownWrapper = mount(wrapper.find('Trigger').node.getComponent());
-    expect(dropdownWrapper.find('Menu').props().selectedKeys).toEqual(['1', '2']);
+    expect(wrapper.find('Menu').props().selectedKeys).toEqual(['1', '2']);
   });
 
   it('should hide clear button', () => {
@@ -143,9 +136,8 @@ describe('Select', () => {
     );
 
     wrapper.find('input').simulate('change', { target: { value: '1' } });
-    const dropdownWrapper = mount(wrapper.find('Trigger').node.getComponent());
-    expect(dropdownWrapper.find('MenuItem').length).toBe(1);
-    expect(dropdownWrapper.find('MenuItem').props().value).toBe('1');
+    expect(wrapper.find('MenuItem').length).toBe(1);
+    expect(wrapper.find('MenuItem').props().value).toBe('1');
   });
 
   it('specify which prop to filter', () => {
@@ -157,10 +149,9 @@ describe('Select', () => {
     );
 
     wrapper.find('input').simulate('change', { target: { value: 'Two' } });
-    const dropdownWrapper = mount(wrapper.find('Trigger').node.getComponent());
 
-    expect(dropdownWrapper.find('MenuItem').length).toBe(1);
-    expect(dropdownWrapper.find('MenuItem').props().value).toBe('2');
+    expect(wrapper.find('MenuItem').length).toBe(1);
+    expect(wrapper.find('MenuItem').props().value).toBe('2');
   });
 
   it('no search', () => {
@@ -219,8 +210,7 @@ describe('Select', () => {
     );
 
     wrapper.find('.rc-select').simulate('click');
-    const dropdownWrapper = mount(wrapper.find('Trigger').node.getComponent());
-    dropdownWrapper.find('MenuItem').first().simulate('click');
+    wrapper.find('MenuItem').first().simulate('click');
     expect(handleChange).toBeCalledWith({ key: '1', label: 'One' });
   });
 
@@ -252,8 +242,7 @@ describe('Select', () => {
       </Select>
     );
     wrapper.find('.rc-select').simulate('click');
-    const dropdownWrapper = mount(wrapper.find('Trigger').node.getComponent());
-    dropdownWrapper.find('MenuItem').first().simulate('click');
+    wrapper.find('MenuItem').first().simulate('click');
     expect(handleSearch).not.toBeCalled();
   });
 
@@ -268,7 +257,7 @@ describe('Select', () => {
           <Option value="2">2</Option>
         </Select>
       );
-      wrapper.find('div').first().simulate('focus');
+      wrapper.find('.rc-select').simulate('focus');
     });
 
     it('set _focused to true', () => {
@@ -280,7 +269,7 @@ describe('Select', () => {
     });
 
     it('set className', () => {
-      expect(wrapper.find('div').first().node.className).toContain('-focus');
+      expect(wrapper.find('.rc-select').node.className).toContain('-focus');
     });
   });
 
@@ -304,7 +293,7 @@ describe('Select', () => {
       );
       jest.useFakeTimers();
       wrapper.find('input').simulate('change', { target: { value: '1' } });
-      wrapper.find('div').first().simulate('blur');
+      wrapper.find('.rc-select').simulate('blur');
       jest.runAllTimers();
     });
 
@@ -321,7 +310,7 @@ describe('Select', () => {
     });
 
     it('set className', () => {
-      expect(wrapper.find('div').first().node.className).not.toContain('-focus');
+      expect(wrapper.find('.rc-select').node.className).not.toContain('-focus');
     });
   });
 
@@ -340,7 +329,7 @@ describe('Select', () => {
     });
 
     it('clear blur timer', () => {
-      wrapper.find('div').first().simulate('blur');
+      wrapper.find('.rc-select').simulate('blur');
 
       expect(instance.blurTimer).toBeTruthy();
       instance.componentWillUnmount();
@@ -395,8 +384,7 @@ describe('Select', () => {
     wrapper.find('.rc-select').simulate('click');
     expect(wrapper.state().open).toBe(true);
 
-    const dropdownWrapper = mount(wrapper.find('Trigger').node.getComponent());
-    dropdownWrapper.find('MenuItem').simulate('click');
+    wrapper.find('MenuItem').simulate('click');
     expect(wrapper.state().open).toBe(false);
   });
 
@@ -437,9 +425,8 @@ describe('Select', () => {
     expect(wrapper.find('textarea').length).toBe(1);
     wrapper.find('.rc-select').simulate('click');
     wrapper.find('.rc-select').find('textarea').simulate('keyDown', { keyCode: KeyCode.NUM_ONE });
-    const dropdownWrapper = mount(wrapper.find('Trigger').node.getComponent());
 
-    dropdownWrapper.find('MenuItem').first().simulate('click');
+    wrapper.find('MenuItem').first().simulate('click');
     expect(wrapper.state().inputValue).toBe('1');
     expect(handleKeyDown).toBeCalled();
   });
