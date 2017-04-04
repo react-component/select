@@ -3,7 +3,6 @@ import React from 'react';
 import Select from '../../src/Select';
 import Option from '../../src/Option';
 import { shallow, render } from 'enzyme';
-import { shallowToJson, renderToJson } from 'enzyme-to-json';
 
 export default function maxTagTextLengthTest(mode) {
   describe('render', () => {
@@ -19,7 +18,7 @@ export default function maxTagTextLengthTest(mode) {
         </Select>
       );
 
-      expect(renderToJson(wrapper)).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
     });
 
     it('render animation', () => {
@@ -33,7 +32,7 @@ export default function maxTagTextLengthTest(mode) {
         </Select>
       );
 
-      expect(shallowToJson(wrapper)).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
     });
   });
 }

@@ -2,7 +2,6 @@
 import React from 'react';
 import Select, { Option } from '../src';
 import { mount, render } from 'enzyme';
-import { renderToJson } from 'enzyme-to-json';
 import allowClearTest from './shared/allowClearTest';
 
 describe('Select.combobox', () => {
@@ -16,7 +15,7 @@ describe('Select.combobox', () => {
       </Select>
     );
 
-    expect(renderToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
   });
 
   it('set inputValue based on value', () => {

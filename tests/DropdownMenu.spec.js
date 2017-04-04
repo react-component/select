@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import { mount, render } from 'enzyme';
-import { renderToJson } from 'enzyme-to-json';
 import DropdownMenu from '../src/DropdownMenu';
 import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
 
@@ -23,7 +22,7 @@ describe('DropdownMenu', () => {
       />
     );
 
-    expect(renderToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
   });
 
   it('save first active item', () => {

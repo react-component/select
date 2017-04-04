@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import { mount, render } from 'enzyme';
-import { renderToJson } from 'enzyme-to-json';
 import KeyCode from 'rc-util/lib/KeyCode';
 import Select, { Option, OptGroup } from '../src';
 
@@ -32,12 +31,12 @@ describe('Select', () => {
 
     it('renders correctly', () => {
       const wrapper = render(select);
-      expect(renderToJson(wrapper)).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
     });
 
     it('renders dropdown correctly', () => {
       const wrapper = render(React.cloneElement(select, { open: true }));
-      expect(renderToJson(wrapper)).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
     });
   });
 
@@ -162,7 +161,7 @@ describe('Select', () => {
       </Select>
     );
 
-    expect(renderToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
   });
 
   it('open dropdown on down key press', () => {

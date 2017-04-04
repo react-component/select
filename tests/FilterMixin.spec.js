@@ -5,7 +5,6 @@ import Menu from 'rc-menu';
 import OptGroup from '../src/OptGroup';
 import Option from '../src/Option';
 import { render, mount } from 'enzyme';
-import { renderToJson } from 'enzyme-to-json';
 
 describe('FilterMixin', () => {
   const Select = React.createClass({
@@ -52,7 +51,7 @@ describe('FilterMixin', () => {
         </Select>
       );
 
-      expect(renderToJson(wrapper)).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
     });
 
     it('set label as key for OptGroup', () => {
@@ -77,7 +76,7 @@ describe('FilterMixin', () => {
         </Select>
       );
 
-      expect(renderToJson(wrapper)).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
     });
 
     it('renders not found when search result is empty', () => {
@@ -88,7 +87,7 @@ describe('FilterMixin', () => {
         </Select>
       );
 
-      expect(renderToJson(wrapper)).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
     });
 
     it('warns on invalid children', () => {
@@ -114,7 +113,7 @@ describe('FilterMixin', () => {
         </Select>
       );
 
-      expect(renderToJson(wrapper)).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
     });
 
     describe('tag mode', () => {
@@ -126,7 +125,7 @@ describe('FilterMixin', () => {
           </Select>
         );
 
-        expect(renderToJson(wrapper)).toMatchSnapshot();
+        expect(wrapper).toMatchSnapshot();
       });
 
       it('renders search value when not fount', () => {
@@ -136,7 +135,7 @@ describe('FilterMixin', () => {
           </Select>
         );
 
-        expect(renderToJson(wrapper)).toMatchSnapshot();
+        expect(wrapper).toMatchSnapshot();
       });
     });
   });
