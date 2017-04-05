@@ -19,7 +19,7 @@ describe('test test test', () => {
     expect(wrapper.state().inputValue).toBe('1');
   });
 
-  it('not fires input change when triggerOnchange is true ', () => {
+  it('not fires input change when triggerOnchange is false ', () => {
     const wrapper = mount(
       <Select combobox triggerOnchange={false}>
         <Option value="1">1</Option>
