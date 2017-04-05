@@ -52,6 +52,7 @@ const Select = React.createClass({
       defaultActiveFirstOption: true,
       showSearch: true,
       allowClear: false,
+      triggerOnchange: true,
       placeholder: '',
       onChange: noop,
       onFocus: noop,
@@ -639,7 +640,10 @@ const Select = React.createClass({
       }
       props.onDeselect(event);
     }
-    this.fireChange(value);
+    
+    if (props.triggerOnchange) {
+      this.fireChange(value);
+    }
   },
 
   openIfHasChildren() {

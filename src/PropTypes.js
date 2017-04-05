@@ -40,6 +40,7 @@ export const SelectPropTypes = {
   showSearch: PropTypes.bool,
   disabled: PropTypes.bool,
   allowClear: PropTypes.bool,
+  triggerOnchange: PropTypes.bool,
   showArrow: PropTypes.bool,
   tags: PropTypes.bool,
   prefixCls: PropTypes.string,
