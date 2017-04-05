@@ -271,8 +271,9 @@ const Select = React.createClass({
       this.setOpenState(false, true);
     }
     this.fireChange(value);
+
     let inputValue;
-    if (isCombobox(props)) {
+    if (isCombobox(props) && props.triggerOnchange) {
       inputValue = getPropValue(item, props.optionLabelProp);
     } else {
       inputValue = '';
@@ -640,10 +641,7 @@ const Select = React.createClass({
       }
       props.onDeselect(event);
     }
-    
-    if (props.triggerOnchange) {
-      this.fireChange(value);
-    }
+    this.fireChange(value);
   },
 
   openIfHasChildren() {
