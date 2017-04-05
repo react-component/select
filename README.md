@@ -83,6 +83,7 @@ React.render(c, container);
 |combobox | enable combobox mode(can not set multiple at the same time) | bool | false |
 |multiple | whether multiple select | bool | false |
 |disabled | whether disabled select | bool | false |
+|triggerOnchange | trigger input onChange event after an option is selected(onSelect) | bool | true |
 |filterOption | whether filter options by input value. default filter by option's optionFilterProp prop's value | bool | true/Function(inputValue:string, option:Option) |
 |optionFilterProp | which prop value of option will be used for filter if filterOption is true | String | 'value' |
 |optionLabelProp | which prop value of option will render as content of select | String | 'value' |
