@@ -67,4 +67,22 @@ describe('Select.multiple', () => {
       expect(handleFocus).toBeCalled();
     });
   });
+
+  it('OptGroup without key', () => {
+    expect(() => {
+      mount(
+        <Select
+          multiple
+          defaultValue={['1']}
+        >
+          <OptGroup label="group1">
+            <Option value="1">One</Option>
+          </OptGroup>
+          <OptGroup label="group2">
+            <Option value="2">Two</Option>
+          </OptGroup>
+        </Select>,
+      );
+    }).not.toThrow();
+  });
 });
