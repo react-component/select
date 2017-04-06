@@ -163,6 +163,14 @@ webpackJsonp([3],{
 	        autoDestroy: false,
 	        getComponent: function getComponent(instance, extra) {
 	            return _react2["default"].createElement(_Dialog2["default"], __assign({}, instance.props, extra, { key: "dialog" }));
+	        },
+	        getContainer: function getContainer(instance) {
+	            if (instance.props.getContainer) {
+	                return instance.props.getContainer();
+	            }
+	            var container = document.createElement('div');
+	            document.body.appendChild(container);
+	            return container;
 	        }
 	    })],
 	    getDefaultProps: function getDefaultProps() {
