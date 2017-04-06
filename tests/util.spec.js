@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { includesSeparators, splitBySeparators } from '../src/util';
+import { includesSeparators, splitBySeparators, getValuePropValue } from '../src/util';
 
 describe('includesSeparators', () => {
   const separators = [' ', ','];
@@ -36,5 +36,29 @@ describe('splitBySeparators', () => {
   it('split a separator', () => {
     const string = ',';
     expect(splitBySeparators(string, separators)).toEqual([]);
+  });
+});
+
+describe('getValuePropValue', () => {
+  const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+  afterEach(() => {
+    errorSpy.mockReset();
+  });
+
+  afterAll(() => {
+    errorSpy.mockRestore();
+  });
+
+  it('return label when type is isSelectOptGroup', () => {
+    expect(getValuePropValue({
+      props: {
+        label: 'Manager',
+      },
+      type: {
+        isSelectOptGroup: true,
+      },
+    })).toBe('Manager');
+    expect(errorSpy).not.toHaveBeenCalled();
   });
 });
