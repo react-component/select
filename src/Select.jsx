@@ -495,7 +495,9 @@ const Select = React.createClass({
   },
 
   getInputDOMNode() {
-    return this.inputInstance;
+    return this.topCtrlNode ?
+       this.topCtrlNode.querySelector('input,textarea,div[contentEditable]') :
+       this.inputInstance;
   },
 
   getInputMirrorDOMNode() {
@@ -700,9 +702,11 @@ const Select = React.createClass({
       options = this.renderFilterOptions();
     }
     this._options = options;
-    if (open &&
-      (isMultipleOrTagsOrCombobox(this.props) || !this.props.showSearch) && !options.length) {
-      open = false;
+
+    if (isMultipleOrTagsOrCombobox(this.props) || !this.props.showSearch) {
+      if (open && !options.length) {
+        open = false;
+      }
     }
     this.state.open = open;
   },
@@ -812,7 +816,13 @@ const Select = React.createClass({
         innerNode = <ul>{selectedValueNodes}</ul>;
       }
     }
-    return (<div className={className}>{this.getPlaceholderElement()}{innerNode}</div>);
+    return (<div
+      className={className}
+      ref={node => this.topCtrlNode = node}
+    >
+      {this.getPlaceholderElement()}
+      {innerNode}
+    </div>);
   },
 
   render() {

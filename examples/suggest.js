@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Select, { Option } from 'rc-select';
+import { Input } from 'antd';
 import 'rc-select/assets/index.less';
 import { fetch } from './common/tbFetchSuggest';
 import ReactDOM from 'react-dom';
@@ -57,6 +58,7 @@ const Search = React.createClass({
           value={this.state.value}
           placeholder="placeholder"
           defaultActiveFirstOption={false}
+          getInputElement={() => <Input />}
           showArrow={false}
           notFoundContent=""
           onChange={this.fetchData}
