@@ -2,10 +2,11 @@
 
 import React from 'react';
 import Select, { Option } from 'rc-select';
-import { Input } from 'antd';
 import 'rc-select/assets/index.less';
 import { fetch } from './common/tbFetchSuggest';
 import ReactDOM from 'react-dom';
+
+const Input = (props) => <input {...props} />;
 
 const Search = React.createClass({
   getInitialState() {
