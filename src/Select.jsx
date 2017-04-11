@@ -702,7 +702,8 @@ const Select = React.createClass({
       options = this.renderFilterOptions();
     }
     this._options = options;
-     if (isMultipleOrTagsOrCombobox(this.props) || !this.props.showSearch) {
+
+    if (isMultipleOrTagsOrCombobox(this.props) || !this.props.showSearch) {
       if (open && !options.length) {
         open = false;
       }
