@@ -3,12 +3,12 @@ webpackJsonp([12],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(357);
+	module.exports = __webpack_require__(361);
 
 
 /***/ },
 
-/***/ 335:
+/***/ 339:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18,11 +18,11 @@ webpackJsonp([12],{
 	});
 	exports.fetch = fetch;
 	
-	var _jsonp = __webpack_require__(336);
+	var _jsonp = __webpack_require__(340);
 	
 	var _jsonp2 = _interopRequireDefault(_jsonp);
 	
-	var _querystring = __webpack_require__(340);
+	var _querystring = __webpack_require__(344);
 	
 	var _querystring2 = _interopRequireDefault(_querystring);
 	
@@ -63,14 +63,14 @@ webpackJsonp([12],{
 
 /***/ },
 
-/***/ 336:
+/***/ 340:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies
 	 */
 	
-	var debug = __webpack_require__(337)('jsonp');
+	var debug = __webpack_require__(341)('jsonp');
 	
 	/**
 	 * Module exports.
@@ -167,7 +167,7 @@ webpackJsonp([12],{
 
 /***/ },
 
-/***/ 337:
+/***/ 341:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -176,7 +176,7 @@ webpackJsonp([12],{
 	 * Expose `debug()` as the module.
 	 */
 	
-	exports = module.exports = __webpack_require__(338);
+	exports = module.exports = __webpack_require__(342);
 	exports.log = log;
 	exports.formatArgs = formatArgs;
 	exports.save = save;
@@ -360,7 +360,7 @@ webpackJsonp([12],{
 
 /***/ },
 
-/***/ 338:
+/***/ 342:
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -376,7 +376,7 @@ webpackJsonp([12],{
 	exports.disable = disable;
 	exports.enable = enable;
 	exports.enabled = enabled;
-	exports.humanize = __webpack_require__(339);
+	exports.humanize = __webpack_require__(343);
 	
 	/**
 	 * The currently active debug mode names, and names to skip.
@@ -569,7 +569,7 @@ webpackJsonp([12],{
 
 /***/ },
 
-/***/ 339:
+/***/ 343:
 /***/ function(module, exports) {
 
 	/**
@@ -725,18 +725,18 @@ webpackJsonp([12],{
 
 /***/ },
 
-/***/ 340:
+/***/ 344:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	exports.decode = exports.parse = __webpack_require__(341);
-	exports.encode = exports.stringify = __webpack_require__(342);
+	exports.decode = exports.parse = __webpack_require__(345);
+	exports.encode = exports.stringify = __webpack_require__(346);
 
 
 /***/ },
 
-/***/ 341:
+/***/ 345:
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -823,7 +823,7 @@ webpackJsonp([12],{
 
 /***/ },
 
-/***/ 342:
+/***/ 346:
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -894,7 +894,7 @@ webpackJsonp([12],{
 
 /***/ },
 
-/***/ 357:
+/***/ 361:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -903,19 +903,23 @@ webpackJsonp([12],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _rcSelect = __webpack_require__(179);
+	var _rcSelect = __webpack_require__(183);
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(332);
+	__webpack_require__(336);
 	
-	var _tbFetchSuggest = __webpack_require__(335);
+	var _tbFetchSuggest = __webpack_require__(339);
 	
-	var _reactDom = __webpack_require__(33);
+	var _reactDom = __webpack_require__(37);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Input = function Input(props) {
+	  return _react2.default.createElement('input', props);
+	}; /* eslint no-console: 0 */
 	
 	var Search = _react2.default.createClass({
 	  displayName: 'Search',
@@ -979,6 +983,9 @@ webpackJsonp([12],{
 	            value: this.state.value,
 	            placeholder: 'placeholder',
 	            defaultActiveFirstOption: false,
+	            getInputElement: function getInputElement() {
+	              return _react2.default.createElement(Input, null);
+	            },
 	            showArrow: false,
 	            notFoundContent: '',
 	            onChange: this.fetchData,
@@ -990,7 +997,7 @@ webpackJsonp([12],{
 	      )
 	    );
 	  }
-	}); /* eslint no-console: 0 */
+	});
 	
 	_reactDom2.default.render(_react2.default.createElement(Search, null), document.getElementById('__react-content'));
 
