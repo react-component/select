@@ -1,5 +1,7 @@
 /* eslint-disable no-undef */
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import createReactClass from 'create-react-class';
 import FilterMixin from '../src/FilterMixin';
 import Menu from 'rc-menu';
 import OptGroup from '../src/OptGroup';
@@ -7,7 +9,7 @@ import Option from '../src/Option';
 import { render, mount } from 'enzyme';
 
 describe('FilterMixin', () => {
-  const Select = React.createClass({
+  const Select = createReactClass({
     propTypes: {
       value: PropTypes.any,
       inputValue: PropTypes.string,
