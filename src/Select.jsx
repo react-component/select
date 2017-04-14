@@ -4,6 +4,7 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import classnames from 'classnames';
 import Animate from 'rc-animate';
 import classes from 'component-classes';
+import createReactClass from 'create-react-class';
 import {
   getPropValue, getValuePropValue, isCombobox,
   isMultipleOrTags, isMultipleOrTagsOrCombobox,
@@ -38,7 +39,7 @@ function chaining(...fns) {
   };
 }
 
-const Select = React.createClass({
+const Select = createReactClass({
   propTypes: SelectPropTypes,
 
   mixins: [FilterMixin],

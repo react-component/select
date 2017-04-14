@@ -1,6 +1,7 @@
 /* eslint no-console: 0 */
 
 import React from 'react';
+import createReactClass from 'create-react-class';
 import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.less';
 import { fetch } from './common/tbFetchSuggest';
@@ -8,7 +9,7 @@ import ReactDOM from 'react-dom';
 
 const Input = (props) => <input {...props} />;
 
-const Search = React.createClass({
+const Search = createReactClass({
   getInitialState() {
     return {
       data: [],

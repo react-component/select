@@ -1,11 +1,12 @@
 /* eslint no-console: 0 */
 
 import React from 'react';
+import createReactClass from 'create-react-class';
 import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.less';
 import ReactDOM from 'react-dom';
 
-const Test = React.createClass({
+const Test = createReactClass({
   getInitialState() {
     return {
       destroy: false,

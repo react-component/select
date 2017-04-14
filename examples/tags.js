@@ -1,6 +1,7 @@
 /* eslint no-console: 0 */
 
 import React from 'react';
+import createReactClass from 'create-react-class';
 import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.less';
 import ReactDOM from 'react-dom';
@@ -10,7 +11,7 @@ for (let i = 10; i < 36; i++) {
   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
 }
 
-const Test = React.createClass({
+const Test = createReactClass({
   getInitialState() {
     return {
       disabled: false,

@@ -1,5 +1,7 @@
 import Trigger from 'rc-trigger';
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import createReactClass from 'create-react-class';
 import classnames from 'classnames';
 import DropdownMenu from './DropdownMenu';
 import ReactDOM from 'react-dom';
@@ -24,7 +26,7 @@ const BUILT_IN_PLACEMENTS = {
   },
 };
 
-const SelectTrigger = React.createClass({
+const SelectTrigger = createReactClass({
   propTypes: {
     onPopupFocus: PropTypes.func,
     dropdownMatchSelectWidth: PropTypes.bool,

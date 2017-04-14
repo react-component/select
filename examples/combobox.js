@@ -2,10 +2,11 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import createReactClass from 'create-react-class';
 import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.less';
 
-const Test = React.createClass({
+const Test = createReactClass({
   getInitialState() {
     return {
       disabled: false,

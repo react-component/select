@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import createReactClass from 'create-react-class';
 import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.less';
 import Dialog from 'rc-dialog';
 import 'rc-dialog/assets/index.css';
 
-const Test = React.createClass({
+const Test = createReactClass({
   getInitialState() {
     return {
       open: false,
