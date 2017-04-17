@@ -68,7 +68,7 @@ const DropdownMenu = React.createClass({
       const menuProps = {};
       const setLastInputValue = function(text){
         this.lastInputValue = text;
-      }
+      }.bind(this);
       const onSelect = function(){
         onMenuSelect(arguments); 
         setLastInputValue(arguments[0]);
