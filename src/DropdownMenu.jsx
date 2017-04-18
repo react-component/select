@@ -73,7 +73,6 @@ const DropdownMenu = React.createClass({
         onMenuSelect(_ref); 
         setLastInputValue(_ref.key);
       }
-      
       if (multiple) {
         menuProps.onDeselect = props.onMenuDeselect;
         menuProps.onSelect = onSelect;
