@@ -90,6 +90,7 @@ const DropdownMenu = createClass({
           if (!foundFirst && selectedKeys.indexOf(item.key) !== -1) {
             foundFirst = true;
             return cloneElement(item, {
+              onKeyDown: () => console.log(' item keydown'),
               ref: (ref) => {
                 this.firstActiveItem = ref;
               },

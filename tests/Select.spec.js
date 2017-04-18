@@ -256,7 +256,9 @@ describe('Select', () => {
           <Option value="2">2</Option>
         </Select>
       );
+      jest.useFakeTimers();
       wrapper.find('.rc-select').simulate('focus');
+      jest.runAllTimers();
     });
 
     it('set _focused to true', () => {
@@ -265,6 +267,37 @@ describe('Select', () => {
 
     it('fires focus event', () => {
       expect(handleFocus).toBeCalled();
+      expect(handleFocus.mock.calls.length).toBe(1);
+    });
+
+    it('set className', () => {
+      expect(wrapper.find('.rc-select').node.className).toContain('-focus');
+    });
+  });
+
+  describe('click input will trigger focus', () => {
+    let handleFocus;
+    let wrapper;
+    beforeEach(() => {
+      handleFocus = jest.fn();
+      wrapper = mount(
+        <Select onFocus={handleFocus}>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>
+      );
+      jest.useFakeTimers();
+      wrapper.find('.rc-select input').simulate('click');
+      jest.runAllTimers();
+    });
+
+    it('set _focused to true', () => {
+      expect(wrapper.instance()._focused).toBe(true);
+    });
+
+    it('fires focus event', () => {
+      expect(handleFocus).toBeCalled();
+      expect(handleFocus.mock.calls.length).toBe(1);
     });
 
     it('set className', () => {
