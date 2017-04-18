@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import createClass from 'create-react-class';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classnames from 'classnames';
 import Animate from 'rc-animate';
@@ -38,7 +39,7 @@ function chaining(...fns) {
   };
 }
 
-const Select = React.createClass({
+const Select = createClass({
   propTypes: SelectPropTypes,
 
   mixins: [FilterMixin],
@@ -928,4 +929,5 @@ const Select = React.createClass({
   },
 });
 
+Select.displayName = 'Select';
 export default Select;
