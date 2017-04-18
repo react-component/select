@@ -350,7 +350,7 @@ const Select = createClass({
         this.state.inputValue = this.getInputDOMNode().value = '';
       }
       props.onBlur(this.getVLForOnChange(value));
-    }, 50);
+    }, 10);
   },
 
   onClearSelection(event) {
