@@ -1,9 +1,13 @@
 import Trigger from 'rc-trigger';
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import createClass from 'create-react-class';
 import classnames from 'classnames';
 import DropdownMenu from './DropdownMenu';
 import ReactDOM from 'react-dom';
 import { isSingleMode } from './util';
+
+Trigger.displayName = 'Trigger';
 
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
@@ -24,7 +28,7 @@ const BUILT_IN_PLACEMENTS = {
   },
 };
 
-const SelectTrigger = React.createClass({
+const SelectTrigger = createClass({
   propTypes: {
     onPopupFocus: PropTypes.func,
     dropdownMatchSelectWidth: PropTypes.bool,
@@ -133,5 +137,7 @@ const SelectTrigger = React.createClass({
     >{props.children}</Trigger>);
   },
 });
+
+SelectTrigger.displayName = 'SelectTrigger';
 
 export default SelectTrigger;

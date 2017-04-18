@@ -91,7 +91,6 @@ exports[`SelectTrigger renders correctly 1`] = `
       <div
         onClick={[Function]}
         onMouseDown={[Function]}
-        onTouchStart={[Function]}
       >
         foo
       </div>

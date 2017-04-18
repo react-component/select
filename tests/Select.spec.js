@@ -448,8 +448,9 @@ describe('Select', () => {
         );
       }).toThrow();
       expect(spy.mock.calls[0][0]).toMatch(
-        'Invalid prop `value` supplied to `Select`, when you set `labelInValue` ' +
-        'to `true`, `value` should in shape of `{ key: string, label?: string }`'
+        'Warning: Failed prop type: Invalid prop `value` supplied to `Select`, ' +
+        'when you set `labelInValue` to `true`,' +
+        ' `value` should in shape of `{ key: string, label?: string }`'
       );
     });
 
@@ -458,7 +459,7 @@ describe('Select', () => {
         <Select multiple value="" />
       );
       expect(spy.mock.calls[0][0]).toMatch(
-        'Invalid prop `value` of type `string` supplied to `Select`, ' +
+        'Warning: Failed prop type: Invalid prop `value` of type `string` supplied to `Select`, ' +
         'expected `array` when `multiple` is `true`'
       );
     });

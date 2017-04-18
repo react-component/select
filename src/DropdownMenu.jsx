@@ -1,11 +1,13 @@
-import React, { cloneElement, PropTypes } from 'react';
+import React, { cloneElement } from 'react';
 import { findDOMNode } from 'react-dom';
+import PropTypes from 'prop-types';
+import createClass from 'create-react-class';
 import toArray from 'rc-util/lib/Children/toArray';
 import Menu from 'rc-menu';
 import scrollIntoView from 'dom-scroll-into-view';
 import { getSelectKeys, preventDefaultEvent } from './util';
 
-const DropdownMenu = React.createClass({
+const DropdownMenu = createClass({
   propTypes: {
     defaultActiveFirstOption: PropTypes.bool,
     value: PropTypes.any,
@@ -141,4 +143,5 @@ const DropdownMenu = React.createClass({
   },
 });
 
+DropdownMenu.displayName = 'DropdownMenu';
 export default DropdownMenu;

@@ -1,4 +1,4 @@
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 
 function valueType(props, propName, componentName) {
   const labelInValueShape = PropTypes.shape({
