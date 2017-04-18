@@ -66,18 +66,18 @@ const DropdownMenu = React.createClass({
     } = props;
     if (menuItems && menuItems.length) {
       const menuProps = {};
-      const func-setLastInputValue = function(text) {
+      const setLastInputValue = function setLastInputValue(text) {
         this.lastInputValue = text;
       }.bind(this);
-      const func-onSelect = function(_ref) {
+      const onSelect = function onSelect(_ref) {
         onMenuSelect(_ref); 
-        func-setLastInputValue(_ref.key);
+        setLastInputValue(_ref.key);
       }
       if (multiple) {
         menuProps.onDeselect = props.onMenuDeselect;
-        menuProps.onSelect = func-setLastInputValue;
+        menuProps.onSelect = onSelect;
       } else {
-        menuProps.onClick = func-setLastInputValuet;
+        menuProps.onClick = onSelect;
       }
 
       const selectedKeys = getSelectKeys(menuItems, value);
