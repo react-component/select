@@ -66,10 +66,10 @@ const DropdownMenu = React.createClass({
     } = props;
     if (menuItems && menuItems.length) {
       const menuProps = {};
-      const setLastInputValue = function setLastInputValue(text) {
+      const setLastInputValue = (text) => {
         this.lastInputValue = text;
-      }.bind(this);
-      const onSelect = function onSelect(_ref) {
+      };
+      const onSelect = (_ref) => {
         onMenuSelect(_ref);
         setLastInputValue(_ref.key);
       };
