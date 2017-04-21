@@ -526,11 +526,9 @@ const Select = createClass({
     if (!open && isSingleMode(props) && props.showSearch) {
       this.setInputValue('');
     }
-    if (!open) {
-      this.maybeFocus(open, needFocus);
-    }
+
     this.setState(nextState, () => {
-      if (open) {
+      if (!open) {
         this.maybeFocus(open, needFocus);
       }
     });
