@@ -137,6 +137,7 @@ const Select = createClass({
   },
 
   componentWillUnmount() {
+    this.clearFocusTime();
     this.clearBlurTime();
     this.clearAdjustTimer();
     if (this.dropdownContainer) {
@@ -170,6 +171,12 @@ const Select = createClass({
   },
 
   onDropdownVisibleChange(open) {
+    if (open && !this._focused) {
+      this.clearBlurTime();
+      this.timeoutFocus();
+      this._focused = true;
+      this.updateFocusClassName();
+    }
     this.setOpenState(open);
   },
 
@@ -302,13 +309,16 @@ const Select = createClass({
   },
 
   onOuterFocus(e) {
+    this.clearBlurTime();
     if (!isMultipleOrTagsOrCombobox(this.props) && e.target === this.getInputDOMNode()) {
       return;
     }
-    this.clearBlurTime();
+    if (this._focused) {
+      return;
+    }
     this._focused = true;
     this.updateFocusClassName();
-    this.props.onFocus();
+    this.timeoutFocus();
   },
 
   onPopupFocus() {
@@ -546,6 +556,22 @@ const Select = createClass({
       }
     }
   },
+
+  timeoutFocus() {
+    if (this.focusTimer) {
+      this.clearFocusTime();
+    }
+    this.focusTimer = setTimeout(() => {
+      this.props.onFocus();
+    }, 10);
+  },
+
+  clearFocusTime() {
+    if (this.focusTimer) {
+      clearTimeout(this.focusTimer);
+      this.focusTimer = null;
+    }
+  },
   clearBlurTime() {
     if (this.blurTimer) {
       clearTimeout(this.blurTimer);
@@ -575,11 +601,13 @@ const Select = createClass({
       if (input && (open || isMultipleOrTagsOrCombobox(this.props))) {
         if (activeElement !== input) {
           input.focus();
+          this._focused = true;
         }
       } else {
         const selection = this.refs.selection;
         if (activeElement !== selection) {
           selection.focus();
+          this._focused = true;
         }
       }
     }
