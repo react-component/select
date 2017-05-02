@@ -94,17 +94,18 @@ describe('FilterMixin', () => {
 
     it('warns on invalid children', () => {
       const Foo = () => <div>foo</div>;
-      spyOn(console, 'error');
+      const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
       mount(
         <Select>
           <Foo value="1" />
         </Select>
       );
-      expect(console.error.calls.count()).toBe(1);
-      expect(console.error.calls.argsFor(0)[0]).toContain(
+      expect(spy.mock.calls.length).toBe(1);
+      expect(spy.mock.calls[0][0]).toContain(
         'the children of `Select` should be `Select.Option` or `Select.OptGroup`, ' +
           `instead of \`Foo\`.`
       );
+      spy.mockRestore();
     });
 
     it('filterOption could be true as described in default value', () => {
