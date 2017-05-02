@@ -39,7 +39,9 @@
     "collectCoverageFrom": [
       "src/**/*"
     ],
-    "snapshotSerializers": ["enzyme-to-json/serializer"]
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
   },
   "devDependencies": {
     "babel-jest": "^17.0.0",

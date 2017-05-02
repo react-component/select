@@ -37,6 +37,11 @@ describe('splitBySeparators', () => {
     const string = ',';
     expect(splitBySeparators(string, separators)).toEqual([]);
   });
+
+  it('split two separators', () => {
+    const string = ',,';
+    expect(splitBySeparators(string, separators)).toEqual([]);
+  });
 });
 
 describe('getValuePropValue', () => {

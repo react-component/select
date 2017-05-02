@@ -129,10 +129,10 @@ export function includesSeparators(string, separators) {
 export function splitBySeparators(string, separators) {
   const reg = new RegExp(`[${separators.join()}]`);
   const array = string.split(reg);
-  if (array[0] === '') {
+  while (array[0] === '') {
     array.shift();
   }
-  if (array[array.length - 1] === '') {
+  while (array[array.length - 1] === '') {
     array.pop();
   }
   return array;
