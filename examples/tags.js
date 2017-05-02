@@ -1,15 +1,15 @@
 webpackJsonp([13],{
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(362);
+	module.exports = __webpack_require__(363);
 
 
-/***/ },
+/***/ }),
 
-/***/ 362:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 363:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -21,7 +21,7 @@ webpackJsonp([13],{
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(336);
+	__webpack_require__(337);
 	
 	var _reactDom = __webpack_require__(37);
 	
@@ -102,7 +102,7 @@ webpackJsonp([13],{
 	
 	_reactDom2.default.render(_react2.default.createElement(Test, null), document.getElementById('__react-content'));
 
-/***/ }
+/***/ })
 
 });
 //# sourceMappingURL=tags.js.map

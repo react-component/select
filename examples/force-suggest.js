@@ -1,15 +1,15 @@
 webpackJsonp([2],{
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(338);
+	module.exports = __webpack_require__(339);
 
 
-/***/ },
+/***/ }),
 
-/***/ 338:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 339:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -21,9 +21,9 @@ webpackJsonp([2],{
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
-	__webpack_require__(336);
+	__webpack_require__(337);
 	
-	var _tbFetchSuggest = __webpack_require__(339);
+	var _tbFetchSuggest = __webpack_require__(340);
 	
 	var _reactDom = __webpack_require__(37);
 	
@@ -123,10 +123,10 @@ webpackJsonp([2],{
 	
 	_reactDom2.default.render(_react2.default.createElement(Search, null), document.getElementById('__react-content'));
 
-/***/ },
+/***/ }),
 
-/***/ 339:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 340:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -135,11 +135,11 @@ webpackJsonp([2],{
 	});
 	exports.fetch = fetch;
 	
-	var _jsonp = __webpack_require__(340);
+	var _jsonp = __webpack_require__(341);
 	
 	var _jsonp2 = _interopRequireDefault(_jsonp);
 	
-	var _querystring = __webpack_require__(344);
+	var _querystring = __webpack_require__(345);
 	
 	var _querystring2 = _interopRequireDefault(_querystring);
 	
@@ -178,16 +178,16 @@ webpackJsonp([2],{
 	  timeout = setTimeout(fake, 300);
 	}
 
-/***/ },
+/***/ }),
 
-/***/ 340:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 341:
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies
 	 */
 	
-	var debug = __webpack_require__(341)('jsonp');
+	var debug = __webpack_require__(342)('jsonp');
 	
 	/**
 	 * Module exports.
@@ -282,10 +282,10 @@ webpackJsonp([2],{
 	}
 
 
-/***/ },
+/***/ }),
 
-/***/ 341:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 342:
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
 	 * This is the web browser implementation of `debug()`.
@@ -293,7 +293,7 @@ webpackJsonp([2],{
 	 * Expose `debug()` as the module.
 	 */
 	
-	exports = module.exports = __webpack_require__(342);
+	exports = module.exports = __webpack_require__(343);
 	exports.log = log;
 	exports.formatArgs = formatArgs;
 	exports.save = save;
@@ -329,15 +329,15 @@ webpackJsonp([2],{
 	  // NB: In an Electron preload script, document will be defined but not fully
 	  // initialized. Since we know we're in Chrome, we'll just detect this case
 	  // explicitly
-	  if (typeof window !== 'undefined' && window && typeof window.process !== 'undefined' && window.process.type === 'renderer') {
+	  if (typeof window !== 'undefined' && window.process && window.process.type === 'renderer') {
 	    return true;
 	  }
 	
 	  // is webkit? http://stackoverflow.com/a/16459606/376773
 	  // document is undefined in react-native: https://github.com/facebook/react-native/pull/1632
-	  return (typeof document !== 'undefined' && document && 'WebkitAppearance' in document.documentElement.style) ||
+	  return (typeof document !== 'undefined' && document && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance) ||
 	    // is firebug? http://stackoverflow.com/a/398120/376773
-	    (typeof window !== 'undefined' && window && window.console && (console.firebug || (console.exception && console.table))) ||
+	    (typeof window !== 'undefined' && window && window.console && (window.console.firebug || (window.console.exception && window.console.table))) ||
 	    // is firefox >= v31?
 	    // https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
 	    (typeof navigator !== 'undefined' && navigator && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31) ||
@@ -475,10 +475,10 @@ webpackJsonp([2],{
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
-/***/ },
+/***/ }),
 
-/***/ 342:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 343:
+/***/ (function(module, exports, __webpack_require__) {
 
 	
 	/**
@@ -493,7 +493,7 @@ webpackJsonp([2],{
 	exports.disable = disable;
 	exports.enable = enable;
 	exports.enabled = enabled;
-	exports.humanize = __webpack_require__(343);
+	exports.humanize = __webpack_require__(344);
 	
 	/**
 	 * The currently active debug mode names, and names to skip.
@@ -623,7 +623,7 @@ webpackJsonp([2],{
 	  exports.names = [];
 	  exports.skips = [];
 	
-	  var split = (namespaces || '').split(/[\s,]+/);
+	  var split = (typeof namespaces === 'string' ? namespaces : '').split(/[\s,]+/);
 	  var len = split.length;
 	
 	  for (var i = 0; i < len; i++) {
@@ -684,10 +684,10 @@ webpackJsonp([2],{
 	}
 
 
-/***/ },
+/***/ }),
 
-/***/ 343:
-/***/ function(module, exports) {
+/***/ 344:
+/***/ (function(module, exports) {
 
 	/**
 	 * Helpers.
@@ -707,7 +707,7 @@ webpackJsonp([2],{
 	 *  - `long` verbose formatting [false]
 	 *
 	 * @param {String|Number} val
-	 * @param {Object} options
+	 * @param {Object} [options]
 	 * @throws {Error} throw an error if val is not a non-empty string or a number
 	 * @return {String|Number}
 	 * @api public
@@ -840,21 +840,21 @@ webpackJsonp([2],{
 	}
 
 
-/***/ },
+/***/ }),
 
-/***/ 344:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 345:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	exports.decode = exports.parse = __webpack_require__(345);
-	exports.encode = exports.stringify = __webpack_require__(346);
+	exports.decode = exports.parse = __webpack_require__(346);
+	exports.encode = exports.stringify = __webpack_require__(347);
 
 
-/***/ },
+/***/ }),
 
-/***/ 345:
-/***/ function(module, exports) {
+/***/ 346:
+/***/ (function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
 	//
@@ -938,10 +938,10 @@ webpackJsonp([2],{
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 346:
-/***/ function(module, exports) {
+/***/ 347:
+/***/ (function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
 	//
@@ -1009,7 +1009,7 @@ webpackJsonp([2],{
 	};
 
 
-/***/ }
+/***/ })
 
 });
 //# sourceMappingURL=force-suggest.js.map
