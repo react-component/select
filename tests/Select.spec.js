@@ -270,6 +270,18 @@ describe('Select', () => {
     it('set className', () => {
       expect(wrapper.find('.rc-select').node.className).toContain('-focus');
     });
+
+    it('click placeholder should trigger onFocus', () => {
+      const handleFocus2 = jest.fn();
+      const wrapper2 = mount(
+        <Select onFocus={handleFocus2} placeholder="xxxx">
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>
+      );
+      wrapper2.find('.rc-select-selection__placeholder').simulate('click');
+      expect(handleFocus2).toBeCalled();
+    });
   });
 
   describe('blur', () => {
