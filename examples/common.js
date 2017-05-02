@@ -21628,6 +21628,7 @@
 	    }
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
+	    this.clearFocusTime();
 	    this.clearBlurTime();
 	    this.clearAdjustTimer();
 	    if (this.dropdownContainer) {
@@ -21658,6 +21659,12 @@
 	    }
 	  },
 	  onDropdownVisibleChange: function onDropdownVisibleChange(open) {
+	    if (open && !this._focused) {
+	      this.clearBlurTime();
+	      this.timeoutFocus();
+	      this._focused = true;
+	      this.updateFocusClassName();
+	    }
 	    this.setOpenState(open);
 	  },
 	
@@ -21789,16 +21796,20 @@
 	  onPlaceholderClick: function onPlaceholderClick() {
 	    if (this.getInputDOMNode()) {
 	      this.getInputDOMNode().focus();
+	      this.props.onFocus();
 	    }
 	  },
 	  onOuterFocus: function onOuterFocus(e) {
+	    this.clearBlurTime();
 	    if (!(0, _util.isMultipleOrTagsOrCombobox)(this.props) && e.target === this.getInputDOMNode()) {
 	      return;
 	    }
-	    this.clearBlurTime();
+	    if (this._focused) {
+	      return;
+	    }
 	    this._focused = true;
 	    this.updateFocusClassName();
-	    this.props.onFocus();
+	    this.timeoutFocus();
 	  },
 	  onPopupFocus: function onPopupFocus() {
 	    // fix ie scrollbar, focus element again
@@ -22040,6 +22051,22 @@
 	      }
 	    }
 	  },
+	  timeoutFocus: function timeoutFocus() {
+	    var _this6 = this;
+	
+	    if (this.focusTimer) {
+	      this.clearFocusTime();
+	    }
+	    this.focusTimer = setTimeout(function () {
+	      _this6.props.onFocus();
+	    }, 10);
+	  },
+	  clearFocusTime: function clearFocusTime() {
+	    if (this.focusTimer) {
+	      clearTimeout(this.focusTimer);
+	      this.focusTimer = null;
+	    }
+	  },
 	  clearBlurTime: function clearBlurTime() {
 	    if (this.blurTimer) {
 	      clearTimeout(this.blurTimer);
@@ -22072,35 +22099,37 @@
 	      if (input && (open || (0, _util.isMultipleOrTagsOrCombobox)(this.props))) {
 	        if (activeElement !== input) {
 	          input.focus();
+	          this._focused = true;
 	        }
 	      } else {
 	        var selection = this.refs.selection;
 	        if (activeElement !== selection) {
 	          selection.focus();
+	          this._focused = true;
 	        }
 	      }
 	    }
 	  },
 	  addLabelToValue: function addLabelToValue(props, value_) {
-	    var _this6 = this;
+	    var _this7 = this;
 	
 	    var value = value_;
 	    if (props.labelInValue) {
 	      value.forEach(function (v) {
-	        v.label = v.label || _this6.getLabelFromProps(props, v.key);
+	        v.label = v.label || _this7.getLabelFromProps(props, v.key);
 	      });
 	    } else {
 	      value = value.map(function (v) {
 	        return {
 	          key: v,
-	          label: _this6.getLabelFromProps(props, v)
+	          label: _this7.getLabelFromProps(props, v)
 	        };
 	      });
 	    }
 	    return value;
 	  },
 	  addTitleToValue: function addTitleToValue(props, values) {
-	    var _this7 = this;
+	    var _this8 = this;
 	
 	    var nextValues = values;
 	    var keys = values.map(function (v) {
@@ -22108,7 +22137,7 @@
 	    });
 	    _react2.default.Children.forEach(props.children, function (child) {
 	      if (child.type.isSelectOptGroup) {
-	        nextValues = _this7.addTitleToValue(child.props, nextValues);
+	        nextValues = _this8.addTitleToValue(child.props, nextValues);
 	      } else {
 	        var value = (0, _util.getValuePropValue)(child);
 	        var valueIndex = keys.indexOf(value);
@@ -22167,7 +22196,7 @@
 	    });
 	  },
 	  tokenize: function tokenize(string) {
-	    var _this8 = this;
+	    var _this9 = this;
 	
 	    var _props = this.props,
 	        multiple = _props.multiple,
@@ -22179,7 +22208,7 @@
 	      var selectedValue = { key: label, label: label };
 	      if ((0, _util.findIndexInValueByLabel)(nextValue, label) === -1) {
 	        if (multiple) {
-	          var value = _this8.getValueByLabel(children, label);
+	          var value = _this9.getValueByLabel(children, label);
 	          if (value) {
 	            selectedValue.key = value;
 	            nextValue = nextValue.concat(selectedValue);
@@ -22214,7 +22243,7 @@
 	    this.state.open = open;
 	  },
 	  renderTopControlNode: function renderTopControlNode() {
-	    var _this9 = this;
+	    var _this10 = this;
 	
 	    var _state = this.state,
 	        value = _state.value,
@@ -22286,7 +22315,7 @@
 	          if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
 	            content = content.slice(0, maxTagTextLength) + '...';
 	          }
-	          var disabled = _this9.isChildDisabled(singleValue.key);
+	          var disabled = _this10.isChildDisabled(singleValue.key);
 	          var choiceClassName = disabled ? prefixCls + '-selection__choice ' + prefixCls + '-selection__choice__disabled' : prefixCls + '-selection__choice';
 	          return _react2.default.createElement(
 	            'li',
@@ -22305,7 +22334,7 @@
 	            ),
 	            disabled ? null : _react2.default.createElement('span', {
 	              className: prefixCls + '-selection__choice__remove',
-	              onClick: _this9.removeSelected.bind(_this9, singleValue.key)
+	              onClick: _this10.removeSelected.bind(_this10, singleValue.key)
 	            })
 	          );
 	        });
@@ -22342,7 +22371,7 @@
 	      {
 	        className: className,
 	        ref: function ref(node) {
-	          return _this9.topCtrlNode = node;
+	          return _this10.topCtrlNode = node;
 	        }
 	      },
 	      this.getPlaceholderElement(),
