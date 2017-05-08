@@ -312,7 +312,10 @@ describe('Select', () => {
           <Option value="2">2</Option>
         </Select>
       );
+      jest.useFakeTimers();
       wrapper2.find('.rc-select-selection__placeholder').simulate('click');
+      jest.runAllTimers();
+      expect(handleFocus2.mock.calls).toHaveLength(1);
       expect(handleFocus2).toBeCalled();
     });
   });

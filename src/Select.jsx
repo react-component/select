@@ -304,7 +304,6 @@ const Select = createClass({
   onPlaceholderClick() {
     if (this.getInputDOMNode()) {
       this.getInputDOMNode().focus();
-      this.props.onFocus();
     }
   },
 
