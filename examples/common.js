@@ -21796,7 +21796,6 @@
 	  onPlaceholderClick: function onPlaceholderClick() {
 	    if (this.getInputDOMNode()) {
 	      this.getInputDOMNode().focus();
-	      this.props.onFocus();
 	    }
 	  },
 	  onOuterFocus: function onOuterFocus(e) {
