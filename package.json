@@ -9,8 +9,10 @@
     "select"
   ],
   "main": "./lib/index",
+  "module": "./es/index",
   "files": [
     "assets/*.css",
+    "es",
     "lib"
   ],
   "homepage": "http://github.com/react-component/select",
@@ -27,6 +29,7 @@
   },
   "scripts": {
     "build": "rc-tools run build",
+    "compile": "rc-tools run compile --babel-runtime",
     "gh-pages": "rc-tools run gh-pages",
     "start": "rc-tools run server",
     "pub": "rc-tools run pub --babel-runtime",
@@ -41,13 +44,12 @@
     ],
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
-    ]
+    ],
+    "transform": {
+      "\\.jsx?$": "./node_modules/rc-tools/scripts/jestPreprocessor.js"
+    }
   },
   "devDependencies": {
-    "babel-jest": "^17.0.0",
-    "babel-preset-es2015": "^6.18.0",
-    "babel-preset-react": "^6.16.0",
-    "babel-preset-stage-0": "^6.16.0",
     "coveralls": "^2.11.15",
     "enzyme": "^2.6.0",
     "enzyme-to-json": "^1.5.0",
@@ -56,14 +58,14 @@
     "pre-commit": "1.x",
     "querystring": "^0.2.0",
     "rc-dialog": "6.x",
-    "rc-tools": "5.x",
+    "rc-tools": "6.x",
     "react": "15.x",
     "react-addons-test-utils": "15.x",
     "react-dom": "15.x",
     "react-test-renderer": "^15.3.2"
   },
   "dependencies": {
-    "babel-runtime": "6.x",
+    "babel-runtime": "^6.23.0",
     "classnames": "2.x",
     "component-classes": "1.x",
     "create-react-class": "^15.5.2",
@@ -72,7 +74,7 @@
     "rc-animate": "2.x",
     "rc-menu": "5.x || 4.x",
     "rc-trigger": "1.x",
-    "rc-util": "4.x",
+    "rc-util": "^4.0.4",
     "warning": "2.x"
   },
   "pre-commit": [
