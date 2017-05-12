@@ -10,24 +10,25 @@ for (let i = 10; i < 36; i++) {
   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
 }
 
-const Test = React.createClass({
-  getInitialState() {
-    return {
-      disabled: false,
-      value: ['name2', 'name3'],
-    };
-  },
-  onChange(value) {
+class Test extends React.Component {
+  state = {
+    disabled: false,
+    value: ['name2', 'name3'],
+  };
+
+  onChange = (value) => {
     console.log(`selected ${value}`);
     this.setState({
       value,
     });
-  },
-  toggleDisabled() {
+  };
+
+  toggleDisabled = () => {
     this.setState({
       disabled: !this.state.disabled,
     });
-  },
+  };
+
   render() {
     return (
       <div>
@@ -53,7 +54,7 @@ const Test = React.createClass({
         </p>
       </div>
     );
-  },
-});
+  }
+}
 
 ReactDOM.render(<Test />, document.getElementById('__react-content'));

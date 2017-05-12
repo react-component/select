@@ -14,32 +14,33 @@ for (let i = 10; i < 36; i++) {
   );
 }
 
-function onSelect() {
-  console.log(arguments);
-}
+class Test extends React.Component {
+  state = {
+    useAnim: 0,
+    value: ['a10'],
+  }
 
-function onDeselect() {
-  console.log(arguments);
-}
-
-const Test = React.createClass({
-  getInitialState() {
-    return {
-      useAnim: 0,
-      value: ['a10'],
-    };
-  },
-  onChange(value) {
+  onChange = (value) => {
     console.log('onChange', value);
     this.setState({
       value,
     });
-  },
-  useAnim(e) {
+  }
+
+  onSelect = (...args) => {
+    console.log(args);
+  }
+
+  onDeselect = (...args) => {
+    console.log(args);
+  }
+
+  useAnim = (e) => {
     this.setState({
       useAnim: e.target.checked,
     });
-  },
+  }
+
   render() {
     const dropdownMenuStyle = {
       maxHeight: 200,
@@ -67,8 +68,8 @@ const Test = React.createClass({
             allowClear
             optionFilterProp="children"
             optionLabelProp="children"
-            onSelect={onSelect}
-            onDeselect={onDeselect}
+            onSelect={this.onSelect}
+            onDeselect={this.onDeselect}
             placeholder="please select"
             onChange={this.onChange}
             onFocus={() => console.log('focus')}
@@ -79,7 +80,7 @@ const Test = React.createClass({
         </div>
       </div>
     );
-  },
-});
+  }
+}
 
 ReactDOM.render(<Test />, document.getElementById('__react-content'));

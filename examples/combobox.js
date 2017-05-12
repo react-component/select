@@ -5,35 +5,33 @@ import ReactDOM from 'react-dom';
 import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.less';
 
-const Test = React.createClass({
-  getInitialState() {
-    return {
-      disabled: false,
-      value: 'l',
-    };
-  },
+class Demo extends React.Component {
+  state = {
+    disabled: false,
+    value: 'l',
+  };
 
-  onChange(value) {
+  onChange = (value) => {
     this.setState({
       value,
     });
-  },
+  }
 
-  onKeyDown(e) {
+  onKeyDown = (e) => {
     if (e.keyCode === 13) {
       console.log('onEnter', this.state.value);
     }
-  },
+  }
 
-  onSelect(v) {
+  onSelect = (v) => {
     console.log('onSelect', v);
-  },
+  }
 
-  toggleDisabled() {
+  toggleDisabled = () => {
     this.setState({
       disabled: !this.state.disabled,
     });
-  },
+  }
 
   render() {
     return (<div>
@@ -63,7 +61,7 @@ const Test = React.createClass({
         </Select>
       </div>
     </div>);
-  },
-});
+  }
+}
 
-ReactDOM.render(<Test />, document.getElementById('__react-content'));
+ReactDOM.render(<Demo />, document.getElementById('__react-content'));

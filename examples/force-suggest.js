@@ -6,23 +6,21 @@ import 'rc-select/assets/index.less';
 import { fetch } from './common/tbFetchSuggest';
 import ReactDOM from 'react-dom';
 
-const Search = React.createClass({
-  getInitialState() {
-    return {
-      disabled: false,
-      data: [],
-      value: undefined,
-    };
-  },
+class Search extends React.Component {
+  state = {
+    disabled: false,
+    data: [],
+    value: undefined,
+  };
 
-  onChange(value) {
+  onChange = (value) => {
     console.log('select ', value);
     this.setState({
       value,
     });
-  },
+  };
 
-  fetchData(value) {
+  fetchData = (value) => {
     if (value) {
       fetch(value, (data) => {
         this.setState({
@@ -34,13 +32,13 @@ const Search = React.createClass({
         data: [],
       });
     }
-  },
+  };
 
-  toggleDisabled() {
+  toggleDisabled = () => {
     this.setState({
       disabled: !this.state.disabled,
     });
-  },
+  };
 
   render() {
     const data = this.state.data;
@@ -70,7 +68,7 @@ const Search = React.createClass({
         </Select>
       </div>
     </div>);
-  },
-});
+  }
+}
 
 ReactDOM.render(<Search />, document.getElementById('__react-content'));

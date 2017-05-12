@@ -6,28 +6,26 @@ import 'rc-select/assets/index.less';
 import { fetch } from './common/tbFetchSuggest';
 import ReactDOM from 'react-dom';
 
-const Search = React.createClass({
-  getInitialState() {
-    return {
-      data: [],
-      value: [],
-    };
-  },
+class Search extends React.Component {
+  state = {
+    data: [],
+    value: [],
+  };
 
-  onChange(value) {
+  onChange = (value) => {
     console.log('onChange ', value);
     this.setState({
       value,
     });
-  },
+  };
 
-  fetchData(value) {
+  fetchData = (value) => {
     fetch(value, (data) => {
       this.setState({
         data,
       });
     });
-  },
+  };
 
   render() {
     const data = this.state.data;
@@ -55,7 +53,7 @@ const Search = React.createClass({
         </Select>
       </div>
     </div>);
-  },
-});
+  }
+}
 
 ReactDOM.render(<Search />, document.getElementById('__react-content'));
