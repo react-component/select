@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>tags.js - example - rc-select@6.8.5</title>
+  <title>tags.js - example - rc-select@6.8.6</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-select@6.8.5</h1>
+      <h1>rc-select@6.8.6</h1>
 
       <p>React Select</p>
     </div>
@@ -281,24 +281,25 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   children.push(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{i.toString(36)</span> + <span class="hljs-attribute">i</span>}&gt;</span>{i.toString(36) + i}<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>)</span>;
 }
 
-<span class="hljs-keyword">const</span> Test = React.createClass({
-  getInitialState() {
-    <span class="hljs-keyword">return</span> {
-      disabled: <span class="hljs-literal">false</span>,
-      value: [<span class="hljs-string">'name2'</span>, <span class="hljs-string">'name3'</span>],
-    };
-  },
-  onChange(value) {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  state = {
+    disabled: <span class="hljs-literal">false</span>,
+    value: [<span class="hljs-string">'name2'</span>, <span class="hljs-string">'name3'</span>],
+  };
+
+  onChange = (value) =&gt; {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`selected <span class="hljs-subst">${value}</span>`</span>);
     <span class="hljs-keyword">this</span>.setState({
       value,
     });
-  },
-  toggleDisabled() {
+  };
+
+  toggleDisabled = () =&gt; {
     <span class="hljs-keyword">this</span>.setState({
       disabled: !<span class="hljs-keyword">this</span>.state.disabled,
     });
-  },
+  };
+
   render() {
     <span class="hljs-keyword">return</span> (
       <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
@@ -324,8 +325,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
         <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     )</span>;
-  },
-});
+  }
+}
 
 ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Test</span> /&gt;</span>, document.getElementById('__react-content'));
 </span></code></pre></div>

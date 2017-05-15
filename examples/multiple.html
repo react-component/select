@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>multiple.js - example - rc-select@6.8.5</title>
+  <title>multiple.js - example - rc-select@6.8.6</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-select@6.8.5</h1>
+      <h1>rc-select@6.8.6</h1>
 
       <p>React Select</p>
     </div>
@@ -285,32 +285,33 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   )</span>;
 }
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onSelect</span>(<span class="hljs-params"></span>) </span>{
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">arguments</span>);
-}
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  state = {
+    useAnim: <span class="hljs-number">0</span>,
+    value: [<span class="hljs-string">'a10'</span>],
+  }
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onDeselect</span>(<span class="hljs-params"></span>) </span>{
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">arguments</span>);
-}
-
-<span class="hljs-keyword">const</span> Test = React.createClass({
-  getInitialState() {
-    <span class="hljs-keyword">return</span> {
-      useAnim: <span class="hljs-number">0</span>,
-      value: [<span class="hljs-string">'a10'</span>],
-    };
-  },
-  onChange(value) {
+  onChange = (value) =&gt; {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange'</span>, value);
     <span class="hljs-keyword">this</span>.setState({
       value,
     });
-  },
-  useAnim(e) {
+  }
+
+  onSelect = (...args) =&gt; {
+    <span class="hljs-built_in">console</span>.log(args);
+  }
+
+  onDeselect = (...args) =&gt; {
+    <span class="hljs-built_in">console</span>.log(args);
+  }
+
+  useAnim = (e) =&gt; {
     <span class="hljs-keyword">this</span>.setState({
       useAnim: e.target.checked,
     });
-  },
+  }
+
   render() {
     <span class="hljs-keyword">const</span> dropdownMenuStyle = {
       maxHeight: <span class="hljs-number">200</span>,
@@ -338,8 +339,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
             <span class="hljs-attribute">allowClear</span>
             <span class="hljs-attribute">optionFilterProp</span>=<span class="hljs-value">"children"</span>
             <span class="hljs-attribute">optionLabelProp</span>=<span class="hljs-value">"children"</span>
-            <span class="hljs-attribute">onSelect</span>=<span class="hljs-value">{onSelect}</span>
-            <span class="hljs-attribute">onDeselect</span>=<span class="hljs-value">{onDeselect}</span>
+            <span class="hljs-attribute">onSelect</span>=<span class="hljs-value">{this.onSelect}</span>
+            <span class="hljs-attribute">onDeselect</span>=<span class="hljs-value">{this.onDeselect}</span>
             <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"please select"</span>
             <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>
             <span class="hljs-attribute">onFocus</span>=<span class="hljs-value">{()</span> =&gt;</span> console.log('focus')}
@@ -350,8 +351,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
         <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     )</span>;
-  },
-});
+  }
+}
 
 ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Test</span> /&gt;</span>, document.getElementById('__react-content'));
 </span></code></pre></div>

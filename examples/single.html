@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>single.js - example - rc-select@6.8.5</title>
+  <title>single.js - example - rc-select@6.8.6</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-select@6.8.5</h1>
+      <h1>rc-select@6.8.6</h1>
 
       <p>React Select</p>
     </div>
@@ -276,15 +276,13 @@ import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.css';
 import ReactDOM from 'react-dom';
 
-const Test = React.createClass({
-  getInitialState() {
-    return {
-      destroy: false,
-      value: String(9),
-    };
-  },
+class Test extends React.Component {
+  state = {
+    destroy: false,
+    value: String(9),
+  };
 
-  onChange(e) {
+  onChange = (e) =&gt; {
     let value;
     if (e &amp;&amp; e.target) {
       value = e.target.value;
@@ -295,21 +293,21 @@ const Test = React.createClass({
     this.setState({
       value,
     });
-  },
+  };
 
-  onDestroy() {
+  onDestroy = () =&gt; {
     this.setState({
       destroy: 1,
     });
-  },
+  };
 
-  onBlur(v) {
+  onBlur = (v) =&gt; {
     console.log('onBlur', v);
-  },
+  };
 
-  onFocus() {
+  onFocus = () =&gt; {
     console.log('onFocus');
-  },
+  };
 
   render() {
     if (this.state.destroy) {
@@ -372,8 +370,8 @@ const Test = React.createClass({
         &lt;/p&gt;
       &lt;/div&gt;
     );
-  },
-});
+  }
+}
 
 ReactDOM.render(&lt;Test /&gt;, document.getElementById('__react-content'));
 </code></pre></div>

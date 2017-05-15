@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>email.js - example - rc-select@6.8.5</title>
+  <title>email.js - example - rc-select@6.8.6</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-select@6.8.5</h1>
+      <h1>rc-select@6.8.6</h1>
 
       <p>React Select</p>
     </div>
@@ -276,16 +276,16 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <span class="hljs-keyword">import</span> <span class="hljs-string">'rc-select/assets/index.css'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 
-<span class="hljs-keyword">const</span> Test = React.createClass({
-  getInitialState() {
-    <span class="hljs-keyword">return</span> {
-      options: [],
-    };
-  },
-  onSelect(value) {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  state = {
+    options: [],
+  };
+
+  onSelect = (value) =&gt; {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onSelect'</span>, value);
-  },
-  onChange(value) {
+  };
+
+  onChange = (value) =&gt; {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange'</span>, value);
     <span class="hljs-keyword">let</span> options = [];
     <span class="hljs-keyword">if</span> (value) {
@@ -301,7 +301,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     <span class="hljs-keyword">this</span>.setState({
       options,
     });
-  },
+  };
+
   render() {
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Select</span>
       <span class="hljs-attribute">combobox</span>
@@ -313,8 +314,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     &gt;</span>
       {this.state.options}
     <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>)</span>;
-  },
-});
+  }
+}
 
 ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Test</span> /&gt;</span>, document.getElementById('__react-content'));
 </span></code></pre></div>
