@@ -17,6 +17,12 @@ describe('FilterMixin', () => {
 
     mixins: [FilterMixin],
 
+    getDefaultProps() {
+      return {
+        optionFilterProp: 'value',
+      };
+    },
+
     getInitialState() {
       const value = this.props.value ? [{ key: this.props.value }] : null;
       return {
@@ -133,8 +139,23 @@ describe('FilterMixin', () => {
 
       it('renders search value when not fount', () => {
         const wrapper = render(
-          <Select tags value="22" inputValue="2" filterOption={filterFn}>
+          <Select tags value="22" inputValue="2">
             <Option value="1">1</Option>
+          </Select>
+        );
+
+        expect(wrapper).toMatchSnapshot();
+      });
+
+      it('use filterOption', () => {
+        const filterOption = (inputValue, option) =>
+          option.props.value
+            .toLowerCase()
+            .indexOf(inputValue.toLowerCase()) !== -1;
+
+        const wrapper = render(
+          <Select tags inputValue="red" filterOption={filterOption}>
+            <Option value="Red">Red</Option>
           </Select>
         );
 

@@ -21,10 +21,6 @@ import { SelectPropTypes } from './PropTypes';
 function noop() {
 }
 
-function filterFn(input, child) {
-  return String(getPropValue(child, this.props.optionFilterProp)).indexOf(input) > -1;
-}
-
 function saveRef(name, component) {
   this[name] = component;
 }
@@ -47,7 +43,6 @@ const Select = createClass({
   getDefaultProps() {
     return {
       prefixCls: 'rc-select',
-      filterOption: filterFn,
       defaultOpen: false,
       labelInValue: false,
       defaultActiveFirstOption: true,

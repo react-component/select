@@ -1,14 +1,20 @@
 import React from 'react';
-import { getValuePropValue, UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE } from './util';
+import {
+  getValuePropValue,
+  defaultFilterFn,
+  UNSELECTABLE_ATTRIBUTE,
+  UNSELECTABLE_STYLE,
+} from './util';
 import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
 import warning from 'warning';
 
 export default {
-  filterOption(input, child) {
+  filterOption(input, child, defaultFilter = defaultFilterFn) {
     if (!input) {
       return true;
     }
-    const { filterOption } = this.props;
+    const filterOption = ('filterOption' in this.props) ?
+      this.props.filterOption : defaultFilter;
     if (!filterOption) {
       return true;
     } else if (child.props.disabled) {
@@ -87,7 +93,9 @@ export default {
       }));
       if (inputValue) {
         const notFindInputItem = sel.every((option) => {
-          return getValuePropValue(option) !== inputValue;
+          return !this.filterOption.call(this, inputValue, option, () =>
+            getValuePropValue(option) === inputValue
+          );
         });
         if (notFindInputItem) {
           sel.unshift(<MenuItem

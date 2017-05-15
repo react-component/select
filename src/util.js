@@ -137,3 +137,7 @@ export function splitBySeparators(string, separators) {
   }
   return array;
 }
+
+export function defaultFilterFn(input, child) {
+  return String(getPropValue(child, this.props.optionFilterProp)).indexOf(input) > -1;
+}
