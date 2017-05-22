@@ -788,6 +788,22 @@ const Select = createClass({
       }
     } else {
       let selectedValueNodes = [];
+      let limitedCountValue = value;
+      let maxTagPlaceholder;
+      if (props.maxTagCount && value.length > props.maxTagCount) {
+        limitedCountValue = limitedCountValue.slice(0, props.maxTagCount);
+        const content = props.maxTagPlaceholder || `+ ${value.length - props.maxTagCount} ...`;
+        maxTagPlaceholder = (<li
+          style={UNSELECTABLE_STYLE}
+          {...UNSELECTABLE_ATTRIBUTE}
+          onMouseDown={preventDefaultEvent}
+          className={`${prefixCls}-selection__choice ${prefixCls}-selection__choice__disabled`}
+          key={'maxTagPlaceholder'}
+          title={content}
+        >
+          <div className={`${prefixCls}-selection__choice__content`}>{content}</div>
+        </li>);
+      }
       if (isMultipleOrTags(props)) {
         selectedValueNodes = value.map((singleValue) => {
           let content = singleValue.label;
@@ -820,6 +836,9 @@ const Select = createClass({
             </li>
           );
         });
+      }
+      if (maxTagPlaceholder) {
+        selectedValueNodes.push(maxTagPlaceholder);
       }
       selectedValueNodes.push(<li
         className={`${prefixCls}-search ${prefixCls}-search--inline`}
