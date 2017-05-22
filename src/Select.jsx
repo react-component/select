@@ -805,7 +805,7 @@ const Select = createClass({
         </li>);
       }
       if (isMultipleOrTags(props)) {
-        selectedValueNodes = value.map((singleValue) => {
+        selectedValueNodes = limitedCountValue.map((singleValue) => {
           let content = singleValue.label;
           const title = singleValue.title || content;
           if (maxTagTextLength &&
