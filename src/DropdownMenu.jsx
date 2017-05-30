@@ -1,14 +1,13 @@
 import React, { cloneElement } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
-import createClass from 'create-react-class';
 import toArray from 'rc-util/lib/Children/toArray';
 import Menu from 'rc-menu';
 import scrollIntoView from 'dom-scroll-into-view';
 import { getSelectKeys, preventDefaultEvent } from './util';
 
-const DropdownMenu = createClass({
-  propTypes: {
+export default class DropdownMenu extends React.Component {
+  static propTypes= {
     defaultActiveFirstOption: PropTypes.bool,
     value: PropTypes.any,
     dropdownMenuStyle: PropTypes.object,
@@ -20,16 +19,16 @@ const DropdownMenu = createClass({
     menuItems: PropTypes.any,
     inputValue: PropTypes.string,
     visible: PropTypes.bool,
-  },
+  }
 
   componentWillMount() {
     this.lastInputValue = this.props.inputValue;
-  },
+  }
 
   componentDidMount() {
     this.scrollActiveItemToView();
     this.lastVisible = this.props.visible;
-  },
+  }
 
   shouldComponentUpdate(nextProps) {
     if (!nextProps.visible) {
@@ -37,7 +36,7 @@ const DropdownMenu = createClass({
     }
     // freeze when hide
     return nextProps.visible;
-  },
+  }
 
   componentDidUpdate(prevProps) {
     const props = this.props;
@@ -46,9 +45,9 @@ const DropdownMenu = createClass({
     }
     this.lastVisible = props.visible;
     this.lastInputValue = props.inputValue;
-  },
+  }
 
-  scrollActiveItemToView() {
+  scrollActiveItemToView = () => {
     // scroll into view
     const itemComponent = findDOMNode(this.firstActiveItem);
     if (itemComponent) {
@@ -56,7 +55,7 @@ const DropdownMenu = createClass({
         onlyScrollIfNeeded: true,
       });
     }
-  },
+  }
 
   renderMenu() {
     const props = this.props;
@@ -127,7 +126,7 @@ const DropdownMenu = createClass({
       </Menu>);
     }
     return null;
-  },
+  }
 
   render() {
     const renderMenu = this.renderMenu();
@@ -140,8 +139,7 @@ const DropdownMenu = createClass({
         {renderMenu}
       </div>
     ) : null;
-  },
-});
+  }
+}
 
 DropdownMenu.displayName = 'DropdownMenu';
-export default DropdownMenu;

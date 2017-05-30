@@ -1,7 +1,6 @@
 import Trigger from 'rc-trigger';
 import React from 'react';
 import PropTypes from 'prop-types';
-import createClass from 'create-react-class';
 import classnames from 'classnames';
 import DropdownMenu from './DropdownMenu';
 import ReactDOM from 'react-dom';
@@ -28,8 +27,8 @@ const BUILT_IN_PLACEMENTS = {
   },
 };
 
-const SelectTrigger = createClass({
-  propTypes: {
+export default class SelectTrigger extends React.Component {
+  static propTypes= {
     onPopupFocus: PropTypes.func,
     dropdownMatchSelectWidth: PropTypes.bool,
     dropdownAlign: PropTypes.object,
@@ -44,7 +43,7 @@ const SelectTrigger = createClass({
     prefixCls: PropTypes.string,
     popupClassName: PropTypes.string,
     children: PropTypes.any,
-  },
+  }
 
   componentDidUpdate() {
     const { visible, dropdownMatchSelectWidth } = this.props;
@@ -55,17 +54,17 @@ const SelectTrigger = createClass({
         dropdownDOMNode.style[widthProp] = `${ReactDOM.findDOMNode(this).offsetWidth}px`;
       }
     }
-  },
+  }
 
-  getInnerMenu() {
+  getInnerMenu = () => {
     return this.popupMenu && this.popupMenu.refs.menu;
-  },
+  }
 
-  getPopupDOMNode() {
+  getPopupDOMNode = () => {
     return this.refs.trigger.getPopupDomNode();
-  },
+  }
 
-  getDropdownElement(newProps) {
+  getDropdownElement = (newProps) => {
     const props = this.props;
     return (<DropdownMenu
       ref={this.saveMenu}
@@ -77,24 +76,25 @@ const SelectTrigger = createClass({
       defaultActiveFirstOption={props.defaultActiveFirstOption}
       dropdownMenuStyle={props.dropdownMenuStyle}
     />);
-  },
+  }
 
-  getDropdownTransitionName() {
+  getDropdownTransitionName = () => {
     const props = this.props;
     let transitionName = props.transitionName;
     if (!transitionName && props.animation) {
       transitionName = `${this.getDropdownPrefixCls()}-${props.animation}`;
     }
     return transitionName;
-  },
+  }
 
-  getDropdownPrefixCls() {
+  getDropdownPrefixCls = () => {
     return `${this.props.prefixCls}-dropdown`;
-  },
+  }
 
-  saveMenu(menu) {
+  saveMenu = (menu) => {
     this.popupMenu = menu;
-  },
+  }
+
   render() {
     const { onPopupFocus, ...props } = this.props;
     const { multiple, visible, inputValue, dropdownAlign,
@@ -135,9 +135,7 @@ const SelectTrigger = createClass({
       popupClassName={classnames(popupClassName)}
       popupStyle={props.dropdownStyle}
     >{props.children}</Trigger>);
-  },
-});
+  }
+}
 
 SelectTrigger.displayName = 'SelectTrigger';
-
-export default SelectTrigger;
