@@ -31,6 +31,7 @@ const BUILT_IN_PLACEMENTS = {
 const SelectTrigger = createClass({
   propTypes: {
     onPopupFocus: PropTypes.func,
+    onPopupScroll: PropTypes.func,
     dropdownMatchSelectWidth: PropTypes.bool,
     dropdownAlign: PropTypes.object,
     visible: PropTypes.bool,
@@ -73,6 +74,7 @@ const SelectTrigger = createClass({
       prefixCls={this.getDropdownPrefixCls()}
       onMenuSelect={props.onMenuSelect}
       onMenuDeselect={props.onMenuDeselect}
+      onPopupScroll={props.onPopupScroll}
       value={props.value}
       defaultActiveFirstOption={props.defaultActiveFirstOption}
       dropdownMenuStyle={props.dropdownMenuStyle}
