@@ -68,7 +68,7 @@ const Select = createClass({
   getInitialState() {
     const props = this.props;
     let value = [];
-    if ('value' in props) {
+    if (props.value !== undefined && props.value !== null) {
       value = toArray(props.value);
     } else {
       value = toArray(props.defaultValue);
