@@ -913,7 +913,7 @@ const Select = createClass({
         getPopupContainer={props.getPopupContainer}
         onMenuSelect={this.onMenuSelect}
         onMenuDeselect={this.onMenuDeselect}
-        onPopupScroll={props.onMenuScroll}
+        onPopupScroll={props.onPopupScroll}
         ref="trigger"
       >
         <div
