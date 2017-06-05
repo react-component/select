@@ -67,11 +67,18 @@ export default class DropdownMenu extends React.Component {
     } = props;
     if (menuItems && menuItems.length) {
       const menuProps = {};
+      const setLastInputValue = (text) => {
+        this.lastInputValue = text;
+      };
+      const onSelect = (_ref) => {
+        onMenuSelect(_ref);
+        setLastInputValue(_ref.key);
+      };
       if (multiple) {
         menuProps.onDeselect = props.onMenuDeselect;
-        menuProps.onSelect = onMenuSelect;
+        menuProps.onSelect = onSelect;
       } else {
-        menuProps.onClick = onMenuSelect;
+        menuProps.onClick = onSelect;
       }
 
       const selectedKeys = getSelectKeys(menuItems, value);
