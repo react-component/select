@@ -48,6 +48,7 @@ const Select = createClass({
       defaultActiveFirstOption: true,
       showSearch: true,
       allowClear: false,
+      triggerOnchange: true,
       placeholder: '',
       onChange: noop,
       onFocus: noop,
@@ -273,8 +274,9 @@ const Select = createClass({
       this.setOpenState(false, true);
     }
     this.fireChange(value);
+
     let inputValue;
-    if (isCombobox(props)) {
+    if (isCombobox(props) && props.triggerOnchange) {
       inputValue = getPropValue(item, props.optionLabelProp);
     } else {
       inputValue = '';
