@@ -81,6 +81,7 @@ const Select = createClass({
     }
     this.saveInputRef = saveRef.bind(this, 'inputInstance');
     this.saveInputMirrorRef = saveRef.bind(this, 'inputMirrorInstance');
+    this._justSelected = false;
     let open = props.open;
     if (open === undefined) {
       open = props.defaultOpen;
@@ -163,6 +164,7 @@ const Select = createClass({
         key: val,
       }]);
     }
+    this._justSelected = false;
   },
 
   onDropdownVisibleChange(open) {
@@ -271,6 +273,7 @@ const Select = createClass({
         title: selectedTitle,
       }];
       this.setOpenState(false, true);
+      this._justSelected = true;
     }
     this.fireChange(value);
     let inputValue;
@@ -712,7 +715,7 @@ const Select = createClass({
   },
 
   adjustOpenState() {
-    if (this.skipAdjustOpen) {
+    if (this.skipAdjustOpen || this._justSelected) {
       return;
     }
     let { open } = this.state;
