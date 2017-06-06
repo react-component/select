@@ -38,6 +38,10 @@ class Test extends React.Component {
     console.log('onFocus');
   };
 
+  afterDropdownVisibleChange = (open, popupDOMNode) => {
+    console.log('afterDropdownVisibleChange', open, popupDOMNode);
+  };
+
   render() {
     if (this.state.destroy) {
       return null;
@@ -53,6 +57,7 @@ class Test extends React.Component {
             value={this.state.value}
             placeholder="placeholder"
             dropdownMenuStyle={{ maxHeight: 200, overflow: 'auto' }}
+            afterDropdownVisibleChange={this.afterDropdownVisibleChange}
             style={{ width: 500 }}
             onBlur={this.onBlur}
             onFocus={this.onFocus}

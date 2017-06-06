@@ -55,6 +55,7 @@ const Select = createClass({
       onSelect: noop,
       onSearch: noop,
       onDeselect: noop,
+      afterDropdownVisibleChange: () => {},
       showArrow: true,
       dropdownMatchSelectWidth: true,
       dropdownStyle: {},
@@ -538,6 +539,7 @@ const Select = createClass({
       if (open) {
         this.maybeFocus(open, needFocus);
       }
+      this.props.afterDropdownVisibleChange(open, this.getPopupDOMNode());
     });
   },
   setInputValue(inputValue, fireSearch = true) {
