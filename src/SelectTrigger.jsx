@@ -73,6 +73,7 @@ export default class SelectTrigger extends React.Component {
       onMenuSelect={props.onMenuSelect}
       onMenuDeselect={props.onMenuDeselect}
       value={props.value}
+      firstActiveValue={props.firstActiveValue}
       defaultActiveFirstOption={props.defaultActiveFirstOption}
       dropdownMenuStyle={props.dropdownMenuStyle}
     />);

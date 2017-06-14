@@ -88,6 +88,7 @@ React.render(c, container);
 |optionLabelProp | which prop value of option will render as content of select | String | 'value' |
 |defaultValue | initial selected option(s) | String/Array<String> | - |
 |value | current selected option(s) | String/Array<String>/{key:String, label:React.Node}/Array<{key, label}> | - |
+|firstActiveValue | first active value when there is no value | String/Array<String> | - |
 |labelInValue| whether to embed label in value, see above value type | Bool | false |
 |onChange | called when select an option or input value change(combobox) | function(value) | - |
 |onSearch | called when input changed | function | - |
