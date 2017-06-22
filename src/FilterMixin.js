@@ -13,14 +13,21 @@ export default {
     if (!input) {
       return true;
     }
-    const filterOption = ('filterOption' in this.props) ?
-      this.props.filterOption : defaultFilter;
-    if (!filterOption) {
+    let filterFn = this.props.filterOption;
+    if ('filterOption' in this.props) {
+      if (this.props.filterOption === true) {
+        filterFn = defaultFilter;
+      }
+    } else {
+      filterFn = defaultFilter;
+    }
+
+    if (!filterFn) {
       return true;
     } else if (child.props.disabled) {
       return false;
-    } else if (typeof filterOption === 'function') {
-      return filterOption.call(this, input, child);
+    } else if (typeof filterFn === 'function') {
+      return filterFn.call(this, input, child);
     }
     return true;
   },
