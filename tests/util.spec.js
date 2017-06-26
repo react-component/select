@@ -1,5 +1,10 @@
 /* eslint-disable no-undef */
-import { includesSeparators, splitBySeparators, getValuePropValue } from '../src/util';
+import {
+  includesSeparators,
+  splitBySeparators,
+  getValuePropValue,
+  defaultFilterFn,
+} from '../src/util';
 
 describe('includesSeparators', () => {
   const separators = [' ', ','];
@@ -65,5 +70,27 @@ describe('getValuePropValue', () => {
       },
     })).toBe('Manager');
     expect(errorSpy).not.toHaveBeenCalled();
+  });
+});
+
+describe('defaultFilterFn', () => {
+  function TesterClass() {
+    this.props = {
+      optionFilterProp: 'label',
+    };
+  }
+  const testerInstance = new TesterClass();
+  const child = {
+    props: {
+      label: 'my-val',
+    },
+  };
+
+  it('returns true when input matches option value', () => {
+    expect(defaultFilterFn.call(testerInstance, 'my-val', child)).toBe(true);
+  });
+
+  it('returns false when input does NOT match option value', () => {
+    expect(defaultFilterFn.call(testerInstance, 'wrong-val', child)).toBe(false);
   });
 });
