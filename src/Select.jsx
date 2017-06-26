@@ -49,6 +49,7 @@ const Select = createClass({
       showSearch: true,
       allowClear: false,
       placeholder: '',
+      firstActiveValue: '',
       onChange: noop,
       onFocus: noop,
       onBlur: noop,
