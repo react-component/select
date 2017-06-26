@@ -476,7 +476,7 @@ const Select = createClass({
 
   getInputElement() {
     const props = this.props;
-    const inputElement = props.getInputElement ? props.getInputElement() : <input />;
+    const inputElement = props.getInputElement ? props.getInputElement() : <input id={props.id} />;
     const inputCls = classnames(inputElement.props.className, {
       [`${props.prefixCls}-search__field`]: true,
     });
