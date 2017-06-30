@@ -63,7 +63,7 @@ export default class DropdownMenu extends React.Component {
       menuItems,
       defaultActiveFirstOption, value,
       prefixCls, multiple,
-      onMenuSelect, inputValue,
+      onMenuSelect, inputValue, firstActiveValue,
     } = props;
     if (menuItems && menuItems.length) {
       const menuProps = {};
@@ -78,7 +78,7 @@ export default class DropdownMenu extends React.Component {
       const activeKeyProps = {};
 
       let clonedMenuItems = menuItems;
-      if (selectedKeys.length) {
+      if (selectedKeys.length || firstActiveValue) {
         if (props.visible && !this.lastVisible) {
           activeKeyProps.activeKey = selectedKeys[0];
         }
@@ -86,7 +86,8 @@ export default class DropdownMenu extends React.Component {
         // set firstActiveItem via cloning menus
         // for scroll into view
         const clone = (item) => {
-          if (!foundFirst && selectedKeys.indexOf(item.key) !== -1) {
+          if ((!foundFirst && selectedKeys.indexOf(item.key) !== -1)
+            || (!foundFirst && !selectedKeys.length && firstActiveValue.indexOf(item.key) !== -1)) {
             foundFirst = true;
             return cloneElement(item, {
               ref: (ref) => {
@@ -105,6 +106,7 @@ export default class DropdownMenu extends React.Component {
           return clone(item);
         });
       }
+
 
       // clear activeKey when inputValue change
       if (inputValue !== this.lastInputValue) {

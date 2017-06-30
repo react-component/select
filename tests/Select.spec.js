@@ -126,7 +126,7 @@ describe('Select', () => {
     expect(wrapper.find('.rc-select-selection-selected-value').props().children).toBe('1');
   });
 
-  it('filter options by values', () => {
+  it('filter options by "value" prop by default', () => {
     const wrapper = mount(
       <Select>
         <Option value="1">One</Option>
@@ -137,6 +137,31 @@ describe('Select', () => {
     wrapper.find('input').simulate('change', { target: { value: '1' } });
     expect(wrapper.find('MenuItem').length).toBe(1);
     expect(wrapper.find('MenuItem').props().value).toBe('1');
+  });
+
+  it('should filter options when filterOption is true', () => {
+    const wrapper = mount(
+      <Select filterOption>
+        <Option value="1">One</Option>
+        <Option value="2">Two</Option>
+      </Select>
+    );
+
+    wrapper.find('input').simulate('change', { target: { value: '2' } });
+    expect(wrapper.find('MenuItem').length).toBe(1);
+    expect(wrapper.find('MenuItem').props().value).toBe('2');
+  });
+
+  it('should not filter options when filterOption is false', () => {
+    const wrapper = mount(
+      <Select filterOption={false}>
+        <Option value="1">One</Option>
+        <Option value="2">Two</Option>
+      </Select>
+    );
+
+    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    expect(wrapper.find('MenuItem').length).toBe(2);
   });
 
   it('specify which prop to filter', () => {

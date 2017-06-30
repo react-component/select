@@ -125,6 +125,17 @@ describe('FilterMixin', () => {
       expect(wrapper).toMatchSnapshot();
     });
 
+    it('does not filter when filterOption value is false', () => {
+      const wrapper = render(
+        <Select inputValue="1" filterOption={false}>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>
+      );
+
+      expect(wrapper).toMatchSnapshot();
+    });
+
     describe('tag mode', () => {
       it('renders unlisted item in value', () => {
         const wrapper = render(
@@ -137,7 +148,7 @@ describe('FilterMixin', () => {
         expect(wrapper).toMatchSnapshot();
       });
 
-      it('renders search value when not fount', () => {
+      it('renders search value when not found', () => {
         const wrapper = render(
           <Select tags value="22" inputValue="2">
             <Option value="1">1</Option>

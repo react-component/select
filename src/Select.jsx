@@ -909,6 +909,7 @@ const Select = createClass({
         visible={open}
         inputValue={state.inputValue}
         value={state.value}
+        firstActiveValue={props.firstActiveValue}
         onDropdownVisibleChange={this.onDropdownVisibleChange}
         getPopupContainer={props.getPopupContainer}
         onMenuSelect={this.onMenuSelect}
