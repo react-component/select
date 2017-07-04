@@ -50,10 +50,18 @@ export default class DropdownMenu extends React.Component {
   scrollActiveItemToView = () => {
     // scroll into view
     const itemComponent = findDOMNode(this.firstActiveItem);
+    const props = this.props;
+
     if (itemComponent) {
-      scrollIntoView(itemComponent, findDOMNode(this.refs.menu), {
+      const scrollIntoViewOpts = {
         onlyScrollIfNeeded: true,
-      });
+      };
+
+      if (props.value.length === 0 && props.firstActiveValue) {
+        scrollIntoViewOpts.alignWithTop = true;
+      }
+
+      scrollIntoView(itemComponent, findDOMNode(this.refs.menu), scrollIntoViewOpts);
     }
   }
 
