@@ -1,8 +1,10 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-undef, react/no-multi-comp */
 import React from 'react';
 import Select, { Option } from '../src';
 import { mount, render } from 'enzyme';
 import allowClearTest from './shared/allowClearTest';
+
+const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
 
 describe('Select.combobox', () => {
   allowClearTest('combobox');
@@ -110,6 +112,86 @@ describe('Select.combobox', () => {
         });
         wrapper.setProps({ value: { key: '1', label: 'One' } });
         expect(wrapper.find('input').props().value).toBe('One');
+      });
+    });
+
+    describe('hidden when filtered options is empty', () => {
+      // https://github.com/ant-design/ant-design/issues/3958
+      it('should popup when input with async data', () => {
+        class AsyncCombobox extends React.Component {
+          state = {
+            data: [],
+          }
+          handleChange = () => {
+            setTimeout(() => {
+              this.setState({
+                data: [{ key: '1', label: '1' }, { key: '2', label: '2' }],
+              });
+            }, 500);
+          }
+          render() {
+            const options = this.state.data.map(item => (
+              <Option key={item.key}>{item.label}</Option>
+            ));
+            return (
+              <Select
+                combobox
+                onChange={this.handleChange}
+                filterOption={false}
+                notFoundContent=""
+              >
+                {options}
+              </Select>
+            );
+          }
+        }
+        const wrapper = mount(<AsyncCombobox />);
+        wrapper.find('input').simulate('focus');
+        wrapper.find('input').simulate('change', { target: { value: '0' } });
+        return delay(1000).then(() => {
+          expect(wrapper.find('.rc-select-dropdown')
+            .hasClass('rc-select-dropdown-hidden')).toBe(false);
+        });
+      });
+
+      // https://github.com/ant-design/ant-design/issues/6600
+      it('should not repop menu after select', () => {
+        class AsyncCombobox extends React.Component {
+          state = {
+            data: [{ key: '1', label: '1' }, { key: '2', label: '2' }],
+          }
+          onSelect = () => {
+            setTimeout(() => {
+              this.setState({
+                data: [{ key: '3', label: '3' }, { key: '4', label: '4' }],
+              });
+            }, 500);
+          }
+          render() {
+            const options = this.state.data.map(item => (
+              <Option key={item.key}>{item.label}</Option>
+            ));
+            return (
+              <Select
+                combobox
+                onSelect={this.onSelect}
+                filterOption={false}
+                notFoundContent=""
+              >
+                {options}
+              </Select>
+            );
+          }
+        }
+        const wrapper = mount(<AsyncCombobox />);
+        wrapper.find('input').simulate('focus');
+        wrapper.find('input').simulate('change', { target: { value: '0' } });
+        expect(wrapper.find('.rc-select-dropdown')
+          .hasClass('rc-select-dropdown-hidden')).toBe(false);
+        wrapper.find('MenuItem').first().simulate('click');
+        return delay(1000).then(() => {
+          expect(wrapper.find('.rc-select-dropdown').length).toBe(0);
+        });
       });
     });
   });
