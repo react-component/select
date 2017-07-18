@@ -716,13 +716,9 @@ const Select = createClass({
       return;
     }
     let { open } = this.state;
-    if (typeof document !== 'undefined' &&
-      this.getInputDOMNode() &&
-      document.activeElement === this.getInputDOMNode()) {
-      open = true;
-    }
     let options = [];
-    if (open) {
+    // If hidden menu due to no options, then it should be calculated again
+    if (open || this.hiddenForNoOptions) {
       options = this.renderFilterOptions();
     }
     this._options = options;
@@ -730,6 +726,12 @@ const Select = createClass({
     if (isMultipleOrTagsOrCombobox(this.props) || !this.props.showSearch) {
       if (open && !options.length) {
         open = false;
+        this.hiddenForNoOptions = true;
+      }
+      // Keep menu open if there are options and hidden for no options before
+      if (this.hiddenForNoOptions && options.length) {
+        open = true;
+        this.hiddenForNoOptions = false;
       }
     }
     this.state.open = open;
