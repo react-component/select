@@ -537,4 +537,82 @@ describe('Select', () => {
       );
     });
   });
+
+  it('set label as key for OptGroup', () => {
+    const wrapper = mount(
+      <Select open>
+        <OptGroup key="group1">
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </OptGroup>
+      </Select>
+    );
+
+    expect(wrapper.find('MenuItemGroup').props().title).toBe('group1');
+  });
+
+  it('filters options by inputValue', () => {
+    const wrapper = mount(
+      <Select open>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+        <Option value="11" disabled>11</Option>
+      </Select>
+    );
+
+    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    expect(wrapper.find('li')).toHaveLength(1);
+    expect(wrapper.find('li').text()).toEqual('1');
+  });
+
+  it('renders not found when search result is empty', () => {
+    const wrapper = mount(
+      <Select open>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>
+    );
+
+    wrapper.find('input').simulate('change', { target: { value: '3' } });
+    expect(wrapper.find('li')).toHaveLength(1);
+    expect(wrapper.find('li').text()).toEqual('Not Found');
+  });
+
+  it('warns on invalid children', () => {
+    const Foo = () => <div>foo</div>;
+    const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    mount(
+      <Select open>
+        <Foo value="1" />
+      </Select>
+    );
+    expect(spy.mock.calls.length).toBe(1);
+    expect(spy.mock.calls[0][0]).toContain(
+      'the children of `Select` should be `Select.Option` or `Select.OptGroup`, ' +
+      `instead of \`Foo\`.`
+    );
+    spy.mockRestore();
+  });
+
+  it('filterOption could be true as described in default value', () => {
+    const wrapper = render(
+      <Select inputValue="3" filterOption open>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>
+    );
+
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('does not filter when filterOption value is false', () => {
+    const wrapper = render(
+      <Select inputValue="1" filterOption={false} open>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>
+    );
+
+    expect(wrapper).toMatchSnapshot();
+  });
 });
