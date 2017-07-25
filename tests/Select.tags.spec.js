@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import Select, { Option } from '../src';
 import allowClearTest from './shared/allowClearTest';
@@ -55,5 +55,41 @@ describe('Select.tags', () => {
     expect(wrapper.state().inputValue).toBe('');
     expect(wrapper.state().open).toBe(false);
     expect(input.node.focus).toBeCalled();
+  });
+
+  it('renders unlisted item in value', () => {
+    const wrapper = render(
+      <Select tags value="3" open>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>
+    );
+
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('renders search value when not found', () => {
+    const wrapper = render(
+      <Select tags value="22" inputValue="2" open>
+        <Option value="1">1</Option>
+      </Select>
+    );
+
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('use filterOption', () => {
+    const filterOption = (inputValue, option) =>
+      option.props.value
+        .toLowerCase()
+        .indexOf(inputValue.toLowerCase()) !== -1;
+
+    const wrapper = render(
+      <Select tags inputValue="red" filterOption={filterOption} open>
+        <Option value="Red">Red</Option>
+      </Select>
+    );
+
+    expect(wrapper).toMatchSnapshot();
   });
 });
