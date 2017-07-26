@@ -56,8 +56,7 @@ export default class DropdownMenu extends React.Component {
       const scrollIntoViewOpts = {
         onlyScrollIfNeeded: true,
       };
-
-      if (props.value.length === 0 && props.firstActiveValue) {
+      if ((!props.value || props.value.length === 0) && props.firstActiveValue) {
         scrollIntoViewOpts.alignWithTop = true;
       }
 
