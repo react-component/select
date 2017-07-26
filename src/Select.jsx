@@ -11,7 +11,7 @@ import {
   UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE,
   preventDefaultEvent, findFirstMenuItem,
   includesSeparators, splitBySeparators,
-  findIndexInValueByLabel, defaultFilterFn,
+  findIndexInValueByLabel, defaultFilterFn, saveRef,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import { SelectPropTypes } from './PropTypes';
@@ -19,10 +19,6 @@ import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
 import warning from 'warning';
 
 function noop() {
-}
-
-function saveRef(name, component) {
-  this[name] = component;
 }
 
 function chaining(...fns) {
@@ -78,6 +74,9 @@ constructor(props) {
   }
   this.saveInputRef = saveRef.bind(this, 'inputInstance');
   this.saveInputMirrorRef = saveRef.bind(this, 'inputMirrorInstance');
+  this.saveRootRef = saveRef.bind(this, 'rootInstance');
+  this.saveSelectionRef = saveRef.bind(this, 'selectionInstance');
+  this.saveTriggerRef = saveRef.bind(this, 'triggerInstance');
   let open = props.open;
   if (open === undefined) {
     open = props.defaultOpen;
@@ -216,7 +215,7 @@ constructor(props) {
     }
 
     if (state.open) {
-      const menu = this.refs.trigger.getInnerMenu();
+      const menu = this.triggerInstance.getInnerMenu();
       if (menu && menu.onKeyDown(event)) {
         event.preventDefault();
         event.stopPropagation();
@@ -362,7 +361,7 @@ constructor(props) {
   }
 
   onChoiceAnimationLeave =() => {
-    this.refs.trigger.refs.trigger.forcePopupAlign();
+    this.triggerInstance.triggerInstance.forcePopupAlign();
   }
 
   getLabelBySingleValue = (children, value) => {
@@ -505,11 +504,11 @@ constructor(props) {
   }
 
   getPopupDOMNode=() => {
-    return this.refs.trigger.getPopupDOMNode();
+    return this.triggerInstance.getPopupDOMNode();
   }
 
   getPopupMenuComponent=() => {
-    return this.refs.trigger.getInnerMenu();
+    return this.triggerInstance.getInnerMenu();
   }
 
   setOpenState = (open, needFocus) => {
@@ -600,12 +599,12 @@ constructor(props) {
   }
 
   updateFocusClassName = () => {
-    const { refs, props } = this;
+    const { rootInstance, props } = this;
     // avoid setState and its side effect
     if (this._focused) {
-      classes(refs.root).add(`${props.prefixCls}-focused`);
+      classes(rootInstance).add(`${props.prefixCls}-focused`);
     } else {
-      classes(refs.root).remove(`${props.prefixCls}-focused`);
+      classes(rootInstance).remove(`${props.prefixCls}-focused`);
     }
   }
 
@@ -619,7 +618,7 @@ constructor(props) {
           this._focused = true;
         }
       } else {
-        const selection = this.refs.selection;
+        const selection = this.selectionInstance;
         if (activeElement !== selection) {
           selection.focus();
           this._focused = true;
@@ -1035,17 +1034,17 @@ constructor(props) {
         getPopupContainer={props.getPopupContainer}
         onMenuSelect={this.onMenuSelect}
         onMenuDeselect={this.onMenuDeselect}
-        ref="trigger"
+        ref={this.saveTriggerRef}
       >
         <div
           style={props.style}
-          ref="root"
+          ref={this.saveRootRef}
           onBlur={this.onOuterBlur}
           onFocus={this.onOuterFocus}
           className={classnames(rootCls)}
         >
           <div
-            ref="selection"
+            ref={this.saveSelectionRef}
             key="selection"
             className={`${prefixCls}-selection
             ${prefixCls}-selection--${multiple ? 'multiple' : 'single'}`}

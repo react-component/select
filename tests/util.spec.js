@@ -4,6 +4,7 @@ import {
   splitBySeparators,
   getValuePropValue,
   defaultFilterFn,
+  saveRef,
 } from '../src/util';
 
 describe('includesSeparators', () => {
@@ -92,5 +93,16 @@ describe('defaultFilterFn', () => {
 
   it('returns false when input does NOT match option value', () => {
     expect(defaultFilterFn.call(testerInstance, 'wrong-val', child)).toBe(false);
+  });
+});
+
+describe('saveRef', () => {
+  const mock = {};
+  const saveTestRef = saveRef.bind(mock, 'testInstance');
+
+  it('adds a property with the given name to context', () => {
+    expect(mock.testInstance).toBe(undefined);
+    saveTestRef('bar');
+    expect(mock.testInstance).toBe('bar');
   });
 });
