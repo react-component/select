@@ -1,5 +1,173 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Select does not filter when filterOption value is false 1`] = `
+<div
+  id="TriggerContainer"
+>
+  <div
+    class="rc-select rc-select-open rc-select-focused rc-select-enabled"
+  >
+    <div
+      aria-autocomplete="list"
+      aria-expanded="true"
+      aria-haspopup="true"
+      class="rc-select-selection
+                rc-select-selection--single"
+      role="combobox"
+      tabindex="0"
+    >
+      <div
+        class="rc-select-selection__rendered"
+      >
+        <div
+          class="rc-select-search rc-select-search--inline"
+          style="display:block;"
+        >
+          <div
+            class="rc-select-search__field__wrap"
+          >
+            <input
+              class="rc-select-search__field"
+              value=""
+            />
+            <span
+              class="rc-select-search__field__mirror"
+            >
+               
+            </span>
+          </div>
+        </div>
+      </div>
+      <span
+        class="rc-select-arrow"
+        style="user-select:none;-webkit-user-select:none;"
+        unselectable="unselectable"
+      >
+        <b />
+      </span>
+    </div>
+  </div>
+  <div>
+    <div
+      class="rc-select-dropdown rc-select-dropdown--single rc-select-dropdown-placement-bottomLeft "
+    >
+      <div
+        style="overflow:auto;"
+      >
+        <ul
+          aria-activedescendant=""
+          class="rc-select-dropdown-menu rc-select-dropdown-menu-vertical  rc-select-dropdown-menu-root"
+          role="menu"
+        >
+          <li
+            aria-selected="false"
+            class="rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item"
+            role="menuitem"
+            style="user-select:none;-webkit-user-select:none;"
+            unselectable="unselectable"
+          >
+            1
+          </li>
+          <li
+            aria-selected="false"
+            class="rc-select-dropdown-menu-item"
+            role="menuitem"
+            style="user-select:none;-webkit-user-select:none;"
+            unselectable="unselectable"
+          >
+            2
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Select filterOption could be true as described in default value 1`] = `
+<div
+  id="TriggerContainer"
+>
+  <div
+    class="rc-select rc-select-open rc-select-focused rc-select-enabled"
+  >
+    <div
+      aria-autocomplete="list"
+      aria-expanded="true"
+      aria-haspopup="true"
+      class="rc-select-selection
+                rc-select-selection--single"
+      role="combobox"
+      tabindex="0"
+    >
+      <div
+        class="rc-select-selection__rendered"
+      >
+        <div
+          class="rc-select-search rc-select-search--inline"
+          style="display:block;"
+        >
+          <div
+            class="rc-select-search__field__wrap"
+          >
+            <input
+              class="rc-select-search__field"
+              value=""
+            />
+            <span
+              class="rc-select-search__field__mirror"
+            >
+               
+            </span>
+          </div>
+        </div>
+      </div>
+      <span
+        class="rc-select-arrow"
+        style="user-select:none;-webkit-user-select:none;"
+        unselectable="unselectable"
+      >
+        <b />
+      </span>
+    </div>
+  </div>
+  <div>
+    <div
+      class="rc-select-dropdown rc-select-dropdown--single rc-select-dropdown-placement-bottomLeft "
+    >
+      <div
+        style="overflow:auto;"
+      >
+        <ul
+          aria-activedescendant=""
+          class="rc-select-dropdown-menu rc-select-dropdown-menu-vertical  rc-select-dropdown-menu-root"
+          role="menu"
+        >
+          <li
+            aria-selected="false"
+            class="rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item"
+            role="menuitem"
+            style="user-select:none;-webkit-user-select:none;"
+            unselectable="unselectable"
+          >
+            1
+          </li>
+          <li
+            aria-selected="false"
+            class="rc-select-dropdown-menu-item"
+            role="menuitem"
+            style="user-select:none;-webkit-user-select:none;"
+            unselectable="unselectable"
+          >
+            2
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`Select no search 1`] = `
 <div
   id="TriggerContainer"
