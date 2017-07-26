@@ -88,7 +88,7 @@ export default class DropdownMenu extends React.Component {
       let clonedMenuItems = menuItems;
       if (selectedKeys.length || firstActiveValue) {
         if (props.visible && !this.lastVisible) {
-          activeKeyProps.activeKey = selectedKeys[0];
+          activeKeyProps.activeKey = selectedKeys[0] || firstActiveValue;
         }
         let foundFirst = false;
         // set firstActiveItem via cloning menus
