@@ -50,10 +50,17 @@ export default class DropdownMenu extends React.Component {
   scrollActiveItemToView = () => {
     // scroll into view
     const itemComponent = findDOMNode(this.firstActiveItem);
+    const props = this.props;
+
     if (itemComponent) {
-      scrollIntoView(itemComponent, findDOMNode(this.refs.menu), {
+      const scrollIntoViewOpts = {
         onlyScrollIfNeeded: true,
-      });
+      };
+      if ((!props.value || props.value.length === 0) && props.firstActiveValue) {
+        scrollIntoViewOpts.alignWithTop = true;
+      }
+
+      scrollIntoView(itemComponent, findDOMNode(this.refs.menu), scrollIntoViewOpts);
     }
   }
 
@@ -63,7 +70,7 @@ export default class DropdownMenu extends React.Component {
       menuItems,
       defaultActiveFirstOption, value,
       prefixCls, multiple,
-      onMenuSelect, inputValue,
+      onMenuSelect, inputValue, firstActiveValue,
     } = props;
     if (menuItems && menuItems.length) {
       const menuProps = {};
@@ -78,15 +85,16 @@ export default class DropdownMenu extends React.Component {
       const activeKeyProps = {};
 
       let clonedMenuItems = menuItems;
-      if (selectedKeys.length) {
+      if (selectedKeys.length || firstActiveValue) {
         if (props.visible && !this.lastVisible) {
-          activeKeyProps.activeKey = selectedKeys[0];
+          activeKeyProps.activeKey = selectedKeys[0] || firstActiveValue;
         }
         let foundFirst = false;
         // set firstActiveItem via cloning menus
         // for scroll into view
         const clone = (item) => {
-          if (!foundFirst && selectedKeys.indexOf(item.key) !== -1) {
+          if ((!foundFirst && selectedKeys.indexOf(item.key) !== -1)
+            || (!foundFirst && !selectedKeys.length && firstActiveValue.indexOf(item.key) !== -1)) {
             foundFirst = true;
             return cloneElement(item, {
               ref: (ref) => {
@@ -105,6 +113,7 @@ export default class DropdownMenu extends React.Component {
           return clone(item);
         });
       }
+
 
       // clear activeKey when inputValue change
       if (inputValue !== this.lastInputValue) {

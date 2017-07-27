@@ -61,6 +61,7 @@ exports[`SelectTrigger renders correctly 1`] = `
       <DropdownMenu
         defaultActiveFirstOption={undefined}
         dropdownMenuStyle={undefined}
+        firstActiveValue={undefined}
         inputValue={undefined}
         menuItems={undefined}
         multiple={undefined}

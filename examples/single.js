@@ -60,6 +60,7 @@ class Test extends React.Component {
             optionLabelProp="children"
             optionFilterProp="text"
             onChange={this.onChange}
+            firstActiveValue="2"
           >
             <Option value="01" text="jack" title="jack">
               <b

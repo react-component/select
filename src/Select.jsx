@@ -1031,6 +1031,7 @@ constructor(props) {
         visible={open}
         inputValue={state.inputValue}
         value={state.value}
+        firstActiveValue={props.firstActiveValue}
         onDropdownVisibleChange={this.onDropdownVisibleChange}
         getPopupContainer={props.getPopupContainer}
         onMenuSelect={this.onMenuSelect}
