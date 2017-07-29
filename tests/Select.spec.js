@@ -384,6 +384,21 @@ describe('Select', () => {
     it('set className', () => {
       expect(wrapper.find('.rc-select').node.className).not.toContain('-focus');
     });
+
+    // Fix https://github.com/ant-design/ant-design/issues/6342
+    it('should be close when blur Select[showSearch=false]', () => {
+      wrapper = mount(
+        <Select showSearch={false}>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>
+      );
+      wrapper.find('.rc-select').simulate('click');
+      expect(wrapper.state().open).toBe(true);
+      wrapper.find('.rc-select').simulate('blur');
+      jest.runAllTimers();
+      expect(wrapper.state().open).toBe(false);
+    });
   });
 
   describe('unmount', () => {
