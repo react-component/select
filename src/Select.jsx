@@ -339,6 +339,7 @@ constructor(props) {
         this.state.inputValue = this.getInputDOMNode().value = '';
       }
       props.onBlur(this.getVLForOnChange(value));
+      this.setOpenState(false);
     }, 10);
   }
 
