@@ -28,7 +28,7 @@ const BUILT_IN_PLACEMENTS = {
 };
 
 export default class SelectTrigger extends React.Component {
-  static propTypes= {
+  static propTypes = {
     onPopupFocus: PropTypes.func,
     dropdownMatchSelectWidth: PropTypes.bool,
     dropdownAlign: PropTypes.object,
@@ -43,7 +43,7 @@ export default class SelectTrigger extends React.Component {
     prefixCls: PropTypes.string,
     popupClassName: PropTypes.string,
     children: PropTypes.any,
-  }
+  };
 
   componentDidUpdate() {
     const { visible, dropdownMatchSelectWidth } = this.props;
@@ -51,33 +51,36 @@ export default class SelectTrigger extends React.Component {
       const dropdownDOMNode = this.getPopupDOMNode();
       if (dropdownDOMNode) {
         const widthProp = dropdownMatchSelectWidth ? 'width' : 'minWidth';
-        dropdownDOMNode.style[widthProp] = `${ReactDOM.findDOMNode(this).offsetWidth}px`;
+        dropdownDOMNode.style[widthProp] = `${ReactDOM.findDOMNode(this)
+          .offsetWidth}px`;
       }
     }
   }
 
   getInnerMenu = () => {
     return this.popupMenu && this.popupMenu.refs.menu;
-  }
+  };
 
   getPopupDOMNode = () => {
     return this.refs.trigger.getPopupDomNode();
-  }
+  };
 
-  getDropdownElement = (newProps) => {
+  getDropdownElement = newProps => {
     const props = this.props;
-    return (<DropdownMenu
-      ref={this.saveMenu}
-      {...newProps}
-      prefixCls={this.getDropdownPrefixCls()}
-      onMenuSelect={props.onMenuSelect}
-      onMenuDeselect={props.onMenuDeselect}
-      value={props.value}
-      firstActiveValue={props.firstActiveValue}
-      defaultActiveFirstOption={props.defaultActiveFirstOption}
-      dropdownMenuStyle={props.dropdownMenuStyle}
-    />);
-  }
+    return (
+      <DropdownMenu
+        ref={this.saveMenu}
+        {...newProps}
+        prefixCls={this.getDropdownPrefixCls()}
+        onMenuSelect={props.onMenuSelect}
+        onMenuDeselect={props.onMenuDeselect}
+        value={props.value}
+        firstActiveValue={props.firstActiveValue}
+        defaultActiveFirstOption={props.defaultActiveFirstOption}
+        dropdownMenuStyle={props.dropdownMenuStyle}
+      />
+    );
+  };
 
   getDropdownTransitionName = () => {
     const props = this.props;
@@ -86,20 +89,27 @@ export default class SelectTrigger extends React.Component {
       transitionName = `${this.getDropdownPrefixCls()}-${props.animation}`;
     }
     return transitionName;
-  }
+  };
 
   getDropdownPrefixCls = () => {
     return `${this.props.prefixCls}-dropdown`;
-  }
+  };
 
-  saveMenu = (menu) => {
+  saveMenu = menu => {
     this.popupMenu = menu;
-  }
+  };
 
   render() {
     const { onPopupFocus, ...props } = this.props;
-    const { multiple, visible, inputValue, dropdownAlign,
-      disabled, showSearch, dropdownClassName } = props;
+    const {
+      multiple,
+      visible,
+      inputValue,
+      dropdownAlign,
+      disabled,
+      showSearch,
+      dropdownClassName,
+    } = props;
     const dropdownPrefixCls = this.getDropdownPrefixCls();
     const popupClassName = {
       [dropdownClassName]: !!dropdownClassName,
@@ -120,22 +130,27 @@ export default class SelectTrigger extends React.Component {
     } else {
       hideAction = ['blur'];
     }
-    return (<Trigger {...props}
-      showAction={disabled ? [] : ['click']}
-      hideAction={hideAction}
-      ref="trigger"
-      popupPlacement="bottomLeft"
-      builtinPlacements={BUILT_IN_PLACEMENTS}
-      prefixCls={dropdownPrefixCls}
-      popupTransitionName={this.getDropdownTransitionName()}
-      onPopupVisibleChange={props.onDropdownVisibleChange}
-      popup={popupElement}
-      popupAlign={dropdownAlign}
-      popupVisible={visible}
-      getPopupContainer={props.getPopupContainer}
-      popupClassName={classnames(popupClassName)}
-      popupStyle={props.dropdownStyle}
-    >{props.children}</Trigger>);
+    return (
+      <Trigger
+        {...props}
+        showAction={disabled ? [] : ['click']}
+        hideAction={hideAction}
+        ref="trigger"
+        popupPlacement="bottomLeft"
+        builtinPlacements={BUILT_IN_PLACEMENTS}
+        prefixCls={dropdownPrefixCls}
+        popupTransitionName={this.getDropdownTransitionName()}
+        onPopupVisibleChange={props.onDropdownVisibleChange}
+        popup={popupElement}
+        popupAlign={dropdownAlign}
+        popupVisible={visible}
+        getPopupContainer={props.getPopupContainer}
+        popupClassName={classnames(popupClassName)}
+        popupStyle={props.dropdownStyle}
+      >
+        {props.children}
+      </Trigger>
+    );
   }
 }
 

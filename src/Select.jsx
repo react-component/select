@@ -5,28 +5,37 @@ import classnames from 'classnames';
 import Animate from 'rc-animate';
 import classes from 'component-classes';
 import {
-  getPropValue, getValuePropValue, isCombobox,
-  isMultipleOrTags, isMultipleOrTagsOrCombobox,
-  isSingleMode, toArray, findIndexInValueByKey,
-  UNSELECTABLE_ATTRIBUTE, UNSELECTABLE_STYLE,
-  preventDefaultEvent, findFirstMenuItem,
-  includesSeparators, splitBySeparators,
-  findIndexInValueByLabel, defaultFilterFn,
+  getPropValue,
+  getValuePropValue,
+  isCombobox,
+  isMultipleOrTags,
+  isMultipleOrTagsOrCombobox,
+  isSingleMode,
+  toArray,
+  findIndexInValueByKey,
+  UNSELECTABLE_ATTRIBUTE,
+  UNSELECTABLE_STYLE,
+  preventDefaultEvent,
+  findFirstMenuItem,
+  includesSeparators,
+  splitBySeparators,
+  findIndexInValueByLabel,
+  defaultFilterFn,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import { SelectPropTypes } from './PropTypes';
 import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
 import warning from 'warning';
 
-function noop() {
-}
+function noop() {}
 
 function saveRef(name, component) {
   this[name] = component;
 }
 
 function chaining(...fns) {
-  return function (...args) {  // eslint-disable-line
+  return function (...args) {
+    // eslint-disable-line
     for (let i = 0; i < fns.length; i++) {
       if (fns[i] && typeof fns[i] === 'function') {
         fns[i].apply(this, args);
@@ -35,62 +44,63 @@ function chaining(...fns) {
   };
 }
 
-export default class Select extends React.Component
-{
-  static propTypes = SelectPropTypes
+export default class Select extends React.Component {
+  static propTypes = SelectPropTypes;
 
-   static defaultProps ={
-     prefixCls: 'rc-select',
-     defaultOpen: false,
-     labelInValue: false,
-     defaultActiveFirstOption: true,
-     showSearch: true,
-     allowClear: false,
-     placeholder: '',
-     onChange: noop,
-     onFocus: noop,
-     onBlur: noop,
-     onSelect: noop,
-     onSearch: noop,
-     onDeselect: noop,
-     showArrow: true,
-     dropdownMatchSelectWidth: true,
-     dropdownStyle: {},
-     dropdownMenuStyle: {},
-     optionFilterProp: 'value',
-     optionLabelProp: 'value',
-     notFoundContent: 'Not Found',
-   }
-
-constructor(props) {
-  super(props);
-  let value = [];
-  if ('value' in props) {
-    value = toArray(props.value);
-  } else {
-    value = toArray(props.defaultValue);
-  }
-  value = this.addLabelToValue(props, value);
-  value = this.addTitleToValue(props, value);
-  let inputValue = '';
-  if (props.combobox) {
-    inputValue = value.length ? this.getLabelFromProps(props, value[0].key) : '';
-  }
-  this.saveInputRef = saveRef.bind(this, 'inputInstance');
-  this.saveInputMirrorRef = saveRef.bind(this, 'inputMirrorInstance');
-  let open = props.open;
-  if (open === undefined) {
-    open = props.defaultOpen;
-  }
-  this.state = {
-    value,
-    inputValue,
-    open,
+  static defaultProps = {
+    prefixCls: 'rc-select',
+    defaultOpen: false,
+    labelInValue: false,
+    defaultActiveFirstOption: true,
+    showSearch: true,
+    allowClear: false,
+    placeholder: '',
+    onChange: noop,
+    onFocus: noop,
+    onBlur: noop,
+    onSelect: noop,
+    onSearch: noop,
+    onDeselect: noop,
+    showArrow: true,
+    dropdownMatchSelectWidth: true,
+    dropdownStyle: {},
+    dropdownMenuStyle: {},
+    optionFilterProp: 'value',
+    optionLabelProp: 'value',
+    notFoundContent: 'Not Found',
   };
-  this.adjustOpenState();
-}
 
-  componentWillReceiveProps =(nextProps) => {
+  constructor(props) {
+    super(props);
+    let value = [];
+    if ('value' in props) {
+      value = toArray(props.value);
+    } else {
+      value = toArray(props.defaultValue);
+    }
+    value = this.addLabelToValue(props, value);
+    value = this.addTitleToValue(props, value);
+    let inputValue = '';
+    if (props.combobox) {
+      inputValue = value.length
+        ? this.getLabelFromProps(props, value[0].key)
+        : '';
+    }
+    this.saveInputRef = saveRef.bind(this, 'inputInstance');
+    this.saveInputMirrorRef = saveRef.bind(this, 'inputMirrorInstance');
+    let open = props.open;
+    if (open === undefined) {
+      open = props.defaultOpen;
+    }
+    this.state = {
+      value,
+      inputValue,
+      open,
+    };
+    this.adjustOpenState();
+  }
+
+  componentWillReceiveProps = nextProps => {
     if ('value' in nextProps) {
       let value = toArray(nextProps.value);
       value = this.addLabelToValue(nextProps, value);
@@ -100,11 +110,13 @@ constructor(props) {
       });
       if (nextProps.combobox) {
         this.setState({
-          inputValue: value.length ? this.getLabelFromProps(nextProps, value[0].key) : '',
+          inputValue: value.length
+            ? this.getLabelFromProps(nextProps, value[0].key)
+            : '',
         });
       }
     }
-  }
+  };
 
   componentWillUpdate(nextProps, nextState) {
     this.props = nextProps;
@@ -136,12 +148,14 @@ constructor(props) {
     }
   }
 
-  onInputChange =(event) => {
+  onInputChange = event => {
     const { tokenSeparators } = this.props;
     const val = event.target.value;
-    if (isMultipleOrTags(this.props) &&
+    if (
+      isMultipleOrTags(this.props) &&
       tokenSeparators &&
-      includesSeparators(val, tokenSeparators)) {
+      includesSeparators(val, tokenSeparators)
+    ) {
       const nextValue = this.tokenize(val);
       this.fireChange(nextValue);
       this.setOpenState(false, true);
@@ -153,13 +167,15 @@ constructor(props) {
       open: true,
     });
     if (isCombobox(this.props)) {
-      this.fireChange([{
-        key: val,
-      }]);
+      this.fireChange([
+        {
+          key: val,
+        },
+      ]);
     }
-  }
+  };
 
-  onDropdownVisibleChange =(open) => {
+  onDropdownVisibleChange = open => {
     if (open && !this._focused) {
       this.clearBlurTime();
       this.timeoutFocus();
@@ -167,10 +183,10 @@ constructor(props) {
       this.updateFocusClassName();
     }
     this.setOpenState(open);
-  }
+  };
 
   // combobox ignore
-  onKeyDown = (event) => {
+  onKeyDown = event => {
     const props = this.props;
     if (props.disabled) {
       return;
@@ -182,16 +198,20 @@ constructor(props) {
       this.setOpenState(true);
       event.preventDefault();
     }
-  }
+  };
 
-  onInputKeyDown = (event) => {
+  onInputKeyDown = event => {
     const props = this.props;
     if (props.disabled) {
       return;
     }
     const state = this.state;
     const keyCode = event.keyCode;
-    if (isMultipleOrTags(props) && !event.target.value && keyCode === KeyCode.BACKSPACE) {
+    if (
+      isMultipleOrTags(props) &&
+      !event.target.value &&
+      keyCode === KeyCode.BACKSPACE
+    ) {
       event.preventDefault();
       const { value } = state;
       if (value.length) {
@@ -222,9 +242,9 @@ constructor(props) {
         event.stopPropagation();
       }
     }
-  }
+  };
 
-  onMenuSelect =({ item }) => {
+  onMenuSelect = ({ item }) => {
     let value = this.state.value;
     const props = this.props;
     const selectedValue = getValuePropValue(item);
@@ -242,11 +262,13 @@ constructor(props) {
       if (findIndexInValueByKey(value, selectedValue) !== -1) {
         return;
       }
-      value = value.concat([{
-        key: selectedValue,
-        label: selectedLabel,
-        title: selectedTitle,
-      }]);
+      value = value.concat([
+        {
+          key: selectedValue,
+          label: selectedLabel,
+          title: selectedTitle,
+        },
+      ]);
     } else {
       if (isCombobox(props)) {
         this.skipAdjustOpen = true;
@@ -259,11 +281,13 @@ constructor(props) {
         this.setOpenState(false, true);
         return;
       }
-      value = [{
-        key: selectedValue,
-        label: selectedLabel,
-        title: selectedTitle,
-      }];
+      value = [
+        {
+          key: selectedValue,
+          label: selectedLabel,
+          title: selectedTitle,
+        },
+      ];
       this.setOpenState(false, true);
     }
     this.fireChange(value);
@@ -274,31 +298,34 @@ constructor(props) {
       inputValue = '';
     }
     this.setInputValue(inputValue, false);
-  }
+  };
 
   onMenuDeselect = ({ item, domEvent }) => {
     if (domEvent.type === 'click') {
       this.removeSelected(getValuePropValue(item));
     }
     this.setInputValue('', false);
-  }
+  };
 
-  onArrowClick = (e) => {
+  onArrowClick = e => {
     e.stopPropagation();
     if (!this.props.disabled) {
       this.setOpenState(!this.state.open, !this.state.open);
     }
-  }
+  };
 
-  onPlaceholderClick =() => {
+  onPlaceholderClick = () => {
     if (this.getInputDOMNode()) {
       this.getInputDOMNode().focus();
     }
-  }
+  };
 
-  onOuterFocus = (e) => {
+  onOuterFocus = e => {
     this.clearBlurTime();
-    if (!isMultipleOrTagsOrCombobox(this.props) && e.target === this.getInputDOMNode()) {
+    if (
+      !isMultipleOrTagsOrCombobox(this.props) &&
+      e.target === this.getInputDOMNode()
+    ) {
       return;
     }
     if (this._focused) {
@@ -307,12 +334,12 @@ constructor(props) {
     this._focused = true;
     this.updateFocusClassName();
     this.timeoutFocus();
-  }
+  };
 
-  onPopupFocus =() => {
+  onPopupFocus = () => {
     // fix ie scrollbar, focus element again
     this.maybeFocus(true, true);
-  }
+  };
 
   onOuterBlur = () => {
     this.blurTimer = setTimeout(() => {
@@ -321,16 +348,22 @@ constructor(props) {
       const props = this.props;
       let { value } = this.state;
       const { inputValue } = this.state;
-      if (isSingleMode(props) && props.showSearch &&
-        inputValue && props.defaultActiveFirstOption) {
+      if (
+        isSingleMode(props) &&
+        props.showSearch &&
+        inputValue &&
+        props.defaultActiveFirstOption
+      ) {
         const options = this._options || [];
         if (options.length) {
           const firstOption = findFirstMenuItem(options);
           if (firstOption) {
-            value = [{
-              key: firstOption.key,
-              label: this.getLabelFromOption(firstOption),
-            }];
+            value = [
+              {
+                key: firstOption.key,
+                label: this.getLabelFromOption(firstOption),
+              },
+            ];
             this.fireChange(value);
           }
         }
@@ -341,9 +374,9 @@ constructor(props) {
       props.onBlur(this.getVLForOnChange(value));
       this.setOpenState(false);
     }, 10);
-  }
+  };
 
-  onClearSelection = (event) => {
+  onClearSelection = event => {
     const props = this.props;
     const state = this.state;
     if (props.disabled) {
@@ -360,18 +393,18 @@ constructor(props) {
         this.setInputValue('');
       }
     }
-  }
+  };
 
-  onChoiceAnimationLeave =() => {
+  onChoiceAnimationLeave = () => {
     this.refs.trigger.refs.trigger.forcePopupAlign();
-  }
+  };
 
   getLabelBySingleValue = (children, value) => {
     if (value === undefined) {
       return null;
     }
     let label = null;
-    React.Children.forEach(children, (child) => {
+    React.Children.forEach(children, child => {
       if (child.type.isSelectOptGroup) {
         const maybe = this.getLabelBySingleValue(child.props.children, value);
         if (maybe !== null) {
@@ -382,14 +415,14 @@ constructor(props) {
       }
     });
     return label;
-  }
+  };
 
   getValueByLabel = (children, label) => {
     if (label === undefined) {
       return null;
     }
     let value = null;
-    React.Children.forEach(children, (child) => {
+    React.Children.forEach(children, child => {
       if (child.type.isSelectOptGroup) {
         const maybe = this.getValueByLabel(child.props.children, label);
         if (maybe !== null) {
@@ -400,17 +433,17 @@ constructor(props) {
       }
     });
     return value;
-  }
+  };
 
-  getLabelFromOption = (child) => {
+  getLabelFromOption = child => {
     return getPropValue(child, this.props.optionLabelProp);
-  }
+  };
 
   getLabelFromProps = (props, value) => {
     return this.getLabelByValue(props.children, value);
-  }
+  };
 
-  getVLForOnChange = (vls_) => {
+  getVLForOnChange = vls_ => {
     let vls = vls_;
     if (vls !== undefined) {
       if (!this.props.labelInValue) {
@@ -421,7 +454,7 @@ constructor(props) {
       return isMultipleOrTags(this.props) ? vls : vls[0];
     }
     return vls;
-  }
+  };
 
   getLabelByValue = (children, value) => {
     const label = this.getLabelBySingleValue(children, value);
@@ -429,17 +462,17 @@ constructor(props) {
       return value;
     }
     return label;
-  }
+  };
 
-  getDropdownContainer =() => {
+  getDropdownContainer = () => {
     if (!this.dropdownContainer) {
       this.dropdownContainer = document.createElement('div');
       document.body.appendChild(this.dropdownContainer);
     }
     return this.dropdownContainer;
-  }
+  };
 
-  getPlaceholderElement =() => {
+  getPlaceholderElement = () => {
     const { props, state } = this;
     let hidden = false;
     if (state.inputValue) {
@@ -453,65 +486,74 @@ constructor(props) {
     }
     const placeholder = props.placeholder;
     if (placeholder) {
-      return (<div
-        onMouseDown={preventDefaultEvent}
-        style={{
-          display: hidden ? 'none' : 'block',
-          ...UNSELECTABLE_STYLE,
-        }}
-        {...UNSELECTABLE_ATTRIBUTE}
-        onClick={this.onPlaceholderClick}
-        className={`${props.prefixCls}-selection__placeholder`}
-      >
-        {placeholder}
-      </div>);
+      return (
+        <div
+          onMouseDown={preventDefaultEvent}
+          style={{
+            display: hidden ? 'none' : 'block',
+            ...UNSELECTABLE_STYLE,
+          }}
+          {...UNSELECTABLE_ATTRIBUTE}
+          onClick={this.onPlaceholderClick}
+          className={`${props.prefixCls}-selection__placeholder`}
+        >
+          {placeholder}
+        </div>
+      );
     }
     return null;
-  }
+  };
 
-  getInputElement =() => {
+  getInputElement = () => {
     const props = this.props;
-    const inputElement = props.getInputElement ? props.getInputElement() : <input id={props.id} />;
+    const inputElement = props.getInputElement
+      ? props.getInputElement()
+      : <input id={props.id} />;
     const inputCls = classnames(inputElement.props.className, {
       [`${props.prefixCls}-search__field`]: true,
     });
     // https://github.com/ant-design/ant-design/issues/4992#issuecomment-281542159
     // Add space to the end of the inputValue as the width measurement tolerance
-    return (<div className={`${props.prefixCls}-search__field__wrap`}>
-      {React.cloneElement(inputElement, {
-        ref: this.saveInputRef,
-        onChange: this.onInputChange,
-        onKeyDown: chaining(this.onInputKeyDown, inputElement.props.onKeyDown),
-        value: this.state.inputValue,
-        disabled: props.disabled,
-        className: inputCls,
-      })}
-      <span
-        ref={this.saveInputMirrorRef}
-        className={`${props.prefixCls}-search__field__mirror`}
-      >
-        {this.state.inputValue}&nbsp;
-      </span>
-    </div>);
-  }
+    return (
+      <div className={`${props.prefixCls}-search__field__wrap`}>
+        {React.cloneElement(inputElement, {
+          ref: this.saveInputRef,
+          onChange: this.onInputChange,
+          onKeyDown: chaining(
+            this.onInputKeyDown,
+            inputElement.props.onKeyDown
+          ),
+          value: this.state.inputValue,
+          disabled: props.disabled,
+          className: inputCls,
+        })}
+        <span
+          ref={this.saveInputMirrorRef}
+          className={`${props.prefixCls}-search__field__mirror`}
+        >
+          {this.state.inputValue}&nbsp;
+        </span>
+      </div>
+    );
+  };
 
-  getInputDOMNode =() => {
-    return this.topCtrlNode ?
-       this.topCtrlNode.querySelector('input,textarea,div[contentEditable]') :
-       this.inputInstance;
-  }
+  getInputDOMNode = () => {
+    return this.topCtrlNode
+      ? this.topCtrlNode.querySelector('input,textarea,div[contentEditable]')
+      : this.inputInstance;
+  };
 
-  getInputMirrorDOMNode =() => {
+  getInputMirrorDOMNode = () => {
     return this.inputMirrorInstance;
-  }
+  };
 
-  getPopupDOMNode=() => {
+  getPopupDOMNode = () => {
     return this.refs.trigger.getPopupDOMNode();
-  }
+  };
 
-  getPopupMenuComponent=() => {
+  getPopupMenuComponent = () => {
     return this.refs.trigger.getInnerMenu();
-  }
+  };
 
   setOpenState = (open, needFocus) => {
     const { props, state } = this;
@@ -534,7 +576,7 @@ constructor(props) {
         this.maybeFocus(open, needFocus);
       }
     });
-  }
+  };
 
   setInputValue = (inputValue, fireSearch = true) => {
     if (inputValue !== this.state.inputValue) {
@@ -545,60 +587,60 @@ constructor(props) {
         this.props.onSearch(inputValue);
       }
     }
-  }
+  };
 
-    filterOption =(input, child, defaultFilter = defaultFilterFn) => {
-      if (!input) {
-        return true;
-      }
-      let filterFn = this.props.filterOption;
-      if ('filterOption' in this.props) {
-        if (this.props.filterOption === true) {
-          filterFn = defaultFilter;
-        }
-      } else {
-        filterFn = defaultFilter;
-      }
-
-      if (!filterFn) {
-        return true;
-      } else if (child.props.disabled) {
-        return false;
-      } else if (typeof filterFn === 'function') {
-        return filterFn.call(this, input, child);
-      }
+  filterOption = (input, child, defaultFilter = defaultFilterFn) => {
+    if (!input) {
       return true;
     }
+    let filterFn = this.props.filterOption;
+    if ('filterOption' in this.props) {
+      if (this.props.filterOption === true) {
+        filterFn = defaultFilter;
+      }
+    } else {
+      filterFn = defaultFilter;
+    }
 
-  timeoutFocus =() => {
+    if (!filterFn) {
+      return true;
+    } else if (child.props.disabled) {
+      return false;
+    } else if (typeof filterFn === 'function') {
+      return filterFn.call(this, input, child);
+    }
+    return true;
+  };
+
+  timeoutFocus = () => {
     if (this.focusTimer) {
       this.clearFocusTime();
     }
     this.focusTimer = setTimeout(() => {
       this.props.onFocus();
     }, 10);
-  }
+  };
 
   clearFocusTime = () => {
     if (this.focusTimer) {
       clearTimeout(this.focusTimer);
       this.focusTimer = null;
     }
-  }
+  };
 
   clearBlurTime = () => {
     if (this.blurTimer) {
       clearTimeout(this.blurTimer);
       this.blurTimer = null;
     }
-  }
+  };
 
-  clearAdjustTimer =() => {
+  clearAdjustTimer = () => {
     if (this.skipAdjustOpenTimer) {
       clearTimeout(this.skipAdjustOpenTimer);
       this.skipAdjustOpenTimer = null;
     }
-  }
+  };
 
   updateFocusClassName = () => {
     const { refs, props } = this;
@@ -608,7 +650,7 @@ constructor(props) {
     } else {
       classes(refs.root).remove(`${props.prefixCls}-focused`);
     }
-  }
+  };
 
   maybeFocus = (open, needFocus) => {
     if (needFocus || open) {
@@ -627,7 +669,7 @@ constructor(props) {
         }
       }
     }
-  }
+  };
 
   addLabelToValue = (props, value_) => {
     let value = value_;
@@ -644,12 +686,12 @@ constructor(props) {
       });
     }
     return value;
-  }
+  };
 
   addTitleToValue = (props, values) => {
     let nextValues = values;
     const keys = values.map(v => v.key);
-    React.Children.forEach(props.children, (child) => {
+    React.Children.forEach(props.children, child => {
       if (child.type.isSelectOptGroup) {
         nextValues = this.addTitleToValue(child.props, nextValues);
       } else {
@@ -661,19 +703,19 @@ constructor(props) {
       }
     });
     return nextValues;
-  }
+  };
 
-  removeSelected = (selectedKey) => {
+  removeSelected = selectedKey => {
     const props = this.props;
     if (props.disabled || this.isChildDisabled(selectedKey)) {
       return;
     }
     let label;
-    const value = this.state.value.filter((singleValue) => {
+    const value = this.state.value.filter(singleValue => {
       if (singleValue.key === selectedKey) {
         label = singleValue.label;
       }
-      return (singleValue.key !== selectedKey);
+      return singleValue.key !== selectedKey;
     });
     const canMultiple = isMultipleOrTags(props);
 
@@ -688,16 +730,16 @@ constructor(props) {
       props.onDeselect(event);
     }
     this.fireChange(value);
-  }
+  };
 
   openIfHasChildren = () => {
     const props = this.props;
     if (React.Children.count(props.children) || isSingleMode(props)) {
       this.setOpenState(true);
     }
-  }
+  };
 
-  fireChange = (value) => {
+  fireChange = value => {
     const props = this.props;
     if (!('value' in props)) {
       this.setState({
@@ -705,16 +747,16 @@ constructor(props) {
       });
     }
     props.onChange(this.getVLForOnChange(value));
-  }
+  };
 
-  isChildDisabled = (key) => {
+  isChildDisabled = key => {
     return toArray(this.props.children).some(child => {
       const childValue = getValuePropValue(child);
       return childValue === key && child.props && child.props.disabled;
     });
-  }
+  };
 
-  tokenize =(string) => {
+  tokenize = string => {
     const { multiple, tokenSeparators, children } = this.props;
     let nextValue = this.state.value;
     splitBySeparators(string, tokenSeparators).forEach(label => {
@@ -732,7 +774,7 @@ constructor(props) {
       }
     });
     return nextValue;
-  }
+  };
 
   adjustOpenState = () => {
     if (this.skipAdjustOpen) {
@@ -758,11 +800,15 @@ constructor(props) {
       }
     }
     this.state.open = open;
-  }
+  };
 
-  renderFilterOptions =(inputValue) => {
-    return this.renderFilterOptionsFromChildren(this.props.children, true, inputValue);
-  }
+  renderFilterOptions = inputValue => {
+    return this.renderFilterOptionsFromChildren(
+      this.props.children,
+      true,
+      inputValue
+    );
+  };
 
   renderFilterOptionsFromChildren = (children, showNotFound, iv) => {
     let sel = [];
@@ -770,9 +816,12 @@ constructor(props) {
     const inputValue = iv === undefined ? this.state.inputValue : iv;
     const childrenKeys = [];
     const tags = props.tags;
-    React.Children.forEach(children, (child) => {
+    React.Children.forEach(children, child => {
       if (child.type.isSelectOptGroup) {
-        const innerItems = this.renderFilterOptionsFromChildren(child.props.children, false);
+        const innerItems = this.renderFilterOptionsFromChildren(
+          child.props.children,
+          false
+        );
         if (innerItems.length) {
           let label = child.props.label;
           let key = child.key;
@@ -781,9 +830,11 @@ constructor(props) {
           } else if (!label && key) {
             label = key;
           }
-          sel.push(<MenuItemGroup key={key} title={label}>
-            {innerItems}
-          </MenuItemGroup>);
+          sel.push(
+            <MenuItemGroup key={key} title={label}>
+              {innerItems}
+            </MenuItemGroup>
+          );
         }
         return;
       }
@@ -791,18 +842,22 @@ constructor(props) {
       warning(
         child.type.isSelectOption,
         'the children of `Select` should be `Select.Option` or `Select.OptGroup`, ' +
-          `instead of \`${child.type.name || child.type.displayName || child.type}\`.`
+          `instead of \`${child.type.name ||
+            child.type.displayName ||
+            child.type}\`.`
       );
 
       const childValue = getValuePropValue(child);
       if (this.filterOption(inputValue, child)) {
-        sel.push(<MenuItem
-          style={UNSELECTABLE_STYLE}
-          attribute={UNSELECTABLE_ATTRIBUTE}
-          value={childValue}
-          key={childValue}
-          {...child.props}
-        />);
+        sel.push(
+          <MenuItem
+            style={UNSELECTABLE_STYLE}
+            attribute={UNSELECTABLE_ATTRIBUTE}
+            value={childValue}
+            key={childValue}
+            {...child.props}
+          />
+        );
       }
       if (tags && !child.props.disabled) {
         childrenKeys.push(childValue);
@@ -811,57 +866,76 @@ constructor(props) {
     if (tags) {
       // tags value must be string
       let value = this.state.value || [];
-      value = value.filter((singleValue) => {
-        return childrenKeys.indexOf(singleValue.key) === -1 &&
-          (!inputValue || String(singleValue.key).indexOf(String(inputValue)) > -1);
+      value = value.filter(singleValue => {
+        return (
+          childrenKeys.indexOf(singleValue.key) === -1 &&
+          (!inputValue ||
+            String(singleValue.key).indexOf(String(inputValue)) > -1)
+        );
       });
-      sel = sel.concat(value.map((singleValue) => {
-        const key = singleValue.key;
-        return (<MenuItem
-          style={UNSELECTABLE_STYLE}
-          attribute={UNSELECTABLE_ATTRIBUTE}
-          value={key}
-          key={key}
-        >
-          {key}
-        </MenuItem>);
-      }));
+      sel = sel.concat(
+        value.map(singleValue => {
+          const key = singleValue.key;
+          return (
+            <MenuItem
+              style={UNSELECTABLE_STYLE}
+              attribute={UNSELECTABLE_ATTRIBUTE}
+              value={key}
+              key={key}
+            >
+              {key}
+            </MenuItem>
+          );
+        })
+      );
       if (inputValue) {
-        const notFindInputItem = sel.every((option) => {
-          return !this.filterOption.call(this, inputValue, option, () =>
-            getValuePropValue(option) === inputValue
+        const notFindInputItem = sel.every(option => {
+          return !this.filterOption.call(
+            this,
+            inputValue,
+            option,
+            () => getValuePropValue(option) === inputValue
           );
         });
         if (notFindInputItem) {
-          sel.unshift(<MenuItem
-            style={UNSELECTABLE_STYLE}
-            attribute={UNSELECTABLE_ATTRIBUTE}
-            value={inputValue}
-            key={inputValue}
-          >
-            {inputValue}
-          </MenuItem>);
+          sel.unshift(
+            <MenuItem
+              style={UNSELECTABLE_STYLE}
+              attribute={UNSELECTABLE_ATTRIBUTE}
+              value={inputValue}
+              key={inputValue}
+            >
+              {inputValue}
+            </MenuItem>
+          );
         }
       }
     }
     if (!sel.length && showNotFound && props.notFoundContent) {
-      sel = [<MenuItem
-        style={UNSELECTABLE_STYLE}
-        attribute={UNSELECTABLE_ATTRIBUTE}
-        disabled
-        value="NOT_FOUND"
-        key="NOT_FOUND"
-      >
-        {props.notFoundContent}
-      </MenuItem>];
+      sel = [
+        <MenuItem
+          style={UNSELECTABLE_STYLE}
+          attribute={UNSELECTABLE_ATTRIBUTE}
+          disabled
+          value="NOT_FOUND"
+          key="NOT_FOUND"
+        >
+          {props.notFoundContent}
+        </MenuItem>,
+      ];
     }
     return sel;
-  }
+  };
 
   renderTopControlNode = () => {
     const { value, open, inputValue } = this.state;
     const props = this.props;
-    const { choiceTransitionName, prefixCls, maxTagTextLength, showSearch } = props;
+    const {
+      choiceTransitionName,
+      prefixCls,
+      maxTagTextLength,
+      showSearch,
+    } = props;
     const className = `${prefixCls}-selection__rendered`;
     // search input is inside topControlNode in single, multiple & combobox. 2016/04/13
     let innerNode = null;
@@ -894,30 +968,36 @@ constructor(props) {
             }}
           >
             {value[0].label}
-          </div>);
+          </div>
+        );
       }
       if (!showSearch) {
         innerNode = [selectedValue];
       } else {
-        innerNode = [selectedValue, <div
-          className={`${prefixCls}-search ${prefixCls}-search--inline`}
-          key="input"
-          style={{
-            display: open ? 'block' : 'none',
-          }}
-        >
-          {this.getInputElement()}
-        </div>];
+        innerNode = [
+          selectedValue,
+          <div
+            className={`${prefixCls}-search ${prefixCls}-search--inline`}
+            key="input"
+            style={{
+              display: open ? 'block' : 'none',
+            }}
+          >
+            {this.getInputElement()}
+          </div>,
+        ];
       }
     } else {
       let selectedValueNodes = [];
       if (isMultipleOrTags(props)) {
-        selectedValueNodes = value.map((singleValue) => {
+        selectedValueNodes = value.map(singleValue => {
           let content = singleValue.label;
           const title = singleValue.title || content;
-          if (maxTagTextLength &&
+          if (
+            maxTagTextLength &&
             typeof content === 'string' &&
-            content.length > maxTagTextLength) {
+            content.length > maxTagTextLength
+          ) {
             content = `${content.slice(0, maxTagTextLength)}...`;
           }
           const disabled = this.isChildDisabled(singleValue.key);
@@ -933,44 +1013,52 @@ constructor(props) {
               key={singleValue.key}
               title={title}
             >
-              <div className={`${prefixCls}-selection__choice__content`}>{content}</div>
-              {
-                disabled ? null : <span
+              <div className={`${prefixCls}-selection__choice__content`}>
+                {content}
+              </div>
+              {disabled ? null : (
+                <span
                   className={`${prefixCls}-selection__choice__remove`}
                   onClick={this.removeSelected.bind(this, singleValue.key)}
-                />
-              }
+                />)}
             </li>
           );
         });
       }
-      selectedValueNodes.push(<li
-        className={`${prefixCls}-search ${prefixCls}-search--inline`}
-        key="__input"
-      >
-        {this.getInputElement()}
-      </li>);
+      selectedValueNodes.push(
+        <li
+          className={`${prefixCls}-search ${prefixCls}-search--inline`}
+          key="__input"
+        >
+          {this.getInputElement()}
+        </li>
+      );
 
       if (isMultipleOrTags(props) && choiceTransitionName) {
-        innerNode = (<Animate
-          onLeave={this.onChoiceAnimationLeave}
-          component="ul"
-          transitionName={choiceTransitionName}
-        >
-          {selectedValueNodes}
-        </Animate>);
+        innerNode = (
+          <Animate
+            onLeave={this.onChoiceAnimationLeave}
+            component="ul"
+            transitionName={choiceTransitionName}
+          >
+            {selectedValueNodes}
+          </Animate>
+        );
       } else {
-        innerNode = <ul>{selectedValueNodes}</ul>;
+        innerNode = (
+          <ul>
+            {selectedValueNodes}
+          </ul>
+        );
       }
     }
-    return (<div
-      className={className}
-      ref={node => this.topCtrlNode = node}
-    >
-      {this.getPlaceholderElement()}
-      {innerNode}
-    </div>);
-  }
+    return (
+      <div className={className} ref={node => (this.topCtrlNode = node)}>
+        {this.getPlaceholderElement()}
+        {innerNode}
+      </div>
+    );
+  };
 
   render() {
     const props = this.props;
@@ -1004,14 +1092,16 @@ constructor(props) {
     if (state.inputValue || state.value.length) {
       clearStyle.display = 'block';
     }
-    const clear = (<span
-      key="clear"
-      onMouseDown={preventDefaultEvent}
-      style={clearStyle}
-      {...UNSELECTABLE_ATTRIBUTE}
-      className={`${prefixCls}-selection__clear`}
-      onClick={this.onClearSelection}
-    />);
+    const clear = (
+      <span
+        key="clear"
+        onMouseDown={preventDefaultEvent}
+        style={clearStyle}
+        {...UNSELECTABLE_ATTRIBUTE}
+        className={`${prefixCls}-selection__clear`}
+        onClick={this.onClearSelection}
+      />
+    );
     return (
       <SelectTrigger
         onPopupFocus={this.onPopupFocus}
@@ -1059,16 +1149,16 @@ constructor(props) {
           >
             {ctrlNode}
             {allowClear ? clear : null}
-            {multiple || !props.showArrow ? null :
-              (<span
+            {multiple || !props.showArrow ? null : (
+              <span
                 key="arrow"
                 className={`${prefixCls}-arrow`}
                 style={UNSELECTABLE_STYLE}
                 {...UNSELECTABLE_ATTRIBUTE}
                 onClick={this.onArrowClick}
               >
-              <b />
-            </span>)}
+                <b />
+              </span>)}
           </div>
         </div>
       </SelectTrigger>

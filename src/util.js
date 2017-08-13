@@ -11,7 +11,9 @@ export function getValuePropValue(child) {
   if (child.type && child.type.isSelectOptGroup && props.label) {
     return props.label;
   }
-  throw new Error(`Need at least a key or a value or a label (only for OptGroup) for ${child}`);
+  throw new Error(
+    `Need at least a key or a value or a label (only for OptGroup) for ${child}`
+  );
 }
 
 export function getPropValue(child, prop) {
@@ -78,9 +80,11 @@ export function getSelectKeys(menuItems, value) {
     return [];
   }
   let selectedKeys = [];
-  React.Children.forEach(menuItems, (item) => {
+  React.Children.forEach(menuItems, item => {
     if (item.type.isMenuItemGroup) {
-      selectedKeys = selectedKeys.concat(getSelectKeys(item.props.children, value));
+      selectedKeys = selectedKeys.concat(
+        getSelectKeys(item.props.children, value)
+      );
     } else {
       const itemValue = getValuePropValue(item);
       const itemKey = item.key;
@@ -91,7 +95,6 @@ export function getSelectKeys(menuItems, value) {
   });
   return selectedKeys;
 }
-
 
 export const UNSELECTABLE_STYLE = {
   userSelect: 'none',
@@ -139,5 +142,7 @@ export function splitBySeparators(string, separators) {
 }
 
 export function defaultFilterFn(input, child) {
-  return String(getPropValue(child, this.props.optionFilterProp)).indexOf(input) > -1;
+  return (
+    String(getPropValue(child, this.props.optionFilterProp)).indexOf(input) > -1
+  );
 }

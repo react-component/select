@@ -14,14 +14,14 @@ function valueType(props, propName, componentName) {
     if (error) {
       return new Error(
         `Invalid prop \`${propName}\` supplied to \`${componentName}\`, ` +
-        `when you set \`labelInValue\` to \`true\`, \`${propName}\` should in ` +
-        `shape of \`{ key: string, label?: string }\`.`
+          `when you set \`labelInValue\` to \`true\`, \`${propName}\` should in ` +
+          `shape of \`{ key: string, label?: string }\`.`
       );
     }
   } else if (props.multiple && props[propName] === '') {
     return new Error(
       `Invalid prop \`${propName}\` of type \`string\` supplied to \`${componentName}\`, ` +
-      `expected \`array\` when \`multiple\` is \`true\`.`
+        `expected \`array\` when \`multiple\` is \`true\`.`
     );
   } else {
     const validate = PropTypes.oneOfType([
