@@ -890,12 +890,20 @@ export default class Select extends React.Component {
       );
       if (inputValue) {
         const notFindInputItem = sel.every(option => {
-          return !this.filterOption.call(
-            this,
-            inputValue,
-            option,
-            () => getValuePropValue(option) === inputValue
-          );
+          // this.filterOption return true has two meaning,
+          // 1, some one exists after filtering
+          // 2, filterOption is set to false
+          // condition 2 does not mean the option has same value with inputValue
+          const filterFn = () => getValuePropValue(option) === inputValue;
+          if (this.props.filterOption !== false) {
+            return !this.filterOption.call(
+              this,
+              inputValue,
+              option,
+              filterFn
+            );
+          }
+          return !filterFn();
         });
         if (notFindInputItem) {
           sel.unshift(

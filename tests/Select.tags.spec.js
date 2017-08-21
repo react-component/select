@@ -92,4 +92,23 @@ describe('Select.tags', () => {
 
     expect(wrapper).toMatchSnapshot();
   });
+
+  it('filterOption is false', () => {
+    const wrapper = mount(
+      <Select
+        tags
+        filterOption={false}
+      >
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    const input = wrapper.find('input');
+    input.node.focus = jest.fn();
+    input
+      .simulate('change', { target: { value: 'a' } })
+      .simulate('keyDown', { keyCode: KeyCode.ENTER });
+
+    expect(wrapper.state().value).toEqual([{ key: 'a', label: 'a', title: undefined }]);
+  });
 });
