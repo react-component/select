@@ -16082,6 +16082,7 @@ var _initialiseProps = function _initialiseProps() {
         _this2.state.inputValue = _this2.getInputDOMNode().value = '';
       }
       props.onBlur(_this2.getVLForOnChange(value));
+      _this2.setOpenState(false);
     }, 10);
   };
 
@@ -16595,9 +16596,17 @@ var _initialiseProps = function _initialiseProps() {
       }));
       if (inputValue) {
         var notFindInputItem = sel.every(function (option) {
-          return !_this2.filterOption.call(_this2, inputValue, option, function () {
+          // this.filterOption return true has two meaning,
+          // 1, some one exists after filtering
+          // 2, filterOption is set to false
+          // condition 2 does not mean the option has same value with inputValue
+          var filterFn = function filterFn() {
             return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__util__["i" /* getValuePropValue */])(option) === inputValue;
-          });
+          };
+          if (_this2.props.filterOption !== false) {
+            return !_this2.filterOption.call(_this2, inputValue, option, filterFn);
+          }
+          return !filterFn();
         });
         if (notFindInputItem) {
           sel.unshift(__WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(
@@ -16753,12 +16762,9 @@ var _initialiseProps = function _initialiseProps() {
     }
     return __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(
       'div',
-      {
-        className: className,
-        ref: function ref(node) {
+      { className: className, ref: function ref(node) {
           return _this2.topCtrlNode = node;
-        }
-      },
+        } },
       _this2.getPlaceholderElement(),
       innerNode
     );
