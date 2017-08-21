@@ -1,4 +1,3 @@
-import { ItemGroup as MenuItemGroup } from 'rc-menu';
 import React from 'react';
 
 export function getValuePropValue(child) {
@@ -9,7 +8,12 @@ export function getValuePropValue(child) {
   if (child.key) {
     return child.key;
   }
-  throw new Error(`no key or value for ${child}`);
+  if (child.type && child.type.isSelectOptGroup && props.label) {
+    return props.label;
+  }
+  throw new Error(
+    `Need at least a key or a value or a label (only for OptGroup) for ${child}`
+  );
 }
 
 export function getPropValue(child, prop) {
@@ -60,14 +64,27 @@ export function findIndexInValueByKey(value, key) {
   return index;
 }
 
+export function findIndexInValueByLabel(value, label) {
+  let index = -1;
+  for (let i = 0; i < value.length; i++) {
+    if (toArray(value[i].label).join('') === label) {
+      index = i;
+      break;
+    }
+  }
+  return index;
+}
+
 export function getSelectKeys(menuItems, value) {
   if (value === null || value === undefined) {
     return [];
   }
   let selectedKeys = [];
-  React.Children.forEach(menuItems, (item) => {
-    if (item.type === MenuItemGroup) {
-      selectedKeys = selectedKeys.concat(getSelectKeys(item.props.children, value));
+  React.Children.forEach(menuItems, item => {
+    if (item.type.isMenuItemGroup) {
+      selectedKeys = selectedKeys.concat(
+        getSelectKeys(item.props.children, value)
+      );
     } else {
       const itemValue = getValuePropValue(item);
       const itemKey = item.key;
@@ -78,7 +95,6 @@ export function getSelectKeys(menuItems, value) {
   });
   return selectedKeys;
 }
-
 
 export const UNSELECTABLE_STYLE = {
   userSelect: 'none',
@@ -92,7 +108,7 @@ export const UNSELECTABLE_ATTRIBUTE = {
 export function findFirstMenuItem(children) {
   for (let i = 0; i < children.length; i++) {
     const child = children[i];
-    if (child.type === MenuItemGroup) {
+    if (child.type.isMenuItemGroup) {
       const found = findFirstMenuItem(child.props.children);
       if (found) {
         return found;
@@ -102,4 +118,31 @@ export function findFirstMenuItem(children) {
     }
   }
   return null;
+}
+
+export function includesSeparators(string, separators) {
+  for (let i = 0; i < separators.length; ++i) {
+    if (string.lastIndexOf(separators[i]) > 0) {
+      return true;
+    }
+  }
+  return false;
+}
+
+export function splitBySeparators(string, separators) {
+  const reg = new RegExp(`[${separators.join()}]`);
+  const array = string.split(reg);
+  while (array[0] === '') {
+    array.shift();
+  }
+  while (array[array.length - 1] === '') {
+    array.pop();
+  }
+  return array;
+}
+
+export function defaultFilterFn(input, child) {
+  return (
+    String(getPropValue(child, this.props.optionFilterProp)).indexOf(input) > -1
+  );
 }

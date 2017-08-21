@@ -5,15 +5,13 @@ import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.less';
 import ReactDOM from 'react-dom';
 
-const Test = React.createClass({
-  getInitialState() {
-    return {
-      destroy: false,
-      value: String(9),
-    };
-  },
+class Test extends React.Component {
+  state = {
+    destroy: false,
+    value: String(9),
+  };
 
-  onChange(e) {
+  onChange = (e) => {
     let value;
     if (e && e.target) {
       value = e.target.value;
@@ -24,17 +22,21 @@ const Test = React.createClass({
     this.setState({
       value,
     });
-  },
+  };
 
-  onDestroy() {
+  onDestroy = () => {
     this.setState({
       destroy: 1,
     });
-  },
+  };
 
-  onBlur(v) {
+  onBlur = (v) => {
     console.log('onBlur', v);
-  },
+  };
+
+  onFocus = () => {
+    console.log('onFocus');
+  };
 
   render() {
     if (this.state.destroy) {
@@ -53,12 +55,14 @@ const Test = React.createClass({
             dropdownMenuStyle={{ maxHeight: 200, overflow: 'auto' }}
             style={{ width: 500 }}
             onBlur={this.onBlur}
+            onFocus={this.onFocus}
             allowClear
             optionLabelProp="children"
             optionFilterProp="text"
             onChange={this.onChange}
+            firstActiveValue="2"
           >
-            <Option value="01" text="jack">
+            <Option value="01" text="jack" title="jack">
               <b
                 style={{
                   color: 'red',
@@ -96,7 +100,7 @@ const Test = React.createClass({
         </p>
       </div>
     );
-  },
-});
+  }
+}
 
 ReactDOM.render(<Test />, document.getElementById('__react-content'));

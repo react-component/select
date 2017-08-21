@@ -1,5 +1,16 @@
 # History
 ----
+## 6.8.0 / 2017-03-24
+
+- support allowClear in multiple/tags mode
+
+## 6.7.0 / 2017-01-03
+
+- support getInputElement https://github.com/react-component/select/pull/145
+
+## 6.6.0 / 2016-11-01
+
+- add tokenSeparators for multiple and tag mode
 
 ## 6.4.0 / 2016-05-26
 

@@ -5,9 +5,10 @@ sudo: false
 notifications:
   email:
   - yiminghe@gmail.com
+  - yesmeck@gmail.com
 
 node_js:
-- 4.0.0
+- node
 
 before_install:
 - |

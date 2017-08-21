@@ -25,3 +25,6 @@ assets/**/*.css
 build
 lib
 coverage
+.vscode
+yarn.lock
+es/

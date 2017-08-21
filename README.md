@@ -73,6 +73,7 @@ React.render(c, container);
 |dropdownAlign | additional align applied to dropdown | Object | {} |
 |dropdownMenuStyle | additional style applied to dropdown menu | Object | {} |
 |notFoundContent | specify content to show when no result matches. | String | 'Not Found' |
+|tokenSeparators | separator used to tokenize on tag/multiple mode | string[]? |  |
 |placeholder | select placeholder | React Node | |
 |showSearch | whether show search input in single mode | bool | true |
 |showArrow | whether show arrow in single mode | bool | true |
@@ -87,13 +88,17 @@ React.render(c, container);
 |optionLabelProp | which prop value of option will render as content of select | String | 'value' |
 |defaultValue | initial selected option(s) | String/Array<String> | - |
 |value | current selected option(s) | String/Array<String>/{key:String, label:React.Node}/Array<{key, label}> | - |
+|firstActiveValue | first active value when there is no value | String/Array<String> | - |
 |labelInValue| whether to embed label in value, see above value type | Bool | false |
 |onChange | called when select an option or input value change(combobox) | function(value) | - |
 |onSearch | called when input changed | function | - |
+|onBlur | called when blur | function | - |
+|onFocus | called when focus | function | - |
 |onSelect | called when a option is selected. param is option's value and option instance | Function(value, option:Option) | - |
 |onDeselect | called when a option is deselected. param is option's value. only called for multiple or tags | Function(value) | - |
 |defaultActiveFirstOption | whether active first option by default | bool | true |
 |getPopupContainer | container which popup select menu rendered into | function(trigger:Node):Node | function(){return document.body;} |
+|getInputElement| customize input element | function(): Element | - |
 
 ### Option props
 
@@ -103,6 +108,7 @@ React.render(c, container);
 |disabled | no effect for click or keydown for this item | bool | false |
 |key | if react want you to set key, then key is same as value, you can omit value | String | - |
 |value | default filter by this attribute. if react want you to set key, then key is same as value, you can omit value | String | - |
+|title | if you are not satisfied with auto-generated `title` which is show while hovering on selected value, you can customize it with this property | String | - |
 
 
 ### OptGroup props
@@ -129,11 +135,16 @@ online example: http://react-component.github.io/select/examples/
 
 ## Test Case
 
-http://localhost:8003/tests/runner.html?coverage
+```
+npm test
+```
 
 ## Coverage
 
-http://localhost:8003/node_modules/rc-server/node_modules/node-jscover/lib/front-end/jscoverage.html?w=http://localhost:8003/tests/runner.html?coverage
+```
+npm run coverage
+```
+
 
 ## License
 

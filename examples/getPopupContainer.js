@@ -5,32 +5,36 @@ import 'rc-select/assets/index.less';
 import Dialog from 'rc-dialog';
 import 'rc-dialog/assets/index.css';
 
-const Test = React.createClass({
-  getInitialState() {
-    return {
-      open: false,
-      destroy: false,
-    };
-  },
-  getPopupContainer(node) {
+class Test extends React.Component {
+  state = {
+    open: false,
+    destroy: false,
+  };
+
+  getPopupContainer = (node) => {
     return node.parentNode;
-  },
-  setVisible(open) {
+  };
+
+  setVisible = (open) => {
     this.setState({
       open,
     });
-  },
-  open() {
+  };
+
+  open = () => {
     this.setVisible(true);
-  },
-  close() {
+  };
+
+  close = () => {
     this.setVisible(false);
-  },
-  destroy() {
+  };
+
+  destroy = () => {
     this.setState({
       destroy: true,
     });
-  },
+  };
+
   render() {
     if (this.state.destroy) {
       return null;
@@ -52,7 +56,7 @@ const Test = React.createClass({
           </Select>
         </div>
       </Dialog></div>);
-  },
-});
+  }
+}
 
 ReactDOM.render(<Test />, document.getElementById('__react-content'));

@@ -6,32 +6,32 @@ import 'rc-select/assets/index.less';
 import { fetch } from './common/tbFetchSuggest';
 import ReactDOM from 'react-dom';
 
-const Search = React.createClass({
-  getInitialState() {
-    return {
-      data: [],
-      value: '',
-    };
-  },
+const Input = (props) => <input {...props} />;
 
-  onKeyDown(e) {
+class Search extends React.Component {
+  state = {
+    data: [],
+    value: '',
+  };
+
+  onKeyDown = (e) => {
     if (e.keyCode === 13) {
       console.log('onEnter', this.state.value);
       this.jump(this.state.value);
     }
-  },
+  };
 
-  onSelect(value) {
+  onSelect = (value) => {
     console.log('select ', value);
     this.jump(value);
-  },
+  };
 
-  jump(v) {
+  jump = (v) => {
     console.log('jump ', v);
     // location.href = 'https://s.taobao.com/search?q=' + encodeURIComponent(v);
-  },
+  };
 
-  fetchData(value) {
+  fetchData = (value) => {
     this.setState({
       value,
     });
@@ -40,7 +40,7 @@ const Search = React.createClass({
         data,
       });
     });
-  },
+  };
 
   render() {
     const data = this.state.data;
@@ -57,6 +57,7 @@ const Search = React.createClass({
           value={this.state.value}
           placeholder="placeholder"
           defaultActiveFirstOption={false}
+          getInputElement={() => <Input />}
           showArrow={false}
           notFoundContent=""
           onChange={this.fetchData}
@@ -67,7 +68,7 @@ const Search = React.createClass({
         </Select>
       </div>
     </div>);
-  },
-});
+  }
+}
 
 ReactDOM.render(<Search />, document.getElementById('__react-content'));
