@@ -90,6 +90,7 @@ React.render(c, container);
 |value | current selected option(s) | String/Array<String>/{key:String, label:React.Node}/Array<{key, label}> | - |
 |firstActiveValue | first active value when there is no value | String/Array<String> | - |
 |labelInValue| whether to embed label in value, see above value type | Bool | false |
+|backfill| whether backfill select option to search input (Only works in single and combobox mode) | Bool | false |
 |onChange | called when select an option or input value change(combobox) | function(value) | - |
 |onSearch | called when input changed | function | - |
 |onBlur | called when blur | function | - |
