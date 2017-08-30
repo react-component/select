@@ -31,7 +31,7 @@ function valueType(props, propName, componentName) {
       PropTypes.arrayOf(PropTypes.string),
       PropTypes.arrayOf(PropTypes.number),
       PropTypes.string,
-      PropTypes.number
+      PropTypes.number,
     ]);
     return validate(...arguments);
   }
