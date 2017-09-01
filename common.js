@@ -15444,7 +15444,8 @@ var DropdownMenu = function (_React$Component) {
         }
 
         // clear activeKey when inputValue change
-        if (inputValue !== this.lastInputValue) {
+        var lastValue = value && value[value.length - 1];
+        if (inputValue !== this.lastInputValue && (!lastValue || !lastValue.backfill)) {
           activeKeyProps.activeKey = '';
         }
 
@@ -15856,7 +15857,8 @@ Select.defaultProps = {
   dropdownMenuStyle: {},
   optionFilterProp: 'value',
   optionLabelProp: 'value',
-  notFoundContent: 'Not Found'
+  notFoundContent: 'Not Found',
+  backfill: false
 };
 
 var _initialiseProps = function _initialiseProps() {
@@ -15958,7 +15960,7 @@ var _initialiseProps = function _initialiseProps() {
 
     if (state.open) {
       var menu = _this2.refs.trigger.getInnerMenu();
-      if (menu && menu.onKeyDown(event)) {
+      if (menu && menu.onKeyDown(event, _this2.handleBackfill)) {
         event.preventDefault();
         event.stopPropagation();
       }
@@ -15972,6 +15974,7 @@ var _initialiseProps = function _initialiseProps() {
     var props = _this2.props;
     var selectedValue = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__util__["i" /* getValuePropValue */])(item);
     var selectedLabel = _this2.getLabelFromOption(item);
+    var lastValue = value[value.length - 1];
     var event = selectedValue;
     if (props.labelInValue) {
       event = {
@@ -15998,7 +16001,7 @@ var _initialiseProps = function _initialiseProps() {
           _this2.skipAdjustOpen = false;
         }, 0);
       }
-      if (value.length && value[0].key === selectedValue) {
+      if (lastValue && lastValue.key === selectedValue && !lastValue.backfill) {
         _this2.setOpenState(false, true);
         return;
       }
@@ -16313,10 +16316,34 @@ var _initialiseProps = function _initialiseProps() {
     }
   };
 
+  this.handleBackfill = function (item) {
+    if (!_this2.props.backfill || !(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__util__["l" /* isSingleMode */])(_this2.props) || __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__util__["d" /* isCombobox */])(_this2.props))) {
+      return;
+    }
+
+    var key = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__util__["i" /* getValuePropValue */])(item);
+    var label = _this2.getLabelFromOption(item);
+    var backfillValue = {
+      key: key,
+      label: label,
+      backfill: true
+    };
+
+    if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__util__["d" /* isCombobox */])(_this2.props)) {
+      _this2.setInputValue(key, false);
+    }
+
+    _this2.setState({
+      value: [backfillValue]
+    });
+  };
+
   this.filterOption = function (input, child) {
     var defaultFilter = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : __WEBPACK_IMPORTED_MODULE_12__util__["n" /* defaultFilterFn */];
+    var value = _this2.state.value;
 
-    if (!input) {
+    var lastValue = value[value.length - 1];
+    if (!input || lastValue && lastValue.backfill) {
       return true;
     }
     var filterFn = _this2.props.filterOption;

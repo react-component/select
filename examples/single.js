@@ -102,7 +102,8 @@ var Test = function (_React$Component) {
               optionLabelProp: 'children',
               optionFilterProp: 'text',
               onChange: this.onChange,
-              firstActiveValue: '2'
+              firstActiveValue: '2',
+              backfill: true
             },
             __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
               __WEBPACK_IMPORTED_MODULE_5_rc_select__["Option"],
