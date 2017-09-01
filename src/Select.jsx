@@ -407,6 +407,9 @@ export default class Select extends React.Component {
     }
     let label = null;
     React.Children.forEach(children, child => {
+      if (!child) {
+        return;
+      }
       if (child.type.isSelectOptGroup) {
         const maybe = this.getLabelBySingleValue(child.props.children, value);
         if (maybe !== null) {
@@ -425,6 +428,9 @@ export default class Select extends React.Component {
     }
     let value = null;
     React.Children.forEach(children, child => {
+      if (!child) {
+        return;
+      }
       if (child.type.isSelectOptGroup) {
         const maybe = this.getValueByLabel(child.props.children, label);
         if (maybe !== null) {
@@ -718,6 +724,9 @@ export default class Select extends React.Component {
     let nextValues = values;
     const keys = values.map(v => v.key);
     React.Children.forEach(props.children, child => {
+      if (!child) {
+        return;
+      }
       if (child.type.isSelectOptGroup) {
         nextValues = this.addTitleToValue(child.props, nextValues);
       } else {
@@ -843,6 +852,9 @@ export default class Select extends React.Component {
     const childrenKeys = [];
     const tags = props.tags;
     React.Children.forEach(children, child => {
+      if (!child) {
+        return;
+      }
       if (child.type.isSelectOptGroup) {
         const innerItems = this.renderFilterOptionsFromChildren(
           child.props.children,
