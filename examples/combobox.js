@@ -48,7 +48,7 @@ var Demo = function (_React$Component) {
 
     return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = Demo.__proto__ || Object.getPrototypeOf(Demo)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
       disabled: false,
-      value: ''
+      value: 'l'
     }, _this.onChange = function (value) {
       _this.setState({
         value: value
@@ -96,12 +96,12 @@ var Demo = function (_React$Component) {
               style: { width: 500 },
               onChange: this.onChange,
               onSelect: this.onSelect,
+              defaultActiveFirstOption: false,
               notFoundContent: '',
               allowClear: true,
               placeholder: 'please select',
               value: this.state.value,
-              combobox: true,
-              backfill: true
+              combobox: true
             },
             __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
               __WEBPACK_IMPORTED_MODULE_6_rc_select__["Option"],
@@ -140,7 +140,7 @@ __WEBPACK_IMPORTED_MODULE_5_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ }),
 
-/***/ 365:
+/***/ 364:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(163);
@@ -148,5 +148,5 @@ module.exports = __webpack_require__(163);
 
 /***/ })
 
-},[365]);
+},[364]);
 //# sourceMappingURL=combobox.js.map
