@@ -189,6 +189,19 @@ describe('Select', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
+  it('should contian falsy children', () => {
+    const wrapper = render(
+      <Select value="1">
+        <Option value="1">1</Option>
+        {null}
+        <Option value="2">2</Option>
+        {false}
+      </Select>
+    );
+
+    expect(wrapper).toMatchSnapshot();
+  });
+
   it('open dropdown on down key press', () => {
     const wrapper = mount(
       <Select value="1">
