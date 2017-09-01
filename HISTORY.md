@@ -1,5 +1,10 @@
 # History
 ----
+
+## 6.9.0 / 2017-09-01
+
+- add backfill in single/combobox mode
+
 ## 6.8.0 / 2017-03-24
 
 - support allowClear in multiple/tags mode
