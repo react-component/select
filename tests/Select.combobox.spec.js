@@ -2,6 +2,7 @@
 import React from 'react';
 import Select, { Option } from '../src';
 import { mount, render } from 'enzyme';
+import KeyCode from 'rc-util/lib/KeyCode';
 import allowClearTest from './shared/allowClearTest';
 
 const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
@@ -194,5 +195,48 @@ describe('Select.combobox', () => {
         });
       });
     });
+  });
+
+  it('backfill', () => {
+    const handleChange = jest.fn();
+    const handleSelect = jest.fn();
+    const wrapper = mount(
+      <Select
+        combobox
+        backfill
+        open
+        onChange={handleChange}
+        onSelect={handleSelect}
+      >
+        <Option value="One">One</Option>
+        <Option value="Two">Two</Option>
+      </Select>
+    );
+
+    const input = wrapper.find('input');
+
+    input.simulate('keyDown', { keyCode: KeyCode.DOWN });
+
+    expect(wrapper.state().value).toEqual([
+      {
+        key: 'Two',
+        label: 'Two',
+        backfill: true,
+      },
+    ]);
+    expect(wrapper.state().inputValue).toBe('Two');
+    expect(handleChange).not.toBeCalled();
+    expect(handleSelect).not.toBeCalled();
+
+    input.simulate('keyDown', { keyCode: KeyCode.ENTER });
+
+    expect(wrapper.state().value).toEqual([
+      {
+        key: 'Two',
+        label: 'Two',
+      },
+    ]);
+    expect(handleChange).toBeCalledWith('Two');
+    expect(handleSelect).toBeCalledWith('Two', expect.anything());
   });
 });

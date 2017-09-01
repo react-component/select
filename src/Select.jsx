@@ -68,6 +68,7 @@ export default class Select extends React.Component {
     optionFilterProp: 'value',
     optionLabelProp: 'value',
     notFoundContent: 'Not Found',
+    backfill: false,
   };
 
   constructor(props) {
@@ -237,7 +238,7 @@ export default class Select extends React.Component {
 
     if (state.open) {
       const menu = this.refs.trigger.getInnerMenu();
-      if (menu && menu.onKeyDown(event)) {
+      if (menu && menu.onKeyDown(event, this.handleBackfill)) {
         event.preventDefault();
         event.stopPropagation();
       }
@@ -249,6 +250,7 @@ export default class Select extends React.Component {
     const props = this.props;
     const selectedValue = getValuePropValue(item);
     const selectedLabel = this.getLabelFromOption(item);
+    const lastValue = value[value.length - 1];
     let event = selectedValue;
     if (props.labelInValue) {
       event = {
@@ -277,7 +279,7 @@ export default class Select extends React.Component {
           this.skipAdjustOpen = false;
         }, 0);
       }
-      if (value.length && value[0].key === selectedValue) {
+      if (lastValue && lastValue.key === selectedValue && !lastValue.backfill) {
         this.setOpenState(false, true);
         return;
       }
@@ -589,8 +591,32 @@ export default class Select extends React.Component {
     }
   };
 
+  handleBackfill = (item) => {
+    if (!this.props.backfill || !(isSingleMode(this.props) || isCombobox(this.props))) {
+      return;
+    }
+
+    const key = getValuePropValue(item);
+    const label = this.getLabelFromOption(item);
+    const backfillValue = {
+      key,
+      label,
+      backfill: true,
+    };
+
+    if (isCombobox(this.props)) {
+      this.setInputValue(key, false);
+    }
+
+    this.setState({
+      value: [backfillValue],
+    });
+  };
+
   filterOption = (input, child, defaultFilter = defaultFilterFn) => {
-    if (!input) {
+    const { value } = this.state;
+    const lastValue = value[value.length - 1];
+    if (!input || (lastValue && lastValue.backfill)) {
       return true;
     }
     let filterFn = this.props.filterOption;

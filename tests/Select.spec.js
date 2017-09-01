@@ -630,4 +630,46 @@ describe('Select', () => {
 
     expect(wrapper).toMatchSnapshot();
   });
+
+  it('backfill', () => {
+    const handleChange = jest.fn();
+    const handleSelect = jest.fn();
+    const wrapper = mount(
+      <Select
+        backfill
+        open
+        onChange={handleChange}
+        onSelect={handleSelect}
+        optionLabelProp="children"
+      >
+        <Option value="1">One</Option>
+        <Option value="2">Two</Option>
+      </Select>
+    );
+
+    const input = wrapper.find('input');
+
+    input.simulate('keyDown', { keyCode: KeyCode.DOWN });
+
+    expect(wrapper.state().value).toEqual([
+      {
+        key: '2',
+        label: 'Two',
+        backfill: true,
+      },
+    ]);
+    expect(handleChange).not.toBeCalled();
+    expect(handleSelect).not.toBeCalled();
+
+    input.simulate('keyDown', { keyCode: KeyCode.ENTER });
+
+    expect(wrapper.state().value).toEqual([
+      {
+        key: '2',
+        label: 'Two',
+      },
+    ]);
+    expect(handleChange).toBeCalledWith('2');
+    expect(handleSelect).toBeCalledWith('2', expect.anything());
+  });
 });
