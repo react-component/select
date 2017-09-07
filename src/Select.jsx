@@ -29,10 +29,6 @@ import warning from 'warning';
 
 function noop() {}
 
-function saveRef(name, component) {
-  this[name] = component;
-}
-
 function chaining(...fns) {
   return function (...args) {
     // eslint-disable-line
@@ -87,8 +83,7 @@ export default class Select extends React.Component {
         ? this.getLabelFromProps(props, value[0].key)
         : '';
     }
-    this.saveInputRef = saveRef.bind(this, 'inputInstance');
-    this.saveInputMirrorRef = saveRef.bind(this, 'inputMirrorInstance');
+
     let open = props.open;
     if (open === undefined) {
       open = props.defaultOpen;
@@ -237,7 +232,7 @@ export default class Select extends React.Component {
     }
 
     if (state.open) {
-      const menu = this.refs.trigger.getInnerMenu();
+      const menu = this.selectTrigger.getInnerMenu();
       if (menu && menu.onKeyDown(event, this.handleBackfill)) {
         event.preventDefault();
         event.stopPropagation();
@@ -398,7 +393,7 @@ export default class Select extends React.Component {
   };
 
   onChoiceAnimationLeave = () => {
-    this.refs.trigger.refs.trigger.forcePopupAlign();
+    this.selectTrigger.trigger.forcePopupAlign();
   };
 
   getLabelBySingleValue = (children, value) => {
@@ -525,7 +520,7 @@ export default class Select extends React.Component {
     return (
       <div className={`${props.prefixCls}-search__field__wrap`}>
         {React.cloneElement(inputElement, {
-          ref: this.saveInputRef,
+          ref: this.saveRef('inputInstance'),
           onChange: this.onInputChange,
           onKeyDown: chaining(
             this.onInputKeyDown,
@@ -536,7 +531,7 @@ export default class Select extends React.Component {
           className: inputCls,
         })}
         <span
-          ref={this.saveInputMirrorRef}
+          ref={this.saveRef('inputMirrorInstance')}
           className={`${props.prefixCls}-search__field__mirror`}
         >
           {this.state.inputValue}&nbsp;
@@ -556,11 +551,11 @@ export default class Select extends React.Component {
   };
 
   getPopupDOMNode = () => {
-    return this.refs.trigger.getPopupDOMNode();
+    return this.selectTrigger.getPopupDOMNode();
   };
 
   getPopupMenuComponent = () => {
-    return this.refs.trigger.getInnerMenu();
+    return this.selectTrigger.getInnerMenu();
   };
 
   setOpenState = (open, needFocus) => {
@@ -675,12 +670,12 @@ export default class Select extends React.Component {
   };
 
   updateFocusClassName = () => {
-    const { refs, props } = this;
+    const { root, props } = this;
     // avoid setState and its side effect
     if (this._focused) {
-      classes(refs.root).add(`${props.prefixCls}-focused`);
+      classes(root).add(`${props.prefixCls}-focused`);
     } else {
-      classes(refs.root).remove(`${props.prefixCls}-focused`);
+      classes(root).remove(`${props.prefixCls}-focused`);
     }
   };
 
@@ -694,7 +689,7 @@ export default class Select extends React.Component {
           this._focused = true;
         }
       } else {
-        const selection = this.refs.selection;
+        const selection = this.selection;
         if (activeElement !== selection) {
           selection.focus();
           this._focused = true;
@@ -836,6 +831,10 @@ export default class Select extends React.Component {
     }
     this.state.open = open;
   };
+
+  saveRef = name => node => {
+    this[name] = node;
+  }
 
   renderFilterOptions = inputValue => {
     return this.renderFilterOptionsFromChildren(
@@ -1099,7 +1098,7 @@ export default class Select extends React.Component {
       }
     }
     return (
-      <div className={className} ref={node => (this.topCtrlNode = node)}>
+      <div className={className} ref={this.saveRef('topCtrlNode')}>
         {this.getPlaceholderElement()}
         {innerNode}
       </div>
@@ -1173,17 +1172,17 @@ export default class Select extends React.Component {
         getPopupContainer={props.getPopupContainer}
         onMenuSelect={this.onMenuSelect}
         onMenuDeselect={this.onMenuDeselect}
-        ref="trigger"
+        ref={this.saveRef('selectTrigger')}
       >
         <div
           style={props.style}
-          ref="root"
+          ref={this.saveRef('root')}
           onBlur={this.onOuterBlur}
           onFocus={this.onOuterFocus}
           className={classnames(rootCls)}
         >
           <div
-            ref="selection"
+            ref={this.saveRef('selection')}
             key="selection"
             className={`${prefixCls}-selection
             ${prefixCls}-selection--${multiple ? 'multiple' : 'single'}`}

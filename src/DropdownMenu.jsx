@@ -65,11 +65,15 @@ export default class DropdownMenu extends React.Component {
 
       scrollIntoView(
         itemComponent,
-        findDOMNode(this.refs.menu),
+        findDOMNode(this.menu),
         scrollIntoViewOpts
       );
     }
   };
+
+  saveMenu = (node) => {
+    this.menu = node;
+  }
 
   renderMenu() {
     const props = this.props;
@@ -137,7 +141,7 @@ export default class DropdownMenu extends React.Component {
 
       return (
         <Menu
-          ref="menu"
+          ref={this.saveMenu}
           style={this.props.dropdownMenuStyle}
           defaultActiveFirst={defaultActiveFirstOption}
           {...activeKeyProps}

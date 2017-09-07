@@ -58,18 +58,18 @@ export default class SelectTrigger extends React.Component {
   }
 
   getInnerMenu = () => {
-    return this.popupMenu && this.popupMenu.refs.menu;
+    return this.popupMenu && this.popupMenu.menu;
   };
 
   getPopupDOMNode = () => {
-    return this.refs.trigger.getPopupDomNode();
+    return this.trigger.getPopupDomNode();
   };
 
   getDropdownElement = newProps => {
     const props = this.props;
     return (
       <DropdownMenu
-        ref={this.saveMenu}
+        ref={this.saveRef('popupMenu')}
         {...newProps}
         prefixCls={this.getDropdownPrefixCls()}
         onMenuSelect={props.onMenuSelect}
@@ -95,9 +95,9 @@ export default class SelectTrigger extends React.Component {
     return `${this.props.prefixCls}-dropdown`;
   };
 
-  saveMenu = menu => {
-    this.popupMenu = menu;
-  };
+  saveRef = name => node => {
+    this[name] = node;
+  }
 
   render() {
     const { onPopupFocus, ...props } = this.props;
@@ -135,7 +135,7 @@ export default class SelectTrigger extends React.Component {
         {...props}
         showAction={disabled ? [] : ['click']}
         hideAction={hideAction}
-        ref="trigger"
+        ref={this.saveRef('trigger')}
         popupPlacement="bottomLeft"
         builtinPlacements={BUILT_IN_PLACEMENTS}
         prefixCls={dropdownPrefixCls}
