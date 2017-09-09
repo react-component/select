@@ -34,7 +34,7 @@ function saveRef(name, component) {
 }
 
 function chaining(...fns) {
-  return function (...args) {
+  return function (...args) { // eslint-disable-line
     // eslint-disable-line
     for (let i = 0; i < fns.length; i++) {
       if (fns[i] && typeof fns[i] === 'function') {
@@ -1104,13 +1104,41 @@ export default class Select extends React.Component {
         {innerNode}
       </div>
     );
-  };
+  }
+
+  renderClear() {
+    const { prefixCls, allowClear } = this.props;
+    const { value, inputValue } = this.state;
+    const clear = (
+      <span
+        key="clear"
+        onMouseDown={preventDefaultEvent}
+        style={UNSELECTABLE_STYLE}
+        {...UNSELECTABLE_ATTRIBUTE}
+        className={`${prefixCls}-selection__clear`}
+        onClick={this.onClearSelection}
+      />
+    );
+    if (!allowClear) {
+      return null;
+    }
+    if (isCombobox(this.props)) {
+      if (inputValue) {
+        return clear;
+      }
+      return null;
+    }
+    if (inputValue || value.length) {
+      return clear;
+    }
+    return null;
+  }
 
   render() {
     const props = this.props;
     const multiple = isMultipleOrTags(props);
     const state = this.state;
-    const { className, disabled, allowClear, prefixCls } = props;
+    const { className, disabled, prefixCls } = props;
     const ctrlNode = this.renderTopControlNode();
     let extraSelectionProps = {};
     const { open } = this.state;
@@ -1131,23 +1159,6 @@ export default class Select extends React.Component {
       [`${prefixCls}-enabled`]: !disabled,
       [`${prefixCls}-allow-clear`]: !!props.allowClear,
     };
-    const clearStyle = {
-      ...UNSELECTABLE_STYLE,
-      display: 'none',
-    };
-    if (state.inputValue || state.value.length) {
-      clearStyle.display = 'block';
-    }
-    const clear = (
-      <span
-        key="clear"
-        onMouseDown={preventDefaultEvent}
-        style={clearStyle}
-        {...UNSELECTABLE_ATTRIBUTE}
-        className={`${prefixCls}-selection__clear`}
-        onClick={this.onClearSelection}
-      />
-    );
     return (
       <SelectTrigger
         onPopupFocus={this.onPopupFocus}
@@ -1194,7 +1205,7 @@ export default class Select extends React.Component {
             {...extraSelectionProps}
           >
             {ctrlNode}
-            {allowClear ? clear : null}
+            {this.renderClear()}
             {multiple || !props.showArrow ? null : (
               <span
                 key="arrow"
