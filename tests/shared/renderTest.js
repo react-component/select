@@ -21,6 +21,22 @@ export default function maxTagTextLengthTest(mode) {
       expect(wrapper).toMatchSnapshot();
     });
 
+    it('truncates tags by maxTagCount', () => {
+      const wrapper = render(
+        <Select
+          {...{ [mode]: true } }
+          value={['one', 'two', 'three']}
+          maxTagCount={2}
+        >
+          <Option value="one">One</Option>
+          <Option value="two">Two</Option>
+          <Option value="three">Three</Option>
+        </Select>
+      );
+
+      expect(wrapper).toMatchSnapshot();
+    });
+
     it('render animation', () => {
       const wrapper = shallow(
         <Select

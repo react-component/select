@@ -980,6 +980,8 @@ export default class Select extends React.Component {
       choiceTransitionName,
       prefixCls,
       maxTagTextLength,
+      maxTagCount,
+      maxTagPlaceholder,
       showSearch,
     } = props;
     const className = `${prefixCls}-selection__rendered`;
@@ -1036,11 +1038,11 @@ export default class Select extends React.Component {
     } else {
       let selectedValueNodes = [];
       let limitedCountValue = value;
-      let maxTagPlaceholder;
-      if (props.maxTagCount && value.length > props.maxTagCount) {
-        limitedCountValue = limitedCountValue.slice(0, props.maxTagCount);
-        const content = props.maxTagPlaceholder || `+ ${value.length - props.maxTagCount} ...`;
-        maxTagPlaceholder = (<li
+      let maxTagPlaceholderEl;
+      if (maxTagCount && value.length > maxTagCount) {
+        limitedCountValue = limitedCountValue.slice(0, maxTagCount);
+        const content = maxTagPlaceholder || `+ ${value.length - maxTagCount} ...`;
+        maxTagPlaceholderEl = (<li
           style={UNSELECTABLE_STYLE}
           {...UNSELECTABLE_ATTRIBUTE}
           onMouseDown={preventDefaultEvent}
@@ -1087,8 +1089,8 @@ export default class Select extends React.Component {
           );
         });
       }
-      if (maxTagPlaceholder) {
-        selectedValueNodes.push(maxTagPlaceholder);
+      if (maxTagPlaceholderEl) {
+        selectedValueNodes.push(maxTagPlaceholderEl);
       }
       selectedValueNodes.push(
         <li
