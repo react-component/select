@@ -516,7 +516,7 @@ export default class Select extends React.Component {
     const props = this.props;
     const inputElement = props.getInputElement
       ? props.getInputElement()
-      : <input id={props.id} />;
+      : <input id={props.id} autoComplete="off" />;
     const inputCls = classnames(inputElement.props.className, {
       [`${props.prefixCls}-search__field`]: true,
     });
