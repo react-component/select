@@ -26,6 +26,7 @@ exports[`Select.multiple allowClear renders correctly 1`] = `
               class="rc-select-search__field__wrap"
             >
               <input
+                autocomplete="off"
                 class="rc-select-search__field"
                 value=""
               />
@@ -102,6 +103,7 @@ exports[`Select.multiple render render animation 1`] = `
               className="rc-select-search__field__wrap"
             >
               <input
+                autoComplete="off"
                 className="rc-select-search__field"
                 onChange={[Function]}
                 onKeyDown={[Function]}
@@ -177,6 +179,7 @@ exports[`Select.multiple render truncates values by maxTagTextLength 1`] = `
               class="rc-select-search__field__wrap"
             >
               <input
+                autocomplete="off"
                 class="rc-select-search__field"
                 value=""
               />

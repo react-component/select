@@ -27,6 +27,7 @@ exports[`Select does not filter when filterOption value is false 1`] = `
             class="rc-select-search__field__wrap"
           >
             <input
+              autocomplete="off"
               class="rc-select-search__field"
               value=""
             />
@@ -111,6 +112,7 @@ exports[`Select filterOption could be true as described in default value 1`] = `
             class="rc-select-search__field__wrap"
           >
             <input
+              autocomplete="off"
               class="rc-select-search__field"
               value=""
             />
@@ -248,6 +250,7 @@ exports[`Select render renders correctly 1`] = `
             class="antd-search__field__wrap"
           >
             <input
+              autocomplete="off"
               class="antd-search__field"
               value=""
             />
@@ -317,6 +320,7 @@ exports[`Select render renders dropdown correctly 1`] = `
             class="antd-search__field__wrap"
           >
             <input
+              autocomplete="off"
               class="antd-search__field"
               value=""
             />
@@ -452,6 +456,7 @@ exports[`Select should contian falsy children 1`] = `
             class="rc-select-search__field__wrap"
           >
             <input
+              autocomplete="off"
               class="rc-select-search__field"
               value=""
             />
