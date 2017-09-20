@@ -685,4 +685,27 @@ describe('Select', () => {
     expect(handleChange).toBeCalledWith('2');
     expect(handleSelect).toBeCalledWith('2', expect.anything());
   });
+
+  describe('autoFocus', () => {
+    let wrapper;
+
+    beforeEach(() => {
+      wrapper = mount(
+        <Select
+          autoFocus
+          showSearch
+        >
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>
+      );
+      jest.useFakeTimers();
+      jest.runAllTimers();
+    });
+
+    it('set _focused to true', () => {
+      expect(wrapper.instance()._focused).toBe(true);
+      expect(wrapper.state().open).toBe(true);
+    });
+  });
 });

@@ -107,6 +107,7 @@ export default class Select extends React.Component {
     if (this.props.autoFocus) {
       setTimeout(() => {
         this.setState({ open: true });
+        this._focused = true;
         this.inputInstance.focus();
       }, 10);
     }

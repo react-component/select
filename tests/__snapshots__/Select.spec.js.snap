@@ -363,6 +363,7 @@ exports[`Select render renders dropdown correctly 1`] = `
           >
             <div
               class="antd-dropdown-menu-item-group-title"
+              title="manager"
             >
               manager
             </div>
@@ -398,6 +399,7 @@ exports[`Select render renders dropdown correctly 1`] = `
           >
             <div
               class="antd-dropdown-menu-item-group-title"
+              title="engineer"
             >
               engineer
             </div>
