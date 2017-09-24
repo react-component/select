@@ -15617,6 +15617,7 @@ Option.isSelectOption = true;
 
 
 
+/* eslint func-names: 0 */
 
 
 
@@ -16046,6 +16047,10 @@ var _initialiseProps = function _initialiseProps() {
   };
 
   this.onOuterFocus = function (e) {
+    if (_this2.props.disabled) {
+      e.preventDefault();
+      return;
+    }
     _this2.clearBlurTime();
     if (!__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__util__["c" /* isMultipleOrTagsOrCombobox */])(_this2.props) && e.target === _this2.getInputDOMNode()) {
       return;
@@ -16063,7 +16068,11 @@ var _initialiseProps = function _initialiseProps() {
     _this2.maybeFocus(true, true);
   };
 
-  this.onOuterBlur = function () {
+  this.onOuterBlur = function (e) {
+    if (_this2.props.disabled) {
+      e.preventDefault();
+      return;
+    }
     _this2.blurTimer = setTimeout(function () {
       _this2._focused = false;
       _this2.updateFocusClassName();
