@@ -323,7 +323,11 @@ export default class Select extends React.Component {
     }
   };
 
-  onOuterFocus = e => {
+  onOuterFocus = (e) => {
+    if (this.props.disabled) {
+      e.preventDefault();
+      return;
+    }
     this.clearBlurTime();
     if (
       !isMultipleOrTagsOrCombobox(this.props) &&
@@ -344,7 +348,11 @@ export default class Select extends React.Component {
     this.maybeFocus(true, true);
   };
 
-  onOuterBlur = () => {
+  onOuterBlur = (e) => {
+    if (this.props.disabled) {
+      e.preventDefault();
+      return;
+    }
     this.blurTimer = setTimeout(() => {
       this._focused = false;
       this.updateFocusClassName();

@@ -412,6 +412,28 @@ describe('Select', () => {
       jest.runAllTimers();
       expect(wrapper.state().open).toBe(false);
     });
+
+    // Fix https://github.com/ant-design/ant-design/issues/7720
+    it('should not trigger onFocus/onBlur when select is disabled', () => {
+      const onFocus = jest.fn();
+      const onBlur = jest.fn();
+      wrapper = mount(
+        <Select
+          onFocus={onFocus}
+          onBlur={onBlur}
+          disabled
+        >
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>
+      );
+      jest.useFakeTimers();
+      wrapper.find('.rc-select').simulate('focus');
+      wrapper.find('.rc-select').simulate('blur');
+      jest.runAllTimers();
+      expect(onFocus).not.toBeCalled();
+      expect(onBlur).not.toBeCalled();
+    });
   });
 
   describe('unmount', () => {
