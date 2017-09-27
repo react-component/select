@@ -22,6 +22,7 @@ import {
   splitBySeparators,
   findIndexInValueByLabel,
   defaultFilterFn,
+  validateOptionValue,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import { SelectPropTypes } from './PropTypes';
@@ -895,6 +896,9 @@ export default class Select extends React.Component {
       );
 
       const childValue = getValuePropValue(child);
+
+      validateOptionValue(childValue, this.props);
+
       if (this.filterOption(inputValue, child)) {
         sel.push(
           <MenuItem

@@ -7,6 +7,7 @@ import allowClearTest from './shared/allowClearTest';
 import blurTest from './shared/blurTest';
 import renderTest from './shared/renderTest';
 import removeSelectedTest from './shared/removeSelectedTest';
+import throwOptionValue from './shared/throwOptionValue';
 
 jest.unmock('react-dom');
 
@@ -15,6 +16,7 @@ describe('Select.tags', () => {
   blurTest('tags');
   renderTest('tags');
   removeSelectedTest('tags');
+  throwOptionValue('tags');
 
   it('allow user input tags', () => {
     const wrapper = mount(
