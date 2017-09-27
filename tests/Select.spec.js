@@ -707,4 +707,24 @@ describe('Select', () => {
     expect(handleChange).toBeCalledWith('2');
     expect(handleSelect).toBeCalledWith('2', expect.anything());
   });
+
+  it('allow non-string value', () => {
+    const handleChange = jest.fn();
+
+    const wrapper = mount(
+      <Select defaultValue={1} onChange={handleChange}>
+        <Option value={1}>1</Option>
+        <Option value={true}>2</Option>
+        <Option value={{ value: 3 }}>3</Option>
+      </Select>
+    );
+
+    wrapper.find('.rc-select').simulate('click');
+    wrapper.find('MenuItem').at(1).simulate('click');
+    expect(handleChange).toBeCalledWith(true);
+
+    wrapper.find('.rc-select').simulate('click');
+    wrapper.find('MenuItem').at(2).simulate('click');
+    expect(handleChange).toBeCalledWith({ value: 3 });
+  });
 });

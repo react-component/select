@@ -72,7 +72,7 @@ class Test extends React.Component {
                 jack
               </b>
             </Option>
-            <Option value="11" text="lucy">lucy</Option>
+            <Option value={{ id: 11 }} text="lucy">lucy</Option>
             <Option value="21" disabled text="disabled">disabled</Option>
             <Option value="31" text="yiminghe">yiminghe</Option>
             {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => {
