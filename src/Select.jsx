@@ -22,11 +22,13 @@ import {
   splitBySeparators,
   findIndexInValueByLabel,
   defaultFilterFn,
+  validateOptionValue,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import { SelectPropTypes } from './PropTypes';
 import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
 import warning from 'warning';
+import isEqual from 'lodash.isequal';
 
 function noop() {}
 
@@ -424,7 +426,7 @@ export default class Select extends React.Component {
         if (maybe !== null) {
           label = maybe;
         }
-      } else if (getValuePropValue(child) === value) {
+      } else if (isEqual(getValuePropValue(child), value)) {
         label = this.getLabelFromOption(child);
       }
     });
@@ -895,6 +897,9 @@ export default class Select extends React.Component {
       );
 
       const childValue = getValuePropValue(child);
+
+      validateOptionValue(childValue, this.props);
+
       if (this.filterOption(inputValue, child)) {
         sel.push(
           <MenuItem
@@ -1022,7 +1027,7 @@ export default class Select extends React.Component {
               opacity,
             }}
           >
-            {value[0].label}
+            {String(value[0].label)}
           </div>
         );
       }

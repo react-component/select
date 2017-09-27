@@ -23,6 +23,10 @@ export function getPropValue(child, prop) {
   return child.props[prop];
 }
 
+export function isMultiple(props) {
+  return props.multiple;
+}
+
 export function isCombobox(props) {
   return props.combobox;
 }
@@ -145,4 +149,16 @@ export function defaultFilterFn(input, child) {
   return (
     String(getPropValue(child, this.props.optionFilterProp)).indexOf(input) > -1
   );
+}
+
+export function validateOptionValue(value, props) {
+  if (isSingleMode(props) || isMultiple(props)) {
+    return;
+  }
+  if (typeof value !== 'string') {
+    throw new Error(
+      `Invalid \`value\` of type \`${typeof value}\` supplied to Option, ` +
+      `expected \`string\` when \`tags/combobox\` is \`true\`.`
+    );
+  }
 }

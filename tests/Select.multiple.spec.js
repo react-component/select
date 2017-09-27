@@ -85,4 +85,20 @@ describe('Select.multiple', () => {
       );
     }).not.toThrow();
   });
+
+  it('allow non-string value', () => {
+    const handleChange = jest.fn();
+
+    const wrapper = mount(
+      <Select multiple defaultValue={[1]} onChange={handleChange}>
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>
+    );
+
+    wrapper.find('.rc-select').simulate('click');
+    wrapper.find('MenuItem').at(1).simulate('click');
+
+    expect(handleChange).toBeCalledWith([1, 2]);
+  });
 });

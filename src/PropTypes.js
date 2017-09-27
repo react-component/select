@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 function valueType(props, propName, componentName) {
   const labelInValueShape = PropTypes.shape({
-    key: PropTypes.string.isRequired,
+    key: PropTypes.any.isRequired,
     label: PropTypes.string,
   });
   if (props.labelInValue) {
@@ -25,8 +25,8 @@ function valueType(props, propName, componentName) {
     );
   } else {
     const validate = PropTypes.oneOfType([
-      PropTypes.arrayOf(PropTypes.string),
-      PropTypes.string,
+      PropTypes.arrayOf(PropTypes.any),
+      PropTypes.any,
     ]);
     return validate(...arguments);
   }
