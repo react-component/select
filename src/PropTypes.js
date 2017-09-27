@@ -2,7 +2,10 @@ import PropTypes from 'prop-types';
 
 function valueType(props, propName, componentName) {
   const labelInValueShape = PropTypes.shape({
-    key: PropTypes.string.isRequired,
+    key: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]).isRequired,
     label: PropTypes.string,
   });
   if (props.labelInValue) {
@@ -15,18 +18,20 @@ function valueType(props, propName, componentName) {
       return new Error(
         `Invalid prop \`${propName}\` supplied to \`${componentName}\`, ` +
           `when you set \`labelInValue\` to \`true\`, \`${propName}\` should in ` +
-          `shape of \`{ key: string, label?: string }\`.`
+          `shape of \`{ key: string || number, label?: string }\`.`
       );
     }
   } else if (props.multiple && props[propName] === '') {
     return new Error(
-      `Invalid prop \`${propName}\` of type \`string\` supplied to \`${componentName}\`, ` +
+      `Invalid prop \`${propName}\` supplied to \`${componentName}\`, ` +
         `expected \`array\` when \`multiple\` is \`true\`.`
     );
   } else {
     const validate = PropTypes.oneOfType([
       PropTypes.arrayOf(PropTypes.string),
+      PropTypes.arrayOf(PropTypes.number),
       PropTypes.string,
+      PropTypes.number,
     ]);
     return validate(...arguments);
   }
