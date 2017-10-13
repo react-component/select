@@ -99,6 +99,7 @@ export default class Select extends React.Component {
       inputValue,
       open,
     };
+    this.isInputInComposition = false;
     this.adjustOpenState();
   }
 
@@ -153,6 +154,7 @@ export default class Select extends React.Component {
   onInputChange = event => {
     const { tokenSeparators } = this.props;
     const val = event.target.value;
+    const type = event.type;
     if (
       isMultipleOrTags(this.props) &&
       tokenSeparators &&
@@ -168,12 +170,24 @@ export default class Select extends React.Component {
     this.setState({
       open: true,
     });
+
     if (isCombobox(this.props)) {
-      this.fireChange([
-        {
-          key: val,
-        },
-      ]);
+      if (type === 'compositionend') {
+        this.isInputInComposition = false;
+        this.fireChange([
+          {
+            key: val,
+          },
+        ]);
+      } else if (type === 'change' && !this.isInputInComposition) {
+        this.fireChange([
+          {
+            key: val,
+          },
+        ]);
+      } else {
+        this.isInputInComposition = true;
+      }
     }
   };
 
@@ -540,6 +554,8 @@ export default class Select extends React.Component {
             this.onInputKeyDown,
             inputElement.props.onKeyDown
           ),
+          onCompositionStart: this.onInputChange,
+          onCompositionEnd: this.onInputChange,
           value: this.state.inputValue,
           disabled: props.disabled,
           className: inputCls,
