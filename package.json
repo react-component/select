@@ -54,7 +54,7 @@
     "coveralls": "^2.11.15",
     "enzyme": "^2.6.0",
     "enzyme-to-json": "^1.5.0",
-    "jest": "^19.0.2",
+    "jest": "^21.2.1",
     "jsonp": "^0.2.0",
     "pre-commit": "1.x",
     "querystring": "^0.2.0",

@@ -57,15 +57,16 @@ describe('Select.multiple', () => {
     const wrapper = mount(
       <Select
         multiple
+        onFocus={handleFocus}
       >
         <Option value="1">One</Option>
         <Option value="2">Two</Option>
       </Select>,
     );
-    wrapper.find('div').first().simulate('focus');
-    it('fires focus event', () => {
-      expect(handleFocus).toBeCalled();
-    });
+    jest.useFakeTimers();
+    wrapper.find('.rc-select').simulate('focus');
+    jest.runAllTimers();
+    expect(handleFocus).toBeCalled();
   });
 
   it('OptGroup without key', () => {

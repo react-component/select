@@ -12,7 +12,7 @@ exports[`Select does not filter when filterOption value is false 1`] = `
       aria-expanded="true"
       aria-haspopup="true"
       class="rc-select-selection
-                rc-select-selection--single"
+            rc-select-selection--single"
       role="combobox"
       tabindex="0"
     >
@@ -97,7 +97,7 @@ exports[`Select filterOption could be true as described in default value 1`] = `
       aria-expanded="true"
       aria-haspopup="true"
       class="rc-select-selection
-                rc-select-selection--single"
+            rc-select-selection--single"
       role="combobox"
       tabindex="0"
     >
@@ -182,7 +182,7 @@ exports[`Select no search 1`] = `
       aria-expanded="false"
       aria-haspopup="true"
       class="rc-select-selection
-                rc-select-selection--single"
+            rc-select-selection--single"
       role="combobox"
       tabindex="0"
     >
@@ -221,7 +221,7 @@ exports[`Select render renders correctly 1`] = `
       aria-expanded="false"
       aria-haspopup="true"
       class="antd-selection
-                antd-selection--single"
+            antd-selection--single"
       role="combobox"
       tabindex="0"
     >
@@ -291,7 +291,7 @@ exports[`Select render renders dropdown correctly 1`] = `
       aria-expanded="true"
       aria-haspopup="true"
       class="antd-selection
-                antd-selection--single"
+            antd-selection--single"
       role="combobox"
       tabindex="0"
     >
@@ -436,7 +436,7 @@ exports[`Select should contian falsy children 1`] = `
       aria-expanded="false"
       aria-haspopup="true"
       class="rc-select-selection
-                rc-select-selection--single"
+            rc-select-selection--single"
       role="combobox"
       tabindex="0"
     >

@@ -12,7 +12,7 @@ exports[`Select.tags allowClear renders correctly 1`] = `
       aria-expanded="false"
       aria-haspopup="true"
       class="rc-select-selection
-                rc-select-selection--multiple"
+            rc-select-selection--multiple"
       role="combobox"
     >
       <div
@@ -77,7 +77,7 @@ exports[`Select.tags render render animation 1`] = `
       aria-expanded={false}
       aria-haspopup="true"
       className="rc-select-selection
-                rc-select-selection--multiple"
+            rc-select-selection--multiple"
       role="combobox"
     >
       <div
@@ -135,7 +135,7 @@ exports[`Select.tags render truncates values by maxTagTextLength 1`] = `
       aria-expanded="false"
       aria-haspopup="true"
       class="rc-select-selection
-                rc-select-selection--multiple"
+            rc-select-selection--multiple"
       role="combobox"
     >
       <div
@@ -209,7 +209,7 @@ exports[`Select.tags renders search value when not found 1`] = `
       aria-expanded="true"
       aria-haspopup="true"
       class="rc-select-selection
-                rc-select-selection--multiple"
+            rc-select-selection--multiple"
       role="combobox"
     >
       <div
@@ -302,7 +302,7 @@ exports[`Select.tags renders unlisted item in value 1`] = `
       aria-expanded="true"
       aria-haspopup="true"
       class="rc-select-selection
-                rc-select-selection--multiple"
+            rc-select-selection--multiple"
       role="combobox"
     >
       <div
@@ -404,7 +404,7 @@ exports[`Select.tags use filterOption 1`] = `
       aria-expanded="true"
       aria-haspopup="true"
       class="rc-select-selection
-                rc-select-selection--multiple"
+            rc-select-selection--multiple"
       role="combobox"
     >
       <div

@@ -12,7 +12,7 @@ exports[`Select.combobox allowClear renders correctly 1`] = `
       aria-expanded="false"
       aria-haspopup="true"
       class="rc-select-selection
-                rc-select-selection--single"
+            rc-select-selection--single"
       role="combobox"
     >
       <div
@@ -68,7 +68,7 @@ exports[`Select.combobox renders correctly 1`] = `
       aria-expanded="false"
       aria-haspopup="true"
       class="rc-select-selection
-                rc-select-selection--single"
+            rc-select-selection--single"
       role="combobox"
     >
       <div
