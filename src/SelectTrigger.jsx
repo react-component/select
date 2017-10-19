@@ -58,12 +58,9 @@ export default class SelectTrigger extends React.Component {
   }
 
   setDropdownWidth = () => {
-    const { visible } = this.props;
-    if (visible) {
-      const width = ReactDOM.findDOMNode(this).offsetWidth;
-      if (width !== this.state.dropdownWidth) {
-        this.setState({ dropdownWidth: width });
-      }
+    const width = ReactDOM.findDOMNode(this).offsetWidth;
+    if (width !== this.state.dropdownWidth) {
+      this.setState({ dropdownWidth: width });
     }
   }
 
