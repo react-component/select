@@ -16784,13 +16784,9 @@ var SelectTrigger = function (_React$Component) {
     return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = SelectTrigger.__proto__ || Object.getPrototypeOf(SelectTrigger)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
       dropdownWidth: null
     }, _this.setDropdownWidth = function () {
-      var visible = _this.props.visible;
-
-      if (visible) {
-        var width = __WEBPACK_IMPORTED_MODULE_12_react_dom___default.a.findDOMNode(_this).offsetWidth;
-        if (width !== _this.state.dropdownWidth) {
-          _this.setState({ dropdownWidth: width });
-        }
+      var width = __WEBPACK_IMPORTED_MODULE_12_react_dom___default.a.findDOMNode(_this).offsetWidth;
+      if (width !== _this.state.dropdownWidth) {
+        _this.setState({ dropdownWidth: width });
       }
     }, _this.getInnerMenu = function () {
       return _this.popupMenu && _this.popupMenu.refs.menu;
