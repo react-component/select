@@ -63,4 +63,5 @@ export const SelectPropTypes = {
   maxTagTextLength: PropTypes.number,
   tokenSeparators: PropTypes.arrayOf(PropTypes.string),
   getInputElement: PropTypes.func,
+  autoFocus: PropTypes.bool,
 };

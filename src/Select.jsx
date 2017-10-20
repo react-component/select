@@ -70,6 +70,7 @@ export default class Select extends React.Component {
     optionLabelProp: 'value',
     notFoundContent: 'Not Found',
     backfill: false,
+    autoFocus: false,
   };
 
   constructor(props) {
@@ -100,6 +101,16 @@ export default class Select extends React.Component {
       open,
     };
     this.adjustOpenState();
+  }
+
+  componentDidMount = () => {
+    if (this.props.autoFocus) {
+      setTimeout(() => {
+        this.setState({ open: true });
+        this._focused = true;
+        this.inputInstance.focus();
+      }, 10);
+    }
   }
 
   componentWillReceiveProps = nextProps => {
