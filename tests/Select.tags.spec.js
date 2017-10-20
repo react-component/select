@@ -8,8 +8,6 @@ import blurTest from './shared/blurTest';
 import renderTest from './shared/renderTest';
 import removeSelectedTest from './shared/removeSelectedTest';
 
-jest.unmock('react-dom');
-
 describe('Select.tags', () => {
   allowClearTest('tags');
   blurTest('tags');

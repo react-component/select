@@ -12,7 +12,7 @@ exports[`Select does not filter when filterOption value is false 1`] = `
       aria-expanded="true"
       aria-haspopup="true"
       class="rc-select-selection
-                rc-select-selection--single"
+            rc-select-selection--single"
       role="combobox"
       tabindex="0"
     >
@@ -27,6 +27,7 @@ exports[`Select does not filter when filterOption value is false 1`] = `
             class="rc-select-search__field__wrap"
           >
             <input
+              autocomplete="off"
               class="rc-select-search__field"
               value=""
             />
@@ -96,7 +97,7 @@ exports[`Select filterOption could be true as described in default value 1`] = `
       aria-expanded="true"
       aria-haspopup="true"
       class="rc-select-selection
-                rc-select-selection--single"
+            rc-select-selection--single"
       role="combobox"
       tabindex="0"
     >
@@ -111,6 +112,7 @@ exports[`Select filterOption could be true as described in default value 1`] = `
             class="rc-select-search__field__wrap"
           >
             <input
+              autocomplete="off"
               class="rc-select-search__field"
               value=""
             />
@@ -180,7 +182,7 @@ exports[`Select no search 1`] = `
       aria-expanded="false"
       aria-haspopup="true"
       class="rc-select-selection
-                rc-select-selection--single"
+            rc-select-selection--single"
       role="combobox"
       tabindex="0"
     >
@@ -219,7 +221,7 @@ exports[`Select render renders correctly 1`] = `
       aria-expanded="false"
       aria-haspopup="true"
       class="antd-selection
-                antd-selection--single"
+            antd-selection--single"
       role="combobox"
       tabindex="0"
     >
@@ -248,6 +250,7 @@ exports[`Select render renders correctly 1`] = `
             class="antd-search__field__wrap"
           >
             <input
+              autocomplete="off"
               class="antd-search__field"
               value=""
             />
@@ -288,7 +291,7 @@ exports[`Select render renders dropdown correctly 1`] = `
       aria-expanded="true"
       aria-haspopup="true"
       class="antd-selection
-                antd-selection--single"
+            antd-selection--single"
       role="combobox"
       tabindex="0"
     >
@@ -317,6 +320,7 @@ exports[`Select render renders dropdown correctly 1`] = `
             class="antd-search__field__wrap"
           >
             <input
+              autocomplete="off"
               class="antd-search__field"
               value=""
             />
@@ -359,6 +363,7 @@ exports[`Select render renders dropdown correctly 1`] = `
           >
             <div
               class="antd-dropdown-menu-item-group-title"
+              title="manager"
             >
               manager
             </div>
@@ -394,6 +399,7 @@ exports[`Select render renders dropdown correctly 1`] = `
           >
             <div
               class="antd-dropdown-menu-item-group-title"
+              title="engineer"
             >
               engineer
             </div>
@@ -413,6 +419,64 @@ exports[`Select render renders dropdown correctly 1`] = `
           </li>
         </ul>
       </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Select should contian falsy children 1`] = `
+<div
+  id="TriggerContainer"
+>
+  <div
+    class="rc-select rc-select-enabled"
+  >
+    <div
+      aria-autocomplete="list"
+      aria-expanded="false"
+      aria-haspopup="true"
+      class="rc-select-selection
+            rc-select-selection--single"
+      role="combobox"
+      tabindex="0"
+    >
+      <div
+        class="rc-select-selection__rendered"
+      >
+        <div
+          class="rc-select-selection-selected-value"
+          style="display:block;opacity:1;"
+          title="1"
+        >
+          1
+        </div>
+        <div
+          class="rc-select-search rc-select-search--inline"
+          style="display:none;"
+        >
+          <div
+            class="rc-select-search__field__wrap"
+          >
+            <input
+              autocomplete="off"
+              class="rc-select-search__field"
+              value=""
+            />
+            <span
+              class="rc-select-search__field__mirror"
+            >
+               
+            </span>
+          </div>
+        </div>
+      </div>
+      <span
+        class="rc-select-arrow"
+        style="user-select:none;-webkit-user-select:none;"
+        unselectable="unselectable"
+      >
+        <b />
+      </span>
     </div>
   </div>
 </div>

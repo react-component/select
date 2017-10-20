@@ -45,15 +45,22 @@ export default class SelectTrigger extends React.Component {
     children: PropTypes.any,
   };
 
+  state = {
+    dropdownWidth: null,
+  }
+
+  componentDidMount() {
+    this.setDropdownWidth();
+  }
+
   componentDidUpdate() {
-    const { visible, dropdownMatchSelectWidth } = this.props;
-    if (visible) {
-      const dropdownDOMNode = this.getPopupDOMNode();
-      if (dropdownDOMNode) {
-        const widthProp = dropdownMatchSelectWidth ? 'width' : 'minWidth';
-        dropdownDOMNode.style[widthProp] = `${ReactDOM.findDOMNode(this)
-          .offsetWidth}px`;
-      }
+    this.setDropdownWidth();
+  }
+
+  setDropdownWidth = () => {
+    const width = ReactDOM.findDOMNode(this).offsetWidth;
+    if (width !== this.state.dropdownWidth) {
+      this.setState({ dropdownWidth: width });
     }
   }
 
@@ -109,6 +116,8 @@ export default class SelectTrigger extends React.Component {
       disabled,
       showSearch,
       dropdownClassName,
+      dropdownStyle,
+      dropdownMatchSelectWidth,
     } = props;
     const dropdownPrefixCls = this.getDropdownPrefixCls();
     const popupClassName = {
@@ -130,6 +139,12 @@ export default class SelectTrigger extends React.Component {
     } else {
       hideAction = ['blur'];
     }
+    const popupStyle = { ...dropdownStyle };
+    const widthProp = dropdownMatchSelectWidth ? 'width' : 'minWidth';
+    if (this.state.dropdownWidth) {
+      popupStyle[widthProp] = `${this.state.dropdownWidth}px`;
+    }
+
     return (
       <Trigger
         {...props}
@@ -146,7 +161,7 @@ export default class SelectTrigger extends React.Component {
         popupVisible={visible}
         getPopupContainer={props.getPopupContainer}
         popupClassName={classnames(popupClassName)}
-        popupStyle={props.dropdownStyle}
+        popupStyle={popupStyle}
       >
         {props.children}
       </Trigger>

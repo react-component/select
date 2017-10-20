@@ -12,7 +12,7 @@ exports[`Select.combobox allowClear renders correctly 1`] = `
       aria-expanded="false"
       aria-haspopup="true"
       class="rc-select-selection
-                rc-select-selection--single"
+            rc-select-selection--single"
       role="combobox"
     >
       <div
@@ -26,6 +26,7 @@ exports[`Select.combobox allowClear renders correctly 1`] = `
               class="rc-select-search__field__wrap"
             >
               <input
+                autocomplete="off"
                 class="rc-select-search__field"
                 value=""
               />
@@ -67,7 +68,7 @@ exports[`Select.combobox renders correctly 1`] = `
       aria-expanded="false"
       aria-haspopup="true"
       class="rc-select-selection
-                rc-select-selection--single"
+            rc-select-selection--single"
       role="combobox"
     >
       <div
@@ -88,6 +89,7 @@ exports[`Select.combobox renders correctly 1`] = `
               class="rc-select-search__field__wrap"
             >
               <input
+                autocomplete="off"
                 class="rc-select-search__field"
                 value=""
               />
