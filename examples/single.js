@@ -52,6 +52,7 @@ class Test extends React.Component {
           <Select
             value={this.state.value}
             placeholder="placeholder"
+            notFoundContent=""
             dropdownMenuStyle={{ maxHeight: 200, overflow: 'auto' }}
             style={{ width: 500 }}
             onBlur={this.onBlur}
