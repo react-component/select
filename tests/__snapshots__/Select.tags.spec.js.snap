@@ -264,7 +264,7 @@ exports[`Select.tags renders search value when not found 1`] = `
       >
         <ul
           aria-activedescendant=""
-          class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
+          class="rc-select-dropdown-menu rc-select-dropdown-menu-vertical  rc-select-dropdown-menu-root"
           role="menu"
         >
           <li
@@ -278,7 +278,7 @@ exports[`Select.tags renders search value when not found 1`] = `
           </li>
           <li
             aria-selected="true"
-            class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item-selected"
+            class="rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item-selected rc-select-dropdown-menu-item"
             role="menuitem"
             style="user-select:none;-webkit-user-select:none;"
             unselectable="unselectable"
@@ -357,7 +357,7 @@ exports[`Select.tags renders unlisted item in value 1`] = `
       >
         <ul
           aria-activedescendant=""
-          class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
+          class="rc-select-dropdown-menu rc-select-dropdown-menu-vertical  rc-select-dropdown-menu-root"
           role="menu"
         >
           <li
@@ -380,7 +380,7 @@ exports[`Select.tags renders unlisted item in value 1`] = `
           </li>
           <li
             aria-selected="true"
-            class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item-selected"
+            class="rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item-selected rc-select-dropdown-menu-item"
             role="menuitem"
             style="user-select:none;-webkit-user-select:none;"
             unselectable="unselectable"
@@ -444,12 +444,12 @@ exports[`Select.tags use filterOption 1`] = `
       >
         <ul
           aria-activedescendant=""
-          class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
+          class="rc-select-dropdown-menu rc-select-dropdown-menu-vertical  rc-select-dropdown-menu-root"
           role="menu"
         >
           <li
             aria-selected="false"
-            class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
+            class="rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item"
             role="menuitem"
             style="user-select:none;-webkit-user-select:none;"
             unselectable="unselectable"

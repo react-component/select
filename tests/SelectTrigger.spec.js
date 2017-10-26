@@ -1,12 +1,11 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { mount } from 'enzyme';
-import { mountToJson } from 'enzyme-to-json';
+import { render, mount } from 'enzyme';
 import SelectTrigger from '../src/SelectTrigger';
 
 describe('SelectTrigger', () => {
   it('renders correctly', () => {
-    const wrapper = mount(
+    const wrapper = render(
       <SelectTrigger
         prefixCls="rc-select"
         transitionName="slide"
@@ -15,7 +14,7 @@ describe('SelectTrigger', () => {
       </SelectTrigger>
     );
 
-    expect(mountToJson(wrapper)).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
   });
 
   it('set popupTransitionName if animation given', () => {

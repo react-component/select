@@ -57,12 +57,12 @@ exports[`Select does not filter when filterOption value is false 1`] = `
       >
         <ul
           aria-activedescendant=""
-          class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
+          class="rc-select-dropdown-menu rc-select-dropdown-menu-vertical  rc-select-dropdown-menu-root"
           role="menu"
         >
           <li
             aria-selected="false"
-            class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
+            class="rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item"
             role="menuitem"
             style="user-select:none;-webkit-user-select:none;"
             unselectable="unselectable"
@@ -142,12 +142,12 @@ exports[`Select filterOption could be true as described in default value 1`] = `
       >
         <ul
           aria-activedescendant=""
-          class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
+          class="rc-select-dropdown-menu rc-select-dropdown-menu-vertical  rc-select-dropdown-menu-root"
           role="menu"
         >
           <li
             aria-selected="false"
-            class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
+            class="rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item"
             role="menuitem"
             style="user-select:none;-webkit-user-select:none;"
             unselectable="unselectable"
@@ -355,7 +355,7 @@ exports[`Select render renders dropdown correctly 1`] = `
       >
         <ul
           aria-activedescendant=""
-          class="antd-dropdown-menu  antd-dropdown-menu-root antd-dropdown-menu-vertical"
+          class="antd-dropdown-menu antd-dropdown-menu-vertical  antd-dropdown-menu-root"
           role="menu"
         >
           <li
@@ -372,7 +372,7 @@ exports[`Select render renders dropdown correctly 1`] = `
             >
               <li
                 aria-selected="false"
-                class="antd-dropdown-menu-item option-test antd-dropdown-menu-item-active"
+                class="antd-dropdown-menu-item-active antd-dropdown-menu-item option-test"
                 role="menuitem"
                 style="user-select:none;-webkit-user-select:none;"
                 unselectable="unselectable"
