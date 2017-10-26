@@ -309,7 +309,7 @@ describe('Select', () => {
     });
 
     it('set className', () => {
-      expect(wrapper.find('.rc-select').node.className).toContain('-focus');
+      expect(wrapper.find('.rc-select').getDOMNode().className).toContain('-focus');
     });
   });
 
@@ -339,7 +339,7 @@ describe('Select', () => {
     });
 
     it('set className', () => {
-      expect(wrapper.find('.rc-select').node.className).toContain('-focus');
+      expect(wrapper.find('.rc-select').getDOMNode().className).toContain('-focus');
     });
 
     it('click placeholder should trigger onFocus', () => {
@@ -395,7 +395,7 @@ describe('Select', () => {
     });
 
     it('set className', () => {
-      expect(wrapper.find('.rc-select').node.className).not.toContain('-focus');
+      expect(wrapper.find('.rc-select').getDOMNode().className).not.toContain('-focus');
     });
 
     // Fix https://github.com/ant-design/ant-design/issues/6342
@@ -528,7 +528,7 @@ describe('Select', () => {
       </Select>
     );
 
-    const input = wrapper.find('input').node;
+    const input = wrapper.find('input').instance();
     input.focus = jest.fn();
     wrapper.find('.rc-select-selection__placeholder').simulate('click');
 

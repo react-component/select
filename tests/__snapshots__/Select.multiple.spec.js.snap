@@ -78,6 +78,7 @@ exports[`Select.multiple render render animation 1`] = `
       aria-haspopup="true"
       className="rc-select-selection
             rc-select-selection--multiple"
+      key="selection"
       role="combobox"
     >
       <div
@@ -98,6 +99,7 @@ exports[`Select.multiple render render animation 1`] = `
         >
           <li
             className="rc-select-search rc-select-search--inline"
+            key="__input"
           >
             <div
               className="rc-select-search__field__wrap"

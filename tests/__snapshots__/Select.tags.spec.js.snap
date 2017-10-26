@@ -78,6 +78,7 @@ exports[`Select.tags render render animation 1`] = `
       aria-haspopup="true"
       className="rc-select-selection
             rc-select-selection--multiple"
+      key="selection"
       role="combobox"
     >
       <div
@@ -98,6 +99,7 @@ exports[`Select.tags render render animation 1`] = `
         >
           <li
             className="rc-select-search rc-select-search--inline"
+            key="__input"
           >
             <div
               className="rc-select-search__field__wrap"
@@ -262,7 +264,7 @@ exports[`Select.tags renders search value when not found 1`] = `
       >
         <ul
           aria-activedescendant=""
-          class="rc-select-dropdown-menu rc-select-dropdown-menu-vertical  rc-select-dropdown-menu-root"
+          class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
           role="menu"
         >
           <li
@@ -276,7 +278,7 @@ exports[`Select.tags renders search value when not found 1`] = `
           </li>
           <li
             aria-selected="true"
-            class="rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item-selected rc-select-dropdown-menu-item"
+            class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item-selected"
             role="menuitem"
             style="user-select:none;-webkit-user-select:none;"
             unselectable="unselectable"
@@ -355,7 +357,7 @@ exports[`Select.tags renders unlisted item in value 1`] = `
       >
         <ul
           aria-activedescendant=""
-          class="rc-select-dropdown-menu rc-select-dropdown-menu-vertical  rc-select-dropdown-menu-root"
+          class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
           role="menu"
         >
           <li
@@ -378,7 +380,7 @@ exports[`Select.tags renders unlisted item in value 1`] = `
           </li>
           <li
             aria-selected="true"
-            class="rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item-selected rc-select-dropdown-menu-item"
+            class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item-selected"
             role="menuitem"
             style="user-select:none;-webkit-user-select:none;"
             unselectable="unselectable"
@@ -442,12 +444,12 @@ exports[`Select.tags use filterOption 1`] = `
       >
         <ul
           aria-activedescendant=""
-          class="rc-select-dropdown-menu rc-select-dropdown-menu-vertical  rc-select-dropdown-menu-root"
+          class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
           role="menu"
         >
           <li
             aria-selected="false"
-            class="rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item"
+            class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
             role="menuitem"
             style="user-select:none;-webkit-user-select:none;"
             unselectable="unselectable"

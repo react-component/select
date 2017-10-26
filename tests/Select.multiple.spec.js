@@ -32,7 +32,7 @@ describe('Select.multiple', () => {
     );
 
     const input = wrapper.find('input');
-    input.node.focus = jest.fn();
+    input.instance().focus = jest.fn();
 
     input.simulate('change', { target: {
       value: 'One',
@@ -49,7 +49,7 @@ describe('Select.multiple', () => {
     ]);
     expect(wrapper.state().inputValue).toBe('');
     expect(wrapper.state().open).toBe(false);
-    expect(input.node.focus).toBeCalled();
+    expect(input.instance().focus).toBeCalled();
   });
 
   it('focus', () => {

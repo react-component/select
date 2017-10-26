@@ -18,7 +18,7 @@ export default function blurTest(mode) {
     wrapper.find('.rc-select').simulate('blur');
     jest.runAllTimers();
 
-    expect(wrapper.find('input').node.value).toBe('');
+    expect(wrapper.find('input').getDOMNode().value).toBe('');
     expect(wrapper.state().inputValue).toBe('');
   });
 }

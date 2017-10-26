@@ -55,9 +55,7 @@ describe('Select.combobox', () => {
     );
 
     wrapper.find('.rc-select').simulate('click');
-    const dropdownWrapper = mount(wrapper.find('Trigger').node.getComponent());
-
-    dropdownWrapper.find('MenuItem').first().simulate('click');
+    wrapper.find('MenuItem').first().simulate('click');
     expect(wrapper.state().inputValue).toBe('1');
   });
 
@@ -150,7 +148,8 @@ describe('Select.combobox', () => {
         wrapper.find('input').simulate('focus');
         wrapper.find('input').simulate('change', { target: { value: '0' } });
         return delay(1000).then(() => {
-          expect(wrapper.find('.rc-select-dropdown')
+          wrapper.update();
+          expect(wrapper.find('.rc-select-dropdown').hostNodes()
             .hasClass('rc-select-dropdown-hidden')).toBe(false);
         });
       });
@@ -187,7 +186,7 @@ describe('Select.combobox', () => {
         const wrapper = mount(<AsyncCombobox />);
         wrapper.find('input').simulate('focus');
         wrapper.find('input').simulate('change', { target: { value: '0' } });
-        expect(wrapper.find('.rc-select-dropdown')
+        expect(wrapper.find('.rc-select-dropdown').hostNodes()
           .hasClass('rc-select-dropdown-hidden')).toBe(false);
         wrapper.find('MenuItem').first().simulate('click');
         return delay(1000).then(() => {

@@ -40,7 +40,7 @@ describe('Select.tags', () => {
     );
 
     const input = wrapper.find('input');
-    input.node.focus = jest.fn();
+    input.instance().focus = jest.fn();
 
     input.simulate('change', { target: { value: '2,3,4' } });
 
@@ -52,7 +52,7 @@ describe('Select.tags', () => {
     ]);
     expect(wrapper.state().inputValue).toBe('');
     expect(wrapper.state().open).toBe(false);
-    expect(input.node.focus).toBeCalled();
+    expect(input.instance().focus).toBeCalled();
   });
 
   it('renders unlisted item in value', () => {
@@ -102,7 +102,7 @@ describe('Select.tags', () => {
       </Select>,
     );
     const input = wrapper.find('input');
-    input.node.focus = jest.fn();
+    input.instance().focus = jest.fn();
     input
       .simulate('change', { target: { value: 'a' } })
       .simulate('keyDown', { keyCode: KeyCode.ENTER });
