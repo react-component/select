@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import DropdownMenu from './DropdownMenu';
 import ReactDOM from 'react-dom';
-import { isSingleMode } from './util';
+import { isSingleMode, saveRef } from './util';
 
 Trigger.displayName = 'Trigger';
 
@@ -66,18 +66,18 @@ export default class SelectTrigger extends React.Component {
   }
 
   getInnerMenu = () => {
-    return this.popupMenu && this.popupMenu.refs.menu;
+    return this.dropdownMenuRef && this.dropdownMenuRef.menuRef;
   };
 
   getPopupDOMNode = () => {
-    return this.refs.trigger.getPopupDomNode();
+    return this.triggerRef.getPopupDomNode();
   };
 
   getDropdownElement = newProps => {
     const props = this.props;
     return (
       <DropdownMenu
-        ref={this.saveMenu}
+        ref={saveRef(this, 'dropdownMenuRef')}
         {...newProps}
         prefixCls={this.getDropdownPrefixCls()}
         onMenuSelect={props.onMenuSelect}
@@ -101,10 +101,6 @@ export default class SelectTrigger extends React.Component {
 
   getDropdownPrefixCls = () => {
     return `${this.props.prefixCls}-dropdown`;
-  };
-
-  saveMenu = menu => {
-    this.popupMenu = menu;
   };
 
   render() {
@@ -151,7 +147,7 @@ export default class SelectTrigger extends React.Component {
         {...props}
         showAction={disabled ? [] : this.props.showAction}
         hideAction={hideAction}
-        ref="trigger"
+        ref={saveRef(this, 'triggerRef')}
         popupPlacement="bottomLeft"
         builtinPlacements={BUILT_IN_PLACEMENTS}
         prefixCls={dropdownPrefixCls}
