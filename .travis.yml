@@ -17,12 +17,11 @@ before_install:
       echo "Only docs were updated, stopping build process."
       exit
     fi
-    npm install npm@3.x -g
-    phantomjs --version
 script:
 - |
     if [ "$TEST_TYPE" = test ]; then
-      npm test
+      npm test && \
+      bash <(curl -s https://codecov.io/bash)
     else
       npm run $TEST_TYPE
     fi
@@ -30,8 +29,6 @@ env:
   matrix:
   - TEST_TYPE=lint
   - TEST_TYPE=test
-  - TEST_TYPE=coverage
-
 
 matrix:
   allow_failures:
