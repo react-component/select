@@ -240,4 +240,18 @@ describe('Select.combobox', () => {
     expect(handleChange).toBeCalledWith('Two');
     expect(handleSelect).toBeCalledWith('Two', expect.anything());
   });
+
+  it('should hide clear icon when inputValue is \'\'', () => {
+    const wrapper = mount(
+      <Select combobox allowClear>
+        <Option value="One">One</Option>
+        <Option value="Two">Two</Option>
+      </Select>
+    );
+
+    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    expect(wrapper.find('.rc-select-selection__clear').length).toBe(1);
+    wrapper.find('input').simulate('change', { target: { value: '' } });
+    expect(wrapper.find('.rc-select-selection__clear').length).toBe(0);
+  });
 });

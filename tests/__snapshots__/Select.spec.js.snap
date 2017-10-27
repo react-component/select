@@ -264,7 +264,7 @@ exports[`Select render renders correctly 1`] = `
       </div>
       <span
         class="antd-selection__clear"
-        style="user-select:none;-webkit-user-select:none;display:block;"
+        style="user-select:none;-webkit-user-select:none;"
         unselectable="unselectable"
       />
       <span
@@ -334,7 +334,7 @@ exports[`Select render renders dropdown correctly 1`] = `
       </div>
       <span
         class="antd-selection__clear"
-        style="user-select:none;-webkit-user-select:none;display:block;"
+        style="user-select:none;-webkit-user-select:none;"
         unselectable="unselectable"
       />
       <span

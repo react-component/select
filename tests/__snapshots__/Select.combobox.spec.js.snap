@@ -40,11 +40,6 @@ exports[`Select.combobox allowClear renders correctly 1`] = `
         </ul>
       </div>
       <span
-        class="rc-select-selection__clear"
-        style="user-select:none;-webkit-user-select:none;display:none;"
-        unselectable="unselectable"
-      />
-      <span
         class="rc-select-arrow"
         style="user-select:none;-webkit-user-select:none;"
         unselectable="unselectable"

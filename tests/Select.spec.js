@@ -101,7 +101,7 @@ describe('Select', () => {
         <Option value="2">2</Option>
       </Select>
     );
-    expect(wrapper.find('.rc-select-selection__clear').props().style.display).toBe('none');
+    expect(wrapper.find('.rc-select-selection__clear').length).toBe(0);
   });
 
   it('should not response click event when select is disabled', () => {

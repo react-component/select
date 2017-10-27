@@ -39,11 +39,6 @@ exports[`Select.tags allowClear renders correctly 1`] = `
           </li>
         </ul>
       </div>
-      <span
-        class="rc-select-selection__clear"
-        style="user-select:none;-webkit-user-select:none;display:none;"
-        unselectable="unselectable"
-      />
     </div>
   </div>
 </div>
