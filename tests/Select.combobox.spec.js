@@ -4,11 +4,13 @@ import Select, { Option } from '../src';
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import allowClearTest from './shared/allowClearTest';
+import throwOptionValue from './shared/throwOptionValue';
 
 const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
 
 describe('Select.combobox', () => {
   allowClearTest('combobox');
+  throwOptionValue('combobox');
 
   it('renders correctly', () => {
     const wrapper = render(

@@ -573,7 +573,7 @@ describe('Select', () => {
       expect(spy.mock.calls[0][0]).toMatch(
         'Warning: Failed prop type: Invalid prop `value` supplied to `Select`, ' +
         'when you set `labelInValue` to `true`,' +
-        ' `value` should in shape of `{ key: string, label?: string }`'
+        ' `value` should in shape of `{ key: string | number, label?: string | number }`'
       );
     });
 
@@ -706,5 +706,41 @@ describe('Select', () => {
     ]);
     expect(handleChange).toBeCalledWith('2');
     expect(handleSelect).toBeCalledWith('2', expect.anything());
+  });
+
+  describe('number value', () => {
+    it('support number value', () => {
+      const handleChange = jest.fn();
+
+      const wrapper = mount(
+        <Select defaultValue={1} onChange={handleChange}>
+          <Option value={1}>1</Option>
+          <Option value={2}>2</Option>
+        </Select>
+      );
+
+      expect(
+        wrapper.find('.rc-select-selection-selected-value').text()
+      ).toBe('1');
+
+      wrapper.find('.rc-select').simulate('click');
+      wrapper.find('MenuItem').at(1).simulate('click');
+      expect(handleChange).toBeCalledWith(2);
+      expect(
+        wrapper.find('.rc-select-selection-selected-value').text()
+      ).toBe('2');
+    });
+
+    it('search number value', () => {
+      const wrapper = mount(
+        <Select showSearch>
+          <Option value={1}>1</Option>
+          <Option value={2}>2</Option>
+        </Select>
+      );
+
+      wrapper.find('input').simulate('change', { target: { value: '1' } });
+      expect(wrapper.find('MenuItem').props().value).toBe(1);
+    });
   });
 });
