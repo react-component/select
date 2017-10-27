@@ -120,6 +120,91 @@ exports[`Select.multiple render render animation 1`] = `
 </SelectTrigger>
 `;
 
+exports[`Select.multiple render truncates tags by maxTagCount 1`] = `
+<div
+  id="TriggerContainer"
+>
+  <div
+    class="rc-select rc-select-enabled"
+  >
+    <div
+      aria-autocomplete="list"
+      aria-expanded="false"
+      aria-haspopup="true"
+      class="rc-select-selection
+                rc-select-selection--multiple"
+      role="combobox"
+    >
+      <div
+        class="rc-select-selection__rendered"
+      >
+        <ul>
+          <li
+            class="rc-select-selection__choice"
+            style="user-select:none;-webkit-user-select:none;"
+            title="one"
+            unselectable="unselectable"
+          >
+            <div
+              class="rc-select-selection__choice__content"
+            >
+              one
+            </div>
+            <span
+              class="rc-select-selection__choice__remove"
+            />
+          </li>
+          <li
+            class="rc-select-selection__choice"
+            style="user-select:none;-webkit-user-select:none;"
+            title="two"
+            unselectable="unselectable"
+          >
+            <div
+              class="rc-select-selection__choice__content"
+            >
+              two
+            </div>
+            <span
+              class="rc-select-selection__choice__remove"
+            />
+          </li>
+          <li
+            class="rc-select-selection__choice rc-select-selection__choice__disabled"
+            style="user-select:none;-webkit-user-select:none;"
+            title="+ 1 ..."
+            unselectable="unselectable"
+          >
+            <div
+              class="rc-select-selection__choice__content"
+            >
+              + 1 ...
+            </div>
+          </li>
+          <li
+            class="rc-select-search rc-select-search--inline"
+          >
+            <div
+              class="rc-select-search__field__wrap"
+            >
+              <input
+                class="rc-select-search__field"
+                value=""
+              />
+              <span
+                class="rc-select-search__field__mirror"
+              >
+                 
+              </span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`Select.multiple render truncates values by maxTagTextLength 1`] = `
 <div
   id="TriggerContainer"
