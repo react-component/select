@@ -132,7 +132,7 @@ exports[`Select.multiple render truncates tags by maxTagCount 1`] = `
       aria-expanded="false"
       aria-haspopup="true"
       class="rc-select-selection
-                rc-select-selection--multiple"
+            rc-select-selection--multiple"
       role="combobox"
     >
       <div
@@ -188,6 +188,7 @@ exports[`Select.multiple render truncates tags by maxTagCount 1`] = `
               class="rc-select-search__field__wrap"
             >
               <input
+                autocomplete="off"
                 class="rc-select-search__field"
                 value=""
               />
