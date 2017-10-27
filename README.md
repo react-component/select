@@ -100,6 +100,7 @@ React.render(c, container);
 |defaultActiveFirstOption | whether active first option by default | bool | true |
 |getPopupContainer | container which popup select menu rendered into | function(trigger:Node):Node | function(){return document.body;} |
 |getInputElement| customize input element | function(): Element | - |
+|showAction| actions trigger the dropdown to show | String[]? | - |
 
 ### Option props
 

@@ -743,4 +743,19 @@ describe('Select', () => {
       expect(wrapper.find('MenuItem').props().value).toBe(1);
     });
   });
+
+  it('set showAction', () => {
+    const wrapper = mount(
+      <Select showAction={['mouseEnter']}>
+        <Option value="1">1</Option>
+      </Select>
+    );
+
+    wrapper.find('.rc-select').simulate('click');
+    expect(wrapper.hasClass('rc-select-open')).toBe(false);
+
+    wrapper.find('.rc-select').simulate('mouseEnter');
+
+    expect(wrapper.find('.rc-select').hasClass('rc-select-open')).toBe(true);
+  });
 });

@@ -70,4 +70,5 @@ export const SelectPropTypes = {
   maxTagPlaceholder: PropTypes.any,
   tokenSeparators: PropTypes.arrayOf(PropTypes.string),
   getInputElement: PropTypes.func,
+  showAction: PropTypes.arrayOf(PropTypes.string),
 };

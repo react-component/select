@@ -71,6 +71,7 @@ export default class Select extends React.Component {
     optionLabelProp: 'value',
     notFoundContent: 'Not Found',
     backfill: false,
+    showAction: ['click'],
   };
 
   constructor(props) {
@@ -1218,6 +1219,7 @@ export default class Select extends React.Component {
         getPopupContainer={props.getPopupContainer}
         onMenuSelect={this.onMenuSelect}
         onMenuDeselect={this.onMenuDeselect}
+        showAction={props.showAction}
         ref="trigger"
       >
         <div

@@ -58,6 +58,11 @@ exports[`Select.multiple render render animation 1`] = `
   onPopupFocus={[Function]}
   options={Array []}
   prefixCls="rc-select"
+  showAction={
+    Array [
+      "click",
+    ]
+  }
   showSearch={true}
   value={Array []}
   visible={false}

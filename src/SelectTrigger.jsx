@@ -43,6 +43,7 @@ export default class SelectTrigger extends React.Component {
     prefixCls: PropTypes.string,
     popupClassName: PropTypes.string,
     children: PropTypes.any,
+    showAction: PropTypes.arrayOf(PropTypes.string),
   };
 
   state = {
@@ -148,7 +149,7 @@ export default class SelectTrigger extends React.Component {
     return (
       <Trigger
         {...props}
-        showAction={disabled ? [] : ['click']}
+        showAction={disabled ? [] : this.props.showAction}
         hideAction={hideAction}
         ref="trigger"
         popupPlacement="bottomLeft"
