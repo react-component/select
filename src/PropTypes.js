@@ -59,6 +59,8 @@ export const SelectPropTypes = {
   onFocus: PropTypes.func,
   onSelect: PropTypes.func,
   onSearch: PropTypes.func,
+  onMouseEnter: PropTypes.func,
+  onMouseLeave: PropTypes.func,
   placeholder: PropTypes.any,
   onDeselect: PropTypes.func,
   labelInValue: PropTypes.bool,

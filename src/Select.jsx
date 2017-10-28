@@ -1191,6 +1191,8 @@ export default class Select extends React.Component {
     return (
       <SelectTrigger
         onPopupFocus={this.onPopupFocus}
+        onMouseEnter={this.props.onMouseEnter}
+        onMouseLeave={this.props.onMouseLeave}
         dropdownAlign={props.dropdownAlign}
         dropdownClassName={props.dropdownClassName}
         dropdownMatchSelectWidth={props.dropdownMatchSelectWidth}
