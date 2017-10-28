@@ -5,6 +5,7 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import Select, { Option } from '../src';
 import allowClearTest from './shared/allowClearTest';
 import blurTest from './shared/blurTest';
+import hoverTest from './shared/hoverTest';
 import renderTest from './shared/renderTest';
 import removeSelectedTest from './shared/removeSelectedTest';
 import throwOptionValue from './shared/throwOptionValue';
@@ -12,6 +13,7 @@ import throwOptionValue from './shared/throwOptionValue';
 describe('Select.tags', () => {
   allowClearTest('tags');
   blurTest('tags');
+  hoverTest('tags');
   renderTest('tags');
   removeSelectedTest('tags');
   throwOptionValue('tags');
