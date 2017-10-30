@@ -47,6 +47,21 @@ describe('splitBySeparators', () => {
     const string = ',,';
     expect(splitBySeparators(string, separators)).toEqual([]);
   });
+
+  it('split two separators surrounded by valid input', () => {
+    const string = 'a,,b';
+    expect(splitBySeparators(string, separators)).toEqual(['a', 'b']);
+  });
+
+  it('split repeating separators with valid input throughout', () => {
+    const string = ',,,a,b,,,c,d,,,e,';
+    expect(splitBySeparators(string, separators)).toEqual(['a', 'b', 'c', 'd', 'e']);
+  });
+
+  it('split multiple repeating separators with valid input throughout', () => {
+    const string = ',,,a b,  c,d, ,e    ,f';
+    expect(splitBySeparators(string, separators)).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
+  });
 });
 
 describe('getValuePropValue', () => {

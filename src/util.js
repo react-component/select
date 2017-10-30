@@ -135,14 +135,7 @@ export function includesSeparators(string, separators) {
 
 export function splitBySeparators(string, separators) {
   const reg = new RegExp(`[${separators.join()}]`);
-  const array = string.split(reg);
-  while (array[0] === '') {
-    array.shift();
-  }
-  while (array[array.length - 1] === '') {
-    array.pop();
-  }
-  return array;
+  return string.split(reg).filter(token => token);
 }
 
 export function defaultFilterFn(input, child) {
