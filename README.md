@@ -101,6 +101,13 @@ React.render(c, container);
 |getPopupContainer | container which popup select menu rendered into | function(trigger:Node):Node | function(){return document.body;} |
 |getInputElement| customize input element | function(): Element | - |
 |showAction| actions trigger the dropdown to show | String[]? | - |
+|autoFocus| focus select after mount | Bool | - |
+
+### Methods
+
+| name     | description    | parameters | return      |
+|----------|----------------|----------|--------------|
+|focus     | focus select programmably | - | - |
 
 ### Option props
 
