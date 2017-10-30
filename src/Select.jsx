@@ -99,6 +99,12 @@ export default class Select extends React.Component {
     this.adjustOpenState();
   }
 
+  componentDidMount() {
+    if (this.props.autoFocus) {
+      this.focus();
+    }
+  }
+
   componentWillReceiveProps = nextProps => {
     if ('value' in nextProps) {
       let value = toArray(nextProps.value);
@@ -602,6 +608,14 @@ export default class Select extends React.Component {
       }
     }
   };
+
+  focus() {
+    if (isSingleMode(this.props)) {
+      this.selectionRef.focus();
+    } else {
+      this.getInputDOMNode().focus();
+    }
+  }
 
   handleBackfill = (item) => {
     if (!this.props.backfill || !(isSingleMode(this.props) || isCombobox(this.props))) {

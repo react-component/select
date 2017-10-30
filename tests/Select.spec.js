@@ -3,8 +3,11 @@ import React from 'react';
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import Select, { Option, OptGroup } from '../src';
+import focusTest from './shared/focusTest';
 
 describe('Select', () => {
+  focusTest('single');
+
   describe('render', () => {
     const select = (
       <Select

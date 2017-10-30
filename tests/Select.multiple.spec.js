@@ -3,6 +3,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import Select, { Option, OptGroup } from '../src';
 import allowClearTest from './shared/allowClearTest';
+import focusTest from './shared/focusTest';
 import blurTest from './shared/blurTest';
 import hoverTest from './shared/hoverTest';
 import renderTest from './shared/renderTest';
@@ -10,6 +11,7 @@ import removeSelectedTest from './shared/removeSelectedTest';
 
 describe('Select.multiple', () => {
   allowClearTest('multiple');
+  focusTest('multiple');
   blurTest('multiple');
   hoverTest('multiple');
   renderTest('multiple');

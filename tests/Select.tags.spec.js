@@ -4,6 +4,7 @@ import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import Select, { Option } from '../src';
 import allowClearTest from './shared/allowClearTest';
+import focusTest from './shared/focusTest';
 import blurTest from './shared/blurTest';
 import hoverTest from './shared/hoverTest';
 import renderTest from './shared/renderTest';
@@ -12,6 +13,7 @@ import throwOptionValue from './shared/throwOptionValue';
 
 describe('Select.tags', () => {
   allowClearTest('tags');
+  focusTest('tags');
   blurTest('tags');
   hoverTest('tags');
   renderTest('tags');

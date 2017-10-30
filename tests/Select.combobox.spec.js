@@ -5,12 +5,12 @@ import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import allowClearTest from './shared/allowClearTest';
 import throwOptionValue from './shared/throwOptionValue';
-
-const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
+import focusTest from './shared/focusTest';
 
 describe('Select.combobox', () => {
   allowClearTest('combobox');
   throwOptionValue('combobox');
+  focusTest('combobox');
 
   it('renders correctly', () => {
     const wrapper = render(
@@ -149,11 +149,10 @@ describe('Select.combobox', () => {
         const wrapper = mount(<AsyncCombobox />);
         wrapper.find('input').simulate('focus');
         wrapper.find('input').simulate('change', { target: { value: '0' } });
-        return delay(1000).then(() => {
-          wrapper.update();
-          expect(wrapper.find('.rc-select-dropdown').hostNodes()
-            .hasClass('rc-select-dropdown-hidden')).toBe(false);
-        });
+        jest.advanceTimersByTime(500);
+        wrapper.update();
+        expect(wrapper.find('.rc-select-dropdown').hostNodes()
+          .hasClass('rc-select-dropdown-hidden')).toBe(false);
       });
 
       // https://github.com/ant-design/ant-design/issues/6600
@@ -191,9 +190,8 @@ describe('Select.combobox', () => {
         expect(wrapper.find('.rc-select-dropdown').hostNodes()
           .hasClass('rc-select-dropdown-hidden')).toBe(false);
         wrapper.find('MenuItem').first().simulate('click');
-        return delay(1000).then(() => {
-          expect(wrapper.find('.rc-select-dropdown').length).toBe(0);
-        });
+        jest.advanceTimersByTime(500);
+        expect(wrapper.find('.rc-select-dropdown').length).toBe(0);
       });
     });
   });
