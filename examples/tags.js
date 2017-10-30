@@ -67,10 +67,6 @@ var Test = function (_React$Component) {
       _this.setState({
         disabled: !_this.state.disabled
       });
-    }, _this.toggleMaxTagCount = function () {
-      _this.setState({
-        maxTagCount: _this.state.maxTagCount ? null : 1
-      });
     }, _temp), __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
   }
 
@@ -96,7 +92,6 @@ var Test = function (_React$Component) {
               dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
               style: { width: 500 },
               disabled: this.state.disabled,
-              maxTagCount: this.state.maxTagCount,
               maxTagTextLength: 10,
               value: this.state.value,
               onChange: this.onChange,
@@ -112,11 +107,6 @@ var Test = function (_React$Component) {
             'button',
             { onClick: this.toggleDisabled },
             'toggle disabled'
-          ),
-          __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-            'button',
-            { onClick: this.toggleMaxTagCount },
-            'toggle maxTagCount (1)'
           )
         )
       );
