@@ -410,7 +410,7 @@ export default class Select extends React.Component {
   };
 
   onChoiceAnimationLeave = () => {
-    this.selectTriggerRef.refs.trigger.forcePopupAlign();
+    this.selectTriggerRef.triggerRef.forcePopupAlign();
   };
 
   getLabelBySingleValue = (children, value) => {
