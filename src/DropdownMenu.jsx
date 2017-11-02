@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import toArray from 'rc-util/lib/Children/toArray';
 import Menu from 'rc-menu';
 import scrollIntoView from 'dom-scroll-into-view';
-import { getSelectKeys, preventDefaultEvent } from './util';
+import { getSelectKeys, preventDefaultEvent, saveRef } from './util';
 
 export default class DropdownMenu extends React.Component {
   static propTypes = {
@@ -65,7 +65,7 @@ export default class DropdownMenu extends React.Component {
 
       scrollIntoView(
         itemComponent,
-        findDOMNode(this.refs.menu),
+        findDOMNode(this.menuRef),
         scrollIntoViewOpts
       );
     }
@@ -137,7 +137,7 @@ export default class DropdownMenu extends React.Component {
 
       return (
         <Menu
-          ref="menu"
+          ref={saveRef(this, 'menuRef')}
           style={this.props.dropdownMenuStyle}
           defaultActiveFirst={defaultActiveFirstOption}
           {...activeKeyProps}

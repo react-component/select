@@ -1,4 +1,4 @@
-/* eslint func-names: 0 */
+/* eslint func-names: 1 */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import KeyCode from 'rc-util/lib/KeyCode';
@@ -22,6 +22,8 @@ import {
   splitBySeparators,
   findIndexInValueByLabel,
   defaultFilterFn,
+  validateOptionValue,
+  saveRef,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import { SelectPropTypes } from './PropTypes';
@@ -30,12 +32,8 @@ import warning from 'warning';
 
 function noop() {}
 
-function saveRef(name, component) {
-  this[name] = component;
-}
-
 function chaining(...fns) {
-  return function (...args) {
+  return function (...args) { // eslint-disable-line
     // eslint-disable-line
     for (let i = 0; i < fns.length; i++) {
       if (fns[i] && typeof fns[i] === 'function') {
@@ -70,6 +68,7 @@ export default class Select extends React.Component {
     optionLabelProp: 'value',
     notFoundContent: 'Not Found',
     backfill: false,
+    showAction: ['click'],
   };
 
   constructor(props) {
@@ -88,8 +87,6 @@ export default class Select extends React.Component {
         ? this.getLabelFromProps(props, value[0].key)
         : '';
     }
-    this.saveInputRef = saveRef.bind(this, 'inputInstance');
-    this.saveInputMirrorRef = saveRef.bind(this, 'inputMirrorInstance');
     let open = props.open;
     if (open === undefined) {
       open = props.defaultOpen;
@@ -100,6 +97,12 @@ export default class Select extends React.Component {
       open,
     };
     this.adjustOpenState();
+  }
+
+  componentDidMount() {
+    if (this.props.autoFocus) {
+      this.focus();
+    }
   }
 
   componentWillReceiveProps = nextProps => {
@@ -238,7 +241,7 @@ export default class Select extends React.Component {
     }
 
     if (state.open) {
-      const menu = this.refs.trigger.getInnerMenu();
+      const menu = this.selectTriggerRef.getInnerMenu();
       if (menu && menu.onKeyDown(event, this.handleBackfill)) {
         event.preventDefault();
         event.stopPropagation();
@@ -407,7 +410,7 @@ export default class Select extends React.Component {
   };
 
   onChoiceAnimationLeave = () => {
-    this.refs.trigger.refs.trigger.forcePopupAlign();
+    this.selectTriggerRef.triggerRef.forcePopupAlign();
   };
 
   getLabelBySingleValue = (children, value) => {
@@ -534,7 +537,7 @@ export default class Select extends React.Component {
     return (
       <div className={`${props.prefixCls}-search__field__wrap`}>
         {React.cloneElement(inputElement, {
-          ref: this.saveInputRef,
+          ref: saveRef(this, 'inputRef'),
           onChange: this.onInputChange,
           onKeyDown: chaining(
             this.onInputKeyDown,
@@ -545,7 +548,7 @@ export default class Select extends React.Component {
           className: inputCls,
         })}
         <span
-          ref={this.saveInputMirrorRef}
+          ref={saveRef(this, 'inputMirrorRef')}
           className={`${props.prefixCls}-search__field__mirror`}
         >
           {this.state.inputValue}&nbsp;
@@ -555,21 +558,21 @@ export default class Select extends React.Component {
   };
 
   getInputDOMNode = () => {
-    return this.topCtrlNode
-      ? this.topCtrlNode.querySelector('input,textarea,div[contentEditable]')
-      : this.inputInstance;
+    return this.topCtrlRef
+      ? this.topCtrlRef.querySelector('input,textarea,div[contentEditable]')
+      : this.inputRef;
   };
 
   getInputMirrorDOMNode = () => {
-    return this.inputMirrorInstance;
+    return this.inputMirrorRef;
   };
 
   getPopupDOMNode = () => {
-    return this.refs.trigger.getPopupDOMNode();
+    return this.selectTriggerRef.getPopupDOMNode();
   };
 
   getPopupMenuComponent = () => {
-    return this.refs.trigger.getInnerMenu();
+    return this.selectTriggerRef.getInnerMenu();
   };
 
   setOpenState = (open, needFocus) => {
@@ -605,6 +608,22 @@ export default class Select extends React.Component {
       }
     }
   };
+
+  focus() {
+    if (isSingleMode(this.props)) {
+      this.selectionRef.focus();
+    } else {
+      this.getInputDOMNode().focus();
+    }
+  }
+
+  blur() {
+    if (isSingleMode(this.props)) {
+      this.selectionRef.blur();
+    } else {
+      this.getInputDOMNode().blur();
+    }
+  }
 
   handleBackfill = (item) => {
     if (!this.props.backfill || !(isSingleMode(this.props) || isCombobox(this.props))) {
@@ -684,12 +703,12 @@ export default class Select extends React.Component {
   };
 
   updateFocusClassName = () => {
-    const { refs, props } = this;
+    const { rootRef, props } = this;
     // avoid setState and its side effect
     if (this._focused) {
-      classes(refs.root).add(`${props.prefixCls}-focused`);
+      classes(rootRef).add(`${props.prefixCls}-focused`);
     } else {
-      classes(refs.root).remove(`${props.prefixCls}-focused`);
+      classes(rootRef).remove(`${props.prefixCls}-focused`);
     }
   };
 
@@ -703,9 +722,8 @@ export default class Select extends React.Component {
           this._focused = true;
         }
       } else {
-        const selection = this.refs.selection;
-        if (activeElement !== selection) {
-          selection.focus();
+        if (activeElement !== this.selectionRef) {
+          this.selectionRef.focus();
           this._focused = true;
         }
       }
@@ -895,6 +913,9 @@ export default class Select extends React.Component {
       );
 
       const childValue = getValuePropValue(child);
+
+      validateOptionValue(childValue, this.props);
+
       if (this.filterOption(inputValue, child)) {
         sel.push(
           <MenuItem
@@ -989,6 +1010,8 @@ export default class Select extends React.Component {
       choiceTransitionName,
       prefixCls,
       maxTagTextLength,
+      maxTagCount,
+      maxTagPlaceholder,
       showSearch,
     } = props;
     const className = `${prefixCls}-selection__rendered`;
@@ -1044,8 +1067,24 @@ export default class Select extends React.Component {
       }
     } else {
       let selectedValueNodes = [];
+      let limitedCountValue = value;
+      let maxTagPlaceholderEl;
+      if (maxTagCount && value.length > maxTagCount) {
+        limitedCountValue = limitedCountValue.slice(0, maxTagCount);
+        const content = maxTagPlaceholder || `+ ${value.length - maxTagCount} ...`;
+        maxTagPlaceholderEl = (<li
+          style={UNSELECTABLE_STYLE}
+          {...UNSELECTABLE_ATTRIBUTE}
+          onMouseDown={preventDefaultEvent}
+          className={`${prefixCls}-selection__choice ${prefixCls}-selection__choice__disabled`}
+          key={'maxTagPlaceholder'}
+          title={content}
+        >
+          <div className={`${prefixCls}-selection__choice__content`}>{content}</div>
+        </li>);
+      }
       if (isMultipleOrTags(props)) {
-        selectedValueNodes = value.map(singleValue => {
+        selectedValueNodes = limitedCountValue.map(singleValue => {
           let content = singleValue.label;
           const title = singleValue.title || content;
           if (
@@ -1080,6 +1119,9 @@ export default class Select extends React.Component {
           );
         });
       }
+      if (maxTagPlaceholderEl) {
+        selectedValueNodes.push(maxTagPlaceholderEl);
+      }
       selectedValueNodes.push(
         <li
           className={`${prefixCls}-search ${prefixCls}-search--inline`}
@@ -1108,18 +1150,46 @@ export default class Select extends React.Component {
       }
     }
     return (
-      <div className={className} ref={node => (this.topCtrlNode = node)}>
+      <div className={className} ref={saveRef(this, 'topCtrlRef')}>
         {this.getPlaceholderElement()}
         {innerNode}
       </div>
     );
-  };
+  }
+
+  renderClear() {
+    const { prefixCls, allowClear } = this.props;
+    const { value, inputValue } = this.state;
+    const clear = (
+      <span
+        key="clear"
+        onMouseDown={preventDefaultEvent}
+        style={UNSELECTABLE_STYLE}
+        {...UNSELECTABLE_ATTRIBUTE}
+        className={`${prefixCls}-selection__clear`}
+        onClick={this.onClearSelection}
+      />
+    );
+    if (!allowClear) {
+      return null;
+    }
+    if (isCombobox(this.props)) {
+      if (inputValue) {
+        return clear;
+      }
+      return null;
+    }
+    if (inputValue || value.length) {
+      return clear;
+    }
+    return null;
+  }
 
   render() {
     const props = this.props;
     const multiple = isMultipleOrTags(props);
     const state = this.state;
-    const { className, disabled, allowClear, prefixCls } = props;
+    const { className, disabled, prefixCls } = props;
     const ctrlNode = this.renderTopControlNode();
     let extraSelectionProps = {};
     const { open } = this.state;
@@ -1140,26 +1210,11 @@ export default class Select extends React.Component {
       [`${prefixCls}-enabled`]: !disabled,
       [`${prefixCls}-allow-clear`]: !!props.allowClear,
     };
-    const clearStyle = {
-      ...UNSELECTABLE_STYLE,
-      display: 'none',
-    };
-    if (state.inputValue || state.value.length) {
-      clearStyle.display = 'block';
-    }
-    const clear = (
-      <span
-        key="clear"
-        onMouseDown={preventDefaultEvent}
-        style={clearStyle}
-        {...UNSELECTABLE_ATTRIBUTE}
-        className={`${prefixCls}-selection__clear`}
-        onClick={this.onClearSelection}
-      />
-    );
     return (
       <SelectTrigger
         onPopupFocus={this.onPopupFocus}
+        onMouseEnter={this.props.onMouseEnter}
+        onMouseLeave={this.props.onMouseLeave}
         dropdownAlign={props.dropdownAlign}
         dropdownClassName={props.dropdownClassName}
         dropdownMatchSelectWidth={props.dropdownMatchSelectWidth}
@@ -1182,17 +1237,18 @@ export default class Select extends React.Component {
         getPopupContainer={props.getPopupContainer}
         onMenuSelect={this.onMenuSelect}
         onMenuDeselect={this.onMenuDeselect}
-        ref="trigger"
+        showAction={props.showAction}
+        ref={saveRef(this, 'selectTriggerRef')}
       >
         <div
           style={props.style}
-          ref="root"
+          ref={saveRef(this, 'rootRef')}
           onBlur={this.onOuterBlur}
           onFocus={this.onOuterFocus}
           className={classnames(rootCls)}
         >
           <div
-            ref="selection"
+            ref={saveRef(this, 'selectionRef')}
             key="selection"
             className={`${prefixCls}-selection
             ${prefixCls}-selection--${multiple ? 'multiple' : 'single'}`}
@@ -1203,7 +1259,7 @@ export default class Select extends React.Component {
             {...extraSelectionProps}
           >
             {ctrlNode}
-            {allowClear ? clear : null}
+            {this.renderClear()}
             {multiple || !props.showArrow ? null : (
               <span
                 key="arrow"

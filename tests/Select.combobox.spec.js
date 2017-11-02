@@ -4,11 +4,13 @@ import Select, { Option } from '../src';
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import allowClearTest from './shared/allowClearTest';
-
-const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
+import throwOptionValue from './shared/throwOptionValue';
+import focusTest from './shared/focusTest';
 
 describe('Select.combobox', () => {
   allowClearTest('combobox');
+  throwOptionValue('combobox');
+  focusTest('combobox');
 
   it('renders correctly', () => {
     const wrapper = render(
@@ -55,9 +57,7 @@ describe('Select.combobox', () => {
     );
 
     wrapper.find('.rc-select').simulate('click');
-    const dropdownWrapper = mount(wrapper.find('Trigger').node.getComponent());
-
-    dropdownWrapper.find('MenuItem').first().simulate('click');
+    wrapper.find('MenuItem').first().simulate('click');
     expect(wrapper.state().inputValue).toBe('1');
   });
 
@@ -149,10 +149,10 @@ describe('Select.combobox', () => {
         const wrapper = mount(<AsyncCombobox />);
         wrapper.find('input').simulate('focus');
         wrapper.find('input').simulate('change', { target: { value: '0' } });
-        return delay(1000).then(() => {
-          expect(wrapper.find('.rc-select-dropdown')
-            .hasClass('rc-select-dropdown-hidden')).toBe(false);
-        });
+        jest.advanceTimersByTime(500);
+        wrapper.update();
+        expect(wrapper.find('.rc-select-dropdown').hostNodes()
+          .hasClass('rc-select-dropdown-hidden')).toBe(false);
       });
 
       // https://github.com/ant-design/ant-design/issues/6600
@@ -187,12 +187,11 @@ describe('Select.combobox', () => {
         const wrapper = mount(<AsyncCombobox />);
         wrapper.find('input').simulate('focus');
         wrapper.find('input').simulate('change', { target: { value: '0' } });
-        expect(wrapper.find('.rc-select-dropdown')
+        expect(wrapper.find('.rc-select-dropdown').hostNodes()
           .hasClass('rc-select-dropdown-hidden')).toBe(false);
         wrapper.find('MenuItem').first().simulate('click');
-        return delay(1000).then(() => {
-          expect(wrapper.find('.rc-select-dropdown').length).toBe(0);
-        });
+        jest.advanceTimersByTime(500);
+        expect(wrapper.find('.rc-select-dropdown').length).toBe(0);
       });
     });
   });
@@ -238,5 +237,19 @@ describe('Select.combobox', () => {
     ]);
     expect(handleChange).toBeCalledWith('Two');
     expect(handleSelect).toBeCalledWith('Two', expect.anything());
+  });
+
+  it('should hide clear icon when inputValue is \'\'', () => {
+    const wrapper = mount(
+      <Select combobox allowClear>
+        <Option value="One">One</Option>
+        <Option value="Two">Two</Option>
+      </Select>
+    );
+
+    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    expect(wrapper.find('.rc-select-selection__clear').length).toBe(1);
+    wrapper.find('input').simulate('change', { target: { value: '' } });
+    expect(wrapper.find('.rc-select-selection__clear').length).toBe(0);
   });
 });

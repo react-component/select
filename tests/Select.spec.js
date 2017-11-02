@@ -3,8 +3,13 @@ import React from 'react';
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import Select, { Option, OptGroup } from '../src';
+import focusTest from './shared/focusTest';
+import blurTest from './shared/blurTest';
 
 describe('Select', () => {
+  focusTest('single');
+  blurTest('single');
+
   describe('render', () => {
     const select = (
       <Select
@@ -101,7 +106,7 @@ describe('Select', () => {
         <Option value="2">2</Option>
       </Select>
     );
-    expect(wrapper.find('.rc-select-selection__clear').props().style.display).toBe('none');
+    expect(wrapper.find('.rc-select-selection__clear').length).toBe(0);
   });
 
   it('should not response click event when select is disabled', () => {
@@ -309,7 +314,7 @@ describe('Select', () => {
     });
 
     it('set className', () => {
-      expect(wrapper.find('.rc-select').node.className).toContain('-focus');
+      expect(wrapper.find('.rc-select').getDOMNode().className).toContain('-focus');
     });
   });
 
@@ -339,7 +344,7 @@ describe('Select', () => {
     });
 
     it('set className', () => {
-      expect(wrapper.find('.rc-select').node.className).toContain('-focus');
+      expect(wrapper.find('.rc-select').getDOMNode().className).toContain('-focus');
     });
 
     it('click placeholder should trigger onFocus', () => {
@@ -395,7 +400,7 @@ describe('Select', () => {
     });
 
     it('set className', () => {
-      expect(wrapper.find('.rc-select').node.className).not.toContain('-focus');
+      expect(wrapper.find('.rc-select').getDOMNode().className).not.toContain('-focus');
     });
 
     // Fix https://github.com/ant-design/ant-design/issues/6342
@@ -528,7 +533,7 @@ describe('Select', () => {
       </Select>
     );
 
-    const input = wrapper.find('input').node;
+    const input = wrapper.find('input').instance();
     input.focus = jest.fn();
     wrapper.find('.rc-select-selection__placeholder').simulate('click');
 
@@ -573,7 +578,7 @@ describe('Select', () => {
       expect(spy.mock.calls[0][0]).toMatch(
         'Warning: Failed prop type: Invalid prop `value` supplied to `Select`, ' +
         'when you set `labelInValue` to `true`,' +
-        ' `value` should in shape of `{ key: string, label?: string }`'
+        ' `value` should in shape of `{ key: string | number, label?: string | number }`'
       );
     });
 
@@ -706,5 +711,56 @@ describe('Select', () => {
     ]);
     expect(handleChange).toBeCalledWith('2');
     expect(handleSelect).toBeCalledWith('2', expect.anything());
+  });
+
+  describe('number value', () => {
+    it('support number value', () => {
+      const handleChange = jest.fn();
+
+      const wrapper = mount(
+        <Select defaultValue={1} onChange={handleChange}>
+          <Option value={1}>1</Option>
+          <Option value={2}>2</Option>
+        </Select>
+      );
+
+      expect(
+        wrapper.find('.rc-select-selection-selected-value').text()
+      ).toBe('1');
+
+      wrapper.find('.rc-select').simulate('click');
+      wrapper.find('MenuItem').at(1).simulate('click');
+      expect(handleChange).toBeCalledWith(2);
+      expect(
+        wrapper.find('.rc-select-selection-selected-value').text()
+      ).toBe('2');
+    });
+
+    it('search number value', () => {
+      const wrapper = mount(
+        <Select showSearch>
+          <Option value={1}>1</Option>
+          <Option value={2}>2</Option>
+        </Select>
+      );
+
+      wrapper.find('input').simulate('change', { target: { value: '1' } });
+      expect(wrapper.find('MenuItem').props().value).toBe(1);
+    });
+  });
+
+  it('set showAction', () => {
+    const wrapper = mount(
+      <Select showAction={['mouseEnter']}>
+        <Option value="1">1</Option>
+      </Select>
+    );
+
+    wrapper.find('.rc-select').simulate('click');
+    expect(wrapper.hasClass('rc-select-open')).toBe(false);
+
+    wrapper.find('.rc-select').simulate('mouseEnter');
+
+    expect(wrapper.find('.rc-select').hasClass('rc-select-open')).toBe(true);
   });
 });

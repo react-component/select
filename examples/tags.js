@@ -29,6 +29,12 @@ class Test extends React.Component {
     });
   };
 
+  toggleMaxTagCount = () => {
+    this.setState({
+      maxTagCount: this.state.maxTagCount ? null : 1,
+    });
+  };
+
   render() {
     return (
       <div>
@@ -41,6 +47,7 @@ class Test extends React.Component {
             dropdownMenuStyle={{ maxHeight: 200, overflow: 'auto' }}
             style={{ width: 500 }}
             disabled={this.state.disabled}
+            maxTagCount={this.state.maxTagCount}
             maxTagTextLength={10}
             value={this.state.value}
             onChange={this.onChange}
@@ -51,6 +58,7 @@ class Test extends React.Component {
         </div>
         <p>
           <button onClick={this.toggleDisabled}>toggle disabled</button>
+          <button onClick={this.toggleMaxTagCount}>toggle maxTagCount (1)</button>
         </p>
       </div>
     );

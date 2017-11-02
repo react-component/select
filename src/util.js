@@ -23,6 +23,10 @@ export function getPropValue(child, prop) {
   return child.props[prop];
 }
 
+export function isMultiple(props) {
+  return props.multiple;
+}
+
 export function isCombobox(props) {
   return props.combobox;
 }
@@ -131,18 +135,29 @@ export function includesSeparators(string, separators) {
 
 export function splitBySeparators(string, separators) {
   const reg = new RegExp(`[${separators.join()}]`);
-  const array = string.split(reg);
-  while (array[0] === '') {
-    array.shift();
-  }
-  while (array[array.length - 1] === '') {
-    array.pop();
-  }
-  return array;
+  return string.split(reg).filter(token => token);
 }
 
 export function defaultFilterFn(input, child) {
   return (
     String(getPropValue(child, this.props.optionFilterProp)).indexOf(input) > -1
   );
+}
+
+export function validateOptionValue(value, props) {
+  if (isSingleMode(props) || isMultiple(props)) {
+    return;
+  }
+  if (typeof value !== 'string') {
+    throw new Error(
+      `Invalid \`value\` of type \`${typeof value}\` supplied to Option, ` +
+      `expected \`string\` when \`tags/combobox\` is \`true\`.`
+    );
+  }
+}
+
+export function saveRef(instance, name) {
+  return (node) => {
+    instance[name] = node;
+  };
 }
