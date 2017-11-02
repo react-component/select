@@ -120,6 +120,7 @@ export default class SelectTrigger extends React.Component {
     const popupClassName = {
       [dropdownClassName]: !!dropdownClassName,
       [`${dropdownPrefixCls}--${multiple ? 'multiple' : 'single'}`]: 1,
+      [`${dropdownPrefixCls}--no-options`]: (props.options && props.options.length === 0),
     };
     const popupElement = this.getDropdownElement({
       menuItems: props.options,
