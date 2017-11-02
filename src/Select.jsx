@@ -617,6 +617,14 @@ export default class Select extends React.Component {
     }
   }
 
+  blur() {
+    if (isSingleMode(this.props)) {
+      this.selectionRef.blur();
+    } else {
+      this.getInputDOMNode().blur();
+    }
+  }
+
   handleBackfill = (item) => {
     if (!this.props.backfill || !(isSingleMode(this.props) || isCombobox(this.props))) {
       return;

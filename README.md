@@ -108,6 +108,7 @@ React.render(c, container);
 | name     | description    | parameters | return      |
 |----------|----------------|----------|--------------|
 |focus     | focus select programmably | - | - |
+|blur     | blur select programmably | - | - |
 
 ### Option props
 
