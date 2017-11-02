@@ -2,43 +2,39 @@
 
 exports[`Select.multiple allowClear renders correctly 1`] = `
 <div
-  id="TriggerContainer"
+  class="rc-select rc-select-enabled rc-select-allow-clear"
 >
   <div
-    class="rc-select rc-select-enabled rc-select-allow-clear"
+    aria-autocomplete="list"
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="rc-select-selection
+            rc-select-selection--multiple"
+    role="combobox"
   >
     <div
-      aria-autocomplete="list"
-      aria-expanded="false"
-      aria-haspopup="true"
-      class="rc-select-selection
-            rc-select-selection--multiple"
-      role="combobox"
+      class="rc-select-selection__rendered"
     >
-      <div
-        class="rc-select-selection__rendered"
-      >
-        <ul>
-          <li
-            class="rc-select-search rc-select-search--inline"
+      <ul>
+        <li
+          class="rc-select-search rc-select-search--inline"
+        >
+          <div
+            class="rc-select-search__field__wrap"
           >
-            <div
-              class="rc-select-search__field__wrap"
+            <input
+              autocomplete="off"
+              class="rc-select-search__field"
+              value=""
+            />
+            <span
+              class="rc-select-search__field__mirror"
             >
-              <input
-                autocomplete="off"
-                class="rc-select-search__field"
-                value=""
-              />
-              <span
-                class="rc-select-search__field__mirror"
-              >
-                 
-              </span>
-            </div>
-          </li>
-        </ul>
-      </div>
+               
+            </span>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
@@ -127,85 +123,81 @@ exports[`Select.multiple render render animation 1`] = `
 
 exports[`Select.multiple render truncates tags by maxTagCount 1`] = `
 <div
-  id="TriggerContainer"
+  class="rc-select rc-select-enabled"
 >
   <div
-    class="rc-select rc-select-enabled"
+    aria-autocomplete="list"
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="rc-select-selection
+            rc-select-selection--multiple"
+    role="combobox"
   >
     <div
-      aria-autocomplete="list"
-      aria-expanded="false"
-      aria-haspopup="true"
-      class="rc-select-selection
-            rc-select-selection--multiple"
-      role="combobox"
+      class="rc-select-selection__rendered"
     >
-      <div
-        class="rc-select-selection__rendered"
-      >
-        <ul>
-          <li
-            class="rc-select-selection__choice"
-            style="user-select:none;-webkit-user-select:none;"
-            title="one"
-            unselectable="unselectable"
+      <ul>
+        <li
+          class="rc-select-selection__choice"
+          style="user-select:none;-webkit-user-select:none"
+          title="one"
+          unselectable="unselectable"
+        >
+          <div
+            class="rc-select-selection__choice__content"
           >
-            <div
-              class="rc-select-selection__choice__content"
-            >
-              one
-            </div>
-            <span
-              class="rc-select-selection__choice__remove"
+            one
+          </div>
+          <span
+            class="rc-select-selection__choice__remove"
+          />
+        </li>
+        <li
+          class="rc-select-selection__choice"
+          style="user-select:none;-webkit-user-select:none"
+          title="two"
+          unselectable="unselectable"
+        >
+          <div
+            class="rc-select-selection__choice__content"
+          >
+            two
+          </div>
+          <span
+            class="rc-select-selection__choice__remove"
+          />
+        </li>
+        <li
+          class="rc-select-selection__choice rc-select-selection__choice__disabled"
+          style="user-select:none;-webkit-user-select:none"
+          title="+ 1 ..."
+          unselectable="unselectable"
+        >
+          <div
+            class="rc-select-selection__choice__content"
+          >
+            + 1 ...
+          </div>
+        </li>
+        <li
+          class="rc-select-search rc-select-search--inline"
+        >
+          <div
+            class="rc-select-search__field__wrap"
+          >
+            <input
+              autocomplete="off"
+              class="rc-select-search__field"
+              value=""
             />
-          </li>
-          <li
-            class="rc-select-selection__choice"
-            style="user-select:none;-webkit-user-select:none;"
-            title="two"
-            unselectable="unselectable"
-          >
-            <div
-              class="rc-select-selection__choice__content"
-            >
-              two
-            </div>
             <span
-              class="rc-select-selection__choice__remove"
-            />
-          </li>
-          <li
-            class="rc-select-selection__choice rc-select-selection__choice__disabled"
-            style="user-select:none;-webkit-user-select:none;"
-            title="+ 1 ..."
-            unselectable="unselectable"
-          >
-            <div
-              class="rc-select-selection__choice__content"
+              class="rc-select-search__field__mirror"
             >
-              + 1 ...
-            </div>
-          </li>
-          <li
-            class="rc-select-search rc-select-search--inline"
-          >
-            <div
-              class="rc-select-search__field__wrap"
-            >
-              <input
-                autocomplete="off"
-                class="rc-select-search__field"
-                value=""
-              />
-              <span
-                class="rc-select-search__field__mirror"
-              >
-                 
-              </span>
-            </div>
-          </li>
-        </ul>
-      </div>
+               
+            </span>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
@@ -213,73 +205,69 @@ exports[`Select.multiple render truncates tags by maxTagCount 1`] = `
 
 exports[`Select.multiple render truncates values by maxTagTextLength 1`] = `
 <div
-  id="TriggerContainer"
+  class="rc-select rc-select-enabled"
 >
   <div
-    class="rc-select rc-select-enabled"
+    aria-autocomplete="list"
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="rc-select-selection
+            rc-select-selection--multiple"
+    role="combobox"
   >
     <div
-      aria-autocomplete="list"
-      aria-expanded="false"
-      aria-haspopup="true"
-      class="rc-select-selection
-            rc-select-selection--multiple"
-      role="combobox"
+      class="rc-select-selection__rendered"
     >
-      <div
-        class="rc-select-selection__rendered"
-      >
-        <ul>
-          <li
-            class="rc-select-selection__choice"
-            style="user-select:none;-webkit-user-select:none;"
-            title="one"
-            unselectable="unselectable"
+      <ul>
+        <li
+          class="rc-select-selection__choice"
+          style="user-select:none;-webkit-user-select:none"
+          title="one"
+          unselectable="unselectable"
+        >
+          <div
+            class="rc-select-selection__choice__content"
           >
-            <div
-              class="rc-select-selection__choice__content"
-            >
-              on...
-            </div>
-            <span
-              class="rc-select-selection__choice__remove"
+            on...
+          </div>
+          <span
+            class="rc-select-selection__choice__remove"
+          />
+        </li>
+        <li
+          class="rc-select-selection__choice"
+          style="user-select:none;-webkit-user-select:none"
+          title="two"
+          unselectable="unselectable"
+        >
+          <div
+            class="rc-select-selection__choice__content"
+          >
+            tw...
+          </div>
+          <span
+            class="rc-select-selection__choice__remove"
+          />
+        </li>
+        <li
+          class="rc-select-search rc-select-search--inline"
+        >
+          <div
+            class="rc-select-search__field__wrap"
+          >
+            <input
+              autocomplete="off"
+              class="rc-select-search__field"
+              value=""
             />
-          </li>
-          <li
-            class="rc-select-selection__choice"
-            style="user-select:none;-webkit-user-select:none;"
-            title="two"
-            unselectable="unselectable"
-          >
-            <div
-              class="rc-select-selection__choice__content"
-            >
-              tw...
-            </div>
             <span
-              class="rc-select-selection__choice__remove"
-            />
-          </li>
-          <li
-            class="rc-select-search rc-select-search--inline"
-          >
-            <div
-              class="rc-select-search__field__wrap"
+              class="rc-select-search__field__mirror"
             >
-              <input
-                autocomplete="off"
-                class="rc-select-search__field"
-                value=""
-              />
-              <span
-                class="rc-select-search__field__mirror"
-              >
-                 
-              </span>
-            </div>
-          </li>
-        </ul>
-      </div>
+               
+            </span>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 </div>

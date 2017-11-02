@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Select does not filter when filterOption value is false 1`] = `
-<div
-  id="TriggerContainer"
->
+Array [
   <div
     class="rc-select rc-select-open rc-select-focused rc-select-enabled"
   >
@@ -21,7 +19,7 @@ exports[`Select does not filter when filterOption value is false 1`] = `
       >
         <div
           class="rc-select-search rc-select-search--inline"
-          style="display:block;"
+          style="display:block"
         >
           <div
             class="rc-select-search__field__wrap"
@@ -41,30 +39,30 @@ exports[`Select does not filter when filterOption value is false 1`] = `
       </div>
       <span
         class="rc-select-arrow"
-        style="user-select:none;-webkit-user-select:none;"
+        style="user-select:none;-webkit-user-select:none"
         unselectable="unselectable"
       >
         <b />
       </span>
     </div>
-  </div>
+  </div>,
   <div>
     <div
       class="rc-select-dropdown rc-select-dropdown--single rc-select-dropdown-placement-bottomLeft "
     >
       <div
-        style="overflow:auto;"
+        style="overflow:auto"
       >
         <ul
           aria-activedescendant=""
-          class="rc-select-dropdown-menu rc-select-dropdown-menu-vertical  rc-select-dropdown-menu-root"
+          class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
           role="menu"
         >
           <li
             aria-selected="false"
-            class="rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item"
+            class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
             role="menuitem"
-            style="user-select:none;-webkit-user-select:none;"
+            style="user-select:none;-webkit-user-select:none"
             unselectable="unselectable"
           >
             1
@@ -73,7 +71,7 @@ exports[`Select does not filter when filterOption value is false 1`] = `
             aria-selected="false"
             class="rc-select-dropdown-menu-item"
             role="menuitem"
-            style="user-select:none;-webkit-user-select:none;"
+            style="user-select:none;-webkit-user-select:none"
             unselectable="unselectable"
           >
             2
@@ -81,14 +79,12 @@ exports[`Select does not filter when filterOption value is false 1`] = `
         </ul>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+]
 `;
 
 exports[`Select filterOption could be true as described in default value 1`] = `
-<div
-  id="TriggerContainer"
->
+Array [
   <div
     class="rc-select rc-select-open rc-select-focused rc-select-enabled"
   >
@@ -106,7 +102,7 @@ exports[`Select filterOption could be true as described in default value 1`] = `
       >
         <div
           class="rc-select-search rc-select-search--inline"
-          style="display:block;"
+          style="display:block"
         >
           <div
             class="rc-select-search__field__wrap"
@@ -126,30 +122,30 @@ exports[`Select filterOption could be true as described in default value 1`] = `
       </div>
       <span
         class="rc-select-arrow"
-        style="user-select:none;-webkit-user-select:none;"
+        style="user-select:none;-webkit-user-select:none"
         unselectable="unselectable"
       >
         <b />
       </span>
     </div>
-  </div>
+  </div>,
   <div>
     <div
       class="rc-select-dropdown rc-select-dropdown--single rc-select-dropdown-placement-bottomLeft "
     >
       <div
-        style="overflow:auto;"
+        style="overflow:auto"
       >
         <ul
           aria-activedescendant=""
-          class="rc-select-dropdown-menu rc-select-dropdown-menu-vertical  rc-select-dropdown-menu-root"
+          class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
           role="menu"
         >
           <li
             aria-selected="false"
-            class="rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item"
+            class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
             role="menuitem"
-            style="user-select:none;-webkit-user-select:none;"
+            style="user-select:none;-webkit-user-select:none"
             unselectable="unselectable"
           >
             1
@@ -158,7 +154,7 @@ exports[`Select filterOption could be true as described in default value 1`] = `
             aria-selected="false"
             class="rc-select-dropdown-menu-item"
             role="menuitem"
-            style="user-select:none;-webkit-user-select:none;"
+            style="user-select:none;-webkit-user-select:none"
             unselectable="unselectable"
           >
             2
@@ -166,123 +162,113 @@ exports[`Select filterOption could be true as described in default value 1`] = `
         </ul>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+]
 `;
 
 exports[`Select no search 1`] = `
 <div
-  id="TriggerContainer"
+  class="rc-select rc-select-enabled"
 >
   <div
-    class="rc-select rc-select-enabled"
+    aria-autocomplete="list"
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="rc-select-selection
+            rc-select-selection--single"
+    role="combobox"
+    tabindex="0"
   >
     <div
-      aria-autocomplete="list"
-      aria-expanded="false"
-      aria-haspopup="true"
-      class="rc-select-selection
-            rc-select-selection--single"
-      role="combobox"
-      tabindex="0"
+      class="rc-select-selection__rendered"
     >
       <div
-        class="rc-select-selection__rendered"
+        class="rc-select-selection-selected-value"
+        style="display:block;opacity:1"
+        title="1"
       >
-        <div
-          class="rc-select-selection-selected-value"
-          style="display:block;opacity:1;"
-          title="1"
-        >
-          1
-        </div>
+        1
       </div>
-      <span
-        class="rc-select-arrow"
-        style="user-select:none;-webkit-user-select:none;"
-        unselectable="unselectable"
-      >
-        <b />
-      </span>
     </div>
+    <span
+      class="rc-select-arrow"
+      style="user-select:none;-webkit-user-select:none"
+      unselectable="unselectable"
+    >
+      <b />
+    </span>
   </div>
 </div>
 `;
 
 exports[`Select render renders correctly 1`] = `
 <div
-  id="TriggerContainer"
+  class="select-test antd antd-enabled antd-allow-clear"
 >
   <div
-    class="select-test antd antd-enabled antd-allow-clear"
+    aria-autocomplete="list"
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="antd-selection
+            antd-selection--single"
+    role="combobox"
+    tabindex="0"
   >
     <div
-      aria-autocomplete="list"
-      aria-expanded="false"
-      aria-haspopup="true"
-      class="antd-selection
-            antd-selection--single"
-      role="combobox"
-      tabindex="0"
+      class="antd-selection__rendered"
     >
       <div
-        class="antd-selection__rendered"
+        class="antd-selection__placeholder"
+        style="display:none;user-select:none;-webkit-user-select:none"
+        unselectable="unselectable"
+      >
+        Select a number
+      </div>
+      <div
+        class="antd-selection-selected-value"
+        style="display:block;opacity:1"
+        title="2"
+      >
+        2
+      </div>
+      <div
+        class="antd-search antd-search--inline"
+        style="display:none"
       >
         <div
-          class="antd-selection__placeholder"
-          style="display:none;user-select:none;-webkit-user-select:none;"
-          unselectable="unselectable"
+          class="antd-search__field__wrap"
         >
-          Select a number
-        </div>
-        <div
-          class="antd-selection-selected-value"
-          style="display:block;opacity:1;"
-          title="2"
-        >
-          2
-        </div>
-        <div
-          class="antd-search antd-search--inline"
-          style="display:none;"
-        >
-          <div
-            class="antd-search__field__wrap"
+          <input
+            autocomplete="off"
+            class="antd-search__field"
+            value=""
+          />
+          <span
+            class="antd-search__field__mirror"
           >
-            <input
-              autocomplete="off"
-              class="antd-search__field"
-              value=""
-            />
-            <span
-              class="antd-search__field__mirror"
-            >
-               
-            </span>
-          </div>
+             
+          </span>
         </div>
       </div>
-      <span
-        class="antd-selection__clear"
-        style="user-select:none;-webkit-user-select:none;"
-        unselectable="unselectable"
-      />
-      <span
-        class="antd-arrow"
-        style="user-select:none;-webkit-user-select:none;"
-        unselectable="unselectable"
-      >
-        <b />
-      </span>
     </div>
+    <span
+      class="antd-selection__clear"
+      style="user-select:none;-webkit-user-select:none"
+      unselectable="unselectable"
+    />
+    <span
+      class="antd-arrow"
+      style="user-select:none;-webkit-user-select:none"
+      unselectable="unselectable"
+    >
+      <b />
+    </span>
   </div>
 </div>
 `;
 
 exports[`Select render renders dropdown correctly 1`] = `
-<div
-  id="TriggerContainer"
->
+Array [
   <div
     class="select-test antd antd-open antd-focused antd-enabled antd-allow-clear"
   >
@@ -300,21 +286,21 @@ exports[`Select render renders dropdown correctly 1`] = `
       >
         <div
           class="antd-selection__placeholder"
-          style="display:none;user-select:none;-webkit-user-select:none;"
+          style="display:none;user-select:none;-webkit-user-select:none"
           unselectable="unselectable"
         >
           Select a number
         </div>
         <div
           class="antd-selection-selected-value"
-          style="display:block;opacity:0.4;"
+          style="display:block;opacity:0.4"
           title="2"
         >
           2
         </div>
         <div
           class="antd-search antd-search--inline"
-          style="display:block;"
+          style="display:block"
         >
           <div
             class="antd-search__field__wrap"
@@ -334,28 +320,28 @@ exports[`Select render renders dropdown correctly 1`] = `
       </div>
       <span
         class="antd-selection__clear"
-        style="user-select:none;-webkit-user-select:none;"
+        style="user-select:none;-webkit-user-select:none"
         unselectable="unselectable"
       />
       <span
         class="antd-arrow"
-        style="user-select:none;-webkit-user-select:none;"
+        style="user-select:none;-webkit-user-select:none"
         unselectable="unselectable"
       >
         <b />
       </span>
     </div>
-  </div>
+  </div>,
   <div>
     <div
       class="antd-dropdown antd-dropdown--single antd-dropdown-placement-bottomLeft "
     >
       <div
-        style="overflow:auto;"
+        style="overflow:auto"
       >
         <ul
           aria-activedescendant=""
-          class="antd-dropdown-menu antd-dropdown-menu-vertical  antd-dropdown-menu-root"
+          class="antd-dropdown-menu  antd-dropdown-menu-root antd-dropdown-menu-vertical"
           role="menu"
         >
           <li
@@ -372,13 +358,13 @@ exports[`Select render renders dropdown correctly 1`] = `
             >
               <li
                 aria-selected="false"
-                class="antd-dropdown-menu-item-active antd-dropdown-menu-item option-test"
+                class="antd-dropdown-menu-item option-test antd-dropdown-menu-item-active"
                 role="menuitem"
-                style="user-select:none;-webkit-user-select:none;"
+                style="user-select:none;-webkit-user-select:none"
                 unselectable="unselectable"
               >
                 <b
-                  style="color:red;"
+                  style="color:red"
                 >
                   jack
                 </b>
@@ -387,7 +373,7 @@ exports[`Select render renders dropdown correctly 1`] = `
                 aria-selected="false"
                 class="antd-dropdown-menu-item"
                 role="menuitem"
-                style="user-select:none;-webkit-user-select:none;"
+                style="user-select:none;-webkit-user-select:none"
                 unselectable="unselectable"
               >
                 lucy
@@ -410,7 +396,7 @@ exports[`Select render renders dropdown correctly 1`] = `
                 aria-selected="false"
                 class="antd-dropdown-menu-item"
                 role="menuitem"
-                style="user-select:none;-webkit-user-select:none;"
+                style="user-select:none;-webkit-user-select:none"
                 unselectable="unselectable"
               >
                 yiminghe
@@ -420,64 +406,60 @@ exports[`Select render renders dropdown correctly 1`] = `
         </ul>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+]
 `;
 
 exports[`Select should contian falsy children 1`] = `
 <div
-  id="TriggerContainer"
+  class="rc-select rc-select-enabled"
 >
   <div
-    class="rc-select rc-select-enabled"
+    aria-autocomplete="list"
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="rc-select-selection
+            rc-select-selection--single"
+    role="combobox"
+    tabindex="0"
   >
     <div
-      aria-autocomplete="list"
-      aria-expanded="false"
-      aria-haspopup="true"
-      class="rc-select-selection
-            rc-select-selection--single"
-      role="combobox"
-      tabindex="0"
+      class="rc-select-selection__rendered"
     >
       <div
-        class="rc-select-selection__rendered"
+        class="rc-select-selection-selected-value"
+        style="display:block;opacity:1"
+        title="1"
+      >
+        1
+      </div>
+      <div
+        class="rc-select-search rc-select-search--inline"
+        style="display:none"
       >
         <div
-          class="rc-select-selection-selected-value"
-          style="display:block;opacity:1;"
-          title="1"
+          class="rc-select-search__field__wrap"
         >
-          1
-        </div>
-        <div
-          class="rc-select-search rc-select-search--inline"
-          style="display:none;"
-        >
-          <div
-            class="rc-select-search__field__wrap"
+          <input
+            autocomplete="off"
+            class="rc-select-search__field"
+            value=""
+          />
+          <span
+            class="rc-select-search__field__mirror"
           >
-            <input
-              autocomplete="off"
-              class="rc-select-search__field"
-              value=""
-            />
-            <span
-              class="rc-select-search__field__mirror"
-            >
-               
-            </span>
-          </div>
+             
+          </span>
         </div>
       </div>
-      <span
-        class="rc-select-arrow"
-        style="user-select:none;-webkit-user-select:none;"
-        unselectable="unselectable"
-      >
-        <b />
-      </span>
     </div>
+    <span
+      class="rc-select-arrow"
+      style="user-select:none;-webkit-user-select:none"
+      unselectable="unselectable"
+    >
+      <b />
+    </span>
   </div>
 </div>
 `;

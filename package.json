@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "enzyme": "^3.1.0",
-    "enzyme-adapter-react-15": "^1.0.2",
+    "enzyme-adapter-react-16": "^1.0.2",
     "enzyme-to-json": "^3.1.4",
     "jest": "^21.3.0-beta.4",
     "jsonp": "^0.2.0",
@@ -63,9 +63,9 @@
     "querystring": "^0.2.0",
     "rc-dialog": "6.x",
     "rc-tools": "6.x",
-    "react": "15.x",
-    "react-dom": "15.x",
-    "react-test-renderer": "^15.3.2"
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-test-renderer": "^16.0.0"
   },
   "dependencies": {
     "babel-runtime": "^6.23.0",
@@ -74,8 +74,8 @@
     "dom-scroll-into-view": "1.x",
     "prop-types": "^15.5.8",
     "rc-animate": "2.x",
-    "rc-menu": "^5.0.11",
-    "rc-trigger": "1.x",
+    "rc-menu": "^6.1.0",
+    "rc-trigger": "^2.2.0",
     "rc-util": "^4.0.4",
     "warning": "^3.0.0"
   },

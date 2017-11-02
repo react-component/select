@@ -1,11 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SelectTrigger renders correctly 1`] = `
-<div
-  id="TriggerContainer"
->
-  <div>
-    foo
-  </div>
+<div>
+  foo
 </div>
 `;

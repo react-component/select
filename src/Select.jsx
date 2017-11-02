@@ -1,4 +1,4 @@
-/* eslint func-names: 0 */
+/* eslint func-names: 1 */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import KeyCode from 'rc-util/lib/KeyCode';
