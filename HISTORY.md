@@ -1,5 +1,18 @@
 # History
 ----
+
+## 7.0.0 / 2017-10-30
+
+- Allow numbe value in Option
+- Add maxTagCount and maxTagTextLength https://github.com/react-component/select/pull/224
+- Add showAction https://github.com/react-component/select/pull/224
+- Add onMouseEnter and onMouseLeave https://github.com/react-component/select/pull/238
+- Add focus() and autoFocus
+
+## 6.9.0 / 2017-09-01
+
+- add backfill in single/combobox mode
+
 ## 6.8.0 / 2017-03-24
 
 - support allowClear in multiple/tags mode

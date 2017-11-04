@@ -1,20 +1,24 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import Select, { Option } from '../src';
 import allowClearTest from './shared/allowClearTest';
+import focusTest from './shared/focusTest';
 import blurTest from './shared/blurTest';
+import hoverTest from './shared/hoverTest';
 import renderTest from './shared/renderTest';
 import removeSelectedTest from './shared/removeSelectedTest';
-
-jest.unmock('react-dom');
+import throwOptionValue from './shared/throwOptionValue';
 
 describe('Select.tags', () => {
   allowClearTest('tags');
+  focusTest('tags');
   blurTest('tags');
+  hoverTest('tags');
   renderTest('tags');
   removeSelectedTest('tags');
+  throwOptionValue('tags');
 
   it('allow user input tags', () => {
     const wrapper = mount(
@@ -42,7 +46,7 @@ describe('Select.tags', () => {
     );
 
     const input = wrapper.find('input');
-    input.node.focus = jest.fn();
+    input.instance().focus = jest.fn();
 
     input.simulate('change', { target: { value: '2,3,4' } });
 
@@ -54,6 +58,61 @@ describe('Select.tags', () => {
     ]);
     expect(wrapper.state().inputValue).toBe('');
     expect(wrapper.state().open).toBe(false);
-    expect(input.node.focus).toBeCalled();
+    expect(input.instance().focus).toBeCalled();
+  });
+
+  it('renders unlisted item in value', () => {
+    const wrapper = render(
+      <Select tags value="3" open>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>
+    );
+
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('renders search value when not found', () => {
+    const wrapper = render(
+      <Select tags value="22" inputValue="2" open>
+        <Option value="1">1</Option>
+      </Select>
+    );
+
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('use filterOption', () => {
+    const filterOption = (inputValue, option) =>
+      option.props.value
+        .toLowerCase()
+        .indexOf(inputValue.toLowerCase()) !== -1;
+
+    const wrapper = render(
+      <Select tags inputValue="red" filterOption={filterOption} open>
+        <Option value="Red">Red</Option>
+      </Select>
+    );
+
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('filterOption is false', () => {
+    const wrapper = mount(
+      <Select
+        tags
+        filterOption={false}
+      >
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    const input = wrapper.find('input');
+    input.instance().focus = jest.fn();
+    input
+      .simulate('change', { target: { value: 'a' } })
+      .simulate('keyDown', { keyCode: KeyCode.ENTER });
+
+    expect(wrapper.state().value).toEqual([{ key: 'a', label: 'a', title: undefined }]);
   });
 });

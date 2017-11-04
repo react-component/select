@@ -2,11 +2,11 @@
 
 exports[`DropdownMenu renders correctly 1`] = `
 <div
-  style="overflow:auto;"
+  style="overflow:auto"
 >
   <ul
     aria-activedescendant=""
-    class="undefined-menu undefined-menu-vertical  undefined-menu-root"
+    class="undefined-menu  undefined-menu-root undefined-menu-vertical"
     role="menu"
   >
     <li
@@ -20,7 +20,7 @@ exports[`DropdownMenu renders correctly 1`] = `
       >
         <li
           aria-selected="true"
-          class="undefined-menu-item-selected undefined-menu-item"
+          class="undefined-menu-item undefined-menu-item-selected"
           role="menuitem"
         >
           1

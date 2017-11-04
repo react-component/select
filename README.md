@@ -88,7 +88,9 @@ React.render(c, container);
 |optionLabelProp | which prop value of option will render as content of select | String | 'value' |
 |defaultValue | initial selected option(s) | String/Array<String> | - |
 |value | current selected option(s) | String/Array<String>/{key:String, label:React.Node}/Array<{key, label}> | - |
+|firstActiveValue | first active value when there is no value | String/Array<String> | - |
 |labelInValue| whether to embed label in value, see above value type | Bool | false |
+|backfill| whether backfill select option to search input (Only works in single and combobox mode) | Bool | false |
 |onChange | called when select an option or input value change(combobox) | function(value) | - |
 |onSearch | called when input changed | function | - |
 |onBlur | called when blur | function | - |
@@ -99,6 +101,15 @@ React.render(c, container);
 |defaultActiveFirstOption | whether active first option by default | bool | true |
 |getPopupContainer | container which popup select menu rendered into | function(trigger:Node):Node | function(){return document.body;} |
 |getInputElement| customize input element | function(): Element | - |
+|showAction| actions trigger the dropdown to show | String[]? | - |
+|autoFocus| focus select after mount | Bool | - |
+
+### Methods
+
+| name     | description    | parameters | return      |
+|----------|----------------|----------|--------------|
+|focus     | focus select programmably | - | - |
+|blur     | blur select programmably | - | - |
 
 ### Option props
 

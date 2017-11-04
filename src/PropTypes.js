@@ -1,9 +1,14 @@
 import PropTypes from 'prop-types';
 
 function valueType(props, propName, componentName) {
+  const basicType = PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]);
+
   const labelInValueShape = PropTypes.shape({
-    key: PropTypes.string.isRequired,
-    label: PropTypes.string,
+    key: basicType.isRequired,
+    label: basicType,
   });
   if (props.labelInValue) {
     const validate = PropTypes.oneOfType([
@@ -14,19 +19,19 @@ function valueType(props, propName, componentName) {
     if (error) {
       return new Error(
         `Invalid prop \`${propName}\` supplied to \`${componentName}\`, ` +
-        `when you set \`labelInValue\` to \`true\`, \`${propName}\` should in ` +
-        `shape of \`{ key: string, label?: string }\`.`
+          `when you set \`labelInValue\` to \`true\`, \`${propName}\` should in ` +
+          `shape of \`{ key: string | number, label?: string | number }\`.`
       );
     }
   } else if (props.multiple && props[propName] === '') {
     return new Error(
       `Invalid prop \`${propName}\` of type \`string\` supplied to \`${componentName}\`, ` +
-      `expected \`array\` when \`multiple\` is \`true\`.`
+        `expected \`array\` when \`multiple\` is \`true\`.`
     );
   } else {
     const validate = PropTypes.oneOfType([
-      PropTypes.arrayOf(PropTypes.string),
-      PropTypes.string,
+      PropTypes.arrayOf(basicType),
+      basicType,
     ]);
     return validate(...arguments);
   }
@@ -55,6 +60,8 @@ export const SelectPropTypes = {
   onSelect: PropTypes.func,
   onSearch: PropTypes.func,
   onPopupScroll: PropTypes.func,
+  onMouseEnter: PropTypes.func,
+  onMouseLeave: PropTypes.func,
   placeholder: PropTypes.any,
   onDeselect: PropTypes.func,
   labelInValue: PropTypes.bool,
@@ -62,6 +69,9 @@ export const SelectPropTypes = {
   defaultValue: valueType,
   dropdownStyle: PropTypes.object,
   maxTagTextLength: PropTypes.number,
+  maxTagCount: PropTypes.number,
+  maxTagPlaceholder: PropTypes.any,
   tokenSeparators: PropTypes.arrayOf(PropTypes.string),
   getInputElement: PropTypes.func,
+  showAction: PropTypes.arrayOf(PropTypes.string),
 };

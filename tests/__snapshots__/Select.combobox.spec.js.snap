@@ -2,112 +2,101 @@
 
 exports[`Select.combobox allowClear renders correctly 1`] = `
 <div
-  id="TriggerContainer"
+  class="rc-select rc-select-combobox rc-select-enabled rc-select-allow-clear"
 >
   <div
-    class="rc-select rc-select-combobox rc-select-enabled rc-select-allow-clear"
+    aria-autocomplete="list"
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="rc-select-selection
+            rc-select-selection--single"
+    role="combobox"
   >
     <div
-      aria-autocomplete="list"
-      aria-expanded="false"
-      aria-haspopup="true"
-      class="rc-select-selection
-                rc-select-selection--single"
-      role="combobox"
+      class="rc-select-selection__rendered"
     >
-      <div
-        class="rc-select-selection__rendered"
-      >
-        <ul>
-          <li
-            class="rc-select-search rc-select-search--inline"
+      <ul>
+        <li
+          class="rc-select-search rc-select-search--inline"
+        >
+          <div
+            class="rc-select-search__field__wrap"
           >
-            <div
-              class="rc-select-search__field__wrap"
+            <input
+              autocomplete="off"
+              class="rc-select-search__field"
+              value=""
+            />
+            <span
+              class="rc-select-search__field__mirror"
             >
-              <input
-                class="rc-select-search__field"
-                value=""
-              />
-              <span
-                class="rc-select-search__field__mirror"
-              >
-                 
-              </span>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <span
-        class="rc-select-selection__clear"
-        style="user-select:none;-webkit-user-select:none;display:none;"
-        unselectable="unselectable"
-      />
-      <span
-        class="rc-select-arrow"
-        style="user-select:none;-webkit-user-select:none;"
-        unselectable="unselectable"
-      >
-        <b />
-      </span>
+               
+            </span>
+          </div>
+        </li>
+      </ul>
     </div>
+    <span
+      class="rc-select-arrow"
+      style="user-select:none;-webkit-user-select:none"
+      unselectable="unselectable"
+    >
+      <b />
+    </span>
   </div>
 </div>
 `;
 
 exports[`Select.combobox renders correctly 1`] = `
 <div
-  id="TriggerContainer"
+  class="rc-select rc-select-combobox rc-select-enabled"
 >
   <div
-    class="rc-select rc-select-combobox rc-select-enabled"
+    aria-autocomplete="list"
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="rc-select-selection
+            rc-select-selection--single"
+    role="combobox"
   >
     <div
-      aria-autocomplete="list"
-      aria-expanded="false"
-      aria-haspopup="true"
-      class="rc-select-selection
-                rc-select-selection--single"
-      role="combobox"
+      class="rc-select-selection__rendered"
     >
       <div
-        class="rc-select-selection__rendered"
-      >
-        <div
-          class="rc-select-selection__placeholder"
-          style="display:block;user-select:none;-webkit-user-select:none;"
-          unselectable="unselectable"
-        >
-          Search
-        </div>
-        <ul>
-          <li
-            class="rc-select-search rc-select-search--inline"
-          >
-            <div
-              class="rc-select-search__field__wrap"
-            >
-              <input
-                class="rc-select-search__field"
-                value=""
-              />
-              <span
-                class="rc-select-search__field__mirror"
-              >
-                 
-              </span>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <span
-        class="rc-select-arrow"
-        style="user-select:none;-webkit-user-select:none;"
+        class="rc-select-selection__placeholder"
+        style="display:block;user-select:none;-webkit-user-select:none"
         unselectable="unselectable"
       >
-        <b />
-      </span>
+        Search
+      </div>
+      <ul>
+        <li
+          class="rc-select-search rc-select-search--inline"
+        >
+          <div
+            class="rc-select-search__field__wrap"
+          >
+            <input
+              autocomplete="off"
+              class="rc-select-search__field"
+              value=""
+            />
+            <span
+              class="rc-select-search__field__mirror"
+            >
+               
+            </span>
+          </div>
+        </li>
+      </ul>
     </div>
+    <span
+      class="rc-select-arrow"
+      style="user-select:none;-webkit-user-select:none"
+      unselectable="unselectable"
+    >
+      <b />
+    </span>
   </div>
 </div>
 `;

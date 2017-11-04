@@ -8,7 +8,7 @@ import 'rc-select/assets/index.less';
 class Demo extends React.Component {
   state = {
     disabled: false,
-    value: 'l',
+    value: '',
   };
 
   onChange = (value) => {
@@ -45,12 +45,12 @@ class Demo extends React.Component {
           style={{ width: 500 }}
           onChange={this.onChange}
           onSelect={this.onSelect}
-          defaultActiveFirstOption={false}
           notFoundContent=""
           allowClear
           placeholder="please select"
           value={this.state.value}
           combobox
+          backfill
         >
           <Option value="jack">
             <b style={{ color: 'red' }}>jack</b>

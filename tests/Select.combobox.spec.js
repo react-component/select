@@ -1,11 +1,16 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-undef, react/no-multi-comp */
 import React from 'react';
 import Select, { Option } from '../src';
 import { mount, render } from 'enzyme';
+import KeyCode from 'rc-util/lib/KeyCode';
 import allowClearTest from './shared/allowClearTest';
+import throwOptionValue from './shared/throwOptionValue';
+import focusTest from './shared/focusTest';
 
 describe('Select.combobox', () => {
   allowClearTest('combobox');
+  throwOptionValue('combobox');
+  focusTest('combobox');
 
   it('renders correctly', () => {
     const wrapper = render(
@@ -52,9 +57,7 @@ describe('Select.combobox', () => {
     );
 
     wrapper.find('.rc-select').simulate('click');
-    const dropdownWrapper = mount(wrapper.find('Trigger').node.getComponent());
-
-    dropdownWrapper.find('MenuItem').first().simulate('click');
+    wrapper.find('MenuItem').first().simulate('click');
     expect(wrapper.state().inputValue).toBe('1');
   });
 
@@ -112,5 +115,143 @@ describe('Select.combobox', () => {
         expect(wrapper.find('input').props().value).toBe('One');
       });
     });
+
+    describe('hidden when filtered options is empty', () => {
+      // https://github.com/ant-design/ant-design/issues/3958
+      it('should popup when input with async data', () => {
+        jest.useFakeTimers();
+        class AsyncCombobox extends React.Component {
+          state = {
+            data: [],
+          }
+          handleChange = () => {
+            setTimeout(() => {
+              this.setState({
+                data: [{ key: '1', label: '1' }, { key: '2', label: '2' }],
+              });
+            }, 500);
+          }
+          render() {
+            const options = this.state.data.map(item => (
+              <Option key={item.key}>{item.label}</Option>
+            ));
+            return (
+              <Select
+                combobox
+                onChange={this.handleChange}
+                filterOption={false}
+                notFoundContent=""
+              >
+                {options}
+              </Select>
+            );
+          }
+        }
+        const wrapper = mount(<AsyncCombobox />);
+        wrapper.find('input').simulate('focus');
+        wrapper.find('input').simulate('change', { target: { value: '0' } });
+        jest.runAllTimers();
+        wrapper.update();
+        expect(wrapper.find('.rc-select-dropdown').hostNodes()
+          .hasClass('rc-select-dropdown-hidden')).toBe(false);
+      });
+
+      // https://github.com/ant-design/ant-design/issues/6600
+      it('should not repop menu after select', () => {
+        jest.useFakeTimers();
+        class AsyncCombobox extends React.Component {
+          state = {
+            data: [{ key: '1', label: '1' }, { key: '2', label: '2' }],
+          }
+          onSelect = () => {
+            setTimeout(() => {
+              this.setState({
+                data: [{ key: '3', label: '3' }, { key: '4', label: '4' }],
+              });
+            }, 500);
+          }
+          render() {
+            const options = this.state.data.map(item => (
+              <Option key={item.key}>{item.label}</Option>
+            ));
+            return (
+              <Select
+                combobox
+                onSelect={this.onSelect}
+                filterOption={false}
+                notFoundContent=""
+              >
+                {options}
+              </Select>
+            );
+          }
+        }
+        const wrapper = mount(<AsyncCombobox />);
+        wrapper.find('input').simulate('focus');
+        wrapper.find('input').simulate('change', { target: { value: '0' } });
+        expect(wrapper.find('.rc-select-dropdown').hostNodes()
+          .hasClass('rc-select-dropdown-hidden')).toBe(false);
+        wrapper.find('MenuItem').first().simulate('click');
+        jest.runAllTimers();
+        expect(wrapper.find('.rc-select-dropdown').length).toBe(0);
+      });
+    });
+  });
+
+  it('backfill', () => {
+    const handleChange = jest.fn();
+    const handleSelect = jest.fn();
+    const wrapper = mount(
+      <Select
+        combobox
+        backfill
+        open
+        onChange={handleChange}
+        onSelect={handleSelect}
+      >
+        <Option value="One">One</Option>
+        <Option value="Two">Two</Option>
+      </Select>
+    );
+
+    const input = wrapper.find('input');
+
+    input.simulate('keyDown', { keyCode: KeyCode.DOWN });
+
+    expect(wrapper.state().value).toEqual([
+      {
+        key: 'Two',
+        label: 'Two',
+        backfill: true,
+      },
+    ]);
+    expect(wrapper.state().inputValue).toBe('Two');
+    expect(handleChange).not.toBeCalled();
+    expect(handleSelect).not.toBeCalled();
+
+    input.simulate('keyDown', { keyCode: KeyCode.ENTER });
+
+    expect(wrapper.state().value).toEqual([
+      {
+        key: 'Two',
+        label: 'Two',
+      },
+    ]);
+    expect(handleChange).toBeCalledWith('Two');
+    expect(handleSelect).toBeCalledWith('Two', expect.anything());
+  });
+
+  it('should hide clear icon when inputValue is \'\'', () => {
+    const wrapper = mount(
+      <Select combobox allowClear>
+        <Option value="One">One</Option>
+        <Option value="Two">Two</Option>
+      </Select>
+    );
+
+    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    expect(wrapper.find('.rc-select-selection__clear').length).toBe(1);
+    wrapper.find('input').simulate('change', { target: { value: '' } });
+    expect(wrapper.find('.rc-select-selection__clear').length).toBe(0);
   });
 });

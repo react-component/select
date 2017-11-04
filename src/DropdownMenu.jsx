@@ -1,14 +1,13 @@
 import React, { cloneElement } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
-import createClass from 'create-react-class';
 import toArray from 'rc-util/lib/Children/toArray';
 import Menu from 'rc-menu';
 import scrollIntoView from 'dom-scroll-into-view';
-import { getSelectKeys, preventDefaultEvent } from './util';
+import { getSelectKeys, preventDefaultEvent, saveRef } from './util';
 
-const DropdownMenu = createClass({
-  propTypes: {
+export default class DropdownMenu extends React.Component {
+  static propTypes = {
     defaultActiveFirstOption: PropTypes.bool,
     value: PropTypes.any,
     dropdownMenuStyle: PropTypes.object,
@@ -21,16 +20,16 @@ const DropdownMenu = createClass({
     menuItems: PropTypes.any,
     inputValue: PropTypes.string,
     visible: PropTypes.bool,
-  },
+  };
 
   componentWillMount() {
     this.lastInputValue = this.props.inputValue;
-  },
+  }
 
   componentDidMount() {
     this.scrollActiveItemToView();
     this.lastVisible = this.props.visible;
-  },
+  }
 
   shouldComponentUpdate(nextProps) {
     if (!nextProps.visible) {
@@ -38,7 +37,7 @@ const DropdownMenu = createClass({
     }
     // freeze when hide
     return nextProps.visible;
-  },
+  }
 
   componentDidUpdate(prevProps) {
     const props = this.props;
@@ -47,25 +46,43 @@ const DropdownMenu = createClass({
     }
     this.lastVisible = props.visible;
     this.lastInputValue = props.inputValue;
-  },
+  }
 
-  scrollActiveItemToView() {
+  scrollActiveItemToView = () => {
     // scroll into view
     const itemComponent = findDOMNode(this.firstActiveItem);
+    const props = this.props;
+
     if (itemComponent) {
-      scrollIntoView(itemComponent, findDOMNode(this.refs.menu), {
+      const scrollIntoViewOpts = {
         onlyScrollIfNeeded: true,
-      });
+      };
+      if (
+        (!props.value || props.value.length === 0) &&
+        props.firstActiveValue
+      ) {
+        scrollIntoViewOpts.alignWithTop = true;
+      }
+
+      scrollIntoView(
+        itemComponent,
+        findDOMNode(this.menuRef),
+        scrollIntoViewOpts
+      );
     }
-  },
+  };
 
   renderMenu() {
     const props = this.props;
     const {
       menuItems,
-      defaultActiveFirstOption, value,
-      prefixCls, multiple,
-      onMenuSelect, inputValue,
+      defaultActiveFirstOption,
+      value,
+      prefixCls,
+      multiple,
+      onMenuSelect,
+      inputValue,
+      firstActiveValue,
     } = props;
     if (menuItems && menuItems.length) {
       const menuProps = {};
@@ -80,18 +97,23 @@ const DropdownMenu = createClass({
       const activeKeyProps = {};
 
       let clonedMenuItems = menuItems;
-      if (selectedKeys.length) {
+      if (selectedKeys.length || firstActiveValue) {
         if (props.visible && !this.lastVisible) {
-          activeKeyProps.activeKey = selectedKeys[0];
+          activeKeyProps.activeKey = selectedKeys[0] || firstActiveValue;
         }
         let foundFirst = false;
         // set firstActiveItem via cloning menus
         // for scroll into view
-        const clone = (item) => {
-          if (!foundFirst && selectedKeys.indexOf(item.key) !== -1) {
+        const clone = item => {
+          if (
+            (!foundFirst && selectedKeys.indexOf(item.key) !== -1) ||
+            (!foundFirst &&
+              !selectedKeys.length &&
+              firstActiveValue.indexOf(item.key) !== -1)
+          ) {
             foundFirst = true;
             return cloneElement(item, {
-              ref: (ref) => {
+              ref: ref => {
                 this.firstActiveItem = ref;
               },
             });
@@ -109,26 +131,29 @@ const DropdownMenu = createClass({
       }
 
       // clear activeKey when inputValue change
-      if (inputValue !== this.lastInputValue) {
+      const lastValue = value && value[value.length - 1];
+      if (inputValue !== this.lastInputValue && (!lastValue || !lastValue.backfill)) {
         activeKeyProps.activeKey = '';
       }
 
-      return (<Menu
-        ref="menu"
-        style={this.props.dropdownMenuStyle}
-        defaultActiveFirst={defaultActiveFirstOption}
-        {...activeKeyProps}
-        multiple={multiple}
-        focusable={false}
-        {...menuProps}
-        selectedKeys={selectedKeys}
-        prefixCls={`${prefixCls}-menu`}
-      >
-        {clonedMenuItems}
-      </Menu>);
+      return (
+        <Menu
+          ref={saveRef(this, 'menuRef')}
+          style={this.props.dropdownMenuStyle}
+          defaultActiveFirst={defaultActiveFirstOption}
+          {...activeKeyProps}
+          multiple={multiple}
+          focusable={false}
+          {...menuProps}
+          selectedKeys={selectedKeys}
+          prefixCls={`${prefixCls}-menu`}
+        >
+          {clonedMenuItems}
+        </Menu>
+      );
     }
     return null;
-  },
+  }
 
   render() {
     const renderMenu = this.renderMenu();
@@ -142,8 +167,7 @@ const DropdownMenu = createClass({
         {renderMenu}
       </div>
     ) : null;
-  },
-});
+  }
+}
 
 DropdownMenu.displayName = 'DropdownMenu';
-export default DropdownMenu;
