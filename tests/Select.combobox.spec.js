@@ -119,6 +119,7 @@ describe('Select.combobox', () => {
     describe('hidden when filtered options is empty', () => {
       // https://github.com/ant-design/ant-design/issues/3958
       it('should popup when input with async data', () => {
+        jest.useFakeTimers();
         class AsyncCombobox extends React.Component {
           state = {
             data: [],
@@ -149,7 +150,7 @@ describe('Select.combobox', () => {
         const wrapper = mount(<AsyncCombobox />);
         wrapper.find('input').simulate('focus');
         wrapper.find('input').simulate('change', { target: { value: '0' } });
-        jest.advanceTimersByTime(500);
+        jest.runAllTimers();
         wrapper.update();
         expect(wrapper.find('.rc-select-dropdown').hostNodes()
           .hasClass('rc-select-dropdown-hidden')).toBe(false);
@@ -157,6 +158,7 @@ describe('Select.combobox', () => {
 
       // https://github.com/ant-design/ant-design/issues/6600
       it('should not repop menu after select', () => {
+        jest.useFakeTimers();
         class AsyncCombobox extends React.Component {
           state = {
             data: [{ key: '1', label: '1' }, { key: '2', label: '2' }],
@@ -190,7 +192,7 @@ describe('Select.combobox', () => {
         expect(wrapper.find('.rc-select-dropdown').hostNodes()
           .hasClass('rc-select-dropdown-hidden')).toBe(false);
         wrapper.find('MenuItem').first().simulate('click');
-        jest.advanceTimersByTime(500);
+        jest.runAllTimers();
         expect(wrapper.find('.rc-select-dropdown').length).toBe(0);
       });
     });
