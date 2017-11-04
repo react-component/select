@@ -2,9 +2,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import KeyCode from 'rc-util/lib/KeyCode';
+import childrenToArray from 'rc-util/lib/Children/toArray';
 import classnames from 'classnames';
 import Animate from 'rc-animate';
 import classes from 'component-classes';
+import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
+import warning from 'warning';
+
 import {
   getPropValue,
   getValuePropValue,
@@ -27,8 +31,6 @@ import {
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import { SelectPropTypes } from './PropTypes';
-import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
-import warning from 'warning';
 
 function noop() {}
 
@@ -812,7 +814,7 @@ export default class Select extends React.Component {
   };
 
   isChildDisabled = key => {
-    return toArray(this.props.children).some(child => {
+    return childrenToArray(this.props.children).some(child => {
       const childValue = getValuePropValue(child);
       return childValue === key && child.props && child.props.disabled;
     });
