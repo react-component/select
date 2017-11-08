@@ -8,6 +8,7 @@ import Animate from 'rc-animate';
 import classes from 'component-classes';
 import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
 import warning from 'warning';
+import Trigger from 'rc-trigger';
 
 import {
   getPropValue,
@@ -1005,6 +1006,33 @@ export default class Select extends React.Component {
     return sel;
   };
 
+  renderPopUp = (items) => {
+    return (
+      <div
+        style={{
+          border: '1px solid #666',
+          paddingLeft: 10,
+          paddingRight: 10,
+          paddingBottom: 5,
+          background: 'white',
+          maxHeight: '200px',
+          width: '200px',
+          overflow: 'auto',
+        }}
+      >
+        <ul style={{ paddingLeft: 0, listStyleType: 'none', margin: 0 }}>
+          {items.map(item => (
+            <li
+              key={item.key}
+            >
+              {item.label}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
+
   renderTopControlNode = () => {
     const { value, open, inputValue } = this.state;
     const props = this.props;
@@ -1070,10 +1098,26 @@ export default class Select extends React.Component {
     } else {
       let selectedValueNodes = [];
       let limitedCountValue = value;
+      let maxTagValue = [];
       let maxTagPlaceholderEl;
       if (maxTagCount && value.length > maxTagCount) {
         limitedCountValue = limitedCountValue.slice(0, maxTagCount);
-        const content = maxTagPlaceholder || `+ ${value.length - maxTagCount} ...`;
+        maxTagValue = value.slice(maxTagCount, value.length);
+        const content = maxTagPlaceholder || (
+          <Trigger
+            action={['hover']}
+            popup={this.renderPopUp(maxTagValue)}
+            destroyPopupOnHide
+            popupAlign={{
+              points: ['tl', 'bl'],
+              offset: [0, 3],
+            }}
+          >
+            <div className={`${prefixCls}-selection__choice__content`}>
+              {`+ ${value.length - maxTagCount} ...`}
+            </div>
+          </Trigger>
+        );
         maxTagPlaceholderEl = (<li
           style={UNSELECTABLE_STYLE}
           {...UNSELECTABLE_ATTRIBUTE}
@@ -1082,7 +1126,7 @@ export default class Select extends React.Component {
           key={'maxTagPlaceholder'}
           title={content}
         >
-          <div className={`${prefixCls}-selection__choice__content`}>{content}</div>
+          {content}
         </li>);
       }
       if (isMultipleOrTags(props)) {

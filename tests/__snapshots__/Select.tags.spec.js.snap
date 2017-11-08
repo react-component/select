@@ -170,7 +170,7 @@ exports[`Select.tags render truncates tags by maxTagCount 1`] = `
         <li
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
           style="user-select:none;-webkit-user-select:none"
-          title="+ 1 ..."
+          title="[object Object]"
           unselectable="unselectable"
         >
           <div

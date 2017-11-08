@@ -74,6 +74,7 @@ class Test extends React.Component {
             onChange={this.onChange}
             onFocus={() => console.log('focus')}
             tokenSeparators={[' ', ',']}
+            maxTagCount={3}
           >
             {children}
           </Select>
