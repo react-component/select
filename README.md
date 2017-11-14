@@ -85,7 +85,7 @@ React.render(c, container);
 |disabled | whether disabled select | bool | false |
 |filterOption | whether filter options by input value. default filter by option's optionFilterProp prop's value | bool | true/Function(inputValue:string, option:Option) |
 |optionFilterProp | which prop value of option will be used for filter if filterOption is true | String | 'value' |
-|optionLabelProp | which prop value of option will render as content of select | String | 'value' |
+|optionLabelProp | render option value or option children as content of select | String: 'value'/'children' | 'value' |
 |defaultValue | initial selected option(s) | String/Array<String> | - |
 |value | current selected option(s) | String/Array<String>/{key:String, label:React.Node}/Array<{key, label}> | - |
 |firstActiveValue | first active value when there is no value | String/Array<String> | - |
