@@ -23,10 +23,13 @@ function valueType(props, propName, componentName) {
           `shape of \`{ key: string | number, label?: string | number }\`.`
       );
     }
-  } else if (props.multiple && props[propName] === '') {
+  } else if (
+    (props.mode === 'multiple' || props.mode === 'tags' || props.multiple || props.tags)
+    && props[propName] === ''
+  ) {
     return new Error(
       `Invalid prop \`${propName}\` of type \`string\` supplied to \`${componentName}\`, ` +
-        `expected \`array\` when \`multiple\` is \`true\`.`
+        `expected \`array\` when \`multiple\` or \`tags\` is \`true\`.`
     );
   } else {
     const validate = PropTypes.oneOfType([
