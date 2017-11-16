@@ -193,7 +193,8 @@ describe('Select.combobox', () => {
           .hasClass('rc-select-dropdown-hidden')).toBe(false);
         wrapper.find('MenuItem').first().simulate('click');
         jest.runAllTimers();
-        expect(wrapper.find('.rc-select-dropdown').length).toBe(0);
+        expect(wrapper.find('.rc-select-dropdown').hostNodes()
+          .hasClass('rc-select-dropdown-hidden')).toBe(true);
       });
     });
   });
