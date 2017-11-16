@@ -492,6 +492,7 @@ function getContainerRenderMixin(config) {
       _config$autoDestroy = config.autoDestroy,
       autoDestroy = _config$autoDestroy === undefined ? true : _config$autoDestroy,
       isVisible = config.isVisible,
+      isForceRender = config.isForceRender,
       getComponent = config.getComponent,
       _config$getContainer = config.getContainer,
       getContainer = _config$getContainer === undefined ? defaultGetContainer : _config$getContainer;
@@ -500,7 +501,7 @@ function getContainerRenderMixin(config) {
   var mixin = void 0;
 
   function _renderComponent(instance, componentArg, ready) {
-    if (!isVisible || instance._component || isVisible(instance)) {
+    if (!isVisible || instance._component || isVisible(instance) || isForceRender && isForceRender(instance)) {
       if (!instance._container) {
         instance._container = getContainer(instance);
       }
