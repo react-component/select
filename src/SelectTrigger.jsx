@@ -30,6 +30,7 @@ const BUILT_IN_PLACEMENTS = {
 export default class SelectTrigger extends React.Component {
   static propTypes = {
     onPopupFocus: PropTypes.func,
+    onPopupScroll: PropTypes.func,
     dropdownMatchSelectWidth: PropTypes.bool,
     dropdownAlign: PropTypes.object,
     visible: PropTypes.bool,
@@ -82,6 +83,7 @@ export default class SelectTrigger extends React.Component {
         prefixCls={this.getDropdownPrefixCls()}
         onMenuSelect={props.onMenuSelect}
         onMenuDeselect={props.onMenuDeselect}
+        onPopupScroll={props.onPopupScroll}
         value={props.value}
         firstActiveValue={props.firstActiveValue}
         defaultActiveFirstOption={props.defaultActiveFirstOption}

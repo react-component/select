@@ -13,6 +13,7 @@ export default class DropdownMenu extends React.Component {
     dropdownMenuStyle: PropTypes.object,
     multiple: PropTypes.bool,
     onPopupFocus: PropTypes.func,
+    onPopupScroll: PropTypes.func,
     onMenuDeSelect: PropTypes.func,
     onMenuSelect: PropTypes.func,
     prefixCls: PropTypes.string,
@@ -161,6 +162,7 @@ export default class DropdownMenu extends React.Component {
         style={{ overflow: 'auto' }}
         onFocus={this.props.onPopupFocus}
         onMouseDown={preventDefaultEvent}
+        onScroll={this.props.onPopupScroll}
       >
         {renderMenu}
       </div>

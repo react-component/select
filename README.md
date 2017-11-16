@@ -95,6 +95,7 @@ React.render(c, container);
 |onSearch | called when input changed | function | - |
 |onBlur | called when blur | function | - |
 |onFocus | called when focus | function | - |
+|onPopupScroll | called when menu is scrolled | function | - |
 |onSelect | called when a option is selected. param is option's value and option instance | Function(value, option:Option) | - |
 |onDeselect | called when a option is deselected. param is option's value. only called for multiple or tags | Function(value) | - |
 |defaultActiveFirstOption | whether active first option by default | bool | true |

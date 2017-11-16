@@ -1239,6 +1239,7 @@ export default class Select extends React.Component {
         getPopupContainer={props.getPopupContainer}
         onMenuSelect={this.onMenuSelect}
         onMenuDeselect={this.onMenuDeselect}
+        onPopupScroll={props.onPopupScroll}
         showAction={props.showAction}
         ref={saveRef(this, 'selectTriggerRef')}
       >
