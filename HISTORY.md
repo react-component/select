@@ -1,6 +1,10 @@
 # History
 ----
 
+## 7.2.0 / 2017-11-16
+
+- Add onPopupScroll.
+
 ## 7.0.0 / 2017-10-30
 
 - Allow numbe value in Option
