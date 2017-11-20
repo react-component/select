@@ -3328,7 +3328,7 @@ var SelectPropTypes = {
   dropdownStyle: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.object,
   maxTagTextLength: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.number,
   maxTagCount: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.number,
-  maxTagPlaceholder: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.any,
+  maxTagPlaceholder: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.oneOfType([__WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.node, __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func]),
   tokenSeparators: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.arrayOf(__WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string),
   getInputElement: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
   showAction: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.arrayOf(__WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string)
@@ -7202,7 +7202,11 @@ var _initialiseProps = function _initialiseProps() {
       var maxTagPlaceholderEl = void 0;
       if (maxTagCount && value.length > maxTagCount) {
         limitedCountValue = limitedCountValue.slice(0, maxTagCount);
-        var content = maxTagPlaceholder || '+ ' + (value.length - maxTagCount) + ' ...';
+        var omittedValues = _this2.getVLForOnChange(value.slice(maxTagCount, value.length));
+        var content = '+ ' + (value.length - maxTagCount) + ' ...';
+        if (maxTagPlaceholder) {
+          content = typeof maxTagPlaceholder === 'function' ? maxTagPlaceholder(omittedValues) : maxTagPlaceholder;
+        }
         maxTagPlaceholderEl = __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(
           'li',
           __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({
