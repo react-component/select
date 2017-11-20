@@ -80,6 +80,8 @@ React.render(c, container);
 |allowClear | whether allowClear | bool | false |
 |tags | when tagging is enabled the user can select from pre-existing options or create a new tag by picking the first choice, which is what the user has typed into the search box so far. | bool | false |
 |maxTagTextLength | max tag text length to show | number | - |
+|maxTagCount | max tag count to show | number | - |
+|maxTagPlaceholder | placeholder for omitted values | ReactNode/function(omittedValues) | - |
 |combobox | enable combobox mode(can not set multiple at the same time) | bool | false |
 |multiple | whether multiple select | bool | false |
 |disabled | whether disabled select | bool | false |

@@ -73,7 +73,10 @@ export const SelectPropTypes = {
   dropdownStyle: PropTypes.object,
   maxTagTextLength: PropTypes.number,
   maxTagCount: PropTypes.number,
-  maxTagPlaceholder: PropTypes.any,
+  maxTagPlaceholder: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.func,
+  ]),
   tokenSeparators: PropTypes.arrayOf(PropTypes.string),
   getInputElement: PropTypes.func,
   showAction: PropTypes.arrayOf(PropTypes.string),

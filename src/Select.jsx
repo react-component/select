@@ -1073,7 +1073,12 @@ export default class Select extends React.Component {
       let maxTagPlaceholderEl;
       if (maxTagCount && value.length > maxTagCount) {
         limitedCountValue = limitedCountValue.slice(0, maxTagCount);
-        const content = maxTagPlaceholder || `+ ${value.length - maxTagCount} ...`;
+        const omittedValues = this.getVLForOnChange(value.slice(maxTagCount, value.length));
+        let content = `+ ${value.length - maxTagCount} ...`;
+        if (maxTagPlaceholder) {
+          content = typeof maxTagPlaceholder === 'function' ?
+            maxTagPlaceholder(omittedValues) : maxTagPlaceholder;
+        }
         maxTagPlaceholderEl = (<li
           style={UNSELECTABLE_STYLE}
           {...UNSELECTABLE_ATTRIBUTE}

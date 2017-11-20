@@ -203,6 +203,174 @@ exports[`Select.multiple render truncates tags by maxTagCount 1`] = `
 </div>
 `;
 
+exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPlaceholder 1`] = `
+<div
+  class="rc-select rc-select-enabled"
+>
+  <div
+    aria-autocomplete="list"
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="rc-select-selection
+            rc-select-selection--multiple"
+    role="combobox"
+  >
+    <div
+      class="rc-select-selection__rendered"
+    >
+      <ul>
+        <li
+          class="rc-select-selection__choice"
+          style="user-select:none;-webkit-user-select:none"
+          title="one"
+          unselectable="unselectable"
+        >
+          <div
+            class="rc-select-selection__choice__content"
+          >
+            one
+          </div>
+          <span
+            class="rc-select-selection__choice__remove"
+          />
+        </li>
+        <li
+          class="rc-select-selection__choice"
+          style="user-select:none;-webkit-user-select:none"
+          title="two"
+          unselectable="unselectable"
+        >
+          <div
+            class="rc-select-selection__choice__content"
+          >
+            two
+          </div>
+          <span
+            class="rc-select-selection__choice__remove"
+          />
+        </li>
+        <li
+          class="rc-select-selection__choice rc-select-selection__choice__disabled"
+          style="user-select:none;-webkit-user-select:none"
+          title="[object Object]"
+          unselectable="unselectable"
+        >
+          <div
+            class="rc-select-selection__choice__content"
+          >
+            <span>
+              Omitted
+            </span>
+          </div>
+        </li>
+        <li
+          class="rc-select-search rc-select-search--inline"
+        >
+          <div
+            class="rc-select-search__field__wrap"
+          >
+            <input
+              autocomplete="off"
+              class="rc-select-search__field"
+              value=""
+            />
+            <span
+              class="rc-select-search__field__mirror"
+            >
+               
+            </span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPlaceholder function 1`] = `
+<div
+  class="rc-select rc-select-enabled"
+>
+  <div
+    aria-autocomplete="list"
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="rc-select-selection
+            rc-select-selection--multiple"
+    role="combobox"
+  >
+    <div
+      class="rc-select-selection__rendered"
+    >
+      <ul>
+        <li
+          class="rc-select-selection__choice"
+          style="user-select:none;-webkit-user-select:none"
+          title="one"
+          unselectable="unselectable"
+        >
+          <div
+            class="rc-select-selection__choice__content"
+          >
+            one
+          </div>
+          <span
+            class="rc-select-selection__choice__remove"
+          />
+        </li>
+        <li
+          class="rc-select-selection__choice"
+          style="user-select:none;-webkit-user-select:none"
+          title="two"
+          unselectable="unselectable"
+        >
+          <div
+            class="rc-select-selection__choice__content"
+          >
+            two
+          </div>
+          <span
+            class="rc-select-selection__choice__remove"
+          />
+        </li>
+        <li
+          class="rc-select-selection__choice rc-select-selection__choice__disabled"
+          style="user-select:none;-webkit-user-select:none"
+          title="[object Object]"
+          unselectable="unselectable"
+        >
+          <div
+            class="rc-select-selection__choice__content"
+          >
+            <span>
+              1 values omitted
+            </span>
+          </div>
+        </li>
+        <li
+          class="rc-select-search rc-select-search--inline"
+        >
+          <div
+            class="rc-select-search__field__wrap"
+          >
+            <input
+              autocomplete="off"
+              class="rc-select-search__field"
+              value=""
+            />
+            <span
+              class="rc-select-search__field__mirror"
+            >
+               
+            </span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`Select.multiple render truncates values by maxTagTextLength 1`] = `
 <div
   class="rc-select rc-select-enabled"
