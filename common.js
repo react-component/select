@@ -3279,13 +3279,13 @@ function valueType(props, propName, componentName) {
 
   var labelInValueShape = __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.shape({
     key: basicType.isRequired,
-    label: basicType
+    label: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.node
   });
   if (props.labelInValue) {
     var validate = __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.oneOfType([__WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.arrayOf(labelInValueShape), labelInValueShape]);
     var error = validate.apply(undefined, arguments);
     if (error) {
-      return new Error('Invalid prop `' + propName + '` supplied to `' + componentName + '`, ' + ('when you set `labelInValue` to `true`, `' + propName + '` should in ') + 'shape of `{ key: string | number, label?: string | number }`.');
+      return new Error('Invalid prop `' + propName + '` supplied to `' + componentName + '`, ' + ('when you set `labelInValue` to `true`, `' + propName + '` should in ') + 'shape of `{ key: string | number, label?: ReactNode }`.');
     }
   } else if ((props.mode === 'multiple' || props.mode === 'tags' || props.multiple || props.tags) && props[propName] === '') {
     return new Error('Invalid prop `' + propName + '` of type `string` supplied to `' + componentName + '`, ' + 'expected `array` when `multiple` or `tags` is `true`.');
