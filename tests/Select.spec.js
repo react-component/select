@@ -578,7 +578,7 @@ describe('Select', () => {
       expect(spy.mock.calls[0][0]).toMatch(
         'Warning: Failed prop type: Invalid prop `value` supplied to `Select`, ' +
         'when you set `labelInValue` to `true`,' +
-        ' `value` should in shape of `{ key: string | number, label?: string | number }`'
+        ' `value` should in shape of `{ key: string | number, label?: ReactNode }`'
       );
     });
 

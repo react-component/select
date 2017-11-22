@@ -8,7 +8,7 @@ function valueType(props, propName, componentName) {
 
   const labelInValueShape = PropTypes.shape({
     key: basicType.isRequired,
-    label: basicType,
+    label: PropTypes.node,
   });
   if (props.labelInValue) {
     const validate = PropTypes.oneOfType([
@@ -20,7 +20,7 @@ function valueType(props, propName, componentName) {
       return new Error(
         `Invalid prop \`${propName}\` supplied to \`${componentName}\`, ` +
           `when you set \`labelInValue\` to \`true\`, \`${propName}\` should in ` +
-          `shape of \`{ key: string | number, label?: string | number }\`.`
+          `shape of \`{ key: string | number, label?: ReactNode }\`.`
       );
     }
   } else if (
