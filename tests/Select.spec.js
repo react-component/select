@@ -763,4 +763,17 @@ describe('Select', () => {
 
     expect(wrapper.find('.rc-select').hasClass('rc-select-open')).toBe(true);
   });
+
+  it('default filterOption is case insensitive', () => {
+    const wrapper = mount(
+      <Select>
+        <Option value="ABC">ABC</Option>
+        <Option value="DEF">DEF</Option>
+      </Select>
+    );
+
+    wrapper.find('input').simulate('change', { target: { value: 'B' } });
+    expect(wrapper.find('MenuItem').length).toBe(1);
+    expect(wrapper.find('MenuItem').props().value).toBe('ABC');
+  });
 });

@@ -666,10 +666,10 @@ export default class Select extends React.Component {
 
     if (!filterFn) {
       return true;
-    } else if (child.props.disabled) {
-      return false;
     } else if (typeof filterFn === 'function') {
       return filterFn.call(this, input, child);
+    } else if (child.props.disabled) {
+      return false;
     }
     return true;
   };

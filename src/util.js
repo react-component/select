@@ -139,8 +139,12 @@ export function splitBySeparators(string, separators) {
 }
 
 export function defaultFilterFn(input, child) {
+  if (child.props.disabled) {
+    return false;
+  }
+  const value = String(getPropValue(child, this.props.optionFilterProp));
   return (
-    String(getPropValue(child, this.props.optionFilterProp)).indexOf(input) > -1
+    value.toLowerCase().indexOf(input.toLowerCase()) > -1
   );
 }
 
