@@ -5,10 +5,12 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import Select, { Option, OptGroup } from '../src';
 import focusTest from './shared/focusTest';
 import blurTest from './shared/blurTest';
+import keyDownTest from './shared/keyDownTest';
 
 describe('Select', () => {
   focusTest('single');
   blurTest('single');
+  keyDownTest('single');
 
   describe('render', () => {
     const select = (
