@@ -44,7 +44,7 @@ describe('Select', () => {
       expect(wrapper).toMatchSnapshot();
     });
 
-    fit('renders disabeld select correctly', () => {
+    it('renders disabeld select correctly', () => {
       const wrapper = render(React.cloneElement(select, { disabled: true }));
       expect(wrapper).toMatchSnapshot();
     });
