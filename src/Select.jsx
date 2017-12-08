@@ -62,6 +62,7 @@ export default class Select extends React.Component {
     onSelect: noop,
     onSearch: noop,
     onDeselect: noop,
+    onInputKeyDown: noop,
     showArrow: true,
     dropdownMatchSelectWidth: true,
     dropdownStyle: {},
@@ -543,7 +544,8 @@ export default class Select extends React.Component {
           onChange: this.onInputChange,
           onKeyDown: chaining(
             this.onInputKeyDown,
-            inputElement.props.onKeyDown
+            inputElement.props.onKeyDown,
+            this.props.onInputKeyDown
           ),
           value: this.state.inputValue,
           disabled: props.disabled,

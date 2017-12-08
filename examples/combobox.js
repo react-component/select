@@ -39,12 +39,13 @@ class Demo extends React.Component {
       <p>
         <button onClick={this.toggleDisabled}>toggle disabled</button>
       </p>
-      <div style={{ width: 300 }} onKeyDown={this.onKeyDown}>
+      <div style={{ width: 300 }}>
         <Select
           disabled={this.state.disabled}
           style={{ width: 500 }}
           onChange={this.onChange}
           onSelect={this.onSelect}
+          onInputKeyDown={this.onKeyDown}
           notFoundContent=""
           allowClear
           placeholder="please select"

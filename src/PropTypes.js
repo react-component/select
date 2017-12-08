@@ -65,6 +65,7 @@ export const SelectPropTypes = {
   onPopupScroll: PropTypes.func,
   onMouseEnter: PropTypes.func,
   onMouseLeave: PropTypes.func,
+  onInputKeyDown: PropTypes.func,
   placeholder: PropTypes.any,
   onDeselect: PropTypes.func,
   labelInValue: PropTypes.bool,
