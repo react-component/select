@@ -1204,7 +1204,7 @@ export default class Select extends React.Component {
     if (!isMultipleOrTagsOrCombobox(props)) {
       extraSelectionProps = {
         onKeyDown: this.onKeyDown,
-        tabIndex: 0,
+        tabIndex: props.disabled ? -1 : 0,
       };
     }
     const rootCls = {

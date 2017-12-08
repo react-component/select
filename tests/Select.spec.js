@@ -43,6 +43,11 @@ describe('Select', () => {
       const wrapper = render(React.cloneElement(select, { open: true }));
       expect(wrapper).toMatchSnapshot();
     });
+
+    fit('renders disabeld select correctly', () => {
+      const wrapper = render(React.cloneElement(select, { disabled: true }));
+      expect(wrapper).toMatchSnapshot();
+    });
   });
 
   it('convert value to array', () => {
