@@ -6,11 +6,13 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import allowClearTest from './shared/allowClearTest';
 import throwOptionValue from './shared/throwOptionValue';
 import focusTest from './shared/focusTest';
+import keyDownTest from './shared/keyDownTest';
 
 describe('Select.combobox', () => {
   allowClearTest('combobox');
   throwOptionValue('combobox');
   focusTest('combobox');
+  keyDownTest('combobox');
 
   it('renders correctly', () => {
     const wrapper = render(
