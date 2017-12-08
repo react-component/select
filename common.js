@@ -3210,11 +3210,7 @@ function splitBySeparators(string, separators) {
 }
 
 function defaultFilterFn(input, child) {
-  if (child.props.disabled) {
-    return false;
-  }
-  var value = String(getPropValue(child, this.props.optionFilterProp));
-  return value.toLowerCase().indexOf(input.toLowerCase()) > -1;
+  return String(getPropValue(child, this.props.optionFilterProp)).indexOf(input) > -1;
 }
 
 function validateOptionValue(value, props) {
@@ -23559,7 +23555,7 @@ var Select = function (_React$Component) {
     if (!Object(__WEBPACK_IMPORTED_MODULE_13__util__["m" /* isMultipleOrTagsOrCombobox */])(props)) {
       extraSelectionProps = {
         onKeyDown: this.onKeyDown,
-        tabIndex: 0
+        tabIndex: props.disabled ? -1 : 0
       };
     }
     var rootCls = (_rootCls = {}, _rootCls[className] = !!className, _rootCls[prefixCls] = 1, _rootCls[prefixCls + '-open'] = open, _rootCls[prefixCls + '-focused'] = open || !!this._focused, _rootCls[prefixCls + '-combobox'] = Object(__WEBPACK_IMPORTED_MODULE_13__util__["k" /* isCombobox */])(props), _rootCls[prefixCls + '-disabled'] = disabled, _rootCls[prefixCls + '-enabled'] = !disabled, _rootCls[prefixCls + '-allow-clear'] = !!props.allowClear, _rootCls);
@@ -24168,10 +24164,10 @@ var _initialiseProps = function _initialiseProps() {
 
     if (!filterFn) {
       return true;
-    } else if (typeof filterFn === 'function') {
-      return filterFn.call(_this2, input, child);
     } else if (child.props.disabled) {
       return false;
+    } else if (typeof filterFn === 'function') {
+      return filterFn.call(_this2, input, child);
     }
     return true;
   };
