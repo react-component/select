@@ -1,6 +1,10 @@
 # History
 ----
 
+## 7.5.0 / 2017-12-11
+
+- Add onInputKeydown
+
 ## 7.2.0 / 2017-11-16
 
 - Add onPopupScroll.
