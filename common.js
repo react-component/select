@@ -3210,7 +3210,11 @@ function splitBySeparators(string, separators) {
 }
 
 function defaultFilterFn(input, child) {
-  return String(getPropValue(child, this.props.optionFilterProp)).indexOf(input) > -1;
+  if (child.props.disabled) {
+    return false;
+  }
+  var value = String(getPropValue(child, this.props.optionFilterProp));
+  return value.toLowerCase().indexOf(input.toLowerCase()) > -1;
 }
 
 function validateOptionValue(value, props) {
@@ -5316,6 +5320,7 @@ var SelectPropTypes = {
   onPopupScroll: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
   onMouseEnter: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
   onMouseLeave: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
+  onInputKeyDown: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
   placeholder: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.any,
   onDeselect: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
   labelInValue: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.bool,
@@ -23647,6 +23652,7 @@ Select.defaultProps = {
   onSelect: noop,
   onSearch: noop,
   onDeselect: noop,
+  onInputKeyDown: noop,
   showArrow: true,
   dropdownMatchSelectWidth: true,
   dropdownStyle: {},
@@ -24052,7 +24058,7 @@ var _initialiseProps = function _initialiseProps() {
       __WEBPACK_IMPORTED_MODULE_4_react___default.a.cloneElement(inputElement, {
         ref: Object(__WEBPACK_IMPORTED_MODULE_13__util__["p" /* saveRef */])(_this2, 'inputRef'),
         onChange: _this2.onInputChange,
-        onKeyDown: chaining(_this2.onInputKeyDown, inputElement.props.onKeyDown),
+        onKeyDown: chaining(_this2.onInputKeyDown, inputElement.props.onKeyDown, _this2.props.onInputKeyDown),
         value: _this2.state.inputValue,
         disabled: props.disabled,
         className: inputCls
@@ -24164,10 +24170,10 @@ var _initialiseProps = function _initialiseProps() {
 
     if (!filterFn) {
       return true;
-    } else if (child.props.disabled) {
-      return false;
     } else if (typeof filterFn === 'function') {
       return filterFn.call(_this2, input, child);
+    } else if (child.props.disabled) {
+      return false;
     }
     return true;
   };

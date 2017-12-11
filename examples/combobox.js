@@ -89,7 +89,7 @@ var Demo = function (_React$Component) {
       ),
       __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
         'div',
-        { style: { width: 300 }, onKeyDown: this.onKeyDown },
+        { style: { width: 300 } },
         __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
           __WEBPACK_IMPORTED_MODULE_5_rc_select___default.a,
           {
@@ -97,6 +97,7 @@ var Demo = function (_React$Component) {
             style: { width: 500 },
             onChange: this.onChange,
             onSelect: this.onSelect,
+            onInputKeyDown: this.onKeyDown,
             notFoundContent: '',
             allowClear: true,
             placeholder: 'please select',
