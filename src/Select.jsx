@@ -381,7 +381,7 @@ export default class Select extends React.Component {
                 label: this.getLabelFromOption(firstOption),
               },
             ];
-            
+
             /* Close dropdown so the unfiltering caused by fireChange()
                does not cause the dropdown to animate and expand just
                before closing again. */
