@@ -1,5 +1,342 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Select.tags OptGroup renders correctly 1`] = `
+<div>
+  <div
+    class="rc-select rc-select-open rc-select-focused rc-select-enabled"
+    style=""
+  >
+    <div
+      aria-autocomplete="list"
+      aria-expanded="true"
+      aria-haspopup="true"
+      class="rc-select-selection
+            rc-select-selection--multiple"
+      role="combobox"
+    >
+      <div
+        class="rc-select-selection__rendered"
+      >
+        <ul>
+          <li
+            class="rc-select-selection__choice"
+            title="jack"
+            unselectable="unselectable"
+          >
+            <div
+              class="rc-select-selection__choice__content"
+            >
+              jack
+            </div>
+            <span
+              class="rc-select-selection__choice__remove"
+            />
+          </li>
+          <li
+            class="rc-select-selection__choice"
+            title="foo"
+            unselectable="unselectable"
+          >
+            <div
+              class="rc-select-selection__choice__content"
+            >
+              foo
+            </div>
+            <span
+              class="rc-select-selection__choice__remove"
+            />
+          </li>
+          <li
+            class="rc-select-search rc-select-search--inline"
+          >
+            <div
+              class="rc-select-search__field__wrap"
+            >
+              <input
+                autocomplete="off"
+                class="rc-select-search__field"
+                value=""
+              />
+              <span
+                class="rc-select-search__field__mirror"
+              >
+                 
+              </span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div
+      class="rc-select-dropdown rc-select-dropdown--multiple rc-select-dropdown-placement-bottomLeft "
+      style="left: -999px; top: -995px;"
+    >
+      <div
+        style="overflow: auto;"
+      >
+        <ul
+          aria-activedescendant=""
+          class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
+          role="menu"
+        >
+          <li
+            class=" rc-select-dropdown-menu-item-group"
+          >
+            <div
+              class="rc-select-dropdown-menu-item-group-title"
+              title="Manager"
+            >
+              Manager
+            </div>
+            <ul
+              class="rc-select-dropdown-menu-item-group-list"
+            >
+              <li
+                aria-selected="true"
+                class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item-selected"
+                role="menuitem"
+                style=""
+                unselectable="unselectable"
+              >
+                Jack
+              </li>
+            </ul>
+          </li>
+          <li
+            class=" rc-select-dropdown-menu-item-group"
+          >
+            <div
+              class="rc-select-dropdown-menu-item-group-title"
+              title="Engineer"
+            >
+              Engineer
+            </div>
+            <ul
+              class="rc-select-dropdown-menu-item-group-list"
+            >
+              <li
+                aria-selected="false"
+                class="rc-select-dropdown-menu-item"
+                role="menuitem"
+                unselectable="unselectable"
+              >
+                yiminghe
+              </li>
+            </ul>
+          </li>
+          <li
+            aria-selected="true"
+            class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-selected"
+            role="menuitem"
+            unselectable="unselectable"
+          >
+            foo
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Select.tags OptGroup renders inputValue correctly 1`] = `
+<div>
+  <div
+    class="rc-select rc-select-open rc-select-focused rc-select-enabled"
+    style=""
+  >
+    <div
+      aria-autocomplete="list"
+      aria-expanded="true"
+      aria-haspopup="true"
+      class="rc-select-selection
+            rc-select-selection--multiple"
+      role="combobox"
+    >
+      <div
+        class="rc-select-selection__rendered"
+      >
+        <ul>
+          <li
+            class="rc-select-search rc-select-search--inline"
+          >
+            <div
+              class="rc-select-search__field__wrap"
+            >
+              <input
+                autocomplete="off"
+                class="rc-select-search__field"
+                style="width: 0px;"
+                value="foo"
+              />
+              <span
+                class="rc-select-search__field__mirror"
+              >
+                foo 
+              </span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div
+      class="rc-select-dropdown rc-select-dropdown--multiple rc-select-dropdown-placement-bottomLeft "
+      style="left: -999px; top: -995px;"
+    >
+      <div
+        style="overflow: auto;"
+      >
+        <ul
+          aria-activedescendant=""
+          class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
+          role="menu"
+        >
+          <li
+            aria-selected="false"
+            class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
+            role="menuitem"
+            unselectable="unselectable"
+          >
+            foo
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Select.tags OptGroup renders inputValue correctly 2`] = `
+<div>
+  <div
+    class="rc-select rc-select-open rc-select-focused rc-select-enabled"
+    style=""
+  >
+    <div
+      aria-autocomplete="list"
+      aria-expanded="true"
+      aria-haspopup="true"
+      class="rc-select-selection
+            rc-select-selection--multiple"
+      role="combobox"
+    >
+      <div
+        class="rc-select-selection__rendered"
+      >
+        <ul>
+          <li
+            class="rc-select-selection__choice"
+            title="foo"
+            unselectable="unselectable"
+          >
+            <div
+              class="rc-select-selection__choice__content"
+            >
+              foo
+            </div>
+            <span
+              class="rc-select-selection__choice__remove"
+            />
+          </li>
+          <li
+            class="rc-select-search rc-select-search--inline"
+          >
+            <div
+              class="rc-select-search__field__wrap"
+            >
+              <input
+                autocomplete="off"
+                class="rc-select-search__field"
+                style=""
+                value=""
+              />
+              <span
+                class="rc-select-search__field__mirror"
+              >
+                 
+              </span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div
+      class="rc-select-dropdown rc-select-dropdown--multiple rc-select-dropdown-placement-bottomLeft "
+      style="left: -999px; top: -995px;"
+    >
+      <div
+        style="overflow: auto;"
+      >
+        <ul
+          aria-activedescendant=""
+          class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
+          role="menu"
+        >
+          <li
+            class=" rc-select-dropdown-menu-item-group"
+          >
+            <div
+              class="rc-select-dropdown-menu-item-group-title"
+              title="Manager"
+            >
+              Manager
+            </div>
+            <ul
+              class="rc-select-dropdown-menu-item-group-list"
+            >
+              <li
+                aria-selected="false"
+                class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
+                role="menuitem"
+                unselectable="unselectable"
+              >
+                Jack
+              </li>
+            </ul>
+          </li>
+          <li
+            class=" rc-select-dropdown-menu-item-group"
+          >
+            <div
+              class="rc-select-dropdown-menu-item-group-title"
+              title="Engineer"
+            >
+              Engineer
+            </div>
+            <ul
+              class="rc-select-dropdown-menu-item-group-list"
+            >
+              <li
+                aria-selected="false"
+                class="rc-select-dropdown-menu-item"
+                role="menuitem"
+                unselectable="unselectable"
+              >
+                yiminghe
+              </li>
+            </ul>
+          </li>
+          <li
+            aria-selected="true"
+            class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-selected"
+            role="menuitem"
+            unselectable="unselectable"
+          >
+            foo
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`Select.tags allowClear renders correctly 1`] = `
 <div
   class="rc-select rc-select-enabled rc-select-allow-clear"

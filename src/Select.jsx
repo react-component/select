@@ -868,19 +868,93 @@ export default class Select extends React.Component {
     this.state.open = open;
   };
 
-  renderFilterOptions = inputValue => {
-    return this.renderFilterOptionsFromChildren(
-      this.props.children,
-      true,
-      inputValue
+  renderFilterOptions = () => {
+    const { inputValue } = this.state;
+    const { children, tags, filterOption, notFoundContent } = this.props;
+    const menuItems = [];
+    const childrenKeys = [];
+    let options = this.renderFilterOptionsFromChildren(
+      children,
+      childrenKeys,
+      menuItems,
     );
+    if (tags) {
+      // tags value must be string
+      let value = this.state.value || [];
+      value = value.filter(singleValue => {
+        return (
+          childrenKeys.indexOf(singleValue.key) === -1 &&
+          (!inputValue ||
+            String(singleValue.key).indexOf(String(inputValue)) > -1)
+        );
+      });
+      value.forEach(singleValue => {
+        const key = singleValue.key;
+        const menuItem = (
+          <MenuItem
+            style={UNSELECTABLE_STYLE}
+            attribute={UNSELECTABLE_ATTRIBUTE}
+            value={key}
+            key={key}
+          >
+            {key}
+          </MenuItem>
+        );
+        options.push(menuItem);
+        menuItems.push(menuItem);
+      });
+      if (inputValue) {
+        const notFindInputItem = menuItems.every(option => {
+          // this.filterOption return true has two meaning,
+          // 1, some one exists after filtering
+          // 2, filterOption is set to false
+          // condition 2 does not mean the option has same value with inputValue
+          const filterFn = () => getValuePropValue(option) === inputValue;
+          if (filterOption !== false) {
+            return !this.filterOption.call(
+              this,
+              inputValue,
+              option,
+              filterFn
+            );
+          }
+          return !filterFn();
+        });
+        if (notFindInputItem) {
+          options.unshift(
+            <MenuItem
+              style={UNSELECTABLE_STYLE}
+              attribute={UNSELECTABLE_ATTRIBUTE}
+              value={inputValue}
+              key={inputValue}
+            >
+              {inputValue}
+            </MenuItem>
+          );
+        }
+      }
+    }
+
+    if (!options.length && notFoundContent) {
+      options = [
+        <MenuItem
+          style={UNSELECTABLE_STYLE}
+          attribute={UNSELECTABLE_ATTRIBUTE}
+          disabled
+          value="NOT_FOUND"
+          key="NOT_FOUND"
+        >
+          {notFoundContent}
+        </MenuItem>,
+      ];
+    }
+    return options;
   };
 
-  renderFilterOptionsFromChildren = (children, showNotFound, iv) => {
-    let sel = [];
+  renderFilterOptionsFromChildren = (children, childrenKeys, menuItems) => {
+    const sel = [];
     const props = this.props;
-    const inputValue = iv === undefined ? this.state.inputValue : iv;
-    const childrenKeys = [];
+    const { inputValue } = this.state;
     const tags = props.tags;
     React.Children.forEach(children, child => {
       if (!child) {
@@ -889,7 +963,8 @@ export default class Select extends React.Component {
       if (child.type.isSelectOptGroup) {
         const innerItems = this.renderFilterOptionsFromChildren(
           child.props.children,
-          false
+          childrenKeys,
+          menuItems,
         );
         if (innerItems.length) {
           let label = child.props.label;
@@ -921,7 +996,7 @@ export default class Select extends React.Component {
       validateOptionValue(childValue, this.props);
 
       if (this.filterOption(inputValue, child)) {
-        sel.push(
+        const menuItem = (
           <MenuItem
             style={UNSELECTABLE_STYLE}
             attribute={UNSELECTABLE_ATTRIBUTE}
@@ -930,80 +1005,14 @@ export default class Select extends React.Component {
             {...child.props}
           />
         );
+        sel.push(menuItem);
+        menuItems.push(menuItem);
       }
       if (tags && !child.props.disabled) {
         childrenKeys.push(childValue);
       }
     });
-    if (tags) {
-      // tags value must be string
-      let value = this.state.value || [];
-      value = value.filter(singleValue => {
-        return (
-          childrenKeys.indexOf(singleValue.key) === -1 &&
-          (!inputValue ||
-            String(singleValue.key).indexOf(String(inputValue)) > -1)
-        );
-      });
-      sel = sel.concat(
-        value.map(singleValue => {
-          const key = singleValue.key;
-          return (
-            <MenuItem
-              style={UNSELECTABLE_STYLE}
-              attribute={UNSELECTABLE_ATTRIBUTE}
-              value={key}
-              key={key}
-            >
-              {key}
-            </MenuItem>
-          );
-        })
-      );
-      if (inputValue) {
-        const notFindInputItem = sel.every(option => {
-          // this.filterOption return true has two meaning,
-          // 1, some one exists after filtering
-          // 2, filterOption is set to false
-          // condition 2 does not mean the option has same value with inputValue
-          const filterFn = () => getValuePropValue(option) === inputValue;
-          if (this.props.filterOption !== false) {
-            return !this.filterOption.call(
-              this,
-              inputValue,
-              option,
-              filterFn
-            );
-          }
-          return !filterFn();
-        });
-        if (notFindInputItem) {
-          sel.unshift(
-            <MenuItem
-              style={UNSELECTABLE_STYLE}
-              attribute={UNSELECTABLE_ATTRIBUTE}
-              value={inputValue}
-              key={inputValue}
-            >
-              {inputValue}
-            </MenuItem>
-          );
-        }
-      }
-    }
-    if (!sel.length && showNotFound && props.notFoundContent) {
-      sel = [
-        <MenuItem
-          style={UNSELECTABLE_STYLE}
-          attribute={UNSELECTABLE_ATTRIBUTE}
-          disabled
-          value="NOT_FOUND"
-          key="NOT_FOUND"
-        >
-          {props.notFoundContent}
-        </MenuItem>,
-      ];
-    }
+
     return sel;
   };
 

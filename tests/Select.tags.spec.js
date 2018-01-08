@@ -2,7 +2,7 @@
 import React from 'react';
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
-import Select, { Option } from '../src';
+import Select, { Option, OptGroup } from '../src';
 import allowClearTest from './shared/allowClearTest';
 import focusTest from './shared/focusTest';
 import blurTest from './shared/blurTest';
@@ -114,5 +114,38 @@ describe('Select.tags', () => {
       .simulate('keyDown', { keyCode: KeyCode.ENTER });
 
     expect(wrapper.state().value).toEqual([{ key: 'a', label: 'a', title: undefined }]);
+  });
+
+  describe('OptGroup', () => {
+    const createSelect = (props) => (
+      <div>
+        <Select tags {...props}>
+          <OptGroup key="Manager" label="Manager">
+            <Option key="jack" value="jack">Jack</Option>
+          </OptGroup>
+          <OptGroup key="Engineer" label="Engineer">
+            <Option key="Yiminghe" value="Yiminghe">yiminghe</Option>
+          </OptGroup>
+        </Select>
+      </div>
+    );
+
+    it('renders correctly', () => {
+      const wrapper = mount(createSelect({ value: ['jack', 'foo'] }));
+      wrapper.find('.rc-select').simulate('click');
+      expect(wrapper.render()).toMatchSnapshot();
+    });
+
+    it('renders inputValue correctly', () => {
+      const wrapper = mount(createSelect());
+      wrapper.find('.rc-select').simulate('click');
+
+      wrapper.find('input')
+        .simulate('change', { target: { value: 'foo' } });
+      expect(wrapper.render()).toMatchSnapshot();
+
+      wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ENTER });
+      expect(wrapper.render()).toMatchSnapshot();
+    });
   });
 });
