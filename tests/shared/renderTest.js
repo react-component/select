@@ -37,6 +37,22 @@ export default function maxTagTextLengthTest(mode) {
       expect(wrapper).toMatchSnapshot();
     });
 
+    it('truncates tags by maxTagCount while maxTagCount is 0', () => {
+      const wrapper = render(
+        <Select
+          {...{ [mode]: true } }
+          value={['one', 'two', 'three']}
+          maxTagCount={0}
+        >
+          <Option value="one">One</Option>
+          <Option value="two">Two</Option>
+          <Option value="three">Three</Option>
+        </Select>
+      );
+
+      expect(wrapper).toMatchSnapshot();
+    });
+
     it('truncates tags by maxTagCount and show maxTagPlaceholder', () => {
       const wrapper = render(
         <Select
@@ -53,7 +69,6 @@ export default function maxTagTextLengthTest(mode) {
 
       expect(wrapper).toMatchSnapshot();
     });
-
 
     it('truncates tags by maxTagCount and show maxTagPlaceholder function', () => {
       const maxTagPlaceholder = (omittedValues) => {
