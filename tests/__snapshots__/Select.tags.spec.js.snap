@@ -708,6 +708,58 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
 </div>
 `;
 
+exports[`Select.tags render truncates tags by maxTagCount while maxTagCount is 0 1`] = `
+<div
+  class="rc-select rc-select-enabled"
+>
+  <div
+    aria-autocomplete="list"
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="rc-select-selection
+            rc-select-selection--multiple"
+    role="combobox"
+  >
+    <div
+      class="rc-select-selection__rendered"
+    >
+      <ul>
+        <li
+          class="rc-select-selection__choice rc-select-selection__choice__disabled"
+          style="user-select:none;-webkit-user-select:none"
+          title="+ 3 ..."
+          unselectable="unselectable"
+        >
+          <div
+            class="rc-select-selection__choice__content"
+          >
+            + 3 ...
+          </div>
+        </li>
+        <li
+          class="rc-select-search rc-select-search--inline"
+        >
+          <div
+            class="rc-select-search__field__wrap"
+          >
+            <input
+              autocomplete="off"
+              class="rc-select-search__field"
+              value=""
+            />
+            <span
+              class="rc-select-search__field__mirror"
+            >
+               
+            </span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`Select.tags render truncates values by maxTagTextLength 1`] = `
 <div
   class="rc-select rc-select-enabled"
