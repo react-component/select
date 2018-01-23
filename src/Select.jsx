@@ -1082,7 +1082,7 @@ export default class Select extends React.Component {
       let selectedValueNodes = [];
       let limitedCountValue = value;
       let maxTagPlaceholderEl;
-      if (maxTagCount && value.length > maxTagCount) {
+      if (maxTagCount !== undefined && value.length > maxTagCount) {
         limitedCountValue = limitedCountValue.slice(0, maxTagCount);
         const omittedValues = this.getVLForOnChange(value.slice(maxTagCount, value.length));
         let content = `+ ${value.length - maxTagCount} ...`;

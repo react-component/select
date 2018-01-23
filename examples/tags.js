@@ -29,9 +29,9 @@ class Test extends React.Component {
     });
   };
 
-  toggleMaxTagCount = () => {
+  toggleMaxTagCount = (count) => {
     this.setState({
-      maxTagCount: this.state.maxTagCount ? null : 1,
+      maxTagCount: count,
     });
   };
 
@@ -58,7 +58,8 @@ class Test extends React.Component {
         </div>
         <p>
           <button onClick={this.toggleDisabled}>toggle disabled</button>
-          <button onClick={this.toggleMaxTagCount}>toggle maxTagCount (1)</button>
+          <button onClick={() => this.toggleMaxTagCount(0)}>toggle maxTagCount (0)</button>
+          <button onClick={() => this.toggleMaxTagCount(1)}>toggle maxTagCount (1)</button>
         </p>
       </div>
     );
