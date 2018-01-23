@@ -70,14 +70,16 @@ var Test = function (_React$Component) {
       _this.setState({
         disabled: !_this.state.disabled
       });
-    }, _this.toggleMaxTagCount = function () {
+    }, _this.toggleMaxTagCount = function (count) {
       _this.setState({
-        maxTagCount: _this.state.maxTagCount ? null : 1
+        maxTagCount: count
       });
     }, _temp), __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
   }
 
   Test.prototype.render = function render() {
+    var _this2 = this;
+
     return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
       'div',
       null,
@@ -116,7 +118,16 @@ var Test = function (_React$Component) {
         ),
         __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
           'button',
-          { onClick: this.toggleMaxTagCount },
+          { onClick: function onClick() {
+              return _this2.toggleMaxTagCount(0);
+            } },
+          'toggle maxTagCount (0)'
+        ),
+        __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+          'button',
+          { onClick: function onClick() {
+              return _this2.toggleMaxTagCount(1);
+            } },
           'toggle maxTagCount (1)'
         )
       )
