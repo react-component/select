@@ -23,7 +23,6 @@ class Test extends React.Component {
   render() {
     const dropdownMenuStyle = {
       maxHeight: 200,
-      overflow: 'auto',
     };
     return (
       <div>

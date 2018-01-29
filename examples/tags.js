@@ -44,7 +44,7 @@ class Test extends React.Component {
           <Select
             placeholder="placeholder"
             tags
-            dropdownMenuStyle={{ maxHeight: 200, overflow: 'auto' }}
+            dropdownMenuStyle={{ maxHeight: 200 }}
             style={{ width: 500 }}
             disabled={this.state.disabled}
             maxTagCount={this.state.maxTagCount}
