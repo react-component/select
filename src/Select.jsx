@@ -8,6 +8,7 @@ import Animate from 'rc-animate';
 import classes from 'component-classes';
 import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
 import warning from 'warning';
+import Option from './Option';
 
 import {
   getPropValue,
@@ -258,14 +259,10 @@ export default class Select extends React.Component {
     const selectedValue = getValuePropValue(item);
     const selectedLabel = this.getLabelFromOption(item);
     const lastValue = value[value.length - 1];
-    let event = selectedValue;
-    if (props.labelInValue) {
-      event = {
-        key: event,
-        label: selectedLabel,
-      };
-    }
-    props.onSelect(event, item);
+    this.fireSelect({
+      key: selectedValue,
+      label: selectedLabel,
+    });
     const selectedTitle = item.props.title;
     if (isMultipleOrTags(props)) {
       if (findIndexInValueByKey(value, selectedValue) !== -1) {
@@ -414,6 +411,23 @@ export default class Select extends React.Component {
 
   onChoiceAnimationLeave = () => {
     this.selectTriggerRef.triggerRef.forcePopupAlign();
+  };
+
+  getOptionByValueKey = (key) => {
+    if (this._optionDefineMap && this._optionDefineMap[key]) {
+      return this._optionDefineMap[key];
+    }
+    return <Option value={key} key={key}>{key}</Option>;
+  };
+
+  getOptionByValue = (value) => {
+    if (value === undefined) {
+      return undefined;
+    }
+    if (!Array.isArray(value)) {
+      return this.getOptionByValueKey(this.props.labelInValue ? value.key : value);
+    }
+    return value.map(this.getOptionByValue);
   };
 
   getLabelBySingleValue = (children, value) => {
@@ -805,6 +819,12 @@ export default class Select extends React.Component {
     }
   };
 
+  fireSelect = value => {
+    const { labelInValue, onSelect } = this.props;
+    const val = labelInValue ? value : value.key;
+    onSelect(val, this.getOptionByValueKey(value.key));
+  };
+
   fireChange = value => {
     const props = this.props;
     if (!('value' in props)) {
@@ -812,7 +832,9 @@ export default class Select extends React.Component {
         value,
       });
     }
-    props.onChange(this.getVLForOnChange(value));
+    const vls = this.getVLForOnChange(value);
+    const options = this.getOptionByValue(vls);
+    props.onChange(vls, options);
   };
 
   isChildDisabled = key => {
@@ -838,6 +860,10 @@ export default class Select extends React.Component {
           nextValue = nextValue.concat(selectedValue);
         }
       }
+      this.fireSelect({
+        key: label,
+        label,
+      });
     });
     return nextValue;
   };
@@ -850,7 +876,9 @@ export default class Select extends React.Component {
     let options = [];
     // If hidden menu due to no options, then it should be calculated again
     if (open || this.hiddenForNoOptions) {
-      options = this.renderFilterOptions();
+      const optionInfo = this.renderFilterOptions();
+      options = optionInfo.options;
+      this._optionDefineMap = optionInfo.optionDefineMap;
     }
     this._options = options;
 
@@ -872,11 +900,13 @@ export default class Select extends React.Component {
     const { inputValue } = this.state;
     const { children, tags, filterOption, notFoundContent } = this.props;
     const menuItems = [];
+    const optionDefineMap = {};
     const childrenKeys = [];
     let options = this.renderFilterOptionsFromChildren(
       children,
       childrenKeys,
       menuItems,
+      optionDefineMap,
     );
     if (tags) {
       // tags value must be string
@@ -948,10 +978,13 @@ export default class Select extends React.Component {
         </MenuItem>,
       ];
     }
-    return options;
+    return {
+      options,
+      optionDefineMap,
+    };
   };
 
-  renderFilterOptionsFromChildren = (children, childrenKeys, menuItems) => {
+  renderFilterOptionsFromChildren = (children, childrenKeys, menuItems, optionDefineMap) => {
     const sel = [];
     const props = this.props;
     const { inputValue } = this.state;
@@ -965,6 +998,7 @@ export default class Select extends React.Component {
           child.props.children,
           childrenKeys,
           menuItems,
+          optionDefineMap,
         );
         if (innerItems.length) {
           let label = child.props.label;
@@ -1007,6 +1041,7 @@ export default class Select extends React.Component {
         );
         sel.push(menuItem);
         menuItems.push(menuItem);
+        optionDefineMap[childValue] = child;
       }
       if (tags && !child.props.disabled) {
         childrenKeys.push(childValue);

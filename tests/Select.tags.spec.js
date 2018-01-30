@@ -34,14 +34,17 @@ describe('Select.tags', () => {
 
   it('tokenize input', () => {
     const handleChange = jest.fn();
+    const handleSelect = jest.fn();
+    const option2 = <Option value="2">2</Option>;
     const wrapper = mount(
       <Select
         tags
         tokenSeparators={[',']}
         onChange={handleChange}
+        onSelect={handleSelect}
       >
         <Option value="1">1</Option>
-        <Option value="2">2</Option>
+        {option2}
       </Select>,
     );
 
@@ -50,7 +53,9 @@ describe('Select.tags', () => {
 
     input.simulate('change', { target: { value: '2,3,4' } });
 
-    expect(handleChange).toBeCalledWith(['2', '3', '4']);
+    expect(handleChange).toBeCalledWith(['2', '3', '4'], expect.anything());
+    expect(handleSelect).toHaveBeenCalledTimes(3);
+    expect(handleSelect).toHaveBeenLastCalledWith('4', <Option key="4" value="4">4</Option>);
     expect(wrapper.state().value).toEqual([
       { key: '2', label: '2' },
       { key: '3', label: '3' },

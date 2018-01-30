@@ -93,7 +93,7 @@ React.render(c, container);
 |firstActiveValue | first active value when there is no value | String/Array<String> | - |
 |labelInValue| whether to embed label in value, see above value type | Bool | false |
 |backfill| whether backfill select option to search input (Only works in single and combobox mode) | Bool | false |
-|onChange | called when select an option or input value change(combobox) | function(value) | - |
+|onChange | called when select an option or input value change(combobox) | function(value, option:Option/Array<Option>) | - |
 |onSearch | called when input changed | function | - |
 |onBlur | called when blur | function | - |
 |onFocus | called when focus | function | - |

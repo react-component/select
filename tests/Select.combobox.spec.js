@@ -47,7 +47,7 @@ describe('Select.combobox', () => {
 
     wrapper.find('input').simulate('change', { target: { value: '1' } });
 
-    expect(handleChange).toBeCalledWith('1');
+    expect(handleChange).toBeCalledWith('1', expect.anything());
   });
 
   it('set inputValue when user select a option', () => {
@@ -240,7 +240,7 @@ describe('Select.combobox', () => {
         label: 'Two',
       },
     ]);
-    expect(handleChange).toBeCalledWith('Two');
+    expect(handleChange).toBeCalledWith('Two', expect.anything());
     expect(handleSelect).toBeCalledWith('Two', expect.anything());
   });
 
