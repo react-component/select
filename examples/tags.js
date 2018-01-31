@@ -27,8 +27,8 @@ class Test extends React.Component {
     console.log(`selected ${value}`, option.props);
   };
 
-  onDeselect = (value) => {
-    console.log(`deselected ${value}`);
+  onDeselect = (value, option) => {
+    console.log(`deselected ${value}`, option);
   };
 
   toggleDisabled = () => {
@@ -60,6 +60,7 @@ class Test extends React.Component {
             value={this.state.value}
             onChange={this.onChange}
             onSelect={this.onSelect}
+            onDeselect={this.onDeselect}
             tokenSeparators={[' ', ',']}
           >
             {children}
