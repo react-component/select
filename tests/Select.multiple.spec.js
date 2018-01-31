@@ -8,6 +8,7 @@ import blurTest from './shared/blurTest';
 import hoverTest from './shared/hoverTest';
 import renderTest from './shared/renderTest';
 import removeSelectedTest from './shared/removeSelectedTest';
+import dynamicChildrenTest from './shared/dynamicChildrenTest';
 
 describe('Select.multiple', () => {
   allowClearTest('multiple');
@@ -16,6 +17,7 @@ describe('Select.multiple', () => {
   hoverTest('multiple');
   renderTest('multiple');
   removeSelectedTest('multiple');
+  dynamicChildrenTest('multiple');
 
   it('tokenize input', () => {
     const handleChange = jest.fn();

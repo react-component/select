@@ -10,6 +10,7 @@ import hoverTest from './shared/hoverTest';
 import renderTest from './shared/renderTest';
 import removeSelectedTest from './shared/removeSelectedTest';
 import throwOptionValue from './shared/throwOptionValue';
+import dynamicChildrenTest from './shared/dynamicChildrenTest';
 
 describe('Select.tags', () => {
   allowClearTest('tags');
@@ -19,6 +20,7 @@ describe('Select.tags', () => {
   renderTest('tags');
   removeSelectedTest('tags');
   throwOptionValue('tags');
+  dynamicChildrenTest('tags');
 
   it('allow user input tags', () => {
     const wrapper = mount(

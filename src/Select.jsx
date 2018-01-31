@@ -95,6 +95,10 @@ export default class Select extends React.Component {
     if (open === undefined) {
       open = props.defaultOpen;
     }
+    this._valueOptions = [];
+    if (value.length > 0) {
+      this._valueOptions = this.getOptionsByValue(value);
+    }
     this.state = {
       value,
       inputValue,
@@ -433,7 +437,16 @@ export default class Select extends React.Component {
     });
     values.forEach((v, i) => {
       if (!options[i]) {
-        options[i] = <Option value={v.key} key={v.key}>{v.label}</Option>;
+        for (let j = 0; j < this._valueOptions.length; j++) {
+          const item = this._valueOptions[j];
+          if (getValuePropValue(item) === v.key) {
+            options[i] = item;
+            break;
+          }
+        }
+        if (!options[i]) {
+          options[i] = <Option value={v.key} key={v.key}>{v.label}</Option>;
+        }
       }
     });
     if (!Array.isArray(value)) {
@@ -449,15 +462,14 @@ export default class Select extends React.Component {
     }, this.props.children);
   };
 
-  getOptionByValue = (value) => {
+  getOptionsByValue = (value) => {
     if (value === undefined) {
       return undefined;
     }
-    const option = this.getOptionsFromChildren(value, this.props.children);
-    if (!isMultipleOrTags(this.props)) {
-      return option[0];
+    if (value.length === 0) {
+      return [];
     }
-    return option;
+    return this.getOptionsFromChildren(value, this.props.children);
   };
 
   getLabelBySingleValue = (children, value) => {
@@ -862,8 +874,9 @@ export default class Select extends React.Component {
       });
     }
     const vls = this.getVLForOnChange(value);
-    const options = this.getOptionByValue(value);
-    props.onChange(vls, options);
+    const options = this.getOptionsByValue(value);
+    this._valueOptions = options;
+    props.onChange(vls, isMultipleOrTags(this.props) ? options : options[0]);
   };
 
   isChildDisabled = key => {

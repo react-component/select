@@ -11,7 +11,8 @@ class Demo extends React.Component {
     value: '',
   };
 
-  onChange = (value) => {
+  onChange = (value, option) => {
+    console.log('onChange', value, option);
     this.setState({
       value,
     });
@@ -23,8 +24,8 @@ class Demo extends React.Component {
     }
   }
 
-  onSelect = (v) => {
-    console.log('onSelect', v);
+  onSelect = (v, option) => {
+    console.log('onSelect', v, option);
   }
 
   toggleDisabled = () => {
