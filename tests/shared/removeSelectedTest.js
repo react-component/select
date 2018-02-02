@@ -17,14 +17,14 @@ export default function removeSelectedTest(mode) {
           onDeselect={handleDeselect}
           {...{ [mode]: true }}
         >
-          <Option value="1">1</Option>
+          <Option value="1" testprop="deselect">1</Option>
           <Option value="2">2</Option>
         </Select>
       );
       wrapper.find('.rc-select-selection__choice__remove').first().simulate('click');
 
-      expect(handleDeselect).toBeCalledWith('1');
-      expect(handleChange).toBeCalledWith(['2']);
+      expect(handleDeselect).toBeCalledWith('1', <Option value="1" testprop="deselect">1</Option>);
+      expect(handleChange).toBeCalledWith(['2'], expect.anything());
     });
 
     it('noop if select is disabled', () => {
@@ -65,8 +65,14 @@ export default function removeSelectedTest(mode) {
       );
       wrapper.find('.rc-select-selection__choice__remove').first().simulate('click');
 
-      expect(handleDeselect).toHaveBeenCalledWith({ key: '1', label: '1' });
-      expect(handleChange).toHaveBeenCalledWith([{ key: '2', label: '2' }]);
+      expect(handleDeselect).toHaveBeenCalledWith(
+        { key: '1', label: '1' },
+        <Option value="1">1</Option>
+      );
+      expect(handleChange).toHaveBeenCalledWith(
+        [{ key: '2', label: '2' }],
+        [<Option value="2">2</Option>]
+      );
     });
 
     it('remove by backspace key', () => {

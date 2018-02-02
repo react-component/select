@@ -47,7 +47,7 @@ describe('Select.combobox', () => {
 
     wrapper.find('input').simulate('change', { target: { value: '1' } });
 
-    expect(handleChange).toBeCalledWith('1');
+    expect(handleChange).toBeCalledWith('1', <Option key="1" value="1" />);
   });
 
   it('set inputValue when user select a option', () => {
@@ -240,8 +240,8 @@ describe('Select.combobox', () => {
         label: 'Two',
       },
     ]);
-    expect(handleChange).toBeCalledWith('Two');
-    expect(handleSelect).toBeCalledWith('Two', expect.anything());
+    expect(handleChange).toBeCalledWith('Two', <Option value="Two">Two</Option>);
+    expect(handleSelect).toBeCalledWith('Two', <Option value="Two">Two</Option>);
   });
 
   it('should hide clear icon when inputValue is \'\'', () => {

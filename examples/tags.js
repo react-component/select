@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
 
 const children = [];
 for (let i = 10; i < 36; i++) {
-  children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+  children.push(<Option key={i.toString(36) + i} test={i}>{i.toString(36) + i}</Option>);
 }
 
 class Test extends React.Component {
@@ -16,11 +16,19 @@ class Test extends React.Component {
     value: ['name2', 'name3'],
   };
 
-  onChange = (value) => {
-    console.log(`selected ${value}`);
+  onChange = (value, option) => {
+    console.log(`changed ${value}`, option);
     this.setState({
       value,
     });
+  };
+
+  onSelect = (value, option) => {
+    console.log(`selected ${value}`, option.props);
+  };
+
+  onDeselect = (value, option) => {
+    console.log(`deselected ${value}`, option);
   };
 
   toggleDisabled = () => {
@@ -51,6 +59,8 @@ class Test extends React.Component {
             maxTagTextLength={10}
             value={this.state.value}
             onChange={this.onChange}
+            onSelect={this.onSelect}
+            onDeselect={this.onDeselect}
             tokenSeparators={[' ', ',']}
           >
             {children}

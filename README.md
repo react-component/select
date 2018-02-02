@@ -93,13 +93,13 @@ React.render(c, container);
 |firstActiveValue | first active value when there is no value | String/Array<String> | - |
 |labelInValue| whether to embed label in value, see above value type | Bool | false |
 |backfill| whether backfill select option to search input (Only works in single and combobox mode) | Bool | false |
-|onChange | called when select an option or input value change(combobox) | function(value) | - |
+|onChange | called when select an option or input value change(combobox) | function(value, option:Option/Array<Option>) | - |
 |onSearch | called when input changed | function | - |
 |onBlur | called when blur | function | - |
 |onFocus | called when focus | function | - |
 |onPopupScroll | called when menu is scrolled | function | - |
 |onSelect | called when a option is selected. param is option's value and option instance | Function(value, option:Option) | - |
-|onDeselect | called when a option is deselected. param is option's value. only called for multiple or tags | Function(value) | - |
+|onDeselect | called when a option is deselected. param is option's value. only called for multiple or tags | Function(value, option:Option) | - |
 |onInputKeydown | called when key down on input | Function(event) | - |
 |defaultActiveFirstOption | whether active first option by default | bool | true |
 |getPopupContainer | container which popup select menu rendered into | function(trigger:Node):Node | function(){return document.body;} |

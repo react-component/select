@@ -8,6 +8,7 @@ import blurTest from './shared/blurTest';
 import hoverTest from './shared/hoverTest';
 import renderTest from './shared/renderTest';
 import removeSelectedTest from './shared/removeSelectedTest';
+import dynamicChildrenTest from './shared/dynamicChildrenTest';
 
 describe('Select.multiple', () => {
   allowClearTest('multiple');
@@ -16,6 +17,7 @@ describe('Select.multiple', () => {
   hoverTest('multiple');
   renderTest('multiple');
   removeSelectedTest('multiple');
+  dynamicChildrenTest('multiple');
 
   it('tokenize input', () => {
     const handleChange = jest.fn();
@@ -46,7 +48,7 @@ describe('Select.multiple', () => {
       value: 'One,Two,Three',
     } });
 
-    expect(handleChange).toBeCalledWith(['1', '2']);
+    expect(handleChange).toBeCalledWith(['1', '2'], expect.anything());
     expect(wrapper.state().value).toEqual([
       { key: '1', label: 'One' },
       { key: '2', label: 'Two' },
@@ -97,7 +99,7 @@ describe('Select.multiple', () => {
     const wrapper = mount(
       <Select multiple defaultValue={1} onChange={handleChange}>
         <Option value={1}>1</Option>
-        <Option value={2}>2</Option>
+        <Option value={2} testprop={2}>2</Option>
       </Select>
     );
 
@@ -107,7 +109,10 @@ describe('Select.multiple', () => {
 
     wrapper.find('.rc-select').simulate('click');
     wrapper.find('MenuItem').at(1).simulate('click');
-    expect(handleChange).toBeCalledWith([1, 2]);
+    expect(handleChange).toBeCalledWith([1, 2], [
+      <Option value={1}>1</Option>,
+      <Option value={2} testprop={2}>2</Option>,
+    ]);
     expect(
       wrapper.find('.rc-select-selection__choice__content').at(1).text()
     ).toBe('2');

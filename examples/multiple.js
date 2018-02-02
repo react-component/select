@@ -20,8 +20,8 @@ class Test extends React.Component {
     value: ['a10'],
   }
 
-  onChange = (value) => {
-    console.log('onChange', value);
+  onChange = (value, options) => {
+    console.log('onChange', value, options);
     this.setState({
       value,
     });

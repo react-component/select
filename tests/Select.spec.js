@@ -241,7 +241,7 @@ describe('Select', () => {
 
     wrapper.find('input').simulate('change', { target: { value: 'foo' } });
     wrapper.find('.rc-select-selection__clear').simulate('click');
-    expect(handleChange).toBeCalledWith(undefined);
+    expect(handleChange).toBeCalledWith(undefined, undefined);
     expect(wrapper.state().inputValue).toBe('');
   });
 
@@ -253,14 +253,17 @@ describe('Select', () => {
         labelInValue
         optionLabelProp="children"
       >
-        <Option value="1">One</Option>
+        <Option value="1" testprop="test">One</Option>
         <Option value="2">Two</Option>
       </Select>
     );
 
     wrapper.find('.rc-select').simulate('click');
     wrapper.find('MenuItem').first().simulate('click');
-    expect(handleChange).toBeCalledWith({ key: '1', label: 'One' });
+    expect(handleChange).toBeCalledWith(
+      { key: '1', label: 'One' },
+      <Option value="1" testprop="test">One</Option>
+    );
   });
 
   it('fires search event when user input', () => {
@@ -399,7 +402,7 @@ describe('Select', () => {
     });
 
     it('fires change event', () => {
-      expect(handleChange).toBeCalledWith('1');
+      expect(handleChange).toBeCalledWith('1', expect.anything());
     });
 
     it('fires blur event', () => {
@@ -716,7 +719,7 @@ describe('Select', () => {
         label: 'Two',
       },
     ]);
-    expect(handleChange).toBeCalledWith('2');
+    expect(handleChange).toBeCalledWith('2', expect.anything());
     expect(handleSelect).toBeCalledWith('2', expect.anything());
   });
 
@@ -737,7 +740,7 @@ describe('Select', () => {
 
       wrapper.find('.rc-select').simulate('click');
       wrapper.find('MenuItem').at(1).simulate('click');
-      expect(handleChange).toBeCalledWith(2);
+      expect(handleChange).toBeCalledWith(2, expect.anything());
       expect(
         wrapper.find('.rc-select-selection-selected-value').text()
       ).toBe('2');

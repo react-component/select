@@ -8,6 +8,7 @@ import Animate from 'rc-animate';
 import classes from 'component-classes';
 import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
 import warning from 'warning';
+import Option from './Option';
 
 import {
   getPropValue,
@@ -93,6 +94,10 @@ export default class Select extends React.Component {
     let open = props.open;
     if (open === undefined) {
       open = props.defaultOpen;
+    }
+    this._valueOptions = [];
+    if (value.length > 0) {
+      this._valueOptions = this.getOptionsByValue(value);
     }
     this.state = {
       value,
@@ -258,14 +263,10 @@ export default class Select extends React.Component {
     const selectedValue = getValuePropValue(item);
     const selectedLabel = this.getLabelFromOption(item);
     const lastValue = value[value.length - 1];
-    let event = selectedValue;
-    if (props.labelInValue) {
-      event = {
-        key: event,
-        label: selectedLabel,
-      };
-    }
-    props.onSelect(event, item);
+    this.fireSelect({
+      key: selectedValue,
+      label: selectedLabel,
+    });
     const selectedTitle = item.props.title;
     if (isMultipleOrTags(props)) {
       if (findIndexInValueByKey(value, selectedValue) !== -1) {
@@ -414,6 +415,61 @@ export default class Select extends React.Component {
 
   onChoiceAnimationLeave = () => {
     this.selectTriggerRef.triggerRef.forcePopupAlign();
+  };
+
+  getOptionsFromChildren = (value, children, options = []) => {
+    let values = value;
+    if (!Array.isArray(value)) {
+      values = [value];
+    }
+    React.Children.forEach(children, child => {
+      if (!child) {
+        return;
+      }
+      if (child.type.isSelectOptGroup) {
+        this.getOptionsFromChildren(child.props.children, options);
+      } else {
+        const index = findIndexInValueByKey(values, getValuePropValue(child));
+        if (index !== -1) {
+          options[index] = child;
+        }
+      }
+    });
+    values.forEach((v, i) => {
+      if (!options[i]) {
+        for (let j = 0; j < this._valueOptions.length; j++) {
+          const item = this._valueOptions[j];
+          if (getValuePropValue(item) === v.key) {
+            options[i] = item;
+            break;
+          }
+        }
+        if (!options[i]) {
+          options[i] = <Option value={v.key} key={v.key}>{v.label}</Option>;
+        }
+      }
+    });
+    if (!Array.isArray(value)) {
+      return options[0];
+    }
+    return options;
+  };
+
+  getSingleOptionByValueKey = (key) => {
+    return this.getOptionsFromChildren({
+      key,
+      label: key,
+    }, this.props.children);
+  };
+
+  getOptionsByValue = (value) => {
+    if (value === undefined) {
+      return undefined;
+    }
+    if (value.length === 0) {
+      return [];
+    }
+    return this.getOptionsFromChildren(value, this.props.children);
   };
 
   getLabelBySingleValue = (children, value) => {
@@ -793,7 +849,7 @@ export default class Select extends React.Component {
           label,
         };
       }
-      props.onDeselect(event);
+      props.onDeselect(event, this.getSingleOptionByValueKey(selectedKey));
     }
     this.fireChange(value);
   };
@@ -805,6 +861,11 @@ export default class Select extends React.Component {
     }
   };
 
+  fireSelect = value => {
+    const { labelInValue, onSelect } = this.props;
+    onSelect(labelInValue ? value : value.key, this.getSingleOptionByValueKey(value.key));
+  };
+
   fireChange = value => {
     const props = this.props;
     if (!('value' in props)) {
@@ -812,7 +873,10 @@ export default class Select extends React.Component {
         value,
       });
     }
-    props.onChange(this.getVLForOnChange(value));
+    const vls = this.getVLForOnChange(value);
+    const options = this.getOptionsByValue(value);
+    this._valueOptions = options;
+    props.onChange(vls, isMultipleOrTags(this.props) ? options : options[0]);
   };
 
   isChildDisabled = key => {
@@ -838,6 +902,10 @@ export default class Select extends React.Component {
           nextValue = nextValue.concat(selectedValue);
         }
       }
+      this.fireSelect({
+        key: label,
+        label,
+      });
     });
     return nextValue;
   };
