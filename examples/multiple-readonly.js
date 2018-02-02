@@ -69,8 +69,7 @@ var Test = function (_React$Component) {
 
   Test.prototype.render = function render() {
     var dropdownMenuStyle = {
-      maxHeight: 200,
-      overflow: 'auto'
+      maxHeight: 200
     };
     return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
       'div',

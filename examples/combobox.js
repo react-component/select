@@ -1,14 +1,14 @@
 webpackJsonp([14],{
 
-/***/ 96:
+/***/ 97:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(97);
+module.exports = __webpack_require__(98);
 
 
 /***/ }),
 
-/***/ 97:
+/***/ 98:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52,7 +52,8 @@ var Demo = function (_React$Component) {
     return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
       disabled: false,
       value: ''
-    }, _this.onChange = function (value) {
+    }, _this.onChange = function (value, option) {
+      console.log('onChange', value, option);
       _this.setState({
         value: value
       });
@@ -60,8 +61,8 @@ var Demo = function (_React$Component) {
       if (e.keyCode === 13) {
         console.log('onEnter', _this.state.value);
       }
-    }, _this.onSelect = function (v) {
-      console.log('onSelect', v);
+    }, _this.onSelect = function (v, option) {
+      console.log('onSelect', v, option);
     }, _this.toggleDisabled = function () {
       _this.setState({
         disabled: !_this.state.disabled
@@ -141,5 +142,5 @@ __WEBPACK_IMPORTED_MODULE_4_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ })
 
-},[96]);
+},[97]);
 //# sourceMappingURL=combobox.js.map

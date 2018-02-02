@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>combobox.js - example - rc-select@7.6.0</title>
+  <title>combobox.js - example - rc-select@7.7.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-select@7.6.0</h1>
+      <h1>rc-select@7.7.0</h1>
 
       <p>React Select</p>
     </div>
@@ -282,7 +282,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     value: <span class="hljs-string">''</span>,
   };
 
-  onChange = (value) =&gt; {
+  onChange = (value, option) =&gt; {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange'</span>, value, option);
     <span class="hljs-keyword">this</span>.setState({
       value,
     });
@@ -294,8 +295,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     }
   }
 
-  onSelect = (v) =&gt; {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onSelect'</span>, v);
+  onSelect = (v, option) =&gt; {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onSelect'</span>, v, option);
   }
 
   toggleDisabled = () =&gt; {

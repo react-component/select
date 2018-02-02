@@ -41,7 +41,7 @@ var children = [];
 for (var i = 10; i < 36; i++) {
   children.push(__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
     __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
-    { key: i.toString(36) + i },
+    { key: i.toString(36) + i, test: i },
     i.toString(36) + i
   ));
 }
@@ -61,11 +61,15 @@ var Test = function (_React$Component) {
     return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
       disabled: false,
       value: ['name2', 'name3']
-    }, _this.onChange = function (value) {
-      console.log('selected ' + value);
+    }, _this.onChange = function (value, option) {
+      console.log('changed ' + value, option);
       _this.setState({
         value: value
       });
+    }, _this.onSelect = function (value, option) {
+      console.log('selected ' + value, option.props);
+    }, _this.onDeselect = function (value, option) {
+      console.log('deselected ' + value, option);
     }, _this.toggleDisabled = function () {
       _this.setState({
         disabled: !_this.state.disabled
@@ -96,13 +100,15 @@ var Test = function (_React$Component) {
           {
             placeholder: 'placeholder',
             tags: true,
-            dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
+            dropdownMenuStyle: { maxHeight: 200 },
             style: { width: 500 },
             disabled: this.state.disabled,
             maxTagCount: this.state.maxTagCount,
             maxTagTextLength: 10,
             value: this.state.value,
             onChange: this.onChange,
+            onSelect: this.onSelect,
+            onDeselect: this.onDeselect,
             tokenSeparators: [' ', ',']
           },
           children

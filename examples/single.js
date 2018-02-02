@@ -95,7 +95,7 @@ var Test = function (_React$Component) {
           {
             value: this.state.value,
             placeholder: 'placeholder',
-            dropdownMenuStyle: { maxHeight: 200, overflow: 'auto' },
+            dropdownMenuStyle: { maxHeight: 200 },
             style: { width: 500 },
             onBlur: this.onBlur,
             onFocus: this.onFocus,

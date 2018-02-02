@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-select@7.6.0 - React Select</title>
+  <title>rc-select@7.7.0 - React Select</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,7 +737,7 @@
 
 <body>
 <div class="header">
-  <h1>rc-select@7.6.0</h1>
+  <h1>rc-select@7.7.0</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
@@ -1004,7 +1004,7 @@ React.render(c, container);</code></pre></div><h2>API<a id="user-content-api" na
 <tr>
 <td>onChange</td>
 <td>called when select an option or input value change(combobox)</td>
-<td>function(value)</td>
+<td>function(value, option:Option/Array<Option>)</td>
 <td>-</td>
 </tr>
 <tr>
@@ -1040,7 +1040,7 @@ React.render(c, container);</code></pre></div><h2>API<a id="user-content-api" na
 <tr>
 <td>onDeselect</td>
 <td>called when a option is deselected. param is option&#39;s value. only called for multiple or tags</td>
-<td>Function(value)</td>
+<td>Function(value, option:Option)</td>
 <td>-</td>
 </tr>
 <tr>
