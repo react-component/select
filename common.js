@@ -30767,8 +30767,7 @@ var DropdownMenu = function (_React$Component) {
           style: this.props.dropdownMenuStyle,
           defaultActiveFirst: defaultActiveFirstOption
         }, activeKeyProps, {
-          multiple: multiple,
-          focusable: false
+          multiple: multiple
         }, menuProps, {
           selectedKeys: selectedKeys,
           prefixCls: prefixCls + '-menu'
