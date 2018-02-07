@@ -8,6 +8,7 @@ exports[`DropdownMenu renders correctly 1`] = `
     aria-activedescendant=""
     class="undefined-menu  undefined-menu-root undefined-menu-vertical"
     role="menu"
+    tabindex="0"
   >
     <li
       class=" undefined-menu-item-group"

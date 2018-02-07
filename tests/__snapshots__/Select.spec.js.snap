@@ -57,6 +57,7 @@ Array [
           aria-activedescendant=""
           class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
           role="menu"
+          tabindex="0"
         >
           <li
             aria-selected="false"
@@ -140,6 +141,7 @@ Array [
           aria-activedescendant=""
           class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
           role="menu"
+          tabindex="0"
         >
           <li
             aria-selected="false"
@@ -410,6 +412,7 @@ Array [
           aria-activedescendant=""
           class="antd-dropdown-menu  antd-dropdown-menu-root antd-dropdown-menu-vertical"
           role="menu"
+          tabindex="0"
         >
           <li
             class=" antd-dropdown-menu-item-group"

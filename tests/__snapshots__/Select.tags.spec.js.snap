@@ -80,6 +80,7 @@ exports[`Select.tags OptGroup renders correctly 1`] = `
           aria-activedescendant=""
           class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
           role="menu"
+          tabindex="0"
         >
           <li
             class=" rc-select-dropdown-menu-item-group"
@@ -194,6 +195,7 @@ exports[`Select.tags OptGroup renders inputValue correctly 1`] = `
           aria-activedescendant=""
           class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
           role="menu"
+          tabindex="0"
         >
           <li
             aria-selected="false"
@@ -277,6 +279,7 @@ exports[`Select.tags OptGroup renders inputValue correctly 2`] = `
           aria-activedescendant=""
           class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
           role="menu"
+          tabindex="0"
         >
           <li
             class=" rc-select-dropdown-menu-item-group"
@@ -895,6 +898,7 @@ Array [
           aria-activedescendant=""
           class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
           role="menu"
+          tabindex="0"
         >
           <li
             aria-selected="false"
@@ -986,6 +990,7 @@ Array [
           aria-activedescendant=""
           class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
           role="menu"
+          tabindex="0"
         >
           <li
             aria-selected="false"
@@ -1071,6 +1076,7 @@ Array [
           aria-activedescendant=""
           class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
           role="menu"
+          tabindex="0"
         >
           <li
             aria-selected="false"

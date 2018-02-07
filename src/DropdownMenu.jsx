@@ -143,7 +143,6 @@ export default class DropdownMenu extends React.Component {
           defaultActiveFirst={defaultActiveFirstOption}
           {...activeKeyProps}
           multiple={multiple}
-          focusable={false}
           {...menuProps}
           selectedKeys={selectedKeys}
           prefixCls={`${prefixCls}-menu`}
