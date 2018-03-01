@@ -107,10 +107,10 @@ export default function dynamicChildrenTest(mode, props) {
 
     const wrapper = mount(<App />);
     jest.runAllTimers();
-    expect(wrapper.find('.rc-select-selection__choice__content').text()).toEqual('1-lable-new');
+    expect(wrapper.find('.rc-select-selection__choice__content').text()).toEqual('1-label-new');
   });
 
-  it.only('defaultValue label update with dynamic children', () => {
+  it('defaultValue label update with dynamic children', () => {
     class App extends React.Component {
       state = {
         value: ['1'],
