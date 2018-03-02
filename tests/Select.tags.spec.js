@@ -34,6 +34,34 @@ describe('Select.tags', () => {
     expect(wrapper.state().value).toEqual([{ key: 'foo', label: 'foo', title: undefined }]);
   });
 
+  it('should call onChange on blur if changeOnBlur is true', () => {
+    const wrapper = mount(
+      <Select tags changeOnBlur />
+    );
+
+    jest.useFakeTimers();
+    wrapper.find('input')
+      .simulate('change', { target: { value: 'foo' } })
+      .simulate('blur');
+
+    jest.runAllTimers();
+    expect(wrapper.state().value).toEqual([{ key: 'foo', label: 'foo', title: undefined }]);
+  });
+
+  it('should not call onChange on blur if changeOnBlur is false', () => {
+    const wrapper = mount(
+      <Select tags />
+    );
+
+    jest.useFakeTimers();
+    wrapper.find('input')
+      .simulate('change', { target: { value: 'foo' } })
+      .simulate('blur');
+
+    jest.runAllTimers();
+    expect(wrapper.state().value).toEqual([]);
+  });
+
   it('tokenize input', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();

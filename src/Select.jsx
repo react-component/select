@@ -73,6 +73,7 @@ export default class Select extends React.Component {
     notFoundContent: 'Not Found',
     backfill: false,
     showAction: ['click'],
+    changeOnBlur: false,
   };
 
   constructor(props) {
@@ -388,6 +389,16 @@ export default class Select extends React.Component {
       } else if (isMultipleOrTags(props) && inputValue) {
         // why not use setState?
         this.state.inputValue = this.getInputDOMNode().value = '';
+
+        if (this.props.changeOnBlur) {
+          if (findIndexInValueByLabel(value, inputValue) === -1) {
+            value = [...value, {
+              key: inputValue,
+              label: inputValue,
+            }];
+          }
+          this.fireChange(value);
+        }
       }
       props.onBlur(this.getVLForOnChange(value));
       this.setOpenState(false);
