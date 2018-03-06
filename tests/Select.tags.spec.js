@@ -34,9 +34,9 @@ describe('Select.tags', () => {
     expect(wrapper.state().value).toEqual([{ key: 'foo', label: 'foo', title: undefined }]);
   });
 
-  it('should call onChange on blur if tokenizeOnBlur is true and there are tokenSeparators', () => {
+  it('should call onChange on blur if selectOnBlur is true', () => {
     const wrapper = mount(
-      <Select tags tokenizeOnBlur tokenSeparators={[',']}/>
+      <Select tags selectOnBlur />
     );
 
     jest.useFakeTimers();
@@ -48,34 +48,18 @@ describe('Select.tags', () => {
     expect(wrapper.state().value).toEqual([{ key: 'foo', label: 'foo', title: undefined }]);
   });
 
-  describe('should not call onChange on blur', () => {
-    it('if tokenizeOnBlur is true but there are no tokenSeparators', () => {
-      const wrapper = mount(
-        <Select tags tokenizeOnBlur/>
-      );
+  it('should not call onChange on blur if selectOnBlur is false', () => {
+    const wrapper = mount(
+      <Select tags />
+    );
 
-      jest.useFakeTimers();
-      wrapper.find('input')
-        .simulate('change', { target: { value: 'foo' } })
-        .simulate('blur');
+    jest.useFakeTimers();
+    wrapper.find('input')
+      .simulate('change', { target: { value: 'foo' } })
+      .simulate('blur');
 
-      jest.runAllTimers();
-      expect(wrapper.state().value).toEqual([]);
-    });
-
-    it('if tokenizeOnBlur is false', () => {
-      const wrapper = mount(
-        <Select tags tokenSeparators={[',']}/>
-      );
-
-      jest.useFakeTimers();
-      wrapper.find('input')
-        .simulate('change', { target: { value: 'foo' } })
-        .simulate('blur');
-
-      jest.runAllTimers();
-      expect(wrapper.state().value).toEqual([]);
-    });
+    jest.runAllTimers();
+    expect(wrapper.state().value).toEqual([]);
   });
 
   it('tokenize input', () => {

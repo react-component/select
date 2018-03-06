@@ -73,7 +73,8 @@ export default class Select extends React.Component {
     notFoundContent: 'Not Found',
     backfill: false,
     showAction: ['click'],
-    tokenizeOnBlur: false,
+    selectOnBlur: false,
+    tokenSeparators: [],
   };
 
   constructor(props) {
@@ -167,7 +168,7 @@ export default class Select extends React.Component {
     const val = event.target.value;
     if (
       isMultipleOrTags(this.props) &&
-      tokenSeparators &&
+      tokenSeparators.length &&
       includesSeparators(val, tokenSeparators)
     ) {
       const nextValue = this.tokenize(val);
@@ -390,7 +391,7 @@ export default class Select extends React.Component {
         // why not use setState?
         this.state.inputValue = this.getInputDOMNode().value = '';
 
-        if (this.props.tokenizeOnBlur && props.tokenSeparators) {
+        if (this.props.selectOnBlur) {
           value = this.tokenize(inputValue);
           this.fireChange(value);
         }
