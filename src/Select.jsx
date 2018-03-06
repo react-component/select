@@ -319,6 +319,7 @@ export default class Select extends React.Component {
 
   onArrowClick = e => {
     e.stopPropagation();
+    e.preventDefault();
     if (!this.props.disabled) {
       this.setOpenState(!this.state.open, !this.state.open);
     }
