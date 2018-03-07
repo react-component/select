@@ -23624,13 +23624,8 @@ var _initialiseProps = function _initialiseProps() {
   var _this2 = this;
 
   this.componentWillReceiveProps = function (nextProps) {
-    if ('value' in nextProps || _this2.state.value.length > 0) {
-      var value = void 0;
-      if ('value' in nextProps) {
-        value = Object(__WEBPACK_IMPORTED_MODULE_14__util__["r" /* toArray */])(nextProps.value);
-      } else {
-        value = Object(__WEBPACK_IMPORTED_MODULE_14__util__["r" /* toArray */])(_this2.getVLForOnChange(_this2.state.value));
-      }
+    if ('value' in nextProps) {
+      var value = Object(__WEBPACK_IMPORTED_MODULE_14__util__["r" /* toArray */])(nextProps.value);
       value = _this2.addLabelToValue(nextProps, value);
       value = _this2.addTitleToValue(nextProps, value);
       _this2.setState({
