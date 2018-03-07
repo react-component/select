@@ -73,7 +73,6 @@ export default class Select extends React.Component {
     notFoundContent: 'Not Found',
     backfill: false,
     showAction: ['click'],
-    tokenSeparators: [],
   };
 
   constructor(props) {
@@ -167,7 +166,7 @@ export default class Select extends React.Component {
     const val = event.target.value;
     if (
       isMultipleOrTags(this.props) &&
-      tokenSeparators.length &&
+      tokenSeparators &&
       includesSeparators(val, tokenSeparators)
     ) {
       const nextValue = this.tokenize(val);
