@@ -73,7 +73,6 @@ export default class Select extends React.Component {
     notFoundContent: 'Not Found',
     backfill: false,
     showAction: ['click'],
-    selectOnBlur: false,
     tokenSeparators: [],
   };
 
@@ -391,8 +390,11 @@ export default class Select extends React.Component {
         // why not use setState?
         this.state.inputValue = this.getInputDOMNode().value = '';
 
-        if (this.props.selectOnBlur) {
-          value = this.tokenize(inputValue);
+        if (findIndexInValueByLabel(value, inputValue) === -1) {
+          value = [...value, {
+            key: inputValue,
+            label: inputValue,
+          }];
           this.fireChange(value);
         }
       }

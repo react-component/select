@@ -81,5 +81,4 @@ export const SelectPropTypes = {
   tokenSeparators: PropTypes.arrayOf(PropTypes.string),
   getInputElement: PropTypes.func,
   showAction: PropTypes.arrayOf(PropTypes.string),
-  selectOnBlur: PropTypes.bool,
 };

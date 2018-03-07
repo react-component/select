@@ -34,21 +34,7 @@ describe('Select.tags', () => {
     expect(wrapper.state().value).toEqual([{ key: 'foo', label: 'foo', title: undefined }]);
   });
 
-  it('should call onChange on blur if selectOnBlur is true', () => {
-    const wrapper = mount(
-      <Select tags selectOnBlur />
-    );
-
-    jest.useFakeTimers();
-    wrapper.find('input')
-      .simulate('change', { target: { value: 'foo' } })
-      .simulate('blur');
-
-    jest.runAllTimers();
-    expect(wrapper.state().value).toEqual([{ key: 'foo', label: 'foo', title: undefined }]);
-  });
-
-  it('should not call onChange on blur if selectOnBlur is false', () => {
+  it('should call onChange on blur', () => {
     const wrapper = mount(
       <Select tags />
     );
@@ -59,7 +45,7 @@ describe('Select.tags', () => {
       .simulate('blur');
 
     jest.runAllTimers();
-    expect(wrapper.state().value).toEqual([]);
+    expect(wrapper.state().value).toEqual([{ key: 'foo', label: 'foo', title: undefined }]);
   });
 
   it('tokenize input', () => {
