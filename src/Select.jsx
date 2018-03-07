@@ -396,6 +396,7 @@ export default class Select extends React.Component {
             label: inputValue,
           }];
           this.fireChange(value);
+          this.fireSelect(value);
         }
       }
       props.onBlur(this.getVLForOnChange(value));
