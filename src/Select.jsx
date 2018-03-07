@@ -114,13 +114,8 @@ export default class Select extends React.Component {
   }
 
   componentWillReceiveProps = nextProps => {
-    if ('value' in nextProps || this.state.value.length > 0) {
-      let value;
-      if ('value' in nextProps) {
-        value = toArray(nextProps.value);
-      } else {
-        value = toArray(this.getVLForOnChange(this.state.value));
-      }
+    if ('value' in nextProps) {
+      let value = toArray(nextProps.value);
       value = this.addLabelToValue(nextProps, value);
       value = this.addTitleToValue(nextProps, value);
       this.setState({
