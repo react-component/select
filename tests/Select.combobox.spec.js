@@ -257,4 +257,44 @@ describe('Select.combobox', () => {
     wrapper.find('input').simulate('change', { target: { value: '' } });
     expect(wrapper.find('.rc-select-selection__clear').length).toBe(0);
   });
+
+  it('autocomplete - option update when input change', () => {
+    class App extends React.Component {
+      state = {
+        options: [],
+      }
+
+      updateOptions = (value) => {
+        const options = [
+          value,
+          value + value,
+          value + value + value,
+        ];
+        this.setState({
+          options,
+        });
+      }
+
+      render() {
+        return (
+          <Select
+            combobox
+            optionLabelProp="children"
+            onChange={this.updateOptions}
+          >
+            {this.state.options.map((opt) => {
+              return <Option key={opt}>{opt}</Option>;
+            })}
+          </Select>
+        );
+      }
+    }
+
+    const wrapper = mount(<App/>);
+    wrapper.find('input').simulate('change', { target: { value: 'a' } });
+    wrapper.find('input').simulate('change', { target: { value: 'ab' } });
+    expect(wrapper.find('input').prop('value')).toBe('ab');
+    wrapper.find('MenuItem').at(1).simulate('click');
+    expect(wrapper.find('input').prop('value')).toBe('abab');
+  });
 });
