@@ -1,6 +1,10 @@
 # History
 ----
 
+## 7.7.4 / 2018-03-13
+
+- Fire change on blur for tags mode https://github.com/react-component/select/pull/271
+
 ## 7.5.0 / 2017-12-11
 
 - Add onInputKeydown
