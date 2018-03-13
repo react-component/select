@@ -73,6 +73,7 @@ export default class Select extends React.Component {
     notFoundContent: 'Not Found',
     backfill: false,
     showAction: ['click'],
+    tokenSeparators: [],
   };
 
   constructor(props) {
@@ -166,10 +167,10 @@ export default class Select extends React.Component {
     const val = event.target.value;
     if (
       isMultipleOrTags(this.props) &&
-      tokenSeparators &&
+      tokenSeparators.length &&
       includesSeparators(val, tokenSeparators)
     ) {
-      const nextValue = this.tokenize(val);
+      const nextValue = this.getValueByInput(val);
       this.fireChange(nextValue);
       this.setOpenState(false, true);
       this.setInputValue('', false);
@@ -389,6 +390,9 @@ export default class Select extends React.Component {
       } else if (isMultipleOrTags(props) && inputValue) {
         // why not use setState?
         this.state.inputValue = this.getInputDOMNode().value = '';
+
+        value = this.getValueByInput(inputValue);
+        this.fireChange(value);
       }
       props.onBlur(this.getVLForOnChange(value));
       this.setOpenState(false);
@@ -670,6 +674,30 @@ export default class Select extends React.Component {
     }
   };
 
+  getValueByInput = string => {
+    const { multiple, tokenSeparators, children } = this.props;
+    let nextValue = this.state.value;
+    splitBySeparators(string, tokenSeparators).forEach(label => {
+      const selectedValue = { key: label, label };
+      if (findIndexInValueByLabel(nextValue, label) === -1) {
+        if (multiple) {
+          const value = this.getValueByLabel(children, label);
+          if (value) {
+            selectedValue.key = value;
+            nextValue = nextValue.concat(selectedValue);
+          }
+        } else {
+          nextValue = nextValue.concat(selectedValue);
+        }
+      }
+      this.fireSelect({
+        key: label,
+        label,
+      });
+    });
+    return nextValue;
+  };
+
   focus() {
     if (isSingleMode(this.props)) {
       this.selectionRef.focus();
@@ -885,30 +913,6 @@ export default class Select extends React.Component {
       const childValue = getValuePropValue(child);
       return childValue === key && child.props && child.props.disabled;
     });
-  };
-
-  tokenize = string => {
-    const { multiple, tokenSeparators, children } = this.props;
-    let nextValue = this.state.value;
-    splitBySeparators(string, tokenSeparators).forEach(label => {
-      const selectedValue = { key: label, label };
-      if (findIndexInValueByLabel(nextValue, label) === -1) {
-        if (multiple) {
-          const value = this.getValueByLabel(children, label);
-          if (value) {
-            selectedValue.key = value;
-            nextValue = nextValue.concat(selectedValue);
-          }
-        } else {
-          nextValue = nextValue.concat(selectedValue);
-        }
-      }
-      this.fireSelect({
-        key: label,
-        label,
-      });
-    });
-    return nextValue;
   };
 
   adjustOpenState = () => {
