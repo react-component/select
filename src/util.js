@@ -142,7 +142,7 @@ export function defaultFilterFn(input, child) {
   if (child.props.disabled) {
     return false;
   }
-  const value = String(getPropValue(child, this.props.optionFilterProp));
+  const value = toArray(getPropValue(child, this.props.optionFilterProp)).join('');
   return (
     value.toLowerCase().indexOf(input.toLowerCase()) > -1
   );
