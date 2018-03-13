@@ -3173,7 +3173,7 @@ function defaultFilterFn(input, child) {
   if (child.props.disabled) {
     return false;
   }
-  var value = String(getPropValue(child, this.props.optionFilterProp));
+  var value = toArray(getPropValue(child, this.props.optionFilterProp)).join('');
   return value.toLowerCase().indexOf(input.toLowerCase()) > -1;
 }
 
@@ -23617,7 +23617,8 @@ Select.defaultProps = {
   optionLabelProp: 'value',
   notFoundContent: 'Not Found',
   backfill: false,
-  showAction: ['click']
+  showAction: ['click'],
+  tokenSeparators: []
 };
 
 var _initialiseProps = function _initialiseProps() {
@@ -23643,8 +23644,8 @@ var _initialiseProps = function _initialiseProps() {
     var tokenSeparators = _this2.props.tokenSeparators;
 
     var val = event.target.value;
-    if (Object(__WEBPACK_IMPORTED_MODULE_14__util__["l" /* isMultipleOrTags */])(_this2.props) && tokenSeparators && Object(__WEBPACK_IMPORTED_MODULE_14__util__["j" /* includesSeparators */])(val, tokenSeparators)) {
-      var nextValue = _this2.tokenize(val);
+    if (Object(__WEBPACK_IMPORTED_MODULE_14__util__["l" /* isMultipleOrTags */])(_this2.props) && tokenSeparators.length && Object(__WEBPACK_IMPORTED_MODULE_14__util__["j" /* includesSeparators */])(val, tokenSeparators)) {
+      var nextValue = _this2.getValueByInput(val);
       _this2.fireChange(nextValue);
       _this2.setOpenState(false, true);
       _this2.setInputValue('', false);
@@ -23850,6 +23851,9 @@ var _initialiseProps = function _initialiseProps() {
       } else if (Object(__WEBPACK_IMPORTED_MODULE_14__util__["l" /* isMultipleOrTags */])(props) && inputValue) {
         // why not use setState?
         _this2.state.inputValue = _this2.getInputDOMNode().value = '';
+
+        value = _this2.getValueByInput(inputValue);
+        _this2.fireChange(value);
       }
       props.onBlur(_this2.getVLForOnChange(value));
       _this2.setOpenState(false);
@@ -24143,6 +24147,34 @@ var _initialiseProps = function _initialiseProps() {
     }
   };
 
+  this.getValueByInput = function (string) {
+    var _props2 = _this2.props,
+        multiple = _props2.multiple,
+        tokenSeparators = _props2.tokenSeparators,
+        children = _props2.children;
+
+    var nextValue = _this2.state.value;
+    Object(__WEBPACK_IMPORTED_MODULE_14__util__["q" /* splitBySeparators */])(string, tokenSeparators).forEach(function (label) {
+      var selectedValue = { key: label, label: label };
+      if (Object(__WEBPACK_IMPORTED_MODULE_14__util__["f" /* findIndexInValueByLabel */])(nextValue, label) === -1) {
+        if (multiple) {
+          var value = _this2.getValueByLabel(children, label);
+          if (value) {
+            selectedValue.key = value;
+            nextValue = nextValue.concat(selectedValue);
+          }
+        } else {
+          nextValue = nextValue.concat(selectedValue);
+        }
+      }
+      _this2.fireSelect({
+        key: label,
+        label: label
+      });
+    });
+    return nextValue;
+  };
+
   this.handleBackfill = function (item) {
     if (!_this2.props.backfill || !(Object(__WEBPACK_IMPORTED_MODULE_14__util__["n" /* isSingleMode */])(_this2.props) || Object(__WEBPACK_IMPORTED_MODULE_14__util__["k" /* isCombobox */])(_this2.props))) {
       return;
@@ -24328,9 +24360,9 @@ var _initialiseProps = function _initialiseProps() {
   };
 
   this.fireSelect = function (value) {
-    var _props2 = _this2.props,
-        labelInValue = _props2.labelInValue,
-        onSelect = _props2.onSelect;
+    var _props3 = _this2.props,
+        labelInValue = _props3.labelInValue,
+        onSelect = _props3.onSelect;
 
     onSelect(labelInValue ? value : value.key, _this2.getSingleOptionByValueKey(value.key));
   };
@@ -24353,34 +24385,6 @@ var _initialiseProps = function _initialiseProps() {
       var childValue = Object(__WEBPACK_IMPORTED_MODULE_14__util__["i" /* getValuePropValue */])(child);
       return childValue === key && child.props && child.props.disabled;
     });
-  };
-
-  this.tokenize = function (string) {
-    var _props3 = _this2.props,
-        multiple = _props3.multiple,
-        tokenSeparators = _props3.tokenSeparators,
-        children = _props3.children;
-
-    var nextValue = _this2.state.value;
-    Object(__WEBPACK_IMPORTED_MODULE_14__util__["q" /* splitBySeparators */])(string, tokenSeparators).forEach(function (label) {
-      var selectedValue = { key: label, label: label };
-      if (Object(__WEBPACK_IMPORTED_MODULE_14__util__["f" /* findIndexInValueByLabel */])(nextValue, label) === -1) {
-        if (multiple) {
-          var value = _this2.getValueByLabel(children, label);
-          if (value) {
-            selectedValue.key = value;
-            nextValue = nextValue.concat(selectedValue);
-          }
-        } else {
-          nextValue = nextValue.concat(selectedValue);
-        }
-      }
-      _this2.fireSelect({
-        key: label,
-        label: label
-      });
-    });
-    return nextValue;
   };
 
   this.adjustOpenState = function () {
