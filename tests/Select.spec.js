@@ -190,6 +190,20 @@ describe('Select', () => {
     expect(wrapper.find('MenuItem').props().value).toBe('2');
   });
 
+  it('filter array children', () => {
+    const wrapper = mount(
+      <Select optionFilterProp="children">
+        <Option value="1" label="One">One{1}</Option>
+        <Option value="2" label="Two">Two{2}</Option>
+      </Select>
+    );
+
+    wrapper.find('input').simulate('change', { target: { value: 'Two2' } });
+
+    expect(wrapper.find('MenuItem').length).toBe(1);
+    expect(wrapper.find('MenuItem').props().value).toBe('2');
+  });
+
   it('no search', () => {
     const wrapper = render(
       <Select showSearch={false} value="1">
