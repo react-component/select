@@ -47,6 +47,7 @@ class Test extends React.Component {
     };
     return (
       <div>
+        <Select tags />
         <h2>multiple select（scroll the menu）</h2>
 
         <p>

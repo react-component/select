@@ -50,11 +50,8 @@ describe('Select.multiple', () => {
 
     expect(handleChange).toBeCalledWith(['1', '2'], expect.anything());
     expect(wrapper.state().value).toEqual(['1', '2']);
-    // TODO
-    // expect(wrapper.state().value).toEqual([
-    //   { key: '1', label: 'One' },
-    //   { key: '2', label: 'Two' },
-    // ]);
+    expect(wrapper.find('.rc-select-selection__choice__content').at(0).text()).toEqual('One');
+    expect(wrapper.find('.rc-select-selection__choice__content').at(1).text()).toEqual('Two');
     expect(wrapper.state().inputValue).toBe('');
     expect(wrapper.state().open).toBe(false);
     expect(input.instance().focus).toBeCalled();

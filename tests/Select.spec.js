@@ -54,15 +54,15 @@ describe('Select', () => {
 
   it('convert value to array', () => {
     const wrapper = mount(
-      <Select value="1">
+      <Select value="1" optionLabelProp="children">
         <OptGroup>
-          <Option value="1" title="一">1</Option>
+          <Option value="1" title="一">1-label</Option>
         </OptGroup>
       </Select>
     );
     expect(wrapper.state().value).toEqual(['1']);
-    // TODO checkout title
-    // expect(wrapper.state().value).toEqual([{ key: '1', label: '1', title: '一' }]);
+    expect(wrapper.find('.rc-select-selection-selected-value').text()).toEqual('1-label');
+    expect(wrapper.find('.rc-select-selection-selected-value').prop('title')).toEqual('一');
   });
 
   it('convert defaultValue to array', () => {
@@ -74,8 +74,8 @@ describe('Select', () => {
       </Select>
     );
     expect(wrapper.state().value).toEqual(['1']);
-    // TODO check title
-    // expect(wrapper.state().value).toEqual([{ key: '1', label: '1', title: '一' }]);
+    expect(wrapper.find('.rc-select-selection-selected-value').text()).toEqual('1');
+    expect(wrapper.find('.rc-select-selection-selected-value').prop('title')).toEqual('一');
   });
 
   it('not add open className when result is empty and no notFoundContent given', () => {
@@ -725,9 +725,9 @@ describe('Select', () => {
     input.simulate('keyDown', { keyCode: KeyCode.ENTER });
 
     expect(wrapper.state().value).toEqual(['2']);
-    // TODO add label check
     expect(handleChange).toBeCalledWith('2', expect.anything());
     expect(handleSelect).toBeCalledWith('2', expect.anything());
+    expect(wrapper.find('.rc-select-selection-selected-value').text()).toEqual('Two');
   });
 
   describe('number value', () => {
