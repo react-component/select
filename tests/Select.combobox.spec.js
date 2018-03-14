@@ -47,7 +47,7 @@ describe('Select.combobox', () => {
 
     wrapper.find('input').simulate('change', { target: { value: '1' } });
 
-    expect(handleChange).toBeCalledWith('1', <Option key="1" value="1" />);
+    expect(handleChange).toBeCalledWith('1', <Option key="1" value="1">1</Option>);
   });
 
   it('set inputValue when user select a option', () => {
@@ -221,25 +221,15 @@ describe('Select.combobox', () => {
 
     input.simulate('keyDown', { keyCode: KeyCode.DOWN });
 
-    expect(wrapper.state().value).toEqual([
-      {
-        key: 'Two',
-        label: 'Two',
-        backfill: true,
-      },
-    ]);
+    expect(wrapper.state().value).toEqual(['Two']);
+    expect(wrapper.state().backfillValue).toEqual('Two');
     expect(wrapper.state().inputValue).toBe('Two');
     expect(handleChange).not.toBeCalled();
     expect(handleSelect).not.toBeCalled();
 
     input.simulate('keyDown', { keyCode: KeyCode.ENTER });
 
-    expect(wrapper.state().value).toEqual([
-      {
-        key: 'Two',
-        label: 'Two',
-      },
-    ]);
+    expect(wrapper.state().value).toEqual(['Two']);
     expect(handleChange).toBeCalledWith('Two', <Option value="Two">Two</Option>);
     expect(handleSelect).toBeCalledWith('Two', <Option value="Two">Two</Option>);
   });

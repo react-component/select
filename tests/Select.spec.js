@@ -60,7 +60,9 @@ describe('Select', () => {
         </OptGroup>
       </Select>
     );
-    expect(wrapper.state().value).toEqual([{ key: '1', label: '1', title: '一' }]);
+    expect(wrapper.state().value).toEqual(['1']);
+    // TODO checkout title
+    // expect(wrapper.state().value).toEqual([{ key: '1', label: '1', title: '一' }]);
   });
 
   it('convert defaultValue to array', () => {
@@ -71,7 +73,9 @@ describe('Select', () => {
         </OptGroup>
       </Select>
     );
-    expect(wrapper.state().value).toEqual([{ key: '1', label: '1', title: '一' }]);
+    expect(wrapper.state().value).toEqual(['1']);
+    // TODO check title
+    // expect(wrapper.state().value).toEqual([{ key: '1', label: '1', title: '一' }]);
   });
 
   it('not add open className when result is empty and no notFoundContent given', () => {
@@ -594,11 +598,9 @@ describe('Select', () => {
     });
 
     it('warns on invalid value when labelInValue', () => {
-      expect(() => {
-        mount(
-          <Select labelInValue value="foo" />
-        );
-      }).toThrow();
+      mount(
+        <Select labelInValue value="foo" />
+      );
       expect(spy.mock.calls[0][0]).toMatch(
         'Warning: Failed prop type: Invalid prop `value` supplied to `Select`, ' +
         'when you set `labelInValue` to `true`,' +
@@ -715,24 +717,15 @@ describe('Select', () => {
 
     input.simulate('keyDown', { keyCode: KeyCode.DOWN });
 
-    expect(wrapper.state().value).toEqual([
-      {
-        key: '2',
-        label: 'Two',
-        backfill: true,
-      },
-    ]);
+    expect(wrapper.state().value).toEqual(['2']);
+    expect(wrapper.state().backfillValue).toEqual('2');
     expect(handleChange).not.toBeCalled();
     expect(handleSelect).not.toBeCalled();
 
     input.simulate('keyDown', { keyCode: KeyCode.ENTER });
 
-    expect(wrapper.state().value).toEqual([
-      {
-        key: '2',
-        label: 'Two',
-      },
-    ]);
+    expect(wrapper.state().value).toEqual(['2']);
+    // TODO add label check
     expect(handleChange).toBeCalledWith('2', expect.anything());
     expect(handleSelect).toBeCalledWith('2', expect.anything());
   });

@@ -31,7 +31,8 @@ describe('Select.tags', () => {
       .simulate('change', { target: { value: 'foo' } })
       .simulate('keyDown', { keyCode: KeyCode.ENTER });
 
-    expect(wrapper.state().value).toEqual([{ key: 'foo', label: 'foo', title: undefined }]);
+    expect(wrapper.state().value).toEqual(['foo']);
+    // expect(wrapper.state().value).toEqual([{ key: 'foo', label: 'foo', title: undefined }]);
   });
 
   it('should call onChange on blur', () => {
@@ -45,7 +46,9 @@ describe('Select.tags', () => {
       .simulate('blur');
 
     jest.runAllTimers();
-    expect(wrapper.state().value).toEqual([{ key: 'foo', label: 'foo', title: undefined }]);
+    expect(wrapper.state().value).toEqual(['foo']);
+    // TODO check label
+    // expect(wrapper.state().value).toEqual([{ key: 'foo', label: 'foo', title: undefined }]);
   });
 
   it('tokenize input', () => {
@@ -72,11 +75,12 @@ describe('Select.tags', () => {
     expect(handleChange).toBeCalledWith(['2', '3', '4'], expect.anything());
     expect(handleSelect).toHaveBeenCalledTimes(3);
     expect(handleSelect).toHaveBeenLastCalledWith('4', <Option key="4" value="4">4</Option>);
-    expect(wrapper.state().value).toEqual([
-      { key: '2', label: '2' },
-      { key: '3', label: '3' },
-      { key: '4', label: '4' },
-    ]);
+    expect(wrapper.state().value).toEqual(['2', '3', '4']);
+    // TODO add label check
+    //   { key: '2', label: '2' },
+    //   { key: '3', label: '3' },
+    //   { key: '4', label: '4' },
+    // ]);
     expect(wrapper.state().inputValue).toBe('');
     expect(wrapper.state().open).toBe(false);
     expect(input.instance().focus).toBeCalled();
@@ -134,7 +138,9 @@ describe('Select.tags', () => {
       .simulate('change', { target: { value: 'a' } })
       .simulate('keyDown', { keyCode: KeyCode.ENTER });
 
-    expect(wrapper.state().value).toEqual([{ key: 'a', label: 'a', title: undefined }]);
+    expect(wrapper.state().value).toEqual(['a']);
+    // TODO test label
+    // expect(wrapper.state().value).toEqual([{ key: 'a', label: 'a', title: undefined }]);
   });
 
   describe('OptGroup', () => {

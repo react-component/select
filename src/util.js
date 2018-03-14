@@ -60,7 +60,7 @@ export function preventDefaultEvent(e) {
 export function findIndexInValueByKey(value, key) {
   let index = -1;
   for (let i = 0; i < value.length; i++) {
-    if (value[i].key === key) {
+    if (value[i] === key) {
       index = i;
       break;
     }
@@ -71,7 +71,7 @@ export function findIndexInValueByKey(value, key) {
 export function findIndexInValueByLabel(value, label) {
   let index = -1;
   for (let i = 0; i < value.length; i++) {
-    if (toArray(value[i].label).join('') === label) {
+    if (toArray(value[i]).join('') === label) {
       index = i;
       break;
     }
