@@ -34,12 +34,9 @@ describe('Select.combobox', () => {
     );
 
     expect(wrapper.state().inputValue).toBe('1');
-    expect(
-      wrapper.find('.rc-select-selection__placeholder').prop('style')
-    ).toHaveProperty('display', 'none');
   });
 
-  it.only('placeholder', () => {
+  it('placeholder', () => {
     const wrapper = mount(
       <Select combobox placeholder="placeholder">
         <Option value="1">1</Option>
@@ -257,6 +254,28 @@ describe('Select.combobox', () => {
     expect(wrapper.state().value).toEqual(['Two']);
     expect(handleChange).toBeCalledWith('Two', <Option value="Two">Two</Option>);
     expect(handleSelect).toBeCalledWith('Two', <Option value="Two">Two</Option>);
+  });
+
+  it('should hide clear icon when value is \'\'', () => {
+    const wrapper = mount(
+      <Select combobox value="" allowClear>
+        <Option value="One">One</Option>
+        <Option value="Two">Two</Option>
+      </Select>
+    );
+
+    expect(wrapper.find('.rc-select-selection__clear').length).toBe(0);
+  });
+
+  it('should show clear icon when inputValue is not \'\'', () => {
+    const wrapper = mount(
+      <Select combobox value="One" allowClear>
+        <Option value="One">One</Option>
+        <Option value="Two">Two</Option>
+      </Select>
+    );
+
+    expect(wrapper.find('.rc-select-selection__clear').length).toBe(1);
   });
 
   it('should hide clear icon when inputValue is \'\'', () => {
