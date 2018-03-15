@@ -529,7 +529,7 @@ export default class Select extends React.Component {
     if (state.value.length) {
       hidden = true;
     }
-    if (isCombobox(props) && state.value.length === 1 && !state.value[0].key) {
+    if (isCombobox(props) && state.value.length === 1 && !state.value[0]) {
       hidden = false;
     }
     const placeholder = props.placeholder;

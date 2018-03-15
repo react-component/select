@@ -34,6 +34,31 @@ describe('Select.combobox', () => {
     );
 
     expect(wrapper.state().inputValue).toBe('1');
+    expect(
+      wrapper.find('.rc-select-selection__placeholder').prop('style')
+    ).toHaveProperty('display', 'none');
+  });
+
+  it.only('placeholder', () => {
+    const wrapper = mount(
+      <Select combobox placeholder="placeholder">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>
+    );
+
+    expect(wrapper.state().inputValue).toBe('');
+    expect(
+      wrapper.find('.rc-select-selection__placeholder').text()
+    ).toBe('placeholder');
+    expect(
+      wrapper.find('.rc-select-selection__placeholder').prop('style')
+    ).toHaveProperty('display', 'block');
+    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    expect(
+      wrapper.update().find('.rc-select-selection__placeholder').prop('style')
+    ).toHaveProperty('display', 'none');
+    expect(wrapper.state().inputValue).toBe('1');
   });
 
   it('fire change event immediately when user inputing', () => {
