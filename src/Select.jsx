@@ -434,7 +434,7 @@ export default class Select extends React.Component {
     };
     optionsInfo = optionsInfo || this.state.optionsInfo;
     if (optionsInfo.has(value)) {
-      return optionsInfo.get(value);
+      return optionsInfo.get(value) || defaultInfo;
     }
     return defaultInfo;
   }
