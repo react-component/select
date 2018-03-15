@@ -404,53 +404,44 @@ export default class Select extends React.Component {
     return value;
   }
 
-  getOptionInfoByValue = (value, optionsInfo) => {
-    let ret = {
-      option: <Option value={value} key={value}>{value}</Option>,
-      value,
-      label: value,
-    };
-    optionsInfo = optionsInfo || this.state.optionsInfo;
-    for (let i = 0; i < optionsInfo.length; i++) {
-      if (optionsInfo[i].value === value) {
-        ret = optionsInfo[i];
-        break;
-      }
-    }
-    return ret;
-  }
-
   getOptionsInfoFromProps = props => {
     const options = this.getOptionsFromChildren(props.children);
-    const oldOptionsInfo = this.state ? this.state.optionsInfo : [];
+    const oldOptionsInfo = this.state ? this.state.optionsInfo : new Map();
     const value = this.state ? this.state.value : [];
-    const valueInNewOptionsFlag = {};
-    const optionsInfo = options.map((option) => {
+    const optionsInfo = new Map();
+    options.forEach((option) => {
       const singleValue = getValuePropValue(option);
-      valueInNewOptionsFlag[singleValue] = true;
-      return {
+      optionsInfo.set(singleValue, {
         option,
         value: singleValue,
         label: this.getLabelFromOption(option),
         title: option.props.title,
-      };
+      });
     });
     value.forEach(v => {
-      if (valueInNewOptionsFlag[v] === undefined) {
-        const index = oldOptionsInfo.findIndex(info => {
-          return v === info.value;
-        });
-        if (index !== -1) {
-          optionsInfo.push(oldOptionsInfo[index]);
-        }
+      if (!optionsInfo.has(v)) {
+        optionsInfo.set(v, oldOptionsInfo.get(v));
       }
     });
     return optionsInfo;
   }
 
+  getOptionInfoByValue = (value, optionsInfo) => {
+    const defaultInfo = {
+      option: <Option value={value} key={value}>{value}</Option>,
+      value,
+      label: value,
+    };
+    optionsInfo = optionsInfo || this.state.optionsInfo;
+    if (optionsInfo.has(value)) {
+      return optionsInfo.get(value);
+    }
+    return defaultInfo;
+  }
+
   getOptionByValue = value => {
-    const info = this.getOptionInfoByValue(value);
-    return info.option;
+    const { option } = this.getOptionInfoByValue(value);
+    return option;
   }
 
   getOptionsByValue = values => {
@@ -517,8 +508,8 @@ export default class Select extends React.Component {
   };
 
   getLabelByValue = (value, optionsInfo) => {
-    const info = this.getOptionInfoByValue(value, optionsInfo);
-    return info.label;
+    const { label } = this.getOptionInfoByValue(value, optionsInfo);
+    return label;
   };
 
   getDropdownContainer = () => {
@@ -1042,18 +1033,18 @@ export default class Select extends React.Component {
           }
         }
         const singleValue = value[0];
-        const info = this.getOptionInfoByValue(singleValue);
+        const { label, title } = this.getOptionInfoByValue(singleValue);
         selectedValue = (
           <div
             key="value"
             className={`${prefixCls}-selection-selected-value`}
-            title={info.title || info.label}
+            title={title || label}
             style={{
               display: showSelectedValue ? 'block' : 'none',
               opacity,
             }}
           >
-            {info.label}
+            {label}
           </div>
         );
       }
