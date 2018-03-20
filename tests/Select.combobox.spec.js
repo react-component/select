@@ -246,6 +246,7 @@ describe('Select.combobox', () => {
     expect(wrapper.state().value).toEqual(['Two']);
     expect(wrapper.state().backfillValue).toEqual('Two');
     expect(wrapper.state().inputValue).toBe('Two');
+    expect(wrapper.find('MenuItem').at(1).text()).toBe('Two');
     expect(handleChange).not.toBeCalled();
     expect(handleSelect).not.toBeCalled();
 

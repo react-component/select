@@ -612,6 +612,7 @@ export default class Select extends React.Component {
     }
     const nextState = {
       open,
+      backfillValue: undefined,
     };
     // clear search input value when open is false in singleMode.
     if (!open && isSingleMode(props) && props.showSearch) {
@@ -694,7 +695,7 @@ export default class Select extends React.Component {
   filterOption = (input, child, defaultFilter = defaultFilterFn) => {
     const { value } = this.state;
     const lastValue = value[value.length - 1];
-    if (!input || (lastValue && lastValue.backfill)) {
+    if (!input || (lastValue && lastValue === this.state.backfillValue)) {
       return true;
     }
     let filterFn = this.props.filterOption;
@@ -1237,6 +1238,7 @@ export default class Select extends React.Component {
         visible={open}
         inputValue={state.inputValue}
         value={state.value}
+        backfillValue={state.backfillValue}
         firstActiveValue={props.firstActiveValue}
         onDropdownVisibleChange={this.onDropdownVisibleChange}
         getPopupContainer={props.getPopupContainer}
