@@ -68,10 +68,10 @@ export function findIndexInValueByKey(value, key) {
   return index;
 }
 
-export function findIndexInValueByLabel(value, label) {
+export function findIndexInValueByValue(value, singleValue) {
   let index = -1;
   for (let i = 0; i < value.length; i++) {
-    if (toArray(value[i]).join('') === label) {
+    if (value[i] === singleValue) {
       index = i;
       break;
     }

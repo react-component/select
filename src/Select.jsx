@@ -25,7 +25,7 @@ import {
   findFirstMenuItem,
   includesSeparators,
   splitBySeparators,
-  findIndexInValueByLabel,
+  findIndexInValueByValue,
   defaultFilterFn,
   validateOptionValue,
   saveRef,
@@ -164,7 +164,9 @@ export default class Select extends React.Component {
       includesSeparators(val, tokenSeparators)
     ) {
       const nextValue = this.getValueByInput(val);
-      this.fireChange(nextValue);
+      if (nextValue !== undefined) {
+        this.fireChange(nextValue);
+      }
       this.setOpenState(false, true);
       this.setInputValue('', false);
       return;
@@ -359,7 +361,9 @@ export default class Select extends React.Component {
         this.state.inputValue = this.getInputDOMNode().value = '';
 
         value = this.getValueByInput(inputValue);
-        this.fireChange(value);
+        if (value !== undefined) {
+          this.fireChange(value);
+        }
       }
       props.onBlur(this.getVLForOnChange(value));
       this.setOpenState(false);
@@ -642,21 +646,26 @@ export default class Select extends React.Component {
   getValueByInput = string => {
     const { multiple, tokenSeparators } = this.props;
     let nextValue = this.state.value;
+    let hasNewValue = false;
     splitBySeparators(string, tokenSeparators).forEach(label => {
       const selectedValue = [label];
-      if (findIndexInValueByLabel(nextValue, label) === -1) {
-        if (multiple) {
-          const value = this.getValueByLabel(label);
-          if (value) {
-            nextValue = nextValue.concat(value);
-          }
-        } else {
+      if (multiple) {
+        const value = this.getValueByLabel(label);
+        if (value && findIndexInValueByValue(nextValue, value) === -1) {
+          nextValue = nextValue.concat(value);
+          hasNewValue = true;
+          this.fireSelect(value);
+        }
+      } else {
+        // tag
+        if (findIndexInValueByValue(nextValue, label) === -1) {
           nextValue = nextValue.concat(selectedValue);
+          hasNewValue = true;
+          this.fireSelect(label);
         }
       }
-      this.fireSelect(label);
     });
-    return nextValue;
+    return hasNewValue ? nextValue : undefined;
   };
 
   focus() {

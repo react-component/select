@@ -21,12 +21,14 @@ describe('Select.multiple', () => {
 
   it('tokenize input', () => {
     const handleChange = jest.fn();
+    const handleSelect = jest.fn();
     const wrapper = mount(
       <Select
         multiple
         optionLabelProp="children"
         tokenSeparators={[',']}
         onChange={handleChange}
+        onSelect={handleSelect}
       >
         <OptGroup key="group1">
           <Option value="1">One</Option>
@@ -48,7 +50,13 @@ describe('Select.multiple', () => {
       value: 'One,Two,Three',
     } });
 
+    input.simulate('change', { target: {
+      value: 'One,Two',
+    } });
+
     expect(handleChange).toBeCalledWith(['1', '2'], expect.anything());
+    expect(handleChange).toHaveBeenCalledTimes(1);
+    expect(handleSelect).toHaveBeenCalledTimes(2);
     expect(wrapper.state().value).toEqual(['1', '2']);
     expect(wrapper.find('.rc-select-selection__choice__content').at(0).text()).toEqual('One');
     expect(wrapper.find('.rc-select-selection__choice__content').at(1).text()).toEqual('Two');
