@@ -284,6 +284,15 @@ describe('Select', () => {
     );
   });
 
+  it('use label in props.value', () => {
+    const wrapper = mount(
+      <Select labelInValue value={{ key: 1, label: 'One' }}>
+        <Option value="2">Two</Option>
+      </Select>
+    );
+    expect(wrapper.find('.rc-select-selection-selected-value').text()).toEqual('One');
+  });
+
   it('fires search event when user input', () => {
     const handleSearch = jest.fn();
     const wrapper = mount(

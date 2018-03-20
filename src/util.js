@@ -57,18 +57,7 @@ export function preventDefaultEvent(e) {
   e.preventDefault();
 }
 
-export function findIndexInValueByKey(value, key) {
-  let index = -1;
-  for (let i = 0; i < value.length; i++) {
-    if (value[i] === key) {
-      index = i;
-      break;
-    }
-  }
-  return index;
-}
-
-export function findIndexInValueByValue(value, singleValue) {
+export function findIndexInValueBySingleValue(value, singleValue) {
   let index = -1;
   for (let i = 0; i < value.length; i++) {
     if (value[i] === singleValue) {
@@ -77,6 +66,18 @@ export function findIndexInValueByValue(value, singleValue) {
     }
   }
   return index;
+}
+
+export function getLabelFromPropsValue(value, key) {
+  let label;
+  value = toArray(value);
+  for (let i = 0; i < value.length; i++) {
+    if (value[i].key === key) {
+      label = value[i].label;
+      break;
+    }
+  }
+  return label;
 }
 
 export function getSelectKeys(menuItems, value) {
@@ -92,7 +93,7 @@ export function getSelectKeys(menuItems, value) {
     } else {
       const itemValue = getValuePropValue(item);
       const itemKey = item.key;
-      if (findIndexInValueByKey(value, itemValue) !== -1 && itemKey) {
+      if (findIndexInValueBySingleValue(value, itemValue) !== -1 && itemKey) {
         selectedKeys.push(itemKey);
       }
     }

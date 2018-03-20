@@ -18,14 +18,14 @@ import {
   isMultipleOrTagsOrCombobox,
   isSingleMode,
   toArray,
-  findIndexInValueByKey,
+  findIndexInValueBySingleValue,
+  getLabelFromPropsValue,
   UNSELECTABLE_ATTRIBUTE,
   UNSELECTABLE_STYLE,
   preventDefaultEvent,
   findFirstMenuItem,
   includesSeparators,
   splitBySeparators,
-  findIndexInValueByValue,
   defaultFilterFn,
   validateOptionValue,
   saveRef,
@@ -78,12 +78,12 @@ export default class Select extends React.Component {
 
   constructor(props) {
     super(props);
-    const value = this.getValueStateFromProps(props);
+    const value = this.getValueFromProps(props);
     const optionsInfo = this.getOptionsInfoFromProps(props);
     let inputValue = '';
     if (props.combobox) {
       inputValue = value.length
-        ? this.getLabelByValue(value[0], optionsInfo)
+        ? this.getLabelBySingleValue(value[0], optionsInfo)
         : '';
     }
     let open = props.open;
@@ -111,14 +111,14 @@ export default class Select extends React.Component {
       optionsInfo,
     });
     if ('value' in nextProps) {
-      const value = this.getValueStateFromProps(nextProps);
+      const value = this.getValueFromProps(nextProps);
       this.setState({
         value,
       });
       if (nextProps.combobox) {
         this.setState({
           inputValue: value.length
-            ? this.getLabelByValue(value[0], optionsInfo)
+            ? this.getLabelBySingleValue(value[0], optionsInfo)
             : '',
         });
       }
@@ -256,7 +256,7 @@ export default class Select extends React.Component {
     const lastValue = value[value.length - 1];
     this.fireSelect(selectedValue);
     if (isMultipleOrTags(props)) {
-      if (findIndexInValueByKey(value, selectedValue) !== -1) {
+      if (findIndexInValueBySingleValue(value, selectedValue) !== -1) {
         return;
       }
       value = value.concat([selectedValue]);
@@ -393,7 +393,7 @@ export default class Select extends React.Component {
     this.selectTriggerRef.triggerRef.forcePopupAlign();
   };
 
-  getValueStateFromProps = props => {
+  getValueFromProps = props => {
     let value = [];
     if ('value' in props) {
       value = toArray(props.value);
@@ -430,27 +430,38 @@ export default class Select extends React.Component {
     return optionsInfo;
   }
 
-  getOptionInfoByValue = (value, optionsInfo) => {
+  getOptionInfoBySingleValue = (value, optionsInfo) => {
+    let info;
+    optionsInfo = optionsInfo || this.state.optionsInfo;
+    if (optionsInfo.has(value)) {
+      info = optionsInfo.get(value);
+    }
+    if (info) {
+      return info;
+    }
+    let defaultLabel = value;
+    if (this.props.labelInValue) {
+      const label = getLabelFromPropsValue(this.props.value, value);
+      if (label !== undefined) {
+        defaultLabel = label;
+      }
+    }
     const defaultInfo = {
       option: <Option value={value} key={value}>{value}</Option>,
       value,
-      label: value,
+      label: defaultLabel,
     };
-    optionsInfo = optionsInfo || this.state.optionsInfo;
-    if (optionsInfo.has(value)) {
-      return optionsInfo.get(value) || defaultInfo;
-    }
     return defaultInfo;
   }
 
-  getOptionByValue = value => {
-    const { option } = this.getOptionInfoByValue(value);
+  getOptionBySingleValue = value => {
+    const { option } = this.getOptionInfoBySingleValue(value);
     return option;
   }
 
-  getOptionsByValue = values => {
+  getOptionsBySingleValue = values => {
     return values.map(value => {
-      return this.getOptionByValue(value);
+      return this.getOptionBySingleValue(value);
     });
   }
 
@@ -485,11 +496,11 @@ export default class Select extends React.Component {
     return getPropValue(option, this.props.optionLabelProp);
   };
 
-  getVLByValue = value => {
+  getVLBySingleValue = value => {
     if (this.props.labelInValue) {
       return {
         key: value,
-        label: this.getLabelByValue(value),
+        label: this.getLabelBySingleValue(value),
       };
     }
     return value;
@@ -503,7 +514,7 @@ export default class Select extends React.Component {
       } else {
         vls = vls.map(vl => ({
           key: vl,
-          label: this.getLabelByValue(vl),
+          label: this.getLabelBySingleValue(vl),
         }));
       }
       return isMultipleOrTags(this.props) ? vls : vls[0];
@@ -511,8 +522,8 @@ export default class Select extends React.Component {
     return vls;
   };
 
-  getLabelByValue = (value, optionsInfo) => {
-    const { label } = this.getOptionInfoByValue(value, optionsInfo);
+  getLabelBySingleValue = (value, optionsInfo) => {
+    const { label } = this.getOptionInfoBySingleValue(value, optionsInfo);
     return label;
   };
 
@@ -651,14 +662,14 @@ export default class Select extends React.Component {
       const selectedValue = [label];
       if (multiple) {
         const value = this.getValueByLabel(label);
-        if (value && findIndexInValueByValue(nextValue, value) === -1) {
+        if (value && findIndexInValueBySingleValue(nextValue, value) === -1) {
           nextValue = nextValue.concat(value);
           hasNewValue = true;
           this.fireSelect(value);
         }
       } else {
         // tag
-        if (findIndexInValueByValue(nextValue, label) === -1) {
+        if (findIndexInValueBySingleValue(nextValue, label) === -1) {
           nextValue = nextValue.concat(selectedValue);
           hasNewValue = true;
           this.fireSelect(label);
@@ -799,10 +810,10 @@ export default class Select extends React.Component {
       if (props.labelInValue) {
         event = {
           key: selectedKey,
-          label: this.getLabelByValue(selectedKey),
+          label: this.getLabelBySingleValue(selectedKey),
         };
       }
-      props.onDeselect(event, this.getOptionByValue(selectedKey));
+      props.onDeselect(event, this.getOptionBySingleValue(selectedKey));
     }
     this.fireChange(value);
   };
@@ -815,7 +826,7 @@ export default class Select extends React.Component {
   };
 
   fireSelect = value => {
-    this.props.onSelect(this.getVLByValue(value), this.getOptionByValue(value));
+    this.props.onSelect(this.getVLBySingleValue(value), this.getOptionBySingleValue(value));
   };
 
   fireChange = value => {
@@ -826,7 +837,7 @@ export default class Select extends React.Component {
       });
     }
     const vls = this.getVLForOnChange(value);
-    const options = this.getOptionsByValue(value);
+    const options = this.getOptionsBySingleValue(value);
     props.onChange(vls, isMultipleOrTags(this.props) ? options : options[0]);
   };
 
@@ -1043,7 +1054,7 @@ export default class Select extends React.Component {
           }
         }
         const singleValue = value[0];
-        const { label, title } = this.getOptionInfoByValue(singleValue);
+        const { label, title } = this.getOptionInfoBySingleValue(singleValue);
         selectedValue = (
           <div
             key="value"
@@ -1099,7 +1110,7 @@ export default class Select extends React.Component {
       }
       if (isMultipleOrTags(props)) {
         selectedValueNodes = limitedCountValue.map(singleValue => {
-          const info = this.getOptionInfoByValue(singleValue);
+          const info = this.getOptionInfoBySingleValue(singleValue);
           let content = info.label;
           const title = info.title || content;
           if (
