@@ -5,8 +5,8 @@ import Select, { Option, OptGroup } from 'rc-select';
 import 'rc-select/assets/index.less';
 import ReactDOM from 'react-dom';
 
-function onChange(value) {
-  console.log(`selected ${value}`);
+function onChange(value, option) {
+  console.log(`selected ${value}`, option);
 }
 
 const c1 = (
@@ -21,7 +21,7 @@ const c1 = (
         onChange={onChange}
       >
         <OptGroup label="manager">
-          <Option value="jack">
+          <Option value="jack" test-prop="jack-prop">
             <b
               style={{
                 color: 'red',
@@ -30,10 +30,10 @@ const c1 = (
               jack
             </b>
           </Option>
-          <Option value="lucy">lucy</Option>
+          <Option value="lucy" test-prop="lucy-prop">lucy</Option>
         </OptGroup>
         <OptGroup label="engineer">
-          <Option value="yiminghe">yiminghe</Option>
+          <Option value="yiminghe" test-prop="yiminghe-prop">yiminghe</Option>
         </OptGroup>
       </Select>
     </div>

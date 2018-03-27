@@ -284,6 +284,29 @@ describe('Select', () => {
     );
   });
 
+  it('give right option when use OptGroup', () => {
+    const handleChange = jest.fn();
+    const wrapper = mount(
+      <Select
+        onChange={handleChange}
+        labelInValue
+        optionLabelProp="children"
+      >
+        <OptGroup label="grouplabel">
+          <Option value="1" testprop="test">One</Option>
+          </OptGroup>
+        <Option value="2">Two</Option>
+      </Select>
+    );
+
+    wrapper.find('.rc-select').simulate('click');
+    wrapper.find('MenuItem').first().simulate('click');
+    expect(handleChange).toBeCalledWith(
+      { key: '1', label: 'One' },
+      <Option value="1" testprop="test">One</Option>
+    );
+  });
+
   it('use label in props.value', () => {
     const wrapper = mount(
       <Select labelInValue value={{ key: 1, label: 'One' }}>
