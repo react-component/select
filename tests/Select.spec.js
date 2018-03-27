@@ -294,7 +294,7 @@ describe('Select', () => {
       >
         <OptGroup label="grouplabel">
           <Option value="1" testprop="test">One</Option>
-          </OptGroup>
+        </OptGroup>
         <Option value="2">Two</Option>
       </Select>
     );
