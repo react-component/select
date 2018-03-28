@@ -18,6 +18,7 @@ import {
   isMultipleOrTagsOrCombobox,
   isSingleMode,
   toArray,
+  getMapKey,
   findIndexInValueBySingleValue,
   getLabelFromPropsValue,
   UNSELECTABLE_ATTRIBUTE,
@@ -410,21 +411,22 @@ export default class Select extends React.Component {
 
   getOptionsInfoFromProps = props => {
     const options = this.getOptionsFromChildren(props.children);
-    const oldOptionsInfo = this.state ? this.state.optionsInfo : new Map();
+    const oldOptionsInfo = this.state ? this.state.optionsInfo : {};
     const value = this.state ? this.state.value : [];
-    const optionsInfo = new Map();
+    const optionsInfo = {};
     options.forEach((option) => {
       const singleValue = getValuePropValue(option);
-      optionsInfo.set(singleValue, {
+      optionsInfo[getMapKey(singleValue)] = {
         option,
         value: singleValue,
         label: this.getLabelFromOption(option),
         title: option.props.title,
-      });
+      };
     });
     value.forEach(v => {
-      if (!optionsInfo.has(v)) {
-        optionsInfo.set(v, oldOptionsInfo.get(v));
+      const key = getMapKey(v);
+      if (!optionsInfo[key]) {
+        optionsInfo[key] = oldOptionsInfo[key];
       }
     });
     return optionsInfo;
@@ -433,8 +435,8 @@ export default class Select extends React.Component {
   getOptionInfoBySingleValue = (value, optionsInfo) => {
     let info;
     optionsInfo = optionsInfo || this.state.optionsInfo;
-    if (optionsInfo.has(value)) {
-      info = optionsInfo.get(value);
+    if (optionsInfo[getMapKey(value)]) {
+      info = optionsInfo[getMapKey(value)];
     }
     if (info) {
       return info;
@@ -484,7 +486,8 @@ export default class Select extends React.Component {
       return null;
     }
     let value = null;
-    this.state.optionsInfo.forEach(info => {
+    Object.keys(this.state.optionsInfo).forEach(key => {
+      const info = this.state.optionsInfo[key];
       if (toArray(info.label).join('') === label) {
         value = info.value;
       }

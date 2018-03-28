@@ -53,6 +53,10 @@ export function toArray(value) {
   return ret;
 }
 
+export function getMapKey(value) {
+  return `${typeof value}-${value}`;
+}
+
 export function preventDefaultEvent(e) {
   e.preventDefault();
 }
