@@ -339,19 +339,19 @@ function localstorage() {
   } catch (e) {}
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+
+/***/ }),
+
+/***/ 202:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(203);
+
 
 /***/ }),
 
 /***/ 203:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(204);
-
-
-/***/ }),
-
-/***/ 204:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1028,5 +1028,5 @@ var objectKeys = Object.keys || function (obj) {
 
 /***/ })
 
-},[203]);
+},[202]);
 //# sourceMappingURL=mul-suggest.js.map

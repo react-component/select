@@ -339,19 +339,19 @@ function localstorage() {
   } catch (e) {}
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+
+/***/ }),
+
+/***/ 204:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(205);
+
 
 /***/ }),
 
 /***/ 205:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(206);
-
-
-/***/ }),
-
-/***/ 206:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1030,5 +1030,5 @@ var objectKeys = Object.keys || function (obj) {
 
 /***/ })
 
-},[205]);
+},[204]);
 //# sourceMappingURL=mul-tag-suggest.js.map

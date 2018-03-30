@@ -339,7 +339,7 @@ function localstorage() {
   } catch (e) {}
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
 
@@ -711,15 +711,15 @@ function plural(ms, n, name) {
 
 /***/ }),
 
-/***/ 221:
+/***/ 220:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(222);
+module.exports = __webpack_require__(221);
 
 
 /***/ }),
 
-/***/ 222:
+/***/ 221:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1039,5 +1039,5 @@ var objectKeys = Object.keys || function (obj) {
 
 /***/ })
 
-},[221]);
+},[220]);
 //# sourceMappingURL=suggest.js.map

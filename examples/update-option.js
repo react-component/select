@@ -1,14 +1,14 @@
-webpackJsonp([14],{
+webpackJsonp([5],{
 
-/***/ 190:
+/***/ 224:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(191);
+module.exports = __webpack_require__(225);
 
 
 /***/ }),
 
-/***/ 191:
+/***/ 225:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37,61 +37,91 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+function handleChange(value) {
+  console.log('selected ' + value);
+}
+
 var Test = function (_React$Component) {
   __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_inherits___default()(Test, _React$Component);
 
-  function Test() {
-    var _temp, _this, _ret;
-
+  function Test(props) {
     __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, Test);
 
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+    var _this = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(this, _React$Component.call(this, props));
 
-    return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
-      options: []
-    }, _this.onSelect = function (value) {
-      console.log('onSelect', value);
-    }, _this.onChange = function (value) {
-      console.log('onChange', value);
-      var options = [];
-      if (value) {
-        if (value.indexOf('@') >= 0) {
-          options = __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-            __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
-            { key: value },
-            value
-          );
-        } else {
-          options = ['gmail.com', 'yahoo.com', 'outlook.com'].map(function (domain) {
-            var email = value + '@' + domain;
-            return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-              __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
-              { key: email },
-              email
-            );
-          });
-        }
-      }
+    _this.updateLabel = function () {
+      _this.setState({
+        label: 'newlabel ' + _this.count++
+      });
+    };
+
+    _this.updateOptions = function (value) {
+      var options = [value, value + value, value + value + value];
       _this.setState({
         options: options
       });
-    }, _temp), __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
+    };
+
+    _this.state = {
+      label: 'Lucy',
+      options: []
+    };
+    _this.count = 0;
+    return _this;
   }
 
   Test.prototype.render = function render() {
     return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-      __WEBPACK_IMPORTED_MODULE_4_rc_select___default.a,
-      {
-        combobox: true,
-        notFoundContent: false,
-        style: { width: 200 },
-        onChange: this.onChange,
-        onSelect: this.onSelect,
-        placeholder: '\u8BF7\u8F93\u5165\u8D26\u6237\u540D'
-      },
-      this.state.options
+      'div',
+      null,
+      'label: ',
+      this.state.label,
+      __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement('hr', null),
+      __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_4_rc_select___default.a,
+        {
+          defaultValue: 'lucy',
+          optionLabelProp: 'children',
+          style: { width: 120 },
+          onChange: handleChange
+        },
+        __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+          __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
+          { value: 'lucy' },
+          this.state.label
+        ),
+        __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+          __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
+          { value: 'lucy2' },
+          'lucy2'
+        )
+      ),
+      __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+        'p',
+        null,
+        __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+          'button',
+          { onClick: this.updateLabel },
+          'upadte option label'
+        )
+      ),
+      __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement('hr', null),
+      __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_4_rc_select___default.a,
+        {
+          combobox: true,
+          optionLabelProp: 'children',
+          onChange: this.updateOptions
+        },
+        this.state.options.map(function (opt) {
+          return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
+            { key: opt },
+            opt
+          );
+        })
+      ),
+      __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement('hr', null)
     );
   };
 
@@ -102,5 +132,5 @@ __WEBPACK_IMPORTED_MODULE_6_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ })
 
-},[190]);
-//# sourceMappingURL=email.js.map
+},[224]);
+//# sourceMappingURL=update-option.js.map
