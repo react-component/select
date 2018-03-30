@@ -36,16 +36,15 @@ import { SelectPropTypes } from './PropTypes';
 
 function noop() {}
 
-function chaining(...fns) {
-  return function (...args) { // eslint-disable-line
-    // eslint-disable-line
+const chaining = (...fns) => {
+  return (...args) => {
     for (let i = 0; i < fns.length; i++) {
       if (fns[i] && typeof fns[i] === 'function') {
         fns[i].apply(this, args);
       }
     }
   };
-}
+};
 
 export default class Select extends React.Component {
   static propTypes = SelectPropTypes;
@@ -307,7 +306,7 @@ export default class Select extends React.Component {
     }
   };
 
-  onOuterFocus = (e) => {
+  onOuterFocus = e => {
     if (this.props.disabled) {
       e.preventDefault();
       return;
@@ -332,7 +331,7 @@ export default class Select extends React.Component {
     this.maybeFocus(true, true);
   };
 
-  onOuterBlur = (e) => {
+  onOuterBlur = e => {
     if (this.props.disabled) {
       e.preventDefault();
       return;
@@ -572,9 +571,11 @@ export default class Select extends React.Component {
 
   getInputElement = () => {
     const props = this.props;
-    const inputElement = props.getInputElement
-      ? props.getInputElement()
-      : <input id={props.id} autoComplete="off" />;
+    const inputElement = props.getInputElement ? (
+      props.getInputElement()
+    ) : (
+      <input id={props.id} autoComplete="off" />
+    );
     const inputCls = classnames(inputElement.props.className, {
       [`${props.prefixCls}-search__field`]: true,
     });
@@ -698,8 +699,11 @@ export default class Select extends React.Component {
     }
   }
 
-  handleBackfill = (item) => {
-    if (!this.props.backfill || !(isSingleMode(this.props) || isCombobox(this.props))) {
+  handleBackfill = item => {
+    if (
+      !this.props.backfill ||
+      !(isSingleMode(this.props) || isCombobox(this.props))
+    ) {
       return;
     }
 
@@ -885,7 +889,7 @@ export default class Select extends React.Component {
     let options = this.renderFilterOptionsFromChildren(
       children,
       childrenKeys,
-      menuItems,
+      menuItems
     );
     if (tags) {
       // tags value must be string
@@ -920,12 +924,7 @@ export default class Select extends React.Component {
           // condition 2 does not mean the option has same value with inputValue
           const filterFn = () => getValuePropValue(option) === inputValue;
           if (filterOption !== false) {
-            return !this.filterOption.call(
-              this,
-              inputValue,
-              option,
-              filterFn
-            );
+            return !this.filterOption.call(this, inputValue, option, filterFn);
           }
           return !filterFn();
         });
@@ -973,7 +972,7 @@ export default class Select extends React.Component {
         const innerItems = this.renderFilterOptionsFromChildren(
           child.props.children,
           childrenKeys,
-          menuItems,
+          menuItems
         );
         if (innerItems.length) {
           let label = child.props.label;
@@ -1094,22 +1093,30 @@ export default class Select extends React.Component {
       let maxTagPlaceholderEl;
       if (maxTagCount !== undefined && value.length > maxTagCount) {
         limitedCountValue = limitedCountValue.slice(0, maxTagCount);
-        const omittedValues = this.getVLForOnChange(value.slice(maxTagCount, value.length));
+        const omittedValues = this.getVLForOnChange(
+          value.slice(maxTagCount, value.length)
+        );
         let content = `+ ${value.length - maxTagCount} ...`;
         if (maxTagPlaceholder) {
-          content = typeof maxTagPlaceholder === 'function' ?
-            maxTagPlaceholder(omittedValues) : maxTagPlaceholder;
+          content =
+            typeof maxTagPlaceholder === 'function'
+              ? maxTagPlaceholder(omittedValues)
+              : maxTagPlaceholder;
         }
-        maxTagPlaceholderEl = (<li
-          style={UNSELECTABLE_STYLE}
-          {...UNSELECTABLE_ATTRIBUTE}
-          onMouseDown={preventDefaultEvent}
-          className={`${prefixCls}-selection__choice ${prefixCls}-selection__choice__disabled`}
-          key={'maxTagPlaceholder'}
-          title={content}
-        >
-          <div className={`${prefixCls}-selection__choice__content`}>{content}</div>
-        </li>);
+        maxTagPlaceholderEl = (
+          <li
+            style={UNSELECTABLE_STYLE}
+            {...UNSELECTABLE_ATTRIBUTE}
+            onMouseDown={preventDefaultEvent}
+            className={`${prefixCls}-selection__choice ${prefixCls}-selection__choice__disabled`}
+            key={'maxTagPlaceholder'}
+            title={content}
+          >
+            <div className={`${prefixCls}-selection__choice__content`}>
+              {content}
+            </div>
+          </li>
+        );
       }
       if (isMultipleOrTags(props)) {
         selectedValueNodes = limitedCountValue.map(singleValue => {
@@ -1142,8 +1149,9 @@ export default class Select extends React.Component {
               {disabled ? null : (
                 <span
                   className={`${prefixCls}-selection__choice__remove`}
-                  onClick={this.removeSelected.bind(this, singleValue)}
-                />)}
+                  onClick={this.removeSelected.bind(this, singleValue.key)}
+                />
+              )}
             </li>
           );
         });
@@ -1171,11 +1179,7 @@ export default class Select extends React.Component {
           </Animate>
         );
       } else {
-        innerNode = (
-          <ul>
-            {selectedValueNodes}
-          </ul>
-        );
+        innerNode = <ul>{selectedValueNodes}</ul>;
       }
     }
     return (
@@ -1184,7 +1188,7 @@ export default class Select extends React.Component {
         {innerNode}
       </div>
     );
-  }
+  };
 
   renderClear() {
     const { prefixCls, allowClear } = this.props;
@@ -1213,6 +1217,39 @@ export default class Select extends React.Component {
     }
     return null;
   }
+
+  renderArrow = () => {
+    const props = this.props;
+    const { arrow, prefixCls } = props;
+    const multiple = isMultipleOrTags(props);
+    if (multiple && !props.showArrow) {
+      return null;
+    }
+    if (arrow) {
+      return (
+        <span
+          key="arrow"
+          className={`${prefixCls}-arrow`}
+          style={UNSELECTABLE_STYLE}
+          {...UNSELECTABLE_ATTRIBUTE}
+          onClick={this.onArrowClick}
+        >
+          {arrow}
+        </span>
+      );
+    }
+    return (
+      <span
+        key="arrow"
+        className={`${prefixCls}-arrow`}
+        style={UNSELECTABLE_STYLE}
+        {...UNSELECTABLE_ATTRIBUTE}
+        onClick={this.onArrowClick}
+      >
+        <b />
+      </span>
+    );
+  };
 
   render() {
     const props = this.props;
@@ -1291,16 +1328,7 @@ export default class Select extends React.Component {
           >
             {ctrlNode}
             {this.renderClear()}
-            {multiple || !props.showArrow ? null : (
-              <span
-                key="arrow"
-                className={`${prefixCls}-arrow`}
-                style={UNSELECTABLE_STYLE}
-                {...UNSELECTABLE_ATTRIBUTE}
-                onClick={this.onArrowClick}
-              >
-                <b />
-              </span>)}
+            {this.renderArrow()}
           </div>
         </div>
       </SelectTrigger>
