@@ -54,13 +54,15 @@ describe('Select', () => {
 
   it('convert value to array', () => {
     const wrapper = mount(
-      <Select value="1">
+      <Select value="1" optionLabelProp="children">
         <OptGroup>
-          <Option value="1" title="一">1</Option>
+          <Option value="1" title="一">1-label</Option>
         </OptGroup>
       </Select>
     );
-    expect(wrapper.state().value).toEqual([{ key: '1', label: '1', title: '一' }]);
+    expect(wrapper.state().value).toEqual(['1']);
+    expect(wrapper.find('.rc-select-selection-selected-value').text()).toEqual('1-label');
+    expect(wrapper.find('.rc-select-selection-selected-value').prop('title')).toEqual('一');
   });
 
   it('convert defaultValue to array', () => {
@@ -71,7 +73,9 @@ describe('Select', () => {
         </OptGroup>
       </Select>
     );
-    expect(wrapper.state().value).toEqual([{ key: '1', label: '1', title: '一' }]);
+    expect(wrapper.state().value).toEqual(['1']);
+    expect(wrapper.find('.rc-select-selection-selected-value').text()).toEqual('1');
+    expect(wrapper.find('.rc-select-selection-selected-value').prop('title')).toEqual('一');
   });
 
   it('not add open className when result is empty and no notFoundContent given', () => {
@@ -278,6 +282,38 @@ describe('Select', () => {
       { key: '1', label: 'One' },
       <Option value="1" testprop="test">One</Option>
     );
+  });
+
+  it('give right option when use OptGroup', () => {
+    const handleChange = jest.fn();
+    const wrapper = mount(
+      <Select
+        onChange={handleChange}
+        labelInValue
+        optionLabelProp="children"
+      >
+        <OptGroup label="grouplabel">
+          <Option value="1" testprop="test">One</Option>
+        </OptGroup>
+        <Option value="2">Two</Option>
+      </Select>
+    );
+
+    wrapper.find('.rc-select').simulate('click');
+    wrapper.find('MenuItem').first().simulate('click');
+    expect(handleChange).toBeCalledWith(
+      { key: '1', label: 'One' },
+      <Option value="1" testprop="test">One</Option>
+    );
+  });
+
+  it('use label in props.value', () => {
+    const wrapper = mount(
+      <Select labelInValue value={{ key: 1, label: 'One' }}>
+        <Option value="2">Two</Option>
+      </Select>
+    );
+    expect(wrapper.find('.rc-select-selection-selected-value').text()).toEqual('One');
   });
 
   it('fires search event when user input', () => {
@@ -594,11 +630,9 @@ describe('Select', () => {
     });
 
     it('warns on invalid value when labelInValue', () => {
-      expect(() => {
-        mount(
-          <Select labelInValue value="foo" />
-        );
-      }).toThrow();
+      mount(
+        <Select labelInValue value="foo" />
+      );
       expect(spy.mock.calls[0][0]).toMatch(
         'Warning: Failed prop type: Invalid prop `value` supplied to `Select`, ' +
         'when you set `labelInValue` to `true`,' +
@@ -715,26 +749,17 @@ describe('Select', () => {
 
     input.simulate('keyDown', { keyCode: KeyCode.DOWN });
 
-    expect(wrapper.state().value).toEqual([
-      {
-        key: '2',
-        label: 'Two',
-        backfill: true,
-      },
-    ]);
+    expect(wrapper.state().value).toEqual(['2']);
+    expect(wrapper.state().backfillValue).toEqual('2');
     expect(handleChange).not.toBeCalled();
     expect(handleSelect).not.toBeCalled();
 
     input.simulate('keyDown', { keyCode: KeyCode.ENTER });
 
-    expect(wrapper.state().value).toEqual([
-      {
-        key: '2',
-        label: 'Two',
-      },
-    ]);
+    expect(wrapper.state().value).toEqual(['2']);
     expect(handleChange).toBeCalledWith('2', expect.anything());
     expect(handleSelect).toBeCalledWith('2', expect.anything());
+    expect(wrapper.find('.rc-select-selection-selected-value').text()).toEqual('Two');
   });
 
   describe('number value', () => {

@@ -85,6 +85,7 @@ export default class SelectTrigger extends React.Component {
         onMenuDeselect={props.onMenuDeselect}
         onPopupScroll={props.onPopupScroll}
         value={props.value}
+        backfillValue={props.backfillValue}
         firstActiveValue={props.firstActiveValue}
         defaultActiveFirstOption={props.defaultActiveFirstOption}
         dropdownMenuStyle={props.dropdownMenuStyle}

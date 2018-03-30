@@ -36,6 +36,28 @@ describe('Select.combobox', () => {
     expect(wrapper.state().inputValue).toBe('1');
   });
 
+  it('placeholder', () => {
+    const wrapper = mount(
+      <Select combobox placeholder="placeholder">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>
+    );
+
+    expect(wrapper.state().inputValue).toBe('');
+    expect(
+      wrapper.find('.rc-select-selection__placeholder').text()
+    ).toBe('placeholder');
+    expect(
+      wrapper.find('.rc-select-selection__placeholder').prop('style')
+    ).toHaveProperty('display', 'block');
+    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    expect(
+      wrapper.update().find('.rc-select-selection__placeholder').prop('style')
+    ).toHaveProperty('display', 'none');
+    expect(wrapper.state().inputValue).toBe('1');
+  });
+
   it('fire change event immediately when user inputing', () => {
     const handleChange = jest.fn();
     const wrapper = mount(
@@ -47,7 +69,7 @@ describe('Select.combobox', () => {
 
     wrapper.find('input').simulate('change', { target: { value: '1' } });
 
-    expect(handleChange).toBeCalledWith('1', <Option key="1" value="1" />);
+    expect(handleChange).toBeCalledWith('1', <Option key="1" value="1">1</Option>);
   });
 
   it('set inputValue when user select a option', () => {
@@ -221,27 +243,40 @@ describe('Select.combobox', () => {
 
     input.simulate('keyDown', { keyCode: KeyCode.DOWN });
 
-    expect(wrapper.state().value).toEqual([
-      {
-        key: 'Two',
-        label: 'Two',
-        backfill: true,
-      },
-    ]);
+    expect(wrapper.state().value).toEqual(['Two']);
+    expect(wrapper.state().backfillValue).toEqual('Two');
     expect(wrapper.state().inputValue).toBe('Two');
+    expect(wrapper.find('MenuItem').at(1).text()).toBe('Two');
     expect(handleChange).not.toBeCalled();
     expect(handleSelect).not.toBeCalled();
 
     input.simulate('keyDown', { keyCode: KeyCode.ENTER });
 
-    expect(wrapper.state().value).toEqual([
-      {
-        key: 'Two',
-        label: 'Two',
-      },
-    ]);
+    expect(wrapper.state().value).toEqual(['Two']);
     expect(handleChange).toBeCalledWith('Two', <Option value="Two">Two</Option>);
     expect(handleSelect).toBeCalledWith('Two', <Option value="Two">Two</Option>);
+  });
+
+  it('should hide clear icon when value is \'\'', () => {
+    const wrapper = mount(
+      <Select combobox value="" allowClear>
+        <Option value="One">One</Option>
+        <Option value="Two">Two</Option>
+      </Select>
+    );
+
+    expect(wrapper.find('.rc-select-selection__clear').length).toBe(0);
+  });
+
+  it('should show clear icon when inputValue is not \'\'', () => {
+    const wrapper = mount(
+      <Select combobox value="One" allowClear>
+        <Option value="One">One</Option>
+        <Option value="Two">Two</Option>
+      </Select>
+    );
+
+    expect(wrapper.find('.rc-select-selection__clear').length).toBe(1);
   });
 
   it('should hide clear icon when inputValue is \'\'', () => {

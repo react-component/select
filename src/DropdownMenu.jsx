@@ -83,6 +83,7 @@ export default class DropdownMenu extends React.Component {
       onMenuSelect,
       inputValue,
       firstActiveValue,
+      backfillValue,
     } = props;
     if (menuItems && menuItems.length) {
       const menuProps = {};
@@ -132,7 +133,7 @@ export default class DropdownMenu extends React.Component {
 
       // clear activeKey when inputValue change
       const lastValue = value && value[value.length - 1];
-      if (inputValue !== this.lastInputValue && (!lastValue || !lastValue.backfill)) {
+      if (inputValue !== this.lastInputValue && (!lastValue || lastValue !== backfillValue)) {
         activeKeyProps.activeKey = '';
       }
 

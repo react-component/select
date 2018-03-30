@@ -18,7 +18,7 @@ describe('DropdownMenu', () => {
     const wrapper = render(
       <DropdownMenu
         menuItems={menuItems}
-        value={[{ key: '1' }]}
+        value={['1']}
       />
     );
 
@@ -34,7 +34,7 @@ describe('DropdownMenu', () => {
     const wrapper = mount(
       <DropdownMenu
         menuItems={menuItems}
-        value={[{ key: '1' }]}
+        value={['1']}
       />
     );
 
@@ -50,7 +50,7 @@ describe('DropdownMenu', () => {
     const wrapper = mount(
       <DropdownMenu
         menuItems={menuItems}
-        value={[{ key: '1' }]}
+        value={['1']}
       />
     );
 
@@ -105,7 +105,7 @@ describe('DropdownMenu', () => {
 
     const wrapper = mount(
       <DropdownMenu
-        value={[{ key: '1' }]}
+        value={['1']}
         menuItems={menuItems}
         firstActiveValue={'2'}
       />
