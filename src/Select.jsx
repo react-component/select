@@ -115,7 +115,7 @@ export default class Select extends React.Component {
       const value = this.getValueFromProps(nextProps);
       this.setState({
         value,
-      });
+      }, this.forcePopupAlign);
       if (nextProps.combobox) {
         this.setState({
           inputValue: value.length
@@ -391,7 +391,7 @@ export default class Select extends React.Component {
   };
 
   onChoiceAnimationLeave = () => {
-    this.selectTriggerRef.triggerRef.forcePopupAlign();
+    this.forcePopupAlign();
   };
 
   getValueFromProps = props => {
@@ -650,7 +650,7 @@ export default class Select extends React.Component {
     if (inputValue !== this.state.inputValue) {
       this.setState({
         inputValue,
-      });
+      }, this.forcePopupAlign);
       if (fireSearch) {
         this.props.onSearch(inputValue);
       }
@@ -837,7 +837,7 @@ export default class Select extends React.Component {
     if (!('value' in props)) {
       this.setState({
         value,
-      });
+      }, this.forcePopupAlign);
     }
     const vls = this.getVLForOnChange(value);
     const options = this.getOptionsBySingleValue(value);
@@ -875,6 +875,10 @@ export default class Select extends React.Component {
       }
     }
     this.state.open = open;
+  };
+
+  forcePopupAlign = () => {
+    this.selectTriggerRef.triggerRef.forcePopupAlign();
   };
 
   renderFilterOptions = () => {
