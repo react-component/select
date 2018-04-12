@@ -201,6 +201,7 @@ exports[`Select.tags OptGroup renders inputValue correctly 1`] = `
             aria-selected="false"
             class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
             role="menuitem"
+            style=""
             unselectable="unselectable"
           >
             foo
@@ -297,6 +298,7 @@ exports[`Select.tags OptGroup renders inputValue correctly 2`] = `
                 aria-selected="false"
                 class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
                 role="menuitem"
+                style=""
                 unselectable="unselectable"
               >
                 Jack
@@ -329,6 +331,7 @@ exports[`Select.tags OptGroup renders inputValue correctly 2`] = `
             aria-selected="true"
             class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-selected"
             role="menuitem"
+            style=""
             unselectable="unselectable"
           >
             foo
