@@ -353,7 +353,7 @@ export default class Select extends React.Component {
         if (options.length) {
           const firstOption = findFirstMenuItem(options);
           if (firstOption) {
-            value = [firstOption.key];
+            value = [getValuePropValue(firstOption)];
             this.fireChange(value);
           }
         }

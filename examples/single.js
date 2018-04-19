@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom';
 class Test extends React.Component {
   state = {
     destroy: false,
-    value: String(9),
+    value: 9,
   };
 
   onChange = (e) => {
@@ -76,11 +76,10 @@ class Test extends React.Component {
             <Option value="21" disabled text="disabled">disabled</Option>
             <Option value="31" text="yiminghe">yiminghe</Option>
             {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => {
-              return <Option key={i} text={String(i)}>{i}</Option>;
+              return <Option key={i} value={i} text={String(i)}>{i}-text</Option>;
             })}
           </Select>
         </div>
-
         <h2>native select</h2>
         <select
           value={this.state.value}
