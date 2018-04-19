@@ -1,6 +1,10 @@
 # History
 ----
 
+## 7.7.8 / 2018-04-19
+
+- Fix: value is wrong when blur https://github.com/react-component/select/pull/290
+
 ## 7.7.6 / 2018-03-30
 
 - Refactoring: update state.value format https://github.com/react-component/select/pull/277
