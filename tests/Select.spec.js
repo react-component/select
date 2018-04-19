@@ -457,7 +457,7 @@ describe('Select', () => {
     });
 
     it('fires change event', () => {
-      expect(handleChange).toBeCalledWith('1', expect.anything());
+      expect(handleChange).toBeCalledWith(1, expect.anything());
     });
 
     it('fires blur event', () => {
