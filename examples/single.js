@@ -51,7 +51,7 @@ var Test = function (_React$Component) {
 
     return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
       destroy: false,
-      value: String(9)
+      value: 9
     }, _this.onChange = function (e) {
       var value = void 0;
       if (e && e.target) {
@@ -137,8 +137,9 @@ var Test = function (_React$Component) {
           [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (i) {
             return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
               __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
-              { key: i, text: String(i) },
-              i
+              { key: i, value: i, text: String(i) },
+              i,
+              '-text'
             );
           })
         )
