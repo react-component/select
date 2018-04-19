@@ -436,15 +436,20 @@ describe('Select', () => {
           onChange={handleChange}
           onBlur={handleBlur}
           showSearch
+          optionLabelProp="children"
         >
-          <Option value="1">1</Option>
-          <Option value="2">2</Option>
+          <Option value={1} key={1}>1-text</Option>
+          <Option value={2} key={2}>2-text</Option>
         </Select>
       );
       jest.useFakeTimers();
       wrapper.find('input').simulate('change', { target: { value: '1' } });
       wrapper.find('.rc-select').simulate('blur');
       jest.runAllTimers();
+    });
+
+    it('will be auto select', () => {
+      expect(wrapper.update().find('.rc-select-selection-selected-value').text()).toBe('1-text');
     });
 
     it('set _focused to false', () => {
