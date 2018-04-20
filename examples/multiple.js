@@ -1,6 +1,6 @@
 /* eslint no-console: 0 */
 
-import React, { StrictMode } from 'react';
+import React from 'react';
 import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.less';
 import ReactDOM from 'react-dom';
@@ -81,4 +81,4 @@ class Test extends React.Component {
   }
 }
 
-ReactDOM.render(<StrictMode><Test /></StrictMode>, document.getElementById('__react-content'));
+ReactDOM.render(<Test />, document.getElementById('__react-content'));

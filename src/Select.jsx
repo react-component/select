@@ -80,26 +80,11 @@ class Select extends React.Component {
 
   constructor(props) {
     super(props);
-    const value = Select.getValueFromProps(props);
-    const optionsInfo = Select.getOptionsInfoFromProps(props);
-    let inputValue = '';
-    if (props.combobox) {
-      if ('value' in props) {
-        inputValue = Select.getInputValueForCombobox(props.value, props, optionsInfo);
-      } else if ('defaultValue' in props) {
-        inputValue = Select.getInputValueForCombobox(props.defaultValue, props, optionsInfo);
-      }
-    }
-    let open = props.open;
-    if (open === undefined) {
-      open = props.defaultOpen;
-    }
     this.state = {
-      value,
-      inputValue,
-      open,
-      optionsInfo,
-      skipRebuildOptions: false,
+      // mark defaultValue has been setted, propr.defaultValue only work at the first time.
+      canUseDefaultValue: true,
+      value: [],
+      inputValue: '',
     };
   }
 
@@ -126,7 +111,6 @@ class Select extends React.Component {
   componentWillUnmount() {
     this.clearFocusTime();
     this.clearBlurTime();
-    this.clearAdjustTimer();
     if (this.dropdownContainer) {
       ReactDOM.unmountComponentAtNode(this.dropdownContainer);
       document.body.removeChild(this.dropdownContainer);
@@ -240,13 +224,6 @@ class Select extends React.Component {
       }
       value = value.concat([selectedValue]);
     } else {
-      if (isCombobox(props)) {
-        this.state.skipRebuildOptions = true;
-        this.clearAdjustTimer();
-        this.skipRebuildOptionsTimer = setTimeout(() => {
-          this.state.skipRebuildOptions = false;
-        }, 0);
-      }
       if (lastValue && lastValue === selectedValue && selectedValue !== this.state.backfillValue) {
         this.setOpenState(false, true);
         return;
@@ -373,18 +350,27 @@ class Select extends React.Component {
   };
 
   static getDerivedStateFromProps = (nextProps, prevState) => {
+    const canUseDefaultValue = prevState.canUseDefaultValue;
     const optionsInfo = Select.getOptionsInfoFromProps(nextProps, prevState);
+    let open = prevState.open || false;
+    if ('open' in nextProps) {
+      open = nextProps.open;
+    } else if ('defaultOpen' in nextProps && canUseDefaultValue) {
+      open = nextProps.defaultOpen;
+    }
     const newState = {
       optionsInfo,
+      canUseDefaultValue: false,
+      open,
     };
-    if ('value' in nextProps) {
-      const value = Select.getValueFromProps(nextProps);
+    if ('value' in nextProps || ('defaultValue' in nextProps && canUseDefaultValue)) {
+      const value = Select.getValueFromProps(nextProps, canUseDefaultValue);
       newState.value = value;
       if (nextProps.combobox) {
         newState.inputValue = Select.getInputValueForCombobox(
-          nextProps.value,
           nextProps,
-          optionsInfo
+          optionsInfo,
+          canUseDefaultValue,
         );
       }
     }
@@ -405,8 +391,13 @@ class Select extends React.Component {
     return options;
   };
 
-  static getInputValueForCombobox = (value, props, optionsInfo) => {
-    value = toArray(value);
+  static getInputValueForCombobox = (props, optionsInfo, canUseDefaultValue) => {
+    let value = [];
+    if ('value' in props) {
+      value = toArray(props.value);
+    } else if ('defaultValue' in props && canUseDefaultValue) {
+      value = toArray(props.defaultValue);
+    }
     if (value.length) {
       value = value[0];
     } else {
@@ -431,7 +422,7 @@ class Select extends React.Component {
   static getOptionsInfoFromProps = (props, state) => {
     const options = Select.getOptionsFromChildren(props.children);
     const oldOptionsInfo = state ? state.optionsInfo : {};
-    const value = state ? state.value : [];
+    const value = state.value;
     const optionsInfo = {};
     options.forEach((option) => {
       const singleValue = getValuePropValue(option);
@@ -451,11 +442,11 @@ class Select extends React.Component {
     return optionsInfo;
   }
 
-  static getValueFromProps = props => {
+  static getValueFromProps = (props, canUseDefaultValue) => {
     let value = [];
     if ('value' in props) {
       value = toArray(props.value);
-    } else {
+    } else if ('defaultValue' in props && canUseDefaultValue) {
       value = toArray(props.defaultValue);
     }
     if (props.labelInValue) {
@@ -790,13 +781,6 @@ class Select extends React.Component {
     }
   };
 
-  clearAdjustTimer = () => {
-    if (this.skipRebuildOptionsTimer) {
-      clearTimeout(this.skipRebuildOptionsTimer);
-      this.skipRebuildOptionsTimer = null;
-    }
-  };
-
   updateFocusClassName = () => {
     const { rootRef, props } = this;
     // avoid setState and its side effect
@@ -894,7 +878,7 @@ class Select extends React.Component {
     );
     if (tags) {
       // tags value must be string
-      let value = this.state.value || [];
+      let value = this.state.value;
       value = value.filter(singleValue => {
         return (
           childrenKeys.indexOf(singleValue) === -1 &&
@@ -1226,8 +1210,8 @@ class Select extends React.Component {
     const { className, disabled, prefixCls } = props;
     const ctrlNode = this.renderTopControlNode();
     let extraSelectionProps = {};
-    const { open, skipRebuildOptions } = this.state;
-    if (open && !skipRebuildOptions) {
+    const { open } = this.state;
+    if (open) {
       this._options = this.renderFilterOptions();
     }
     const realOpen = this.getRealOpenState();
