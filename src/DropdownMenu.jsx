@@ -22,8 +22,9 @@ export default class DropdownMenu extends React.Component {
     visible: PropTypes.bool,
   };
 
-  componentDidMount() {
-    this.lastInputValue = this.props.inputValue;
+  constructor(props) {
+    super();
+    this.lastInputValue = props.inputValue;
   }
 
   componentDidMount() {
@@ -136,7 +137,6 @@ export default class DropdownMenu extends React.Component {
       if (inputValue !== this.lastInputValue && (!lastValue || lastValue !== backfillValue)) {
         activeKeyProps.activeKey = '';
       }
-
       return (
         <Menu
           ref={saveRef(this, 'menuRef')}
