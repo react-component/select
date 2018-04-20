@@ -22,7 +22,7 @@ export default class DropdownMenu extends React.Component {
     visible: PropTypes.bool,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.lastInputValue = this.props.inputValue;
   }
 

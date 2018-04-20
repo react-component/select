@@ -1,6 +1,7 @@
 /* eslint func-names: 1 */
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { polyfill } from 'react-lifecycles-compat';
 import KeyCode from 'rc-util/lib/KeyCode';
 import childrenToArray from 'rc-util/lib/Children/toArray';
 import classnames from 'classnames';
@@ -47,7 +48,7 @@ function chaining(...fns) {
   };
 }
 
-export default class Select extends React.Component {
+class Select extends React.Component {
   static propTypes = SelectPropTypes;
 
   static defaultProps = {
@@ -77,15 +78,104 @@ export default class Select extends React.Component {
     tokenSeparators: [],
   };
 
+  static getDerivedStateFromProps = (nextProps, prevState) => {
+    const optionsInfo = Select.getOptionsInfoFromProps(nextProps, prevState);
+    const newState = {
+      optionsInfo,
+    };
+    if ('value' in nextProps) {
+      const value = Select.getValueFromProps(nextProps);
+      newState.value = value;
+      if (nextProps.combobox) {
+        newState.inputValue = Select.getInputValueForCombobox(nextProps.value, nextProps, optionsInfo);
+      }
+    }
+    return newState;
+  };
+
+  static getOptionsFromChildren = (children, options = []) => {
+    React.Children.forEach(children, child => {
+      if (!child) {
+        return;
+      }
+      if (child.type.isSelectOptGroup) {
+        Select.getOptionsFromChildren(child.props.children, options);
+      } else {
+        options.push(child);
+      }
+    });
+    return options;
+  };
+
+  static getInputValueForCombobox = (value, props, optionsInfo) => {
+    value = toArray(value);
+    if (value.length) {
+      value = value[0];
+    } else {
+      return '';
+    }
+    let label = value;
+    if (props.labelInValue) {
+      label = value.label;
+    } else if (optionsInfo[getMapKey(value)]) {
+      label = optionsInfo[getMapKey(value)].label;
+    }
+    return label;
+  }
+
+  static getLabelFromOption = (props, option) => {
+    return getPropValue(option, props.optionLabelProp);
+  };
+
+  static getOptionsInfoFromProps = (props, state) => {
+    const options = Select.getOptionsFromChildren(props.children);
+    const oldOptionsInfo = state ? state.optionsInfo : {};
+    const value = state ? state.value : [];
+    const optionsInfo = {};
+    options.forEach((option) => {
+      const singleValue = getValuePropValue(option);
+      optionsInfo[getMapKey(singleValue)] = {
+        option,
+        value: singleValue,
+        label: Select.getLabelFromOption(props, option),
+        title: option.props.title,
+      };
+    });
+    value.forEach(v => {
+      const key = getMapKey(v);
+      if (!optionsInfo[key]) {
+        optionsInfo[key] = oldOptionsInfo[key];
+      }
+    });
+    return optionsInfo;
+  }
+
+  static getValueFromProps = props => {
+    let value = [];
+    if ('value' in props) {
+      value = toArray(props.value);
+    } else {
+      value = toArray(props.defaultValue);
+    }
+    if (props.labelInValue) {
+      value = value.map((v) => {
+        return v.key;
+      });
+    }
+    return value;
+  }
+
   constructor(props) {
     super(props);
-    const value = this.getValueFromProps(props);
-    const optionsInfo = this.getOptionsInfoFromProps(props);
+    const value = Select.getValueFromProps(props);
+    const optionsInfo = Select.getOptionsInfoFromProps(props);
     let inputValue = '';
     if (props.combobox) {
-      inputValue = value.length
-        ? this.getLabelBySingleValue(value[0], optionsInfo)
-        : '';
+      if ('value' in props) {
+        inputValue = Select.getInputValueForCombobox(props.value, props, optionsInfo);
+      } else if ('defaultValue' in props) {
+        inputValue = Select.getInputValueForCombobox(props.defaultValue, props, optionsInfo);
+      }
     }
     let open = props.open;
     if (open === undefined) {
@@ -96,40 +186,14 @@ export default class Select extends React.Component {
       inputValue,
       open,
       optionsInfo,
+      skipRebuildOptions: false,
     };
-    this.adjustOpenState();
   }
 
   componentDidMount() {
     if (this.props.autoFocus) {
       this.focus();
     }
-  }
-
-  componentWillReceiveProps = nextProps => {
-    const optionsInfo = this.getOptionsInfoFromProps(nextProps);
-    this.setState({
-      optionsInfo,
-    });
-    if ('value' in nextProps) {
-      const value = this.getValueFromProps(nextProps);
-      this.setState({
-        value,
-      }, this.forcePopupAlign);
-      if (nextProps.combobox) {
-        this.setState({
-          inputValue: value.length
-            ? this.getLabelBySingleValue(value[0], optionsInfo)
-            : '',
-        });
-      }
-    }
-  };
-
-  componentWillUpdate(nextProps, nextState) {
-    this.props = nextProps;
-    this.state = nextState;
-    this.adjustOpenState();
   }
 
   componentDidUpdate() {
@@ -143,6 +207,7 @@ export default class Select extends React.Component {
         inputNode.style.width = '';
       }
     }
+    this.forcePopupAlign();
   }
 
   componentWillUnmount() {
@@ -263,10 +328,10 @@ export default class Select extends React.Component {
       value = value.concat([selectedValue]);
     } else {
       if (isCombobox(props)) {
-        this.skipAdjustOpen = true;
+        this.state.skipRebuildOptions = true;
         this.clearAdjustTimer();
-        this.skipAdjustOpenTimer = setTimeout(() => {
-          this.skipAdjustOpen = false;
+        this.skipRebuildOptionsTimer = setTimeout(() => {
+          this.state.skipRebuildOptions = false;
         }, 0);
       }
       if (lastValue && lastValue === selectedValue && selectedValue !== this.state.backfillValue) {
@@ -394,44 +459,6 @@ export default class Select extends React.Component {
     this.forcePopupAlign();
   };
 
-  getValueFromProps = props => {
-    let value = [];
-    if ('value' in props) {
-      value = toArray(props.value);
-    } else {
-      value = toArray(props.defaultValue);
-    }
-    if (props.labelInValue) {
-      value = value.map((v) => {
-        return v.key;
-      });
-    }
-    return value;
-  }
-
-  getOptionsInfoFromProps = props => {
-    const options = this.getOptionsFromChildren(props.children);
-    const oldOptionsInfo = this.state ? this.state.optionsInfo : {};
-    const value = this.state ? this.state.value : [];
-    const optionsInfo = {};
-    options.forEach((option) => {
-      const singleValue = getValuePropValue(option);
-      optionsInfo[getMapKey(singleValue)] = {
-        option,
-        value: singleValue,
-        label: this.getLabelFromOption(option),
-        title: option.props.title,
-      };
-    });
-    value.forEach(v => {
-      const key = getMapKey(v);
-      if (!optionsInfo[key]) {
-        optionsInfo[key] = oldOptionsInfo[key];
-      }
-    });
-    return optionsInfo;
-  }
-
   getOptionInfoBySingleValue = (value, optionsInfo) => {
     let info;
     optionsInfo = optionsInfo || this.state.optionsInfo;
@@ -467,20 +494,6 @@ export default class Select extends React.Component {
     });
   }
 
-  getOptionsFromChildren = (children, options = []) => {
-    React.Children.forEach(children, child => {
-      if (!child) {
-        return;
-      }
-      if (child.type.isSelectOptGroup) {
-        this.getOptionsFromChildren(child.props.children, options);
-      } else {
-        options.push(child);
-      }
-    });
-    return options;
-  };
-
   getValueByLabel = (label) => {
     if (label === undefined) {
       return null;
@@ -493,10 +506,6 @@ export default class Select extends React.Component {
       }
     });
     return value;
-  };
-
-  getLabelFromOption = option => {
-    return getPropValue(option, this.props.optionLabelProp);
   };
 
   getVLBySingleValue = value => {
@@ -682,6 +691,17 @@ export default class Select extends React.Component {
     return hasNewValue ? nextValue : undefined;
   };
 
+  getRealOpenState = () => {
+    let open = this.state.open;
+    const options = this._options || [];
+    if (isMultipleOrTagsOrCombobox(this.props) || !this.props.showSearch) {
+      if (open && !options.length) {
+        open = false;
+      }
+    }
+    return open;
+  }
+
   focus() {
     if (isSingleMode(this.props)) {
       this.selectionRef.focus();
@@ -764,9 +784,9 @@ export default class Select extends React.Component {
   };
 
   clearAdjustTimer = () => {
-    if (this.skipAdjustOpenTimer) {
-      clearTimeout(this.skipAdjustOpenTimer);
-      this.skipAdjustOpenTimer = null;
+    if (this.skipRebuildOptionsTimer) {
+      clearTimeout(this.skipRebuildOptionsTimer);
+      this.skipRebuildOptionsTimer = null;
     }
   };
 
@@ -849,32 +869,6 @@ export default class Select extends React.Component {
       const childValue = getValuePropValue(child);
       return childValue === key && child.props && child.props.disabled;
     });
-  };
-
-  adjustOpenState = () => {
-    if (this.skipAdjustOpen) {
-      return;
-    }
-    let { open } = this.state;
-    let options = [];
-    // If hidden menu due to no options, then it should be calculated again
-    if (open || this.hiddenForNoOptions) {
-      options = this.renderFilterOptions();
-    }
-    this._options = options;
-
-    if (isMultipleOrTagsOrCombobox(this.props) || !this.props.showSearch) {
-      if (open && !options.length) {
-        open = false;
-        this.hiddenForNoOptions = true;
-      }
-      // Keep menu open if there are options and hidden for no options before
-      if (this.hiddenForNoOptions && options.length) {
-        open = true;
-        this.hiddenForNoOptions = false;
-      }
-    }
-    this.state.open = open;
   };
 
   forcePopupAlign = () => {
@@ -1225,7 +1219,11 @@ export default class Select extends React.Component {
     const { className, disabled, prefixCls } = props;
     const ctrlNode = this.renderTopControlNode();
     let extraSelectionProps = {};
-    const { open } = this.state;
+    const { open, skipRebuildOptions } = this.state;
+    if (open && !skipRebuildOptions) {
+      this._options = this.renderFilterOptions();
+    }
+    const realOpen = this.getRealOpenState();
     const options = this._options;
     if (!isMultipleOrTagsOrCombobox(props)) {
       extraSelectionProps = {
@@ -1262,7 +1260,7 @@ export default class Select extends React.Component {
         options={options}
         multiple={multiple}
         disabled={disabled}
-        visible={open}
+        visible={realOpen}
         inputValue={state.inputValue}
         value={state.value}
         backfillValue={state.backfillValue}
@@ -1290,7 +1288,7 @@ export default class Select extends React.Component {
             role="combobox"
             aria-autocomplete="list"
             aria-haspopup="true"
-            aria-expanded={open}
+            aria-expanded={realOpen}
             {...extraSelectionProps}
           >
             {ctrlNode}
@@ -1313,3 +1311,7 @@ export default class Select extends React.Component {
 }
 
 Select.displayName = 'Select';
+
+polyfill(Select);
+
+export default Select;
