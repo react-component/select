@@ -47,8 +47,15 @@ export default class SelectTrigger extends React.Component {
     showAction: PropTypes.arrayOf(PropTypes.string),
   };
 
-  state = {
-    dropdownWidth: null,
+  constructor(props) {
+    super(props);
+
+    this.saveDropdownMenuRef = saveRef(this, 'dropdownMenuRef');
+    this.saveTriggerRef = saveRef(this, 'triggerRef');
+
+    this.state = {
+      dropdownWidth: null,
+    };
   }
 
   componentDidMount() {
@@ -78,7 +85,7 @@ export default class SelectTrigger extends React.Component {
     const props = this.props;
     return (
       <DropdownMenu
-        ref={saveRef(this, 'dropdownMenuRef')}
+        ref={this.saveDropdownMenuRef}
         {...newProps}
         prefixCls={this.getDropdownPrefixCls()}
         onMenuSelect={props.onMenuSelect}
@@ -150,7 +157,7 @@ export default class SelectTrigger extends React.Component {
         {...props}
         showAction={disabled ? [] : this.props.showAction}
         hideAction={hideAction}
-        ref={saveRef(this, 'triggerRef')}
+        ref={this.saveTriggerRef}
         popupPlacement="bottomLeft"
         builtinPlacements={BUILT_IN_PLACEMENTS}
         prefixCls={dropdownPrefixCls}
