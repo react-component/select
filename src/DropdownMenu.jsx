@@ -142,6 +142,7 @@ export default class DropdownMenu extends React.Component {
           ref={saveRef(this, 'menuRef')}
           style={this.props.dropdownMenuStyle}
           defaultActiveFirst={defaultActiveFirstOption}
+          role="listbox"
           {...activeKeyProps}
           multiple={multiple}
           {...menuProps}

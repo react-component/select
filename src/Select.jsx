@@ -906,6 +906,7 @@ export default class Select extends React.Component {
         const menuItem = (
           <MenuItem
             style={UNSELECTABLE_STYLE}
+            role={null}
             attribute={UNSELECTABLE_ATTRIBUTE}
             value={key}
             key={key}
@@ -937,6 +938,7 @@ export default class Select extends React.Component {
           options.unshift(
             <MenuItem
               style={UNSELECTABLE_STYLE}
+              role={null}
               attribute={UNSELECTABLE_ATTRIBUTE}
               value={inputValue}
               key={inputValue}
@@ -954,6 +956,7 @@ export default class Select extends React.Component {
           style={UNSELECTABLE_STYLE}
           attribute={UNSELECTABLE_ATTRIBUTE}
           disabled
+          role="option"
           value="NOT_FOUND"
           key="NOT_FOUND"
         >
@@ -1015,6 +1018,7 @@ export default class Select extends React.Component {
             attribute={UNSELECTABLE_ATTRIBUTE}
             value={childValue}
             key={childValue}
+            role="option"
             {...child.props}
           />
         );
