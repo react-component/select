@@ -14,6 +14,7 @@ import {
   getPropValue,
   getValuePropValue,
   isCombobox,
+  isMultiple,
   isMultipleOrTags,
   isMultipleOrTagsOrCombobox,
   isSingleMode,
@@ -75,6 +76,7 @@ export default class Select extends React.Component {
     backfill: false,
     showAction: ['click'],
     tokenSeparators: [],
+    autoClearSearchValue: false,
   };
 
   constructor(props) {
@@ -293,14 +295,20 @@ export default class Select extends React.Component {
     } else {
       inputValue = '';
     }
-    this.setInputValue(inputValue, false);
+    if (!isMultiple(props) && props.autoClearSearchValue) {
+      this.setInputValue(inputValue, false);
+    }
   };
 
   onMenuDeselect = ({ item, domEvent }) => {
     if (domEvent.type === 'click') {
       this.removeSelected(getValuePropValue(item));
     }
-    this.setInputValue('', false);
+
+    const { props } = this;
+    if (!isMultiple(props) && props.autoClearSearchValue) {
+      this.setInputValue('', false);
+    }
   };
 
   onArrowClick = e => {
