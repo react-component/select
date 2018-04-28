@@ -40,7 +40,7 @@ Array [
       <span
         class="rc-select-arrow"
         style="user-select:none;-webkit-user-select:none"
-        unselectable="unselectable"
+        unselectable="on"
       >
         <b />
       </span>
@@ -64,7 +64,7 @@ Array [
             class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
             role="menuitem"
             style="user-select:none;-webkit-user-select:none"
-            unselectable="unselectable"
+            unselectable="on"
           >
             1
           </li>
@@ -73,7 +73,7 @@ Array [
             class="rc-select-dropdown-menu-item"
             role="menuitem"
             style="user-select:none;-webkit-user-select:none"
-            unselectable="unselectable"
+            unselectable="on"
           >
             2
           </li>
@@ -124,7 +124,7 @@ Array [
       <span
         class="rc-select-arrow"
         style="user-select:none;-webkit-user-select:none"
-        unselectable="unselectable"
+        unselectable="on"
       >
         <b />
       </span>
@@ -148,7 +148,7 @@ Array [
             class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
             role="menuitem"
             style="user-select:none;-webkit-user-select:none"
-            unselectable="unselectable"
+            unselectable="on"
           >
             1
           </li>
@@ -157,7 +157,7 @@ Array [
             class="rc-select-dropdown-menu-item"
             role="menuitem"
             style="user-select:none;-webkit-user-select:none"
-            unselectable="unselectable"
+            unselectable="on"
           >
             2
           </li>
@@ -195,7 +195,7 @@ exports[`Select no search 1`] = `
     <span
       class="rc-select-arrow"
       style="user-select:none;-webkit-user-select:none"
-      unselectable="unselectable"
+      unselectable="on"
     >
       <b />
     </span>
@@ -222,7 +222,7 @@ exports[`Select render renders correctly 1`] = `
       <div
         class="antd-selection__placeholder"
         style="display:none;user-select:none;-webkit-user-select:none"
-        unselectable="unselectable"
+        unselectable="on"
       >
         Select a number
       </div>
@@ -256,12 +256,12 @@ exports[`Select render renders correctly 1`] = `
     <span
       class="antd-selection__clear"
       style="user-select:none;-webkit-user-select:none"
-      unselectable="unselectable"
+      unselectable="on"
     />
     <span
       class="antd-arrow"
       style="user-select:none;-webkit-user-select:none"
-      unselectable="unselectable"
+      unselectable="on"
     >
       <b />
     </span>
@@ -288,7 +288,7 @@ exports[`Select render renders disabeld select correctly 1`] = `
       <div
         class="antd-selection__placeholder"
         style="display:none;user-select:none;-webkit-user-select:none"
-        unselectable="unselectable"
+        unselectable="on"
       >
         Select a number
       </div>
@@ -323,12 +323,12 @@ exports[`Select render renders disabeld select correctly 1`] = `
     <span
       class="antd-selection__clear"
       style="user-select:none;-webkit-user-select:none"
-      unselectable="unselectable"
+      unselectable="on"
     />
     <span
       class="antd-arrow"
       style="user-select:none;-webkit-user-select:none"
-      unselectable="unselectable"
+      unselectable="on"
     >
       <b />
     </span>
@@ -356,7 +356,7 @@ Array [
         <div
           class="antd-selection__placeholder"
           style="display:none;user-select:none;-webkit-user-select:none"
-          unselectable="unselectable"
+          unselectable="on"
         >
           Select a number
         </div>
@@ -390,12 +390,12 @@ Array [
       <span
         class="antd-selection__clear"
         style="user-select:none;-webkit-user-select:none"
-        unselectable="unselectable"
+        unselectable="on"
       />
       <span
         class="antd-arrow"
         style="user-select:none;-webkit-user-select:none"
-        unselectable="unselectable"
+        unselectable="on"
       >
         <b />
       </span>
@@ -431,7 +431,7 @@ Array [
                 class="antd-dropdown-menu-item option-test antd-dropdown-menu-item-active"
                 role="menuitem"
                 style="user-select:none;-webkit-user-select:none"
-                unselectable="unselectable"
+                unselectable="on"
               >
                 <b
                   style="color:red"
@@ -444,7 +444,7 @@ Array [
                 class="antd-dropdown-menu-item"
                 role="menuitem"
                 style="user-select:none;-webkit-user-select:none"
-                unselectable="unselectable"
+                unselectable="on"
               >
                 lucy
               </li>
@@ -467,7 +467,7 @@ Array [
                 class="antd-dropdown-menu-item"
                 role="menuitem"
                 style="user-select:none;-webkit-user-select:none"
-                unselectable="unselectable"
+                unselectable="on"
               >
                 yiminghe
               </li>
@@ -526,7 +526,7 @@ exports[`Select should contian falsy children 1`] = `
     <span
       class="rc-select-arrow"
       style="user-select:none;-webkit-user-select:none"
-      unselectable="unselectable"
+      unselectable="on"
     >
       <b />
     </span>
