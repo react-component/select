@@ -39,7 +39,7 @@ exports[`Select.combobox allowClear renders correctly 1`] = `
     <span
       class="rc-select-arrow"
       style="user-select:none;-webkit-user-select:none"
-      unselectable="unselectable"
+      unselectable="on"
     >
       <b />
     </span>
@@ -65,7 +65,7 @@ exports[`Select.combobox renders correctly 1`] = `
       <div
         class="rc-select-selection__placeholder"
         style="display:block;user-select:none;-webkit-user-select:none"
-        unselectable="unselectable"
+        unselectable="on"
       >
         Search
       </div>
@@ -93,7 +93,7 @@ exports[`Select.combobox renders correctly 1`] = `
     <span
       class="rc-select-arrow"
       style="user-select:none;-webkit-user-select:none"
-      unselectable="unselectable"
+      unselectable="on"
     >
       <b />
     </span>

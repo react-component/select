@@ -21,7 +21,7 @@ exports[`Select.tags OptGroup renders correctly 1`] = `
           <li
             class="rc-select-selection__choice"
             title="jack"
-            unselectable="unselectable"
+            unselectable="on"
           >
             <div
               class="rc-select-selection__choice__content"
@@ -35,7 +35,7 @@ exports[`Select.tags OptGroup renders correctly 1`] = `
           <li
             class="rc-select-selection__choice"
             title="foo"
-            unselectable="unselectable"
+            unselectable="on"
           >
             <div
               class="rc-select-selection__choice__content"
@@ -99,7 +99,7 @@ exports[`Select.tags OptGroup renders correctly 1`] = `
                 class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item-selected"
                 role="menuitem"
                 style=""
-                unselectable="unselectable"
+                unselectable="on"
               >
                 Jack
               </li>
@@ -121,7 +121,7 @@ exports[`Select.tags OptGroup renders correctly 1`] = `
                 aria-selected="false"
                 class="rc-select-dropdown-menu-item"
                 role="menuitem"
-                unselectable="unselectable"
+                unselectable="on"
               >
                 yiminghe
               </li>
@@ -131,7 +131,7 @@ exports[`Select.tags OptGroup renders correctly 1`] = `
             aria-selected="true"
             class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-selected"
             role="menuitem"
-            unselectable="unselectable"
+            unselectable="on"
           >
             foo
           </li>
@@ -202,7 +202,7 @@ exports[`Select.tags OptGroup renders inputValue correctly 1`] = `
             class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
             role="menuitem"
             style=""
-            unselectable="unselectable"
+            unselectable="on"
           >
             foo
           </li>
@@ -234,7 +234,7 @@ exports[`Select.tags OptGroup renders inputValue correctly 2`] = `
           <li
             class="rc-select-selection__choice"
             title="foo"
-            unselectable="unselectable"
+            unselectable="on"
           >
             <div
               class="rc-select-selection__choice__content"
@@ -299,7 +299,7 @@ exports[`Select.tags OptGroup renders inputValue correctly 2`] = `
                 class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
                 role="menuitem"
                 style=""
-                unselectable="unselectable"
+                unselectable="on"
               >
                 Jack
               </li>
@@ -321,7 +321,7 @@ exports[`Select.tags OptGroup renders inputValue correctly 2`] = `
                 aria-selected="false"
                 class="rc-select-dropdown-menu-item"
                 role="menuitem"
-                unselectable="unselectable"
+                unselectable="on"
               >
                 yiminghe
               </li>
@@ -332,7 +332,7 @@ exports[`Select.tags OptGroup renders inputValue correctly 2`] = `
             class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-selected"
             role="menuitem"
             style=""
-            unselectable="unselectable"
+            unselectable="on"
           >
             foo
           </li>
@@ -484,7 +484,7 @@ exports[`Select.tags render truncates tags by maxTagCount 1`] = `
           class="rc-select-selection__choice"
           style="user-select:none;-webkit-user-select:none"
           title="one"
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -499,7 +499,7 @@ exports[`Select.tags render truncates tags by maxTagCount 1`] = `
           class="rc-select-selection__choice"
           style="user-select:none;-webkit-user-select:none"
           title="two"
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -514,7 +514,7 @@ exports[`Select.tags render truncates tags by maxTagCount 1`] = `
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
           style="user-select:none;-webkit-user-select:none"
           title="+ 1 ..."
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -566,7 +566,7 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
           class="rc-select-selection__choice"
           style="user-select:none;-webkit-user-select:none"
           title="one"
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -581,7 +581,7 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
           class="rc-select-selection__choice"
           style="user-select:none;-webkit-user-select:none"
           title="two"
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -596,7 +596,7 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
           style="user-select:none;-webkit-user-select:none"
           title="[object Object]"
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -650,7 +650,7 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
           class="rc-select-selection__choice"
           style="user-select:none;-webkit-user-select:none"
           title="one"
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -665,7 +665,7 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
           class="rc-select-selection__choice"
           style="user-select:none;-webkit-user-select:none"
           title="two"
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -680,7 +680,7 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
           style="user-select:none;-webkit-user-select:none"
           title="[object Object]"
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -734,7 +734,7 @@ exports[`Select.tags render truncates tags by maxTagCount while maxTagCount is 0
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
           style="user-select:none;-webkit-user-select:none"
           title="+ 3 ..."
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -786,7 +786,7 @@ exports[`Select.tags render truncates values by maxTagTextLength 1`] = `
           class="rc-select-selection__choice"
           style="user-select:none;-webkit-user-select:none"
           title="one"
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -801,7 +801,7 @@ exports[`Select.tags render truncates values by maxTagTextLength 1`] = `
           class="rc-select-selection__choice"
           style="user-select:none;-webkit-user-select:none"
           title="two"
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -857,7 +857,7 @@ Array [
             class="rc-select-selection__choice"
             style="user-select:none;-webkit-user-select:none"
             title="22"
-            unselectable="unselectable"
+            unselectable="on"
           >
             <div
               class="rc-select-selection__choice__content"
@@ -908,7 +908,7 @@ Array [
             class="rc-select-dropdown-menu-item"
             role="menuitem"
             style="user-select:none;-webkit-user-select:none"
-            unselectable="unselectable"
+            unselectable="on"
           >
             1
           </li>
@@ -917,7 +917,7 @@ Array [
             class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item-selected"
             role="menuitem"
             style="user-select:none;-webkit-user-select:none"
-            unselectable="unselectable"
+            unselectable="on"
           >
             22
           </li>
@@ -949,7 +949,7 @@ Array [
             class="rc-select-selection__choice"
             style="user-select:none;-webkit-user-select:none"
             title="3"
-            unselectable="unselectable"
+            unselectable="on"
           >
             <div
               class="rc-select-selection__choice__content"
@@ -1000,7 +1000,7 @@ Array [
             class="rc-select-dropdown-menu-item"
             role="menuitem"
             style="user-select:none;-webkit-user-select:none"
-            unselectable="unselectable"
+            unselectable="on"
           >
             1
           </li>
@@ -1009,7 +1009,7 @@ Array [
             class="rc-select-dropdown-menu-item"
             role="menuitem"
             style="user-select:none;-webkit-user-select:none"
-            unselectable="unselectable"
+            unselectable="on"
           >
             2
           </li>
@@ -1018,7 +1018,7 @@ Array [
             class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item-selected"
             role="menuitem"
             style="user-select:none;-webkit-user-select:none"
-            unselectable="unselectable"
+            unselectable="on"
           >
             3
           </li>
@@ -1086,7 +1086,7 @@ Array [
             class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
             role="menuitem"
             style="user-select:none;-webkit-user-select:none"
-            unselectable="unselectable"
+            unselectable="on"
           >
             Red
           </li>

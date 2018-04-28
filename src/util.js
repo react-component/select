@@ -111,7 +111,7 @@ export const UNSELECTABLE_STYLE = {
 };
 
 export const UNSELECTABLE_ATTRIBUTE = {
-  unselectable: 'unselectable',
+  unselectable: 'on',
 };
 
 export function findFirstMenuItem(children) {
