@@ -1,6 +1,10 @@
 # History
 ----
 
+## 8.0.0 / 2018-04-28
+
+- Upgrade rc-menu to 7.0.1
+
 ## 7.7.8 / 2018-04-19
 
 - Fix: value is wrong when blur https://github.com/react-component/select/pull/290
