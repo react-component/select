@@ -295,7 +295,7 @@ export default class Select extends React.Component {
     } else {
       inputValue = '';
     }
-    if (!isMultiple(props) && props.autoClearSearchValue) {
+    if (!isMultiple(props)) {
       this.setInputValue(inputValue, false);
     }
   };
@@ -306,7 +306,7 @@ export default class Select extends React.Component {
     }
 
     const { props } = this;
-    if (!isMultiple(props) && props.autoClearSearchValue) {
+    if (!isMultiple(props) || props.autoClearSearchValue) {
       this.setInputValue('', false);
     }
   };
