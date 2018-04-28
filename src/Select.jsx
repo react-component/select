@@ -98,6 +98,13 @@ export default class Select extends React.Component {
       optionsInfo,
     };
     this.adjustOpenState();
+
+    this.saveInputRef = saveRef(this, 'inputRef');
+    this.saveInputMirrorRef = saveRef(this, 'inputMirrorRef');
+    this.saveTopCtrlRef = saveRef(this, 'topCtrlRef');
+    this.saveSelectTriggerRef = saveRef(this, 'selectTriggerRef');
+    this.saveRootRef = saveRef(this, 'rootRef');
+    this.saveSelectionRef = saveRef(this, 'selectionRef');
   }
 
   componentDidMount() {
@@ -583,7 +590,7 @@ export default class Select extends React.Component {
     return (
       <div className={`${props.prefixCls}-search__field__wrap`}>
         {React.cloneElement(inputElement, {
-          ref: saveRef(this, 'inputRef'),
+          ref: this.saveInputRef,
           onChange: this.onInputChange,
           onKeyDown: chaining(
             this.onInputKeyDown,
@@ -595,7 +602,7 @@ export default class Select extends React.Component {
           className: inputCls,
         })}
         <span
-          ref={saveRef(this, 'inputMirrorRef')}
+          ref={this.saveInputMirrorRef}
           className={`${props.prefixCls}-search__field__mirror`}
         >
           {this.state.inputValue}&nbsp;
@@ -1183,7 +1190,7 @@ export default class Select extends React.Component {
       }
     }
     return (
-      <div className={className} ref={saveRef(this, 'topCtrlRef')}>
+      <div className={className} ref={this.saveTopCtrlRef}>
         {this.getPlaceholderElement()}
         {innerNode}
       </div>
@@ -1273,17 +1280,17 @@ export default class Select extends React.Component {
         onMenuDeselect={this.onMenuDeselect}
         onPopupScroll={props.onPopupScroll}
         showAction={props.showAction}
-        ref={saveRef(this, 'selectTriggerRef')}
+        ref={this.saveSelectTriggerRef}
       >
         <div
           style={props.style}
-          ref={saveRef(this, 'rootRef')}
+          ref={this.saveRootRef}
           onBlur={this.onOuterBlur}
           onFocus={this.onOuterFocus}
           className={classnames(rootCls)}
         >
           <div
-            ref={saveRef(this, 'selectionRef')}
+            ref={this.saveSelectionRef}
             key="selection"
             className={`${prefixCls}-selection
             ${prefixCls}-selection--${multiple ? 'multiple' : 'single'}`}
