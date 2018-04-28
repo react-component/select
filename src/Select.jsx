@@ -14,6 +14,7 @@ import {
   getPropValue,
   getValuePropValue,
   isCombobox,
+  isMultiple,
   isMultipleOrTags,
   isMultipleOrTagsOrCombobox,
   isSingleMode,
@@ -290,14 +291,20 @@ export default class Select extends React.Component {
     } else {
       inputValue = '';
     }
-    this.setInputValue(inputValue, false);
+    if (!isMultiple(props)) {
+      this.setInputValue(inputValue, false);
+    }
   };
 
   onMenuDeselect = ({ item, domEvent }) => {
     if (domEvent.type === 'click') {
       this.removeSelected(getValuePropValue(item));
     }
-    this.setInputValue('', false);
+
+    const { props } = this;
+    if (!isMultiple(props)) {
+      this.setInputValue('', false);
+    }
   };
 
   onArrowClick = e => {

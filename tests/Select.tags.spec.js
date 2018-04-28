@@ -11,6 +11,7 @@ import renderTest from './shared/renderTest';
 import removeSelectedTest from './shared/removeSelectedTest';
 import throwOptionValue from './shared/throwOptionValue';
 import dynamicChildrenTest from './shared/dynamicChildrenTest';
+import inputFilterTest from './shared/inputFilterTest';
 
 describe('Select.tags', () => {
   allowClearTest('tags');
@@ -21,6 +22,7 @@ describe('Select.tags', () => {
   removeSelectedTest('tags');
   throwOptionValue('tags');
   dynamicChildrenTest('tags');
+  inputFilterTest('tags');
 
   it('allow user input tags', () => {
     const wrapper = mount(
