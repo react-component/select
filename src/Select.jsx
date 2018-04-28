@@ -76,6 +76,7 @@ export default class Select extends React.Component {
     backfill: false,
     showAction: ['click'],
     tokenSeparators: [],
+    autoClearSearchValue: false,
   };
 
   constructor(props) {
@@ -291,7 +292,7 @@ export default class Select extends React.Component {
     } else {
       inputValue = '';
     }
-    if (!isMultiple(props)) {
+    if (!isMultiple(props) && props.autoClearSearchValue) {
       this.setInputValue(inputValue, false);
     }
   };
@@ -302,7 +303,7 @@ export default class Select extends React.Component {
     }
 
     const { props } = this;
-    if (!isMultiple(props)) {
+    if (!isMultiple(props) && props.autoClearSearchValue) {
       this.setInputValue('', false);
     }
   };
