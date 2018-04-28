@@ -127,7 +127,9 @@ exports[`Select.tags OptGroup renders correctly 1`] = `
             </ul>
           </li>
           <li
+            aria-selected="true"
             class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-selected"
+            role="option"
             unselectable="on"
           >
             foo
@@ -194,7 +196,9 @@ exports[`Select.tags OptGroup renders inputValue correctly 1`] = `
           tabindex="0"
         >
           <li
+            aria-selected="false"
             class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
+            role="option"
             style=""
             unselectable="on"
           >
@@ -321,7 +325,9 @@ exports[`Select.tags OptGroup renders inputValue correctly 2`] = `
             </ul>
           </li>
           <li
+            aria-selected="true"
             class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-selected"
+            role="option"
             style=""
             unselectable="on"
           >
@@ -903,7 +909,9 @@ Array [
             1
           </li>
           <li
+            aria-selected="true"
             class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item-selected"
+            role="option"
             style="user-select:none;-webkit-user-select:none"
             unselectable="on"
           >
@@ -1001,7 +1009,9 @@ Array [
             2
           </li>
           <li
+            aria-selected="true"
             class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item-selected"
+            role="option"
             style="user-select:none;-webkit-user-select:none"
             unselectable="on"
           >
