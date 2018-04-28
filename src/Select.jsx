@@ -258,6 +258,9 @@ export default class Select extends React.Component {
   };
 
   onMenuSelect = ({ item }) => {
+    if (!item) {
+      return;
+    }
     let value = this.state.value;
     const props = this.props;
     const selectedValue = getValuePropValue(item);

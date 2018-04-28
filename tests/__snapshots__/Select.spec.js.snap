@@ -54,15 +54,14 @@ Array [
         style="overflow:auto"
       >
         <ul
-          aria-activedescendant=""
           class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
-          role="menu"
+          role="listbox"
           tabindex="0"
         >
           <li
             aria-selected="false"
             class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
-            role="menuitem"
+            role="option"
             style="user-select:none;-webkit-user-select:none"
             unselectable="on"
           >
@@ -71,7 +70,7 @@ Array [
           <li
             aria-selected="false"
             class="rc-select-dropdown-menu-item"
-            role="menuitem"
+            role="option"
             style="user-select:none;-webkit-user-select:none"
             unselectable="on"
           >
@@ -138,15 +137,14 @@ Array [
         style="overflow:auto"
       >
         <ul
-          aria-activedescendant=""
           class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
-          role="menu"
+          role="listbox"
           tabindex="0"
         >
           <li
             aria-selected="false"
             class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
-            role="menuitem"
+            role="option"
             style="user-select:none;-webkit-user-select:none"
             unselectable="on"
           >
@@ -155,7 +153,7 @@ Array [
           <li
             aria-selected="false"
             class="rc-select-dropdown-menu-item"
-            role="menuitem"
+            role="option"
             style="user-select:none;-webkit-user-select:none"
             unselectable="on"
           >
@@ -409,9 +407,8 @@ Array [
         style="overflow:auto"
       >
         <ul
-          aria-activedescendant=""
           class="antd-dropdown-menu  antd-dropdown-menu-root antd-dropdown-menu-vertical"
-          role="menu"
+          role="listbox"
           tabindex="0"
         >
           <li
@@ -429,7 +426,7 @@ Array [
               <li
                 aria-selected="false"
                 class="antd-dropdown-menu-item option-test antd-dropdown-menu-item-active"
-                role="menuitem"
+                role="option"
                 style="user-select:none;-webkit-user-select:none"
                 unselectable="on"
               >
@@ -442,7 +439,7 @@ Array [
               <li
                 aria-selected="false"
                 class="antd-dropdown-menu-item"
-                role="menuitem"
+                role="option"
                 style="user-select:none;-webkit-user-select:none"
                 unselectable="on"
               >
@@ -465,7 +462,7 @@ Array [
               <li
                 aria-selected="false"
                 class="antd-dropdown-menu-item"
-                role="menuitem"
+                role="option"
                 style="user-select:none;-webkit-user-select:none"
                 unselectable="on"
               >

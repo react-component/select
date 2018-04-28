@@ -5,9 +5,8 @@ exports[`DropdownMenu renders correctly 1`] = `
   style="overflow:auto"
 >
   <ul
-    aria-activedescendant=""
     class="undefined-menu  undefined-menu-root undefined-menu-vertical"
-    role="menu"
+    role="listbox"
     tabindex="0"
   >
     <li
@@ -20,7 +19,6 @@ exports[`DropdownMenu renders correctly 1`] = `
         class="undefined-menu-item-group-list"
       >
         <li
-          aria-selected="true"
           class="undefined-menu-item undefined-menu-item-selected"
           role="menuitem"
         >
@@ -38,7 +36,6 @@ exports[`DropdownMenu renders correctly 1`] = `
         class="undefined-menu-item-group-list"
       >
         <li
-          aria-selected="false"
           class="undefined-menu-item"
           role="menuitem"
         >
