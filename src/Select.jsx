@@ -834,11 +834,17 @@ class Select extends React.Component {
     }
   };
 
-  removeSelected = selectedKey => {
+  removeSelected = (selectedKey, e) => {
     const props = this.props;
     if (props.disabled || this.isChildDisabled(selectedKey)) {
       return;
     }
+
+    // Do not trigger Trigger popup
+    if (e && e.stopPropagation) {
+      e.stopPropagation();
+    }
+
     const value = this.state.value.filter(singleValue => {
       return singleValue !== selectedKey;
     });
@@ -1160,7 +1166,9 @@ class Select extends React.Component {
               {disabled ? null : (
                 <span
                   className={`${prefixCls}-selection__choice__remove`}
-                  onClick={this.removeSelected.bind(this, singleValue)}
+                  onClick={(event) => {
+                    this.removeSelected(singleValue, event);
+                  }}
                 />)}
             </li>
           );
