@@ -82,11 +82,18 @@ class Select extends React.Component {
 
   constructor(props) {
     super(props);
+    const optionsInfo = Select.getOptionsInfoFromProps(props);
     this.state = {
-      // mark defaultValue has been setted, propr.defaultValue only work at the first time.
-      canUseDefaultValue: true,
-      value: [],
-      inputValue: '',
+      value: Select.getValueFromProps(props, true), // true: use default value
+      inputValue: props.combobox ? Select.getInputValueForCombobox(
+        props,
+        optionsInfo,
+        true, // use default value
+      ) : '',
+      open: props.defaultOpen,
+      optionsInfo,
+      // a flag for aviod redundant getOptionsInfoFromProps call
+      skipBuildOptionsInfo: true,
     };
 
     this.saveInputRef = saveRef(this, 'inputRef');
@@ -368,27 +375,22 @@ class Select extends React.Component {
   };
 
   static getDerivedStateFromProps = (nextProps, prevState) => {
-    const canUseDefaultValue = prevState.canUseDefaultValue;
-    const optionsInfo = Select.getOptionsInfoFromProps(nextProps, prevState);
-    let open = prevState.open || false;
-    if ('open' in nextProps) {
-      open = nextProps.open;
-    } else if ('defaultOpen' in nextProps && canUseDefaultValue) {
-      open = nextProps.defaultOpen;
-    }
+    const optionsInfo = prevState.skipBuildOptionsInfo
+                        ? prevState.optionsInfo
+                        : Select.getOptionsInfoFromProps(nextProps, prevState);
+    const open = 'open' in nextProps ? nextProps.open : prevState.open;
     const newState = {
       optionsInfo,
-      canUseDefaultValue: false,
       open,
+      skipBuildOptionsInfo: false,
     };
-    if ('value' in nextProps || ('defaultValue' in nextProps && canUseDefaultValue)) {
-      const value = Select.getValueFromProps(nextProps, canUseDefaultValue);
+    if ('value' in nextProps) {
+      const value = Select.getValueFromProps(nextProps);
       newState.value = value;
       if (nextProps.combobox) {
         newState.inputValue = Select.getInputValueForCombobox(
           nextProps,
           optionsInfo,
-          canUseDefaultValue,
         );
       }
     }
@@ -409,11 +411,12 @@ class Select extends React.Component {
     return options;
   };
 
-  static getInputValueForCombobox = (props, optionsInfo, canUseDefaultValue) => {
+  static getInputValueForCombobox = (props, optionsInfo, useDefaultValue) => {
     let value = [];
-    if ('value' in props) {
+    if ('value' in props && !useDefaultValue) {
       value = toArray(props.value);
-    } else if ('defaultValue' in props && canUseDefaultValue) {
+    }
+    if ('defaultValue' in props && useDefaultValue) {
       value = toArray(props.defaultValue);
     }
     if (value.length) {
@@ -437,10 +440,8 @@ class Select extends React.Component {
     return getPropValue(option, props.optionLabelProp);
   };
 
-  static getOptionsInfoFromProps = (props, state) => {
+  static getOptionsInfoFromProps = (props, preState) => {
     const options = Select.getOptionsFromChildren(props.children);
-    const oldOptionsInfo = state ? state.optionsInfo : {};
-    const value = state.value;
     const optionsInfo = {};
     options.forEach((option) => {
       const singleValue = getValuePropValue(option);
@@ -451,20 +452,26 @@ class Select extends React.Component {
         title: option.props.title,
       };
     });
-    value.forEach(v => {
-      const key = getMapKey(v);
-      if (!optionsInfo[key]) {
-        optionsInfo[key] = oldOptionsInfo[key];
-      }
-    });
+    if (preState) {
+      // keep option info in pre state value.
+      const oldOptionsInfo = preState.optionsInfo;
+      const value = preState.value;
+      value.forEach(v => {
+        const key = getMapKey(v);
+        if (!optionsInfo[key]) {
+          optionsInfo[key] = oldOptionsInfo[key];
+        }
+      });
+    }
     return optionsInfo;
   }
 
-  static getValueFromProps = (props, canUseDefaultValue) => {
+  static getValueFromProps = (props, useDefaultValue) => {
     let value = [];
-    if ('value' in props) {
+    if ('value' in props && !useDefaultValue) {
       value = toArray(props.value);
-    } else if ('defaultValue' in props && canUseDefaultValue) {
+    }
+    if ('defaultValue' in props && useDefaultValue) {
       value = toArray(props.defaultValue);
     }
     if (props.labelInValue) {
