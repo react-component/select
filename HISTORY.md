@@ -1,6 +1,10 @@
 # History
 ----
 
+## 8.0.2 / 2018-05-03
+
+- Refactoring: Migrate to new lifecycle methods https://github.com/react-component/select/pull/291
+
 ## 8.0.0 / 2018-04-28
 
 - Upgrade rc-menu to 7.0.1
