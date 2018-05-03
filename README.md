@@ -106,6 +106,7 @@ React.render(c, container);
 |getInputElement| customize input element | function(): Element | - |
 |showAction| actions trigger the dropdown to show | String[]? | - |
 |autoFocus| focus select after mount | Bool | - |
+| autoClearSearchValue | auto clear search input value when multiple select is selected/deselected | boolean | false |
 
 ### Methods
 

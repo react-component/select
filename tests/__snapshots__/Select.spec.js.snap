@@ -40,7 +40,7 @@ Array [
       <span
         class="rc-select-arrow"
         style="user-select:none;-webkit-user-select:none"
-        unselectable="unselectable"
+        unselectable="on"
       >
         <b />
       </span>
@@ -54,26 +54,25 @@ Array [
         style="overflow:auto"
       >
         <ul
-          aria-activedescendant=""
           class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
-          role="menu"
+          role="listbox"
           tabindex="0"
         >
           <li
             aria-selected="false"
             class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
-            role="menuitem"
+            role="option"
             style="user-select:none;-webkit-user-select:none"
-            unselectable="unselectable"
+            unselectable="on"
           >
             1
           </li>
           <li
             aria-selected="false"
             class="rc-select-dropdown-menu-item"
-            role="menuitem"
+            role="option"
             style="user-select:none;-webkit-user-select:none"
-            unselectable="unselectable"
+            unselectable="on"
           >
             2
           </li>
@@ -124,7 +123,7 @@ Array [
       <span
         class="rc-select-arrow"
         style="user-select:none;-webkit-user-select:none"
-        unselectable="unselectable"
+        unselectable="on"
       >
         <b />
       </span>
@@ -138,26 +137,25 @@ Array [
         style="overflow:auto"
       >
         <ul
-          aria-activedescendant=""
           class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
-          role="menu"
+          role="listbox"
           tabindex="0"
         >
           <li
             aria-selected="false"
             class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
-            role="menuitem"
+            role="option"
             style="user-select:none;-webkit-user-select:none"
-            unselectable="unselectable"
+            unselectable="on"
           >
             1
           </li>
           <li
             aria-selected="false"
             class="rc-select-dropdown-menu-item"
-            role="menuitem"
+            role="option"
             style="user-select:none;-webkit-user-select:none"
-            unselectable="unselectable"
+            unselectable="on"
           >
             2
           </li>
@@ -195,7 +193,7 @@ exports[`Select no search 1`] = `
     <span
       class="rc-select-arrow"
       style="user-select:none;-webkit-user-select:none"
-      unselectable="unselectable"
+      unselectable="on"
     >
       <b />
     </span>
@@ -222,7 +220,7 @@ exports[`Select render renders correctly 1`] = `
       <div
         class="antd-selection__placeholder"
         style="display:none;user-select:none;-webkit-user-select:none"
-        unselectable="unselectable"
+        unselectable="on"
       >
         Select a number
       </div>
@@ -256,12 +254,12 @@ exports[`Select render renders correctly 1`] = `
     <span
       class="antd-selection__clear"
       style="user-select:none;-webkit-user-select:none"
-      unselectable="unselectable"
+      unselectable="on"
     />
     <span
       class="antd-arrow"
       style="user-select:none;-webkit-user-select:none"
-      unselectable="unselectable"
+      unselectable="on"
     >
       <b />
     </span>
@@ -288,7 +286,7 @@ exports[`Select render renders disabeld select correctly 1`] = `
       <div
         class="antd-selection__placeholder"
         style="display:none;user-select:none;-webkit-user-select:none"
-        unselectable="unselectable"
+        unselectable="on"
       >
         Select a number
       </div>
@@ -323,12 +321,12 @@ exports[`Select render renders disabeld select correctly 1`] = `
     <span
       class="antd-selection__clear"
       style="user-select:none;-webkit-user-select:none"
-      unselectable="unselectable"
+      unselectable="on"
     />
     <span
       class="antd-arrow"
       style="user-select:none;-webkit-user-select:none"
-      unselectable="unselectable"
+      unselectable="on"
     >
       <b />
     </span>
@@ -356,7 +354,7 @@ Array [
         <div
           class="antd-selection__placeholder"
           style="display:none;user-select:none;-webkit-user-select:none"
-          unselectable="unselectable"
+          unselectable="on"
         >
           Select a number
         </div>
@@ -390,12 +388,12 @@ Array [
       <span
         class="antd-selection__clear"
         style="user-select:none;-webkit-user-select:none"
-        unselectable="unselectable"
+        unselectable="on"
       />
       <span
         class="antd-arrow"
         style="user-select:none;-webkit-user-select:none"
-        unselectable="unselectable"
+        unselectable="on"
       >
         <b />
       </span>
@@ -409,9 +407,8 @@ Array [
         style="overflow:auto"
       >
         <ul
-          aria-activedescendant=""
           class="antd-dropdown-menu  antd-dropdown-menu-root antd-dropdown-menu-vertical"
-          role="menu"
+          role="listbox"
           tabindex="0"
         >
           <li
@@ -429,9 +426,9 @@ Array [
               <li
                 aria-selected="false"
                 class="antd-dropdown-menu-item option-test antd-dropdown-menu-item-active"
-                role="menuitem"
+                role="option"
                 style="user-select:none;-webkit-user-select:none"
-                unselectable="unselectable"
+                unselectable="on"
               >
                 <b
                   style="color:red"
@@ -442,9 +439,9 @@ Array [
               <li
                 aria-selected="false"
                 class="antd-dropdown-menu-item"
-                role="menuitem"
+                role="option"
                 style="user-select:none;-webkit-user-select:none"
-                unselectable="unselectable"
+                unselectable="on"
               >
                 lucy
               </li>
@@ -465,9 +462,9 @@ Array [
               <li
                 aria-selected="false"
                 class="antd-dropdown-menu-item"
-                role="menuitem"
+                role="option"
                 style="user-select:none;-webkit-user-select:none"
-                unselectable="unselectable"
+                unselectable="on"
               >
                 yiminghe
               </li>
@@ -526,7 +523,7 @@ exports[`Select should contian falsy children 1`] = `
     <span
       class="rc-select-arrow"
       style="user-select:none;-webkit-user-select:none"
-      unselectable="unselectable"
+      unselectable="on"
     >
       <b />
     </span>

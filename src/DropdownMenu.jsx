@@ -23,8 +23,9 @@ export default class DropdownMenu extends React.Component {
   };
 
   constructor(props) {
-    super();
+    super(props);
     this.lastInputValue = props.inputValue;
+    this.saveMenuRef = saveRef(this, 'menuRef');
   }
 
   componentDidMount() {
@@ -139,9 +140,10 @@ export default class DropdownMenu extends React.Component {
       }
       return (
         <Menu
-          ref={saveRef(this, 'menuRef')}
+          ref={this.saveMenuRef}
           style={this.props.dropdownMenuStyle}
           defaultActiveFirst={defaultActiveFirstOption}
+          role="listbox"
           {...activeKeyProps}
           multiple={multiple}
           {...menuProps}

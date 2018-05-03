@@ -141,7 +141,7 @@ exports[`Select.multiple render truncates tags by maxTagCount 1`] = `
           class="rc-select-selection__choice"
           style="user-select:none;-webkit-user-select:none"
           title="one"
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -156,7 +156,7 @@ exports[`Select.multiple render truncates tags by maxTagCount 1`] = `
           class="rc-select-selection__choice"
           style="user-select:none;-webkit-user-select:none"
           title="two"
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -171,7 +171,7 @@ exports[`Select.multiple render truncates tags by maxTagCount 1`] = `
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
           style="user-select:none;-webkit-user-select:none"
           title="+ 1 ..."
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -223,7 +223,7 @@ exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPla
           class="rc-select-selection__choice"
           style="user-select:none;-webkit-user-select:none"
           title="one"
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -238,7 +238,7 @@ exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPla
           class="rc-select-selection__choice"
           style="user-select:none;-webkit-user-select:none"
           title="two"
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -253,7 +253,7 @@ exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPla
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
           style="user-select:none;-webkit-user-select:none"
           title="[object Object]"
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -307,7 +307,7 @@ exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPla
           class="rc-select-selection__choice"
           style="user-select:none;-webkit-user-select:none"
           title="one"
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -322,7 +322,7 @@ exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPla
           class="rc-select-selection__choice"
           style="user-select:none;-webkit-user-select:none"
           title="two"
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -337,7 +337,7 @@ exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPla
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
           style="user-select:none;-webkit-user-select:none"
           title="[object Object]"
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -391,7 +391,7 @@ exports[`Select.multiple render truncates tags by maxTagCount while maxTagCount 
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
           style="user-select:none;-webkit-user-select:none"
           title="+ 3 ..."
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -443,7 +443,7 @@ exports[`Select.multiple render truncates values by maxTagTextLength 1`] = `
           class="rc-select-selection__choice"
           style="user-select:none;-webkit-user-select:none"
           title="one"
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
@@ -458,7 +458,7 @@ exports[`Select.multiple render truncates values by maxTagTextLength 1`] = `
           class="rc-select-selection__choice"
           style="user-select:none;-webkit-user-select:none"
           title="two"
-          unselectable="unselectable"
+          unselectable="on"
         >
           <div
             class="rc-select-selection__choice__content"
