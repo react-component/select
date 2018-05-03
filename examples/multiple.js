@@ -55,7 +55,6 @@ class Test extends React.Component {
             <input checked={this.state.useAnim} type="checkbox" onChange={this.useAnim} />
           </label>
         </p>
-
         <div style={{ width: 300 }}>
           <Select
             value={this.state.value}
