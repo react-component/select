@@ -711,15 +711,15 @@ function plural(ms, n, name) {
 
 /***/ }),
 
-/***/ 225:
+/***/ 226:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(226);
+module.exports = __webpack_require__(227);
 
 
 /***/ }),
 
-/***/ 226:
+/***/ 227:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1039,5 +1039,5 @@ var objectKeys = Object.keys || function (obj) {
 
 /***/ })
 
-},[225]);
+},[226]);
 //# sourceMappingURL=suggest.js.map

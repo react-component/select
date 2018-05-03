@@ -343,15 +343,15 @@ function localstorage() {
 
 /***/ }),
 
-/***/ 207:
+/***/ 208:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(208);
+module.exports = __webpack_require__(209);
 
 
 /***/ }),
 
-/***/ 208:
+/***/ 209:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1028,5 +1028,5 @@ var objectKeys = Object.keys || function (obj) {
 
 /***/ })
 
-},[207]);
+},[208]);
 //# sourceMappingURL=mul-suggest.js.map
