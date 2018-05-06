@@ -1260,6 +1260,7 @@ class Select extends React.Component {
       [`${prefixCls}-disabled`]: disabled,
       [`${prefixCls}-enabled`]: !disabled,
       [`${prefixCls}-allow-clear`]: !!props.allowClear,
+      [`${prefixCls}-no-arrow`]: !props.showArrow,
     };
     return (
       <SelectTrigger
