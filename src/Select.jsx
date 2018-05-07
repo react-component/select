@@ -77,7 +77,7 @@ class Select extends React.Component {
     backfill: false,
     showAction: ['click'],
     tokenSeparators: [],
-    autoClearSearchValue: false,
+    autoClearSearchValue: true,
   };
 
   constructor(props) {
