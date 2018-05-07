@@ -25010,7 +25010,7 @@ Select.defaultProps = {
   backfill: false,
   showAction: ['click'],
   tokenSeparators: [],
-  autoClearSearchValue: false
+  autoClearSearchValue: true
 };
 
 Select.getDerivedStateFromProps = function (nextProps, prevState) {
