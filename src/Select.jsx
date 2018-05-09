@@ -15,7 +15,6 @@ import {
   getPropValue,
   getValuePropValue,
   isCombobox,
-  isMultiple,
   isMultipleOrTags,
   isMultipleOrTagsOrCombobox,
   isSingleMode,
@@ -257,7 +256,7 @@ class Select extends React.Component {
     } else {
       inputValue = '';
     }
-    if (!isMultiple(props)) {
+    if (props.autoClearSearchValue) {
       this.setInputValue(inputValue, false);
     }
   };
@@ -266,9 +265,8 @@ class Select extends React.Component {
     if (domEvent.type === 'click') {
       this.removeSelected(getValuePropValue(item));
     }
-
     const { props } = this;
-    if (!isMultiple(props) || props.autoClearSearchValue) {
+    if (props.autoClearSearchValue) {
       this.setInputValue('', false);
     }
   };
