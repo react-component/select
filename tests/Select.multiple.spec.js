@@ -126,4 +126,20 @@ describe('Select.multiple', () => {
       wrapper.find('.rc-select-selection__choice__content').at(1).text()
     ).toBe('2');
   });
+
+  it('do not open when close button click', () => {
+    const wrapper = mount(
+      <Select multiple>
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>
+    );
+    wrapper.find('.rc-select-selection').simulate('click');
+    wrapper.find('.rc-select-dropdown-menu-item').at(0).simulate('click');
+    wrapper.find('.rc-select-dropdown-menu-item').at(1).simulate('click');
+    wrapper.setState({ open: false });
+    wrapper.find('.rc-select-selection__choice__remove').at(0).simulate('click');
+    expect(wrapper.state('open')).toBe(false);
+    expect(wrapper.state('value')).toEqual([2]);
+  });
 });
