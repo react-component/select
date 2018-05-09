@@ -142,4 +142,19 @@ describe('Select.multiple', () => {
     expect(wrapper.state('open')).toBe(false);
     expect(wrapper.state('value')).toEqual([2]);
   });
+
+  it('do not crash when children has empty', () => {
+    const wrapper = mount(
+      <Select multiple>
+        {null}
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>
+    );
+
+    wrapper.find('.rc-select-selection').simulate('click');
+    wrapper.find('.rc-select-dropdown-menu-item').at(0).simulate('click');
+
+    // Do not crash
+  });
 });
