@@ -376,12 +376,16 @@ class Select extends React.Component {
     const optionsInfo = prevState.skipBuildOptionsInfo
                         ? prevState.optionsInfo
                         : Select.getOptionsInfoFromProps(nextProps, prevState);
-    const open = 'open' in nextProps ? nextProps.open : prevState.open;
+
     const newState = {
       optionsInfo,
-      open,
       skipBuildOptionsInfo: false,
     };
+
+    if ('open' in nextProps) {
+      newState.open = nextProps.open;
+    }
+
     if ('value' in nextProps) {
       const value = Select.getValueFromProps(nextProps);
       newState.value = value;
