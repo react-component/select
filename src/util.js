@@ -1,6 +1,10 @@
 import React from 'react';
 
 export function getValuePropValue(child) {
+  if (!child) {
+    return null;
+  }
+
   const props = child.props;
   if ('value' in props) {
     return props.value;
