@@ -114,7 +114,6 @@ class Select extends React.Component {
       const inputNode = this.getInputDOMNode();
       const mirrorNode = this.getInputMirrorDOMNode();
       if (inputNode.value) {
-        inputNode.style.width = '';
         inputNode.style.width = `${mirrorNode.clientWidth}px`;
       } else {
         inputNode.style.width = '';
