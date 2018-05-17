@@ -2,7 +2,7 @@
 
 exports[`DropdownMenu renders correctly 1`] = `
 <div
-  style="overflow:auto"
+  style="overflow:auto;transform:translateZ(0)"
 >
   <ul
     class="undefined-menu  undefined-menu-root undefined-menu-vertical"
