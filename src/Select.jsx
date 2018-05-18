@@ -31,6 +31,7 @@ import {
   defaultFilterFn,
   validateOptionValue,
   saveRef,
+  toTitle,
 } from './util';
 import SelectTrigger from './SelectTrigger';
 import { SelectPropTypes } from './PropTypes';
@@ -1088,7 +1089,7 @@ class Select extends React.Component {
           <div
             key="value"
             className={`${prefixCls}-selection-selected-value`}
-            title={title || label}
+            title={toTitle(title || label)}
             style={{
               display: showSelectedValue ? 'block' : 'none',
               opacity,
@@ -1132,7 +1133,7 @@ class Select extends React.Component {
           onMouseDown={preventDefaultEvent}
           className={`${prefixCls}-selection__choice ${prefixCls}-selection__choice__disabled`}
           key={'maxTagPlaceholder'}
-          title={content}
+          title={toTitle(content)}
         >
           <div className={`${prefixCls}-selection__choice__content`}>{content}</div>
         </li>);
@@ -1160,7 +1161,7 @@ class Select extends React.Component {
               onMouseDown={preventDefaultEvent}
               className={choiceClassName}
               key={singleValue}
-              title={title}
+              title={toTitle(title)}
             >
               <div className={`${prefixCls}-selection__choice__content`}>
                 {content}

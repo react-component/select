@@ -1,5 +1,12 @@
 import React from 'react';
 
+export function toTitle(title) {
+  if (typeof title === 'string') {
+    return title;
+  }
+  return null;
+}
+
 export function getValuePropValue(child) {
   if (!child) {
     return null;

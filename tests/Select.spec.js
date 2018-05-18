@@ -832,4 +832,15 @@ describe('Select', () => {
     expect(wrapper.find('MenuItem').length).toBe(1);
     expect(wrapper.find('MenuItem').props().value).toBe('ABC');
   });
+
+  it('check title when label is a object', () => {
+    const wrapper = render(
+      <Select defaultValue="0">
+        <Option value="0">
+          <span>Not Show Title</span>
+        </Option>
+      </Select>
+    );
+    expect(wrapper).toMatchSnapshot();
+  });
 });

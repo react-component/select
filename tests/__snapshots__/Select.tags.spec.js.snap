@@ -592,7 +592,6 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
         <li
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
           style="user-select:none;-webkit-user-select:none"
-          title="[object Object]"
           unselectable="on"
         >
           <div
@@ -676,7 +675,6 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
         <li
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
           style="user-select:none;-webkit-user-select:none"
-          title="[object Object]"
           unselectable="on"
         >
           <div
