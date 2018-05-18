@@ -3041,6 +3041,7 @@ module.exports = ReactPropTypesSecret;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (immutable) */ __webpack_exports__["t"] = toTitle;
 /* harmony export (immutable) */ __webpack_exports__["j"] = getValuePropValue;
 /* harmony export (immutable) */ __webpack_exports__["h"] = getPropValue;
 /* unused harmony export isMultiple */
@@ -3060,11 +3061,18 @@ module.exports = ReactPropTypesSecret;
 /* harmony export (immutable) */ __webpack_exports__["k"] = includesSeparators;
 /* harmony export (immutable) */ __webpack_exports__["r"] = splitBySeparators;
 /* harmony export (immutable) */ __webpack_exports__["c"] = defaultFilterFn;
-/* harmony export (immutable) */ __webpack_exports__["t"] = validateOptionValue;
+/* harmony export (immutable) */ __webpack_exports__["u"] = validateOptionValue;
 /* harmony export (immutable) */ __webpack_exports__["q"] = saveRef;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 
+
+function toTitle(title) {
+  if (typeof title === 'string') {
+    return title;
+  }
+  return null;
+}
 
 function getValuePropValue(child) {
   if (!child) {
@@ -25904,7 +25912,7 @@ var _initialiseProps = function _initialiseProps() {
 
       var childValue = Object(__WEBPACK_IMPORTED_MODULE_15__util__["j" /* getValuePropValue */])(child);
 
-      Object(__WEBPACK_IMPORTED_MODULE_15__util__["t" /* validateOptionValue */])(childValue, _this2.props);
+      Object(__WEBPACK_IMPORTED_MODULE_15__util__["u" /* validateOptionValue */])(childValue, _this2.props);
 
       if (_this2.filterOption(inputValue, child)) {
         var menuItem = __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_12_rc_menu__["a" /* Item */], __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({
@@ -25970,7 +25978,7 @@ var _initialiseProps = function _initialiseProps() {
           {
             key: 'value',
             className: prefixCls + '-selection-selected-value',
-            title: title || label,
+            title: Object(__WEBPACK_IMPORTED_MODULE_15__util__["t" /* toTitle */])(title || label),
             style: {
               display: showSelectedValue ? 'block' : 'none',
               opacity: opacity
@@ -26013,7 +26021,7 @@ var _initialiseProps = function _initialiseProps() {
             onMouseDown: __WEBPACK_IMPORTED_MODULE_15__util__["p" /* preventDefaultEvent */],
             className: prefixCls + '-selection__choice ' + prefixCls + '-selection__choice__disabled',
             key: 'maxTagPlaceholder',
-            title: content
+            title: Object(__WEBPACK_IMPORTED_MODULE_15__util__["t" /* toTitle */])(content)
           }),
           __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
             'div',
@@ -26040,7 +26048,7 @@ var _initialiseProps = function _initialiseProps() {
               onMouseDown: __WEBPACK_IMPORTED_MODULE_15__util__["p" /* preventDefaultEvent */],
               className: choiceClassName,
               key: singleValue,
-              title: title
+              title: Object(__WEBPACK_IMPORTED_MODULE_15__util__["t" /* toTitle */])(title)
             }),
             __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
               'div',
