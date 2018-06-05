@@ -131,6 +131,11 @@ export default class DropdownMenu extends React.Component {
           }
           return clone(item);
         });
+      } else {
+        // Clear firstActiveItem when dropdown menu items was empty
+        // Avoid `Unable to find node on an unmounted component`
+        // https://github.com/ant-design/ant-design/issues/10774
+        this.firstActiveItem = null;
       }
 
       // clear activeKey when inputValue change
