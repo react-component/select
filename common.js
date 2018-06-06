@@ -26640,7 +26640,7 @@ var _initialiseProps = function _initialiseProps() {
     };
     // clear search input value when open is false in singleMode.
     if (!open && Object(__WEBPACK_IMPORTED_MODULE_15__util__["o" /* isSingleMode */])(props) && props.showSearch) {
-      _this2.setInputValue('');
+      _this2.setInputValue('', false);
     }
     if (!open) {
       _this2.maybeFocus(open, needFocus);
