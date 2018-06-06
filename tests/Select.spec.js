@@ -350,6 +350,24 @@ describe('Select', () => {
     expect(handleSearch).not.toBeCalled();
   });
 
+  // https://github.com/ant-design/ant-design/issues/10817
+  it('not fires extra search event when user search and select', () => {
+    const handleSearch = jest.fn();
+    const wrapper = mount(
+      <Select
+        showSearch
+        onSearch={handleSearch}
+      >
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>
+    );
+    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    wrapper.find('MenuItem').first().simulate('click');
+    expect(handleSearch).toHaveBeenCalledTimes(1);
+  });
+
+
   describe('focus', () => {
     let handleFocus;
     let wrapper;

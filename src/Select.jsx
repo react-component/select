@@ -669,7 +669,7 @@ class Select extends React.Component {
     };
     // clear search input value when open is false in singleMode.
     if (!open && isSingleMode(props) && props.showSearch) {
-      this.setInputValue('');
+      this.setInputValue('', false);
     }
     if (!open) {
       this.maybeFocus(open, needFocus);
