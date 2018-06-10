@@ -210,6 +210,10 @@ class Select extends React.Component {
         event.stopPropagation();
         return;
       }
+    } else if (keyCode === KeyCode.ENTER && state.open) {
+      // Aviod trigger form submit when select item
+      // https://github.com/ant-design/ant-design/issues/10861
+      event.preventDefault();
     } else if (keyCode === KeyCode.ESC) {
       if (state.open) {
         this.setOpenState(false);
