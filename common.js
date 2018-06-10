@@ -26282,6 +26282,10 @@ var _initialiseProps = function _initialiseProps() {
         event.stopPropagation();
         return;
       }
+    } else if (keyCode === __WEBPACK_IMPORTED_MODULE_7_rc_util_es_KeyCode__["a" /* default */].ENTER && state.open) {
+      // Aviod trigger form submit when select item
+      // https://github.com/ant-design/ant-design/issues/10861
+      event.preventDefault();
     } else if (keyCode === __WEBPACK_IMPORTED_MODULE_7_rc_util_es_KeyCode__["a" /* default */].ESC) {
       if (state.open) {
         _this2.setOpenState(false);
