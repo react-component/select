@@ -389,7 +389,7 @@ exports[`Select render renders data-attributes correctly 1`] = `
 </div>
 `;
 
-exports[`Select render renders disabled select correctly 1`] = `
+exports[`Select render renders disabeld select correctly 1`] = `
 <div
   class="select-test antd antd-disabled antd-allow-clear"
 >
