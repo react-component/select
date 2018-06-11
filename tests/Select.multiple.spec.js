@@ -143,6 +143,39 @@ describe('Select.multiple', () => {
     expect(wrapper.state('value')).toEqual([2]);
   });
 
+  it('select when item enter', () => {
+    const wrapper = mount(
+      <Select multiple>
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>
+    );
+    wrapper.find('.rc-select-selection').simulate('click');
+    const meunItem = wrapper.find('.rc-select-dropdown-menu-item').at(1);
+    // add active to meunItem
+    meunItem.simulate('mouseenter').simulate('mouseover').simulate('keyDown', { keyCode: 13 });
+    expect(wrapper.state('open')).toBe(true);
+    expect(wrapper.state('value')).toEqual([2]);
+    wrapper.unmount();
+  });
+
+  it('enter twice to cancel the selection', () => {
+    const wrapper = mount(
+      <Select multiple>
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>
+    );
+    wrapper.find('.rc-select-selection').simulate('click');
+    const meunItem = wrapper.find('.rc-select-dropdown-menu-item').at(1);
+    // add active to meunItem
+    meunItem.simulate('mouseenter').simulate('mouseover').simulate('keyDown', { keyCode: 13 });
+    meunItem.simulate('mouseenter').simulate('mouseover').simulate('keyDown', { keyCode: 13 });
+    expect(wrapper.state('open')).toBe(true);
+    expect(wrapper.state('value')).toEqual([]);
+  });
+
+
   it('do not crash when children has empty', () => {
     const wrapper = mount(
       <Select multiple>
