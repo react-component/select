@@ -1253,15 +1253,22 @@ class Select extends React.Component {
     const state = this.state;
     const { className, disabled, prefixCls } = props;
     const ctrlNode = this.renderTopControlNode();
-    let extraSelectionProps = {};
     const { open } = this.state;
     if (open) {
       this._options = this.renderFilterOptions();
     }
     const realOpen = this.getRealOpenState();
     const options = this._options || [];
+    const dataAttributeProps = Object.keys(props).reduce((prev, key) => {
+      if (key.substr(0, 5) === 'data-') {
+        prev[key] = props[key];
+      }
+      return prev;
+    }, {});
+    let extraSelectionProps = { ...dataAttributeProps };
     if (!isMultipleOrTagsOrCombobox(props)) {
       extraSelectionProps = {
+        ...extraSelectionProps,
         onKeyDown: this.onKeyDown,
         tabIndex: props.disabled ? -1 : 0,
       };
