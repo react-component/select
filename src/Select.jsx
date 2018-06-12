@@ -1259,13 +1259,16 @@ class Select extends React.Component {
     }
     const realOpen = this.getRealOpenState();
     const options = this._options || [];
-    const dataAttributeProps = {};
+    const dataOrAriaAttributeProps = {};
     for (const key in props) {
-      if (props.hasOwnProperty(key) && key.substr(0, 5) === 'data-') {
-        dataAttributeProps[key] = props[key];
+      if (
+        props.hasOwnProperty(key) &&
+        (key.substr(0, 5) === 'data-' || key.substr(0, 5) === 'aria-' || key === 'role')
+      ) {
+        dataOrAriaAttributeProps[key] = props[key];
       }
     }
-    let extraSelectionProps = { ...dataAttributeProps };
+    let extraSelectionProps = { ...dataOrAriaAttributeProps };
     if (!isMultipleOrTagsOrCombobox(props)) {
       extraSelectionProps = {
         ...extraSelectionProps,

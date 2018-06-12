@@ -60,6 +60,21 @@ describe('Select', () => {
       }));
       expect(wrapper).toMatchSnapshot();
     });
+
+    it('renders aria-attributes correctly', () => {
+      const wrapper = render(React.cloneElement(select, {
+        'aria-labelledby': 'test-id',
+        'aria-label': 'some-label',
+      }));
+      expect(wrapper).toMatchSnapshot();
+    });
+
+    it('renders role prop correctly', () => {
+      const wrapper = render(React.cloneElement(select, {
+        role: 'button',
+      }));
+      expect(wrapper).toMatchSnapshot();
+    });
   });
 
   it('convert value to array', () => {
