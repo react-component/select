@@ -54,15 +54,9 @@
     }
   },
   "devDependencies": {
-    "babel-jest": "^23.0.1",
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-16": "^1.0.2",
     "enzyme-to-json": "^3.1.4",
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.12.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.9.1",
     "jest": "^21.2.1",
     "jsonp": "^0.2.0",
     "pre-commit": "1.x",
