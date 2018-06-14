@@ -26186,7 +26186,7 @@ Select.getOptionsInfoFromProps = function (props, preState) {
     var value = preState.value;
     value.forEach(function (v) {
       var key = Object(__WEBPACK_IMPORTED_MODULE_15__util__["g" /* getMapKey */])(v);
-      if (!optionsInfo[key]) {
+      if (!optionsInfo[key] && oldOptionsInfo[key] !== undefined) {
         optionsInfo[key] = oldOptionsInfo[key];
       }
     });
