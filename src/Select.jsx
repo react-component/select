@@ -465,7 +465,7 @@ class Select extends React.Component {
       const value = preState.value;
       value.forEach(v => {
         const key = getMapKey(v);
-        if (!optionsInfo[key]) {
+        if (!optionsInfo[key] && oldOptionsInfo[key] !== undefined) {
           optionsInfo[key] = oldOptionsInfo[key];
         }
       });
