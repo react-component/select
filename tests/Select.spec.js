@@ -703,6 +703,16 @@ describe('Select', () => {
     expect(wrapper.find('li').text()).toEqual('1');
   });
 
+  it('should include disabled item in options', () => {
+    const wrapper = mount(
+      <Select tags open value={['name1']}>
+        <Option key="name1" disabled>name1</Option>
+        <Option key="name2">name2</Option>
+      </Select>
+    );
+    expect(wrapper.find('li.rc-select-dropdown-menu-item')).toHaveLength(2);
+  });
+
   it('renders not found when search result is empty', () => {
     const wrapper = mount(
       <Select open>
