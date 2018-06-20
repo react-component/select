@@ -1048,7 +1048,8 @@ class Select extends React.Component {
         sel.push(menuItem);
         menuItems.push(menuItem);
       }
-      if (tags && !child.props.disabled) {
+
+      if (tags) {
         childrenKeys.push(childValue);
       }
     });
