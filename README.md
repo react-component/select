@@ -28,7 +28,7 @@ React Select
 
 ## Feature
 
-* support ie8,ie8+,chrome,firefox,safari
+* support ie9,ie9+,chrome,firefox,safari
 
 ### Keyboard
 
