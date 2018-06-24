@@ -1254,15 +1254,25 @@ class Select extends React.Component {
     const state = this.state;
     const { className, disabled, prefixCls } = props;
     const ctrlNode = this.renderTopControlNode();
-    let extraSelectionProps = {};
     const { open } = this.state;
     if (open) {
       this._options = this.renderFilterOptions();
     }
     const realOpen = this.getRealOpenState();
     const options = this._options || [];
+    const dataOrAriaAttributeProps = {};
+    for (const key in props) {
+      if (
+        props.hasOwnProperty(key) &&
+        (key.substr(0, 5) === 'data-' || key.substr(0, 5) === 'aria-' || key === 'role')
+      ) {
+        dataOrAriaAttributeProps[key] = props[key];
+      }
+    }
+    let extraSelectionProps = { ...dataOrAriaAttributeProps };
     if (!isMultipleOrTagsOrCombobox(props)) {
       extraSelectionProps = {
+        ...extraSelectionProps,
         onKeyDown: this.onKeyDown,
         tabIndex: props.disabled ? -1 : 0,
       };

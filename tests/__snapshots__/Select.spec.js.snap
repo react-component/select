@@ -255,6 +255,74 @@ exports[`Select no search 1`] = `
 </div>
 `;
 
+exports[`Select render renders aria-attributes correctly 1`] = `
+<div
+  class="select-test antd antd-enabled antd-allow-clear"
+>
+  <div
+    aria-autocomplete="list"
+    aria-expanded="false"
+    aria-haspopup="true"
+    aria-label="some-label"
+    aria-labelledby="test-id"
+    class="antd-selection
+            antd-selection--single"
+    role="combobox"
+    tabindex="0"
+  >
+    <div
+      class="antd-selection__rendered"
+    >
+      <div
+        class="antd-selection__placeholder"
+        style="display:none;user-select:none;-webkit-user-select:none"
+        unselectable="on"
+      >
+        Select a number
+      </div>
+      <div
+        class="antd-selection-selected-value"
+        style="display:block;opacity:1"
+        title="2"
+      >
+        2
+      </div>
+      <div
+        class="antd-search antd-search--inline"
+        style="display:none"
+      >
+        <div
+          class="antd-search__field__wrap"
+        >
+          <input
+            autocomplete="off"
+            class="antd-search__field"
+            value=""
+          />
+          <span
+            class="antd-search__field__mirror"
+          >
+             
+          </span>
+        </div>
+      </div>
+    </div>
+    <span
+      class="antd-selection__clear"
+      style="user-select:none;-webkit-user-select:none"
+      unselectable="on"
+    />
+    <span
+      class="antd-arrow"
+      style="user-select:none;-webkit-user-select:none"
+      unselectable="on"
+    >
+      <b />
+    </span>
+  </div>
+</div>
+`;
+
 exports[`Select render renders correctly 1`] = `
 <div
   class="select-test antd antd-enabled antd-allow-clear"
@@ -265,6 +333,74 @@ exports[`Select render renders correctly 1`] = `
     aria-haspopup="true"
     class="antd-selection
             antd-selection--single"
+    role="combobox"
+    tabindex="0"
+  >
+    <div
+      class="antd-selection__rendered"
+    >
+      <div
+        class="antd-selection__placeholder"
+        style="display:none;user-select:none;-webkit-user-select:none"
+        unselectable="on"
+      >
+        Select a number
+      </div>
+      <div
+        class="antd-selection-selected-value"
+        style="display:block;opacity:1"
+        title="2"
+      >
+        2
+      </div>
+      <div
+        class="antd-search antd-search--inline"
+        style="display:none"
+      >
+        <div
+          class="antd-search__field__wrap"
+        >
+          <input
+            autocomplete="off"
+            class="antd-search__field"
+            value=""
+          />
+          <span
+            class="antd-search__field__mirror"
+          >
+             
+          </span>
+        </div>
+      </div>
+    </div>
+    <span
+      class="antd-selection__clear"
+      style="user-select:none;-webkit-user-select:none"
+      unselectable="on"
+    />
+    <span
+      class="antd-arrow"
+      style="user-select:none;-webkit-user-select:none"
+      unselectable="on"
+    >
+      <b />
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Select render renders data-attributes correctly 1`] = `
+<div
+  class="select-test antd antd-enabled antd-allow-clear"
+>
+  <div
+    aria-autocomplete="list"
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="antd-selection
+            antd-selection--single"
+    data-id="12345"
+    data-test="test-id"
     role="combobox"
     tabindex="0"
   >
@@ -529,6 +665,72 @@ Array [
     </div>
   </div>,
 ]
+`;
+
+exports[`Select render renders role prop correctly 1`] = `
+<div
+  class="select-test antd antd-enabled antd-allow-clear"
+>
+  <div
+    aria-autocomplete="list"
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="antd-selection
+            antd-selection--single"
+    role="button"
+    tabindex="0"
+  >
+    <div
+      class="antd-selection__rendered"
+    >
+      <div
+        class="antd-selection__placeholder"
+        style="display:none;user-select:none;-webkit-user-select:none"
+        unselectable="on"
+      >
+        Select a number
+      </div>
+      <div
+        class="antd-selection-selected-value"
+        style="display:block;opacity:1"
+        title="2"
+      >
+        2
+      </div>
+      <div
+        class="antd-search antd-search--inline"
+        style="display:none"
+      >
+        <div
+          class="antd-search__field__wrap"
+        >
+          <input
+            autocomplete="off"
+            class="antd-search__field"
+            value=""
+          />
+          <span
+            class="antd-search__field__mirror"
+          >
+             
+          </span>
+        </div>
+      </div>
+    </div>
+    <span
+      class="antd-selection__clear"
+      style="user-select:none;-webkit-user-select:none"
+      unselectable="on"
+    />
+    <span
+      class="antd-arrow"
+      style="user-select:none;-webkit-user-select:none"
+      unselectable="on"
+    >
+      <b />
+    </span>
+  </div>
+</div>
 `;
 
 exports[`Select should contian falsy children 1`] = `
