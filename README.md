@@ -62,6 +62,7 @@ React.render(c, container);
 
 | name     | description    | type     | default      |
 |----------|----------------|----------|--------------|
+|id | html id to set on the component wrapper | String | '' |
 |className | additional css class of root dom node | String | '' |
 |prefixCls | prefix class | String | '' |
 |animation | dropdown animation name. only support slide-up now | String | '' |

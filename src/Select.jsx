@@ -1321,6 +1321,7 @@ class Select extends React.Component {
         ref={this.saveSelectTriggerRef}
       >
         <div
+          id={props.id}
           style={props.style}
           ref={this.saveRootRef}
           onBlur={this.onOuterBlur}

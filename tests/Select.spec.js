@@ -894,4 +894,14 @@ describe('Select', () => {
     );
     expect(wrapper).toMatchSnapshot();
   });
+
+  it('accepts prop id', () => {
+    const wrapper = render(
+      <Select id="my-select">
+        <Option value="1">One</Option>
+      </Select>
+    );
+
+    expect(wrapper.find('#my-select').length).toBe(1);
+  });
 });

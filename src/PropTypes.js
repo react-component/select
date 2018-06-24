@@ -41,6 +41,7 @@ function valueType(props, propName, componentName) {
 }
 
 export const SelectPropTypes = {
+  id: PropTypes.string,
   defaultActiveFirstOption: PropTypes.bool,
   multiple: PropTypes.bool,
   filterOption: PropTypes.any,

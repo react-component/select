@@ -50,6 +50,7 @@ class Test extends React.Component {
 
         <div style={{ width: 300 }}>
           <Select
+            id="my-select"
             value={this.state.value}
             placeholder="placeholder"
             dropdownMenuStyle={{ maxHeight: 200 }}
