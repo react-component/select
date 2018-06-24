@@ -1,6 +1,11 @@
 # History
 ----
 
+## 8.1.0 / 2018-06-24
+
+- Add id prop.
+- Support data attributes. https://github.com/react-component/select/pull/305
+
 ## 8.0.2 / 2018-05-03
 
 - Refactoring: Migrate to new lifecycle methods https://github.com/react-component/select/pull/291
