@@ -1,14 +1,14 @@
 webpackJsonp([7],{
 
-/***/ 224:
+/***/ 227:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(225);
+module.exports = __webpack_require__(228);
 
 
 /***/ }),
 
-/***/ 225:
+/***/ 228:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -93,6 +93,7 @@ var Test = function (_React$Component) {
         __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
           __WEBPACK_IMPORTED_MODULE_4_rc_select___default.a,
           {
+            id: 'my-select',
             value: this.state.value,
             placeholder: 'placeholder',
             dropdownMenuStyle: { maxHeight: 200 },
@@ -203,5 +204,5 @@ __WEBPACK_IMPORTED_MODULE_6_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ })
 
-},[224]);
+},[227]);
 //# sourceMappingURL=single.js.map
