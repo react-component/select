@@ -102,7 +102,7 @@ React.render(c, container);
 |onPopupScroll | called when menu is scrolled | function | - |
 |onSelect | called when a option is selected. param is option's value and option instance | Function(value, option:Option) | - |
 |onDeselect | called when a option is deselected. param is option's value. only called for multiple or tags | Function(value, option:Option) | - |
-|onInputKeydown | called when key down on input | Function(event) | - |
+|onInputKeyDown | called when key down on input | Function(event) | - |
 |defaultActiveFirstOption | whether active first option by default | bool | true |
 |getPopupContainer | container which popup select menu rendered into | function(trigger:Node):Node | function(){return document.body;} |
 |getInputElement| customize input element | function(): Element | - |
