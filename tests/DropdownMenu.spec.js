@@ -133,4 +133,21 @@ describe('DropdownMenu', () => {
     expect(wrapper.instance().shouldComponentUpdate({ visible: true })).toBe(true);
     expect(wrapper.instance().shouldComponentUpdate({ visible: false })).toBe(false);
   });
+
+  it('should trigger onMenuOpen and onMenuClose', () => {
+    let openCalled = false;
+    let closeCalled = false;
+    const wrapper = mount(
+      <DropdownMenu
+        onMenuOpen={() => openCalled = true}
+        onMenuClose={() => closeCalled = true}
+      />
+    );
+
+    wrapper.setProps({ visible: true });
+    expect(openCalled).toBe(true);
+
+    wrapper.setProps({ visible: false });
+    expect(closeCalled).toBe(true);
+  });
 });
