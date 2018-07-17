@@ -135,7 +135,8 @@ describe('DropdownMenu', () => {
   });
 
   it('should trigger onMenuOpen and onMenuClose', () => {
-    let openCalled = false, closeCalled = false;
+    let openCalled = false;
+    let closeCalled = false;
     const wrapper = mount(
       <DropdownMenu
         onMenuOpen={() => openCalled = true}
@@ -145,7 +146,7 @@ describe('DropdownMenu', () => {
 
     wrapper.setProps({ visible: true });
     expect(openCalled).toBe(true);
-    
+
     wrapper.setProps({ visible: false });
     expect(closeCalled).toBe(true);
   });
