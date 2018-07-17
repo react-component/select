@@ -1316,6 +1316,8 @@ class Select extends React.Component {
         getPopupContainer={props.getPopupContainer}
         onMenuSelect={this.onMenuSelect}
         onMenuDeselect={this.onMenuDeselect}
+        onMenuOpen={props.onMenuOpen}
+        onMenuClose={props.onMenuClose}
         onPopupScroll={props.onPopupScroll}
         showAction={props.showAction}
         ref={this.saveSelectTriggerRef}

@@ -31,6 +31,8 @@ export default class SelectTrigger extends React.Component {
   static propTypes = {
     onPopupFocus: PropTypes.func,
     onPopupScroll: PropTypes.func,
+    onMenuOpen: PropTypes.func,
+    onMenuClose: PropTypes.func,
     dropdownMatchSelectWidth: PropTypes.bool,
     dropdownAlign: PropTypes.object,
     visible: PropTypes.bool,
@@ -90,6 +92,8 @@ export default class SelectTrigger extends React.Component {
         prefixCls={this.getDropdownPrefixCls()}
         onMenuSelect={props.onMenuSelect}
         onMenuDeselect={props.onMenuDeselect}
+        onMenuOpen={props.onMenuOpen}
+        onMenuClose={props.onMenuClose}
         onPopupScroll={props.onPopupScroll}
         value={props.value}
         backfillValue={props.backfillValue}

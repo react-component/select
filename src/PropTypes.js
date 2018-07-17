@@ -64,6 +64,8 @@ export const SelectPropTypes = {
   onSelect: PropTypes.func,
   onSearch: PropTypes.func,
   onPopupScroll: PropTypes.func,
+  onMenuOpen: PropTypes.func,
+  onMenuClose: PropTypes.func,
   onMouseEnter: PropTypes.func,
   onMouseLeave: PropTypes.func,
   onInputKeyDown: PropTypes.func,
