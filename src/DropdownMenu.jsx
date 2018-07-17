@@ -31,9 +31,7 @@ export default class DropdownMenu extends React.Component {
   }
 
   componentDidMount() {
-    if(this.props.onMenuOpen) {
-      this.props.onMenuOpen();
-    }
+    this.handleMenuChange(this.props.visible);
     this.scrollActiveItemToView();
     this.lastVisible = this.props.visible;
   }
@@ -43,14 +41,8 @@ export default class DropdownMenu extends React.Component {
       this.lastVisible = false;
     }
     
-    if(nextProps.visible) {
-      if(this.props.onMenuOpen) {
-        this.props.onMenuOpen();
-      }
-    } else {
-      if(this.props.onMenuClose) {
-        this.props.onMenuClose();
-      }
+    if(this.props.visible !== nextProps.visible) {
+      this.handleMenuChange(nextProps.visible);
     }
     // freeze when hide
     return nextProps.visible;
@@ -88,6 +80,18 @@ export default class DropdownMenu extends React.Component {
       );
     }
   };
+
+  handleMenuChange(visible) {
+    if(visible) {
+      if(this.props.onMenuOpen) {
+        this.props.onMenuOpen();
+      }
+    } else {
+      if(this.props.onMenuClose) {
+        this.props.onMenuClose();
+      }
+    }
+  }
 
   renderMenu() {
     const props = this.props;
