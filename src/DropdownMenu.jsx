@@ -40,8 +40,8 @@ export default class DropdownMenu extends React.Component {
     if (!nextProps.visible) {
       this.lastVisible = false;
     }
-    
-    if(this.props.visible !== nextProps.visible) {
+
+    if (this.props.visible !== nextProps.visible) {
       this.handleMenuChange(nextProps.visible);
     }
     // freeze when hide
@@ -82,12 +82,12 @@ export default class DropdownMenu extends React.Component {
   };
 
   handleMenuChange(visible) {
-    if(visible) {
-      if(this.props.onMenuOpen) {
+    if (visible) {
+      if (this.props.onMenuOpen) {
         this.props.onMenuOpen();
       }
     } else {
-      if(this.props.onMenuClose) {
+      if (this.props.onMenuClose) {
         this.props.onMenuClose();
       }
     }
