@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import toArray from 'rc-util/lib/Children/toArray';
 import Menu from 'rc-menu';
 import scrollIntoView from 'dom-scroll-into-view';
+import raf from 'raf';
 import { getSelectKeys, preventDefaultEvent, saveRef } from './util';
 
 export default class DropdownMenu extends React.Component {
@@ -66,11 +67,15 @@ export default class DropdownMenu extends React.Component {
         scrollIntoViewOpts.alignWithTop = true;
       }
 
-      scrollIntoView(
-        itemComponent,
-        findDOMNode(this.menuRef),
-        scrollIntoViewOpts
-      );
+      // Delay to scroll since current frame item position is not ready when pre view is by filter
+      // https://github.com/ant-design/ant-design/issues/11268#issuecomment-406634462
+      raf(() => {
+        scrollIntoView(
+          itemComponent,
+          findDOMNode(this.menuRef),
+          scrollIntoViewOpts
+        );
+      });
     }
   };
 
