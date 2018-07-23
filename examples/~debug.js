@@ -1,14 +1,14 @@
-webpackJsonp([14],{
+webpackJsonp([5],{
 
-/***/ 218:
+/***/ 238:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(219);
+module.exports = __webpack_require__(239);
 
 
 /***/ }),
 
-/***/ 219:
+/***/ 239:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36,68 +36,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-var children = [];
-for (var i = 10; i < 36; i++) {
-  // 11 => readonly selected item
-  children.push(__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-    __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
-    { disabled: i === 11, key: i.toString(36) + i },
-    '\u4E2D\u6587',
-    i
-  ));
-}
 
 var Test = function (_React$Component) {
   __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_inherits___default()(Test, _React$Component);
 
   function Test() {
-    var _temp, _this, _ret;
-
     __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, Test);
 
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
-      value: ['b11']
-    }, _this.onChange = function (value) {
-      console.log('onChange', value);
-      _this.setState({ value: value });
-    }, _temp), __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
+    return __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(this, _React$Component.apply(this, arguments));
   }
 
   Test.prototype.render = function render() {
-    var dropdownMenuStyle = {
-      maxHeight: 200
-    };
     return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
       'div',
-      null,
+      { style: { margin: 20 } },
       __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-        'h2',
-        null,
-        'multiple readonly default selected item'
-      ),
-      __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-        'div',
-        { style: { width: 300 } },
-        __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_4_rc_select___default.a,
-          {
-            multiple: true,
-            value: this.state.value,
-            animation: 'slide-up',
-            choiceTransitionName: 'rc-select-selection__choice-zoom',
-            dropdownMenuStyle: dropdownMenuStyle,
-            style: { width: 500 },
-            optionFilterProp: 'children',
-            optionLabelProp: 'children',
-            placeholder: 'please select',
-            onChange: this.onChange
-          },
-          children
-        )
+        __WEBPACK_IMPORTED_MODULE_4_rc_select___default.a,
+        {
+          style: { width: 100 },
+          dropdownMenuStyle: { maxHeight: 250, overflow: 'auto' },
+          showSearch: true
+        },
+        Array(100).fill().map(function (v, i) {
+          return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_4_rc_select___default.a.Option,
+            { key: i },
+            i
+          );
+        })
       )
     );
   };
@@ -109,5 +75,5 @@ __WEBPACK_IMPORTED_MODULE_6_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ })
 
-},[218]);
-//# sourceMappingURL=multiple-readonly.js.map
+},[238]);
+//# sourceMappingURL=~debug.js.map
