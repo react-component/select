@@ -78,6 +78,9 @@ class Select extends React.Component {
     showAction: ['click'],
     tokenSeparators: [],
     autoClearSearchValue: true,
+    selectIcon: <b/>,
+    clearIcon: 'x',
+    removeIcon: 'x',
   };
 
   constructor(props) {
