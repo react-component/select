@@ -78,6 +78,9 @@ class Select extends React.Component {
     showAction: ['click'],
     tokenSeparators: [],
     autoClearSearchValue: true,
+    clearIcon: '×',
+    selectIcon: <b/>,
+    removeIcon: '×',
   };
 
   constructor(props) {
@@ -1067,6 +1070,7 @@ class Select extends React.Component {
       maxTagCount,
       maxTagPlaceholder,
       showSearch,
+      removeIcon,
     } = props;
     const className = `${prefixCls}-selection__rendered`;
     // search input is inside topControlNode in single, multiple & combobox. 2016/04/13
@@ -1177,7 +1181,7 @@ class Select extends React.Component {
                   onClick={(event) => {
                     this.removeSelected(singleValue, event);
                   }}
-                />)}
+                >{removeIcon}</span>)}
             </li>
           );
         });
@@ -1221,7 +1225,7 @@ class Select extends React.Component {
   }
 
   renderClear() {
-    const { prefixCls, allowClear } = this.props;
+    const { prefixCls, allowClear, clearIcon } = this.props;
     const { value, inputValue } = this.state;
     const clear = (
       <span
@@ -1231,7 +1235,7 @@ class Select extends React.Component {
         {...UNSELECTABLE_ATTRIBUTE}
         className={`${prefixCls}-selection__clear`}
         onClick={this.onClearSelection}
-      />
+      >{clearIcon}</span>
     );
     if (!allowClear) {
       return null;
@@ -1252,7 +1256,7 @@ class Select extends React.Component {
     const props = this.props;
     const multiple = isMultipleOrTags(props);
     const state = this.state;
-    const { className, disabled, prefixCls } = props;
+    const { className, disabled, prefixCls, selectIcon } = props;
     const ctrlNode = this.renderTopControlNode();
     const { open } = this.state;
     if (open) {
@@ -1349,7 +1353,7 @@ class Select extends React.Component {
                 {...UNSELECTABLE_ATTRIBUTE}
                 onClick={this.onArrowClick}
               >
-                <b />
+                {selectIcon}
               </span>)}
           </div>
         </div>

@@ -311,7 +311,9 @@ exports[`Select render renders aria-attributes correctly 1`] = `
       class="antd-selection__clear"
       style="user-select:none;-webkit-user-select:none"
       unselectable="on"
-    />
+    >
+      ×
+    </span>
     <span
       class="antd-arrow"
       style="user-select:none;-webkit-user-select:none"
@@ -377,7 +379,9 @@ exports[`Select render renders correctly 1`] = `
       class="antd-selection__clear"
       style="user-select:none;-webkit-user-select:none"
       unselectable="on"
-    />
+    >
+      ×
+    </span>
     <span
       class="antd-arrow"
       style="user-select:none;-webkit-user-select:none"
@@ -445,7 +449,9 @@ exports[`Select render renders data-attributes correctly 1`] = `
       class="antd-selection__clear"
       style="user-select:none;-webkit-user-select:none"
       unselectable="on"
-    />
+    >
+      ×
+    </span>
     <span
       class="antd-arrow"
       style="user-select:none;-webkit-user-select:none"
@@ -512,7 +518,9 @@ exports[`Select render renders disabeld select correctly 1`] = `
       class="antd-selection__clear"
       style="user-select:none;-webkit-user-select:none"
       unselectable="on"
-    />
+    >
+      ×
+    </span>
     <span
       class="antd-arrow"
       style="user-select:none;-webkit-user-select:none"
@@ -579,7 +587,9 @@ Array [
         class="antd-selection__clear"
         style="user-select:none;-webkit-user-select:none"
         unselectable="on"
-      />
+      >
+        ×
+      </span>
       <span
         class="antd-arrow"
         style="user-select:none;-webkit-user-select:none"
@@ -721,7 +731,9 @@ exports[`Select render renders role prop correctly 1`] = `
       class="antd-selection__clear"
       style="user-select:none;-webkit-user-select:none"
       unselectable="on"
-    />
+    >
+      ×
+    </span>
     <span
       class="antd-arrow"
       style="user-select:none;-webkit-user-select:none"

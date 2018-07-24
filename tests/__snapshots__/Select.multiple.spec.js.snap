@@ -150,7 +150,9 @@ exports[`Select.multiple render truncates tags by maxTagCount 1`] = `
           </div>
           <span
             class="rc-select-selection__choice__remove"
-          />
+          >
+            ×
+          </span>
         </li>
         <li
           class="rc-select-selection__choice"
@@ -165,7 +167,9 @@ exports[`Select.multiple render truncates tags by maxTagCount 1`] = `
           </div>
           <span
             class="rc-select-selection__choice__remove"
-          />
+          >
+            ×
+          </span>
         </li>
         <li
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
@@ -232,7 +236,9 @@ exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPla
           </div>
           <span
             class="rc-select-selection__choice__remove"
-          />
+          >
+            ×
+          </span>
         </li>
         <li
           class="rc-select-selection__choice"
@@ -247,7 +253,9 @@ exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPla
           </div>
           <span
             class="rc-select-selection__choice__remove"
-          />
+          >
+            ×
+          </span>
         </li>
         <li
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
@@ -315,7 +323,9 @@ exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPla
           </div>
           <span
             class="rc-select-selection__choice__remove"
-          />
+          >
+            ×
+          </span>
         </li>
         <li
           class="rc-select-selection__choice"
@@ -330,7 +340,9 @@ exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPla
           </div>
           <span
             class="rc-select-selection__choice__remove"
-          />
+          >
+            ×
+          </span>
         </li>
         <li
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
@@ -450,7 +462,9 @@ exports[`Select.multiple render truncates values by maxTagTextLength 1`] = `
           </div>
           <span
             class="rc-select-selection__choice__remove"
-          />
+          >
+            ×
+          </span>
         </li>
         <li
           class="rc-select-selection__choice"
@@ -465,7 +479,9 @@ exports[`Select.multiple render truncates values by maxTagTextLength 1`] = `
           </div>
           <span
             class="rc-select-selection__choice__remove"
-          />
+          >
+            ×
+          </span>
         </li>
         <li
           class="rc-select-search rc-select-search--inline"
