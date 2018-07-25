@@ -78,9 +78,6 @@ class Select extends React.Component {
     showAction: ['click'],
     tokenSeparators: [],
     autoClearSearchValue: true,
-    selectIcon: <b/>,
-    clearIcon: '×',
-    removeIcon: '×',
   };
 
   constructor(props) {
@@ -1177,11 +1174,11 @@ class Select extends React.Component {
               </div>
               {disabled ? null : (
                 <span
-                  className={`${prefixCls}-selection__choice__remove`}
                   onClick={(event) => {
                     this.removeSelected(singleValue, event);
                   }}
-                >{removeIcon}</span>)}
+                >{removeIcon ||
+                <span className={`${prefixCls}-selection__choice__remove`}/>}</span>)}
             </li>
           );
         });
@@ -1233,9 +1230,8 @@ class Select extends React.Component {
         onMouseDown={preventDefaultEvent}
         style={UNSELECTABLE_STYLE}
         {...UNSELECTABLE_ATTRIBUTE}
-        className={`${prefixCls}-selection__clear`}
         onClick={this.onClearSelection}
-      >{clearIcon}</span>
+      >{clearIcon || <span className={`${prefixCls}-selection__clear`}/>}</span>
     );
     if (!allowClear) {
       return null;
@@ -1348,12 +1344,11 @@ class Select extends React.Component {
             {multiple || !props.showArrow ? null : (
               <span
                 key="arrow"
-                className={`${prefixCls}-arrow`}
                 style={UNSELECTABLE_STYLE}
                 {...UNSELECTABLE_ATTRIBUTE}
                 onClick={this.onArrowClick}
               >
-                {selectIcon}
+                {selectIcon || <span className={`${prefixCls}-arrow`} />}
               </span>)}
           </div>
         </div>

@@ -1,0 +1,61 @@
+@selectPrefixCls: rc-select;
+
+
+.@{selectPrefixCls} {
+
+  &-arrow-icon {
+    height: 26px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    outline: none;
+    position: absolute;
+    color: #999999;
+  }
+
+  &-selection {
+    position: relative;
+    &__clear-icon {
+      position: absolute;
+      top: 0;
+      right: 20px;
+      font-weight: bold;
+      position: absolute;
+      line-height: 28px;
+    }
+  }
+
+  .@{selectPrefixCls}-selection__clear-icon {
+    cursor: pointer;  
+    top: 0;
+    right: 8px;
+  }
+}
+
+.@{selectPrefixCls}-selection__choice {
+    cursor: default;
+    &:hover {
+      i {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+}
+
+.@{selectPrefixCls}-selection__remove-icon {
+    color: #919191;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0 0 0 8px;
+    position: absolute;
+    opacity: 0;
+    transform: scale(0);
+    top: 0;
+    right: 2px;
+    transition: opacity .3s, transform .3s;
+
+    &:hover {
+      color: #333;
+    }
+}
