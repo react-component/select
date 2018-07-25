@@ -44,11 +44,12 @@ exports[`Select check title when label is a object 1`] = `
       </div>
     </div>
     <span
-      class="rc-select-arrow"
       style="user-select:none;-webkit-user-select:none"
       unselectable="on"
     >
-      <b />
+      <span
+        class="rc-select-arrow"
+      />
     </span>
   </div>
 </div>
@@ -92,11 +93,12 @@ Array [
         </div>
       </div>
       <span
-        class="rc-select-arrow"
         style="user-select:none;-webkit-user-select:none"
         unselectable="on"
       >
-        <b />
+        <span
+          class="rc-select-arrow"
+        />
       </span>
     </div>
   </div>,
@@ -175,11 +177,12 @@ Array [
         </div>
       </div>
       <span
-        class="rc-select-arrow"
         style="user-select:none;-webkit-user-select:none"
         unselectable="on"
       >
-        <b />
+        <span
+          class="rc-select-arrow"
+        />
       </span>
     </div>
   </div>,
@@ -245,11 +248,12 @@ exports[`Select no search 1`] = `
       </div>
     </div>
     <span
-      class="rc-select-arrow"
       style="user-select:none;-webkit-user-select:none"
       unselectable="on"
     >
-      <b />
+      <span
+        class="rc-select-arrow"
+      />
     </span>
   </div>
 </div>
@@ -308,18 +312,20 @@ exports[`Select render renders aria-attributes correctly 1`] = `
       </div>
     </div>
     <span
-      class="antd-selection__clear"
       style="user-select:none;-webkit-user-select:none"
       unselectable="on"
     >
-      ×
+      <span
+        class="antd-selection__clear"
+      />
     </span>
     <span
-      class="antd-arrow"
       style="user-select:none;-webkit-user-select:none"
       unselectable="on"
     >
-      <b />
+      <span
+        class="antd-arrow"
+      />
     </span>
   </div>
 </div>
@@ -376,18 +382,20 @@ exports[`Select render renders correctly 1`] = `
       </div>
     </div>
     <span
-      class="antd-selection__clear"
       style="user-select:none;-webkit-user-select:none"
       unselectable="on"
     >
-      ×
+      <span
+        class="antd-selection__clear"
+      />
     </span>
     <span
-      class="antd-arrow"
       style="user-select:none;-webkit-user-select:none"
       unselectable="on"
     >
-      <b />
+      <span
+        class="antd-arrow"
+      />
     </span>
   </div>
 </div>
@@ -446,18 +454,20 @@ exports[`Select render renders data-attributes correctly 1`] = `
       </div>
     </div>
     <span
-      class="antd-selection__clear"
       style="user-select:none;-webkit-user-select:none"
       unselectable="on"
     >
-      ×
+      <span
+        class="antd-selection__clear"
+      />
     </span>
     <span
-      class="antd-arrow"
       style="user-select:none;-webkit-user-select:none"
       unselectable="on"
     >
-      <b />
+      <span
+        class="antd-arrow"
+      />
     </span>
   </div>
 </div>
@@ -515,18 +525,20 @@ exports[`Select render renders disabeld select correctly 1`] = `
       </div>
     </div>
     <span
-      class="antd-selection__clear"
       style="user-select:none;-webkit-user-select:none"
       unselectable="on"
     >
-      ×
+      <span
+        class="antd-selection__clear"
+      />
     </span>
     <span
-      class="antd-arrow"
       style="user-select:none;-webkit-user-select:none"
       unselectable="on"
     >
-      <b />
+      <span
+        class="antd-arrow"
+      />
     </span>
   </div>
 </div>
@@ -584,18 +596,20 @@ Array [
         </div>
       </div>
       <span
-        class="antd-selection__clear"
         style="user-select:none;-webkit-user-select:none"
         unselectable="on"
       >
-        ×
+        <span
+          class="antd-selection__clear"
+        />
       </span>
       <span
-        class="antd-arrow"
         style="user-select:none;-webkit-user-select:none"
         unselectable="on"
       >
-        <b />
+        <span
+          class="antd-arrow"
+        />
       </span>
     </div>
   </div>,
@@ -728,18 +742,20 @@ exports[`Select render renders role prop correctly 1`] = `
       </div>
     </div>
     <span
-      class="antd-selection__clear"
       style="user-select:none;-webkit-user-select:none"
       unselectable="on"
     >
-      ×
+      <span
+        class="antd-selection__clear"
+      />
     </span>
     <span
-      class="antd-arrow"
       style="user-select:none;-webkit-user-select:none"
       unselectable="on"
     >
-      <b />
+      <span
+        class="antd-arrow"
+      />
     </span>
   </div>
 </div>
@@ -789,11 +805,12 @@ exports[`Select should contian falsy children 1`] = `
       </div>
     </div>
     <span
-      class="rc-select-arrow"
       style="user-select:none;-webkit-user-select:none"
       unselectable="on"
     >
-      <b />
+      <span
+        class="rc-select-arrow"
+      />
     </span>
   </div>
 </div>

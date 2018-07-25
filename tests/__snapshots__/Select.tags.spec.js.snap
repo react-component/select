@@ -28,10 +28,10 @@ exports[`Select.tags OptGroup renders correctly 1`] = `
             >
               jack
             </div>
-            <span
-              class="rc-select-selection__choice__remove"
-            >
-              ×
+            <span>
+              <span
+                class="rc-select-selection__choice__remove"
+              />
             </span>
           </li>
           <li
@@ -44,10 +44,10 @@ exports[`Select.tags OptGroup renders correctly 1`] = `
             >
               foo
             </div>
-            <span
-              class="rc-select-selection__choice__remove"
-            >
-              ×
+            <span>
+              <span
+                class="rc-select-selection__choice__remove"
+              />
             </span>
           </li>
           <li
@@ -243,10 +243,10 @@ exports[`Select.tags OptGroup renders inputValue correctly 2`] = `
             >
               foo
             </div>
-            <span
-              class="rc-select-selection__choice__remove"
-            >
-              ×
+            <span>
+              <span
+                class="rc-select-selection__choice__remove"
+              />
             </span>
           </li>
           <li
@@ -494,10 +494,10 @@ exports[`Select.tags render truncates tags by maxTagCount 1`] = `
           >
             one
           </div>
-          <span
-            class="rc-select-selection__choice__remove"
-          >
-            ×
+          <span>
+            <span
+              class="rc-select-selection__choice__remove"
+            />
           </span>
         </li>
         <li
@@ -511,10 +511,10 @@ exports[`Select.tags render truncates tags by maxTagCount 1`] = `
           >
             two
           </div>
-          <span
-            class="rc-select-selection__choice__remove"
-          >
-            ×
+          <span>
+            <span
+              class="rc-select-selection__choice__remove"
+            />
           </span>
         </li>
         <li
@@ -580,10 +580,10 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
           >
             one
           </div>
-          <span
-            class="rc-select-selection__choice__remove"
-          >
-            ×
+          <span>
+            <span
+              class="rc-select-selection__choice__remove"
+            />
           </span>
         </li>
         <li
@@ -597,10 +597,10 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
           >
             two
           </div>
-          <span
-            class="rc-select-selection__choice__remove"
-          >
-            ×
+          <span>
+            <span
+              class="rc-select-selection__choice__remove"
+            />
           </span>
         </li>
         <li
@@ -667,10 +667,10 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
           >
             one
           </div>
-          <span
-            class="rc-select-selection__choice__remove"
-          >
-            ×
+          <span>
+            <span
+              class="rc-select-selection__choice__remove"
+            />
           </span>
         </li>
         <li
@@ -684,10 +684,10 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
           >
             two
           </div>
-          <span
-            class="rc-select-selection__choice__remove"
-          >
-            ×
+          <span>
+            <span
+              class="rc-select-selection__choice__remove"
+            />
           </span>
         </li>
         <li
@@ -806,10 +806,10 @@ exports[`Select.tags render truncates values by maxTagTextLength 1`] = `
           >
             on...
           </div>
-          <span
-            class="rc-select-selection__choice__remove"
-          >
-            ×
+          <span>
+            <span
+              class="rc-select-selection__choice__remove"
+            />
           </span>
         </li>
         <li
@@ -823,10 +823,10 @@ exports[`Select.tags render truncates values by maxTagTextLength 1`] = `
           >
             tw...
           </div>
-          <span
-            class="rc-select-selection__choice__remove"
-          >
-            ×
+          <span>
+            <span
+              class="rc-select-selection__choice__remove"
+            />
           </span>
         </li>
         <li
@@ -881,10 +881,10 @@ Array [
             >
               22
             </div>
-            <span
-              class="rc-select-selection__choice__remove"
-            >
-              ×
+            <span>
+              <span
+                class="rc-select-selection__choice__remove"
+              />
             </span>
           </li>
           <li
@@ -974,10 +974,10 @@ Array [
             >
               3
             </div>
-            <span
-              class="rc-select-selection__choice__remove"
-            >
-              ×
+            <span>
+              <span
+                class="rc-select-selection__choice__remove"
+              />
             </span>
           </li>
           <li
