@@ -110,8 +110,8 @@ React.render(c, container);
 |autoFocus| focus select after mount | Bool | - |
 | autoClearSearchValue | auto clear search input value when multiple select is selected/deselected | boolean | true |
 | selectIcon | specific the select arrow icon | React.Node | `<b/>` |
-| clearIcon | specific the clear icon | React.Node | '×' |
-| removeIcon | specific the remove icon | React.Node | '×' |
+| clearIcon | specific the clear icon | ReactNode | '×' |
+| removeIcon | specific the remove icon | ReactNode | '×' |
 
 ### Methods
 
