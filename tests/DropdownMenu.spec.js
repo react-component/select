@@ -133,4 +133,12 @@ describe('DropdownMenu', () => {
     expect(wrapper.instance().shouldComponentUpdate({ visible: true })).toBe(true);
     expect(wrapper.instance().shouldComponentUpdate({ visible: false })).toBe(false);
   });
+
+  it('should updated when input value change', () => {
+    const wrapper = mount(
+      <DropdownMenu visible={false} inputValue="test" />
+    );
+
+    expect(wrapper.instance().shouldComponentUpdate({ inputValue: 'test2' })).toBe(true);
+  });
 });
