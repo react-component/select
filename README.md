@@ -113,6 +113,7 @@ React.render(c, container);
 | clearIcon | specific the clear icon | ReactNode | - |
 | removeIcon | specific the remove icon | ReactNode | - |
 
+
 ### Methods
 
 | name     | description    | parameters | return      |
