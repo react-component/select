@@ -5,7 +5,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.less';
-import 'rc-select/assets/custom-icon.less';
+import './custom-icon.less';
 
 const arrowPath = 'M632 888H392c-4.4 0-8 3.6-8 8v32c0 ' +
   '17.7 14.3 32 32 32h192c17.7 0 32-14.3 32-32v-3' +
@@ -77,6 +77,7 @@ class Demo extends React.Component {
       </p>
       <div style={{ width: 300 }}>
         <Select
+          className="custom-select"
           disabled={this.state.disabled}
           style={{ width: 500 }}
           onChange={this.onChange}
@@ -89,13 +90,13 @@ class Demo extends React.Component {
           combobox
           backfill
           selectIcon={getSvg(arrowPath, {
-            className: `rc-select-arrow-icon`,
+            className: `custom-arrow-icon`,
           }, true)}
           clearIcon={getSvg(clearPath, {
-            className: `rc-select-selection__clear-icon`,
+            className: `custom-clear-icon`,
           }, true)}
           removeIcon={getSvg(clearPath, {
-            className: `rc-select-selection__remove-icon`,
+            className: `custom-remove-icon`,
           }, true)}
         >
           <Option value="jack">
@@ -163,6 +164,7 @@ class Test extends React.Component {
         </p>
         <div style={{ width: 300 }}>
           <Select
+            className="custom-select"
             value={this.state.value}
             animation={this.state.useAnim ? 'slide-up' : null}
             choiceTransitionName="rc-select-selection__choice-zoom"

@@ -37,11 +37,12 @@ exports[`Select.combobox allowClear renders correctly 1`] = `
       </ul>
     </div>
     <span
+      class="rc-select-arrow"
       style="user-select:none;-webkit-user-select:none"
       unselectable="on"
     >
-      <span
-        class="rc-select-arrow"
+      <i
+        class="rc-select-arrow-icon"
       />
     </span>
   </div>
@@ -92,11 +93,12 @@ exports[`Select.combobox renders correctly 1`] = `
       </ul>
     </div>
     <span
+      class="rc-select-arrow"
       style="user-select:none;-webkit-user-select:none"
       unselectable="on"
     >
-      <span
-        class="rc-select-arrow"
+      <i
+        class="rc-select-arrow-icon"
       />
     </span>
   </div>

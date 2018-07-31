@@ -1177,8 +1177,9 @@ class Select extends React.Component {
                   onClick={(event) => {
                     this.removeSelected(singleValue, event);
                   }}
+                  className={`${prefixCls}-selection__choice__remove`}
                 >{removeIcon ||
-                <span className={`${prefixCls}-selection__choice__remove`}/>}</span>)}
+                <i className={`${prefixCls}-selection__choice__remove-icon`}/>}</span>)}
             </li>
           );
         });
@@ -1227,11 +1228,12 @@ class Select extends React.Component {
     const clear = (
       <span
         key="clear"
+        className={`${prefixCls}-selection__clear`}
         onMouseDown={preventDefaultEvent}
         style={UNSELECTABLE_STYLE}
         {...UNSELECTABLE_ATTRIBUTE}
         onClick={this.onClearSelection}
-      >{clearIcon || <span className={`${prefixCls}-selection__clear`}/>}</span>
+      >{clearIcon || <i className={`${prefixCls}-selection__clear-icon`}/>}</span>
     );
     if (!allowClear) {
       return null;
@@ -1344,11 +1346,12 @@ class Select extends React.Component {
             {multiple || !props.showArrow ? null : (
               <span
                 key="arrow"
+                className={`${prefixCls}-arrow`}
                 style={UNSELECTABLE_STYLE}
                 {...UNSELECTABLE_ATTRIBUTE}
                 onClick={this.onArrowClick}
               >
-                {selectIcon || <span className={`${prefixCls}-arrow`} />}
+                {selectIcon || <i className={`${prefixCls}-arrow-icon`} />}
               </span>)}
           </div>
         </div>
