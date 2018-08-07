@@ -24,7 +24,7 @@
   width: 20px;
   outline: none;
 }
-.rc-select-arrow b {
+.rc-select-arrow .rc-select-arrow-icon {
   border-color: #999999 transparent transparent transparent;
   border-style: solid;
   border-width: 5px 4px 0 4px;
@@ -58,8 +58,8 @@
   position: absolute;
   line-height: 28px;
 }
-.rc-select-selection__clear:after {
-  content: '\D7';
+.rc-select-selection__clear-icon {
+  font-style: normal;
 }
 .rc-select-focused .rc-select-selection {
   border-color: #23c0fa;
@@ -265,8 +265,8 @@
   right: 2px;
   transition: opacity .3s, transform .3s;
 }
-.rc-select .rc-select-selection__choice__remove:before {
-  content: '\D7';
+.rc-select .rc-select-selection__choice__remove-icon {
+  font-style: normal;
 }
 .rc-select .rc-select-selection__choice__remove:hover {
   color: #333;
