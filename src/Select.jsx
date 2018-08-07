@@ -1067,6 +1067,7 @@ class Select extends React.Component {
       maxTagCount,
       maxTagPlaceholder,
       showSearch,
+      removeIcon,
     } = props;
     const className = `${prefixCls}-selection__rendered`;
     // search input is inside topControlNode in single, multiple & combobox. 2016/04/13
@@ -1173,11 +1174,12 @@ class Select extends React.Component {
               </div>
               {disabled ? null : (
                 <span
-                  className={`${prefixCls}-selection__choice__remove`}
                   onClick={(event) => {
                     this.removeSelected(singleValue, event);
                   }}
-                />)}
+                  className={`${prefixCls}-selection__choice__remove`}
+                >{removeIcon ||
+                <i className={`${prefixCls}-selection__choice__remove-icon`}>×</i>}</span>)}
             </li>
           );
         });
@@ -1221,17 +1223,17 @@ class Select extends React.Component {
   }
 
   renderClear() {
-    const { prefixCls, allowClear } = this.props;
+    const { prefixCls, allowClear, clearIcon } = this.props;
     const { value, inputValue } = this.state;
     const clear = (
       <span
         key="clear"
+        className={`${prefixCls}-selection__clear`}
         onMouseDown={preventDefaultEvent}
         style={UNSELECTABLE_STYLE}
         {...UNSELECTABLE_ATTRIBUTE}
-        className={`${prefixCls}-selection__clear`}
         onClick={this.onClearSelection}
-      />
+      >{clearIcon || <i className={`${prefixCls}-selection__clear-icon`}>×</i>}</span>
     );
     if (!allowClear) {
       return null;
@@ -1252,7 +1254,7 @@ class Select extends React.Component {
     const props = this.props;
     const multiple = isMultipleOrTags(props);
     const state = this.state;
-    const { className, disabled, prefixCls } = props;
+    const { className, disabled, prefixCls, inputIcon } = props;
     const ctrlNode = this.renderTopControlNode();
     const { open } = this.state;
     if (open) {
@@ -1349,7 +1351,7 @@ class Select extends React.Component {
                 {...UNSELECTABLE_ATTRIBUTE}
                 onClick={this.onArrowClick}
               >
-                <b />
+                {inputIcon || <i className={`${prefixCls}-arrow-icon`} />}
               </span>)}
           </div>
         </div>

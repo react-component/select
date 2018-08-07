@@ -82,4 +82,7 @@ export const SelectPropTypes = {
   tokenSeparators: PropTypes.arrayOf(PropTypes.string),
   getInputElement: PropTypes.func,
   showAction: PropTypes.arrayOf(PropTypes.string),
+  clearIcon: PropTypes.node,
+  inputIcon: PropTypes.node,
+  removeIcon: PropTypes.node,
 };

@@ -41,7 +41,9 @@ exports[`Select.combobox allowClear renders correctly 1`] = `
       style="user-select:none;-webkit-user-select:none"
       unselectable="on"
     >
-      <b />
+      <i
+        class="rc-select-arrow-icon"
+      />
     </span>
   </div>
 </div>
@@ -95,7 +97,9 @@ exports[`Select.combobox renders correctly 1`] = `
       style="user-select:none;-webkit-user-select:none"
       unselectable="on"
     >
-      <b />
+      <i
+        class="rc-select-arrow-icon"
+      />
     </span>
   </div>
 </div>
