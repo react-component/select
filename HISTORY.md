@@ -1,6 +1,10 @@
 # History
 ----
 
+## 8.2.0 / 2018-08-07
+
+- Add inputIcon, clearIcon, removeIcon.
+
 ## 8.1.0 / 2018-06-24
 
 - Add id prop.
