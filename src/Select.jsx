@@ -1179,7 +1179,7 @@ class Select extends React.Component {
                   }}
                   className={`${prefixCls}-selection__choice__remove`}
                 >{removeIcon ||
-                <i className={`${prefixCls}-selection__choice__remove-icon`}/>}</span>)}
+                <i className={`${prefixCls}-selection__choice__remove-icon`}>×</i>}</span>)}
             </li>
           );
         });
@@ -1233,7 +1233,7 @@ class Select extends React.Component {
         style={UNSELECTABLE_STYLE}
         {...UNSELECTABLE_ATTRIBUTE}
         onClick={this.onClearSelection}
-      >{clearIcon || <i className={`${prefixCls}-selection__clear-icon`}/>}</span>
+      >{clearIcon || <i className={`${prefixCls}-selection__clear-icon`}>×</i>}</span>
     );
     if (!allowClear) {
       return null;
@@ -1254,7 +1254,7 @@ class Select extends React.Component {
     const props = this.props;
     const multiple = isMultipleOrTags(props);
     const state = this.state;
-    const { className, disabled, prefixCls, selectIcon } = props;
+    const { className, disabled, prefixCls, inputIcon } = props;
     const ctrlNode = this.renderTopControlNode();
     const { open } = this.state;
     if (open) {
@@ -1351,7 +1351,7 @@ class Select extends React.Component {
                 {...UNSELECTABLE_ATTRIBUTE}
                 onClick={this.onArrowClick}
               >
-                {selectIcon || <i className={`${prefixCls}-arrow-icon`} />}
+                {inputIcon || <i className={`${prefixCls}-arrow-icon`} />}
               </span>)}
           </div>
         </div>

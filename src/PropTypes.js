@@ -83,6 +83,6 @@ export const SelectPropTypes = {
   getInputElement: PropTypes.func,
   showAction: PropTypes.arrayOf(PropTypes.string),
   clearIcon: PropTypes.node,
-  selectIcon: PropTypes.node,
+  inputIcon: PropTypes.node,
   removeIcon: PropTypes.node,
 };

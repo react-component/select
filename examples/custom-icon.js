@@ -5,7 +5,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.less';
-import './custom-icon.less';
 
 const arrowPath = 'M632 888H392c-4.4 0-8 3.6-8 8v32c0 ' +
   '17.7 14.3 32 32 32h192c17.7 0 32-14.3 32-32v-3' +
@@ -24,15 +23,15 @@ const clearPath = 'M793 242H366v-74c0-6.7-7.7-10.4-12.9' +
   ' 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h618c35.3 0 64-' +
   '28.7 64-64V306c0-35.3-28.7-64-64-64z';
 
-const getSvg = (path, props = {}, align = false) => {
+const getSvg = (path) => {
   return (
-    <i {...props}>
+    <i>
       <svg
         viewBox="0 0 1024 1024"
         width="1em"
         height="1em"
         fill="currentColor"
-        style={align ? { verticalAlign: '-.125em ' } : {}}
+        style={{ verticalAlign: '-.125em ' }}
       >
         <path d={path} p-id="5827"></path>
       </svg>
@@ -89,7 +88,7 @@ class Demo extends React.Component {
           value={this.state.value}
           combobox
           backfill
-          selectIcon={getSvg(arrowPath, {
+          inputIcon={getSvg(arrowPath, {
             className: `custom-arrow-icon`,
           }, true)}
           clearIcon={getSvg(clearPath, {
@@ -180,15 +179,9 @@ class Test extends React.Component {
             onChange={this.onChange}
             onFocus={() => console.log('focus')}
             tokenSeparators={[' ', ',']}
-            selectIcon={getSvg(arrowPath, {
-              className: `rc-select-arrow-icon`,
-            }, true)}
-            clearIcon={getSvg(clearPath, {
-              className: `rc-select-selection__clear-icon`,
-            }, true)}
-            removeIcon={getSvg(clearPath, {
-              className: `rc-select-selection__remove-icon`,
-            }, true)}
+            inputIcon={getSvg(arrowPath)}
+            clearIcon={getSvg(clearPath)}
+            removeIcon={getSvg(clearPath)}
           >
             {children}
           </Select>
