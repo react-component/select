@@ -322,7 +322,9 @@ exports[`Select render renders aria-attributes correctly 1`] = `
     >
       <i
         class="antd-selection__clear-icon"
-      />
+      >
+        ×
+      </i>
     </span>
     <span
       class="antd-arrow"
@@ -394,7 +396,9 @@ exports[`Select render renders correctly 1`] = `
     >
       <i
         class="antd-selection__clear-icon"
-      />
+      >
+        ×
+      </i>
     </span>
     <span
       class="antd-arrow"
@@ -468,7 +472,9 @@ exports[`Select render renders data-attributes correctly 1`] = `
     >
       <i
         class="antd-selection__clear-icon"
-      />
+      >
+        ×
+      </i>
     </span>
     <span
       class="antd-arrow"
@@ -541,7 +547,9 @@ exports[`Select render renders disabeld select correctly 1`] = `
     >
       <i
         class="antd-selection__clear-icon"
-      />
+      >
+        ×
+      </i>
     </span>
     <span
       class="antd-arrow"
@@ -614,7 +622,9 @@ Array [
       >
         <i
           class="antd-selection__clear-icon"
-        />
+        >
+          ×
+        </i>
       </span>
       <span
         class="antd-arrow"
@@ -762,7 +772,9 @@ exports[`Select render renders role prop correctly 1`] = `
     >
       <i
         class="antd-selection__clear-icon"
-      />
+      >
+        ×
+      </i>
     </span>
     <span
       class="antd-arrow"
