@@ -1,14 +1,14 @@
-webpackJsonp([7],{
+webpackJsonp([5],{
 
-/***/ 236:
+/***/ 240:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(237);
+module.exports = __webpack_require__(241);
 
 
 /***/ }),
 
-/***/ 237:
+/***/ 241:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -30,122 +30,88 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-/* eslint no-console: 0 */
+/* eslint-disable */
 
 
 
 
 
 
-var children = [];
-for (var i = 10; i < 36; i++) {
-  children.push(__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-    __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
-    { key: i.toString(36) + i, test: i },
-    i.toString(36) + i
-  ));
-}
+var App = function (_React$Component) {
+  __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_inherits___default()(App, _React$Component);
 
-var Test = function (_React$Component) {
-  __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_inherits___default()(Test, _React$Component);
-
-  function Test() {
+  function App() {
     var _temp, _this, _ret;
 
-    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, Test);
+    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, App);
 
     for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
     return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
-      disabled: false,
-      value: ['name2', 'name3']
-    }, _this.onChange = function (value, option) {
-      console.log('changed ' + value, option);
-      _this.setState({
-        value: value
-      });
-    }, _this.onSelect = function (value, option) {
-      console.log('selected ' + value, option.props);
-    }, _this.onDeselect = function (value, option) {
-      console.log('deselected ' + value, option);
-    }, _this.toggleDisabled = function () {
-      _this.setState({
-        disabled: !_this.state.disabled
-      });
-    }, _this.toggleMaxTagCount = function (count) {
-      _this.setState({
-        maxTagCount: count
-      });
+      values: null
+    }, _this.handleChange = function (value) {
+      console.log('OnChange: selected ' + value + '.');
+    }, _this.handleBlur = function (value) {
+      var values = _this.state.values;
+
+      console.log('onBlur: selected ' + value + '.');
+      // Only set them to state if not empty
+      // only for demo purpose
+      if (value && value.length && _this.isVisible()) {
+        _this.setState({ values: value });
+      }
+    }, _this.isVisible = function () {
+      return !_this.state.values;
     }, _temp), __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
   }
 
-  Test.prototype.render = function render() {
-    var _this2 = this;
+  App.prototype.render = function render() {
+    var values = this.state.values;
 
     return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
       'div',
       null,
-      __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-        'h2',
-        null,
-        'tags select\uFF08scroll the menu\uFF09'
-      ),
-      __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-        'div',
-        null,
+      this.isVisible() ? __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_4_rc_select___default.a,
+        {
+          style: { width: 120 },
+          multiple: true,
+          onChange: this.handleChange,
+          onBlur: this.handleBlur
+        },
         __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_4_rc_select___default.a,
-          {
-            placeholder: 'placeholder',
-            tags: true,
-            dropdownMenuStyle: { maxHeight: 200 },
-            style: { width: 500 },
-            disabled: this.state.disabled,
-            maxTagCount: this.state.maxTagCount,
-            maxTagTextLength: 10,
-            value: this.state.value,
-            onChange: this.onChange,
-            onSelect: this.onSelect,
-            onDeselect: this.onDeselect,
-            tokenSeparators: [' ', ',']
-          },
-          children
-        )
-      ),
-      __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-        'p',
-        null,
-        __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-          'button',
-          { onClick: this.toggleDisabled },
-          'toggle disabled'
+          __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
+          { value: 'jack' },
+          'Jack'
         ),
         __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-          'button',
-          { onClick: function onClick() {
-              return _this2.toggleMaxTagCount(0);
-            } },
-          'toggle maxTagCount (0)'
+          __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
+          { value: 'lucy' },
+          'Lucy'
         ),
         __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-          'button',
-          { onClick: function onClick() {
-              return _this2.toggleMaxTagCount(1);
-            } },
-          'toggle maxTagCount (1)'
+          __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
+          { value: 'Yiminghe' },
+          'yiminghe'
         )
+      ) : __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+        'span',
+        null,
+        values.join(", ")
       )
     );
   };
 
-  return Test;
+  return App;
 }(__WEBPACK_IMPORTED_MODULE_3_react___default.a.Component);
 
-__WEBPACK_IMPORTED_MODULE_6_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(Test, null), document.getElementById('__react-content'));
+__WEBPACK_IMPORTED_MODULE_6_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(App, null), document.getElementById('__react-content'));
+
+/* eslint-enable */
 
 /***/ })
 
-},[236]);
-//# sourceMappingURL=tags.js.map
+},[240]);
+//# sourceMappingURL=~debug.js.map
