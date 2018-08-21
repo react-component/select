@@ -45,6 +45,7 @@ export default class SelectTrigger extends React.Component {
     popupClassName: PropTypes.string,
     children: PropTypes.any,
     showAction: PropTypes.arrayOf(PropTypes.string),
+    hideAction: PropTypes.arrayOf(PropTypes.string),
   };
 
   constructor(props) {
@@ -138,14 +139,6 @@ export default class SelectTrigger extends React.Component {
       inputValue,
       visible,
     });
-    let hideAction;
-    if (disabled) {
-      hideAction = [];
-    } else if (isSingleMode(props) && !showSearch) {
-      hideAction = ['click'];
-    } else {
-      hideAction = ['blur'];
-    }
     const popupStyle = { ...dropdownStyle };
     const widthProp = dropdownMatchSelectWidth ? 'width' : 'minWidth';
     if (this.state.dropdownWidth) {
@@ -156,7 +149,7 @@ export default class SelectTrigger extends React.Component {
       <Trigger
         {...props}
         showAction={disabled ? [] : this.props.showAction}
-        hideAction={hideAction}
+        hideAction={disabled ? [] : this.props.hideAction}
         ref={this.saveTriggerRef}
         popupPlacement="bottomLeft"
         builtinPlacements={BUILT_IN_PLACEMENTS}
