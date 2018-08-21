@@ -349,8 +349,8 @@ class Select extends React.Component {
           this.fireChange(value);
         }
       }
-      props.onBlur(this.getVLForOnChange(value));
       this.setOpenState(false);
+      props.onBlur(this.getVLForOnChange(value));
     }, 10);
   };
 
