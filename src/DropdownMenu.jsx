@@ -8,6 +8,7 @@ import raf from 'raf';
 import { getSelectKeys, preventDefaultEvent, saveRef } from './util';
 
 export default class DropdownMenu extends React.Component {
+  static displayName = 'DropdownMenu';
   static propTypes = {
     defaultActiveFirstOption: PropTypes.bool,
     value: PropTypes.any,
@@ -21,6 +22,7 @@ export default class DropdownMenu extends React.Component {
     menuItems: PropTypes.any,
     inputValue: PropTypes.string,
     visible: PropTypes.bool,
+    firstActiveValue: PropTypes.string,
   };
 
   constructor(props) {
@@ -51,32 +53,38 @@ export default class DropdownMenu extends React.Component {
     this.lastInputValue = props.inputValue;
   }
 
+  componentWillUnmount() {
+    if (this.rafInstance && this.rafInstance.cancel) {
+      this.rafInstance.cancel();
+    }
+  }
+
   scrollActiveItemToView = () => {
     // scroll into view
     const itemComponent = findDOMNode(this.firstActiveItem);
-    const props = this.props;
+    const { value, visible, firstActiveValue } = this.props;
 
-    if (itemComponent) {
-      const scrollIntoViewOpts = {
-        onlyScrollIfNeeded: true,
-      };
-      if (
-        (!props.value || props.value.length === 0) &&
-        props.firstActiveValue
-      ) {
-        scrollIntoViewOpts.alignWithTop = true;
-      }
-
-      // Delay to scroll since current frame item position is not ready when pre view is by filter
-      // https://github.com/ant-design/ant-design/issues/11268#issuecomment-406634462
-      raf(() => {
-        scrollIntoView(
-          itemComponent,
-          findDOMNode(this.menuRef),
-          scrollIntoViewOpts
-        );
-      });
+    if (!itemComponent || !visible) {
+      return;
     }
+    const scrollIntoViewOpts = {
+      onlyScrollIfNeeded: true,
+    };
+    if (
+      (!value || value.length === 0) && firstActiveValue
+    ) {
+      scrollIntoViewOpts.alignWithTop = true;
+    }
+
+    // Delay to scroll since current frame item position is not ready when pre view is by filter
+    // https://github.com/ant-design/ant-design/issues/11268#issuecomment-406634462
+    this.rafInstance = raf(() => {
+      scrollIntoView(
+        itemComponent,
+        findDOMNode(this.menuRef),
+        scrollIntoViewOpts
+      );
+    });
   };
 
   renderMenu() {
@@ -181,5 +189,3 @@ export default class DropdownMenu extends React.Component {
     ) : null;
   }
 }
-
-DropdownMenu.displayName = 'DropdownMenu';
