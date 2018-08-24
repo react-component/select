@@ -906,6 +906,9 @@ class Select extends React.Component {
   };
 
   forcePopupAlign = () => {
+    if (!this.state.open) {
+      return;
+    }
     this.selectTriggerRef.triggerRef.forcePopupAlign();
   };
 

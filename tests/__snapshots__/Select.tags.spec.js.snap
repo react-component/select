@@ -109,7 +109,6 @@ exports[`Select.tags OptGroup renders correctly 1`] = `
                 aria-selected="true"
                 class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item-selected"
                 role="option"
-                style=""
                 unselectable="on"
               >
                 Jack
