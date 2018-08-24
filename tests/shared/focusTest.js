@@ -52,7 +52,6 @@ export default function focusTest(mode, props) {
 
     mount(
       <Select
-        ref={node => this.select = node}
         {...{ [mode]: true }}
         {...props}
         autoFocus
