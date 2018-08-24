@@ -236,6 +236,7 @@ class Select extends React.Component {
     if (!item) {
       return;
     }
+
     let value = this.state.value;
     const props = this.props;
     const selectedValue = getValuePropValue(item);
@@ -267,6 +268,10 @@ class Select extends React.Component {
   };
 
   onMenuDeselect = ({ item, domEvent }) => {
+    if (domEvent.type === 'keydown' && domEvent.keyCode === KeyCode.ENTER) {
+      this.removeSelected(getValuePropValue(item));
+      return;
+    }
     if (domEvent.type === 'click') {
       this.removeSelected(getValuePropValue(item));
     }
