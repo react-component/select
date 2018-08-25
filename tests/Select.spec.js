@@ -904,4 +904,37 @@ describe('Select', () => {
 
     expect(wrapper.find('#my-select').length).toBe(1);
   });
+
+  it('not select first option when no result', () => {
+    const handleSelect = jest.fn();
+    const wrapper = mount(
+      <Select
+        defaultActiveFirstOption
+        filterOption={(inputValue, option) => {
+          return option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1;
+        }}
+        onSelect={handleSelect}
+      >
+        <Option value="Burns Bay Road">Burns Bay Road</Option>
+        <Option value="Downing Street">Downing Street</Option>
+        <Option value="Wall Street">Wall Street</Option>
+      </Select>
+    );
+
+    wrapper.find('input').simulate('change', { target: { value: 'b' } });
+    expect(wrapper.state().inputValue).toBe('b');
+    expect(wrapper.find('MenuItem').length).toBe(1);
+    expect(wrapper.find('MenuItem').props().value).toBe('Burns Bay Road');
+    expect(wrapper.find('MenuItem').props().disabled).toBeFalsy();
+
+    wrapper.find('input').simulate('change', { target: { value: 'c' } });
+    expect(wrapper.state().inputValue).toBe('c');
+    expect(wrapper.find('MenuItem').length).toBe(1);
+    expect(wrapper.find('MenuItem').props().value).toBe('NOT_FOUND');
+    expect(wrapper.find('MenuItem').props().disabled).toBeTruthy();
+
+    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ENTER });
+    expect(wrapper.state().inputValue).toBe('c');
+    expect(handleSelect).not.toBeCalled();
+  });
 });
