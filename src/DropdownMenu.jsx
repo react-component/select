@@ -179,7 +179,10 @@ export default class DropdownMenu extends React.Component {
     const renderMenu = this.renderMenu();
     return renderMenu ? (
       <div
-        style={{ overflow: 'auto' }}
+        style={{
+          overflow: 'auto',
+          transform: 'translateZ(0)',
+        }}
         onFocus={this.props.onPopupFocus}
         onMouseDown={preventDefaultEvent}
         onScroll={this.props.onPopupScroll}

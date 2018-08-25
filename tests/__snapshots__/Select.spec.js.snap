@@ -109,7 +109,7 @@ Array [
       class="rc-select-dropdown rc-select-dropdown--single rc-select-dropdown-placement-bottomLeft "
     >
       <div
-        style="overflow:auto"
+        style="overflow:auto;transform:translateZ(0)"
       >
         <ul
           class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
@@ -194,7 +194,7 @@ Array [
       class="rc-select-dropdown rc-select-dropdown--single rc-select-dropdown-placement-bottomLeft "
     >
       <div
-        style="overflow:auto"
+        style="overflow:auto;transform:translateZ(0)"
       >
         <ul
           class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
@@ -642,7 +642,7 @@ Array [
       class="antd-dropdown antd-dropdown--single antd-dropdown-placement-bottomLeft "
     >
       <div
-        style="overflow:auto"
+        style="overflow:auto;transform:translateZ(0)"
       >
         <ul
           class="antd-dropdown-menu  antd-dropdown-menu-root antd-dropdown-menu-vertical"
