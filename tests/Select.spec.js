@@ -649,6 +649,35 @@ describe('Select', () => {
     expect(wrapper.state().open).toBe(false);
   });
 
+  it('Controlled onDropdownVisibleChange', () => {
+    class Controlled extends React.Component {
+      state = {
+        open: true,
+      };
+      onDropdownVisibleChange = open => {
+        this.setState({ open });
+      };
+      render() {
+        return (
+          <Select
+            open={this.state.open}
+            onDropdownVisibleChange={this.onDropdownVisibleChange}
+          >
+            <Option value="1">1</Option>
+          </Select>
+        );
+      }
+    }
+
+    const wrapper = mount(<Controlled/>);
+    expect(wrapper.state().open).toBe(true);
+    wrapper.find('.rc-select').simulate('click');
+    expect(wrapper.state().open).toBe(true);
+
+    wrapper.find('MenuItem').simulate('click');
+    expect(wrapper.state().open).toBe(false);
+  });
+
   it('focus input when placeholder is clicked', () => {
     const wrapper = mount(
       <Select placeholder="select">
