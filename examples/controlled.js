@@ -1,14 +1,14 @@
-webpackJsonp([14],{
+webpackJsonp([16],{
 
-/***/ 204:
+/***/ 200:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(205);
+module.exports = __webpack_require__(201);
 
 
 /***/ }),
 
-/***/ 205:
+/***/ 201:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -50,48 +50,102 @@ var Test = function (_React$Component) {
     }
 
     return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
-      options: []
-    }, _this.onSelect = function (value) {
-      console.log('onSelect', value);
-    }, _this.onChange = function (value) {
-      console.log('onChange', value);
-      var options = [];
-      if (value) {
-        if (value.indexOf('@') >= 0) {
-          options = __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-            __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
-            { key: value },
-            value
-          );
-        } else {
-          options = ['gmail.com', 'yahoo.com', 'outlook.com'].map(function (domain) {
-            var email = value + '@' + domain;
-            return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-              __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
-              { key: email },
-              email
-            );
-          });
-        }
+      destroy: false,
+      value: 9,
+      open: true
+    }, _this.onChange = function (e) {
+      var value = void 0;
+      if (e && e.target) {
+        value = e.target.value;
+      } else {
+        value = e;
       }
+      console.log('onChange', value);
       _this.setState({
-        options: options
+        value: value
       });
+    }, _this.onDestroy = function () {
+      _this.setState({
+        destroy: 1
+      });
+    }, _this.onBlur = function (v) {
+      console.log('onBlur', v);
+    }, _this.onFocus = function () {
+      console.log('onFocus');
+    }, _this.onDropdownVisibleChange = function (open) {
+      _this.setState({ open: open });
     }, _temp), __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
   }
 
   Test.prototype.render = function render() {
+    if (this.state.destroy) {
+      return null;
+    }
     return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-      __WEBPACK_IMPORTED_MODULE_4_rc_select___default.a,
-      {
-        combobox: true,
-        notFoundContent: false,
-        style: { width: 200 },
-        onChange: this.onChange,
-        onSelect: this.onSelect,
-        placeholder: '\u8BF7\u8F93\u5165\u8D26\u6237\u540D'
-      },
-      this.state.options
+      'div',
+      { style: { margin: 20 } },
+      __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+        'h2',
+        null,
+        'controlled Select'
+      ),
+      __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+        'div',
+        { style: { width: 300 } },
+        __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+          __WEBPACK_IMPORTED_MODULE_4_rc_select___default.a,
+          {
+            id: 'my-select',
+            value: this.state.value,
+            placeholder: 'placeholder',
+            dropdownMenuStyle: { maxHeight: 200 },
+            style: { width: 500 },
+            onBlur: this.onBlur,
+            onFocus: this.onFocus,
+            open: this.state.open,
+            optionLabelProp: 'children',
+            optionFilterProp: 'text',
+            onChange: this.onChange,
+            onDropdownVisibleChange: this.onDropdownVisibleChange
+          },
+          __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
+            { value: '01', text: 'jack', title: 'jack' },
+            __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+              'b',
+              {
+                style: {
+                  color: 'red'
+                }
+              },
+              'jack'
+            )
+          ),
+          __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
+            { value: '11', text: 'lucy' },
+            'lucy'
+          ),
+          __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
+            { value: '21', disabled: true, text: 'disabled' },
+            'disabled'
+          ),
+          __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
+            { value: '31', text: 'yiminghe' },
+            'yiminghe'
+          ),
+          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (i) {
+            return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+              __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
+              { key: i, value: i, text: String(i) },
+              i,
+              '-text'
+            );
+          })
+        )
+      )
     );
   };
 
@@ -102,5 +156,5 @@ __WEBPACK_IMPORTED_MODULE_6_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ })
 
-},[204]);
-//# sourceMappingURL=email.js.map
+},[200]);
+//# sourceMappingURL=controlled.js.map
