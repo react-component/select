@@ -634,6 +634,21 @@ describe('Select', () => {
     expect(wrapper.state().open).toBe(true);
   });
 
+  it('Controlled opening', () => {
+    const wrapper = mount(
+      <Select open>
+        <Option value="1">1</Option>
+      </Select>
+    );
+    expect(wrapper.state().open).toBe(true);
+    wrapper.find('MenuItem').simulate('click');
+    expect(wrapper.state().open).toBe(true);
+
+    wrapper.setProps({ open: false });
+    wrapper.find('.rc-select').simulate('click');
+    expect(wrapper.state().open).toBe(false);
+  });
+
   it('focus input when placeholder is clicked', () => {
     const wrapper = mount(
       <Select placeholder="select">
