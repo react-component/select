@@ -672,6 +672,11 @@ class Select extends React.Component {
       this.maybeFocus(open, needFocus);
       return;
     }
+
+    if (this.props.onDropdownVisibleChange) {
+      this.props.onDropdownVisibleChange(open);
+    }
+
     const nextState = {
       open,
       backfillValue: undefined,
