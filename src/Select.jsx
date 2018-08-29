@@ -76,6 +76,7 @@ class Select extends React.Component {
     notFoundContent: 'Not Found',
     backfill: false,
     showAction: ['click'],
+    hideAction: ['click'],
     tokenSeparators: [],
     autoClearSearchValue: true,
   };
@@ -1333,6 +1334,7 @@ class Select extends React.Component {
         onMenuDeselect={this.onMenuDeselect}
         onPopupScroll={props.onPopupScroll}
         showAction={props.showAction}
+        hideAction={props.hideAction}
         ref={this.saveSelectTriggerRef}
       >
         <div
