@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>single-animation.js - example - rc-select@8.2.5</title>
+  <title>~debug.js - example - rc-select@8.2.5</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     document.writeln('<script src="https://as.alipayobjects.com/g/component/es6-promise/3.2.2/es6-promise.min.js"'+'>'+'<'+'/'+'script>');
   }
   </script>
-  <link rel="stylesheet" href="../common.css" />
+  <link rel="stylesheet" href="../common.css" /><link rel="stylesheet" href="~debug.css" />
 </head>
 
 <body>
@@ -269,50 +269,59 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     </div>
     <div class="example" id="__react-content"></div>
 
-    <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint no-console: 0 */</span>
+    <div class="highlight"><pre><code language="undefined">/* eslint-disable */
 
-<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
-<span class="hljs-keyword">import</span> Select, { Option } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-select'</span>;
-<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-select/assets/index.css'</span>;
-<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
+import React from 'react';
+import Select, { Option } from 'rc-select';
+import 'rc-select/assets/index.css';
+import ReactDOM from 'react-dom';
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onChange</span>(<span class="hljs-params">value</span>) </span>{
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`selected <span class="hljs-subst">${value}</span>`</span>);
+import './~debug.less';
+
+const options = [];
+for (let i = 0; i &lt; 100; i++) {
+  options.push(`${i}`);
 }
 
-<span class="hljs-keyword">const</span> c1 = (
-  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">height:</span> <span class="hljs-attribute">150</span> }}/&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>Single Select<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Select style={{ width: 120 }} dropdownClassName="test" placeholder="快的"&gt;
+        {options.map(item =&gt; (
+          &lt;Option key={item} value={item}&gt;
+            1
+          &lt;/Option&gt;
+        ))}
+      &lt;/Select&gt;{" "}
+      &lt;Select style={{ width: 200 }} dropdownClassName="test" placeholder="慢的"&gt;
+        {options.map(item =&gt; (
+          &lt;Option key={item} value={item}&gt;
+            $#%#@$%@#$%@#$@#$#@$#@$@#$@#$@#$@#$@#$@#$@!#$@!#$@#!$@#!$@#$#@$@#$#@$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$123123123123123123123123123$#%#@$%@#$%@#$@#$#@$#@$@#$@#$@#$@#$@#$@#$@!#$@!#$@#!$@#!$@#$#@$@#$#@$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$123123123123123123123123123$#%#@$%@#$%@#$@#$#@$#@$@#$@#$@#$@#$@#$@#$@!#$@!#$@#!$@#!$@#$#@$@#$#@$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$123123123123123123123123123$#%#@$%@#$%@#$@#$#@$#@$@#$@#$@#$@#$@#$@#$@!#$@!#$@#!$@#!$@#$#@$@#$#@$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$123123123123123123123123123$#%#@$%@#$%@#$@#$#@$#@$@#$@#$@#$@#$@#$@#$@!#$@!#$@#!$@#!$@#$#@$@#$#@$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$123123123123123123123123123
+          &lt;/Option&gt;
+        ))}
+      &lt;/Select&gt;
+      &lt;Select style={{ width: 120 }} dropdownClassName="test" placeholder="长的"&gt;
+        {options.map(item =&gt; (
+          &lt;Option key={item} value={item}&gt;
+            hello hello hello hello hello hello hello hello hello hello hello
+            hello hello hello hello hello hello hello hello hello hello hello
+            hello hello hello hello hello hello hello hello hello hello hello
+            hello hello hello hello hello hello hello hello hello hello hello
+            hello hello hello hello hello hello hello hello hello hello hello
+            hello hello hello hello hello hello hello hello hello hello hello
+            hello hello hello hello hello hello hello hello hello hello hello
+            hello hello hello hello hello hello hello hello hello hello hello
+            hello hello hello hello hello hello hello hello
+          &lt;/Option&gt;
+        ))}
+      &lt;/Select&gt;
+    &lt;/div&gt;
+  );
+}
 
-    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">300</span> }}&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">Select</span>
-        <span class="hljs-attribute">allowClear</span>
-        <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"placeholder"</span>
-        <span class="hljs-attribute">defaultValue</span>=<span class="hljs-value">"lucy"</span>
-        <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">500</span> }}
-        <span class="hljs-attribute">animation</span>=<span class="hljs-value">"slide-up"</span>
-        <span class="hljs-attribute">showSearch</span>=<span class="hljs-value">{false}</span>
-        <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{onChange}</span>
-      &gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"jack"</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">b</span>
-            <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span>
-              <span class="hljs-attribute">color:</span> '<span class="hljs-attribute">red</span>',
-            }}
-          &gt;</span>
-            jack
-          <span class="hljs-tag">&lt;/<span class="hljs-title">b</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"lucy"</span>&gt;</span>lucy<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"disabled"</span> <span class="hljs-attribute">disabled</span>&gt;</span>disabled<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"yiminghe"</span>&gt;</span>yiminghe<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-)</span>;
+ReactDOM.render(&lt;App /&gt;, document.getElementById('__react-content'));
 
-ReactDOM.render(c1, <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'__react-content'</span>));
+/* eslint-enable */
 </code></pre></div>
   </div>
   <a href="http://github.com/react-component/select">
@@ -323,7 +332,7 @@ ReactDOM.render(c1, <span class="hljs-built_in">document</span>.getElementById(<
   </a>
   <script>FastClick.attach(document.body);</script>
   <script src="../common.js?nowrap"></script>
-  <script src="single-animation.js?nowrap"></script>
+  <script src="~debug.js?nowrap"></script>
 </body>
 
 </html>

@@ -1,14 +1,14 @@
-webpackJsonp([8],{
+webpackJsonp([17],{
 
-/***/ 234:
+/***/ 200:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(235);
+module.exports = __webpack_require__(201);
 
 
 /***/ }),
 
-/***/ 235:
+/***/ 201:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51,7 +51,8 @@ var Test = function (_React$Component) {
 
     return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
       destroy: false,
-      value: 9
+      value: 9,
+      open: true
     }, _this.onChange = function (e) {
       var value = void 0;
       if (e && e.target) {
@@ -71,6 +72,8 @@ var Test = function (_React$Component) {
       console.log('onBlur', v);
     }, _this.onFocus = function () {
       console.log('onFocus');
+    }, _this.onDropdownVisibleChange = function (open) {
+      _this.setState({ open: open });
     }, _temp), __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
   }
 
@@ -81,11 +84,10 @@ var Test = function (_React$Component) {
     return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
       'div',
       { style: { margin: 20 } },
-      __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement('div', { style: { height: 150 } }),
       __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
         'h2',
         null,
-        'Single Select'
+        'controlled Select'
       ),
       __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
         'div',
@@ -100,12 +102,11 @@ var Test = function (_React$Component) {
             style: { width: 500 },
             onBlur: this.onBlur,
             onFocus: this.onFocus,
-            allowClear: true,
+            open: this.state.open,
             optionLabelProp: 'children',
             optionFilterProp: 'text',
             onChange: this.onChange,
-            firstActiveValue: '2',
-            backfill: true
+            onDropdownVisibleChange: this.onDropdownVisibleChange
           },
           __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
             __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
@@ -144,55 +145,6 @@ var Test = function (_React$Component) {
             );
           })
         )
-      ),
-      __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-        'h2',
-        null,
-        'native select'
-      ),
-      __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-        'select',
-        {
-          value: this.state.value,
-          style: { width: 500 },
-          onChange: this.onChange
-        },
-        __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-          'option',
-          { value: '01' },
-          'jack'
-        ),
-        __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-          'option',
-          { value: '11' },
-          'lucy'
-        ),
-        __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-          'option',
-          { value: '21', disabled: true },
-          'disabled'
-        ),
-        __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-          'option',
-          { value: '31' },
-          'yiminghe'
-        ),
-        [1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (i) {
-          return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-            'option',
-            { value: i, key: i },
-            i
-          );
-        })
-      ),
-      __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-        'p',
-        null,
-        __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-          'button',
-          { onClick: this.onDestroy },
-          'destroy'
-        )
       )
     );
   };
@@ -204,5 +156,5 @@ __WEBPACK_IMPORTED_MODULE_6_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ })
 
-},[234]);
-//# sourceMappingURL=single.js.map
+},[200]);
+//# sourceMappingURL=controlled.js.map
