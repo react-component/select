@@ -223,7 +223,7 @@ class Select extends React.Component {
       return;
     }
 
-    if (state.open) {
+    if (this.getRealOpenState(state)) {
       const menu = this.selectTriggerRef.getInnerMenu();
       if (menu && menu.onKeyDown(event, this.handleBackfill)) {
         event.preventDefault();
@@ -731,8 +731,8 @@ class Select extends React.Component {
     return hasNewValue ? nextValue : undefined;
   };
 
-  getRealOpenState = () => {
-    let open = this.state.open;
+  getRealOpenState = (state) => {
+    let open = (state || this.state).open;
     const options = this._options || [];
     if (isMultipleOrTagsOrCombobox(this.props) || !this.props.showSearch) {
       if (open && !options.length) {
