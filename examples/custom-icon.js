@@ -23,6 +23,19 @@ const clearPath = 'M793 242H366v-74c0-6.7-7.7-10.4-12.9' +
   ' 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h618c35.3 0 64-' +
   '28.7 64-64V306c0-35.3-28.7-64-64-64z';
 
+const menuItemIcon = props => {
+  const { ...p } = props;
+  return (
+    <span style={{ position: 'absolute', right: 0 }}>
+      {p.isSelected ? '🌹' : '☑️'}
+    </span>
+  );
+};
+
+const singleItemIcon = (
+  <span style={{ position: 'absolute', right: '0px' }}>🌹</span>
+);
+
 const getSvg = (path) => {
   return (
     <i>
@@ -97,6 +110,7 @@ class Demo extends React.Component {
           removeIcon={getSvg(clearPath, {
             className: `custom-remove-icon`,
           }, true)}
+          menuItemIcon={singleItemIcon}
         >
           <Option value="jack">
             <b style={{ color: 'red' }}>jack</b>
@@ -182,6 +196,7 @@ class Test extends React.Component {
             inputIcon={getSvg(arrowPath)}
             clearIcon={getSvg(clearPath)}
             removeIcon={getSvg(clearPath)}
+            menuItemIcon={menuItemIcon}
           >
             {children}
           </Select>

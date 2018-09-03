@@ -85,4 +85,8 @@ export const SelectPropTypes = {
   clearIcon: PropTypes.node,
   inputIcon: PropTypes.node,
   removeIcon: PropTypes.node,
+  menuItemIcon: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.node,
+  ]),
 };

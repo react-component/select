@@ -45,6 +45,10 @@ export default class SelectTrigger extends React.Component {
     popupClassName: PropTypes.string,
     children: PropTypes.any,
     showAction: PropTypes.arrayOf(PropTypes.string),
+    menuItemIcon: PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.node,
+    ]),
   };
 
   constructor(props) {
@@ -99,6 +103,7 @@ export default class SelectTrigger extends React.Component {
         firstActiveValue={props.firstActiveValue}
         defaultActiveFirstOption={props.defaultActiveFirstOption}
         dropdownMenuStyle={props.dropdownMenuStyle}
+        menuItemIcon={props.menuItemIcon}
       />
     );
   };
