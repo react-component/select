@@ -23,7 +23,7 @@ export default class DropdownMenu extends React.Component {
     inputValue: PropTypes.string,
     visible: PropTypes.bool,
     firstActiveValue: PropTypes.string,
-    menuItemIcon: PropTypes.oneOfType([
+    menuItemSelectedIcon: PropTypes.oneOfType([
       PropTypes.func,
       PropTypes.node,
     ]),
@@ -95,7 +95,7 @@ export default class DropdownMenu extends React.Component {
     const props = this.props;
     const {
       menuItems,
-      menuItemIcon,
+      menuItemSelectedIcon,
       defaultActiveFirstOption,
       value,
       prefixCls,
@@ -167,7 +167,7 @@ export default class DropdownMenu extends React.Component {
           style={this.props.dropdownMenuStyle}
           defaultActiveFirst={defaultActiveFirstOption}
           role="listbox"
-          itemIcon={menuItemIcon}
+          itemIcon={menuItemSelectedIcon}
           {...activeKeyProps}
           multiple={multiple}
           {...menuProps}
