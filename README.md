@@ -109,9 +109,10 @@ React.render(c, container);
 |showAction| actions trigger the dropdown to show | String[]? | - |
 |autoFocus| focus select after mount | Bool | - |
 | autoClearSearchValue | auto clear search input value when multiple select is selected/deselected | boolean | true |
-| inputIcon | specific the select arrow icon | ReactNode | - |
-| clearIcon | specific the clear icon | ReactNode | - |
-| removeIcon | specific the remove icon | ReactNode | - |
+| inputIcon | specify the select arrow icon | ReactNode | - |
+| clearIcon | specify the clear icon | ReactNode | - |
+| removeIcon | specify the remove icon | ReactNode | - |
+| menuItemIcon | specify the remove icon | ReactNode \| (props: MenuItemProps) => ReactNode | - |
 
 
 ### Methods
