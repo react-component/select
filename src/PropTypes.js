@@ -85,7 +85,7 @@ export const SelectPropTypes = {
   clearIcon: PropTypes.node,
   inputIcon: PropTypes.node,
   removeIcon: PropTypes.node,
-  menuItemIcon: PropTypes.oneOfType([
+  menuItemSelectedIcon: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.node,
   ]),

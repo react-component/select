@@ -112,7 +112,7 @@ React.render(c, container);
 | inputIcon | specify the select arrow icon | ReactNode | - |
 | clearIcon | specify the clear icon | ReactNode | - |
 | removeIcon | specify the remove icon | ReactNode | - |
-| menuItemIcon | specify the remove icon | ReactNode \| (props: MenuItemProps) => ReactNode | - |
+| menuItemSelectedIcon | specify the remove icon | ReactNode \| (props: MenuItemProps) => ReactNode | - |
 
 
 ### Methods
