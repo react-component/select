@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>custom-icon.js - example - rc-select@8.2.5</title>
+  <title>custom-icon.js - example - rc-select@8.2.6</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-select@8.2.5</h1>
+      <h1>rc-select@8.2.6</h1>
 
       <p>React Select</p>
     </div>
@@ -293,6 +293,19 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   <span class="hljs-string">'5.2 4.1 12.9 0.4 12.9-6.3v-74h415v470H175c-4.4'</span> +
   <span class="hljs-string">' 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h618c35.3 0 64-'</span> +
   <span class="hljs-string">'28.7 64-64V306c0-35.3-28.7-64-64-64z'</span>;
+
+<span class="hljs-keyword">const</span> menuItemSelectedIcon = props =&gt; {
+  <span class="hljs-keyword">const</span> { ...p } = props;
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">position:</span> '<span class="hljs-attribute">absolute</span>', <span class="hljs-attribute">right:</span> <span class="hljs-attribute">0</span> }}&gt;</span>
+      {p.isSelected ? '🌹' : '☑️'}
+    <span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
+  )</span>;
+};
+
+<span class="hljs-keyword">const</span> singleItemIcon = (
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">position:</span> '<span class="hljs-attribute">absolute</span>', <span class="hljs-attribute">right:</span> '<span class="hljs-attribute">0px</span>' }}&gt;</span>🌹<span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
+)</span>;
 
 <span class="hljs-keyword">const</span> getSvg = (path) =&gt; {
   <span class="hljs-keyword">return</span> (
@@ -368,6 +381,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
           <span class="hljs-attribute">removeIcon</span>=<span class="hljs-value">{getSvg(clearPath,</span> {
             <span class="hljs-attribute">className:</span> `<span class="hljs-attribute">custom-remove-icon</span>`,
           }, <span class="hljs-attribute">true</span>)}
+          <span class="hljs-attribute">menuItemSelectedIcon</span>=<span class="hljs-value">{singleItemIcon}</span>
         &gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"jack"</span>&gt;</span>
             <span class="hljs-tag">&lt;<span class="hljs-title">b</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">color:</span> '<span class="hljs-attribute">red</span>' }}&gt;</span>jack<span class="hljs-tag">&lt;/<span class="hljs-title">b</span>&gt;</span>
@@ -453,6 +467,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
             inputIcon={getSvg(arrowPath)}
             clearIcon={getSvg(clearPath)}
             removeIcon={getSvg(clearPath)}
+            menuItemSelectedIcon={menuItemSelectedIcon}
           &gt;
             {children}
           <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
