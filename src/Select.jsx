@@ -1191,8 +1191,10 @@ class Select extends React.Component {
                     this.removeSelected(singleValue, event);
                   }}
                   className={`${prefixCls}-selection__choice__remove`}
-                >{removeIcon ||
-                <i className={`${prefixCls}-selection__choice__remove-icon`}>×</i>}</span>)}
+                >
+                  {removeIcon || <i className={`${prefixCls}-selection__choice__remove-icon`}>×</i>}
+                </span>
+              )}
             </li>
           );
         });
