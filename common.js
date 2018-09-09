@@ -34773,7 +34773,7 @@ var DropdownMenu = function (_React$Component) {
           style: this.props.dropdownMenuStyle,
           defaultActiveFirst: defaultActiveFirstOption,
           role: 'listbox',
-          itemIcon: menuItemSelectedIcon
+          itemIcon: multiple ? menuItemSelectedIcon : null
         }, activeKeyProps, {
           multiple: multiple
         }, menuProps, {
