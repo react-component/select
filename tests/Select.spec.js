@@ -981,4 +981,25 @@ describe('Select', () => {
     expect(wrapper.state().inputValue).toBe('c');
     expect(handleSelect).not.toBeCalled();
   });
+
+  // https://github.com/ant-design/ant-design/issues/12172
+  it('onChange trigger only once when value is 0', () => {
+    const onChange = jest.fn();
+    const wrapper = mount(
+      <Select onChange={onChange}>
+        <Option value={0}>0</Option>
+      </Select>
+    );
+
+    wrapper.find('.rc-select').simulate('click');
+    wrapper.find('li[role="option"]').at(0).simulate('click');
+
+    expect(onChange).toBeCalled();
+    onChange.mockReset();
+
+    wrapper.find('.rc-select').simulate('click');
+    wrapper.find('li[role="option"]').at(0).simulate('click');
+
+    expect(onChange).not.toBeCalled();
+  });
 });

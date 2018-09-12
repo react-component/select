@@ -248,7 +248,11 @@ class Select extends React.Component {
       }
       value = value.concat([selectedValue]);
     } else {
-      if (lastValue && lastValue === selectedValue && selectedValue !== this.state.backfillValue) {
+      if (
+        lastValue !== undefined &&
+        lastValue === selectedValue &&
+        selectedValue !== this.state.backfillValue
+      ) {
         this.setOpenState(false, true);
         return;
       }
