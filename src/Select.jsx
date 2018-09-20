@@ -1067,7 +1067,7 @@ class Select extends React.Component {
         }
 
         // Match option group label
-        if (this.filterOption(inputValue, child)) {
+        if (inputValue && this.filterOption(inputValue, child)) {
           const innerItems = childrenToArray(child.props.children).map((subChild) => {
             const childValue = getValuePropValue(subChild);
             return (
