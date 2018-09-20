@@ -1058,25 +1058,45 @@ class Select extends React.Component {
         return;
       }
       if (child.type.isSelectOptGroup) {
-        const innerItems = this.renderFilterOptionsFromChildren(
-          child.props.children,
-          childrenKeys,
-          menuItems,
-        );
-        if (innerItems.length) {
-          let label = child.props.label;
-          let key = child.key;
-          if (!key && typeof label === 'string') {
-            key = label;
-          } else if (!label && key) {
-            label = key;
-          }
+        let label = child.props.label;
+        let key = child.key;
+        if (!key && typeof label === 'string') {
+          key = label;
+        } else if (!label && key) {
+          label = key;
+        }
+
+        // Match option group label
+        if (this.filterOption(inputValue, child)) {
+          const innerItems = childrenToArray(child.props.children).map((subChild) => {
+            const childValue = getValuePropValue(subChild);
+            return (
+              <MenuItem key={childValue} {...subChild.props} />
+            );
+          });
+
           sel.push(
             <MenuItemGroup key={key} title={label}>
               {innerItems}
             </MenuItemGroup>
           );
+
+        // Not match
+        } else {
+          const innerItems = this.renderFilterOptionsFromChildren(
+            child.props.children,
+            childrenKeys,
+            menuItems,
+          );
+          if (innerItems.length) {
+            sel.push(
+              <MenuItemGroup key={key} title={label}>
+                {innerItems}
+              </MenuItemGroup>
+            );
+          }
         }
+
         return;
       }
 

@@ -16,7 +16,6 @@ const c1 = (
       <Select
         placeholder="placeholder"
         defaultValue="lucy"
-        showSearch={false}
         style={{ width: 500 }}
         onChange={onChange}
       >
