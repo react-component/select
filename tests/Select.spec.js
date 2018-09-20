@@ -581,10 +581,13 @@ describe('Select', () => {
       mount(
         <Select multiple value="" />
       );
-      expect(spy.mock.calls[0][0]).toMatch(
-        'Warning: Failed prop type: Invalid prop `value` of type `string` supplied to `Select`, ' +
-        'expected `array` when `multiple` is `true`'
-      );
+      expect(
+        spy.mock.calls[0][0].includes(
+          'Warning: Failed prop type: Invalid prop `value`' +
+          ' of type `string` supplied to `Select`, ' +
+          'expected `array` when `multiple` or `tags` is `true`.'
+        )
+      ).toBeTruthy();
     });
   });
 
