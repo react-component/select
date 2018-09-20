@@ -15,6 +15,7 @@ describe('Select.optionGroup', () => {
     );
 
     wrapper.find('input').simulate('change', { target: { value: 'zombiej' } });
-    expect(wrapper.find('MenuItem').length).toBe(1);
+    expect(wrapper.find('MenuItemGroup').length).toBe(1);
+    expect(wrapper.find('MenuItem').length).toBe(2);
   });
 });
