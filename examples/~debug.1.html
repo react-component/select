@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>update-option.js - example - rc-select@8.2.8</title>
+  <title>~debug.1.js - example - rc-select@6.9.8</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,85 +263,82 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-select@8.2.8</h1>
+      <h1>rc-select@6.9.8</h1>
 
       <p>React Select</p>
     </div>
     <div class="example" id="__react-content"></div>
 
-    <div class="highlight"><pre><code language="undefined">/* eslint no-console: 0 */
+    <div class="highlight"><pre><code language="undefined">/* eslint-disable */
 
 import React from 'react';
 import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.css';
 import ReactDOM from 'react-dom';
 
-function handleChange(value) {
-  console.log(`selected ${value}`);
-}
 
-class Test extends React.Component {
+class UserRemoteSelect extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      label: 'Lucy',
-      options: [],
-    };
-    this.count = 0;
+    this.lastFetchId = 0;
   }
 
-  updateLabel = () =&gt; {
+  state = {
+    data: [],
+    value: [],
+    fetching: false,
+  }
+
+  fetchUser = (value) =&gt; {
+    console.log('fetching user1', value);
+    this.lastFetchId += 1;
+    const fetchId = this.lastFetchId;
+    this.setState({ data: [], fetching: true });
+
+   
+    const data = [1,2,3,4,5,6].map((user,index) =&gt; ({
+      text: `${index}label`,
+      value: `${index}`,
+    }));
+    // 模拟：选中的时候，目标数据不在结果集中
+    if (!value) {
+      data.shift()
+    }
+    this.setState({ data, fetching: false });
+  }
+
+  handleChange = (value) =&gt; {
+    console.log('onchange', value)
     this.setState({
-      label: `newlabel ${this.count++}`,
-    });
-  }
-
-  updateOptions = (value) =&gt; {
-    const options = [
       value,
-      value + value,
-      value + value + value,
-    ];
-    this.setState({
-      options,
+      data: [],
+      fetching: false,
     });
   }
 
   render() {
+    const { fetching, data, value } = this.state;
     return (
-      &lt;div&gt;
-        label: {this.state.label}
-        &lt;hr /&gt;
-        &lt;Select
-          defaultValue="lucy"
-          optionLabelProp="children"
-          style={{ width: 120 }}
-          onChange={handleChange}
-        &gt;
-          &lt;Option value="lucy"&gt;{this.state.label}&lt;/Option&gt;
-          &lt;Option value="lucy2"&gt;lucy2&lt;/Option&gt;
-        &lt;/Select&gt;
-        &lt;p&gt;
-          &lt;button onClick={this.updateLabel}&gt;upadte option label&lt;/button&gt;
-        &lt;/p&gt;
-        &lt;hr/&gt;
-        &lt;Select
-          combobox
-          optionLabelProp="children"
-          onChange={this.updateOptions}
-        &gt;
-          {this.state.options.map((opt) =&gt; {
-            return &lt;Option key={opt}&gt;{opt}&lt;/Option&gt;;
-          })}
-        &lt;/Select&gt;
-        &lt;hr/&gt;
-      &lt;/div&gt;
+      &lt;Select
+        showSearch
+        labelInValue
+        value={value}
+        placeholder="Select users"
+        optionFilterProp="children"
+        notFoundContent={fetching ? &lt;Spin size="small" /&gt; : null}
+        onSearch={this.fetchUser}
+        onChange={this.handleChange}
+        style={{ width: '100%' }}
+      &gt;
+        {data.map(d =&gt; &lt;Option key={d.value}&gt;{d.text}&lt;/Option&gt;)}
+      &lt;/Select&gt;
     );
   }
 }
 
-ReactDOM.render(&lt;Test /&gt;, document.getElementById('__react-content'));
+ReactDOM.render(&lt;UserRemoteSelect /&gt;, document.getElementById('__react-content'));
+
+/* eslint-enable */
 </code></pre></div>
   </div>
   <a href="http://github.com/react-component/select">
@@ -352,7 +349,7 @@ ReactDOM.render(&lt;Test /&gt;, document.getElementById('__react-content'));
   </a>
   <script>FastClick.attach(document.body);</script>
   <script src="../common.js?nowrap"></script>
-  <script src="update-option.js?nowrap"></script>
+  <script src="~debug.1.js?nowrap"></script>
 </body>
 
 </html>

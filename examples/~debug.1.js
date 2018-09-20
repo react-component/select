@@ -1,6 +1,6 @@
-webpackJsonp([14],{
+webpackJsonp([6],{
 
-/***/ 168:
+/***/ 181:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25,90 +25,107 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-/* eslint no-console: 0 */
+/* eslint-disable */
 
 
 
 
 
 
-var Test = function (_React$Component) {
-  __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default()(Test, _React$Component);
+var UserRemoteSelect = function (_React$Component) {
+  __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default()(UserRemoteSelect, _React$Component);
 
-  function Test() {
-    var _ref;
+  function UserRemoteSelect(props) {
+    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, UserRemoteSelect);
 
-    var _temp, _this, _ret;
+    var _this = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (UserRemoteSelect.__proto__ || Object.getPrototypeOf(UserRemoteSelect)).call(this, props));
 
-    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, Test);
+    _this.state = {
+      data: [],
+      value: [],
+      fetching: false
+    };
 
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+    _this.fetchUser = function (value) {
+      console.log('fetching user1', value);
+      _this.lastFetchId += 1;
+      var fetchId = _this.lastFetchId;
+      _this.setState({ data: [], fetching: true });
 
-    return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = Test.__proto__ || Object.getPrototypeOf(Test)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      options: []
-    }, _this.onSelect = function (value) {
-      console.log('onSelect', value);
-    }, _this.onChange = function (value) {
-      console.log('onChange', value);
-      var options = [];
-      if (value) {
-        if (value.indexOf('@') >= 0) {
-          options = __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-            __WEBPACK_IMPORTED_MODULE_5_rc_select__["Option"],
-            { key: value },
-            value
-          );
-        } else {
-          options = ['gmail.com', 'yahoo.com', 'outlook.com'].map(function (domain) {
-            var email = value + '@' + domain;
-            return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-              __WEBPACK_IMPORTED_MODULE_5_rc_select__["Option"],
-              { key: email },
-              email
-            );
-          });
-        }
-      }
-      _this.setState({
-        options: options
+      var data = [1, 2, 3, 4, 5, 6].map(function (user, index) {
+        return {
+          text: index + 'label',
+          value: '' + index
+        };
       });
-    }, _temp), __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
+      // 模拟：选中的时候，目标数据不在结果集中
+      if (!value) {
+        data.shift();
+      }
+      _this.setState({ data: data, fetching: false });
+    };
+
+    _this.handleChange = function (value) {
+      console.log('onchange', value);
+      _this.setState({
+        value: value,
+        data: [],
+        fetching: false
+      });
+    };
+
+    _this.lastFetchId = 0;
+    return _this;
   }
 
-  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(Test, [{
+  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(UserRemoteSelect, [{
     key: 'render',
     value: function render() {
+      var _state = this.state,
+          fetching = _state.fetching,
+          data = _state.data,
+          value = _state.value;
+
       return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_5_rc_select___default.a,
         {
-          combobox: true,
-          notFoundContent: false,
-          style: { width: 200 },
-          onChange: this.onChange,
-          onSelect: this.onSelect,
-          placeholder: '\u8BF7\u8F93\u5165\u8D26\u6237\u540D'
+          showSearch: true,
+          labelInValue: true,
+          value: value,
+          placeholder: 'Select users',
+          optionFilterProp: 'children',
+          notFoundContent: fetching ? __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(Spin, { size: 'small' }) : null,
+          onSearch: this.fetchUser,
+          onChange: this.handleChange,
+          style: { width: '100%' }
         },
-        this.state.options
+        data.map(function (d) {
+          return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_5_rc_select__["Option"],
+            { key: d.value },
+            d.text
+          );
+        })
       );
     }
   }]);
 
-  return Test;
+  return UserRemoteSelect;
 }(__WEBPACK_IMPORTED_MODULE_4_react___default.a.Component);
 
-__WEBPACK_IMPORTED_MODULE_7_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(Test, null), document.getElementById('__react-content'));
+__WEBPACK_IMPORTED_MODULE_7_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(UserRemoteSelect, null), document.getElementById('__react-content'));
+
+/* eslint-enable */
 
 /***/ }),
 
-/***/ 379:
+/***/ 392:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(168);
+module.exports = __webpack_require__(181);
 
 
 /***/ })
 
-},[379]);
-//# sourceMappingURL=email.js.map
+},[392]);
+//# sourceMappingURL=~debug.1.js.map

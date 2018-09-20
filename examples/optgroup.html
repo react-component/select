@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>optgroup.js - example - rc-select@8.2.8</title>
+  <title>optgroup.js - example - rc-select@6.9.8</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-select@8.2.8</h1>
+      <h1>rc-select@6.9.8</h1>
 
       <p>React Select</p>
     </div>
@@ -276,8 +276,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <span class="hljs-keyword">import</span> <span class="hljs-string">'rc-select/assets/index.css'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onChange</span>(<span class="hljs-params">value, option</span>) </span>{
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`selected <span class="hljs-subst">${value}</span>`</span>, option);
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onChange</span>(<span class="hljs-params">value</span>) </span>{
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`selected <span class="hljs-subst">${value}</span>`</span>);
 }
 
 <span class="hljs-keyword">const</span> c1 = (
@@ -292,7 +292,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
         <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{onChange}</span>
       &gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">OptGroup</span> <span class="hljs-attribute">label</span>=<span class="hljs-value">"manager"</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"jack"</span> <span class="hljs-attribute">test-prop</span>=<span class="hljs-value">"jack-prop"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"jack"</span>&gt;</span>
             <span class="hljs-tag">&lt;<span class="hljs-title">b</span>
               <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span>
                 <span class="hljs-attribute">color:</span> '<span class="hljs-attribute">red</span>',
@@ -301,10 +301,10 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
               jack
             <span class="hljs-tag">&lt;/<span class="hljs-title">b</span>&gt;</span>
           <span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"lucy"</span> <span class="hljs-attribute">test-prop</span>=<span class="hljs-value">"lucy-prop"</span>&gt;</span>lucy<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"lucy"</span>&gt;</span>lucy<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">OptGroup</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">OptGroup</span> <span class="hljs-attribute">label</span>=<span class="hljs-value">"engineer"</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"yiminghe"</span> <span class="hljs-attribute">test-prop</span>=<span class="hljs-value">"yiminghe-prop"</span>&gt;</span>yiminghe<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"yiminghe"</span>&gt;</span>yiminghe<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">OptGroup</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
