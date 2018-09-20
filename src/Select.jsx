@@ -178,9 +178,12 @@ class Select extends React.Component {
     const keyCode = event.keyCode;
     if (this.state.open && !this.getInputDOMNode()) {
       this.onInputKeyDown(event);
-    } else if (keyCode === KeyCode.ENTER || keyCode === KeyCode.DOWN) {
+    } else if (keyCode === KeyCode.ENTER) {
       this.setOpenState(true);
+      this.focus();
       event.preventDefault();
+    } else if (keyCode === KeyCode.DOWN) {
+      this.setOpenState(true);
     }
   };
 
