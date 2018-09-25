@@ -171,15 +171,16 @@ class Select extends React.Component {
 
   // combobox ignore
   onKeyDown = event => {
-    const props = this.props;
-    if (props.disabled) {
+    const { open } = this.state;
+    const { disabled } = this.props;
+    if (disabled) {
       return;
     }
     const keyCode = event.keyCode;
-    if (this.state.open && !this.getInputDOMNode()) {
+    if (open && !this.getInputDOMNode()) {
       this.onInputKeyDown(event);
     } else if (keyCode === KeyCode.ENTER || keyCode === KeyCode.DOWN) {
-      this.setOpenState(true);
+      if (!open) this.setOpenState(true);
       event.preventDefault();
     }
   };
