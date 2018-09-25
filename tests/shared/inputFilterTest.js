@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 import React from 'react';
+import { mount } from 'enzyme';
 import Select from '../../src/Select';
 import Option from '../../src/Option';
-import { mount } from 'enzyme';
 
 export default function inputFilterTest(mode) {
   it('should keep input filter after select when autoClearSearchValue is false', () => {

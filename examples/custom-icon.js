@@ -33,7 +33,7 @@ const menuItemSelectedIcon = props => {
 };
 
 const singleItemIcon = (
-  <span style={{ position: 'absolute', right: '0px' }}>🌹</span>
+  <span style={{ position: 'absolute', right: '0px' }} role="img" aria-label="rose">🌹</span>
 );
 
 const getSvg = (path) => {
@@ -46,7 +46,7 @@ const getSvg = (path) => {
         fill="currentColor"
         style={{ verticalAlign: '-.125em ' }}
       >
-        <path d={path} p-id="5827"></path>
+        <path d={path} p-id="5827" />
       </svg>
     </i>
   );

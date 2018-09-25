@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import { mount, render } from 'enzyme';
-import DropdownMenu from '../src/DropdownMenu';
 import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
+import DropdownMenu from '../src/DropdownMenu';
 
 describe('DropdownMenu', () => {
   it('renders correctly', () => {
@@ -70,7 +70,7 @@ describe('DropdownMenu', () => {
     const wrapper = mount(
       <DropdownMenu
         menuItems={menuItems}
-        firstActiveValue={'2'}
+        firstActiveValue="2"
       />
     );
 
@@ -86,7 +86,7 @@ describe('DropdownMenu', () => {
     const wrapper = mount(
       <DropdownMenu
         menuItems={menuItems}
-        firstActiveValue={'2'}
+        firstActiveValue="2"
       />
     );
 
@@ -107,7 +107,7 @@ describe('DropdownMenu', () => {
       <DropdownMenu
         value={['1']}
         menuItems={menuItems}
-        firstActiveValue={'2'}
+        firstActiveValue="2"
       />
     );
 

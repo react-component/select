@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 import React from 'react';
+import { mount } from 'enzyme';
 import Select from '../../src/Select';
 import Option from '../../src/Option';
-import { mount } from 'enzyme';
 
 export default function focusTest(mode, props) {
   let container;
@@ -28,7 +28,7 @@ export default function focusTest(mode, props) {
       render() {
         return (
           <Select
-            ref={node => this.select = node}
+            ref={node => { this.select = node; }}
             {...{ [mode]: true }}
             {...props}
             onFocus={handleFocus}

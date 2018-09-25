@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return, prefer-rest-params, import/prefer-default-export */
+// TODO: Fix eslint later
 import PropTypes from 'prop-types';
 
 function valueType(props, propName, componentName) {

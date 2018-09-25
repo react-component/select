@@ -1,8 +1,8 @@
 /* eslint-disable no-undef, react/no-multi-comp */
 import React from 'react';
-import Select, { Option } from '../src';
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
+import Select, { Option } from '../src';
 import allowClearTest from './shared/allowClearTest';
 import throwOptionValue from './shared/throwOptionValue';
 import focusTest from './shared/focusTest';

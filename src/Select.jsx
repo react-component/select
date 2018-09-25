@@ -1,4 +1,6 @@
 /* eslint func-names: 1 */
+/* eslint-disable no-multi-assign, no-lonely-if, jsx-a11y/no-noninteractive-element-interactions, no-restricted-syntax, jsx-a11y/role-has-required-aria-props */
+// TODO: Fix eslint later
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { polyfill } from 'react-lifecycles-compat';
@@ -389,8 +391,8 @@ class Select extends React.Component {
 
   static getDerivedStateFromProps = (nextProps, prevState) => {
     const optionsInfo = prevState.skipBuildOptionsInfo
-                        ? prevState.optionsInfo
-                        : Select.getOptionsInfoFromProps(nextProps, prevState);
+      ? prevState.optionsInfo
+      : Select.getOptionsInfoFromProps(nextProps, prevState);
 
     const newState = {
       optionsInfo,
@@ -847,11 +849,9 @@ class Select extends React.Component {
           input.focus();
           this._focused = true;
         }
-      } else {
-        if (activeElement !== this.selectionRef) {
-          this.selectionRef.focus();
-          this._focused = true;
-        }
+      } else if (activeElement !== this.selectionRef) {
+        this.selectionRef.focus();
+        this._focused = true;
       }
     }
   };
@@ -1097,15 +1097,13 @@ class Select extends React.Component {
         let opacity = 1;
         if (!showSearch) {
           showSelectedValue = true;
-        } else {
-          if (open) {
-            showSelectedValue = !inputValue;
-            if (showSelectedValue) {
-              opacity = 0.4;
-            }
-          } else {
-            showSelectedValue = true;
+        } else if (open) {
+          showSelectedValue = !inputValue;
+          if (showSelectedValue) {
+            opacity = 0.4;
           }
+        } else {
+          showSelectedValue = true;
         }
         const singleValue = value[0];
         const { label, title } = this.getOptionInfoBySingleValue(singleValue);
@@ -1156,7 +1154,7 @@ class Select extends React.Component {
           {...UNSELECTABLE_ATTRIBUTE}
           onMouseDown={preventDefaultEvent}
           className={`${prefixCls}-selection__choice ${prefixCls}-selection__choice__disabled`}
-          key={'maxTagPlaceholder'}
+          key="maxTagPlaceholder"
           title={toTitle(content)}
         >
           <div className={`${prefixCls}-selection__choice__content`}>{content}</div>
@@ -1285,7 +1283,7 @@ class Select extends React.Component {
     const dataOrAriaAttributeProps = {};
     for (const key in props) {
       if (
-        props.hasOwnProperty(key) &&
+        Object.prototype.hasOwnProperty.call(props, key) &&
         (key.substr(0, 5) === 'data-' || key.substr(0, 5) === 'aria-' || key === 'role')
       ) {
         dataOrAriaAttributeProps[key] = props[key];

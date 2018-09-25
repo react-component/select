@@ -1,5 +1,8 @@
+/* eslint import/prefer-default-export: 0 */
+
 import jsonp from 'jsonp';
 import querystring from 'querystring';
+
 let timeout;
 let currentValue;
 

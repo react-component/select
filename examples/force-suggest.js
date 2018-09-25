@@ -3,8 +3,9 @@
 import React from 'react';
 import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.less';
-import { fetch } from './common/tbFetchSuggest';
 import ReactDOM from 'react-dom';
+
+import { fetch } from './common/tbFetchSuggest';
 
 class Search extends React.Component {
   state = {
@@ -42,8 +43,7 @@ class Search extends React.Component {
 
   render() {
     const data = this.state.data;
-    let options;
-    options = data.map((d) => {
+    const options = data.map((d) => {
       return <Option key={d.value}><i>{d.text}</i></Option>;
     });
     return (<div>

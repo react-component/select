@@ -1,8 +1,8 @@
 /* eslint-disable no-undef, react/no-multi-comp */
 import React from 'react';
+import { mount } from 'enzyme';
 import Select from '../../src/Select';
 import Option from '../../src/Option';
-import { mount } from 'enzyme';
 
 export default function dynamicChildrenTest(mode, props) {
   beforeEach(() => {
@@ -42,7 +42,7 @@ export default function dynamicChildrenTest(mode, props) {
         return (
           <Select
             value={this.state.value}
-            ref={node => this.select = node}
+            ref={node => { this.select = node; }}
             {...{ [mode]: true }}
             {...props}
             onChange={onChange}
@@ -97,7 +97,7 @@ export default function dynamicChildrenTest(mode, props) {
           <Select
             optionLabelProp="children"
             value={this.state.value}
-            ref={node => this.select = node}
+            ref={node => { this.select = node; }}
             {...{ [mode]: true }}
             {...props}
           >
@@ -143,7 +143,7 @@ export default function dynamicChildrenTest(mode, props) {
           <Select
             optionLabelProp="children"
             defaultValue={this.state.value}
-            ref={node => this.select = node}
+            ref={node => { this.select = node; }}
             {...{ [mode]: true }}
             {...props}
           >

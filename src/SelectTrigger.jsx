@@ -2,9 +2,9 @@ import Trigger from 'rc-trigger';
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import DropdownMenu from './DropdownMenu';
 import ReactDOM from 'react-dom';
 import { isSingleMode, saveRef } from './util';
+import DropdownMenu from './DropdownMenu';
 
 Trigger.displayName = 'Trigger';
 
