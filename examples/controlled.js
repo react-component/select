@@ -1,14 +1,14 @@
-webpackJsonp([15],{
+webpackJsonp([18],{
 
-/***/ 222:
+/***/ 196:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(223);
+module.exports = __webpack_require__(197);
 
 
 /***/ }),
 
-/***/ 223:
+/***/ 197:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36,16 +36,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-var children = [];
-for (var i = 10; i < 36; i++) {
-  // 11 => readonly selected item
-  children.push(__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-    __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
-    { disabled: i === 11, key: i.toString(36) + i },
-    '\u4E2D\u6587',
-    i
-  ));
-}
 
 var Test = function (_React$Component) {
   __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_inherits___default()(Test, _React$Component);
@@ -60,24 +50,44 @@ var Test = function (_React$Component) {
     }
 
     return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
-      value: ['b11']
-    }, _this.onChange = function (value) {
+      destroy: false,
+      value: 9,
+      open: true
+    }, _this.onChange = function (e) {
+      var value = void 0;
+      if (e && e.target) {
+        value = e.target.value;
+      } else {
+        value = e;
+      }
       console.log('onChange', value);
-      _this.setState({ value: value });
+      _this.setState({
+        value: value
+      });
+    }, _this.onDestroy = function () {
+      _this.setState({
+        destroy: 1
+      });
+    }, _this.onBlur = function (v) {
+      console.log('onBlur', v);
+    }, _this.onFocus = function () {
+      console.log('onFocus');
+    }, _this.onDropdownVisibleChange = function (open) {
+      _this.setState({ open: open });
     }, _temp), __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
   }
 
   Test.prototype.render = function render() {
-    var dropdownMenuStyle = {
-      maxHeight: 200
-    };
+    if (this.state.destroy) {
+      return null;
+    }
     return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
       'div',
-      null,
+      { style: { margin: 20 } },
       __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
         'h2',
         null,
-        'multiple readonly default selected item'
+        'controlled Select'
       ),
       __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
         'div',
@@ -85,18 +95,55 @@ var Test = function (_React$Component) {
         __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
           __WEBPACK_IMPORTED_MODULE_4_rc_select___default.a,
           {
-            multiple: true,
+            id: 'my-select',
             value: this.state.value,
-            animation: 'slide-up',
-            choiceTransitionName: 'rc-select-selection__choice-zoom',
-            dropdownMenuStyle: dropdownMenuStyle,
+            placeholder: 'placeholder',
+            dropdownMenuStyle: { maxHeight: 200 },
             style: { width: 500 },
-            optionFilterProp: 'children',
+            onBlur: this.onBlur,
+            onFocus: this.onFocus,
+            open: this.state.open,
             optionLabelProp: 'children',
-            placeholder: 'please select',
-            onChange: this.onChange
+            optionFilterProp: 'text',
+            onChange: this.onChange,
+            onDropdownVisibleChange: this.onDropdownVisibleChange
           },
-          children
+          __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
+            { value: '01', text: 'jack', title: 'jack' },
+            __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+              'b',
+              {
+                style: {
+                  color: 'red'
+                }
+              },
+              'jack'
+            )
+          ),
+          __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
+            { value: '11', text: 'lucy' },
+            'lucy'
+          ),
+          __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
+            { value: '21', disabled: true, text: 'disabled' },
+            'disabled'
+          ),
+          __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
+            { value: '31', text: 'yiminghe' },
+            'yiminghe'
+          ),
+          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (i) {
+            return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+              __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
+              { key: i, value: i, text: String(i) },
+              i,
+              '-text'
+            );
+          })
         )
       )
     );
@@ -109,5 +156,5 @@ __WEBPACK_IMPORTED_MODULE_6_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ })
 
-},[222]);
-//# sourceMappingURL=multiple-readonly.js.map
+},[196]);
+//# sourceMappingURL=controlled.js.map

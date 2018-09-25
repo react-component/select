@@ -1,14 +1,14 @@
-webpackJsonp([15],{
+webpackJsonp([7],{
 
-/***/ 222:
+/***/ 240:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(223);
+module.exports = __webpack_require__(241);
 
 
 /***/ }),
 
-/***/ 223:
+/***/ 241:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36,69 +36,92 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-var children = [];
-for (var i = 10; i < 36; i++) {
-  // 11 => readonly selected item
-  children.push(__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-    __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
-    { disabled: i === 11, key: i.toString(36) + i },
-    '\u4E2D\u6587',
-    i
-  ));
+
+function handleChange(value) {
+  console.log('selected ' + value);
 }
 
 var Test = function (_React$Component) {
   __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_inherits___default()(Test, _React$Component);
 
-  function Test() {
-    var _temp, _this, _ret;
-
+  function Test(props) {
     __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, Test);
 
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+    var _this = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(this, _React$Component.call(this, props));
 
-    return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
-      value: ['b11']
-    }, _this.onChange = function (value) {
-      console.log('onChange', value);
-      _this.setState({ value: value });
-    }, _temp), __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
+    _this.updateLabel = function () {
+      _this.setState({
+        label: 'newlabel ' + _this.count++
+      });
+    };
+
+    _this.updateOptions = function (value) {
+      var options = [value, value + value, value + value + value];
+      _this.setState({
+        options: options
+      });
+    };
+
+    _this.state = {
+      label: 'Lucy',
+      options: []
+    };
+    _this.count = 0;
+    return _this;
   }
 
   Test.prototype.render = function render() {
-    var dropdownMenuStyle = {
-      maxHeight: 200
-    };
     return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
       'div',
       null,
+      'label: ',
+      this.state.label,
+      __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement('hr', null),
       __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-        'h2',
-        null,
-        'multiple readonly default selected item'
+        __WEBPACK_IMPORTED_MODULE_4_rc_select___default.a,
+        {
+          defaultValue: 'lucy',
+          optionLabelProp: 'children',
+          style: { width: 120 },
+          onChange: handleChange
+        },
+        __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+          __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
+          { value: 'lucy' },
+          this.state.label
+        ),
+        __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+          __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
+          { value: 'lucy2' },
+          'lucy2'
+        )
       ),
       __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-        'div',
-        { style: { width: 300 } },
+        'p',
+        null,
         __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_4_rc_select___default.a,
-          {
-            multiple: true,
-            value: this.state.value,
-            animation: 'slide-up',
-            choiceTransitionName: 'rc-select-selection__choice-zoom',
-            dropdownMenuStyle: dropdownMenuStyle,
-            style: { width: 500 },
-            optionFilterProp: 'children',
-            optionLabelProp: 'children',
-            placeholder: 'please select',
-            onChange: this.onChange
-          },
-          children
+          'button',
+          { onClick: this.updateLabel },
+          'upadte option label'
         )
-      )
+      ),
+      __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement('hr', null),
+      __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_4_rc_select___default.a,
+        {
+          combobox: true,
+          optionLabelProp: 'children',
+          onChange: this.updateOptions
+        },
+        this.state.options.map(function (opt) {
+          return __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_4_rc_select__["Option"],
+            { key: opt },
+            opt
+          );
+        })
+      ),
+      __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement('hr', null)
     );
   };
 
@@ -109,5 +132,5 @@ __WEBPACK_IMPORTED_MODULE_6_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ })
 
-},[222]);
-//# sourceMappingURL=multiple-readonly.js.map
+},[240]);
+//# sourceMappingURL=update-option.js.map

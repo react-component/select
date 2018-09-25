@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>~debug.js - example - rc-select@8.2.9</title>
+  <title>update-option.js - example - rc-select@8.2.9</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     document.writeln('<script src="https://as.alipayobjects.com/g/component/es6-promise/3.2.2/es6-promise.min.js"'+'>'+'<'+'/'+'script>');
   }
   </script>
-  <link rel="stylesheet" href="../common.css" /><link rel="stylesheet" href="~debug.css" />
+  <link rel="stylesheet" href="../common.css" />
 </head>
 
 <body>
@@ -269,43 +269,79 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     </div>
     <div class="example" id="__react-content"></div>
 
-    <div class="highlight"><pre><code language="undefined">/* eslint-disable */
+    <div class="highlight"><pre><code language="undefined">/* eslint no-console: 0 */
 
 import React from 'react';
 import Select, { Option } from 'rc-select';
 import 'rc-select/assets/index.css';
 import ReactDOM from 'react-dom';
 
-import './~debug.less';
-
-const options = [];
-for (let i = 0; i &lt; 10; i++) {
-  options.push(i);
-}
-
 function handleChange(value) {
-  console.log(`OnChange:`, value);
+  console.log(`selected ${value}`);
 }
 
-function App() {
-  return (
-    &lt;div&gt;
-      &lt;input /&gt;
-      &lt;Select style={{ width: 120 }} dropdownClassName="test" onChange={handleChange}&gt;
-        {options.map(item =&gt; (
-          &lt;Option key={item} value={item}&gt;
-            {item}
-          &lt;/Option&gt;
-        ))}
-      &lt;/Select&gt;
-      &lt;input /&gt;
-    &lt;/div&gt;
-  );
+class Test extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      label: 'Lucy',
+      options: [],
+    };
+    this.count = 0;
+  }
+
+  updateLabel = () =&gt; {
+    this.setState({
+      label: `newlabel ${this.count++}`,
+    });
+  }
+
+  updateOptions = (value) =&gt; {
+    const options = [
+      value,
+      value + value,
+      value + value + value,
+    ];
+    this.setState({
+      options,
+    });
+  }
+
+  render() {
+    return (
+      &lt;div&gt;
+        label: {this.state.label}
+        &lt;hr /&gt;
+        &lt;Select
+          defaultValue="lucy"
+          optionLabelProp="children"
+          style={{ width: 120 }}
+          onChange={handleChange}
+        &gt;
+          &lt;Option value="lucy"&gt;{this.state.label}&lt;/Option&gt;
+          &lt;Option value="lucy2"&gt;lucy2&lt;/Option&gt;
+        &lt;/Select&gt;
+        &lt;p&gt;
+          &lt;button onClick={this.updateLabel}&gt;upadte option label&lt;/button&gt;
+        &lt;/p&gt;
+        &lt;hr/&gt;
+        &lt;Select
+          combobox
+          optionLabelProp="children"
+          onChange={this.updateOptions}
+        &gt;
+          {this.state.options.map((opt) =&gt; {
+            return &lt;Option key={opt}&gt;{opt}&lt;/Option&gt;;
+          })}
+        &lt;/Select&gt;
+        &lt;hr/&gt;
+      &lt;/div&gt;
+    );
+  }
 }
 
-ReactDOM.render(&lt;App /&gt;, document.getElementById('__react-content'));
-
-/* eslint-enable */
+ReactDOM.render(&lt;Test /&gt;, document.getElementById('__react-content'));
 </code></pre></div>
   </div>
   <a href="http://github.com/react-component/select">
@@ -316,7 +352,7 @@ ReactDOM.render(&lt;App /&gt;, document.getElementById('__react-content'));
   </a>
   <script>FastClick.attach(document.body);</script>
   <script src="../common.js?nowrap"></script>
-  <script src="~debug.js?nowrap"></script>
+  <script src="update-option.js?nowrap"></script>
 </body>
 
 </html>

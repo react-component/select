@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-select@6.9.8 - React Select</title>
+  <title>rc-select@8.2.9 - React Select</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,7 +737,7 @@
 
 <body>
 <div class="header">
-  <h1>rc-select@6.9.8</h1>
+  <h1>rc-select@8.2.9</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
@@ -745,6 +745,10 @@
     <ul>
       
       <li><a href="examples/combobox.html">combobox</a></li>
+      
+      <li><a href="examples/controlled.html">controlled</a></li>
+      
+      <li><a href="examples/custom-icon.html">custom-icon</a></li>
       
       <li><a href="examples/email.html">email</a></li>
       
@@ -764,6 +768,8 @@
       
       <li><a href="examples/optionFilterProp.html">optionFilterProp</a></li>
       
+      <li><a href="examples/optionLabelProp.html">optionLabelProp</a></li>
+      
       <li><a href="examples/single-animation.html">single-animation</a></li>
       
       <li><a href="examples/single.html">single</a></li>
@@ -771,6 +777,8 @@
       <li><a href="examples/suggest.html">suggest</a></li>
       
       <li><a href="examples/tags.html">tags</a></li>
+      
+      <li><a href="examples/update-option.html">update-option</a></li>
       
       <li><a href="examples/~debug.1.html">~debug.1</a></li>
       
@@ -791,7 +799,7 @@
 <a href="https://npmjs.org/package/rc-select" title="null"><img src="https://img.shields.io/npm/dm/rc-select.svg?style=flat-square" alt="npm download"></a></p>
 <h2>Screenshots<a id="user-content-screenshots" name="screenshots" class="anchor" aria-hidden="true" href="#screenshots"><span class="octicon octicon-link"></span></a></h2><p><img src="https://tfsimg.alipay.com/images/T1CUBeXa0kXXXXXXXX.png" /></p>
 <h2>Feature<a id="user-content-feature" name="feature" class="anchor" aria-hidden="true" href="#feature"><span class="octicon octicon-link"></span></a></h2><ul>
-<li>support ie8,ie8+,chrome,firefox,safari</li>
+<li>support ie9,ie9+,chrome,firefox,safari</li>
 </ul>
 <h3>Keyboard<a id="user-content-keyboard" name="keyboard" class="anchor" aria-hidden="true" href="#keyboard"><span class="octicon octicon-link"></span></a></h3><ul>
 <li>Open select (focus input || focus and click)</li>
@@ -818,8 +826,20 @@ React.render(c, container);</code></pre></div><h2>API<a id="user-content-api" na
 </thead>
 <tbody>
 <tr>
+<td>id</td>
+<td>html id to set on the component wrapper</td>
+<td>String</td>
+<td>&#39;&#39;</td>
+</tr>
+<tr>
 <td>className</td>
 <td>additional css class of root dom node</td>
+<td>String</td>
+<td>&#39;&#39;</td>
+</tr>
+<tr>
+<td>data-*</td>
+<td>html data attributes to set on the component wrapper</td>
 <td>String</td>
 <td>&#39;&#39;</td>
 </tr>
@@ -926,6 +946,18 @@ React.render(c, container);</code></pre></div><h2>API<a id="user-content-api" na
 <td>-</td>
 </tr>
 <tr>
+<td>maxTagCount</td>
+<td>max tag count to show</td>
+<td>number</td>
+<td>-</td>
+</tr>
+<tr>
+<td>maxTagPlaceholder</td>
+<td>placeholder for omitted values</td>
+<td>ReactNode/function(omittedValues)</td>
+<td>-</td>
+</tr>
+<tr>
 <td>combobox</td>
 <td>enable combobox mode(can not set multiple at the same time)</td>
 <td>bool</td>
@@ -957,8 +989,8 @@ React.render(c, container);</code></pre></div><h2>API<a id="user-content-api" na
 </tr>
 <tr>
 <td>optionLabelProp</td>
-<td>which prop value of option will render as content of select</td>
-<td>String</td>
+<td>render option value or option children as content of select</td>
+<td>String: &#39;value&#39;/&#39;children&#39;</td>
 <td>&#39;value&#39;</td>
 </tr>
 <tr>
@@ -994,7 +1026,7 @@ React.render(c, container);</code></pre></div><h2>API<a id="user-content-api" na
 <tr>
 <td>onChange</td>
 <td>called when select an option or input value change(combobox)</td>
-<td>function(value)</td>
+<td>function(value, option:Option/Array<Option>)</td>
 <td>-</td>
 </tr>
 <tr>
@@ -1016,6 +1048,12 @@ React.render(c, container);</code></pre></div><h2>API<a id="user-content-api" na
 <td>-</td>
 </tr>
 <tr>
+<td>onPopupScroll</td>
+<td>called when menu is scrolled</td>
+<td>function</td>
+<td>-</td>
+</tr>
+<tr>
 <td>onSelect</td>
 <td>called when a option is selected. param is option&#39;s value and option instance</td>
 <td>Function(value, option:Option)</td>
@@ -1024,7 +1062,13 @@ React.render(c, container);</code></pre></div><h2>API<a id="user-content-api" na
 <tr>
 <td>onDeselect</td>
 <td>called when a option is deselected. param is option&#39;s value. only called for multiple or tags</td>
-<td>Function(value)</td>
+<td>Function(value, option:Option)</td>
+<td>-</td>
+</tr>
+<tr>
+<td>onInputKeyDown</td>
+<td>called when key down on input</td>
+<td>Function(event)</td>
 <td>-</td>
 </tr>
 <tr>
@@ -1043,6 +1087,73 @@ React.render(c, container);</code></pre></div><h2>API<a id="user-content-api" na
 <td>getInputElement</td>
 <td>customize input element</td>
 <td>function(): Element</td>
+<td>-</td>
+</tr>
+<tr>
+<td>showAction</td>
+<td>actions trigger the dropdown to show</td>
+<td>String[]?</td>
+<td>-</td>
+</tr>
+<tr>
+<td>autoFocus</td>
+<td>focus select after mount</td>
+<td>Bool</td>
+<td>-</td>
+</tr>
+<tr>
+<td>autoClearSearchValue</td>
+<td>auto clear search input value when multiple select is selected/deselected</td>
+<td>boolean</td>
+<td>true</td>
+</tr>
+<tr>
+<td>inputIcon</td>
+<td>specify the select arrow icon</td>
+<td>ReactNode</td>
+<td>-</td>
+</tr>
+<tr>
+<td>clearIcon</td>
+<td>specify the clear icon</td>
+<td>ReactNode</td>
+<td>-</td>
+</tr>
+<tr>
+<td>removeIcon</td>
+<td>specify the remove icon</td>
+<td>ReactNode</td>
+<td>-</td>
+</tr>
+<tr>
+<td>menuItemSelectedIcon</td>
+<td>specify the remove icon</td>
+<td>ReactNode \</td>
+<td>(props: MenuItemProps) =&gt; ReactNode</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3>Methods<a id="user-content-methods" name="methods" class="anchor" aria-hidden="true" href="#methods"><span class="octicon octicon-link"></span></a></h3><table>
+<thead>
+<tr>
+<th>name</th>
+<th>description</th>
+<th>parameters</th>
+<th>return</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>focus</td>
+<td>focus select programmably</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>blur</td>
+<td>blur select programmably</td>
+<td>-</td>
 <td>-</td>
 </tr>
 </tbody>
