@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 import React from 'react';
+import { mount } from 'enzyme';
 import Select from '../../src/Select';
 import Option from '../../src/Option';
-import { mount } from 'enzyme';
 
 export default function openControlledTest(mode) {
   it('selectTriggerRef.props.visible should be equal to props.open', () => {
