@@ -7,12 +7,14 @@ import focusTest from './shared/focusTest';
 import blurTest from './shared/blurTest';
 import keyDownTest from './shared/keyDownTest';
 import inputFilterTest from './shared/inputFilterTest';
+import openControlledTest from './shared/openControlledTest';
 
 describe('Select', () => {
   focusTest('single');
   blurTest('single');
   keyDownTest('single');
   inputFilterTest('single');
+  openControlledTest('single');
 
   describe('render', () => {
     const select = (
