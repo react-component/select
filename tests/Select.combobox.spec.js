@@ -7,12 +7,14 @@ import allowClearTest from './shared/allowClearTest';
 import throwOptionValue from './shared/throwOptionValue';
 import focusTest from './shared/focusTest';
 import keyDownTest from './shared/keyDownTest';
+import openControlledTest from './shared/openControlledTest';
 
 describe('Select.combobox', () => {
   allowClearTest('combobox');
   throwOptionValue('combobox');
   focusTest('combobox');
   keyDownTest('combobox');
+  openControlledTest('combobox');
 
   it('renders correctly', () => {
     const wrapper = render(

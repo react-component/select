@@ -739,6 +739,10 @@ class Select extends React.Component {
   };
 
   getRealOpenState = (state) => {
+    const { open: _open } = this.props;
+    if (typeof _open === 'boolean') {
+      return _open;
+    }
     let open = (state || this.state).open;
     const options = this._options || [];
     if (isMultipleOrTagsOrCombobox(this.props) || !this.props.showSearch) {
