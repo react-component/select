@@ -60,6 +60,8 @@ export const SelectPropTypes = {
   optionFilterProp: PropTypes.string,
   animation: PropTypes.string,
   choiceTransitionName: PropTypes.string,
+  open: PropTypes.bool,
+  defaultOpen: PropTypes.bool,
   onChange: PropTypes.func,
   onBlur: PropTypes.func,
   onFocus: PropTypes.func,

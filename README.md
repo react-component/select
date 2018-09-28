@@ -76,6 +76,8 @@ React.render(c, container);
 |dropdownMenuStyle | additional style applied to dropdown menu | Object | {} |
 |notFoundContent | specify content to show when no result matches. | String | 'Not Found' |
 |tokenSeparators | separator used to tokenize on tag/multiple mode | string[]? |  |
+|open | control select open | bool | |
+|defaultOpen | control select default open | bool | |
 |placeholder | select placeholder | React Node | |
 |showSearch | whether show search input in single mode | bool | true |
 |showArrow | whether show arrow in single mode | bool | true |
