@@ -23,7 +23,7 @@
   "bugs": {
     "url": "http://github.com/react-component/select/issues"
   },
-  "licenses": "MIT",
+  "license": "MIT",
   "config": {
     "port": 8003
   },
