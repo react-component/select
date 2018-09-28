@@ -1,6 +1,10 @@
 # History
 ----
 
+## 8.3.0 / 2018-09-28
+
+- `open` support controlled
+
 ## 8.2.0 / 2018-08-07
 
 - Add inputIcon, clearIcon, removeIcon.
