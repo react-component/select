@@ -2221,7 +2221,6 @@ exports.default = function (obj, key, value) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__AnimateChild__ = __webpack_require__(151);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__CSSMotion__ = __webpack_require__(154);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__util_animate__ = __webpack_require__(78);
-/* unused harmony reexport CSSMotion */
 
 
 
@@ -2250,8 +2249,6 @@ function getChildrenFromProps(props) {
 }
 
 function noop() {}
-
-
 
 var Animate = function (_React$Component) {
   __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits___default()(Animate, _React$Component);
@@ -5692,6 +5689,7 @@ var _initialiseProps = function _initialiseProps() {
     }
 
     mouseProps.onMouseDown = _this5.onPopupMouseDown;
+    mouseProps.onTouchStart = _this5.onPopupMouseDown;
 
     return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
       __WEBPACK_IMPORTED_MODULE_13__Popup__["a" /* default */],
@@ -32306,7 +32304,9 @@ var DOMWrap = function (_React$Component) {
         });
       } else if (renderPlaceholder) {
         style = __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, style, {
-          visibility: 'hidden'
+          visibility: 'hidden',
+          // prevent from taking normal dom space
+          position: 'absolute'
         });
         key = key + '-placeholder';
       }
@@ -34303,7 +34303,8 @@ var Popup = function (_Component) {
         children = _props.children,
         onMouseEnter = _props.onMouseEnter,
         onMouseLeave = _props.onMouseLeave,
-        onMouseDown = _props.onMouseDown;
+        onMouseDown = _props.onMouseDown,
+        onTouchStart = _props.onTouchStart;
 
     var className = this.getClassName(this.currentAlignClassName || getClassNameFromAlign(align));
     var hiddenClassName = prefixCls + '-hidden';
@@ -34346,6 +34347,7 @@ var Popup = function (_Component) {
       onMouseEnter: onMouseEnter,
       onMouseLeave: onMouseLeave,
       onMouseDown: onMouseDown,
+      onTouchStart: onTouchStart,
       style: newStyle
     };
     if (destroyPopupOnHide) {
@@ -34474,6 +34476,7 @@ Popup.propTypes = {
   onMouseEnter: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.func,
   onMouseLeave: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.func,
   onMouseDown: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.func,
+  onTouchStart: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.func,
   stretch: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.string,
   children: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.node,
   point: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.shape({
@@ -35211,6 +35214,7 @@ var PopupInner = function (_Component) {
         onMouseEnter: props.onMouseEnter,
         onMouseLeave: props.onMouseLeave,
         onMouseDown: props.onMouseDown,
+        onTouchStart: props.onTouchStart,
         style: props.style
       },
       __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(
@@ -35231,6 +35235,7 @@ PopupInner.propTypes = {
   onMouseEnter: __WEBPACK_IMPORTED_MODULE_4_prop_types___default.a.func,
   onMouseLeave: __WEBPACK_IMPORTED_MODULE_4_prop_types___default.a.func,
   onMouseDown: __WEBPACK_IMPORTED_MODULE_4_prop_types___default.a.func,
+  onTouchStart: __WEBPACK_IMPORTED_MODULE_4_prop_types___default.a.func,
   children: __WEBPACK_IMPORTED_MODULE_4_prop_types___default.a.any
 };
 
@@ -36189,6 +36194,9 @@ var MenuItemGroup = function (_React$Component) {
     var _props$className = props.className,
         className = _props$className === undefined ? '' : _props$className,
         rootPrefixCls = props.rootPrefixCls;
+    var mode = props.mode,
+        inlineIndent = props.inlineIndent,
+        level = props.level;
 
     var titleClassName = rootPrefixCls + '-item-group-title';
     var listClassName = rootPrefixCls + '-item-group-list';
@@ -36202,6 +36210,11 @@ var MenuItemGroup = function (_React$Component) {
     // Set onClick to null, to ignore propagated onClick event
     delete props.onClick;
 
+    var titleStyle = {};
+    if (mode === 'inline') {
+      titleStyle.paddingLeft = inlineIndent * level;
+    }
+
     return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
       'li',
       __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, props, { className: className + ' ' + rootPrefixCls + '-item-group' }),
@@ -36209,6 +36222,7 @@ var MenuItemGroup = function (_React$Component) {
         'div',
         {
           className: titleClassName,
+          style: titleStyle,
           title: typeof title === 'string' ? title : undefined
         },
         title
