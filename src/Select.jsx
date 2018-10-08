@@ -323,7 +323,9 @@ class Select extends React.Component {
     }
     this._focused = true;
     this.updateFocusClassName();
-    this.timeoutFocus();
+    if (!this._mouseDown) {
+      this.timeoutFocus();
+    }
   };
 
   onPopupFocus = () => {
@@ -357,13 +359,25 @@ class Select extends React.Component {
           }
         }
       } else if (isMultipleOrTags(props) && inputValue) {
-        // why not use setState?
-        this.state.inputValue = this.getInputDOMNode().value = '';
+        if (this._mouseDown) {
+          // need update dropmenu when not blur
+          this.setInputValue('');
+        } else {
+          // why not use setState?
+          this.state.inputValue = this.getInputDOMNode().value = '';
+        }
 
         value = this.getValueByInput(inputValue);
         if (value !== undefined) {
           this.fireChange(value);
         }
+      }
+
+      // if click the rest space of Select in multiple mode
+      if (isMultipleOrTags(props) && this._mouseDown) {
+        this.maybeFocus(true, true);
+        this._mouseDown = false;
+        return;
       }
       this.setOpenState(false);
       props.onBlur(this.getVLForOnChange(value));
@@ -771,6 +785,14 @@ class Select extends React.Component {
     } else {
       this.getInputDOMNode().blur();
     }
+  }
+
+  markMouseDown = () => {
+    this._mouseDown = true;
+  };
+
+  markMouseLeave = () => {
+    this._mouseDown = false;
   }
 
   handleBackfill = (item) => {
@@ -1356,6 +1378,9 @@ class Select extends React.Component {
           onBlur={this.onOuterBlur}
           onFocus={this.onOuterFocus}
           className={classnames(rootCls)}
+          onMouseDown={this.markMouseDown}
+          onMouseUp={this.markMouseLeave}
+          onMouseOut={this.markMouseLeave}
         >
           <div
             ref={this.saveSelectionRef}

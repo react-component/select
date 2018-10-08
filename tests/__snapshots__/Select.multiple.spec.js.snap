@@ -67,6 +67,9 @@ exports[`Select.multiple render render animation 1`] = `
     className="rc-select rc-select-enabled"
     onBlur={[Function]}
     onFocus={[Function]}
+    onMouseDown={[Function]}
+    onMouseOut={[Function]}
+    onMouseUp={[Function]}
   >
     <div
       aria-autocomplete="list"
