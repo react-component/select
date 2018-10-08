@@ -1507,6 +1507,7 @@ $exports.store = store;
 /* harmony export (immutable) */ __webpack_exports__["e"] = loopMenuItemRecursively;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return menuAllProps; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getWidth; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return setWidth; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 
@@ -1563,7 +1564,13 @@ var menuAllProps = ['defaultSelectedKeys', 'selectedKeys', 'defaultOpenKeys', 'o
 'attribute', 'value', 'popupClassName', 'inlineCollapsed', 'menu', 'theme', 'itemIcon', 'expandIcon'];
 
 var getWidth = function getWidth(elem) {
-  return elem.getBoundingClientRect().width;
+  return elem && typeof elem.getBoundingClientRect === 'function' && elem.getBoundingClientRect().width || 0;
+};
+
+var setWidth = function setWidth(elem, width) {
+  if (elem && typeof elem.style === 'object') {
+    elem.style.width = width;
+  }
 };
 
 /***/ }),
@@ -4594,7 +4601,6 @@ var SubMenu = function (_React$Component) {
 
     var props = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_extends___default()({}, this.props);
     var isOpen = props.isOpen;
-    var level = props.level;
     var prefixCls = this.getPrefixCls();
     var isInlineMode = props.mode === 'inline';
     var className = __WEBPACK_IMPORTED_MODULE_9_classnames___default()(prefixCls, prefixCls + '-' + props.mode, (_classNames = {}, _classNames[props.className] = !!props.className, _classNames[this.getOpenClassName()] = isOpen, _classNames[this.getActiveClassName()] = props.active || isOpen && !isInlineMode, _classNames[this.getDisabledClassName()] = props.disabled, _classNames[this.getSelectedClassName()] = this.isChildrenSelected(), _classNames));
@@ -4709,8 +4715,7 @@ var SubMenu = function (_React$Component) {
           mouseEnterDelay: subMenuOpenDelay,
           mouseLeaveDelay: subMenuCloseDelay,
           onPopupVisibleChange: this.onPopupVisibleChange,
-          forceRender: forceSubMenuRender,
-          zIndex: level
+          forceRender: forceSubMenuRender
         },
         title
       )
@@ -28674,7 +28679,10 @@ var Select = function (_React$Component) {
             ref: this.saveRootRef,
             onBlur: this.onOuterBlur,
             onFocus: this.onOuterFocus,
-            className: __WEBPACK_IMPORTED_MODULE_11_classnames___default()(rootCls)
+            className: __WEBPACK_IMPORTED_MODULE_11_classnames___default()(rootCls),
+            onMouseDown: this.markMouseDown,
+            onMouseUp: this.markMouseLeave,
+            onMouseOut: this.markMouseLeave
           },
           __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(
             'div',
@@ -28892,7 +28900,7 @@ var _initialiseProps = function _initialiseProps() {
     var keyCode = event.keyCode;
     if (open && !_this2.getInputDOMNode()) {
       _this2.onInputKeyDown(event);
-    } else if (keyCode === __WEBPACK_IMPORTED_MODULE_9_rc_util_es_KeyCode__["a" /* default */].ENTER || keyCode === __WEBPACK_IMPORTED_MODULE_9_rc_util_es_KeyCode__["a" /* default */].DOWN) {
+    } else if (keyCode === __WEBPACK_IMPORTED_MODULE_9_rc_util_es_KeyCode__["a" /* default */].ENTER || keyCode === __WEBPACK_IMPORTED_MODULE_9_rc_util_es_KeyCode__["a" /* default */].DOWN || keyCode === __WEBPACK_IMPORTED_MODULE_9_rc_util_es_KeyCode__["a" /* default */].SPACE) {
       if (!open) _this2.setOpenState(true);
       event.preventDefault();
     }
@@ -29026,7 +29034,9 @@ var _initialiseProps = function _initialiseProps() {
     }
     _this2._focused = true;
     _this2.updateFocusClassName();
-    _this2.timeoutFocus();
+    if (!_this2._mouseDown) {
+      _this2.timeoutFocus();
+    }
   };
 
   this.onPopupFocus = function () {
@@ -29056,13 +29066,25 @@ var _initialiseProps = function _initialiseProps() {
           }
         }
       } else if (Object(__WEBPACK_IMPORTED_MODULE_17__util__["m" /* isMultipleOrTags */])(props) && inputValue) {
-        // why not use setState?
-        _this2.state.inputValue = _this2.getInputDOMNode().value = '';
+        if (_this2._mouseDown) {
+          // need update dropmenu when not blur
+          _this2.setInputValue('');
+        } else {
+          // why not use setState?
+          _this2.state.inputValue = _this2.getInputDOMNode().value = '';
+        }
 
         value = _this2.getValueByInput(inputValue);
         if (value !== undefined) {
           _this2.fireChange(value);
         }
+      }
+
+      // if click the rest space of Select in multiple mode
+      if (Object(__WEBPACK_IMPORTED_MODULE_17__util__["m" /* isMultipleOrTags */])(props) && _this2._mouseDown) {
+        _this2.maybeFocus(true, true);
+        _this2._mouseDown = false;
+        return;
       }
       _this2.setOpenState(false);
       props.onBlur(_this2.getVLForOnChange(value));
@@ -29358,6 +29380,14 @@ var _initialiseProps = function _initialiseProps() {
       }
     }
     return open;
+  };
+
+  this.markMouseDown = function () {
+    _this2._mouseDown = true;
+  };
+
+  this.markMouseLeave = function () {
+    _this2._mouseDown = false;
   };
 
   this.handleBackfill = function (item) {
@@ -32350,7 +32380,7 @@ var DOMWrap = function (_React$Component) {
       var lastOverflowedIndicatorPlaceholder = ul.children[ulChildrenNodes.length - 1];
 
       // need last overflowed indicator for calculating length;
-      lastOverflowedIndicatorPlaceholder.style.width = 'auto';
+      Object(__WEBPACK_IMPORTED_MODULE_10__util__["h" /* setWidth */])(lastOverflowedIndicatorPlaceholder, 'auto');
       _this.childrenSizes = children.map(function (c, i) {
         return Object(__WEBPACK_IMPORTED_MODULE_10__util__["c" /* getWidth */])(ul.children[2 * i + 1]);
       });
@@ -32362,7 +32392,7 @@ var DOMWrap = function (_React$Component) {
       _this.handleResize();
 
       // prevent the overflowed indicator from taking space;
-      lastOverflowedIndicatorPlaceholder.style.width = 0;
+      Object(__WEBPACK_IMPORTED_MODULE_10__util__["h" /* setWidth */])(lastOverflowedIndicatorPlaceholder, 0);
     }, _this.resizeObserver = null, _this.mutationObserver = null, _this.originalTotalWidth = 0, _this.overflowedItems = [], _this.childrenSizes = [], _this.handleResize = function () {
       if (_this.props.mode !== 'horizontal') {
         return;

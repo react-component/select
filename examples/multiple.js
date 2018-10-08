@@ -113,6 +113,9 @@ var Test = function (_React$Component) {
               onFocus: function onFocus() {
                 return console.log('focus');
               },
+              onBlur: function onBlur(v) {
+                return console.log('blur', v);
+              },
               tokenSeparators: [' ', ',']
             },
             children
