@@ -1,6 +1,11 @@
 # History
 ----
 
+## 8.4.0 / 2018-10-08
+
+- Adjust focus / blur logic
+- Space support open select
+
 ## 8.3.0 / 2018-09-28
 
 - `open` support controlled
