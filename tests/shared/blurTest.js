@@ -43,4 +43,18 @@ export default function blurTest(mode) {
     jest.runAllTimers();
     expect(handleBlur).toBeCalled();
   });
+
+  if (mode === 'multiple' || mode === 'tags') {
+    it('wont blur when click input box', () => {
+      const handleBlur = jest.fn();
+      wrapper.setProps({ onBlur: handleBlur });
+      wrapper.instance().focus();
+      wrapper.find('.rc-select').simulate('mousedown');
+      wrapper.find('.rc-select-search__field').simulate('blur');
+      jest.runAllTimers();
+      wrapper.find('.rc-select').simulate('mouseup');
+      wrapper.find('.rc-select').simulate('click');
+      expect(handleBlur).not.toBeCalled();
+    });
+  }
 }

@@ -780,13 +780,9 @@ class Select extends React.Component {
     this._mouseDown = true;
   };
 
-  markMouseUp = () => {
+  markMouseLeave = () => {
     this._mouseDown = false;
-  };
-
-  markMouseOut = () => {
-    this._mouseDown = false;
-  };
+  }
 
   handleBackfill = (item) => {
     if (!this.props.backfill || !(isSingleMode(this.props) || isCombobox(this.props))) {
@@ -1376,8 +1372,8 @@ class Select extends React.Component {
           onFocus={this.onOuterFocus}
           className={classnames(rootCls)}
           onMouseDown={this.markMouseDown}
-          onMouseUp={this.markMouseUp}
-          onMouseOut={this.markMouseOut}
+          onMouseUp={this.markMouseLeave}
+          onMouseOut={this.markMouseLeave}
         >
           <div
             ref={this.saveSelectionRef}
