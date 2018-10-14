@@ -376,8 +376,9 @@ class Select extends React.Component {
           this.state.inputValue = this.getInputDOMNode().value = '';
         }
 
-        value = this.getValueByInput(inputValue);
-        if (value !== undefined) {
+        const tmpValue = this.getValueByInput(inputValue);
+        if (tmpValue !== undefined) {
+          value = tmpValue;
           this.fireChange(value);
         }
       }
