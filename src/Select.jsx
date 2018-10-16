@@ -323,7 +323,8 @@ class Select extends React.Component {
     }
     this._focused = true;
     this.updateFocusClassName();
-    if (!this._mouseDown) {
+    // only effect multiple or tag mode
+    if (!isMultipleOrTags(this.props) || !this._mouseDown) {
       this.timeoutFocus();
     }
   };

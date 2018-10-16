@@ -64,6 +64,8 @@ class Search extends React.Component {
           onChange={this.fetchData}
           onSelect={this.onSelect}
           filterOption={false}
+          onFocus={() => console.log('focus')}
+          onBlur={() => console.log('blur')}
         >
           {options}
         </Select>
