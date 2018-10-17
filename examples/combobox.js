@@ -53,6 +53,8 @@ class Demo extends React.Component {
           value={this.state.value}
           combobox
           backfill
+          onFocus={() => console.log('focus')}
+          onBlur={() => console.log('blur')}
         >
           <Option value="jack">
             <b style={{ color: 'red' }}>jack</b>
