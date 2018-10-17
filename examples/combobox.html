@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>combobox.js - example - rc-select@8.4.0</title>
+  <title>combobox.js - example - rc-select@8.4.1</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-select@8.4.0</h1>
+      <h1>rc-select@8.4.1</h1>
 
       <p>React Select</p>
     </div>
@@ -324,7 +324,9 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
           <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value}</span>
           <span class="hljs-attribute">combobox</span>
           <span class="hljs-attribute">backfill</span>
-        &gt;</span>
+          <span class="hljs-attribute">onFocus</span>=<span class="hljs-value">{()</span> =&gt;</span> console.log('focus')}
+          onBlur={() =&gt; console.log('blur')}
+        &gt;
           <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"jack"</span>&gt;</span>
             <span class="hljs-tag">&lt;<span class="hljs-title">b</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">color:</span> '<span class="hljs-attribute">red</span>' }}&gt;</span>jack<span class="hljs-tag">&lt;/<span class="hljs-title">b</span>&gt;</span>
           <span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
