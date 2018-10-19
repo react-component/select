@@ -184,7 +184,7 @@ class Select extends React.Component {
     } else if (
       keyCode === KeyCode.ENTER ||
       keyCode === KeyCode.DOWN ||
-      keyCode === KeyCode.SPACE
+      (isMultipleOrTags(this.props) && (keyCode === KeyCode.SPACE))
     ) {
       if (!open) this.setOpenState(true);
       event.preventDefault();
