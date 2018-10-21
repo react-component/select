@@ -183,11 +183,16 @@ class Select extends React.Component {
       this.onInputKeyDown(event);
     } else if (
       keyCode === KeyCode.ENTER ||
-      keyCode === KeyCode.DOWN ||
-      (isMultipleOrTags(this.props) && (keyCode === KeyCode.SPACE))
+      keyCode === KeyCode.DOWN
     ) {
       if (!open) this.setOpenState(true);
       event.preventDefault();
+    } else if (keyCode === KeyCode.SPACE) {
+      // Not block space if popup is shown
+      if (!open) {
+        this.setOpenState(true);
+        event.preventDefault();
+      }
     }
   };
 
