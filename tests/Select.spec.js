@@ -1004,4 +1004,16 @@ describe('Select', () => {
 
     expect(onChange).not.toBeCalled();
   });
+
+  // https://github.com/ant-design/ant-design/issues/12260
+  it('dropdown menu width should not be smaller than trigger even dropdownMatchSelectWidth is false', () => {
+    const wrapper = mount(
+      <Select style={{ width: 1000 }} dropdownMatchSelectWidth={false}>
+        <Option value={0}>0</Option>
+        <Option value={1}>1</Option>
+      </Select>
+    );
+    wrapper.find('.rc-select').simulate('click');
+    expect(typeof wrapper.find('SelectTrigger').state().dropdownWidth).toBe('number');
+  });
 });
