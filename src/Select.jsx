@@ -38,6 +38,8 @@ import {
 import SelectTrigger from './SelectTrigger';
 import { SelectPropTypes } from './PropTypes';
 
+const SELECT_EMPTY_VALUE_KEY = 'RC_SELECT_EMPTY_VALUE_KEY';
+
 function noop() {}
 
 function chaining(...fns) {
@@ -1218,7 +1220,7 @@ class Select extends React.Component {
               {...UNSELECTABLE_ATTRIBUTE}
               onMouseDown={preventDefaultEvent}
               className={choiceClassName}
-              key={singleValue}
+              key={singleValue || SELECT_EMPTY_VALUE_KEY}
               title={toTitle(title)}
             >
               <div className={`${prefixCls}-selection__choice__content`}>

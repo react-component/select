@@ -190,4 +190,17 @@ describe('Select.multiple', () => {
 
     // Do not crash
   });
+
+  it('do not crash when value has empty string', () => {
+    const wrapper = mount(
+      <Select multiple value={['']}>
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>
+    );
+
+    expect(
+      wrapper.find('.rc-select-selection__choice__content').length
+    ).toBe(1);
+  });
 });
