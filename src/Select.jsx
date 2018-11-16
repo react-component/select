@@ -1378,6 +1378,7 @@ class Select extends React.Component {
         showAction={props.showAction}
         ref={this.saveSelectTriggerRef}
         menuItemSelectedIcon={props.menuItemSelectedIcon}
+        dropdownRender={props.dropdownRender}
       >
         <div
           id={props.id}
