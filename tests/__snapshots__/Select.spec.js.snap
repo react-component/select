@@ -844,3 +844,97 @@ exports[`Select should contian falsy children 1`] = `
   </div>
 </div>
 `;
+
+exports[`Select should render custom dropdown correctly 1`] = `
+Array [
+  <div
+    class="rc-select rc-select-open rc-select-focused rc-select-enabled"
+  >
+    <div
+      aria-autocomplete="list"
+      aria-expanded="true"
+      aria-haspopup="true"
+      class="rc-select-selection
+            rc-select-selection--single"
+      role="combobox"
+      tabindex="0"
+    >
+      <div
+        class="rc-select-selection__rendered"
+      >
+        <div
+          class="rc-select-search rc-select-search--inline"
+          style="display:block"
+        >
+          <div
+            class="rc-select-search__field__wrap"
+          >
+            <input
+              autocomplete="off"
+              class="rc-select-search__field"
+              value=""
+            />
+            <span
+              class="rc-select-search__field__mirror"
+            >
+               
+            </span>
+          </div>
+        </div>
+      </div>
+      <span
+        class="rc-select-arrow"
+        style="user-select:none;-webkit-user-select:none"
+        unselectable="on"
+      >
+        <i
+          class="rc-select-arrow-icon"
+        />
+      </span>
+    </div>
+  </div>,
+  <div>
+    <div
+      class="rc-select-dropdown rc-select-dropdown--single rc-select-dropdown-placement-bottomLeft "
+    >
+      <div>
+        <div>
+          <div
+            class="dropdown-custom-node"
+          >
+            CUSTOM NODE
+          </div>
+          <div
+            style="overflow:auto;transform:translateZ(0)"
+          >
+            <ul
+              class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
+              role="listbox"
+              tabindex="0"
+            >
+              <li
+                aria-selected="false"
+                class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
+                role="option"
+                style="user-select:none;-webkit-user-select:none"
+                unselectable="on"
+              >
+                1
+              </li>
+              <li
+                aria-selected="false"
+                class="rc-select-dropdown-menu-item"
+                role="option"
+                style="user-select:none;-webkit-user-select:none"
+                unselectable="on"
+              >
+                2
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+]
+`;
