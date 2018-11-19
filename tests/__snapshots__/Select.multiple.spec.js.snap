@@ -45,6 +45,7 @@ exports[`Select.multiple render render animation 1`] = `
   defaultActiveFirstOption={true}
   dropdownMatchSelectWidth={true}
   dropdownMenuStyle={Object {}}
+  dropdownRender={[Function]}
   dropdownStyle={Object {}}
   inputValue=""
   multiple={true}

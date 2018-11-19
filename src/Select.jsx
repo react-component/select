@@ -82,6 +82,7 @@ class Select extends React.Component {
     showAction: ['click'],
     tokenSeparators: [],
     autoClearSearchValue: true,
+    dropdownRender: (menu) => menu,
   };
 
   constructor(props) {

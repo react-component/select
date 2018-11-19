@@ -53,7 +53,7 @@ class Test extends React.Component {
             onFocus={() => console.log('focus')}
             onBlur={() => console.log('blur')}
             dropdownRender={(menu) =>
-              <div>
+              <React.Fragment>
                 <div
                   onClick={
                     () => {
@@ -75,7 +75,7 @@ class Test extends React.Component {
                 >
                   AFTER
                 </div>
-              </div>
+              </React.Fragment>
             }
           >
             {children}
