@@ -31,7 +31,12 @@ class Test extends React.Component {
 
   render() {
     return (
-      <div>
+      <div
+        onMouseDown={(e) => {
+          e.preventDefault();
+          return false;
+        }}
+      >
         <h2>custom dropdown render select</h2>
 
         <div>
