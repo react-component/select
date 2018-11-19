@@ -111,20 +111,7 @@ export default class SelectTrigger extends React.Component {
     )
 
     if (dropdownRender) {
-      return (
-        <div
-          onMouseDown={
-            (e) => {
-              e.preventDefault();
-              return false;
-            }
-          }
-        >
-          {
-            dropdownRender(menuNode, props)
-          }
-        </div>
-      );
+      return dropdownRender(menuNode, props);
     }
 
     return menuNode;

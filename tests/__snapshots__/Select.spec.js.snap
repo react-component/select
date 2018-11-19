@@ -898,40 +898,38 @@ Array [
       class="rc-select-dropdown rc-select-dropdown--single rc-select-dropdown-placement-bottomLeft "
     >
       <div>
-        <div>
-          <div
-            class="dropdown-custom-node"
+        <div
+          class="dropdown-custom-node"
+        >
+          CUSTOM NODE
+        </div>
+        <div
+          style="overflow:auto;transform:translateZ(0)"
+        >
+          <ul
+            class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
+            role="listbox"
+            tabindex="0"
           >
-            CUSTOM NODE
-          </div>
-          <div
-            style="overflow:auto;transform:translateZ(0)"
-          >
-            <ul
-              class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
-              role="listbox"
-              tabindex="0"
+            <li
+              aria-selected="false"
+              class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
+              role="option"
+              style="user-select:none;-webkit-user-select:none"
+              unselectable="on"
             >
-              <li
-                aria-selected="false"
-                class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
-                role="option"
-                style="user-select:none;-webkit-user-select:none"
-                unselectable="on"
-              >
-                1
-              </li>
-              <li
-                aria-selected="false"
-                class="rc-select-dropdown-menu-item"
-                role="option"
-                style="user-select:none;-webkit-user-select:none"
-                unselectable="on"
-              >
-                2
-              </li>
-            </ul>
-          </div>
+              1
+            </li>
+            <li
+              aria-selected="false"
+              class="rc-select-dropdown-menu-item"
+              role="option"
+              style="user-select:none;-webkit-user-select:none"
+              unselectable="on"
+            >
+              2
+            </li>
+          </ul>
         </div>
       </div>
     </div>
