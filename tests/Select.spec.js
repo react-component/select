@@ -902,6 +902,47 @@ describe('Select', () => {
     });
   });
 
+  it('should render custom dropdown correctly', () => {
+    const wrapper = render(
+      <Select
+        open
+        dropdownRender={(menu) => (
+          <div>
+            <div className="dropdown-custom-node">CUSTOM NODE</div>
+            {menu}
+          </div>
+        )}
+      >
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>
+    );
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should trigger click event in custom node', () => {
+    const handleClick = jest.fn();
+    const wrapper = mount(
+      <Select
+        dropdownRender={(menu) => (
+          <div>
+            <div id="dropdown-custom-node" onClick={handleClick}>
+              CUSTOM NODE
+            </div>
+            {menu}
+          </div>
+        )}
+      >
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>
+    );
+
+    wrapper.find('.rc-select').simulate('click');
+    wrapper.find('div#dropdown-custom-node').simulate('click');
+    expect(handleClick).toBeCalled();
+  });
+
   it('set showAction', () => {
     const wrapper = mount(
       <Select showAction={['mouseEnter']}>

@@ -115,6 +115,7 @@ React.render(c, container);
 | clearIcon | specify the clear icon | ReactNode | - |
 | removeIcon | specify the remove icon | ReactNode | - |
 | menuItemSelectedIcon | specify the remove icon | ReactNode \| (props: MenuItemProps) => ReactNode | - |
+| dropdownRender | render custom dropdown menu | (menu: React.Node, props: MenuProps) => ReactNode | - |
 
 
 ### Methods

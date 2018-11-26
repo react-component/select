@@ -93,4 +93,5 @@ export const SelectPropTypes = {
     PropTypes.func,
     PropTypes.node,
   ]),
+  dropdownRender: PropTypes.func,
 };
