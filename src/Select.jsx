@@ -43,8 +43,7 @@ const SELECT_EMPTY_VALUE_KEY = 'RC_SELECT_EMPTY_VALUE_KEY';
 function noop() {}
 
 function chaining(...fns) {
-  return function (...args) { // eslint-disable-line
-    // eslint-disable-line
+  return (...args) => {
     for (let i = 0; i < fns.length; i++) {
       if (fns[i] && typeof fns[i] === 'function') {
         fns[i].apply(this, args);
@@ -89,11 +88,13 @@ class Select extends React.Component {
     const optionsInfo = Select.getOptionsInfoFromProps(props);
     this.state = {
       value: Select.getValueFromProps(props, true), // true: use default value
-      inputValue: props.combobox ? Select.getInputValueForCombobox(
-        props,
-        optionsInfo,
-        true, // use default value
-      ) : '',
+      inputValue: props.combobox
+        ? Select.getInputValueForCombobox(
+          props,
+          optionsInfo,
+          true // use default value
+        )
+        : '',
       open: props.defaultOpen,
       optionsInfo,
       // a flag for aviod redundant getOptionsInfoFromProps call
@@ -183,10 +184,7 @@ class Select extends React.Component {
     const keyCode = event.keyCode;
     if (open && !this.getInputDOMNode()) {
       this.onInputKeyDown(event);
-    } else if (
-      keyCode === KeyCode.ENTER ||
-      keyCode === KeyCode.DOWN
-    ) {
+    } else if (keyCode === KeyCode.ENTER || keyCode === KeyCode.DOWN) {
       if (!open) this.setOpenState(true);
       event.preventDefault();
     } else if (keyCode === KeyCode.SPACE) {
@@ -205,11 +203,7 @@ class Select extends React.Component {
     }
     const state = this.state;
     const keyCode = event.keyCode;
-    if (
-      isMultipleOrTags(props) &&
-      !event.target.value &&
-      keyCode === KeyCode.BACKSPACE
-    ) {
+    if (isMultipleOrTags(props) && !event.target.value && keyCode === KeyCode.BACKSPACE) {
       event.preventDefault();
       const { value } = state;
       if (value.length) {
@@ -313,16 +307,13 @@ class Select extends React.Component {
     }
   };
 
-  onOuterFocus = (e) => {
+  onOuterFocus = e => {
     if (this.props.disabled) {
       e.preventDefault();
       return;
     }
     this.clearBlurTime();
-    if (
-      !isMultipleOrTagsOrCombobox(this.props) &&
-      e.target === this.getInputDOMNode()
-    ) {
+    if (!isMultipleOrTagsOrCombobox(this.props) && e.target === this.getInputDOMNode()) {
       return;
     }
     if (this._focused) {
@@ -341,7 +332,7 @@ class Select extends React.Component {
     this.maybeFocus(true, true);
   };
 
-  onOuterBlur = (e) => {
+  onOuterBlur = e => {
     if (this.props.disabled) {
       e.preventDefault();
       return;
@@ -352,12 +343,7 @@ class Select extends React.Component {
       const props = this.props;
       let { value } = this.state;
       const { inputValue } = this.state;
-      if (
-        isSingleMode(props) &&
-        props.showSearch &&
-        inputValue &&
-        props.defaultActiveFirstOption
-      ) {
+      if (isSingleMode(props) && props.showSearch && inputValue && props.defaultActiveFirstOption) {
         const options = this._options || [];
         if (options.length) {
           const firstOption = findFirstMenuItem(options);
@@ -433,10 +419,7 @@ class Select extends React.Component {
       const value = Select.getValueFromProps(nextProps);
       newState.value = value;
       if (nextProps.combobox) {
-        newState.inputValue = Select.getInputValueForCombobox(
-          nextProps,
-          optionsInfo,
-        );
+        newState.inputValue = Select.getInputValueForCombobox(nextProps, optionsInfo);
       }
     }
     return newState;
@@ -479,7 +462,7 @@ class Select extends React.Component {
       label = '';
     }
     return label;
-  }
+  };
 
   static getLabelFromOption = (props, option) => {
     return getPropValue(option, props.optionLabelProp);
@@ -488,7 +471,7 @@ class Select extends React.Component {
   static getOptionsInfoFromProps = (props, preState) => {
     const options = Select.getOptionsFromChildren(props.children);
     const optionsInfo = {};
-    options.forEach((option) => {
+    options.forEach(option => {
       const singleValue = getValuePropValue(option);
       optionsInfo[getMapKey(singleValue)] = {
         option,
@@ -509,7 +492,7 @@ class Select extends React.Component {
       });
     }
     return optionsInfo;
-  }
+  };
 
   static getValueFromProps = (props, useDefaultValue) => {
     let value = [];
@@ -520,12 +503,12 @@ class Select extends React.Component {
       value = toArray(props.defaultValue);
     }
     if (props.labelInValue) {
-      value = value.map((v) => {
+      value = value.map(v => {
         return v.key;
       });
     }
     return value;
-  }
+  };
 
   getOptionInfoBySingleValue = (value, optionsInfo) => {
     let info;
@@ -544,25 +527,29 @@ class Select extends React.Component {
       }
     }
     const defaultInfo = {
-      option: <Option value={value} key={value}>{value}</Option>,
+      option: (
+        <Option value={value} key={value}>
+          {value}
+        </Option>
+      ),
       value,
       label: defaultLabel,
     };
     return defaultInfo;
-  }
+  };
 
   getOptionBySingleValue = value => {
     const { option } = this.getOptionInfoBySingleValue(value);
     return option;
-  }
+  };
 
   getOptionsBySingleValue = values => {
     return values.map(value => {
       return this.getOptionBySingleValue(value);
     });
-  }
+  };
 
-  getValueByLabel = (label) => {
+  getValueByLabel = label => {
     if (label === undefined) {
       return null;
     }
@@ -584,7 +571,7 @@ class Select extends React.Component {
       };
     }
     return value;
-  }
+  };
 
   getVLForOnChange = vls_ => {
     let vls = vls_;
@@ -649,9 +636,11 @@ class Select extends React.Component {
 
   getInputElement = () => {
     const props = this.props;
-    const inputElement = props.getInputElement
-      ? props.getInputElement()
-      : <input id={props.id} autoComplete="off" />;
+    const inputElement = props.getInputElement ? (
+      props.getInputElement()
+    ) : (
+      <input id={props.id} autoComplete="off" />
+    );
     const inputCls = classnames(inputElement.props.className, {
       [`${props.prefixCls}-search__field`]: true,
     });
@@ -671,10 +660,7 @@ class Select extends React.Component {
           disabled: props.disabled,
           className: inputCls,
         })}
-        <span
-          ref={this.saveInputMirrorRef}
-          className={`${props.prefixCls}-search__field__mirror`}
-        >
+        <span ref={this.saveInputMirrorRef} className={`${props.prefixCls}-search__field__mirror`}>
           {this.state.inputValue}&nbsp;
         </span>
       </div>
@@ -730,9 +716,12 @@ class Select extends React.Component {
 
   setInputValue = (inputValue, fireSearch = true) => {
     if (inputValue !== this.state.inputValue) {
-      this.setState({
-        inputValue,
-      }, this.forcePopupAlign);
+      this.setState(
+        {
+          inputValue,
+        },
+        this.forcePopupAlign
+      );
       if (fireSearch) {
         this.props.onSearch(inputValue);
       }
@@ -764,7 +753,7 @@ class Select extends React.Component {
     return hasNewValue ? nextValue : undefined;
   };
 
-  getRealOpenState = (state) => {
+  getRealOpenState = state => {
     const { open: _open } = this.props;
     if (typeof _open === 'boolean') {
       return _open;
@@ -777,7 +766,7 @@ class Select extends React.Component {
       }
     }
     return open;
-  }
+  };
 
   focus() {
     if (isSingleMode(this.props)) {
@@ -801,9 +790,9 @@ class Select extends React.Component {
 
   markMouseLeave = () => {
     this._mouseDown = false;
-  }
+  };
 
-  handleBackfill = (item) => {
+  handleBackfill = item => {
     if (!this.props.backfill || !(isSingleMode(this.props) || isCombobox(this.props))) {
       return;
     }
@@ -937,9 +926,12 @@ class Select extends React.Component {
   fireChange = value => {
     const props = this.props;
     if (!('value' in props)) {
-      this.setState({
-        value,
-      }, this.forcePopupAlign);
+      this.setState(
+        {
+          value,
+        },
+        this.forcePopupAlign
+      );
     }
     const vls = this.getVLForOnChange(value);
     const options = this.getOptionsBySingleValue(value);
@@ -965,19 +957,14 @@ class Select extends React.Component {
     const { children, tags, filterOption, notFoundContent } = this.props;
     const menuItems = [];
     const childrenKeys = [];
-    let options = this.renderFilterOptionsFromChildren(
-      children,
-      childrenKeys,
-      menuItems,
-    );
+    let options = this.renderFilterOptionsFromChildren(children, childrenKeys, menuItems);
     if (tags) {
       // tags value must be string
       let value = this.state.value;
       value = value.filter(singleValue => {
         return (
           childrenKeys.indexOf(singleValue) === -1 &&
-          (!inputValue ||
-            String(singleValue).indexOf(String(inputValue)) > -1)
+          (!inputValue || String(singleValue).indexOf(String(inputValue)) > -1)
         );
       });
       value.forEach(singleValue => {
@@ -1004,12 +991,7 @@ class Select extends React.Component {
           // condition 2 does not mean the option has same value with inputValue
           const filterFn = () => getValuePropValue(option) === inputValue;
           if (filterOption !== false) {
-            return !this.filterOption.call(
-              this,
-              inputValue,
-              option,
-              filterFn
-            );
+            return !this.filterOption.call(this, inputValue, option, filterFn);
           }
           return !filterFn();
         });
@@ -1059,7 +1041,7 @@ class Select extends React.Component {
         const innerItems = this.renderFilterOptionsFromChildren(
           child.props.children,
           childrenKeys,
-          menuItems,
+          menuItems
         );
         if (innerItems.length) {
           let label = child.props.label;
@@ -1081,9 +1063,7 @@ class Select extends React.Component {
       warning(
         child.type.isSelectOption,
         'the children of `Select` should be `Select.Option` or `Select.OptGroup`, ' +
-          `instead of \`${child.type.name ||
-            child.type.displayName ||
-            child.type}\`.`
+          `instead of \`${child.type.name || child.type.displayName || child.type}\`.`
       );
 
       const childValue = getValuePropValue(child);
@@ -1184,19 +1164,23 @@ class Select extends React.Component {
         const omittedValues = this.getVLForOnChange(value.slice(maxTagCount, value.length));
         let content = `+ ${value.length - maxTagCount} ...`;
         if (maxTagPlaceholder) {
-          content = typeof maxTagPlaceholder === 'function' ?
-            maxTagPlaceholder(omittedValues) : maxTagPlaceholder;
+          content =
+            typeof maxTagPlaceholder === 'function'
+              ? maxTagPlaceholder(omittedValues)
+              : maxTagPlaceholder;
         }
-        maxTagPlaceholderEl = (<li
-          style={UNSELECTABLE_STYLE}
-          {...UNSELECTABLE_ATTRIBUTE}
-          onMouseDown={preventDefaultEvent}
-          className={`${prefixCls}-selection__choice ${prefixCls}-selection__choice__disabled`}
-          key="maxTagPlaceholder"
-          title={toTitle(content)}
-        >
-          <div className={`${prefixCls}-selection__choice__content`}>{content}</div>
-        </li>);
+        maxTagPlaceholderEl = (
+          <li
+            style={UNSELECTABLE_STYLE}
+            {...UNSELECTABLE_ATTRIBUTE}
+            onMouseDown={preventDefaultEvent}
+            className={`${prefixCls}-selection__choice ${prefixCls}-selection__choice__disabled`}
+            key="maxTagPlaceholder"
+            title={toTitle(content)}
+          >
+            <div className={`${prefixCls}-selection__choice__content`}>{content}</div>
+          </li>
+        );
       }
       if (isMultipleOrTags(props)) {
         selectedValueNodes = limitedCountValue.map(singleValue => {
@@ -1223,12 +1207,10 @@ class Select extends React.Component {
               key={singleValue || SELECT_EMPTY_VALUE_KEY}
               title={toTitle(title)}
             >
-              <div className={`${prefixCls}-selection__choice__content`}>
-                {content}
-              </div>
+              <div className={`${prefixCls}-selection__choice__content`}>{content}</div>
               {disabled ? null : (
                 <span
-                  onClick={(event) => {
+                  onClick={event => {
                     this.removeSelected(singleValue, event);
                   }}
                   className={`${prefixCls}-selection__choice__remove`}
@@ -1244,10 +1226,7 @@ class Select extends React.Component {
         selectedValueNodes.push(maxTagPlaceholderEl);
       }
       selectedValueNodes.push(
-        <li
-          className={`${prefixCls}-search ${prefixCls}-search--inline`}
-          key="__input"
-        >
+        <li className={`${prefixCls}-search ${prefixCls}-search--inline`} key="__input">
           {this.getInputElement()}
         </li>
       );
@@ -1263,11 +1242,7 @@ class Select extends React.Component {
           </Animate>
         );
       } else {
-        innerNode = (
-          <ul>
-            {selectedValueNodes}
-          </ul>
-        );
+        innerNode = <ul>{selectedValueNodes}</ul>;
       }
     }
     return (
@@ -1275,6 +1250,33 @@ class Select extends React.Component {
         {this.getPlaceholderElement()}
         {innerNode}
       </div>
+    );
+  };
+
+  renderArrow(multiple) {
+    const { showArrow, loading, inputIcon, prefixCls } = this.props;
+    if (!showArrow) {
+      return null;
+    }
+    // if loading  icon is show
+    if (multiple && !loading) {
+      return null;
+    }
+    const defaultIcon = loading ? (
+      <i className={`${prefixCls}-arrow-loading`} />
+    ) : (
+      <i className={`${prefixCls}-arrow-icon`} />
+    );
+    return (
+      <span
+        key="arrow"
+        className={`${prefixCls}-arrow`}
+        style={UNSELECTABLE_STYLE}
+        {...UNSELECTABLE_ATTRIBUTE}
+        onClick={this.onArrowClick}
+      >
+        {inputIcon || defaultIcon}
+      </span>
     );
   }
 
@@ -1289,7 +1291,9 @@ class Select extends React.Component {
         style={UNSELECTABLE_STYLE}
         {...UNSELECTABLE_ATTRIBUTE}
         onClick={this.onClearSelection}
-      >{clearIcon || <i className={`${prefixCls}-selection__clear-icon`}>×</i>}</span>
+      >
+        {clearIcon || <i className={`${prefixCls}-selection__clear-icon`}>×</i>}
+      </span>
     );
     if (!allowClear) {
       return null;
@@ -1310,7 +1314,7 @@ class Select extends React.Component {
     const props = this.props;
     const multiple = isMultipleOrTags(props);
     const state = this.state;
-    const { className, disabled, prefixCls, inputIcon } = props;
+    const { className, disabled, prefixCls } = props;
     const ctrlNode = this.renderTopControlNode();
     const { open } = this.state;
     if (open) {
@@ -1403,16 +1407,7 @@ class Select extends React.Component {
           >
             {ctrlNode}
             {this.renderClear()}
-            {multiple || !props.showArrow ? null : (
-              <span
-                key="arrow"
-                className={`${prefixCls}-arrow`}
-                style={UNSELECTABLE_STYLE}
-                {...UNSELECTABLE_ATTRIBUTE}
-                onClick={this.onArrowClick}
-              >
-                {inputIcon || <i className={`${prefixCls}-arrow-icon`} />}
-              </span>)}
+            {this.renderArrow(multiple)}
           </div>
         </div>
       </SelectTrigger>
