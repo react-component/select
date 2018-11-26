@@ -1,14 +1,14 @@
-webpackJsonp([9],{
+webpackJsonp([17],{
 
-/***/ 236:
+/***/ 200:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(237);
+module.exports = __webpack_require__(201);
 
 
 /***/ }),
 
-/***/ 237:
+/***/ 201:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39,6 +39,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+var children = [];
+for (var i = 10; i < 36; i++) {
+  children.push(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+    __WEBPACK_IMPORTED_MODULE_5_rc_select__["Option"],
+    { key: i.toString(36) + i, test: i },
+    i.toString(36) + i
+  ));
+}
 
 var Test = function (_React$Component) {
   __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default()(Test, _React$Component);
@@ -55,150 +63,83 @@ var Test = function (_React$Component) {
     }
 
     return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = Test.__proto__ || Object.getPrototypeOf(Test)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      destroy: false,
-      value: 9
-    }, _this.onChange = function (e) {
-      var value = void 0;
-      if (e && e.target) {
-        value = e.target.value;
-      } else {
-        value = e;
-      }
-      console.log('onChange', value);
+      value: ['name2', 'name3']
+    }, _this.onChange = function (value, option) {
+      console.log('changed ' + value, option);
       _this.setState({
         value: value
       });
-    }, _this.onDestroy = function () {
-      _this.setState({
-        destroy: 1
-      });
-    }, _this.onBlur = function (v) {
-      console.log('onBlur', v);
-    }, _this.onFocus = function () {
-      console.log('onFocus');
+    }, _this.onSelect = function (value, option) {
+      console.log('selected ' + value, option.props);
+    }, _this.onDeselect = function (value, option) {
+      console.log('deselected ' + value, option);
     }, _temp), __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
   }
 
   __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(Test, [{
     key: 'render',
     value: function render() {
-      if (this.state.destroy) {
-        return null;
-      }
       return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
         'div',
-        { style: { margin: 20 } },
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement('div', { style: { height: 150 } }),
+        {
+          onMouseDown: function onMouseDown(e) {
+            e.preventDefault();
+            return false;
+          }
+        },
         __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
           'h2',
           null,
-          'Single Select'
+          'custom dropdown render select'
         ),
         __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
           'div',
-          { style: { width: 300 } },
+          null,
           __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
             __WEBPACK_IMPORTED_MODULE_5_rc_select___default.a,
             {
-              id: 'my-select',
-              value: this.state.value,
               placeholder: 'placeholder',
+              tags: true,
               dropdownMenuStyle: { maxHeight: 200 },
               style: { width: 500 },
-              onBlur: this.onBlur,
-              onFocus: this.onFocus,
-              allowClear: true,
-              optionLabelProp: 'children',
-              optionFilterProp: 'text',
+              value: this.state.value,
               onChange: this.onChange,
-              firstActiveValue: '2',
-              backfill: true
+              onSelect: this.onSelect,
+              onDeselect: this.onDeselect,
+              tokenSeparators: [' ', ','],
+              onFocus: function onFocus() {
+                return console.log('focus');
+              },
+              onBlur: function onBlur() {
+                return console.log('blur');
+              },
+              dropdownRender: function dropdownRender(menu) {
+                return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+                  __WEBPACK_IMPORTED_MODULE_4_react___default.a.Fragment,
+                  null,
+                  __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+                    'div',
+                    {
+                      onClick: function onClick() {
+                        console.log('before clicked');
+                      }
+                    },
+                    'BEFORE'
+                  ),
+                  menu,
+                  __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+                    'div',
+                    {
+                      onClick: function onClick() {
+                        console.log('after clicked');
+                      }
+                    },
+                    'AFTER'
+                  )
+                );
+              }
             },
-            __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-              __WEBPACK_IMPORTED_MODULE_5_rc_select__["Option"],
-              { value: '01', text: 'jack', title: 'jack' },
-              __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-                'b',
-                {
-                  style: {
-                    color: 'red'
-                  }
-                },
-                'jack'
-              )
-            ),
-            __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-              __WEBPACK_IMPORTED_MODULE_5_rc_select__["Option"],
-              { value: '11', text: 'lucy' },
-              'lucy'
-            ),
-            __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-              __WEBPACK_IMPORTED_MODULE_5_rc_select__["Option"],
-              { value: '21', disabled: true, text: 'disabled' },
-              'disabled'
-            ),
-            __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-              __WEBPACK_IMPORTED_MODULE_5_rc_select__["Option"],
-              { value: '31', text: 'yiminghe' },
-              'yiminghe'
-            ),
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (i) {
-              return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_5_rc_select__["Option"],
-                { key: i, value: i, text: String(i) },
-                i,
-                '-text'
-              );
-            })
-          )
-        ),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'h2',
-          null,
-          'native select'
-        ),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'select',
-          {
-            value: this.state.value,
-            style: { width: 500 },
-            onChange: this.onChange
-          },
-          __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-            'option',
-            { value: '01' },
-            'jack'
-          ),
-          __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-            'option',
-            { value: '11' },
-            'lucy'
-          ),
-          __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-            'option',
-            { value: '21', disabled: true },
-            'disabled'
-          ),
-          __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-            'option',
-            { value: '31' },
-            'yiminghe'
-          ),
-          [1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (i) {
-            return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-              'option',
-              { value: i, key: i },
-              i
-            );
-          })
-        ),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'p',
-          null,
-          __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-            'button',
-            { onClick: this.onDestroy },
-            'destroy'
+            children
           )
         )
       );
@@ -212,5 +153,5 @@ __WEBPACK_IMPORTED_MODULE_7_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ })
 
-},[236]);
-//# sourceMappingURL=single.js.map
+},[200]);
+//# sourceMappingURL=dropdownRender.js.map
