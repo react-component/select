@@ -82,7 +82,8 @@ class Select extends React.Component {
     showAction: ['click'],
     tokenSeparators: [],
     autoClearSearchValue: true,
-    tabIndex: "0",    
+    tabIndex: "0",
+    dropdownRender: (menu) => menu,
   };
 
   constructor(props) {
@@ -1379,6 +1380,7 @@ class Select extends React.Component {
         showAction={props.showAction}
         ref={this.saveSelectTriggerRef}
         menuItemSelectedIcon={props.menuItemSelectedIcon}
+        dropdownRender={props.dropdownRender}
       >
         <div
           id={props.id}

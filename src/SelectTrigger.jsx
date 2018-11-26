@@ -49,6 +49,11 @@ export default class SelectTrigger extends React.Component {
       PropTypes.func,
       PropTypes.node,
     ]),
+    dropdownRender: PropTypes.func,
+  };
+
+  static defaultProps = {
+    dropdownRender: (menu) => menu,
   };
 
   constructor(props) {
@@ -87,7 +92,12 @@ export default class SelectTrigger extends React.Component {
 
   getDropdownElement = newProps => {
     const props = this.props;
-    return (
+
+    const {
+      dropdownRender,
+    } = props;
+
+    const menuNode = (
       <DropdownMenu
         ref={this.saveDropdownMenuRef}
         {...newProps}
@@ -102,7 +112,9 @@ export default class SelectTrigger extends React.Component {
         dropdownMenuStyle={props.dropdownMenuStyle}
         menuItemSelectedIcon={props.menuItemSelectedIcon}
       />
-    );
+    )
+
+    return dropdownRender(menuNode, props);
   };
 
   getDropdownTransitionName = () => {
