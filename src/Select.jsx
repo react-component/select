@@ -82,7 +82,7 @@ class Select extends React.Component {
     showAction: ['click'],
     tokenSeparators: [],
     autoClearSearchValue: true,
-    tabIndex: "0",
+    tabIndex: 0,
     dropdownRender: (menu) => menu,
   };
 
