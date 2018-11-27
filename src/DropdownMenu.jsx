@@ -45,7 +45,7 @@ export default class DropdownMenu extends React.Component {
       this.lastVisible = false;
     }
     // freeze when hide
-    return nextProps.visible || nextProps.inputValue !== this.props.inputValue;
+    return (this.props.visible && !nextProps.visible) || nextProps.visible || nextProps.inputValue !== this.props.inputValue;
   }
 
   componentDidUpdate(prevProps) {
@@ -121,6 +121,8 @@ export default class DropdownMenu extends React.Component {
       if (selectedKeys.length || firstActiveValue) {
         if (props.visible && !this.lastVisible) {
           activeKeyProps.activeKey = selectedKeys[0] || firstActiveValue;
+        } else if (!props.visible) {
+          activeKeyProps.activeKey = null;
         }
         let foundFirst = false;
         // set firstActiveItem via cloning menus
