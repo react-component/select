@@ -15,44 +15,23 @@ describe('DropdownMenu', () => {
       </MenuItemGroup>,
     ];
 
-    const wrapper = render(
-      <DropdownMenu
-        menuItems={menuItems}
-        value={['1']}
-      />
-    );
+    const wrapper = render(<DropdownMenu menuItems={menuItems} value={['1']} />);
 
     expect(wrapper).toMatchSnapshot();
   });
 
   it('save first active item', () => {
-    const menuItems = [
-      <MenuItem key="1">1</MenuItem>,
-      <MenuItem key="2">2</MenuItem>,
-    ];
+    const menuItems = [<MenuItem key="1">1</MenuItem>, <MenuItem key="2">2</MenuItem>];
 
-    const wrapper = mount(
-      <DropdownMenu
-        menuItems={menuItems}
-        value={['1']}
-      />
-    );
+    const wrapper = mount(<DropdownMenu menuItems={menuItems} value={['1']} />);
 
     expect(wrapper.instance().firstActiveItem.props.children).toBe('1');
   });
 
   it('set active key to menu', () => {
-    const menuItems = [
-      <MenuItem key="1">1</MenuItem>,
-      <MenuItem key="2">2</MenuItem>,
-    ];
+    const menuItems = [<MenuItem key="1">1</MenuItem>, <MenuItem key="2">2</MenuItem>];
 
-    const wrapper = mount(
-      <DropdownMenu
-        menuItems={menuItems}
-        value={['1']}
-      />
-    );
+    const wrapper = mount(<DropdownMenu menuItems={menuItems} value={['1']} />);
 
     wrapper.setProps({ visible: true });
     expect(wrapper.find('Menu').props().activeKey).toBe('1');
@@ -62,33 +41,17 @@ describe('DropdownMenu', () => {
   });
 
   it('save firstActiveValue', () => {
-    const menuItems = [
-      <MenuItem key="1">1</MenuItem>,
-      <MenuItem key="2">2</MenuItem>,
-    ];
+    const menuItems = [<MenuItem key="1">1</MenuItem>, <MenuItem key="2">2</MenuItem>];
 
-    const wrapper = mount(
-      <DropdownMenu
-        menuItems={menuItems}
-        firstActiveValue="2"
-      />
-    );
+    const wrapper = mount(<DropdownMenu menuItems={menuItems} firstActiveValue="2" />);
 
     expect(wrapper.instance().firstActiveItem.props.children).toBe('2');
   });
 
   it('set firstActiveValue key to menu', () => {
-    const menuItems = [
-      <MenuItem key="1">1</MenuItem>,
-      <MenuItem key="2">2</MenuItem>,
-    ];
+    const menuItems = [<MenuItem key="1">1</MenuItem>, <MenuItem key="2">2</MenuItem>];
 
-    const wrapper = mount(
-      <DropdownMenu
-        menuItems={menuItems}
-        firstActiveValue="2"
-      />
-    );
+    const wrapper = mount(<DropdownMenu menuItems={menuItems} firstActiveValue="2" />);
 
     wrapper.setProps({ visible: true });
     expect(wrapper.find('Menu').props().activeKey).toBe('2');
@@ -98,26 +61,17 @@ describe('DropdownMenu', () => {
   });
 
   it('save value not firstActiveValue', () => {
-    const menuItems = [
-      <MenuItem key="1">1</MenuItem>,
-      <MenuItem key="2">2</MenuItem>,
-    ];
+    const menuItems = [<MenuItem key="1">1</MenuItem>, <MenuItem key="2">2</MenuItem>];
 
     const wrapper = mount(
-      <DropdownMenu
-        value={['1']}
-        menuItems={menuItems}
-        firstActiveValue="2"
-      />
+      <DropdownMenu value={['1']} menuItems={menuItems} firstActiveValue="2" />,
     );
 
     expect(wrapper.instance().firstActiveItem.props.children).toBe('1');
   });
 
   it('save visible and inputValue when update', () => {
-    const wrapper = mount(
-      <DropdownMenu />
-    );
+    const wrapper = mount(<DropdownMenu />);
 
     wrapper.setProps({ visible: true, inputValue: 'foo' });
 
@@ -126,18 +80,14 @@ describe('DropdownMenu', () => {
   });
 
   it('not update when next visible is false', () => {
-    const wrapper = mount(
-      <DropdownMenu />
-    );
+    const wrapper = mount(<DropdownMenu />);
 
     expect(wrapper.instance().shouldComponentUpdate({ visible: true })).toBe(true);
     expect(wrapper.instance().shouldComponentUpdate({ visible: false })).toBe(false);
   });
 
   it('should updated when input value change', () => {
-    const wrapper = mount(
-      <DropdownMenu visible={false} inputValue="test" />
-    );
+    const wrapper = mount(<DropdownMenu visible={false} inputValue="test" />);
 
     expect(wrapper.instance().shouldComponentUpdate({ inputValue: 'test2' })).toBe(true);
   });

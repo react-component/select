@@ -12,12 +12,18 @@ export default function hoverTest(mode) {
       <Select {...{ [mode]: true }} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
 
-    wrapper.find('.rc-select').first().simulate('mouseenter');
+    wrapper
+      .find('.rc-select')
+      .first()
+      .simulate('mouseenter');
     expect(onMouseEnter).toBeCalled();
-    wrapper.find('.rc-select').first().simulate('mouseleave');
+    wrapper
+      .find('.rc-select')
+      .first()
+      .simulate('mouseleave');
     expect(onMouseLeave).toBeCalled();
   });
 }

@@ -17,13 +17,23 @@ export default function removeSelectedTest(mode) {
           onDeselect={handleDeselect}
           {...{ [mode]: true }}
         >
-          <Option value="1" testprop="deselect">1</Option>
+          <Option value="1" testprop="deselect">
+            1
+          </Option>
           <Option value="2">2</Option>
-        </Select>
+        </Select>,
       );
-      wrapper.find('.rc-select-selection__choice__remove').first().simulate('click');
+      wrapper
+        .find('.rc-select-selection__choice__remove')
+        .first()
+        .simulate('click');
 
-      expect(handleDeselect).toBeCalledWith('1', <Option value="1" testprop="deselect">1</Option>);
+      expect(handleDeselect).toBeCalledWith(
+        '1',
+        <Option value="1" testprop="deselect">
+          1
+        </Option>,
+      );
       expect(handleChange).toBeCalledWith(['2'], expect.anything());
     });
 
@@ -40,9 +50,12 @@ export default function removeSelectedTest(mode) {
         >
           <Option value="1">1</Option>
           <Option value="2">2</Option>
-        </Select>
+        </Select>,
       );
-      wrapper.find('.rc-select-selection__choice__remove').first().simulate('click');
+      wrapper
+        .find('.rc-select-selection__choice__remove')
+        .first()
+        .simulate('click');
 
       expect(handleDeselect).not.toHaveBeenCalled();
       expect(handleChange).not.toHaveBeenCalled();
@@ -61,46 +74,41 @@ export default function removeSelectedTest(mode) {
         >
           <Option value="1">1</Option>
           <Option value="2">2</Option>
-        </Select>
+        </Select>,
       );
-      wrapper.find('.rc-select-selection__choice__remove').first().simulate('click');
+      wrapper
+        .find('.rc-select-selection__choice__remove')
+        .first()
+        .simulate('click');
 
       expect(handleDeselect).toHaveBeenCalledWith(
         { key: '1', label: '1' },
-        <Option value="1">1</Option>
+        <Option value="1">1</Option>,
       );
       expect(handleChange).toHaveBeenCalledWith(
         [{ key: '2', label: '2' }],
-        [<Option value="2">2</Option>]
+        [<Option value="2">2</Option>],
       );
     });
 
     it('remove by backspace key', () => {
       const wrapper = mount(
-        <Select
-          defaultValue={['1', '2']}
-          {...{ [mode]: true }}
-        >
+        <Select defaultValue={['1', '2']} {...{ [mode]: true }}>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
-        </Select>
+        </Select>,
       );
 
       wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.BACKSPACE });
       expect(wrapper.state().value).toEqual(['1']);
-      expect(
-        wrapper.find('.rc-select-selection__choice__content').text()
-      ).toBe('1');
+      expect(wrapper.find('.rc-select-selection__choice__content').text()).toBe('1');
     });
 
     it('remove by menu deselect', () => {
       const wrapper = mount(
-        <Select
-          defaultValue={['1']}
-          {...{ [mode]: true }}
-        >
+        <Select defaultValue={['1']} {...{ [mode]: true }}>
           <Option value="1">1</Option>
-        </Select>
+        </Select>,
       );
 
       wrapper.find('.rc-select').simulate('click');

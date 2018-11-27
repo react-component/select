@@ -6,6 +6,7 @@ exports[`Select.multiple allowClear renders correctly 1`] = `
 >
   <div
     aria-autocomplete="list"
+    aria-controls="test-uuid"
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
@@ -42,6 +43,7 @@ exports[`Select.multiple allowClear renders correctly 1`] = `
 
 exports[`Select.multiple render render animation 1`] = `
 <SelectTrigger
+  ariaId="test-uuid"
   defaultActiveFirstOption={true}
   dropdownMatchSelectWidth={true}
   dropdownMenuStyle={Object {}}
@@ -74,6 +76,7 @@ exports[`Select.multiple render render animation 1`] = `
   >
     <div
       aria-autocomplete="list"
+      aria-controls="test-uuid"
       aria-expanded={false}
       aria-haspopup="true"
       className="rc-select-selection
@@ -131,6 +134,7 @@ exports[`Select.multiple render truncates tags by maxTagCount 1`] = `
 >
   <div
     aria-autocomplete="list"
+    aria-controls="test-uuid"
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
@@ -225,6 +229,7 @@ exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPla
 >
   <div
     aria-autocomplete="list"
+    aria-controls="test-uuid"
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
@@ -320,6 +325,7 @@ exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPla
 >
   <div
     aria-autocomplete="list"
+    aria-controls="test-uuid"
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
@@ -415,6 +421,7 @@ exports[`Select.multiple render truncates tags by maxTagCount while maxTagCount 
 >
   <div
     aria-autocomplete="list"
+    aria-controls="test-uuid"
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
@@ -467,6 +474,7 @@ exports[`Select.multiple render truncates values by maxTagTextLength 1`] = `
 >
   <div
     aria-autocomplete="list"
+    aria-controls="test-uuid"
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection

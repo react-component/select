@@ -60,7 +60,7 @@ describe('Select', () => {
         React.cloneElement(select, {
           'data-test': 'test-id',
           'data-id': '12345',
-        })
+        }),
       );
       expect(wrapper).toMatchSnapshot();
     });
@@ -70,7 +70,7 @@ describe('Select', () => {
         React.cloneElement(select, {
           'aria-labelledby': 'test-id',
           'aria-label': 'some-label',
-        })
+        }),
       );
       expect(wrapper).toMatchSnapshot();
     });
@@ -79,7 +79,7 @@ describe('Select', () => {
       const wrapper = render(
         React.cloneElement(select, {
           role: 'button',
-        })
+        }),
       );
       expect(wrapper).toMatchSnapshot();
     });
@@ -93,7 +93,7 @@ describe('Select', () => {
             1-label
           </Option>
         </OptGroup>
-      </Select>
+      </Select>,
     );
     expect(wrapper.state().value).toEqual(['1']);
     expect(wrapper.find('.rc-select-selection-selected-value').text()).toEqual('1-label');
@@ -108,7 +108,7 @@ describe('Select', () => {
             1
           </Option>
         </OptGroup>
-      </Select>
+      </Select>,
     );
     expect(wrapper.state().value).toEqual(['1']);
     expect(wrapper.find('.rc-select-selection-selected-value').text()).toEqual('1');
@@ -127,7 +127,7 @@ describe('Select', () => {
       <Select defaultValue="2">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
     wrapper.find('.rc-select').simulate('click');
     expect(wrapper.find('Menu').props().selectedKeys).toEqual(['2']);
@@ -139,7 +139,7 @@ describe('Select', () => {
         <Option value="1">1</Option>
         <Option value="2">2</Option>
         <Option value="3">2</Option>
-      </Select>
+      </Select>,
     );
     wrapper.find('.rc-select').simulate('click');
     expect(wrapper.find('Menu').props().selectedKeys).toEqual(['1', '2']);
@@ -150,7 +150,7 @@ describe('Select', () => {
       <Select allowClear>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
     expect(wrapper.find('.rc-select-selection__clear').length).toBe(0);
   });
@@ -160,7 +160,7 @@ describe('Select', () => {
       <Select disabled defaultValue="2">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
     wrapper.find('.rc-select').simulate('click');
     expect(wrapper.state().open).toBe(false);
@@ -171,7 +171,7 @@ describe('Select', () => {
       <Select value="1">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
 
     expect(wrapper.find('.rc-select-selection-selected-value').props().children).toBe('1');
@@ -182,7 +182,7 @@ describe('Select', () => {
       <Select>
         <Option value="1">One</Option>
         <Option value="2">Two</Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('input').simulate('change', { target: { value: '1' } });
@@ -195,7 +195,7 @@ describe('Select', () => {
       <Select filterOption>
         <Option value="1">One</Option>
         <Option value="2">Two</Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('input').simulate('change', { target: { value: '2' } });
@@ -208,7 +208,7 @@ describe('Select', () => {
       <Select filterOption={false}>
         <Option value="1">One</Option>
         <Option value="2">Two</Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('input').simulate('change', { target: { value: '1' } });
@@ -224,7 +224,7 @@ describe('Select', () => {
         <Option value="2" label="Two">
           2
         </Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('input').simulate('change', { target: { value: 'Two' } });
@@ -242,7 +242,7 @@ describe('Select', () => {
         <Option value="2" label="Two">
           Two{2}
         </Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('input').simulate('change', { target: { value: 'Two2' } });
@@ -256,7 +256,7 @@ describe('Select', () => {
       <Select showSearch={false} value="1">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
 
     expect(wrapper).toMatchSnapshot();
@@ -269,7 +269,7 @@ describe('Select', () => {
         {null}
         <Option value="2">2</Option>
         {false}
-      </Select>
+      </Select>,
     );
 
     expect(wrapper).toMatchSnapshot();
@@ -280,7 +280,7 @@ describe('Select', () => {
       <Select value="1">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('input').simulate('keyDown', { keyCode: 40 });
@@ -293,7 +293,7 @@ describe('Select', () => {
       <Select value="1" allowClear onChange={handleChange}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('input').simulate('change', { target: { value: 'foo' } });
@@ -310,7 +310,7 @@ describe('Select', () => {
           One
         </Option>
         <Option value="2">Two</Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('.rc-select').simulate('click');
@@ -322,7 +322,7 @@ describe('Select', () => {
       { key: '1', label: 'One' },
       <Option value="1" testprop="test">
         One
-      </Option>
+      </Option>,
     );
   });
 
@@ -336,7 +336,7 @@ describe('Select', () => {
           </Option>
         </OptGroup>
         <Option value="2">Two</Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('.rc-select').simulate('click');
@@ -348,7 +348,7 @@ describe('Select', () => {
       { key: '1', label: 'One' },
       <Option value="1" testprop="test">
         One
-      </Option>
+      </Option>,
     );
   });
 
@@ -356,7 +356,7 @@ describe('Select', () => {
     const wrapper = mount(
       <Select labelInValue value={{ key: 1, label: 'One' }}>
         <Option value="2">Two</Option>
-      </Select>
+      </Select>,
     );
     expect(wrapper.find('.rc-select-selection-selected-value').text()).toEqual('One');
   });
@@ -367,7 +367,7 @@ describe('Select', () => {
       <Select showSearch onSearch={handleSearch}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('input').simulate('change', { target: { value: '1' } });
@@ -380,7 +380,7 @@ describe('Select', () => {
       <Select showSearch onSearch={handleSearch}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
     wrapper.find('.rc-select').simulate('click');
     wrapper
@@ -397,7 +397,7 @@ describe('Select', () => {
       <Select showSearch onSearch={handleSearch}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
     wrapper.find('input').simulate('change', { target: { value: '1' } });
     wrapper
@@ -416,7 +416,7 @@ describe('Select', () => {
         <Select onFocus={handleFocus}>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
-        </Select>
+        </Select>,
       );
       jest.useFakeTimers();
       wrapper.find('.rc-select').simulate('focus');
@@ -446,7 +446,7 @@ describe('Select', () => {
         <Select onFocus={handleFocus}>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
-        </Select>
+        </Select>,
       );
       jest.useFakeTimers();
       wrapper.find('.rc-select input').simulate('click');
@@ -472,7 +472,7 @@ describe('Select', () => {
         <Select onFocus={handleFocus2} placeholder="xxxx">
           <Option value="1">1</Option>
           <Option value="2">2</Option>
-        </Select>
+        </Select>,
       );
       jest.useFakeTimers();
       wrapper2.find('.rc-select-selection__placeholder').simulate('click');
@@ -498,7 +498,7 @@ describe('Select', () => {
           <Option value={2} key={2}>
             2-text
           </Option>
-        </Select>
+        </Select>,
       );
       jest.useFakeTimers();
       wrapper.find('input').simulate('change', { target: { value: '1' } });
@@ -511,7 +511,7 @@ describe('Select', () => {
         wrapper
           .update()
           .find('.rc-select-selection-selected-value')
-          .text()
+          .text(),
       ).toBe('1-text');
     });
 
@@ -537,7 +537,7 @@ describe('Select', () => {
         <Select showSearch={false}>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
-        </Select>
+        </Select>,
       );
       wrapper.find('.rc-select').simulate('click');
       expect(wrapper.state().open).toBe(true);
@@ -554,7 +554,7 @@ describe('Select', () => {
         <Select onFocus={onFocus} onBlur={onBlur} disabled>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
-        </Select>
+        </Select>,
       );
       jest.useFakeTimers();
       wrapper.find('.rc-select').simulate('focus');
@@ -574,7 +574,7 @@ describe('Select', () => {
         <Select>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
-        </Select>
+        </Select>,
       );
       instance = wrapper.instance();
     });
@@ -630,7 +630,7 @@ describe('Select', () => {
     const wrapper = mount(
       <Select>
         <Option value="1">1</Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('.rc-select').simulate('click');
@@ -644,7 +644,7 @@ describe('Select', () => {
     const wrapper = mount(
       <Select>
         <Option value="1">1</Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('.rc-select-arrow').simulate('click');
@@ -655,7 +655,7 @@ describe('Select', () => {
     const wrapper = mount(
       <Select open>
         <Option value="1">1</Option>
-      </Select>
+      </Select>,
     );
     expect(wrapper.state().open).toBe(true);
     wrapper.find('MenuItem').simulate('click');
@@ -696,7 +696,7 @@ describe('Select', () => {
     const wrapper = mount(
       <Select placeholder="select">
         <Option value="1">1</Option>
-      </Select>
+      </Select>,
     );
 
     const input = wrapper.find('input').instance();
@@ -712,7 +712,7 @@ describe('Select', () => {
       <Select combobox getInputElement={() => <textarea onKeyDown={handleKeyDown} />}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
 
     expect(wrapper.find('textarea').length).toBe(1);
@@ -746,7 +746,7 @@ describe('Select', () => {
       expect(spy.mock.calls[0][0]).toMatch(
         'Warning: Failed prop type: Invalid prop `value` supplied to `Select`, ' +
           'when you set `labelInValue` to `true`,' +
-          ' `value` should in shape of `{ key: string | number, label?: ReactNode }`'
+          ' `value` should in shape of `{ key: string | number, label?: ReactNode }`',
       );
     });
 
@@ -754,7 +754,7 @@ describe('Select', () => {
       mount(<Select multiple value="" />);
       expect(spy.mock.calls[0][0]).toMatch(
         'Warning: Failed prop type: Invalid prop `value` of type `string` supplied to `Select`, ' +
-          'expected `array` when `multiple` or `tags` is `true`'
+          'expected `array` when `multiple` or `tags` is `true`',
       );
     });
   });
@@ -766,7 +766,7 @@ describe('Select', () => {
           <Option value="1">1</Option>
           <Option value="2">2</Option>
         </OptGroup>
-      </Select>
+      </Select>,
     );
 
     expect(wrapper.find('MenuItemGroup').props().title).toBe('group1');
@@ -780,7 +780,7 @@ describe('Select', () => {
         <Option value="11" disabled>
           11
         </Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('input').simulate('change', { target: { value: '1' } });
@@ -795,7 +795,7 @@ describe('Select', () => {
           name1
         </Option>
         <Option key="name2">name2</Option>
-      </Select>
+      </Select>,
     );
     expect(wrapper.find('li.rc-select-dropdown-menu-item')).toHaveLength(2);
   });
@@ -805,7 +805,7 @@ describe('Select', () => {
       <Select open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('input').simulate('change', { target: { value: '3' } });
@@ -819,12 +819,12 @@ describe('Select', () => {
     mount(
       <Select open>
         <Foo value="1" />
-      </Select>
+      </Select>,
     );
     expect(spy.mock.calls.length).toBe(1);
     expect(spy.mock.calls[0][0]).toContain(
       'the children of `Select` should be `Select.Option` or `Select.OptGroup`, ' +
-        `instead of \`Foo\`.`
+        `instead of \`Foo\`.`,
     );
     spy.mockRestore();
   });
@@ -834,7 +834,7 @@ describe('Select', () => {
       <Select inputValue="3" filterOption open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
 
     expect(wrapper).toMatchSnapshot();
@@ -845,7 +845,7 @@ describe('Select', () => {
       <Select inputValue="1" filterOption={false} open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
 
     expect(wrapper).toMatchSnapshot();
@@ -864,7 +864,7 @@ describe('Select', () => {
       >
         <Option value="1">One</Option>
         <Option value="2">Two</Option>
-      </Select>
+      </Select>,
     );
 
     const input = wrapper.find('input');
@@ -892,7 +892,7 @@ describe('Select', () => {
         <Select defaultValue={1} onChange={handleChange}>
           <Option value={1}>1</Option>
           <Option value={2}>2</Option>
-        </Select>
+        </Select>,
       );
 
       expect(wrapper.find('.rc-select-selection-selected-value').text()).toBe('1');
@@ -911,7 +911,7 @@ describe('Select', () => {
         <Select showSearch>
           <Option value={1}>1</Option>
           <Option value={2}>2</Option>
-        </Select>
+        </Select>,
       );
 
       wrapper.find('input').simulate('change', { target: { value: '1' } });
@@ -923,7 +923,7 @@ describe('Select', () => {
     const wrapper = render(
       <Select
         open
-        dropdownRender={(menu) => (
+        dropdownRender={menu => (
           <div>
             <div className="dropdown-custom-node">CUSTOM NODE</div>
             {menu}
@@ -932,7 +932,7 @@ describe('Select', () => {
       >
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
     expect(wrapper).toMatchSnapshot();
   });
@@ -941,7 +941,7 @@ describe('Select', () => {
     const handleClick = jest.fn();
     const wrapper = mount(
       <Select
-        dropdownRender={(menu) => (
+        dropdownRender={menu => (
           <div>
             <div id="dropdown-custom-node" onClick={handleClick}>
               CUSTOM NODE
@@ -952,7 +952,7 @@ describe('Select', () => {
       >
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('.rc-select').simulate('click');
@@ -964,7 +964,7 @@ describe('Select', () => {
     const wrapper = mount(
       <Select showAction={['mouseEnter']}>
         <Option value="1">1</Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('.rc-select').simulate('click');
@@ -980,7 +980,7 @@ describe('Select', () => {
       <Select>
         <Option value="ABC">ABC</Option>
         <Option value="DEF">DEF</Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('input').simulate('change', { target: { value: 'B' } });
@@ -994,7 +994,7 @@ describe('Select', () => {
         <Option value="0">
           <span>Not Show Title</span>
         </Option>
-      </Select>
+      </Select>,
     );
     expect(wrapper).toMatchSnapshot();
   });
@@ -1003,7 +1003,7 @@ describe('Select', () => {
     const wrapper = render(
       <Select id="my-select">
         <Option value="1">One</Option>
-      </Select>
+      </Select>,
     );
 
     expect(wrapper.find('#my-select').length).toBe(1);
@@ -1022,7 +1022,7 @@ describe('Select', () => {
         <Option value="Burns Bay Road">Burns Bay Road</Option>
         <Option value="Downing Street">Downing Street</Option>
         <Option value="Wall Street">Wall Street</Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('input').simulate('change', { target: { value: 'b' } });
@@ -1048,7 +1048,7 @@ describe('Select', () => {
     const wrapper = mount(
       <Select onChange={onChange}>
         <Option value={0}>0</Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('.rc-select').simulate('click');
@@ -1075,7 +1075,7 @@ describe('Select', () => {
       <Select style={{ width: 1000 }} dropdownMatchSelectWidth={false}>
         <Option value={0}>0</Option>
         <Option value={1}>1</Option>
-      </Select>
+      </Select>,
     );
     wrapper.find('.rc-select').simulate('click');
     expect(typeof wrapper.find('SelectTrigger').state().dropdownWidth).toBe('number');
@@ -1086,22 +1086,22 @@ describe('Select', () => {
       <Select style={{ width: 1000 }} loading dropdownMatchSelectWidth={false}>
         <Option value={0}>0</Option>
         <Option value={1}>1</Option>
-      </Select>
+      </Select>,
     );
     expect(wrapper.find('.rc-select-arrow-loading').length).toBe(1);
   });
   it('if loading=true and multiple=true, has not arrow, but have loading icon', () => {
-    // multiple=true loading and arrow don't have 
+    // multiple=true loading and arrow don't have
     const wrapper = mount(
       <Select style={{ width: 1000 }} multiple dropdownMatchSelectWidth={false}>
         <Option value={0}>0</Option>
         <Option value={1}>1</Option>
-      </Select>
+      </Select>,
     );
     expect(wrapper.find('.rc-select-arrow-icon').length).toBe(0);
     expect(wrapper.find('.rc-select-arrow-loading').length).toBe(0);
 
-    // multiple=true loading=true  loading do have 
+    // multiple=true loading=true  loading do have
     wrapper.setProps({
       loading: true,
     });

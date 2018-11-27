@@ -45,15 +45,13 @@ export default class SelectTrigger extends React.Component {
     popupClassName: PropTypes.string,
     children: PropTypes.any,
     showAction: PropTypes.arrayOf(PropTypes.string),
-    menuItemSelectedIcon: PropTypes.oneOfType([
-      PropTypes.func,
-      PropTypes.node,
-    ]),
+    menuItemSelectedIcon: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     dropdownRender: PropTypes.func,
+    ariaId: PropTypes.string,
   };
 
   static defaultProps = {
-    dropdownRender: (menu) => menu,
+    dropdownRender: menu => menu,
   };
 
   constructor(props) {
@@ -80,7 +78,7 @@ export default class SelectTrigger extends React.Component {
     if (width !== this.state.dropdownWidth) {
       this.setState({ dropdownWidth: width });
     }
-  }
+  };
 
   getInnerMenu = () => {
     return this.dropdownMenuRef && this.dropdownMenuRef.menuRef;
@@ -93,14 +91,13 @@ export default class SelectTrigger extends React.Component {
   getDropdownElement = newProps => {
     const props = this.props;
 
-    const {
-      dropdownRender,
-    } = props;
+    const { dropdownRender, ariaId } = props;
 
     const menuNode = (
       <DropdownMenu
         ref={this.saveDropdownMenuRef}
         {...newProps}
+        ariaId={ariaId}
         prefixCls={this.getDropdownPrefixCls()}
         onMenuSelect={props.onMenuSelect}
         onMenuDeselect={props.onMenuDeselect}
@@ -112,7 +109,7 @@ export default class SelectTrigger extends React.Component {
         dropdownMenuStyle={props.dropdownMenuStyle}
         menuItemSelectedIcon={props.menuItemSelectedIcon}
       />
-    )
+    );
 
     return dropdownRender(menuNode, props);
   };
@@ -168,7 +165,6 @@ export default class SelectTrigger extends React.Component {
     if (this.state.dropdownWidth) {
       popupStyle[widthProp] = `${this.state.dropdownWidth}px`;
     }
-
     return (
       <Trigger
         {...props}

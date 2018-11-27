@@ -44,24 +44,40 @@ describe('Select.multiple', () => {
     const input = wrapper.find('input');
     input.instance().focus = jest.fn();
 
-    input.simulate('change', { target: {
-      value: 'One',
-    } });
+    input.simulate('change', {
+      target: {
+        value: 'One',
+      },
+    });
 
-    input.simulate('change', { target: {
-      value: 'One,Two,Three',
-    } });
+    input.simulate('change', {
+      target: {
+        value: 'One,Two,Three',
+      },
+    });
 
-    input.simulate('change', { target: {
-      value: 'One,Two',
-    } });
+    input.simulate('change', {
+      target: {
+        value: 'One,Two',
+      },
+    });
 
     expect(handleChange).toBeCalledWith(['1', '2'], expect.anything());
     expect(handleChange).toHaveBeenCalledTimes(1);
     expect(handleSelect).toHaveBeenCalledTimes(2);
     expect(wrapper.state().value).toEqual(['1', '2']);
-    expect(wrapper.find('.rc-select-selection__choice__content').at(0).text()).toEqual('One');
-    expect(wrapper.find('.rc-select-selection__choice__content').at(1).text()).toEqual('Two');
+    expect(
+      wrapper
+        .find('.rc-select-selection__choice__content')
+        .at(0)
+        .text(),
+    ).toEqual('One');
+    expect(
+      wrapper
+        .find('.rc-select-selection__choice__content')
+        .at(1)
+        .text(),
+    ).toEqual('Two');
     expect(wrapper.state().inputValue).toBe('');
     expect(wrapper.state().open).toBe(false);
     expect(input.instance().focus).toBeCalled();
@@ -70,10 +86,7 @@ describe('Select.multiple', () => {
   it('focus', () => {
     const handleFocus = jest.fn();
     const wrapper = mount(
-      <Select
-        multiple
-        onFocus={handleFocus}
-      >
+      <Select multiple onFocus={handleFocus}>
         <Option value="1">One</Option>
         <Option value="2">Two</Option>
       </Select>,
@@ -87,10 +100,7 @@ describe('Select.multiple', () => {
   it('OptGroup without key', () => {
     expect(() => {
       mount(
-        <Select
-          multiple
-          defaultValue={['1']}
-        >
+        <Select multiple defaultValue={['1']}>
           <OptGroup label="group1">
             <Option value="1">One</Option>
           </OptGroup>
@@ -108,22 +118,33 @@ describe('Select.multiple', () => {
     const wrapper = mount(
       <Select multiple defaultValue={1} onChange={handleChange}>
         <Option value={1}>1</Option>
-        <Option value={2} testprop={2}>2</Option>
-      </Select>
+        <Option value={2} testprop={2}>
+          2
+        </Option>
+      </Select>,
     );
 
-    expect(
-      wrapper.find('.rc-select-selection__choice__content').text()
-    ).toBe('1');
+    expect(wrapper.find('.rc-select-selection__choice__content').text()).toBe('1');
 
     wrapper.find('.rc-select').simulate('click');
-    wrapper.find('MenuItem').at(1).simulate('click');
-    expect(handleChange).toBeCalledWith([1, 2], [
-      <Option value={1}>1</Option>,
-      <Option value={2} testprop={2}>2</Option>,
-    ]);
+    wrapper
+      .find('MenuItem')
+      .at(1)
+      .simulate('click');
+    expect(handleChange).toBeCalledWith(
+      [1, 2],
+      [
+        <Option value={1}>1</Option>,
+        <Option value={2} testprop={2}>
+          2
+        </Option>,
+      ],
+    );
     expect(
-      wrapper.find('.rc-select-selection__choice__content').at(1).text()
+      wrapper
+        .find('.rc-select-selection__choice__content')
+        .at(1)
+        .text(),
     ).toBe('2');
   });
 
@@ -132,13 +153,22 @@ describe('Select.multiple', () => {
       <Select multiple>
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
-      </Select>
+      </Select>,
     );
     wrapper.find('.rc-select-selection').simulate('click');
-    wrapper.find('.rc-select-dropdown-menu-item').at(0).simulate('click');
-    wrapper.find('.rc-select-dropdown-menu-item').at(1).simulate('click');
+    wrapper
+      .find('.rc-select-dropdown-menu-item')
+      .at(0)
+      .simulate('click');
+    wrapper
+      .find('.rc-select-dropdown-menu-item')
+      .at(1)
+      .simulate('click');
     wrapper.setState({ open: false });
-    wrapper.find('.rc-select-selection__choice__remove').at(0).simulate('click');
+    wrapper
+      .find('.rc-select-selection__choice__remove')
+      .at(0)
+      .simulate('click');
     expect(wrapper.state('open')).toBe(false);
     expect(wrapper.state('value')).toEqual([2]);
   });
@@ -148,12 +178,15 @@ describe('Select.multiple', () => {
       <Select multiple>
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
-      </Select>
+      </Select>,
     );
     wrapper.find('.rc-select-selection').simulate('click');
     const meunItem = wrapper.find('.rc-select-dropdown-menu-item').at(1);
     // add active to meunItem
-    meunItem.simulate('mouseenter').simulate('mouseover').simulate('keyDown', { keyCode: 13 });
+    meunItem
+      .simulate('mouseenter')
+      .simulate('mouseover')
+      .simulate('keyDown', { keyCode: 13 });
     expect(wrapper.state('open')).toBe(true);
     expect(wrapper.state('value')).toEqual([2]);
     wrapper.unmount();
@@ -164,17 +197,22 @@ describe('Select.multiple', () => {
       <Select multiple>
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
-      </Select>
+      </Select>,
     );
     wrapper.find('.rc-select-selection').simulate('click');
     const meunItem = wrapper.find('.rc-select-dropdown-menu-item').at(1);
     // add active to meunItem
-    meunItem.simulate('mouseenter').simulate('mouseover').simulate('keyDown', { keyCode: 13 });
-    meunItem.simulate('mouseenter').simulate('mouseover').simulate('keyDown', { keyCode: 13 });
+    meunItem
+      .simulate('mouseenter')
+      .simulate('mouseover')
+      .simulate('keyDown', { keyCode: 13 });
+    meunItem
+      .simulate('mouseenter')
+      .simulate('mouseover')
+      .simulate('keyDown', { keyCode: 13 });
     expect(wrapper.state('open')).toBe(true);
     expect(wrapper.state('value')).toEqual([]);
   });
-
 
   it('do not crash when children has empty', () => {
     const wrapper = mount(
@@ -182,11 +220,14 @@ describe('Select.multiple', () => {
         {null}
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('.rc-select-selection').simulate('click');
-    wrapper.find('.rc-select-dropdown-menu-item').at(0).simulate('click');
+    wrapper
+      .find('.rc-select-dropdown-menu-item')
+      .at(0)
+      .simulate('click');
 
     // Do not crash
   });
@@ -196,11 +237,9 @@ describe('Select.multiple', () => {
       <Select multiple value={['']}>
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
-      </Select>
+      </Select>,
     );
 
-    expect(
-      wrapper.find('.rc-select-selection__choice__content').length
-    ).toBe(1);
+    expect(wrapper.find('.rc-select-selection__choice__content').length).toBe(1);
   });
 });

@@ -11,7 +11,7 @@ export default function keyDownTest(mode) {
       <Select {...{ [mode]: true }} onInputKeyDown={onInputKeyDown}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('input').simulate('keydown');

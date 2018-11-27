@@ -27,34 +27,38 @@ describe('Select.tags', () => {
   openControlledTest('tags');
 
   it('allow user input tags', () => {
-    const wrapper = mount(
-      <Select tags />
-    );
+    const wrapper = mount(<Select tags />);
 
-    wrapper.find('input')
+    wrapper
+      .find('input')
       .simulate('change', { target: { value: 'foo' } })
       .simulate('keyDown', { keyCode: KeyCode.ENTER });
 
     expect(wrapper.state().value).toEqual(['foo']);
     expect(
-      wrapper.update().find('.rc-select-selection__choice__content').text()
+      wrapper
+        .update()
+        .find('.rc-select-selection__choice__content')
+        .text(),
     ).toBe('foo');
   });
 
   it('should call onChange on blur', () => {
-    const wrapper = mount(
-      <Select tags />
-    );
+    const wrapper = mount(<Select tags />);
 
     jest.useFakeTimers();
-    wrapper.find('input')
+    wrapper
+      .find('input')
       .simulate('change', { target: { value: 'foo' } })
       .simulate('blur');
 
     jest.runAllTimers();
     expect(wrapper.state().value).toEqual(['foo']);
     expect(
-      wrapper.update().find('.rc-select-selection__choice__content').text()
+      wrapper
+        .update()
+        .find('.rc-select-selection__choice__content')
+        .text(),
     ).toBe('foo');
   });
 
@@ -63,12 +67,7 @@ describe('Select.tags', () => {
     const handleSelect = jest.fn();
     const option2 = <Option value="2">2</Option>;
     const wrapper = mount(
-      <Select
-        tags
-        tokenSeparators={[',']}
-        onChange={handleChange}
-        onSelect={handleSelect}
-      >
+      <Select tags tokenSeparators={[',']} onChange={handleChange} onSelect={handleSelect}>
         <Option value="1">1</Option>
         {option2}
       </Select>,
@@ -81,16 +80,30 @@ describe('Select.tags', () => {
 
     expect(handleChange).toBeCalledWith(['2', '3', '4'], expect.anything());
     expect(handleSelect).toHaveBeenCalledTimes(3);
-    expect(handleSelect).toHaveBeenLastCalledWith('4', <Option key="4" value="4">4</Option>);
+    expect(handleSelect).toHaveBeenLastCalledWith(
+      '4',
+      <Option key="4" value="4">
+        4
+      </Option>,
+    );
     expect(wrapper.state().value).toEqual(['2', '3', '4']);
     expect(
-      wrapper.find('.rc-select-selection__choice__content').at(0).text()
+      wrapper
+        .find('.rc-select-selection__choice__content')
+        .at(0)
+        .text(),
     ).toBe('2');
     expect(
-      wrapper.find('.rc-select-selection__choice__content').at(1).text()
+      wrapper
+        .find('.rc-select-selection__choice__content')
+        .at(1)
+        .text(),
     ).toBe('3');
     expect(
-      wrapper.find('.rc-select-selection__choice__content').at(2).text()
+      wrapper
+        .find('.rc-select-selection__choice__content')
+        .at(2)
+        .text(),
     ).toBe('4');
     expect(wrapper.state().inputValue).toBe('');
     expect(wrapper.state().open).toBe(false);
@@ -102,7 +115,7 @@ describe('Select.tags', () => {
       <Select tags value="3" open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
 
     expect(wrapper).toMatchSnapshot();
@@ -112,7 +125,7 @@ describe('Select.tags', () => {
     const wrapper = render(
       <Select tags value="22" inputValue="2" open>
         <Option value="1">1</Option>
-      </Select>
+      </Select>,
     );
 
     expect(wrapper).toMatchSnapshot();
@@ -120,14 +133,12 @@ describe('Select.tags', () => {
 
   it('use filterOption', () => {
     const filterOption = (inputValue, option) =>
-      option.props.value
-        .toLowerCase()
-        .indexOf(inputValue.toLowerCase()) !== -1;
+      option.props.value.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1;
 
     const wrapper = render(
       <Select tags inputValue="red" filterOption={filterOption} open>
         <Option value="Red">Red</Option>
-      </Select>
+      </Select>,
     );
 
     expect(wrapper).toMatchSnapshot();
@@ -135,10 +146,7 @@ describe('Select.tags', () => {
 
   it('filterOption is false', () => {
     const wrapper = mount(
-      <Select
-        tags
-        filterOption={false}
-      >
+      <Select tags filterOption={false}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -150,20 +158,22 @@ describe('Select.tags', () => {
       .simulate('keyDown', { keyCode: KeyCode.ENTER });
 
     expect(wrapper.state().value).toEqual(['a']);
-    expect(
-      wrapper.find('.rc-select-selection__choice__content').text()
-    ).toBe('a');
+    expect(wrapper.find('.rc-select-selection__choice__content').text()).toBe('a');
   });
 
   describe('OptGroup', () => {
-    const createSelect = (props) => (
+    const createSelect = props => (
       <div>
         <Select tags {...props}>
           <OptGroup key="Manager" label="Manager">
-            <Option key="jack" value="jack">Jack</Option>
+            <Option key="jack" value="jack">
+              Jack
+            </Option>
           </OptGroup>
           <OptGroup key="Engineer" label="Engineer">
-            <Option key="Yiminghe" value="Yiminghe">yiminghe</Option>
+            <Option key="Yiminghe" value="Yiminghe">
+              yiminghe
+            </Option>
           </OptGroup>
         </Select>
       </div>
@@ -179,8 +189,7 @@ describe('Select.tags', () => {
       const wrapper = mount(createSelect());
       wrapper.find('.rc-select').simulate('click');
 
-      wrapper.find('input')
-        .simulate('change', { target: { value: 'foo' } });
+      wrapper.find('input').simulate('change', { target: { value: 'foo' } });
       expect(wrapper.render()).toMatchSnapshot();
 
       wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ENTER });

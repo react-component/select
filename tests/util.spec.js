@@ -76,14 +76,16 @@ describe('getValuePropValue', () => {
   });
 
   it('return label when type is isSelectOptGroup', () => {
-    expect(getValuePropValue({
-      props: {
-        label: 'Manager',
-      },
-      type: {
-        isSelectOptGroup: true,
-      },
-    })).toBe('Manager');
+    expect(
+      getValuePropValue({
+        props: {
+          label: 'Manager',
+        },
+        type: {
+          isSelectOptGroup: true,
+        },
+      }),
+    ).toBe('Manager');
     expect(errorSpy).not.toHaveBeenCalled();
   });
 });
