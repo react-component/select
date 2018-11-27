@@ -1,6 +1,15 @@
 # History
 ----
 
+## 8.6.0 / 2018-11-27
+
+- Added `loading` prop.
+- Allow search Option Group title.
+
+## 8.5.0 / 2018-11-26
+
+- Added `dropdownRender` prop.
+
 ## 8.4.0 / 2018-10-08
 
 - Adjust focus / blur logic
