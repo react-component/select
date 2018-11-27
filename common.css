@@ -1,11 +1,3 @@
-@keyframes select-ring {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
 .rc-select {
   box-sizing: border-box;
   display: inline-block;
@@ -31,24 +23,6 @@
   right: 1px;
   width: 20px;
   outline: none;
-}
-.rc-select-arrow .rc-select-arrow-loading {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  margin-top: 6px;
-  margin-left: -4px;
-}
-.rc-select-arrow .rc-select-arrow-loading:after {
-  content: ' ';
-  display: block;
-  width: 12px;
-  height: 12px;
-  margin: 2px;
-  border-radius: 50%;
-  border: 2px solid #999999;
-  border-color: #999999 transparent #999999 transparent;
-  animation: select-ring 1.2s linear infinite;
 }
 .rc-select-arrow .rc-select-arrow-icon {
   border-color: #999999 transparent transparent transparent;
@@ -243,7 +217,7 @@
 .rc-select .rc-select-selection__choice-zoom-enter,
 .rc-select .rc-select-selection__choice-zoom-appear,
 .rc-select .rc-select-selection__choice-zoom-leave {
-  animation-duration: 0.3s;
+  animation-duration: .3s;
   animation-fill-mode: both;
   transform-origin: 0 0;
   opacity: 0;
@@ -289,7 +263,7 @@
   transform: scale(0);
   top: 0;
   right: 2px;
-  transition: opacity 0.3s, transform 0.3s;
+  transition: opacity .3s, transform .3s;
 }
 .rc-select .rc-select-selection__choice__remove-icon {
   font-style: normal;
@@ -368,7 +342,7 @@ li.rc-select-dropdown-menu-item-divider {
 }
 .rc-select-dropdown-slide-up-enter,
 .rc-select-dropdown-slide-up-appear {
-  animation-duration: 0.3s;
+  animation-duration: .3s;
   animation-fill-mode: both;
   transform-origin: 0 0;
   opacity: 0;
@@ -376,7 +350,7 @@ li.rc-select-dropdown-menu-item-divider {
   animation-play-state: paused;
 }
 .rc-select-dropdown-slide-up-leave {
-  animation-duration: 0.3s;
+  animation-duration: .3s;
   animation-fill-mode: both;
   transform-origin: 0 0;
   opacity: 1;
