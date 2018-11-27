@@ -147,7 +147,7 @@ exports[`Select.multiple render truncates tags by maxTagCount 1`] = `
       <ul>
         <li
           class="rc-select-selection__choice"
-          role="listitem"
+          role="presentation"
           style="user-select:none;-webkit-user-select:none"
           title="one"
           unselectable="on"
@@ -169,7 +169,7 @@ exports[`Select.multiple render truncates tags by maxTagCount 1`] = `
         </li>
         <li
           class="rc-select-selection__choice"
-          role="listitem"
+          role="presentation"
           style="user-select:none;-webkit-user-select:none"
           title="two"
           unselectable="on"
@@ -191,7 +191,7 @@ exports[`Select.multiple render truncates tags by maxTagCount 1`] = `
         </li>
         <li
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
-          role="listitem"
+          role="presentation"
           style="user-select:none;-webkit-user-select:none"
           title="+ 1 ..."
           unselectable="on"
@@ -245,7 +245,7 @@ exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPla
       <ul>
         <li
           class="rc-select-selection__choice"
-          role="listitem"
+          role="presentation"
           style="user-select:none;-webkit-user-select:none"
           title="one"
           unselectable="on"
@@ -267,7 +267,7 @@ exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPla
         </li>
         <li
           class="rc-select-selection__choice"
-          role="listitem"
+          role="presentation"
           style="user-select:none;-webkit-user-select:none"
           title="two"
           unselectable="on"
@@ -289,7 +289,7 @@ exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPla
         </li>
         <li
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
-          role="listitem"
+          role="presentation"
           style="user-select:none;-webkit-user-select:none"
           unselectable="on"
         >
@@ -344,7 +344,7 @@ exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPla
       <ul>
         <li
           class="rc-select-selection__choice"
-          role="listitem"
+          role="presentation"
           style="user-select:none;-webkit-user-select:none"
           title="one"
           unselectable="on"
@@ -366,7 +366,7 @@ exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPla
         </li>
         <li
           class="rc-select-selection__choice"
-          role="listitem"
+          role="presentation"
           style="user-select:none;-webkit-user-select:none"
           title="two"
           unselectable="on"
@@ -388,7 +388,7 @@ exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPla
         </li>
         <li
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
-          role="listitem"
+          role="presentation"
           style="user-select:none;-webkit-user-select:none"
           unselectable="on"
         >
@@ -443,7 +443,7 @@ exports[`Select.multiple render truncates tags by maxTagCount while maxTagCount 
       <ul>
         <li
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
-          role="listitem"
+          role="presentation"
           style="user-select:none;-webkit-user-select:none"
           title="+ 3 ..."
           unselectable="on"
@@ -497,7 +497,7 @@ exports[`Select.multiple render truncates values by maxTagTextLength 1`] = `
       <ul>
         <li
           class="rc-select-selection__choice"
-          role="listitem"
+          role="presentation"
           style="user-select:none;-webkit-user-select:none"
           title="one"
           unselectable="on"
@@ -519,7 +519,7 @@ exports[`Select.multiple render truncates values by maxTagTextLength 1`] = `
         </li>
         <li
           class="rc-select-selection__choice"
-          role="listitem"
+          role="presentation"
           style="user-select:none;-webkit-user-select:none"
           title="two"
           unselectable="on"
