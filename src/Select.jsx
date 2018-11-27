@@ -1299,7 +1299,32 @@ class Select extends React.Component {
       </div>
     );
   }
-
+  renderArrow(multiple){
+    const { showArrow, loading, inputIcon, prefixCls } = this.props;
+    if (!showArrow) {
+      return null;
+    }
+    // if loading  have loading icon
+    if (multiple && !loading) {
+      return null;
+    }
+    const defaultIcon = loading ? (
+      <i className={`${prefixCls}-arrow-loading`} />
+    ) : (
+      <i className={`${prefixCls}-arrow-icon`} />
+    );
+    return (
+      <span
+        key="arrow"
+        className={`${prefixCls}-arrow`}
+        style={UNSELECTABLE_STYLE}
+        {...UNSELECTABLE_ATTRIBUTE}
+        onClick={this.onArrowClick}
+      >
+        {inputIcon || defaultIcon}
+      </span>
+    );
+  }
   renderClear() {
     const { prefixCls, allowClear, clearIcon } = this.props;
     const { value, inputValue } = this.state;
@@ -1332,7 +1357,7 @@ class Select extends React.Component {
     const props = this.props;
     const multiple = isMultipleOrTags(props);
     const state = this.state;
-    const { className, disabled, prefixCls, inputIcon } = props;
+    const { className, disabled, prefixCls } = props;
     const ctrlNode = this.renderTopControlNode();
     const { open } = this.state;
     if (open) {
@@ -1426,16 +1451,7 @@ class Select extends React.Component {
           >
             {ctrlNode}
             {this.renderClear()}
-            {multiple || !props.showArrow ? null : (
-              <span
-                key="arrow"
-                className={`${prefixCls}-arrow`}
-                style={UNSELECTABLE_STYLE}
-                {...UNSELECTABLE_ATTRIBUTE}
-                onClick={this.onArrowClick}
-              >
-                {inputIcon || <i className={`${prefixCls}-arrow-icon`} />}
-              </span>)}
+            {this.renderArrow(multiple)}
           </div>
         </div>
       </SelectTrigger>
