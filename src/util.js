@@ -178,7 +178,7 @@ export function saveRef(instance, name) {
 
 /* eslint-disable */
 export function generateUUID() {
-  if (__JEST__DEV__) {
+  if (process.env.NODE_ENV === 'test') {
     return 'test-uuid';
   }
   let d = new Date().getTime();

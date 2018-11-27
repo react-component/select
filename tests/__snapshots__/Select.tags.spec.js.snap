@@ -21,6 +21,7 @@ exports[`Select.tags OptGroup renders correctly 1`] = `
         <ul>
           <li
             class="rc-select-selection__choice"
+            role="listitem"
             title="jack"
             unselectable="on"
           >
@@ -41,6 +42,7 @@ exports[`Select.tags OptGroup renders correctly 1`] = `
           </li>
           <li
             class="rc-select-selection__choice"
+            role="listitem"
             title="foo"
             unselectable="on"
           >
@@ -247,6 +249,7 @@ exports[`Select.tags OptGroup renders inputValue correctly 2`] = `
         <ul>
           <li
             class="rc-select-selection__choice"
+            role="listitem"
             title="foo"
             unselectable="on"
           >
@@ -510,6 +513,7 @@ exports[`Select.tags render truncates tags by maxTagCount 1`] = `
       <ul>
         <li
           class="rc-select-selection__choice"
+          role="listitem"
           style="user-select:none;-webkit-user-select:none"
           title="one"
           unselectable="on"
@@ -531,6 +535,7 @@ exports[`Select.tags render truncates tags by maxTagCount 1`] = `
         </li>
         <li
           class="rc-select-selection__choice"
+          role="listitem"
           style="user-select:none;-webkit-user-select:none"
           title="two"
           unselectable="on"
@@ -552,6 +557,7 @@ exports[`Select.tags render truncates tags by maxTagCount 1`] = `
         </li>
         <li
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
+          role="listitem"
           style="user-select:none;-webkit-user-select:none"
           title="+ 1 ..."
           unselectable="on"
@@ -605,6 +611,7 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
       <ul>
         <li
           class="rc-select-selection__choice"
+          role="listitem"
           style="user-select:none;-webkit-user-select:none"
           title="one"
           unselectable="on"
@@ -626,6 +633,7 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
         </li>
         <li
           class="rc-select-selection__choice"
+          role="listitem"
           style="user-select:none;-webkit-user-select:none"
           title="two"
           unselectable="on"
@@ -647,6 +655,7 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
         </li>
         <li
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
+          role="listitem"
           style="user-select:none;-webkit-user-select:none"
           unselectable="on"
         >
@@ -701,6 +710,7 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
       <ul>
         <li
           class="rc-select-selection__choice"
+          role="listitem"
           style="user-select:none;-webkit-user-select:none"
           title="one"
           unselectable="on"
@@ -722,6 +732,7 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
         </li>
         <li
           class="rc-select-selection__choice"
+          role="listitem"
           style="user-select:none;-webkit-user-select:none"
           title="two"
           unselectable="on"
@@ -743,6 +754,7 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
         </li>
         <li
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
+          role="listitem"
           style="user-select:none;-webkit-user-select:none"
           unselectable="on"
         >
@@ -797,6 +809,7 @@ exports[`Select.tags render truncates tags by maxTagCount while maxTagCount is 0
       <ul>
         <li
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
+          role="listitem"
           style="user-select:none;-webkit-user-select:none"
           title="+ 3 ..."
           unselectable="on"
@@ -850,6 +863,7 @@ exports[`Select.tags render truncates values by maxTagTextLength 1`] = `
       <ul>
         <li
           class="rc-select-selection__choice"
+          role="listitem"
           style="user-select:none;-webkit-user-select:none"
           title="one"
           unselectable="on"
@@ -871,6 +885,7 @@ exports[`Select.tags render truncates values by maxTagTextLength 1`] = `
         </li>
         <li
           class="rc-select-selection__choice"
+          role="listitem"
           style="user-select:none;-webkit-user-select:none"
           title="two"
           unselectable="on"
@@ -934,6 +949,7 @@ Array [
         <ul>
           <li
             class="rc-select-selection__choice"
+            role="listitem"
             style="user-select:none;-webkit-user-select:none"
             title="22"
             unselectable="on"
@@ -1033,6 +1049,7 @@ Array [
         <ul>
           <li
             class="rc-select-selection__choice"
+            role="listitem"
             style="user-select:none;-webkit-user-select:none"
             title="3"
             unselectable="on"
