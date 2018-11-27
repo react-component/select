@@ -35,6 +35,7 @@
     "pub": "rc-tools run pub --babel-runtime",
     "lint": "rc-tools run lint",
     "lint:fix": "rc-tools run lint --fix",
+    "prettier": "rc-tools run prettier",
     "test": "jest",
     "prepublish": "rc-tools run guard",
     "coverage": "jest --coverage"
