@@ -82,6 +82,7 @@ class Select extends React.Component {
     showAction: ['click'],
     tokenSeparators: [],
     autoClearSearchValue: true,
+    tabIndex: "0",
     dropdownRender: (menu) => menu,
   };
 
@@ -1379,7 +1380,7 @@ class Select extends React.Component {
       extraSelectionProps = {
         ...extraSelectionProps,
         onKeyDown: this.onKeyDown,
-        tabIndex: props.disabled ? -1 : 0,
+        tabIndex: props.disabled ? -1 : props.tabIndex,
       };
     }
     const rootCls = {
