@@ -1,4 +1,4 @@
-webpackJsonp([13],{
+webpackJsonp([11],{
 
 /***/ 228:
 /***/ (function(module, exports, __webpack_require__) {
@@ -48,7 +48,6 @@ var c1 = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       {
         placeholder: 'placeholder',
         defaultValue: 'lucy',
-        showSearch: false,
         style: { width: 500 },
         onChange: onChange
       },

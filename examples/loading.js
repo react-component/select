@@ -1,14 +1,14 @@
-webpackJsonp([12],{
+webpackJsonp([14],{
 
-/***/ 226:
+/***/ 218:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(227);
+module.exports = __webpack_require__(219);
 
 
 /***/ }),
 
-/***/ 227:
+/***/ 219:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40,16 +40,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-var children = [];
-for (var i = 10; i < 36; i++) {
-  children.push(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-    __WEBPACK_IMPORTED_MODULE_5_rc_select__["Option"],
-    { key: i.toString(36) + i, disabled: i === 10, title: '\u4E2D\u6587' + i },
-    '\u4E2D\u6587',
-    i
-  ));
-}
-
 var Test = function (_React$Component) {
   __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default()(Test, _React$Component);
 
@@ -68,28 +58,29 @@ var Test = function (_React$Component) {
   }
 
   __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(Test, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      setTimeout(function () {
+        _this2.loadData();
+      }, 2000);
+    }
+  }, {
     key: 'render',
     value: function render() {
       var dropdownMenuStyle = {
         maxHeight: 200
       };
+      var loading = this.state.loading;
+
       return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
         'div',
         null,
         __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
           'h2',
           null,
-          'multiple select\uFF08scroll the menu\uFF09'
-        ),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'p',
-          null,
-          __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-            'label',
-            null,
-            'anim',
-            __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement('input', { checked: this.state.useAnim, type: 'checkbox', onChange: this.useAnim })
-          )
+          'loading load data'
         ),
         __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
           'div',
@@ -98,16 +89,13 @@ var Test = function (_React$Component) {
             __WEBPACK_IMPORTED_MODULE_5_rc_select___default.a,
             {
               value: this.state.value,
-              animation: this.state.useAnim ? 'slide-up' : null,
-              choiceTransitionName: 'rc-select-selection__choice-zoom',
               dropdownMenuStyle: dropdownMenuStyle,
               style: { width: 500 },
               multiple: true,
-              allowClear: true,
+              loading: loading,
               optionFilterProp: 'children',
               optionLabelProp: 'children',
               onSelect: this.onSelect,
-              onDeselect: this.onDeselect,
               placeholder: 'please select',
               onChange: this.onChange,
               onFocus: function onFocus() {
@@ -118,7 +106,7 @@ var Test = function (_React$Component) {
               },
               tokenSeparators: [' ', ',']
             },
-            children
+            this.state.children
           )
         )
       );
@@ -129,16 +117,17 @@ var Test = function (_React$Component) {
 }(__WEBPACK_IMPORTED_MODULE_4_react___default.a.Component);
 
 var _initialiseProps = function _initialiseProps() {
-  var _this2 = this;
+  var _this3 = this;
 
   this.state = {
-    useAnim: 0,
-    value: ['a10']
+    loading: true,
+    value: ['a10'],
+    children: []
   };
 
   this.onChange = function (value, options) {
     console.log('onChange', value, options);
-    _this2.setState({
+    _this3.setState({
       value: value
     });
   };
@@ -151,17 +140,19 @@ var _initialiseProps = function _initialiseProps() {
     console.log(args);
   };
 
-  this.onDeselect = function () {
-    for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-      args[_key3] = arguments[_key3];
+  this.loadData = function () {
+    var children = [];
+    for (var i = 10; i < 36; i++) {
+      children.push(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_5_rc_select__["Option"],
+        { key: i.toString(36) + i, disabled: i === 10, title: '\u4E2D\u6587' + i },
+        '\u4E2D\u6587',
+        i
+      ));
     }
-
-    console.log(args);
-  };
-
-  this.useAnim = function (e) {
-    _this2.setState({
-      useAnim: e.target.checked
+    _this3.setState({
+      loading: false,
+      children: children
     });
   };
 };
@@ -170,5 +161,5 @@ __WEBPACK_IMPORTED_MODULE_7_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ })
 
-},[226]);
-//# sourceMappingURL=multiple.js.map
+},[218]);
+//# sourceMappingURL=loading.js.map
