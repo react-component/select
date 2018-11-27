@@ -74,7 +74,7 @@ export const SelectPropTypes = {
   placeholder: PropTypes.any,
   onDeselect: PropTypes.func,
   labelInValue: PropTypes.bool,
-  loading:PropTypes.bool,
+  loading: PropTypes.bool,
   value: valueType,
   defaultValue: valueType,
   dropdownStyle: PropTypes.object,
