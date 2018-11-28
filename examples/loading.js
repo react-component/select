@@ -1,14 +1,14 @@
-webpackJsonp([8],{
+webpackJsonp([16],{
 
-/***/ 240:
+/***/ 218:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(241);
+module.exports = __webpack_require__(219);
 
 
 /***/ }),
 
-/***/ 241:
+/***/ 219:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40,15 +40,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-var children = [];
-for (var i = 10; i < 36; i++) {
-  children.push(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-    __WEBPACK_IMPORTED_MODULE_5_rc_select__["Option"],
-    { key: i.toString(36) + i, test: i },
-    i.toString(36) + i
-  ));
-}
-
 var Test = function (_React$Component) {
   __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default()(Test, _React$Component);
 
@@ -63,33 +54,25 @@ var Test = function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = Test.__proto__ || Object.getPrototypeOf(Test)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      disabled: false,
-      value: ['name2', 'name3']
-    }, _this.onChange = function (value, option) {
-      console.log('changed ' + value, option);
-      _this.setState({
-        value: value
-      });
-    }, _this.onSelect = function (value, option) {
-      console.log('selected ' + value, option.props);
-    }, _this.onDeselect = function (value, option) {
-      console.log('deselected ' + value, option);
-    }, _this.toggleDisabled = function () {
-      _this.setState({
-        disabled: !_this.state.disabled
-      });
-    }, _this.toggleMaxTagCount = function (count) {
-      _this.setState({
-        maxTagCount: count
-      });
-    }, _temp), __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
+    return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = Test.__proto__ || Object.getPrototypeOf(Test)).call.apply(_ref, [this].concat(args))), _this), _initialiseProps.call(_this), _temp), __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
   }
 
   __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(Test, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      setTimeout(function () {
+        _this2.loadData();
+      }, 2000);
+    }
+  }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
+      var dropdownMenuStyle = {
+        maxHeight: 200
+      };
+      var loading = this.state.loading;
 
       return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
         'div',
@@ -97,57 +80,33 @@ var Test = function (_React$Component) {
         __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
           'h2',
           null,
-          'tags select\uFF08scroll the menu\uFF09'
+          'loading load data'
         ),
         __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
           'div',
-          null,
+          { style: { width: 300 } },
           __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
             __WEBPACK_IMPORTED_MODULE_5_rc_select___default.a,
             {
-              placeholder: 'placeholder',
-              tags: true,
-              dropdownMenuStyle: { maxHeight: 200 },
-              style: { width: 500 },
-              disabled: this.state.disabled,
-              maxTagCount: this.state.maxTagCount,
-              maxTagTextLength: 10,
               value: this.state.value,
-              onChange: this.onChange,
+              dropdownMenuStyle: dropdownMenuStyle,
+              style: { width: 500 },
+              multiple: true,
+              loading: loading,
+              optionFilterProp: 'children',
+              optionLabelProp: 'children',
               onSelect: this.onSelect,
-              onDeselect: this.onDeselect,
-              tokenSeparators: [' ', ','],
+              placeholder: 'please select',
+              onChange: this.onChange,
               onFocus: function onFocus() {
                 return console.log('focus');
               },
-              onBlur: function onBlur() {
-                return console.log('blur');
-              }
+              onBlur: function onBlur(v) {
+                return console.log('blur', v);
+              },
+              tokenSeparators: [' ', ',']
             },
-            children
-          )
-        ),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'p',
-          null,
-          __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-            'button',
-            { onClick: this.toggleDisabled },
-            'toggle disabled'
-          ),
-          __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-            'button',
-            { onClick: function onClick() {
-                return _this2.toggleMaxTagCount(0);
-              } },
-            'toggle maxTagCount (0)'
-          ),
-          __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-            'button',
-            { onClick: function onClick() {
-                return _this2.toggleMaxTagCount(1);
-              } },
-            'toggle maxTagCount (1)'
+            this.state.children
           )
         )
       );
@@ -157,9 +116,50 @@ var Test = function (_React$Component) {
   return Test;
 }(__WEBPACK_IMPORTED_MODULE_4_react___default.a.Component);
 
+var _initialiseProps = function _initialiseProps() {
+  var _this3 = this;
+
+  this.state = {
+    loading: true,
+    value: ['a10'],
+    children: []
+  };
+
+  this.onChange = function (value, options) {
+    console.log('onChange', value, options);
+    _this3.setState({
+      value: value
+    });
+  };
+
+  this.onSelect = function () {
+    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
+
+    console.log(args);
+  };
+
+  this.loadData = function () {
+    var children = [];
+    for (var i = 10; i < 36; i++) {
+      children.push(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_5_rc_select__["Option"],
+        { key: i.toString(36) + i, disabled: i === 10, title: '\u4E2D\u6587' + i },
+        '\u4E2D\u6587',
+        i
+      ));
+    }
+    _this3.setState({
+      loading: false,
+      children: children
+    });
+  };
+};
+
 __WEBPACK_IMPORTED_MODULE_7_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(Test, null), document.getElementById('__react-content'));
 
 /***/ })
 
-},[240]);
-//# sourceMappingURL=tags.js.map
+},[218]);
+//# sourceMappingURL=loading.js.map

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>tags.js - example - rc-select@8.6.2</title>
+  <title>dropdownRender.js - example - rc-select@8.6.2</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -270,7 +270,6 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     <div class="example" id="__react-content"></div>
 
     <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint no-console: 0 */</span>
-
 <span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
 <span class="hljs-keyword">import</span> Select, { Option } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-select'</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">'rc-select/assets/index.css'</span>;
@@ -283,7 +282,6 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
   state = {
-    disabled: <span class="hljs-literal">false</span>,
     value: [<span class="hljs-string">'name2'</span>, <span class="hljs-string">'name3'</span>],
   };
 
@@ -302,22 +300,15 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`deselected <span class="hljs-subst">${value}</span>`</span>, option);
   };
 
-  toggleDisabled = () =&gt; {
-    <span class="hljs-keyword">this</span>.setState({
-      disabled: !<span class="hljs-keyword">this</span>.state.disabled,
-    });
-  };
-
-  toggleMaxTagCount = (count) =&gt; {
-    <span class="hljs-keyword">this</span>.setState({
-      maxTagCount: count,
-    });
-  };
-
   render() {
     <span class="hljs-keyword">return</span> (
-      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>tags select（scroll the menu）<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
+      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>
+        <span class="hljs-attribute">onMouseDown</span>=<span class="hljs-value">{(e)</span> =&gt;</span> {
+          e.preventDefault();
+          return false;
+        }}
+      &gt;
+        <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>custom dropdown render select<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
 
         <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">Select</span>
@@ -325,9 +316,6 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
             <span class="hljs-attribute">tags</span>
             <span class="hljs-attribute">dropdownMenuStyle</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">maxHeight:</span> <span class="hljs-attribute">200</span> }}
             <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">500</span> }}
-            <span class="hljs-attribute">disabled</span>=<span class="hljs-value">{this.state.disabled}</span>
-            <span class="hljs-attribute">maxTagCount</span>=<span class="hljs-value">{this.state.maxTagCount}</span>
-            <span class="hljs-attribute">maxTagTextLength</span>=<span class="hljs-value">{10}</span>
             <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value}</span>
             <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>
             <span class="hljs-attribute">onSelect</span>=<span class="hljs-value">{this.onSelect}</span>
@@ -335,21 +323,42 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
             <span class="hljs-attribute">tokenSeparators</span>=<span class="hljs-value">{['</span> ', ',']}
             <span class="hljs-attribute">onFocus</span>=<span class="hljs-value">{()</span> =&gt;</span> console.log('focus')}
             onBlur={() =&gt; console.log('blur')}
+            dropdownRender={(menu) =&gt;
+              <span class="hljs-tag">&lt;<span class="hljs-title">React.Fragment</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span>
+                  <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{</span>
+                    () =&gt;</span> {
+                      console.log('before clicked')
+                    }
+                  }
+                &gt;
+                  BEFORE
+                <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+
+                {menu}
+
+                <span class="hljs-tag">&lt;<span class="hljs-title">div</span>
+                  <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{</span>
+                    () =&gt;</span> {
+                      console.log('after clicked')
+                    }
+                  }
+                &gt;
+                  AFTER
+                <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-title">React.Fragment</span>&gt;</span>
+            }
           &gt;
             {children}
           <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.toggleDisabled}</span>&gt;</span>toggle disabled<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{()</span> =&gt;</span> this.toggleMaxTagCount(0)}&gt;toggle maxTagCount (0)<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{()</span> =&gt;</span> this.toggleMaxTagCount(1)}&gt;toggle maxTagCount (1)<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     )</span>;
   }
 }
 
 ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Test</span> /&gt;</span>, document.getElementById('__react-content'));
+
 </span></code></pre></div>
   </div>
   <a href="http://github.com/react-component/select">
@@ -360,7 +369,7 @@ ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-t
   </a>
   <script>FastClick.attach(document.body);</script>
   <script src="../common.js?nowrap"></script>
-  <script src="tags.js?nowrap"></script>
+  <script src="dropdownRender.js?nowrap"></script>
 </body>
 
 </html>

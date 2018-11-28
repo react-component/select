@@ -1,14 +1,14 @@
-webpackJsonp([8],{
+webpackJsonp([18],{
 
-/***/ 240:
+/***/ 198:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(241);
+module.exports = __webpack_require__(199);
 
 
 /***/ }),
 
-/***/ 241:
+/***/ 199:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39,7 +39,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-
 var children = [];
 for (var i = 10; i < 36; i++) {
   children.push(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
@@ -64,7 +63,6 @@ var Test = function (_React$Component) {
     }
 
     return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = Test.__proto__ || Object.getPrototypeOf(Test)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      disabled: false,
       value: ['name2', 'name3']
     }, _this.onChange = function (value, option) {
       console.log('changed ' + value, option);
@@ -75,29 +73,24 @@ var Test = function (_React$Component) {
       console.log('selected ' + value, option.props);
     }, _this.onDeselect = function (value, option) {
       console.log('deselected ' + value, option);
-    }, _this.toggleDisabled = function () {
-      _this.setState({
-        disabled: !_this.state.disabled
-      });
-    }, _this.toggleMaxTagCount = function (count) {
-      _this.setState({
-        maxTagCount: count
-      });
     }, _temp), __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
   }
 
   __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(Test, [{
     key: 'render',
     value: function render() {
-      var _this2 = this;
-
       return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
         'div',
-        null,
+        {
+          onMouseDown: function onMouseDown(e) {
+            e.preventDefault();
+            return false;
+          }
+        },
         __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
           'h2',
           null,
-          'tags select\uFF08scroll the menu\uFF09'
+          'custom dropdown render select'
         ),
         __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
           'div',
@@ -109,9 +102,6 @@ var Test = function (_React$Component) {
               tags: true,
               dropdownMenuStyle: { maxHeight: 200 },
               style: { width: 500 },
-              disabled: this.state.disabled,
-              maxTagCount: this.state.maxTagCount,
-              maxTagTextLength: 10,
               value: this.state.value,
               onChange: this.onChange,
               onSelect: this.onSelect,
@@ -122,32 +112,34 @@ var Test = function (_React$Component) {
               },
               onBlur: function onBlur() {
                 return console.log('blur');
+              },
+              dropdownRender: function dropdownRender(menu) {
+                return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+                  __WEBPACK_IMPORTED_MODULE_4_react___default.a.Fragment,
+                  null,
+                  __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+                    'div',
+                    {
+                      onClick: function onClick() {
+                        console.log('before clicked');
+                      }
+                    },
+                    'BEFORE'
+                  ),
+                  menu,
+                  __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+                    'div',
+                    {
+                      onClick: function onClick() {
+                        console.log('after clicked');
+                      }
+                    },
+                    'AFTER'
+                  )
+                );
               }
             },
             children
-          )
-        ),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'p',
-          null,
-          __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-            'button',
-            { onClick: this.toggleDisabled },
-            'toggle disabled'
-          ),
-          __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-            'button',
-            { onClick: function onClick() {
-                return _this2.toggleMaxTagCount(0);
-              } },
-            'toggle maxTagCount (0)'
-          ),
-          __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-            'button',
-            { onClick: function onClick() {
-                return _this2.toggleMaxTagCount(1);
-              } },
-            'toggle maxTagCount (1)'
           )
         )
       );
@@ -161,5 +153,5 @@ __WEBPACK_IMPORTED_MODULE_7_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ })
 
-},[240]);
-//# sourceMappingURL=tags.js.map
+},[198]);
+//# sourceMappingURL=dropdownRender.js.map

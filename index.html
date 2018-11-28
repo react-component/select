@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-select@8.4.5 - React Select</title>
+  <title>rc-select@8.6.2 - React Select</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,7 +737,7 @@
 
 <body>
 <div class="header">
-  <h1>rc-select@8.4.5</h1>
+  <h1>rc-select@8.6.2</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
@@ -750,11 +750,15 @@
       
       <li><a href="examples/custom-icon.html">custom-icon</a></li>
       
+      <li><a href="examples/dropdownRender.html">dropdownRender</a></li>
+      
       <li><a href="examples/email.html">email</a></li>
       
       <li><a href="examples/force-suggest.html">force-suggest</a></li>
       
       <li><a href="examples/getPopupContainer.html">getPopupContainer</a></li>
+      
+      <li><a href="examples/loading.html">loading</a></li>
       
       <li><a href="examples/mul-suggest.html">mul-suggest</a></li>
       
@@ -1139,6 +1143,18 @@ React.render(c, container);</code></pre></div><h2>API<a id="user-content-api" na
 <td>ReactNode \</td>
 <td>(props: MenuItemProps) =&gt; ReactNode</td>
 <td>-</td>
+</tr>
+<tr>
+<td>dropdownRender</td>
+<td>render custom dropdown menu</td>
+<td>(menu: React.Node, props: MenuProps) =&gt; ReactNode</td>
+<td>-</td>
+</tr>
+<tr>
+<td>loading</td>
+<td>show loading icon in arrow</td>
+<td>Boolean</td>
+<td>false</td>
 </tr>
 </tbody>
 </table>

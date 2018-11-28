@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>tags.js - example - rc-select@8.6.2</title>
+  <title>loading.js - example - rc-select@8.6.2</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -276,74 +276,73 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <span class="hljs-keyword">import</span> <span class="hljs-string">'rc-select/assets/index.css'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 
-<span class="hljs-keyword">const</span> children = [];
-<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">10</span>; i &lt; <span class="hljs-number">36</span>; i++) {
-  children.push(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{i.toString(36)</span> + <span class="hljs-attribute">i</span>} <span class="hljs-attribute">test</span>=<span class="hljs-value">{i}</span>&gt;</span>{i.toString(36) + i}<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>)</span>;
-}
-
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
   state = {
-    disabled: <span class="hljs-literal">false</span>,
-    value: [<span class="hljs-string">'name2'</span>, <span class="hljs-string">'name3'</span>],
+    loading: <span class="hljs-literal">true</span>,
+    value: [<span class="hljs-string">'a10'</span>],
+    children: [],
   };
+  
+  componentDidMount() {
+    setTimeout(() =&gt; {
+      <span class="hljs-keyword">this</span>.loadData();
+    }, <span class="hljs-number">2000</span>);
+  }
 
-  onChange = (value, option) =&gt; {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`changed <span class="hljs-subst">${value}</span>`</span>, option);
+  onChange = (value, options) =&gt; {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange'</span>, value, options);
     <span class="hljs-keyword">this</span>.setState({
       value,
     });
   };
 
-  onSelect = (value, option) =&gt; {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`selected <span class="hljs-subst">${value}</span>`</span>, option.props);
+  onSelect = (...args) =&gt; {
+    <span class="hljs-built_in">console</span>.log(args);
   };
 
-  onDeselect = (value, option) =&gt; {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`deselected <span class="hljs-subst">${value}</span>`</span>, option);
-  };
-
-  toggleDisabled = () =&gt; {
+  loadData = () =&gt; {
+    <span class="hljs-keyword">const</span> children = [];
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">10</span>; i &lt; <span class="hljs-number">36</span>; i++) {
+      children.push(
+        <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{i.toString(36)</span> + <span class="hljs-attribute">i</span>} <span class="hljs-attribute">disabled</span>=<span class="hljs-value">{i</span> =<span class="hljs-value">==</span> <span class="hljs-attribute">10</span>} <span class="hljs-attribute">title</span>=<span class="hljs-value">{`中文${i}`}</span>&gt;</span>
+          中文{i}
+        <span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
+      )</span>;
+    }
     <span class="hljs-keyword">this</span>.setState({
-      disabled: !<span class="hljs-keyword">this</span>.state.disabled,
-    });
-  };
-
-  toggleMaxTagCount = (count) =&gt; {
-    <span class="hljs-keyword">this</span>.setState({
-      maxTagCount: count,
+      loading: <span class="hljs-literal">false</span>,
+      children,
     });
   };
 
   render() {
+    <span class="hljs-keyword">const</span> dropdownMenuStyle = {
+      maxHeight: <span class="hljs-number">200</span>,
+    };
+    <span class="hljs-keyword">const</span> { loading } = <span class="hljs-keyword">this</span>.state;
     <span class="hljs-keyword">return</span> (
       <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>tags select（scroll the menu）<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>loading load data<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
 
-        <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">300</span> }}&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">Select</span>
-            <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"placeholder"</span>
-            <span class="hljs-attribute">tags</span>
-            <span class="hljs-attribute">dropdownMenuStyle</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">maxHeight:</span> <span class="hljs-attribute">200</span> }}
-            <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">500</span> }}
-            <span class="hljs-attribute">disabled</span>=<span class="hljs-value">{this.state.disabled}</span>
-            <span class="hljs-attribute">maxTagCount</span>=<span class="hljs-value">{this.state.maxTagCount}</span>
-            <span class="hljs-attribute">maxTagTextLength</span>=<span class="hljs-value">{10}</span>
             <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value}</span>
-            <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>
+            <span class="hljs-attribute">dropdownMenuStyle</span>=<span class="hljs-value">{dropdownMenuStyle}</span>
+            <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">500</span> }}
+            <span class="hljs-attribute">multiple</span>
+            <span class="hljs-attribute">loading</span>=<span class="hljs-value">{loading}</span>
+            <span class="hljs-attribute">optionFilterProp</span>=<span class="hljs-value">"children"</span>
+            <span class="hljs-attribute">optionLabelProp</span>=<span class="hljs-value">"children"</span>
             <span class="hljs-attribute">onSelect</span>=<span class="hljs-value">{this.onSelect}</span>
-            <span class="hljs-attribute">onDeselect</span>=<span class="hljs-value">{this.onDeselect}</span>
-            <span class="hljs-attribute">tokenSeparators</span>=<span class="hljs-value">{['</span> ', ',']}
+            <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"please select"</span>
+            <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>
             <span class="hljs-attribute">onFocus</span>=<span class="hljs-value">{()</span> =&gt;</span> console.log('focus')}
-            onBlur={() =&gt; console.log('blur')}
+            onBlur={v =&gt; console.log('blur', v)}
+            tokenSeparators={[' ', ',']}
           &gt;
-            {children}
+            {this.state.children}
           <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.toggleDisabled}</span>&gt;</span>toggle disabled<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{()</span> =&gt;</span> this.toggleMaxTagCount(0)}&gt;toggle maxTagCount (0)<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{()</span> =&gt;</span> this.toggleMaxTagCount(1)}&gt;toggle maxTagCount (1)<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     )</span>;
   }
@@ -360,7 +359,7 @@ ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-t
   </a>
   <script>FastClick.attach(document.body);</script>
   <script src="../common.js?nowrap"></script>
-  <script src="tags.js?nowrap"></script>
+  <script src="loading.js?nowrap"></script>
 </body>
 
 </html>
