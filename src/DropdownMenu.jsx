@@ -43,7 +43,11 @@ export default class DropdownMenu extends React.Component {
       this.lastVisible = false;
     }
     // freeze when hide
-    return (this.props.visible && !nextProps.visible) || nextProps.visible || nextProps.inputValue !== this.props.inputValue;
+    return (
+      (this.props.visible && !nextProps.visible) ||
+      nextProps.visible ||
+      nextProps.inputValue !== this.props.inputValue
+    );
   }
 
   componentDidUpdate(prevProps) {
