@@ -1,48 +1,38 @@
-/* eslint-disable consistent-return, prefer-rest-params, import/prefer-default-export */
-// TODO: Fix eslint later
 import PropTypes from 'prop-types';
 
-function valueType(props, propName, componentName) {
-  const basicType = PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]);
+function valueType(props, propName, componentName, ...rest) {
+  const basicType = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);
 
   const labelInValueShape = PropTypes.shape({
     key: basicType.isRequired,
     label: PropTypes.node,
   });
   if (props.labelInValue) {
-    const validate = PropTypes.oneOfType([
-      PropTypes.arrayOf(labelInValueShape),
-      labelInValueShape,
-    ]);
-    const error = validate(...arguments);
+    const validate = PropTypes.oneOfType([PropTypes.arrayOf(labelInValueShape), labelInValueShape]);
+    const error = validate(props, propName, componentName, ...rest);
     if (error) {
       return new Error(
         `Invalid prop \`${propName}\` supplied to \`${componentName}\`, ` +
           `when you set \`labelInValue\` to \`true\`, \`${propName}\` should in ` +
-          `shape of \`{ key: string | number, label?: ReactNode }\`.`
+          `shape of \`{ key: string | number, label?: ReactNode }\`.`,
       );
     }
   } else if (
-    (props.mode === 'multiple' || props.mode === 'tags' || props.multiple || props.tags)
-    && props[propName] === ''
+    (props.mode === 'multiple' || props.mode === 'tags' || props.multiple || props.tags) &&
+    props[propName] === ''
   ) {
     return new Error(
       `Invalid prop \`${propName}\` of type \`string\` supplied to \`${componentName}\`, ` +
-        `expected \`array\` when \`multiple\` or \`tags\` is \`true\`.`
+        `expected \`array\` when \`multiple\` or \`tags\` is \`true\`.`,
     );
   } else {
-    const validate = PropTypes.oneOfType([
-      PropTypes.arrayOf(basicType),
-      basicType,
-    ]);
-    return validate(...arguments);
+    const validate = PropTypes.oneOfType([PropTypes.arrayOf(basicType), basicType]);
+    return validate(props, propName, componentName, ...rest);
   }
+  return null;
 }
 
-export const SelectPropTypes = {
+const SelectPropTypes = {
   id: PropTypes.string,
   defaultActiveFirstOption: PropTypes.bool,
   multiple: PropTypes.bool,
@@ -80,19 +70,15 @@ export const SelectPropTypes = {
   dropdownStyle: PropTypes.object,
   maxTagTextLength: PropTypes.number,
   maxTagCount: PropTypes.number,
-  maxTagPlaceholder: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.func,
-  ]),
+  maxTagPlaceholder: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   tokenSeparators: PropTypes.arrayOf(PropTypes.string),
   getInputElement: PropTypes.func,
   showAction: PropTypes.arrayOf(PropTypes.string),
   clearIcon: PropTypes.node,
   inputIcon: PropTypes.node,
   removeIcon: PropTypes.node,
-  menuItemSelectedIcon: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.node,
-  ]),
+  menuItemSelectedIcon: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
   dropdownRender: PropTypes.func,
 };
+
+export default SelectPropTypes;

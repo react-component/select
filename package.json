@@ -52,6 +52,9 @@
     ],
     "transform": {
       "\\.jsx?$": "./node_modules/rc-tools/scripts/jestPreprocessor.js"
+    },
+    "globals": {
+      "__JEST__DEV__": true
     }
   },
   "devDependencies": {

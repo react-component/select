@@ -21,7 +21,7 @@ describe('Select.combobox', () => {
       <Select combobox placeholder="Search">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
 
     expect(wrapper).toMatchSnapshot();
@@ -32,7 +32,7 @@ describe('Select.combobox', () => {
       <Select combobox value="1">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
 
     expect(wrapper.state().inputValue).toBe('1');
@@ -43,19 +43,21 @@ describe('Select.combobox', () => {
       <Select combobox placeholder="placeholder">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
 
     expect(wrapper.state().inputValue).toBe('');
-    expect(
-      wrapper.find('.rc-select-selection__placeholder').text()
-    ).toBe('placeholder');
-    expect(
-      wrapper.find('.rc-select-selection__placeholder').prop('style')
-    ).toHaveProperty('display', 'block');
+    expect(wrapper.find('.rc-select-selection__placeholder').text()).toBe('placeholder');
+    expect(wrapper.find('.rc-select-selection__placeholder').prop('style')).toHaveProperty(
+      'display',
+      'block',
+    );
     wrapper.find('input').simulate('change', { target: { value: '1' } });
     expect(
-      wrapper.update().find('.rc-select-selection__placeholder').prop('style')
+      wrapper
+        .update()
+        .find('.rc-select-selection__placeholder')
+        .prop('style'),
     ).toHaveProperty('display', 'none');
     expect(wrapper.state().inputValue).toBe('1');
   });
@@ -66,12 +68,17 @@ describe('Select.combobox', () => {
       <Select combobox onChange={handleChange}>
         <Option value="11">11</Option>
         <Option value="22">22</Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('input').simulate('change', { target: { value: '1' } });
 
-    expect(handleChange).toBeCalledWith('1', <Option key="1" value="1">1</Option>);
+    expect(handleChange).toBeCalledWith(
+      '1',
+      <Option key="1" value="1">
+        1
+      </Option>,
+    );
   });
 
   it('set inputValue when user select a option', () => {
@@ -79,25 +86,25 @@ describe('Select.combobox', () => {
       <Select combobox>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('.rc-select').simulate('click');
-    wrapper.find('MenuItem').first().simulate('click');
+    wrapper
+      .find('MenuItem')
+      .first()
+      .simulate('click');
     expect(wrapper.state().inputValue).toBe('1');
   });
 
   describe('input value', () => {
-    const createSelect = (props) => mount(
-      <Select
-        combobox
-        optionLabelProp="children"
-        {...props}
-      >
-        <Option value="1">One</Option>
-        <Option value="2">Two</Option>
-      </Select>
-    );
+    const createSelect = props =>
+      mount(
+        <Select combobox optionLabelProp="children" {...props}>
+          <Option value="1">One</Option>
+          <Option value="2">Two</Option>
+        </Select>,
+      );
 
     describe('labelInValue is false', () => {
       it('displays correct input value for defaultValue', () => {
@@ -149,25 +156,20 @@ describe('Select.combobox', () => {
         class AsyncCombobox extends React.Component {
           state = {
             data: [],
-          }
+          };
           handleChange = () => {
             setTimeout(() => {
               this.setState({
                 data: [{ key: '1', label: '1' }, { key: '2', label: '2' }],
               });
             }, 500);
-          }
+          };
           render() {
             const options = this.state.data.map(item => (
               <Option key={item.key}>{item.label}</Option>
             ));
             return (
-              <Select
-                combobox
-                onChange={this.handleChange}
-                filterOption={false}
-                notFoundContent=""
-              >
+              <Select combobox onChange={this.handleChange} filterOption={false} notFoundContent="">
                 {options}
               </Select>
             );
@@ -178,8 +180,12 @@ describe('Select.combobox', () => {
         wrapper.find('input').simulate('change', { target: { value: '0' } });
         jest.runAllTimers();
         wrapper.update();
-        expect(wrapper.find('.rc-select-dropdown').hostNodes()
-          .hasClass('rc-select-dropdown-hidden')).toBe(false);
+        expect(
+          wrapper
+            .find('.rc-select-dropdown')
+            .hostNodes()
+            .hasClass('rc-select-dropdown-hidden'),
+        ).toBe(false);
       });
 
       // https://github.com/ant-design/ant-design/issues/6600
@@ -188,25 +194,20 @@ describe('Select.combobox', () => {
         class AsyncCombobox extends React.Component {
           state = {
             data: [{ key: '1', label: '1' }, { key: '2', label: '2' }],
-          }
+          };
           onSelect = () => {
             setTimeout(() => {
               this.setState({
                 data: [{ key: '3', label: '3' }, { key: '4', label: '4' }],
               });
             }, 500);
-          }
+          };
           render() {
             const options = this.state.data.map(item => (
               <Option key={item.key}>{item.label}</Option>
             ));
             return (
-              <Select
-                combobox
-                onSelect={this.onSelect}
-                filterOption={false}
-                notFoundContent=""
-              >
+              <Select combobox onSelect={this.onSelect} filterOption={false} notFoundContent="">
                 {options}
               </Select>
             );
@@ -215,12 +216,23 @@ describe('Select.combobox', () => {
         const wrapper = mount(<AsyncCombobox />);
         wrapper.find('input').simulate('focus');
         wrapper.find('input').simulate('change', { target: { value: '0' } });
-        expect(wrapper.find('.rc-select-dropdown').hostNodes()
-          .hasClass('rc-select-dropdown-hidden')).toBe(false);
-        wrapper.find('MenuItem').first().simulate('click');
+        expect(
+          wrapper
+            .find('.rc-select-dropdown')
+            .hostNodes()
+            .hasClass('rc-select-dropdown-hidden'),
+        ).toBe(false);
+        wrapper
+          .find('MenuItem')
+          .first()
+          .simulate('click');
         jest.runAllTimers();
-        expect(wrapper.find('.rc-select-dropdown').hostNodes()
-          .hasClass('rc-select-dropdown-hidden')).toBe(true);
+        expect(
+          wrapper
+            .find('.rc-select-dropdown')
+            .hostNodes()
+            .hasClass('rc-select-dropdown-hidden'),
+        ).toBe(true);
       });
     });
   });
@@ -229,16 +241,10 @@ describe('Select.combobox', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
     const wrapper = mount(
-      <Select
-        combobox
-        backfill
-        open
-        onChange={handleChange}
-        onSelect={handleSelect}
-      >
+      <Select combobox backfill open onChange={handleChange} onSelect={handleSelect}>
         <Option value="One">One</Option>
         <Option value="Two">Two</Option>
-      </Select>
+      </Select>,
     );
 
     const input = wrapper.find('input');
@@ -248,7 +254,12 @@ describe('Select.combobox', () => {
     expect(wrapper.state().value).toEqual(['Two']);
     expect(wrapper.state().backfillValue).toEqual('Two');
     expect(wrapper.state().inputValue).toBe('Two');
-    expect(wrapper.find('MenuItem').at(1).text()).toBe('Two');
+    expect(
+      wrapper
+        .find('MenuItem')
+        .at(1)
+        .text(),
+    ).toBe('Two');
     expect(handleChange).not.toBeCalled();
     expect(handleSelect).not.toBeCalled();
 
@@ -259,34 +270,34 @@ describe('Select.combobox', () => {
     expect(handleSelect).toBeCalledWith('Two', <Option value="Two">Two</Option>);
   });
 
-  it('should hide clear icon when value is \'\'', () => {
+  it("should hide clear icon when value is ''", () => {
     const wrapper = mount(
       <Select combobox value="" allowClear>
         <Option value="One">One</Option>
         <Option value="Two">Two</Option>
-      </Select>
+      </Select>,
     );
 
     expect(wrapper.find('.rc-select-selection__clear').length).toBe(0);
   });
 
-  it('should show clear icon when inputValue is not \'\'', () => {
+  it("should show clear icon when inputValue is not ''", () => {
     const wrapper = mount(
       <Select combobox value="One" allowClear>
         <Option value="One">One</Option>
         <Option value="Two">Two</Option>
-      </Select>
+      </Select>,
     );
 
     expect(wrapper.find('.rc-select-selection__clear').length).toBe(1);
   });
 
-  it('should hide clear icon when inputValue is \'\'', () => {
+  it("should hide clear icon when inputValue is ''", () => {
     const wrapper = mount(
       <Select combobox allowClear>
         <Option value="One">One</Option>
         <Option value="Two">Two</Option>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('input').simulate('change', { target: { value: '1' } });
@@ -299,27 +310,19 @@ describe('Select.combobox', () => {
     class App extends React.Component {
       state = {
         options: [],
-      }
+      };
 
-      updateOptions = (value) => {
-        const options = [
-          value,
-          value + value,
-          value + value + value,
-        ];
+      updateOptions = value => {
+        const options = [value, value + value, value + value + value];
         this.setState({
           options,
         });
-      }
+      };
 
       render() {
         return (
-          <Select
-            combobox
-            optionLabelProp="children"
-            onChange={this.updateOptions}
-          >
-            {this.state.options.map((opt) => {
+          <Select combobox optionLabelProp="children" onChange={this.updateOptions}>
+            {this.state.options.map(opt => {
               return <Option key={opt}>{opt}</Option>;
             })}
           </Select>
@@ -327,11 +330,14 @@ describe('Select.combobox', () => {
       }
     }
 
-    const wrapper = mount(<App/>);
+    const wrapper = mount(<App />);
     wrapper.find('input').simulate('change', { target: { value: 'a' } });
     wrapper.find('input').simulate('change', { target: { value: 'ab' } });
     expect(wrapper.find('input').prop('value')).toBe('ab');
-    wrapper.find('MenuItem').at(1).simulate('click');
+    wrapper
+      .find('MenuItem')
+      .at(1)
+      .simulate('click');
     expect(wrapper.find('input').prop('value')).toBe('abab');
   });
 });

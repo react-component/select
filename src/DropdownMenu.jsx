@@ -10,6 +10,7 @@ import { getSelectKeys, preventDefaultEvent, saveRef } from './util';
 export default class DropdownMenu extends React.Component {
   static displayName = 'DropdownMenu';
   static propTypes = {
+    ariaId: PropTypes.string,
     defaultActiveFirstOption: PropTypes.bool,
     value: PropTypes.any,
     dropdownMenuStyle: PropTypes.object,
@@ -23,10 +24,7 @@ export default class DropdownMenu extends React.Component {
     inputValue: PropTypes.string,
     visible: PropTypes.bool,
     firstActiveValue: PropTypes.string,
-    menuItemSelectedIcon: PropTypes.oneOfType([
-      PropTypes.func,
-      PropTypes.node,
-    ]),
+    menuItemSelectedIcon: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
   };
 
   constructor(props) {
@@ -74,20 +72,14 @@ export default class DropdownMenu extends React.Component {
     const scrollIntoViewOpts = {
       onlyScrollIfNeeded: true,
     };
-    if (
-      (!value || value.length === 0) && firstActiveValue
-    ) {
+    if ((!value || value.length === 0) && firstActiveValue) {
       scrollIntoViewOpts.alignWithTop = true;
     }
 
     // Delay to scroll since current frame item position is not ready when pre view is by filter
     // https://github.com/ant-design/ant-design/issues/11268#issuecomment-406634462
     this.rafInstance = raf(() => {
-      scrollIntoView(
-        itemComponent,
-        findDOMNode(this.menuRef),
-        scrollIntoViewOpts
-      );
+      scrollIntoView(itemComponent, findDOMNode(this.menuRef), scrollIntoViewOpts);
     });
   };
 
@@ -130,9 +122,7 @@ export default class DropdownMenu extends React.Component {
         const clone = item => {
           if (
             (!foundFirst && selectedKeys.indexOf(item.key) !== -1) ||
-            (!foundFirst &&
-              !selectedKeys.length &&
-              firstActiveValue.indexOf(item.key) !== -1)
+            (!foundFirst && !selectedKeys.length && firstActiveValue.indexOf(item.key) !== -1)
           ) {
             foundFirst = true;
             return cloneElement(item, {
@@ -191,6 +181,7 @@ export default class DropdownMenu extends React.Component {
           overflow: 'auto',
           transform: 'translateZ(0)',
         }}
+        id={this.props.ariaId}
         onFocus={this.props.onPopupFocus}
         onMouseDown={preventDefaultEvent}
         onScroll={this.props.onPopupScroll}

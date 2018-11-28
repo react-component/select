@@ -11,7 +11,7 @@ describe('Select.optionGroup', () => {
           <Option value="1">1</Option>
           <Option value="2">2</Option>
         </OptGroup>
-      </Select>
+      </Select>,
     );
 
     wrapper.find('input').simulate('change', { target: { value: 'zombiej' } });

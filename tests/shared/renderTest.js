@@ -8,14 +8,10 @@ export default function maxTagTextLengthTest(mode) {
   describe('render', () => {
     it('truncates values by maxTagTextLength', () => {
       const wrapper = render(
-        <Select
-          {...{ [mode]: true } }
-          value={['one', 'two']}
-          maxTagTextLength={2}
-        >
+        <Select {...{ [mode]: true }} value={['one', 'two']} maxTagTextLength={2}>
           <Option value="one">One</Option>
           <Option value="two">Two</Option>
-        </Select>
+        </Select>,
       );
 
       expect(wrapper).toMatchSnapshot();
@@ -23,15 +19,11 @@ export default function maxTagTextLengthTest(mode) {
 
     it('truncates tags by maxTagCount', () => {
       const wrapper = render(
-        <Select
-          {...{ [mode]: true } }
-          value={['one', 'two', 'three']}
-          maxTagCount={2}
-        >
+        <Select {...{ [mode]: true }} value={['one', 'two', 'three']} maxTagCount={2}>
           <Option value="one">One</Option>
           <Option value="two">Two</Option>
           <Option value="three">Three</Option>
-        </Select>
+        </Select>,
       );
 
       expect(wrapper).toMatchSnapshot();
@@ -39,15 +31,11 @@ export default function maxTagTextLengthTest(mode) {
 
     it('truncates tags by maxTagCount while maxTagCount is 0', () => {
       const wrapper = render(
-        <Select
-          {...{ [mode]: true } }
-          value={['one', 'two', 'three']}
-          maxTagCount={0}
-        >
+        <Select {...{ [mode]: true }} value={['one', 'two', 'three']} maxTagCount={0}>
           <Option value="one">One</Option>
           <Option value="two">Two</Option>
           <Option value="three">Three</Option>
-        </Select>
+        </Select>,
       );
 
       expect(wrapper).toMatchSnapshot();
@@ -56,7 +44,7 @@ export default function maxTagTextLengthTest(mode) {
     it('truncates tags by maxTagCount and show maxTagPlaceholder', () => {
       const wrapper = render(
         <Select
-          {...{ [mode]: true } }
+          {...{ [mode]: true }}
           value={['one', 'two', 'three']}
           maxTagCount={2}
           maxTagPlaceholder={<span>Omitted</span>}
@@ -64,23 +52,19 @@ export default function maxTagTextLengthTest(mode) {
           <Option value="one">One</Option>
           <Option value="two">Two</Option>
           <Option value="three">Three</Option>
-        </Select>
+        </Select>,
       );
 
       expect(wrapper).toMatchSnapshot();
     });
 
     it('truncates tags by maxTagCount and show maxTagPlaceholder function', () => {
-      const maxTagPlaceholder = (omittedValues) => {
-        return (
-          <span>
-            {omittedValues.length} values omitted
-          </span>
-        );
+      const maxTagPlaceholder = omittedValues => {
+        return <span>{omittedValues.length} values omitted</span>;
       };
       const wrapper = render(
         <Select
-          {...{ [mode]: true } }
+          {...{ [mode]: true }}
           value={['one', 'two', 'three']}
           maxTagCount={2}
           maxTagPlaceholder={maxTagPlaceholder}
@@ -88,7 +72,7 @@ export default function maxTagTextLengthTest(mode) {
           <Option value="one">One</Option>
           <Option value="two">Two</Option>
           <Option value="three">Three</Option>
-        </Select>
+        </Select>,
       );
 
       expect(wrapper).toMatchSnapshot();
@@ -96,13 +80,10 @@ export default function maxTagTextLengthTest(mode) {
 
     it('render animation', () => {
       const wrapper = shallow(
-        <Select
-          {...{ [mode]: true } }
-          choiceTransitionName="slide-up"
-        >
+        <Select {...{ [mode]: true }} choiceTransitionName="slide-up">
           <Option value="1">1</Option>
           <Option value="2">2</Option>
-        </Select>
+        </Select>,
       );
 
       expect(wrapper).toMatchSnapshot();

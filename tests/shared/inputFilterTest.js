@@ -14,13 +14,18 @@ export default function inputFilterTest(mode) {
       </Select>,
     );
     const input = wrapper.find('input');
-    input.simulate('change', { target: {
-      value: '1',
-    } });
+    input.simulate('change', {
+      target: {
+        value: '1',
+      },
+    });
 
     expect(wrapper.state().open).toBe(true);
     expect(wrapper.state().inputValue).toBe('1');
-    wrapper.find('.rc-select-dropdown-menu-item').first().simulate('click');
+    wrapper
+      .find('.rc-select-dropdown-menu-item')
+      .first()
+      .simulate('click');
     expect(wrapper.state().inputValue).toBe(mode === 'single' ? '' : '1');
   });
 
@@ -33,13 +38,18 @@ export default function inputFilterTest(mode) {
       </Select>,
     );
     const input = wrapper.find('input');
-    input.simulate('change', { target: {
-      value: '1',
-    } });
+    input.simulate('change', {
+      target: {
+        value: '1',
+      },
+    });
 
     expect(wrapper.state().open).toBe(true);
     expect(wrapper.state().inputValue).toBe('1');
-    wrapper.find('.rc-select-dropdown-menu-item').first().simulate('click');
+    wrapper
+      .find('.rc-select-dropdown-menu-item')
+      .first()
+      .simulate('click');
     expect(wrapper.state().inputValue).toBe('');
   });
 }

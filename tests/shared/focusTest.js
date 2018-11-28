@@ -28,7 +28,9 @@ export default function focusTest(mode, props) {
       render() {
         return (
           <Select
-            ref={node => { this.select = node; }}
+            ref={node => {
+              this.select = node;
+            }}
             {...{ [mode]: true }}
             {...props}
             onFocus={handleFocus}
@@ -51,16 +53,11 @@ export default function focusTest(mode, props) {
     const handleFocus = jest.fn();
 
     mount(
-      <Select
-        {...{ [mode]: true }}
-        {...props}
-        autoFocus
-        onFocus={handleFocus}
-      >
+      <Select {...{ [mode]: true }} {...props} autoFocus onFocus={handleFocus}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
-      { attachTo: container }
+      { attachTo: container },
     );
 
     jest.runAllTimers();

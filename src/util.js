@@ -22,9 +22,7 @@ export function getValuePropValue(child) {
   if (child.type && child.type.isSelectOptGroup && props.label) {
     return props.label;
   }
-  throw new Error(
-    `Need at least a key or a value or a label (only for OptGroup) for ${child}`
-  );
+  throw new Error(`Need at least a key or a value or a label (only for OptGroup) for ${child}`);
 }
 
 export function getPropValue(child, prop) {
@@ -102,9 +100,7 @@ export function getSelectKeys(menuItems, value) {
   let selectedKeys = [];
   React.Children.forEach(menuItems, item => {
     if (item.type.isMenuItemGroup) {
-      selectedKeys = selectedKeys.concat(
-        getSelectKeys(item.props.children, value)
-      );
+      selectedKeys = selectedKeys.concat(getSelectKeys(item.props.children, value));
     } else {
       const itemValue = getValuePropValue(item);
       const itemKey = item.key;
@@ -159,9 +155,7 @@ export function defaultFilterFn(input, child) {
     return false;
   }
   const value = toArray(getPropValue(child, this.props.optionFilterProp)).join('');
-  return (
-    value.toLowerCase().indexOf(input.toLowerCase()) > -1
-  );
+  return value.toLowerCase().indexOf(input.toLowerCase()) > -1;
 }
 
 export function validateOptionValue(value, props) {
@@ -171,13 +165,28 @@ export function validateOptionValue(value, props) {
   if (typeof value !== 'string') {
     throw new Error(
       `Invalid \`value\` of type \`${typeof value}\` supplied to Option, ` +
-      `expected \`string\` when \`tags/combobox\` is \`true\`.`
+        `expected \`string\` when \`tags/combobox\` is \`true\`.`,
     );
   }
 }
 
 export function saveRef(instance, name) {
-  return (node) => {
+  return node => {
     instance[name] = node;
   };
 }
+
+/* eslint-disable */
+export function generateUUID() {
+  if (process.env.NODE_ENV === 'test') {
+    return 'test-uuid';
+  }
+  let d = new Date().getTime();
+  const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = (d + Math.random() * 16) % 16 | 0;
+    d = Math.floor(d / 16);
+    return (c === 'x' ? r : (r & 0x7) | 0x8).toString(16);
+  });
+  return uuid;
+}
+/* eslint-disable */

@@ -6,6 +6,7 @@ exports[`Select check title when label is a object 1`] = `
 >
   <div
     aria-autocomplete="list"
+    aria-controls="test-uuid"
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
@@ -63,6 +64,7 @@ Array [
   >
     <div
       aria-autocomplete="list"
+      aria-controls="test-uuid"
       aria-expanded="true"
       aria-haspopup="true"
       class="rc-select-selection
@@ -109,6 +111,7 @@ Array [
       class="rc-select-dropdown rc-select-dropdown--single rc-select-dropdown-placement-bottomLeft "
     >
       <div
+        id="test-uuid"
         style="overflow:auto;transform:translateZ(0)"
       >
         <ul
@@ -148,6 +151,7 @@ Array [
   >
     <div
       aria-autocomplete="list"
+      aria-controls="test-uuid"
       aria-expanded="true"
       aria-haspopup="true"
       class="rc-select-selection
@@ -194,6 +198,7 @@ Array [
       class="rc-select-dropdown rc-select-dropdown--single rc-select-dropdown-placement-bottomLeft "
     >
       <div
+        id="test-uuid"
         style="overflow:auto;transform:translateZ(0)"
       >
         <ul
@@ -232,6 +237,7 @@ exports[`Select no search 1`] = `
 >
   <div
     aria-autocomplete="list"
+    aria-controls="test-uuid"
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
@@ -269,6 +275,7 @@ exports[`Select render renders aria-attributes correctly 1`] = `
 >
   <div
     aria-autocomplete="list"
+    aria-controls="test-uuid"
     aria-expanded="false"
     aria-haspopup="true"
     aria-label="some-label"
@@ -345,6 +352,7 @@ exports[`Select render renders correctly 1`] = `
 >
   <div
     aria-autocomplete="list"
+    aria-controls="test-uuid"
     aria-expanded="false"
     aria-haspopup="true"
     class="antd-selection
@@ -419,6 +427,7 @@ exports[`Select render renders data-attributes correctly 1`] = `
 >
   <div
     aria-autocomplete="list"
+    aria-controls="test-uuid"
     aria-expanded="false"
     aria-haspopup="true"
     class="antd-selection
@@ -495,6 +504,7 @@ exports[`Select render renders disabeld select correctly 1`] = `
 >
   <div
     aria-autocomplete="list"
+    aria-controls="test-uuid"
     aria-expanded="false"
     aria-haspopup="true"
     class="antd-selection
@@ -571,6 +581,7 @@ Array [
   >
     <div
       aria-autocomplete="list"
+      aria-controls="test-uuid"
       aria-expanded="true"
       aria-haspopup="true"
       class="antd-selection
@@ -642,6 +653,7 @@ Array [
       class="antd-dropdown antd-dropdown--single antd-dropdown-placement-bottomLeft "
     >
       <div
+        id="test-uuid"
         style="overflow:auto;transform:translateZ(0)"
       >
         <ul
@@ -721,6 +733,7 @@ exports[`Select render renders role prop correctly 1`] = `
 >
   <div
     aria-autocomplete="list"
+    aria-controls="test-uuid"
     aria-expanded="false"
     aria-haspopup="true"
     class="antd-selection
@@ -795,6 +808,7 @@ exports[`Select should contian falsy children 1`] = `
 >
   <div
     aria-autocomplete="list"
+    aria-controls="test-uuid"
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
@@ -852,6 +866,7 @@ Array [
   >
     <div
       aria-autocomplete="list"
+      aria-controls="test-uuid"
       aria-expanded="true"
       aria-haspopup="true"
       class="rc-select-selection
@@ -904,6 +919,7 @@ Array [
           CUSTOM NODE
         </div>
         <div
+          id="test-uuid"
           style="overflow:auto;transform:translateZ(0)"
         >
           <ul
