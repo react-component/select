@@ -5,27 +5,9 @@ import classnames from 'classnames';
 import ReactDOM from 'react-dom';
 import { isSingleMode, saveRef } from './util';
 import DropdownMenu from './DropdownMenu';
+import placements from './placements';
 
 Trigger.displayName = 'Trigger';
-
-const BUILT_IN_PLACEMENTS = {
-  bottomLeft: {
-    points: ['tl', 'bl'],
-    offset: [0, 4],
-    overflow: {
-      adjustX: 0,
-      adjustY: 1,
-    },
-  },
-  topLeft: {
-    points: ['bl', 'tl'],
-    offset: [0, -4],
-    overflow: {
-      adjustX: 0,
-      adjustY: 1,
-    },
-  },
-};
 
 export default class SelectTrigger extends React.Component {
   static propTypes = {
@@ -48,6 +30,7 @@ export default class SelectTrigger extends React.Component {
     menuItemSelectedIcon: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     dropdownRender: PropTypes.func,
     ariaId: PropTypes.string,
+    builtinPlacements: PropTypes.object,
   };
 
   static defaultProps = {
@@ -139,6 +122,7 @@ export default class SelectTrigger extends React.Component {
       dropdownClassName,
       dropdownStyle,
       dropdownMatchSelectWidth,
+      builtinPlacements,
     } = props;
     const dropdownPrefixCls = this.getDropdownPrefixCls();
     const popupClassName = {
@@ -172,7 +156,7 @@ export default class SelectTrigger extends React.Component {
         hideAction={hideAction}
         ref={this.saveTriggerRef}
         popupPlacement="bottomLeft"
-        builtinPlacements={BUILT_IN_PLACEMENTS}
+        builtinPlacements={{ ...placements, ...builtinPlacements }}
         prefixCls={dropdownPrefixCls}
         popupTransitionName={this.getDropdownTransitionName()}
         onPopupVisibleChange={props.onDropdownVisibleChange}

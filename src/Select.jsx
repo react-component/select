@@ -83,6 +83,7 @@ class Select extends React.Component {
     autoClearSearchValue: true,
     tabIndex: 0,
     dropdownRender: menu => menu,
+    builtinPlacements: {},
   };
 
   constructor(props) {
@@ -1412,6 +1413,7 @@ class Select extends React.Component {
         menuItemSelectedIcon={props.menuItemSelectedIcon}
         dropdownRender={props.dropdownRender}
         ariaId={this.ariaId}
+        builtinPlacements={props.builtinPlacements}
       >
         <div
           id={props.id}
