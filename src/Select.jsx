@@ -1051,8 +1051,8 @@ class Select extends React.Component {
         // Match option group label
         if (inputValue && this.filterOption(inputValue, child)) {
           const innerItems = childrenToArray(child.props.children).map(subChild => {
-            const childValue = getValuePropValue(subChild);
-            return <MenuItem key={childValue || subChild.key} {...subChild.props} />;
+            const childValue = getValuePropValue(subChild) || subChild.key;
+            return <MenuItem key={childValue} value={childValue} {...subChild.props} />;
           });
 
           sel.push(
