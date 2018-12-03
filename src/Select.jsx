@@ -1052,7 +1052,7 @@ class Select extends React.Component {
         if (inputValue && this.filterOption(inputValue, child)) {
           const innerItems = childrenToArray(child.props.children).map(subChild => {
             const childValue = getValuePropValue(subChild);
-            return <MenuItem key={childValue} {...subChild.props} />;
+            return <MenuItem key={childValue || subChild.key} {...subChild.props} />;
           });
 
           sel.push(
