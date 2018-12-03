@@ -31457,7 +31457,7 @@ var _initialiseProps = function _initialiseProps() {
         if (inputValue && _this3.filterOption(inputValue, child)) {
           var innerItems = Object(__WEBPACK_IMPORTED_MODULE_10_rc_util_es_Children_toArray__["a" /* default */])(child.props.children).map(function (subChild) {
             var childValue = Object(__WEBPACK_IMPORTED_MODULE_17__util__["k" /* getValuePropValue */])(subChild);
-            return __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_14_rc_menu__["a" /* Item */], __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({ key: childValue }, subChild.props));
+            return __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_14_rc_menu__["a" /* Item */], __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({ key: childValue || subChild.key }, subChild.props));
           });
 
           sel.push(__WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(
