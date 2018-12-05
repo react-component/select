@@ -92,10 +92,10 @@ class Select extends React.Component {
       value: Select.getValueFromProps(props, true), // true: use default value
       inputValue: props.combobox
         ? Select.getInputValueForCombobox(
-            props,
-            optionsInfo,
-            true, // use default value
-          )
+          props,
+          optionsInfo,
+          true, // use default value
+        )
         : '',
       open: props.defaultOpen,
       optionsInfo,
@@ -1404,6 +1404,7 @@ class Select extends React.Component {
         firstActiveValue={props.firstActiveValue}
         onDropdownVisibleChange={this.onDropdownVisibleChange}
         getPopupContainer={props.getPopupContainer}
+        getDocument={props.getDocument}
         onMenuSelect={this.onMenuSelect}
         onMenuDeselect={this.onMenuDeselect}
         onPopupScroll={props.onPopupScroll}
