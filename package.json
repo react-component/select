@@ -80,7 +80,7 @@
     "raf": "^3.4.0",
     "rc-animate": "2.x",
     "rc-menu": "^7.3.0",
-    "rc-trigger": "^2.5.4",
+    "rc-trigger": "^2.6.2",
     "rc-util": "^4.0.4",
     "react-lifecycles-compat": "^3.0.2",
     "warning": "^4.0.2"
