@@ -410,6 +410,7 @@ exports[`Select.tags allowClear renders correctly 1`] = `
 exports[`Select.tags render render animation 1`] = `
 <SelectTrigger
   ariaId="test-uuid"
+  builtinPlacements={Object {}}
   defaultActiveFirstOption={true}
   dropdownMatchSelectWidth={true}
   dropdownMenuStyle={Object {}}

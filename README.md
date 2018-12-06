@@ -117,6 +117,7 @@ React.render(c, container);
 | menuItemSelectedIcon | specify the remove icon | ReactNode \| (props: MenuItemProps) => ReactNode | - |
 | dropdownRender | render custom dropdown menu | (menu: React.Node, props: MenuProps) => ReactNode | - |
 | loading | show loading icon in arrow | Boolean | false |
+| builtinPlacements | Describes how the popup items should be positioned | Object of alignConfigs for <a href="https://github.com/yiminghe/dom-align">dom-align</a> | see <a href="./src/placements.js">placements.js</a> |
 
 ### Methods
 
