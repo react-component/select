@@ -71,6 +71,7 @@ class Select extends React.Component {
     onDeselect: noop,
     onInputKeyDown: noop,
     showArrow: true,
+    forceShowArrow: false,
     dropdownMatchSelectWidth: true,
     dropdownStyle: {},
     dropdownMenuStyle: {},
@@ -1275,12 +1276,12 @@ class Select extends React.Component {
     );
   };
   renderArrow(multiple) {
-    const { showArrow, loading, inputIcon, prefixCls } = this.props;
+    const { showArrow, loading, inputIcon, prefixCls, forceShowArrow } = this.props;
     if (!showArrow) {
       return null;
     }
     // if loading  have loading icon
-    if (multiple && !loading) {
+    if (multiple && !loading && !forceShowArrow) {
       return null;
     }
     const defaultIcon = loading ? (

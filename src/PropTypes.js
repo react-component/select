@@ -42,6 +42,7 @@ const SelectPropTypes = {
   disabled: PropTypes.bool,
   allowClear: PropTypes.bool,
   showArrow: PropTypes.bool,
+  forceShowArrow: PropTypes.bool,
   tags: PropTypes.bool,
   prefixCls: PropTypes.string,
   className: PropTypes.string,
