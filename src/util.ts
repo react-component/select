@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
-export function toTitle(title) {
+export function toTitle(title: string) {
   if (typeof title === 'string') {
     return title;
   }
@@ -98,8 +98,9 @@ export function getSelectKeys(menuItems, value) {
     return [];
   }
   let selectedKeys = [];
-  React.Children.forEach(menuItems, item => {
-    if (item.type.isMenuItemGroup) {
+  React.Children.forEach(menuItems, (item: ReactElement<any>) => {
+    const type = item.type as any;
+    if (type.isMenuItemGroup) {
       selectedKeys = selectedKeys.concat(getSelectKeys(item.props.children, value));
     } else {
       const itemValue = getValuePropValue(item);
@@ -112,12 +113,12 @@ export function getSelectKeys(menuItems, value) {
   return selectedKeys;
 }
 
-export const UNSELECTABLE_STYLE = {
+export const UNSELECTABLE_STYLE: any = {
   userSelect: 'none',
   WebkitUserSelect: 'none',
 };
 
-export const UNSELECTABLE_ATTRIBUTE = {
+export const UNSELECTABLE_ATTRIBUTE: any = {
   unselectable: 'on',
 };
 
@@ -136,18 +137,18 @@ export function findFirstMenuItem(children) {
   return null;
 }
 
-export function includesSeparators(string, separators) {
+export function includesSeparators(str: string[], separators: string[]) {
   for (let i = 0; i < separators.length; ++i) {
-    if (string.lastIndexOf(separators[i]) > 0) {
+    if (str.lastIndexOf(separators[i]) > 0) {
       return true;
     }
   }
   return false;
 }
 
-export function splitBySeparators(string, separators) {
+export function splitBySeparators(str: string | string[], separators: string[]) {
   const reg = new RegExp(`[${separators.join()}]`);
-  return string.split(reg).filter(token => token);
+  return (<string> str).split(reg).filter(token => token);
 }
 
 export function defaultFilterFn(input, child) {
@@ -176,17 +177,17 @@ export function saveRef(instance, name) {
   };
 }
 
-/* eslint-disable */
-export function generateUUID() {
+export function generateUUID(): string {
   if (process.env.NODE_ENV === 'test') {
     return 'test-uuid';
   }
   let d = new Date().getTime();
   const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    // tslint:disable-next-line:no-bitwise
     const r = (d + Math.random() * 16) % 16 | 0;
     d = Math.floor(d / 16);
+    // tslint:disable-next-line:no-bitwise
     return (c === 'x' ? r : (r & 0x7) | 0x8).toString(16);
   });
   return uuid;
 }
-/* eslint-disable */

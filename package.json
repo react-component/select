@@ -28,6 +28,7 @@
     "port": 8003
   },
   "scripts": {
+    "watch-tsc": "rc-tools run watch-tsc",
     "build": "rc-tools run build",
     "compile": "rc-tools run compile --babel-runtime",
     "gh-pages": "rc-tools run gh-pages",
@@ -38,7 +39,9 @@
     "prettier": "rc-tools run prettier",
     "test": "jest",
     "prepublish": "rc-tools run guard",
-    "coverage": "jest --coverage"
+    "init-tslint": "rc-tools run init-tslint",
+    "coverage": "jest --coverage",
+    "postinstall": "npm run init-tslint"
   },
   "jest": {
     "setupFiles": [
@@ -58,6 +61,8 @@
     }
   },
   "devDependencies": {
+    "@types/react": "^16.7.13",
+    "@types/react-dom": "^16.0.11",
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-16": "^1.0.2",
     "enzyme-to-json": "^3.1.4",
@@ -66,6 +71,7 @@
     "pre-commit": "1.x",
     "querystring": "^0.2.0",
     "rc-dialog": "6.x",
+    "rc-test": "^6.0.1",
     "rc-tools": "8.x",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",

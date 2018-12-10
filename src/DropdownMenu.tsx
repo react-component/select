@@ -1,13 +1,46 @@
-import React, { cloneElement } from 'react';
+import React, {
+  cloneElement,
+  FocusEventHandler,
+  UIEventHandler,
+  CSSProperties,
+  ReactNode,
+} from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
+import { valueType, renderSelect } from './PropTypes';
 import toArray from 'rc-util/lib/Children/toArray';
 import Menu from 'rc-menu';
 import scrollIntoView from 'dom-scroll-into-view';
 import raf from 'raf';
 import { getSelectKeys, preventDefaultEvent, saveRef } from './util';
 
-export default class DropdownMenu extends React.Component {
+export interface IMenuEvent {
+  key: String;
+  item: ReactNode;
+  domEvent: Event;
+  selectedKeys: String[];
+}
+
+export interface IDropdownMenuProps {
+  ariaId: string;
+  defaultActiveFirstOption: boolean;
+  value: valueType;
+  dropdownMenuStyle: CSSProperties;
+  multiple: boolean;
+  onPopupFocus: FocusEventHandler<HTMLDivElement>;
+  onPopupScroll: UIEventHandler<HTMLDivElement>;
+  onMenuDeselect: (e: IMenuEvent) => void;
+  onMenuSelect: (e: IMenuEvent) => void;
+  prefixCls: string;
+  menuItems: any;
+  inputValue: string | string[];
+  visible: boolean;
+  firstActiveValue: valueType;
+  menuItemSelectedIcon: renderSelect;
+  backfillValue: string;
+}
+
+export default class DropdownMenu extends React.Component<Partial<IDropdownMenuProps>> {
   static displayName = 'DropdownMenu';
   static propTypes = {
     ariaId: PropTypes.string,
@@ -26,7 +59,14 @@ export default class DropdownMenu extends React.Component {
     firstActiveValue: PropTypes.string,
     menuItemSelectedIcon: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
   };
-
+  rafInstance: {
+    cancel: () => void;
+  };
+  lastInputValue: string | string[];
+  saveMenuRef: Menu;
+  menuRef: Menu;
+  lastVisible: boolean;
+  firstActiveItem: any;
   constructor(props) {
     super(props);
     this.lastInputValue = props.inputValue;
@@ -68,12 +108,15 @@ export default class DropdownMenu extends React.Component {
   scrollActiveItemToView = () => {
     // scroll into view
     const itemComponent = findDOMNode(this.firstActiveItem);
-    const { value, visible, firstActiveValue } = this.props;
-
+    const { visible, firstActiveValue } = this.props;
+    const value = this.props.value as string[];
     if (!itemComponent || !visible) {
       return;
     }
-    const scrollIntoViewOpts = {
+    const scrollIntoViewOpts: {
+      alignWithTop?: boolean;
+      onlyScrollIfNeeded?: boolean;
+    } = {
       onlyScrollIfNeeded: true,
     };
     if ((!value || value.length === 0) && firstActiveValue) {
@@ -88,36 +131,43 @@ export default class DropdownMenu extends React.Component {
   };
 
   renderMenu() {
-    const props = this.props;
     const {
       menuItems,
       menuItemSelectedIcon,
       defaultActiveFirstOption,
-      value,
       prefixCls,
       multiple,
       onMenuSelect,
       inputValue,
-      firstActiveValue,
       backfillValue,
-    } = props;
+      onMenuDeselect,
+      visible,
+    } = this.props;
+    const firstActiveValue = this.props.firstActiveValue as string;
+
     if (menuItems && menuItems.length) {
-      const menuProps = {};
+      const menuProps: Partial<{
+        onDeselect: (e: IMenuEvent) => void;
+        onSelect: (e: IMenuEvent) => void;
+        onClick: (e: IMenuEvent) => void;
+      }> = {};
       if (multiple) {
-        menuProps.onDeselect = props.onMenuDeselect;
+        menuProps.onDeselect = onMenuDeselect;
         menuProps.onSelect = onMenuSelect;
       } else {
         menuProps.onClick = onMenuSelect;
       }
-
+      const value = this.props.value as string[];
       const selectedKeys = getSelectKeys(menuItems, value);
-      const activeKeyProps = {};
+      const activeKeyProps: {
+        activeKey?: string;
+      } = {};
 
       let clonedMenuItems = menuItems;
       if (selectedKeys.length || firstActiveValue) {
-        if (props.visible && !this.lastVisible) {
+        if (visible && !this.lastVisible) {
           activeKeyProps.activeKey = selectedKeys[0] || firstActiveValue;
-        } else if (!props.visible) {
+        } else if (!visible) {
           activeKeyProps.activeKey = null;
         }
         let foundFirst = false;

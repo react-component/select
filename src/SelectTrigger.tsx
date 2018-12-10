@@ -1,10 +1,11 @@
 import Trigger from 'rc-trigger';
-import React from 'react';
+import React, { CSSProperties, UIEventHandler, MouseEventHandler } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import ReactDOM from 'react-dom';
 import { isSingleMode, saveRef } from './util';
-import DropdownMenu from './DropdownMenu';
+import DropdownMenu, { IDropdownMenuProps } from './DropdownMenu';
+import { valueType, renderSelect } from './PropTypes';
 
 Trigger.displayName = 'Trigger';
 
@@ -27,7 +28,49 @@ const BUILT_IN_PLACEMENTS = {
   },
 };
 
-export default class SelectTrigger extends React.Component {
+export interface ISelectTriggerProps extends IDropdownMenuProps {
+  onPopupFocus: () => void;
+  onPopupScroll: UIEventHandler<HTMLDivElement>;
+  onMouseEnter: MouseEventHandler<HTMLDivElement>;
+  onMouseLeave: MouseEventHandler<HTMLDivElement>;
+  dropdownMatchSelectWidth: boolean;
+  dropdownStyle: CSSProperties;
+  dropdownAlign: object;
+  visible: boolean;
+  combobox: boolean;
+  disabled: boolean;
+  showSearch: boolean;
+  dropdownClassName: string;
+  multiple: boolean;
+  inputValue: string | string[];
+  filterOption: any;
+  options: any;
+  prefixCls: string;
+  popupClassName: string;
+  children: any;
+  showAction: string[];
+  menuItemSelectedIcon: renderSelect;
+  dropdownRender: (menu: React.ReactNode, props: Partial<ISelectTriggerProps>) => React.ReactNode;
+  onDropdownVisibleChange: (value: boolean) => void;
+  getPopupContainer: renderSelect;
+  ariaId: string;
+  value: valueType;
+  transitionName: string;
+  animation: string;
+}
+export interface ISelectTriggerState {
+  dropdownWidth: number;
+}
+export default class SelectTrigger extends React.Component<
+  Partial<ISelectTriggerProps>,
+  ISelectTriggerState
+> {
+  static displayName: string;
+
+  static defaultProps = {
+    dropdownRender: menu => menu,
+  };
+
   static propTypes = {
     onPopupFocus: PropTypes.func,
     onPopupScroll: PropTypes.func,
@@ -50,9 +93,10 @@ export default class SelectTrigger extends React.Component {
     ariaId: PropTypes.string,
   };
 
-  static defaultProps = {
-    dropdownRender: menu => menu,
-  };
+  saveDropdownMenuRef: (ref) => void;
+  saveTriggerRef: (ref) => void;
+  dropdownMenuRef: DropdownMenu;
+  triggerRef: Trigger;
 
   constructor(props) {
     super(props);
@@ -74,7 +118,8 @@ export default class SelectTrigger extends React.Component {
   }
 
   setDropdownWidth = () => {
-    const width = ReactDOM.findDOMNode(this).offsetWidth;
+    const dom = ReactDOM.findDOMNode(this) as HTMLDivElement;
+    const width = dom.offsetWidth;
     if (width !== this.state.dropdownWidth) {
       this.setState({ dropdownWidth: width });
     }
