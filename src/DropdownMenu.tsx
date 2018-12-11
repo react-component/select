@@ -1,24 +1,24 @@
+import scrollIntoView from 'dom-scroll-into-view';
+import PropTypes from 'prop-types';
+import raf from 'raf';
+import Menu from 'rc-menu';
+import toArray from 'rc-util/lib/Children/toArray';
 import React, {
   cloneElement,
-  FocusEventHandler,
-  UIEventHandler,
   CSSProperties,
+  FocusEventHandler,
   ReactNode,
+  UIEventHandler,
 } from 'react';
 import { findDOMNode } from 'react-dom';
-import PropTypes from 'prop-types';
-import { valueType, renderSelect } from './PropTypes';
-import toArray from 'rc-util/lib/Children/toArray';
-import Menu from 'rc-menu';
-import scrollIntoView from 'dom-scroll-into-view';
-import raf from 'raf';
+import { renderSelect, valueType } from './PropTypes';
 import { getSelectKeys, preventDefaultEvent, saveRef } from './util';
 
 export interface IMenuEvent {
-  key: String;
+  key: string;
   item: ReactNode;
   domEvent: Event;
-  selectedKeys: String[];
+  selectedKeys: string[];
 }
 
 export interface IDropdownMenuProps {
@@ -41,8 +41,8 @@ export interface IDropdownMenuProps {
 }
 
 export default class DropdownMenu extends React.Component<Partial<IDropdownMenuProps>> {
-  static displayName = 'DropdownMenu';
-  static propTypes = {
+  public static displayName = 'DropdownMenu';
+  public static propTypes = {
     ariaId: PropTypes.string,
     defaultActiveFirstOption: PropTypes.bool,
     value: PropTypes.any,
@@ -59,26 +59,26 @@ export default class DropdownMenu extends React.Component<Partial<IDropdownMenuP
     firstActiveValue: PropTypes.string,
     menuItemSelectedIcon: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
   };
-  rafInstance: {
+  public rafInstance: {
     cancel: () => void;
   };
-  lastInputValue: string | string[];
-  saveMenuRef: Menu;
-  menuRef: Menu;
-  lastVisible: boolean;
-  firstActiveItem: any;
+  public lastInputValue: string | string[];
+  public saveMenuRef: Menu;
+  public menuRef: Menu;
+  public lastVisible: boolean;
+  public firstActiveItem: any;
   constructor(props) {
     super(props);
     this.lastInputValue = props.inputValue;
     this.saveMenuRef = saveRef(this, 'menuRef');
   }
 
-  componentDidMount() {
+  public componentDidMount() {
     this.scrollActiveItemToView();
     this.lastVisible = this.props.visible;
   }
 
-  shouldComponentUpdate(nextProps) {
+  public shouldComponentUpdate(nextProps) {
     if (!nextProps.visible) {
       this.lastVisible = false;
     }
@@ -90,7 +90,7 @@ export default class DropdownMenu extends React.Component<Partial<IDropdownMenuP
     );
   }
 
-  componentDidUpdate(prevProps) {
+  public componentDidUpdate(prevProps) {
     const props = this.props;
     if (!prevProps.visible && props.visible) {
       this.scrollActiveItemToView();
@@ -99,13 +99,13 @@ export default class DropdownMenu extends React.Component<Partial<IDropdownMenuP
     this.lastInputValue = props.inputValue;
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     if (this.rafInstance && this.rafInstance.cancel) {
       this.rafInstance.cancel();
     }
   }
 
-  scrollActiveItemToView = () => {
+  public scrollActiveItemToView = () => {
     // scroll into view
     const itemComponent = findDOMNode(this.firstActiveItem);
     const { visible, firstActiveValue } = this.props;
@@ -130,7 +130,7 @@ export default class DropdownMenu extends React.Component<Partial<IDropdownMenuP
     });
   };
 
-  renderMenu() {
+  public renderMenu = () => {
     const {
       menuItems,
       menuItemSelectedIcon,
@@ -225,9 +225,9 @@ export default class DropdownMenu extends React.Component<Partial<IDropdownMenuP
       );
     }
     return null;
-  }
+  };
 
-  render() {
+  public render() {
     const renderMenu = this.renderMenu();
     return renderMenu ? (
       <div

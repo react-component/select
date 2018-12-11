@@ -1,20 +1,20 @@
 import PropTypes from 'prop-types';
-import Option from './Option';
 import {
-  ReactNodeArray,
+  CSSProperties,
+  FocusEventHandler,
   KeyboardEventHandler,
   MouseEventHandler,
-  FocusEventHandler,
-  UIEventHandler,
   ReactNode,
-  CSSProperties,
+  ReactNodeArray,
+  UIEventHandler,
 } from 'react';
+import Option from './Option';
 
 export type emptyFunction = (e?) => void;
 export type valueType =
   | string
   | string[]
-  | { key: String; label: ReactNode }
+  | { key: string; label: ReactNode }
   | Array<{ key; label }>;
 
 type renderNode = () => ReactNode;

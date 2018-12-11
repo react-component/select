@@ -84,6 +84,7 @@ export function findIndexInValueBySingleValue(value, singleValue) {
 export function getLabelFromPropsValue(value, key) {
   let label;
   value = toArray(value);
+  // tslint:disable-next-line:prefer-for-of
   for (let i = 0; i < value.length; i++) {
     if (value[i].key === key) {
       label = value[i].label;
@@ -123,6 +124,7 @@ export const UNSELECTABLE_ATTRIBUTE: any = {
 };
 
 export function findFirstMenuItem(children) {
+  // tslint:disable-next-line:prefer-for-of
   for (let i = 0; i < children.length; i++) {
     const child = children[i];
     if (child.type.isMenuItemGroup) {
@@ -138,6 +140,7 @@ export function findFirstMenuItem(children) {
 }
 
 export function includesSeparators(str: string[], separators: string[]) {
+  // tslint:disable-next-line:prefer-for-of
   for (let i = 0; i < separators.length; ++i) {
     if (str.lastIndexOf(separators[i]) > 0) {
       return true;
@@ -148,7 +151,7 @@ export function includesSeparators(str: string[], separators: string[]) {
 
 export function splitBySeparators(str: string | string[], separators: string[]) {
   const reg = new RegExp(`[${separators.join()}]`);
-  return (<string> str).split(reg).filter(token => token);
+  return (str as string).split(reg).filter(token => token);
 }
 
 export function defaultFilterFn(input, child) {
