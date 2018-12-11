@@ -43,20 +43,6 @@
     "coverage": "jest --coverage",
     "postinstall": "npm run init-tslint"
   },
-  "jest": {
-    "setupFiles": [
-      "./tests/setup.js"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*"
-    ],
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    }
-  },
   "devDependencies": {
     "@types/enzyme": "^3.1.15",
     "@types/jest": "^23.3.10",

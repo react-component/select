@@ -13,18 +13,18 @@ import renderTest from './shared/renderTest';
 
 describe('Select.multiple', () => {
   allowClearTest('multiple');
-  focusTest('multiple');
+  focusTest('multiple', {});
   blurTest('multiple');
   hoverTest('multiple');
   renderTest('multiple');
   removeSelectedTest('multiple');
-  dynamicChildrenTest('multiple');
+  dynamicChildrenTest('multiple', {});
   inputFilterTest('multiple');
 
   it('tokenize input', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
-    const wrapper = mount(
+    const wrapper = mount<Select>(
       <Select
         multiple={true}
         optionLabelProp="children"
@@ -42,7 +42,7 @@ describe('Select.multiple', () => {
     );
 
     const input = wrapper.find('input');
-    input.instance().focus = jest.fn();
+    (input.instance() as any).focus = jest.fn();
 
     input.simulate('change', {
       target: {
@@ -80,7 +80,7 @@ describe('Select.multiple', () => {
     ).toEqual('Two');
     expect(wrapper.state().inputValue).toBe('');
     expect(wrapper.state().open).toBe(false);
-    expect(input.instance().focus).toBeCalled();
+    expect((input.instance() as any).focus).toBeCalled();
   });
 
   it('focus', () => {
@@ -134,7 +134,9 @@ describe('Select.multiple', () => {
     expect(handleChange).toBeCalledWith(
       [1, 2],
       [
-        <Option key="1" value={1}>1</Option>,
+        <Option key="1" value={1}>
+          1
+        </Option>,
         <Option value={2} key="2" testprop={2}>
           2
         </Option>,

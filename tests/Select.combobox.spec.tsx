@@ -12,7 +12,7 @@ import throwOptionValue from './shared/throwOptionValue';
 describe('Select.combobox', () => {
   allowClearTest('combobox');
   throwOptionValue('combobox');
-  focusTest('combobox');
+  focusTest('combobox', {});
   keyDownTest('combobox');
   openControlledTest('combobox');
 
@@ -28,7 +28,7 @@ describe('Select.combobox', () => {
   });
 
   it('set inputValue based on value', () => {
-    const wrapper = mount(
+    const wrapper = mount<Select>(
       <Select combobox={true} value="1">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
@@ -39,7 +39,7 @@ describe('Select.combobox', () => {
   });
 
   it('placeholder', () => {
-    const wrapper = mount(
+    const wrapper = mount<Select>(
       <Select combobox={true} placeholder="placeholder">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
@@ -82,7 +82,7 @@ describe('Select.combobox', () => {
   });
 
   it('set inputValue when user select a option', () => {
-    const wrapper = mount(
+    const wrapper = mount<Select>(
       <Select combobox={true}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
@@ -169,7 +169,12 @@ describe('Select.combobox', () => {
               <Option key={item.key}>{item.label}</Option>
             ));
             return (
-              <Select combobox={true} onChange={this.handleChange} filterOption={false} notFoundContent="">
+              <Select
+                combobox={true}
+                onChange={this.handleChange}
+                filterOption={false}
+                notFoundContent=""
+              >
                 {options}
               </Select>
             );
@@ -208,7 +213,12 @@ describe('Select.combobox', () => {
               <Option key={item.key}>{item.label}</Option>
             ));
             return (
-              <Select combobox={true} onSelect={this.onSelect} filterOption={false} notFoundContent="">
+              <Select
+                combobox={true}
+                onSelect={this.onSelect}
+                filterOption={false}
+                notFoundContent=""
+              >
                 {options}
               </Select>
             );
@@ -241,8 +251,14 @@ describe('Select.combobox', () => {
   it('backfill', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
-    const wrapper = mount(
-      <Select combobox={true} backfill={true} open={true} onChange={handleChange} onSelect={handleSelect}>
+    const wrapper = mount<Select>(
+      <Select
+        combobox={true}
+        backfill={true}
+        open={true}
+        onChange={handleChange}
+        onSelect={handleSelect}
+      >
         <Option value="One">One</Option>
         <Option value="Two">Two</Option>
       </Select>,

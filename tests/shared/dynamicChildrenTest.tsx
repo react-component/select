@@ -4,7 +4,7 @@ import React from 'react';
 import Option from '../../src/Option';
 import Select from '../../src/Select';
 
-export default function dynamicChildrenTest(mode, props) {
+export default function dynamicChildrenTest(mode, props?) {
   beforeEach(() => {
     jest.useFakeTimers();
   });
