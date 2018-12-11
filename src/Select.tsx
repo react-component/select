@@ -4,7 +4,7 @@ import Animate from 'rc-animate';
 import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
 import childrenToArray from 'rc-util/lib/Children/toArray';
 import KeyCode from 'rc-util/lib/KeyCode';
-import React, { ReactElement } from 'react';
+import React, { Component, ReactElement } from 'react';
 import ReactDOM from 'react-dom';
 import { polyfill } from 'react-lifecycles-compat';
 import warning from 'warning';
@@ -61,7 +61,7 @@ export interface ISelectState {
   backfillValue: string;
 }
 
-class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
+class Select extends Component<Partial<ISelectProps>, ISelectState> {
   public static propTypes = SelectPropTypes;
   public static Option: typeof Option;
   public static OptGroup: typeof OptGroup;
@@ -419,13 +419,10 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
       value = [selectedValue];
       this.setOpenState(false, true);
     }
+
     this.fireChange(value);
-    let inputValue;
-    if (isCombobox(props)) {
-      inputValue = getPropValue(item, props.optionLabelProp);
-    } else {
-      inputValue = '';
-    }
+    const inputValue = isCombobox(props) ? getPropValue(item, props.optionLabelProp) : '';
+
     if (props.autoClearSearchValue) {
       this.setInputValue(inputValue, false);
     }
@@ -439,7 +436,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     if (domEvent.type === 'click') {
       this.removeSelected(getValuePropValue(item));
     }
-    const { props } = this;
+    const props = this.props;
     if (props.autoClearSearchValue) {
       this.setInputValue('', false);
     }
@@ -656,7 +653,8 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
   };
 
   public getPlaceholderElement = () => {
-    const { props, state } = this;
+    const props = this.props;
+    const state = this.state;
     let hidden = false;
     if (state.inputValue) {
       hidden = true;
@@ -740,7 +738,8 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
   };
 
   public setOpenState = (open, needFocus?: boolean) => {
-    const { props, state } = this;
+    const props = this.props;
+    const state = this.state;
     if (state.open === open) {
       this.maybeFocus(open, needFocus);
       return;
@@ -910,7 +909,8 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
   };
 
   public updateFocusClassName = () => {
-    const { rootRef, props } = this;
+    const rootRef = this.rootRef;
+    const props = this.props;
     // avoid setState and its side effect
     if (this._focused) {
       classes(rootRef).add(`${props.prefixCls}-focused`);
@@ -1103,8 +1103,8 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
         // Match option group label
         if (inputValue && this.filterOption(inputValue, child)) {
           const innerItems = childrenToArray(child.props.children).map(subChild => {
-            const childValue = getValuePropValue(subChild) || subChild.key;
-            return <MenuItem key={childValue} value={childValue} {...subChild.props} />;
+            const childValueSub = getValuePropValue(subChild) || subChild.key;
+            return <MenuItem key={childValueSub} value={childValueSub} {...subChild.props} />;
           });
 
           sel.push(

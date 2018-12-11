@@ -1,12 +1,12 @@
 /* eslint-disable no-undef */
-import React from 'react';
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
-import Select, { Option, OptGroup } from '../src';
-import focusTest from './shared/focusTest';
+import React from 'react';
+import Select, { OptGroup, Option } from '../src';
 import blurTest from './shared/blurTest';
-import keyDownTest from './shared/keyDownTest';
+import focusTest from './shared/focusTest';
 import inputFilterTest from './shared/inputFilterTest';
+import keyDownTest from './shared/keyDownTest';
 import openControlledTest from './shared/openControlledTest';
 
 describe('Select', () => {
@@ -24,9 +24,9 @@ describe('Select', () => {
         openClassName="open-test"
         value="2"
         placeholder="Select a number"
-        showArrow
-        allowClear
-        showSearch
+        showArrow={true}
+        allowClear={true}
+        showSearch={true}
       >
         <OptGroup label="manager">
           <Option className="option-test" value="jack">
@@ -116,7 +116,7 @@ describe('Select', () => {
   });
 
   it('not add open className when result is empty and no notFoundContent given', () => {
-    const wrapper = mount(<Select combobox notFoundContent={false} />);
+    const wrapper = mount(<Select combobox={true} notFoundContent={false} />);
     const select = wrapper.find('.rc-select');
     select.simulate('click');
     expect(select.props().className).not.toContain('-open');
@@ -135,7 +135,7 @@ describe('Select', () => {
 
   it('should can select multiple items', () => {
     const wrapper = mount(
-      <Select multiple value={['1', '2']}>
+      <Select multiple={true} value={['1', '2']}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
         <Option value="3">2</Option>
@@ -147,7 +147,7 @@ describe('Select', () => {
 
   it('should hide clear button', () => {
     const wrapper = mount(
-      <Select allowClear>
+      <Select allowClear={true}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -157,7 +157,7 @@ describe('Select', () => {
 
   it('should not response click event when select is disabled', () => {
     const wrapper = mount(
-      <Select disabled defaultValue="2">
+      <Select disabled={true} defaultValue="2">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -192,7 +192,7 @@ describe('Select', () => {
 
   it('should filter options when filterOption is true', () => {
     const wrapper = mount(
-      <Select filterOption>
+      <Select filterOption={true}>
         <Option value="1">One</Option>
         <Option value="2">Two</Option>
       </Select>,
@@ -290,7 +290,7 @@ describe('Select', () => {
   it('clears value', () => {
     const handleChange = jest.fn();
     const wrapper = mount(
-      <Select value="1" allowClear onChange={handleChange}>
+      <Select value="1" allowClear={true} onChange={handleChange}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -305,7 +305,7 @@ describe('Select', () => {
   it('adds label to value', () => {
     const handleChange = jest.fn();
     const wrapper = mount(
-      <Select onChange={handleChange} labelInValue optionLabelProp="children">
+      <Select onChange={handleChange} labelInValue={true} optionLabelProp="children">
         <Option value="1" testprop="test">
           One
         </Option>
@@ -329,7 +329,7 @@ describe('Select', () => {
   it('give right option when use OptGroup', () => {
     const handleChange = jest.fn();
     const wrapper = mount(
-      <Select onChange={handleChange} labelInValue optionLabelProp="children">
+      <Select onChange={handleChange} labelInValue={true} optionLabelProp="children">
         <OptGroup label="grouplabel">
           <Option value="1" testprop="test">
             One
@@ -354,7 +354,7 @@ describe('Select', () => {
 
   it('use label in props.value', () => {
     const wrapper = mount(
-      <Select labelInValue value={{ key: 1, label: 'One' }}>
+      <Select labelInValue={true} value={{ key: 1, label: 'One' }}>
         <Option value="2">Two</Option>
       </Select>,
     );
@@ -364,7 +364,7 @@ describe('Select', () => {
   it('fires search event when user input', () => {
     const handleSearch = jest.fn();
     const wrapper = mount(
-      <Select showSearch onSearch={handleSearch}>
+      <Select showSearch={true} onSearch={handleSearch}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -377,7 +377,7 @@ describe('Select', () => {
   it('not fires search event when user select', () => {
     const handleSearch = jest.fn();
     const wrapper = mount(
-      <Select showSearch onSearch={handleSearch}>
+      <Select showSearch={true} onSearch={handleSearch}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -394,7 +394,7 @@ describe('Select', () => {
   it('not fires extra search event when user search and select', () => {
     const handleSearch = jest.fn();
     const wrapper = mount(
-      <Select showSearch onSearch={handleSearch}>
+      <Select showSearch={true} onSearch={handleSearch}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -491,7 +491,12 @@ describe('Select', () => {
       handleChange = jest.fn();
       handleBlur = jest.fn();
       wrapper = mount(
-        <Select onChange={handleChange} onBlur={handleBlur} showSearch optionLabelProp="children">
+        <Select
+          onChange={handleChange}
+          onBlur={handleBlur}
+          showSearch={true}
+          optionLabelProp="children"
+        >
           <Option value={1} key={1}>
             1-text
           </Option>
@@ -551,7 +556,7 @@ describe('Select', () => {
       const onFocus = jest.fn();
       const onBlur = jest.fn();
       wrapper = mount(
-        <Select onFocus={onFocus} onBlur={onBlur} disabled>
+        <Select onFocus={onFocus} onBlur={onBlur} disabled={true}>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
         </Select>,
@@ -653,7 +658,7 @@ describe('Select', () => {
 
   it('Controlled opening', () => {
     const wrapper = mount(
-      <Select open>
+      <Select open={true}>
         <Option value="1">1</Option>
       </Select>,
     );
@@ -668,13 +673,13 @@ describe('Select', () => {
 
   it('Controlled onDropdownVisibleChange', () => {
     class Controlled extends React.Component {
-      state = {
+      public state = {
         open: true,
       };
-      onDropdownVisibleChange = open => {
+      public onDropdownVisibleChange = open => {
         this.setState({ open });
       };
-      render() {
+      public render() {
         return (
           <Select open={this.state.open} onDropdownVisibleChange={this.onDropdownVisibleChange}>
             <Option value="1">1</Option>
@@ -709,7 +714,7 @@ describe('Select', () => {
   it('combox could comstomize input element', () => {
     const handleKeyDown = jest.fn();
     const wrapper = mount(
-      <Select combobox getInputElement={() => <textarea onKeyDown={handleKeyDown} />}>
+      <Select combobox={true} getInputElement={() => <textarea onKeyDown={handleKeyDown} />}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -731,7 +736,7 @@ describe('Select', () => {
   });
 
   describe('propTypes', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const spy = jest.spyOn(console, 'error').mockImplementation(() => null);
 
     beforeEach(() => {
       spy.mockReset();
@@ -742,7 +747,7 @@ describe('Select', () => {
     });
 
     it('warns on invalid value when labelInValue', () => {
-      mount(<Select labelInValue value="foo" />);
+      mount(<Select labelInValue={true} value="foo" />);
       expect(spy.mock.calls[0][0]).toMatch(
         'Warning: Failed prop type: Invalid prop `value` supplied to `Select`, ' +
           'when you set `labelInValue` to `true`,' +
@@ -751,7 +756,7 @@ describe('Select', () => {
     });
 
     it('warns on invalid value when multiple', () => {
-      mount(<Select multiple value="" />);
+      mount(<Select multiple={true} value="" />);
       expect(spy.mock.calls[0][0]).toMatch(
         'Warning: Failed prop type: Invalid prop `value` of type `string` supplied to `Select`, ' +
           'expected `array` when `multiple` or `tags` is `true`',
@@ -761,7 +766,7 @@ describe('Select', () => {
 
   it('set label as key for OptGroup', () => {
     const wrapper = mount(
-      <Select open>
+      <Select open={true}>
         <OptGroup key="group1">
           <Option value="1">1</Option>
           <Option value="2">2</Option>
@@ -774,10 +779,10 @@ describe('Select', () => {
 
   it('filters options by inputValue', () => {
     const wrapper = mount(
-      <Select open>
+      <Select open={true}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
-        <Option value="11" disabled>
+        <Option value="11" disabled={true}>
           11
         </Option>
       </Select>,
@@ -790,8 +795,8 @@ describe('Select', () => {
 
   it('should include disabled item in options', () => {
     const wrapper = mount(
-      <Select tags open value={['name1']}>
-        <Option key="name1" disabled>
+      <Select tags={true} open={true} value={['name1']}>
+        <Option key="name1" disabled={true}>
           name1
         </Option>
         <Option key="name2">name2</Option>
@@ -802,7 +807,7 @@ describe('Select', () => {
 
   it('renders not found when search result is empty', () => {
     const wrapper = mount(
-      <Select open>
+      <Select open={true}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -814,10 +819,10 @@ describe('Select', () => {
   });
 
   it('warns on invalid children', () => {
-    const Foo = () => <div>foo</div>;
-    const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const Foo = value => <div>foo{value}</div>;
+    const spy = jest.spyOn(console, 'error').mockImplementation(() => null);
     mount(
-      <Select open>
+      <Select open={true}>
         <Foo value="1" />
       </Select>,
     );
@@ -831,7 +836,7 @@ describe('Select', () => {
 
   it('filterOption could be true as described in default value', () => {
     const wrapper = render(
-      <Select inputValue="3" filterOption open>
+      <Select inputValue="3" filterOption={true} open={true}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -842,7 +847,7 @@ describe('Select', () => {
 
   it('does not filter when filterOption value is false', () => {
     const wrapper = render(
-      <Select inputValue="1" filterOption={false} open>
+      <Select inputValue="1" filterOption={false} open={true}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -856,8 +861,8 @@ describe('Select', () => {
     const handleSelect = jest.fn();
     const wrapper = mount(
       <Select
-        backfill
-        open
+        backfill={true}
+        open={true}
         onChange={handleChange}
         onSelect={handleSelect}
         optionLabelProp="children"
@@ -908,7 +913,7 @@ describe('Select', () => {
 
     it('search number value', () => {
       const wrapper = mount(
-        <Select showSearch>
+        <Select showSearch={true}>
           <Option value={1}>1</Option>
           <Option value={2}>2</Option>
         </Select>,
@@ -922,7 +927,7 @@ describe('Select', () => {
   it('should render custom dropdown correctly', () => {
     const wrapper = render(
       <Select
-        open
+        open={true}
         dropdownRender={menu => (
           <div>
             <div className="dropdown-custom-node">CUSTOM NODE</div>
@@ -1013,9 +1018,11 @@ describe('Select', () => {
     const handleSelect = jest.fn();
     const wrapper = mount(
       <Select
-        defaultActiveFirstOption
+        defaultActiveFirstOption={true}
         filterOption={(inputValue, option) => {
-          return option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1;
+          return (
+            (option.props.children as string).toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+          );
         }}
         onSelect={handleSelect}
       >
@@ -1083,7 +1090,7 @@ describe('Select', () => {
 
   it('if loading=true, arrow should show loading icon', () => {
     const wrapper = mount(
-      <Select style={{ width: 1000 }} loading dropdownMatchSelectWidth={false}>
+      <Select style={{ width: 1000 }} loading={true} dropdownMatchSelectWidth={false}>
         <Option value={0}>0</Option>
         <Option value={1}>1</Option>
       </Select>,
@@ -1093,7 +1100,7 @@ describe('Select', () => {
   it('if loading=true and multiple=true, has not arrow, but have loading icon', () => {
     // multiple=true loading and arrow don't have
     const wrapper = mount(
-      <Select style={{ width: 1000 }} multiple dropdownMatchSelectWidth={false}>
+      <Select style={{ width: 1000 }} multiple={true} dropdownMatchSelectWidth={false}>
         <Option value={0}>0</Option>
         <Option value={1}>1</Option>
       </Select>,

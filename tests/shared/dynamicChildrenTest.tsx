@@ -1,8 +1,8 @@
 /* eslint-disable no-undef, react/no-multi-comp */
-import React from 'react';
 import { mount } from 'enzyme';
-import Select from '../../src/Select';
+import React from 'react';
 import Option from '../../src/Option';
+import Select from '../../src/Select';
 
 export default function dynamicChildrenTest(mode, props) {
   beforeEach(() => {
@@ -14,7 +14,7 @@ export default function dynamicChildrenTest(mode, props) {
     const onSelect = jest.fn();
 
     class App extends React.Component {
-      state = {
+      public state = {
         value: ['1'],
         options: [
           <Option key="1" testprop="test">
@@ -23,20 +23,21 @@ export default function dynamicChildrenTest(mode, props) {
           <Option key="2">2-label</Option>,
         ],
       };
+      public select: Select;
 
-      componentDidMount() {
+      public componentDidMount() {
         setTimeout(() => {
           this.updateChildren();
         }, 10);
       }
 
-      updateChildren = () => {
+      public updateChildren = () => {
         this.setState({
           options: [<Option key="2">2-label</Option>, <Option key="3">3-label</Option>],
         });
       };
 
-      render() {
+      public render() {
         return (
           <Select
             value={this.state.value}
@@ -75,8 +76,9 @@ export default function dynamicChildrenTest(mode, props) {
   });
 
   it('value label update with dynamic children', () => {
+    // tslint:disable-next-line:max-classes-per-file
     class App extends React.Component {
-      state = {
+      public state = {
         value: 1,
         options: [
           <Option key="0" value={0} testprop="test">
@@ -87,14 +89,15 @@ export default function dynamicChildrenTest(mode, props) {
           </Option>,
         ],
       };
+      public select: Select;
 
-      componentDidMount() {
+      public componentDidMount() {
         setTimeout(() => {
           this.updateChildren();
         }, 10);
       }
 
-      updateChildren = () => {
+      public updateChildren = () => {
         this.setState({
           value: 0,
           options: [
@@ -108,7 +111,7 @@ export default function dynamicChildrenTest(mode, props) {
         });
       };
 
-      render() {
+      public render() {
         return (
           <Select
             optionLabelProp="children"
@@ -136,8 +139,9 @@ export default function dynamicChildrenTest(mode, props) {
   });
 
   it('defaultValue label update with dynamic children', () => {
+    // tslint:disable-next-line:max-classes-per-file
     class App extends React.Component {
-      state = {
+      public state = {
         value: ['1'],
         options: [
           <Option key="1" testprop="test">
@@ -146,20 +150,21 @@ export default function dynamicChildrenTest(mode, props) {
           <Option key="2">2-label</Option>,
         ],
       };
+      public select: Select;
 
-      componentDidMount() {
+      public componentDidMount() {
         setTimeout(() => {
           this.updateChildren();
         }, 10);
       }
 
-      updateChildren = () => {
+      public updateChildren = () => {
         this.setState({
           options: [<Option key="1">1-label-new</Option>, <Option key="2">2-label</Option>],
         });
       };
 
-      render() {
+      public render() {
         return (
           <Select
             optionLabelProp="children"

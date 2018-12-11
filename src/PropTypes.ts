@@ -5,17 +5,18 @@ import {
   KeyboardEventHandler,
   MouseEventHandler,
   ReactNode,
-  ReactNodeArray,
   UIEventHandler,
 } from 'react';
 import Option from './Option';
 
 export type emptyFunction = (e?) => void;
 export type valueType =
+  | number
+  | number[]
   | string
   | string[]
-  | { key: string; label: ReactNode }
-  | Array<{ key; label }>;
+  | { key?: string | number; label?: ReactNode }
+  | Array<{ key: string | number; label?: ReactNode }>;
 
 type renderNode = () => ReactNode;
 type filterOptionType = (inputValue: string, option?: Option) => void;
@@ -27,14 +28,15 @@ export interface ISelectProps {
   multiple: boolean;
   combobox: boolean;
   autoClearSearchValue: boolean;
-  filterOption: filterOptionType | true;
-  children: ReactNodeArray;
+  filterOption: filterOptionType | boolean;
+  children: JSX.Element[] | JSX.Element | any;
   showSearch: boolean;
   disabled: boolean;
   style: CSSProperties;
   allowClear: boolean;
   showArrow: boolean;
   tags: boolean;
+  openClassName: string;
   autoFocus: boolean;
   prefixCls: string;
   className: string;
@@ -45,6 +47,7 @@ export interface ISelectProps {
   choiceTransitionName: string;
   open: boolean;
   defaultOpen: boolean;
+  inputValue: string;
   onChange: (value: valueType, option: Option | Option[]) => void;
   onBlur: FocusEventHandler<HTMLDivElement>;
   onFocus: emptyFunction;
@@ -74,14 +77,14 @@ export interface ISelectProps {
   removeIcon: ReactNode;
   menuItemSelectedIcon: renderSelect;
   getPopupContainer: renderSelect;
-  dropdownRender: () => ReactNode;
+  dropdownRender: (menu) => JSX.Element;
   mode: 'multiple' | 'tags';
   backfill: boolean;
   dropdownAlign: any;
   dropdownClassName: string;
   dropdownMatchSelectWidth: boolean;
   dropdownMenuStyle: React.CSSProperties;
-  notFoundContent: string;
+  notFoundContent: string | false;
   tabIndex: string | number;
 }
 
@@ -95,7 +98,7 @@ function propsValueType(props: ISelectProps, propName: string, componentName: st
   if (props.labelInValue) {
     const validate = PropTypes.oneOfType([PropTypes.arrayOf(labelInValueShape), labelInValueShape]);
     PropTypes.checkPropTypes(validate, props, propName, componentName);
-    
+
     // if value is no null, it's a object
     if (props[propName] && typeof props[propName] !== 'object') {
       throw new Error(

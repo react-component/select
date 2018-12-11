@@ -1,9 +1,9 @@
 /* eslint-disable no-undef */
-import React from 'react';
 import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
-import Select from '../../src/Select';
+import React from 'react';
 import Option from '../../src/Option';
+import Select from '../../src/Select';
 
 export default function removeSelectedTest(mode) {
   describe('remove selected options', () => {
@@ -45,7 +45,7 @@ export default function removeSelectedTest(mode) {
           value={['1']}
           onChange={handleChange}
           onDeselect={handleDeselect}
-          disabled
+          disabled={true}
           {...{ [mode]: true }}
         >
           <Option value="1">1</Option>
@@ -69,7 +69,7 @@ export default function removeSelectedTest(mode) {
           value={[{ key: '1' }, { key: '2' }]}
           onChange={handleChange}
           onDeselect={handleDeselect}
-          labelInValue
+          labelInValue={true}
           {...{ [mode]: true }}
         >
           <Option value="1">1</Option>
@@ -87,12 +87,16 @@ export default function removeSelectedTest(mode) {
       );
       expect(handleChange).toHaveBeenCalledWith(
         [{ key: '2', label: '2' }],
-        [<Option value="2">2</Option>],
+        [
+          <Option key={2} value="2">
+            2
+          </Option>,
+        ],
       );
     });
 
     it('remove by backspace key', () => {
-      const wrapper = mount(
+      const wrapper = mount<Select>(
         <Select defaultValue={['1', '2']} {...{ [mode]: true }}>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
@@ -105,7 +109,7 @@ export default function removeSelectedTest(mode) {
     });
 
     it('remove by menu deselect', () => {
-      const wrapper = mount(
+      const wrapper = mount<Select>(
         <Select defaultValue={['1']} {...{ [mode]: true }}>
           <Option value="1">1</Option>
         </Select>,

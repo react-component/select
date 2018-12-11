@@ -1,8 +1,10 @@
 /* eslint-disable no-undef */
-import React from 'react';
 import { mount } from 'enzyme';
-import Select from '../../src/Select';
+import React from 'react';
 import Option from '../../src/Option';
+import Select from '../../src/Select';
+
+declare const global: any;
 
 export default function blurTest(mode) {
   let wrapper;

@@ -5,6 +5,7 @@ import Menu from 'rc-menu';
 import toArray from 'rc-util/lib/Children/toArray';
 import React, {
   cloneElement,
+  Component,
   CSSProperties,
   FocusEventHandler,
   ReactNode,
@@ -40,7 +41,7 @@ export interface IDropdownMenuProps {
   backfillValue: string;
 }
 
-export default class DropdownMenu extends React.Component<Partial<IDropdownMenuProps>> {
+export default class DropdownMenu extends Component<Partial<IDropdownMenuProps>> {
   public static displayName = 'DropdownMenu';
   public static propTypes = {
     ariaId: PropTypes.string,

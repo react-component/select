@@ -1,5 +1,12 @@
-import React from 'react';
+import { Component } from 'react';
 
-export default class OptGroup extends React.Component {
+export interface IOptGroupProps {
+  label: string;
+  value: string | number;
+  key: string | number;
+  // Everything for testing
+  testprop?: any;
+}
+export default class OptGroup extends Component<Partial<IOptGroupProps>> {
   public static isSelectOptGroup = true;
 }

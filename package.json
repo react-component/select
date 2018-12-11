@@ -54,13 +54,12 @@
       "enzyme-to-json/serializer"
     ],
     "transform": {
-      "\\.jsx?$": "./node_modules/rc-tools/scripts/jestPreprocessor.js"
-    },
-    "globals": {
-      "__JEST__DEV__": true
+      "^.+\\.tsx?$": "ts-jest"
     }
   },
   "devDependencies": {
+    "@types/enzyme": "^3.1.15",
+    "@types/jest": "^23.3.10",
     "@types/react": "^16.7.13",
     "@types/react-dom": "^16.0.11",
     "enzyme": "^3.8.0",
@@ -75,7 +74,9 @@
     "rc-tools": "8.x",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "react-test-renderer": "^16.0.0"
+    "react-test-renderer": "^16.0.0",
+    "ts-jest": "^23.10.5",
+    "typescript": "^3.2.2"
   },
   "dependencies": {
     "babel-runtime": "^6.23.0",

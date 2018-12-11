@@ -139,7 +139,7 @@ export function findFirstMenuItem(children) {
   return null;
 }
 
-export function includesSeparators(str: string[], separators: string[]) {
+export function includesSeparators(str: string | string[], separators: string[]) {
   // tslint:disable-next-line:prefer-for-of
   for (let i = 0; i < separators.length; ++i) {
     if (str.lastIndexOf(separators[i]) > 0) {

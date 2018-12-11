@@ -1,15 +1,15 @@
-import React from 'react';
 import { mount } from 'enzyme';
-import Select from '../../src/Select';
+import React from 'react';
 import Option from '../../src/Option';
+import Select from '../../src/Select';
 
 export default function throwOptionValue(mode) {
   it('warn option value type', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const spy = jest.spyOn(console, 'error').mockImplementation(() => null);
 
     const render = () =>
       mount(
-        <Select {...{ [mode]: true }} open>
+        <Select {...{ [mode]: true }} open={true}>
           <Option value={1}>1</Option>
         </Select>,
       );

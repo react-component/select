@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import Trigger from 'rc-trigger';
-import React, { CSSProperties, MouseEventHandler, UIEventHandler } from 'react';
+import React, { Component, CSSProperties, MouseEventHandler, UIEventHandler } from 'react';
 import ReactDOM from 'react-dom';
 import DropdownMenu, { IDropdownMenuProps } from './DropdownMenu';
 import { renderSelect, valueType } from './PropTypes';
@@ -61,7 +61,7 @@ export interface ISelectTriggerProps extends IDropdownMenuProps {
 export interface ISelectTriggerState {
   dropdownWidth: number;
 }
-export default class SelectTrigger extends React.Component<
+export default class SelectTrigger extends Component<
   Partial<ISelectTriggerProps>,
   ISelectTriggerState
 > {
