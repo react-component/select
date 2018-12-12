@@ -1,4 +1,6 @@
 import React, { ReactElement } from 'react';
+import Option from './Option';
+import { filterOptionType, IILableValueType, ISelectProps, valueType } from './PropTypes';
 
 export function toTitle(title: string): string {
   if (typeof title === 'string') {
@@ -7,7 +9,7 @@ export function toTitle(title: string): string {
   return '';
 }
 
-export function getValuePropValue(child) {
+export function getValuePropValue(child: any) {
   if (!child) {
     return null;
   }
@@ -25,87 +27,95 @@ export function getValuePropValue(child) {
   throw new Error(`Need at least a key or a value or a label (only for OptGroup) for ${child}`);
 }
 
-export function getPropValue(child, prop) {
+export function getPropValue(child: Option, prop?: any) {
   if (prop === 'value') {
     return getValuePropValue(child);
   }
   return child.props[prop];
 }
 
-export function isMultiple(props) {
+export function isMultiple(props: Partial<ISelectProps>) {
   return props.multiple;
 }
 
-export function isCombobox(props) {
+export function isCombobox(props: Partial<ISelectProps>) {
   return props.combobox;
 }
 
-export function isMultipleOrTags(props) {
+export function isMultipleOrTags(props: Partial<ISelectProps>) {
   return props.multiple || props.tags;
 }
 
-export function isMultipleOrTagsOrCombobox(props) {
+export function isMultipleOrTagsOrCombobox(props: Partial<ISelectProps>) {
   return isMultipleOrTags(props) || isCombobox(props);
 }
 
-export function isSingleMode(props) {
+export function isSingleMode(props: any) {
   return !isMultipleOrTagsOrCombobox(props);
 }
 
-export function toArray(value) {
+export function toArray(value: valueType | undefined): valueType | undefined {
   let ret = value;
   if (value === undefined) {
     ret = [];
   } else if (!Array.isArray(value)) {
-    ret = [value];
+    ret = [value as string];
   }
   return ret;
 }
 
-export function getMapKey(value) {
+export function getMapKey(value: valueType) {
   return `${typeof value}-${value}`;
 }
 
-export function preventDefaultEvent(e) {
+export function preventDefaultEvent(e: any) {
   e.preventDefault();
 }
 
-export function findIndexInValueBySingleValue(value, singleValue) {
+export function findIndexInValueBySingleValue(value: valueType | undefined, singleValue: string) {
   let index = -1;
-  for (let i = 0; i < value.length; i++) {
-    if (value[i] === singleValue) {
-      index = i;
-      break;
+
+  if (value) {
+    for (let i = 0; i < (value as string[]).length; i++) {
+      if (value[i] === singleValue) {
+        index = i;
+        break;
+      }
     }
   }
+
   return index;
 }
 
-export function getLabelFromPropsValue(value, key) {
+export function getLabelFromPropsValue(value: valueType | undefined, key: valueType) {
   let label;
   value = toArray(value);
-  // tslint:disable-next-line:prefer-for-of
-  for (let i = 0; i < value.length; i++) {
-    if (value[i].key === key) {
-      label = value[i].label;
-      break;
+  if (value) {
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < (value as string[]).length; i++) {
+      if ((value as IILableValueType[])[i].key === key) {
+        label = value[i].label;
+        break;
+      }
     }
   }
   return label;
 }
 
-export function getSelectKeys(menuItems, value) {
+export function getSelectKeys(menuItems: JSX.Element[], value?: string) {
   if (value === null || value === undefined) {
     return [];
   }
   let selectedKeys: string[] = [];
-  React.Children.forEach(menuItems, (item: ReactElement<any>) => {
-    const type = item.type as any;
+  React.Children.forEach(menuItems, item => {
+    const type = (item as ReactElement<any>).type as any;
     if (type.isMenuItemGroup) {
-      selectedKeys = selectedKeys.concat(getSelectKeys(item.props.children, value));
+      selectedKeys = selectedKeys.concat(
+        getSelectKeys((item as ReactElement<any>).props.children, value),
+      );
     } else {
       const itemValue = getValuePropValue(item);
-      const itemKey = item.key as string;
+      const itemKey = (item as ReactElement<any>).key as string;
       if (findIndexInValueBySingleValue(value, itemValue) !== -1 && itemKey) {
         selectedKeys.push(itemKey);
       }
@@ -123,11 +133,11 @@ export const UNSELECTABLE_ATTRIBUTE: any = {
   unselectable: 'on',
 };
 
-export function findFirstMenuItem(children) {
+export function findFirstMenuItem(children: JSX.Element[]): JSX.Element | null {
   // tslint:disable-next-line:prefer-for-of
   for (let i = 0; i < children.length; i++) {
     const child = children[i];
-    if (child.type.isMenuItemGroup) {
+    if ((child.type as any).isMenuItemGroup) {
       const found = findFirstMenuItem(child.props.children);
       if (found) {
         return found;
@@ -154,15 +164,15 @@ export function splitBySeparators(str: string | string[], separators: string[]) 
   return (str as string).split(reg).filter(token => token);
 }
 
-export function defaultFilterFn(input, child) {
+export function defaultFilterFn(input: string, child: any): filterOptionType | boolean {
   if (child.props.disabled) {
     return false;
   }
-  const value = toArray(getPropValue(child, this.props.optionFilterProp)).join('');
+  const value = (toArray(getPropValue(child, this.props.optionFilterProp)) as string[]).join('');
   return value.toLowerCase().indexOf(input.toLowerCase()) > -1;
 }
 
-export function validateOptionValue(value, props) {
+export function validateOptionValue(value: string, props: any) {
   if (isSingleMode(props) || isMultiple(props)) {
     return;
   }
@@ -174,8 +184,8 @@ export function validateOptionValue(value, props) {
   }
 }
 
-export function saveRef(instance, name) {
-  return node => {
+export function saveRef(instance: any, name: string): (node: any) => void {
+  return (node: JSX.Element) => {
     instance[name] = node;
   };
 }

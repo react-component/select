@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import {
   CSSProperties,
-  FocusEventHandler,
   KeyboardEventHandler,
   MouseEventHandler,
   ReactNode,
@@ -10,16 +9,21 @@ import {
 import Option from './Option';
 
 export type emptyFunction = (e?: any) => void;
+
+export interface IILableValueType {
+  key?: string | number;
+  label?: ReactNode | string;
+}
 export type valueType =
   | number
   | number[]
   | string
   | string[]
-  | { key?: string | number; label?: ReactNode }
-  | Array<{ key: string | number; label?: ReactNode }>;
+  | IILableValueType
+  | IILableValueType[];
 
 type renderNode = () => ReactNode;
-type filterOptionType = (inputValue: string, option?: Option) => void;
+export type filterOptionType = (inputValue: string, option?: Option) => void;
 export type renderSelect = ReactNode | renderNode;
 
 export interface ISelectProps {
@@ -48,10 +52,10 @@ export interface ISelectProps {
   open: boolean;
   defaultOpen: boolean;
   inputValue: string;
-  onChange: (value: valueType, option: Option | Option[]) => void;
-  onBlur: FocusEventHandler<HTMLDivElement>;
+  onChange: (value: valueType, option: JSX.Element | JSX.Element[]) => void;
+  onBlur: emptyFunction;
   onFocus: emptyFunction;
-  onSelect: (value: valueType, option: Option | Option[]) => void;
+  onSelect: (value: valueType, option: JSX.Element | JSX.Element[]) => void;
   onSearch: (value: string) => void;
   onDropdownVisibleChange: (open: boolean | undefined) => void;
   onPopupScroll: UIEventHandler<HTMLDivElement>;
@@ -59,7 +63,7 @@ export interface ISelectProps {
   onMouseLeave: MouseEventHandler<HTMLDivElement>;
   onInputKeyDown: KeyboardEventHandler<HTMLInputElement>;
   placeholder: string;
-  onDeselect: (value: valueType, option: Option | Option[]) => void;
+  onDeselect: (value: valueType, option: JSX.Element | JSX.Element[]) => void;
   labelInValue: boolean;
   loading: boolean;
   value: valueType;

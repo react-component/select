@@ -68,7 +68,7 @@ export default class SelectTrigger extends Component<
   public static displayName: string;
 
   public static defaultProps = {
-    dropdownRender: menu => menu,
+    dropdownRender: (menu: any) => menu,
   };
 
   public static propTypes = {
@@ -93,12 +93,12 @@ export default class SelectTrigger extends Component<
     ariaId: PropTypes.string,
   };
 
-  public saveDropdownMenuRef: (ref) => void;
-  public saveTriggerRef: (ref) => void;
-  public dropdownMenuRef: DropdownMenu;
-  public triggerRef: Trigger;
+  public saveDropdownMenuRef: (ref: any) => void;
+  public saveTriggerRef: (ref: any) => void;
+  public dropdownMenuRef: DropdownMenu | null = null;
+  public triggerRef: any;
 
-  constructor(props) {
+  constructor(props: Partial<ISelectTriggerProps>) {
     super(props);
 
     this.saveDropdownMenuRef = saveRef(this, 'dropdownMenuRef');
@@ -133,7 +133,7 @@ export default class SelectTrigger extends Component<
     return this.triggerRef.getPopupDomNode();
   };
 
-  public getDropdownElement = newProps => {
+  public getDropdownElement = (newProps: Partial<ISelectTriggerProps>) => {
     const props = this.props;
 
     const { dropdownRender, ariaId } = props;
@@ -199,7 +199,7 @@ export default class SelectTrigger extends Component<
       inputValue,
       visible,
     });
-    let hideAction;
+    let hideAction: string[];
     if (disabled) {
       hideAction = [];
     } else if (isSingleMode(props) && !showSearch) {

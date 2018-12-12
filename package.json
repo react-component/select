@@ -43,10 +43,12 @@
     "coverage": "jest --coverage"
   },
   "devDependencies": {
+    "@types/classnames": "^2.2.6",
     "@types/enzyme": "^3.1.15",
     "@types/jest": "^23.3.10",
     "@types/react": "^16.7.13",
     "@types/react-dom": "^16.0.11",
+    "@types/warning": "^3.0.0",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",
     "enzyme-to-json": "^3.1.4",
@@ -54,7 +56,7 @@
     "jsonp": "^0.2.0",
     "pre-commit": "1.x",
     "querystring": "^0.2.0",
-    "rc-dialog": "6.x",
+    "rc-dialog": "7.3.0",
     "rc-test": "^6.0.1",
     "rc-tools": "8.x",
     "react": "^16.0.0",

@@ -11,7 +11,7 @@ import warning from 'warning';
 import OptGroup from './OptGroup';
 import Option from './Option';
 
-import SelectPropTypes, { ISelectProps, valueType } from './PropTypes';
+import SelectPropTypes, { IILableValueType, ISelectProps, valueType } from './PropTypes';
 import SelectTrigger from './SelectTrigger';
 import {
   defaultFilterFn,
@@ -41,12 +41,12 @@ const SELECT_EMPTY_VALUE_KEY = 'RC_SELECT_EMPTY_VALUE_KEY';
 
 const noop = () => null;
 
-function chaining(...fns) {
-  return (...args) => {
+function chaining(...fns: any[]) {
+  return (...args: any[]) => {
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < fns.length; i++) {
       if (fns[i] && typeof fns[i] === 'function') {
-        fns[i].apply(this, args);
+        fns[i].apply(chaining, args);
       }
     }
   };
@@ -55,7 +55,7 @@ function chaining(...fns) {
 export interface ISelectState {
   open: boolean;
   value?: valueType;
-  inputValue?: string | string[];
+  inputValue?: string;
   skipBuildOptionsInfo?: boolean;
   optionsInfo?: any;
   backfillValue?: string;
@@ -93,7 +93,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     tokenSeparators: [],
     autoClearSearchValue: true,
     tabIndex: 0,
-    dropdownRender: menu => menu,
+    dropdownRender: (menu: any) => menu,
   };
   public static getDerivedStateFromProps = (nextProps: ISelectProps, prevState: ISelectState) => {
     const optionsInfo = prevState.skipBuildOptionsInfo
@@ -119,14 +119,17 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     return newState;
   };
 
-  public static getOptionsFromChildren = (children, options: any[] = []) => {
-    React.Children.forEach(children, (child: ReactElement<any>) => {
+  public static getOptionsFromChildren = (
+    children: Array<ReactElement<any>>,
+    options: any[] = [],
+  ) => {
+    React.Children.forEach(children, child => {
       if (!child) {
         return;
       }
-      const type = child.type as any;
+      const type = (child as ReactElement<any>).type as any;
       if (type.isSelectOptGroup) {
-        Select.getOptionsFromChildren(child.props.children, options);
+        Select.getOptionsFromChildren((child as ReactElement<any>).props.children, options);
       } else {
         options.push(child);
       }
@@ -135,25 +138,25 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
   };
 
   public static getInputValueForCombobox = (
-    props: ISelectProps,
-    optionsInfo,
+    props: Partial<ISelectProps>,
+    optionsInfo: any,
     useDefaultValue?: boolean,
   ) => {
-    let value: any = [];
+    let value: valueType | undefined = [];
     if ('value' in props && !useDefaultValue) {
       value = toArray(props.value);
     }
     if ('defaultValue' in props && useDefaultValue) {
       value = toArray(props.defaultValue);
     }
-    if (value.length) {
-      value = value[0];
+    if ((value as string[]).length) {
+      value = (value as string[])[0];
     } else {
       return '';
     }
     let label = value;
     if (props.labelInValue) {
-      label = value.label;
+      label = (value as IILableValueType).label as string;
     } else if (optionsInfo[getMapKey(value)]) {
       label = optionsInfo[getMapKey(value)].label;
     }
@@ -163,11 +166,14 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     return label;
   };
 
-  public static getLabelFromOption = (props, option) => {
+  public static getLabelFromOption = (props: Partial<ISelectProps>, option: any) => {
     return getPropValue(option, props.optionLabelProp);
   };
 
-  public static getOptionsInfoFromProps = (props: Partial<ISelectProps>, preState?) => {
+  public static getOptionsInfoFromProps = (
+    props: Partial<ISelectProps>,
+    preState?: ISelectState,
+  ) => {
     const options = Select.getOptionsFromChildren(props.children);
     const optionsInfo = {};
     options.forEach(option => {
@@ -183,18 +189,20 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
       // keep option info in pre state value.
       const oldOptionsInfo = preState.optionsInfo;
       const value = preState.value;
-      value.forEach(v => {
-        const key = getMapKey(v);
-        if (!optionsInfo[key] && oldOptionsInfo[key] !== undefined) {
-          optionsInfo[key] = oldOptionsInfo[key];
-        }
-      });
+      if (value) {
+        (value as string[]).forEach(v => {
+          const key = getMapKey(v);
+          if (!optionsInfo[key] && oldOptionsInfo[key] !== undefined) {
+            optionsInfo[key] = oldOptionsInfo[key];
+          }
+        });
+      }
     }
     return optionsInfo;
   };
 
-  public static getValueFromProps = (props: ISelectProps, useDefaultValue?: boolean) => {
-    let value: any[] = [];
+  public static getValueFromProps = (props: Partial<ISelectProps>, useDefaultValue?: boolean) => {
+    let value: valueType | undefined = [];
     if ('value' in props && !useDefaultValue) {
       value = toArray(props.value);
     }
@@ -202,37 +210,37 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
       value = toArray(props.defaultValue);
     }
     if (props.labelInValue) {
-      value = value.map(v => {
-        return v.key;
+      value = (value as IILableValueType[]).map(v => {
+        return v.key as string;
       });
     }
     return value;
   };
 
   public ariaId: string;
-  public saveInputRef: (ref) => void;
-  public saveInputMirrorRef: (ref) => void;
-  public saveTopCtrlRef: (ref) => void;
-  public saveSelectTriggerRef: (ref) => void;
-  public saveRootRef: (ref) => void;
-  public saveSelectionRef: (ref) => void;
-  public inputRef: HTMLInputElement | null;
-  public inputMirrorRef: HTMLSpanElement;
-  public topCtrlRef: HTMLDivElement | null;
-  public selectTriggerRef: SelectTrigger;
-  public rootRef: HTMLDivElement | null;
-  public selectionRef: HTMLDivElement | null;
-  public dropdownContainer: Element | null;
-  public blurTimer: number | null;
-  public focusTimer: number | null;
+  public saveInputRef: (ref: HTMLInputElement) => void;
+  public saveInputMirrorRef: (ref: HTMLSpanElement) => void;
+  public saveTopCtrlRef: (ref: HTMLDivElement) => void;
+  public saveSelectTriggerRef: (ref: SelectTrigger) => void;
+  public saveRootRef: (ref: HTMLDivElement) => void;
+  public saveSelectionRef: (ref: HTMLDivElement) => void;
+  public inputRef: HTMLInputElement | null = null;
+  public inputMirrorRef: HTMLSpanElement | null = null;
+  public topCtrlRef: HTMLDivElement | null = null;
+  public selectTriggerRef: SelectTrigger | null = null;
+  public rootRef: HTMLDivElement | null = null;
+  public selectionRef: HTMLDivElement | null = null;
+  public dropdownContainer: Element | null = null;
+  public blurTimer: number | null = null;
+  public focusTimer: number | null = null;
 
   // tslint:disable-next-line:variable-name
-  private _focused: boolean;
+  private _focused: boolean = false;
   // tslint:disable-next-line:variable-name
-  private _mouseDown: boolean;
+  private _mouseDown: boolean = false;
   // tslint:disable-next-line:variable-name
-  private _options: JSX.Element[];
-  constructor(props) {
+  private _options: JSX.Element[] = [];
+  constructor(props: Partial<ISelectProps>) {
     super(props);
     const optionsInfo = Select.getOptionsInfoFromProps(props);
     this.state = {
@@ -244,7 +252,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
             true, // use default value
           )
         : '',
-      open: props.defaultOpen,
+      open: props.defaultOpen as boolean,
       optionsInfo,
       backfillValue: '',
       // a flag for aviod redundant getOptionsInfoFromProps call
@@ -270,7 +278,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     if (isMultipleOrTags(this.props)) {
       const inputNode = this.getInputDOMNode();
       const mirrorNode = this.getInputMirrorDOMNode();
-      if (inputNode && inputNode.value) {
+      if (inputNode && inputNode.value && mirrorNode) {
         inputNode.style.width = '';
         inputNode.style.width = `${mirrorNode.clientWidth}px`;
       } else if (inputNode) {
@@ -289,7 +297,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     }
   }
 
-  public onInputChange = event => {
+  public onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const tokenSeparators = this.props.tokenSeparators as string[];
     const val = event.target.value;
     if (
@@ -314,7 +322,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     }
   };
 
-  public onDropdownVisibleChange = open => {
+  public onDropdownVisibleChange = (open: boolean) => {
     if (open && !this._focused) {
       this.clearBlurTime();
       this.timeoutFocus();
@@ -325,7 +333,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
   };
 
   // combobox ignore
-  public onKeyDown = event => {
+  public onKeyDown = (event: KeyboardEvent) => {
     const { open } = this.state;
     const { disabled } = this.props;
     if (disabled) {
@@ -348,14 +356,19 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     }
   };
 
-  public onInputKeyDown = event => {
+  public onInputKeyDown = (event: React.ChangeEvent<HTMLInputElement> | KeyboardEvent) => {
     const props = this.props;
     if (props.disabled) {
       return;
     }
     const state = this.state;
-    const keyCode = event.keyCode;
-    if (isMultipleOrTags(props) && !event.target.value && keyCode === KeyCode.BACKSPACE) {
+    // magic code
+    const keyCode = (event as KeyboardEvent).keyCode;
+    if (
+      isMultipleOrTags(props) &&
+      !(event as React.ChangeEvent<HTMLInputElement>).target.value &&
+      keyCode === KeyCode.BACKSPACE
+    ) {
       event.preventDefault();
       const value = state.value as string[];
       if (value.length) {
@@ -383,7 +396,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
       return;
     }
 
-    if (this.getRealOpenState(state)) {
+    if (this.getRealOpenState(state) && this.selectTriggerRef) {
       const menu = this.selectTriggerRef.getInnerMenu();
       if (menu && menu.onKeyDown(event, this.handleBackfill)) {
         event.preventDefault();
@@ -392,7 +405,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     }
   };
 
-  public onMenuSelect = ({ item }) => {
+  public onMenuSelect = ({ item }: { item: Option }) => {
     if (!item) {
       return;
     }
@@ -428,7 +441,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     }
   };
 
-  public onMenuDeselect = ({ item, domEvent }) => {
+  public onMenuDeselect = ({ item, domEvent }: { item: any; domEvent: KeyboardEvent }) => {
     if (domEvent.type === 'keydown' && domEvent.keyCode === KeyCode.ENTER) {
       this.removeSelected(getValuePropValue(item));
       return;
@@ -442,7 +455,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     }
   };
 
-  public onArrowClick = e => {
+  public onArrowClick = (e: React.MouseEvent<HTMLIFrameElement>) => {
     e.stopPropagation();
     e.preventDefault();
     if (!this.props.disabled) {
@@ -456,7 +469,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     }
   };
 
-  public onOuterFocus = e => {
+  public onOuterFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     if (this.props.disabled) {
       e.preventDefault();
       return;
@@ -481,7 +494,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     this.maybeFocus(true, true);
   };
 
-  public onOuterBlur = e => {
+  public onOuterBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     if (this.props.disabled) {
       e.preventDefault();
       return;
@@ -535,12 +548,12 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
       }
       this.setOpenState(false);
       if (props.onBlur) {
-        props.onBlur(this.getVLForOnChange(value));
+        props.onBlur(this.getVLForOnChange(value as valueType));
       }
     }, 10);
   };
 
-  public onClearSelection = event => {
+  public onClearSelection = (event: Event) => {
     const props = this.props;
     const state = this.state;
     if (props.disabled) {
@@ -564,7 +577,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     this.forcePopupAlign();
   };
 
-  public getOptionInfoBySingleValue = (value, optionsInfo?) => {
+  public getOptionInfoBySingleValue = (value: valueType, optionsInfo?: any) => {
     let info;
     optionsInfo = optionsInfo || this.state.optionsInfo;
     if (optionsInfo[getMapKey(value)]) {
@@ -582,7 +595,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     }
     const defaultInfo = {
       option: (
-        <Option value={value} key={value}>
+        <Option value={value as string} key={value as string}>
           {value}
         </Option>
       ),
@@ -592,32 +605,33 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     return defaultInfo;
   };
 
-  public getOptionBySingleValue = value => {
+  public getOptionBySingleValue = (value: valueType) => {
     const { option } = this.getOptionInfoBySingleValue(value);
     return option;
   };
 
-  public getOptionsBySingleValue = values => {
-    return values.map(value => {
+  public getOptionsBySingleValue = (values: valueType) => {
+    return (values as string[]).map(value => {
       return this.getOptionBySingleValue(value);
     });
   };
 
-  public getValueByLabel = label => {
+  public getValueByLabel = (label?: string) => {
     if (label === undefined) {
       return null;
     }
     let value = null;
     Object.keys(this.state.optionsInfo).forEach(key => {
       const info = this.state.optionsInfo[key];
-      if (toArray(info.label).join('') === label) {
+      const oldLable = toArray(info.label) as string[];
+      if (oldLable && oldLable.join('') === label) {
         value = info.value;
       }
     });
     return value;
   };
 
-  public getVLBySingleValue = value => {
+  public getVLBySingleValue = (value: valueType) => {
     if (this.props.labelInValue) {
       return {
         key: value,
@@ -627,13 +641,13 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     return value;
   };
 
-  public getVLForOnChange = vlsS => {
+  public getVLForOnChange = (vlsS: valueType) => {
     let vls = vlsS;
     if (vls !== undefined) {
       if (!this.props.labelInValue) {
-        vls = vls.map(v => v);
+        vls = (vls as Array<{ key: string | number; label?: React.ReactNode }>).map((v: any) => v);
       } else {
-        vls = vls.map(vl => ({
+        vls = (vls as string[]).map((vl: string) => ({
           key: vl,
           label: this.getLabelBySingleValue(vl),
         }));
@@ -643,7 +657,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     return vls;
   };
 
-  public getLabelBySingleValue = (value, optionsInfo?) => {
+  public getLabelBySingleValue = (value: valueType, optionsInfo?: any) => {
     const { label } = this.getOptionInfoBySingleValue(value, optionsInfo);
     return label;
   };
@@ -734,18 +748,22 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
   };
 
   public getPopupDOMNode = () => {
-    return this.selectTriggerRef.getPopupDOMNode();
+    if (this.selectTriggerRef) {
+      return this.selectTriggerRef.getPopupDOMNode();
+    }
   };
 
   public getPopupMenuComponent = () => {
-    return this.selectTriggerRef.getInnerMenu();
+    if (this.selectTriggerRef) {
+      return this.selectTriggerRef.getInnerMenu();
+    }
   };
 
   public setOpenState = (open: boolean, needFocus?: boolean) => {
     const props = this.props;
     const state = this.state;
     if (state.open === open) {
-      this.maybeFocus(open, needFocus);
+      this.maybeFocus(open, !!needFocus);
       return;
     }
 
@@ -762,7 +780,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
       this.setInputValue('', false);
     }
     if (!open) {
-      this.maybeFocus(open, needFocus);
+      this.maybeFocus(open, !!needFocus);
     }
     this.setState(
       {
@@ -771,13 +789,13 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
       },
       () => {
         if (open) {
-          this.maybeFocus(open, needFocus);
+          this.maybeFocus(open, !!needFocus);
         }
       },
     );
   };
 
-  public setInputValue = (inputValue, fireSearch = true) => {
+  public setInputValue = (inputValue: string, fireSearch = true) => {
     if (inputValue !== this.state.inputValue) {
       this.setState(
         {
@@ -793,19 +811,19 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
 
   public getValueByInput = (str: string | string[]) => {
     const { multiple, tokenSeparators } = this.props;
-    let nextValue = this.state.value as string[];
+    let nextValue = this.state.value;
     let hasNewValue = false;
     splitBySeparators(str, tokenSeparators as string[]).forEach(label => {
       const selectedValue = [label];
       if (multiple) {
         const value = this.getValueByLabel(label);
         if (value && findIndexInValueBySingleValue(nextValue, value) === -1) {
-          nextValue = nextValue.concat(value);
+          nextValue = (nextValue as string).concat(value);
           hasNewValue = true;
           this.fireSelect(value);
         }
       } else if (findIndexInValueBySingleValue(nextValue, label) === -1) {
-        nextValue = nextValue.concat(selectedValue);
+        nextValue = (nextValue as string[]).concat(selectedValue);
         hasNewValue = true;
         this.fireSelect(label);
       }
@@ -813,7 +831,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     return hasNewValue ? nextValue : undefined;
   };
 
-  public getRealOpenState = (state?) => {
+  public getRealOpenState = (state?: ISelectState) => {
     // tslint:disable-next-line:variable-name
     const { open: _open } = this.props;
     if (typeof _open === 'boolean') {
@@ -853,7 +871,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     this._mouseDown = false;
   };
 
-  public handleBackfill = item => {
+  public handleBackfill = (item: JSX.Element) => {
     if (!this.props.backfill || !(isSingleMode(this.props) || isCombobox(this.props))) {
       return;
     }
@@ -870,7 +888,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     });
   };
 
-  public filterOption = (input, child, defaultFilter = defaultFilterFn) => {
+  public filterOption = (input: string, child: JSX.Element, defaultFilter = defaultFilterFn) => {
     const value = this.state.value as string[];
     const lastValue = value[value.length - 1];
     if (!input || (lastValue && lastValue === this.state.backfillValue)) {
@@ -878,11 +896,11 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     }
     let filterFn = this.props.filterOption;
     if ('filterOption' in this.props) {
-      if (this.props.filterOption === true) {
-        filterFn = defaultFilter;
+      if (filterFn === true) {
+        filterFn = defaultFilter.bind(this);
       }
     } else {
-      filterFn = defaultFilter;
+      filterFn = defaultFilter.bind(this);
     }
 
     if (!filterFn) {
@@ -931,7 +949,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     }
   };
 
-  public maybeFocus = (open, needFocus) => {
+  public maybeFocus = (open: boolean, needFocus: boolean) => {
     if (needFocus || open) {
       const input = this.getInputDOMNode();
       const { activeElement } = document;
@@ -947,7 +965,10 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     }
   };
 
-  public removeSelected = (selectedKey, e?) => {
+  public removeSelected = (
+    selectedKey: string[] | string,
+    e?: React.MouseEvent<HTMLSpanElement>,
+  ) => {
     const props = this.props;
     if (props.disabled || this.isChildDisabled(selectedKey)) {
       return;
@@ -965,10 +986,10 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     const canMultiple = isMultipleOrTags(props);
 
     if (canMultiple) {
-      let event = selectedKey;
+      let event: valueType = selectedKey;
       if (props.labelInValue) {
         event = {
-          key: selectedKey,
+          key: selectedKey as string,
           label: this.getLabelBySingleValue(selectedKey),
         };
       }
@@ -986,13 +1007,16 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     }
   };
 
-  public fireSelect = value => {
+  public fireSelect = (value: valueType) => {
     if (this.props.onSelect) {
-      this.props.onSelect(this.getVLBySingleValue(value), this.getOptionBySingleValue(value));
+      this.props.onSelect(
+        this.getVLBySingleValue(value) as valueType,
+        this.getOptionBySingleValue(value),
+      );
     }
   };
 
-  public fireChange = value => {
+  public fireChange = (value: valueType) => {
     const props = this.props;
     if (!('value' in props)) {
       this.setState(
@@ -1009,8 +1033,8 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     }
   };
 
-  public isChildDisabled = key => {
-    return childrenToArray(this.props.children).some(child => {
+  public isChildDisabled = (key: string | string[]) => {
+    return childrenToArray(this.props.children).some((child: ReactElement<any>) => {
       const childValue = getValuePropValue(child);
       return childValue === key && child.props && child.props.disabled;
     });
@@ -1020,7 +1044,9 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     if (!this.state.open) {
       return;
     }
-    this.selectTriggerRef.triggerRef.forcePopupAlign();
+    if (this.selectTriggerRef && this.selectTriggerRef.triggerRef) {
+      this.selectTriggerRef.triggerRef.forcePopupAlign();
+    }
   };
 
   public renderFilterOptions = () => {
@@ -1099,19 +1125,23 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     return options;
   };
 
-  public renderFilterOptionsFromChildren = (children, childrenKeys, menuItems): JSX.Element[] => {
+  public renderFilterOptionsFromChildren = (
+    children: Array<ReactElement<any>>,
+    childrenKeys: string[],
+    menuItems: JSX.Element[],
+  ): JSX.Element[] => {
     const sel: JSX.Element[] = [];
     const props = this.props;
     const { inputValue } = this.state;
     const tags = props.tags;
-    React.Children.forEach(children, (child: ReactElement<any>) => {
+    React.Children.forEach(children, child => {
       if (!child) {
         return;
       }
-      const type = child.type as any;
+      const type = (child as ReactElement<any>).type as any;
       if (type.isSelectOptGroup) {
-        let label = child.props.label;
-        let key = child.key;
+        let label = (child as ReactElement<any>).props.label;
+        let key = (child as ReactElement<any>).key;
         if (!key && typeof label === 'string') {
           key = label;
         } else if (!label && key) {
@@ -1119,11 +1149,13 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
         }
 
         // Match option group label
-        if (inputValue && this.filterOption(inputValue, child)) {
-          const innerItems = childrenToArray(child.props.children).map(subChild => {
-            const childValueSub = getValuePropValue(subChild) || subChild.key;
-            return <MenuItem key={childValueSub} value={childValueSub} {...subChild.props} />;
-          });
+        if (inputValue && this.filterOption(inputValue as string, child as ReactElement<any>)) {
+          const innerItems = childrenToArray((child as ReactElement<any>).props.children).map(
+            (subChild: JSX.Element) => {
+              const childValueSub = getValuePropValue(subChild) || subChild.key;
+              return <MenuItem key={childValueSub} value={childValueSub} {...subChild.props} />;
+            },
+          );
 
           sel.push(
             <MenuItemGroup key={key} title={label}>
@@ -1134,7 +1166,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
           // Not match
         } else {
           const innerItems = this.renderFilterOptionsFromChildren(
-            child.props.children,
+            (child as ReactElement<any>).props.children,
             childrenKeys,
             menuItems,
           );
@@ -1153,14 +1185,14 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
       warning(
         type.isSelectOption,
         'the children of `Select` should be `Select.Option` or `Select.OptGroup`, ' +
-          `instead of \`${type.name || type.displayName || child.type}\`.`,
+          `instead of \`${type.name || type.displayName || (child as ReactElement<any>).type}\`.`,
       );
 
       const childValue = getValuePropValue(child);
 
       validateOptionValue(childValue, this.props);
 
-      if (this.filterOption(inputValue, child)) {
+      if (this.filterOption(inputValue as string, child as ReactElement<any>)) {
         const menuItem = (
           <MenuItem
             style={UNSELECTABLE_STYLE}
@@ -1168,7 +1200,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
             value={childValue}
             key={childValue}
             role="option"
-            {...child.props}
+            {...(child as ReactElement<any>).props}
           />
         );
         sel.push(menuItem);
@@ -1195,7 +1227,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
       showSearch,
       removeIcon,
     } = props;
-    const maxTagPlaceholder = props.maxTagPlaceholder as (value) => string;
+    const maxTagPlaceholder = props.maxTagPlaceholder as (value: valueType) => string;
     const className = `${prefixCls}-selection__rendered`;
     // search input is inside topControlNode in single, multiple & combobox. 2016/04/13
     let innerNode: Array<JSX.Element | null> | null | JSX.Element = null;
@@ -1345,7 +1377,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
       </div>
     );
   };
-  public renderArrow(multiple) {
+  public renderArrow(multiple: boolean) {
     const { showArrow, loading, inputIcon, prefixCls } = this.props;
     if (!showArrow) {
       return null;
@@ -1510,7 +1542,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
           >
             {ctrlNode}
             {this.renderClear()}
-            {this.renderArrow(multiple)}
+            {this.renderArrow(!!multiple)}
           </div>
         </div>
       </SelectTrigger>

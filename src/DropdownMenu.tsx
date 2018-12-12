@@ -30,10 +30,10 @@ export interface IDropdownMenuProps {
   multiple: boolean;
   onPopupFocus: FocusEventHandler<HTMLDivElement>;
   onPopupScroll: UIEventHandler<HTMLDivElement>;
-  onMenuDeselect: (e: IMenuEvent) => void;
-  onMenuSelect: (e: IMenuEvent) => void;
+  onMenuDeselect: (e: { item: any; domEvent: KeyboardEvent }) => void;
+  onMenuSelect: (e: { item: any; domEvent: KeyboardEvent }) => void;
   prefixCls: string;
-  menuItems: any;
+  menuItems: JSX.Element[];
   inputValue: string | string[];
   visible: boolean;
   firstActiveValue: valueType;
@@ -62,13 +62,13 @@ export default class DropdownMenu extends Component<Partial<IDropdownMenuProps>>
   };
   public rafInstance: {
     cancel: () => void;
-  };
-  public lastInputValue: string | string[];
-  public saveMenuRef: Menu;
-  public menuRef: Menu;
-  public lastVisible: boolean;
+  } = { cancel: () => null };
+  public lastInputValue: string | string[] | undefined;
+  public saveMenuRef: any;
+  public menuRef: any;
+  public lastVisible: boolean = false;
   public firstActiveItem: any;
-  constructor(props) {
+  constructor(props: Partial<IDropdownMenuProps>) {
     super(props);
     this.lastInputValue = props.inputValue;
     this.saveMenuRef = saveRef(this, 'menuRef');
@@ -79,7 +79,7 @@ export default class DropdownMenu extends Component<Partial<IDropdownMenuProps>>
     this.lastVisible = this.props.visible as boolean;
   }
 
-  public shouldComponentUpdate(nextProps) {
+  public shouldComponentUpdate(nextProps: Partial<IDropdownMenuProps>) {
     if (!nextProps.visible) {
       this.lastVisible = false;
     }
@@ -91,7 +91,7 @@ export default class DropdownMenu extends Component<Partial<IDropdownMenuProps>>
     );
   }
 
-  public componentDidUpdate(prevProps) {
+  public componentDidUpdate(prevProps: Partial<IDropdownMenuProps>) {
     const props = this.props;
     if (!prevProps.visible && props.visible) {
       this.scrollActiveItemToView();
@@ -148,9 +148,9 @@ export default class DropdownMenu extends Component<Partial<IDropdownMenuProps>>
 
     if (menuItems && menuItems.length) {
       const menuProps: Partial<{
-        onDeselect: (e: IMenuEvent) => void;
-        onSelect: (e: IMenuEvent) => void;
-        onClick: (e: IMenuEvent) => void;
+        onDeselect: (e: { item: any; domEvent: KeyboardEvent }) => void;
+        onSelect: (e: { item: any; domEvent: KeyboardEvent }) => void;
+        onClick: (e: { item: any; domEvent: KeyboardEvent }) => void;
       }> = {};
       if (multiple) {
         menuProps.onDeselect = onMenuDeselect;
@@ -158,7 +158,7 @@ export default class DropdownMenu extends Component<Partial<IDropdownMenuProps>>
       } else {
         menuProps.onClick = onMenuSelect;
       }
-      const value = this.props.value as string[];
+      const value = this.props.value as string;
       const selectedKeys = getSelectKeys(menuItems, value) as string[];
       const activeKeyProps: {
         activeKey?: string;
@@ -182,7 +182,7 @@ export default class DropdownMenu extends Component<Partial<IDropdownMenuProps>>
           ) {
             foundFirst = true;
             return cloneElement(item, {
-              ref: ref => {
+              ref: (ref: HTMLDivElement) => {
                 this.firstActiveItem = ref;
               },
             });
@@ -190,7 +190,7 @@ export default class DropdownMenu extends Component<Partial<IDropdownMenuProps>>
           return item;
         };
 
-        clonedMenuItems = menuItems.map(item => {
+        clonedMenuItems = menuItems.map((item: any) => {
           if (item.type.isMenuItemGroup) {
             const children = toArray(item.props.children).map(clone);
             return cloneElement(item, {}, children);
