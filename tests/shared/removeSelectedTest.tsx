@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import React from 'react';
@@ -85,14 +84,10 @@ export default function removeSelectedTest(mode) {
         { key: '1', label: '1' },
         <Option value="1">1</Option>,
       );
-      expect(handleChange).toHaveBeenCalledWith(
-        [{ key: '2', label: '2' }],
-        [
-          <Option key={2} value="2">
-            2
-          </Option>,
-        ],
-      );
+
+      const args = handleChange.mock.calls[0];
+      expect(args[0]).toEqual([{ key: '2', label: '2' }]);
+      expect(args[1].length).toBe(1);
     });
 
     it('remove by backspace key', () => {

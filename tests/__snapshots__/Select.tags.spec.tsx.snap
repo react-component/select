@@ -90,7 +90,7 @@ exports[`Select.tags OptGroup renders correctly 1`] = `
     >
       <div
         id="test-uuid"
-        style="overflow: auto;"
+        style="overflow: auto; transform: translateZ(0);"
       >
         <ul
           class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
@@ -205,7 +205,7 @@ exports[`Select.tags OptGroup renders inputValue correctly 1`] = `
     >
       <div
         id="test-uuid"
-        style="overflow: auto;"
+        style="overflow: auto; transform: translateZ(0);"
       >
         <ul
           class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
@@ -298,7 +298,7 @@ exports[`Select.tags OptGroup renders inputValue correctly 2`] = `
     >
       <div
         id="test-uuid"
-        style="overflow: auto;"
+        style="overflow: auto; transform: translateZ(0);"
       >
         <ul
           class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
@@ -410,6 +410,7 @@ exports[`Select.tags allowClear renders correctly 1`] = `
 exports[`Select.tags render render animation 1`] = `
 <SelectTrigger
   ariaId="test-uuid"
+  backfillValue=""
   defaultActiveFirstOption={true}
   dropdownMatchSelectWidth={true}
   dropdownMenuStyle={Object {}}
@@ -657,6 +658,7 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
           role="presentation"
           style="user-select:none;-webkit-user-select:none"
+          title=""
           unselectable="on"
         >
           <div
@@ -756,6 +758,7 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
           role="presentation"
           style="user-select:none;-webkit-user-select:none"
+          title=""
           unselectable="on"
         >
           <div

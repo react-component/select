@@ -1,4 +1,3 @@
-/* eslint-disable no-undef, react/no-multi-comp */
 import { mount } from 'enzyme';
 import React from 'react';
 import Select, { OptGroup, Option } from '../src';

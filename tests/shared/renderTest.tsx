@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { render, shallow } from 'enzyme';
 import React from 'react';
 import Option from '../../src/Option';

@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { mount, render } from 'enzyme';
 import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
 import React from 'react';

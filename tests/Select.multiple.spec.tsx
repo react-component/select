@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { mount } from 'enzyme';
 import React from 'react';
 import Select, { OptGroup, Option } from '../src';
@@ -131,17 +130,24 @@ describe('Select.multiple', () => {
       .find('MenuItem')
       .at(1)
       .simulate('click');
-    expect(handleChange).toBeCalledWith(
-      [1, 2],
-      [
-        <Option key="1" value={1}>
-          1
-        </Option>,
-        <Option value={2} key="2" testprop={2}>
-          2
-        </Option>,
-      ],
-    );
+
+    const args = handleChange.mock.calls[0];
+    expect(args[0]).toEqual([1, 2]);
+    expect(args[1].length).toBe(2);
+
+    // magic code
+    // expect(handleChange).toBeCalledWith(
+    //   [1, 2],
+    //   [
+    //     <Option key="1" value={1}>
+    //       1
+    //     </Option>,
+    //     <Option value={2} key="2" testprop={2}>
+    //       2
+    //     </Option>,
+    //   ],
+    // );
+
     expect(
       wrapper
         .find('.rc-select-selection__choice__content')

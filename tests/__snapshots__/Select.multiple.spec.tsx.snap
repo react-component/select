@@ -44,6 +44,7 @@ exports[`Select.multiple allowClear renders correctly 1`] = `
 exports[`Select.multiple render render animation 1`] = `
 <SelectTrigger
   ariaId="test-uuid"
+  backfillValue=""
   defaultActiveFirstOption={true}
   dropdownMatchSelectWidth={true}
   dropdownMenuStyle={Object {}}
@@ -291,6 +292,7 @@ exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPla
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
           role="presentation"
           style="user-select:none;-webkit-user-select:none"
+          title=""
           unselectable="on"
         >
           <div
@@ -390,6 +392,7 @@ exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPla
           class="rc-select-selection__choice rc-select-selection__choice__disabled"
           role="presentation"
           style="user-select:none;-webkit-user-select:none"
+          title=""
           unselectable="on"
         >
           <div

@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import React from 'react';
@@ -116,7 +115,7 @@ describe('Select', () => {
   });
 
   it('not add open className when result is empty and no notFoundContent given', () => {
-    const wrapper =mount<Select>(<Select combobox={true} notFoundContent={false} />);
+    const wrapper = mount<Select>(<Select combobox={true} notFoundContent={false} />);
     const select = wrapper.find('.rc-select');
     select.simulate('click');
     expect(select.props().className).not.toContain('-open');
@@ -146,7 +145,7 @@ describe('Select', () => {
   });
 
   it('should hide clear button', () => {
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select allowClear={true}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
@@ -167,7 +166,7 @@ describe('Select', () => {
   });
 
   it('should show selected value in singleMode when close', () => {
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select value="1">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
@@ -178,7 +177,7 @@ describe('Select', () => {
   });
 
   it('filter options by "value" prop by default', () => {
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select>
         <Option value="1">One</Option>
         <Option value="2">Two</Option>
@@ -191,7 +190,7 @@ describe('Select', () => {
   });
 
   it('should filter options when filterOption is true', () => {
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select filterOption={true}>
         <Option value="1">One</Option>
         <Option value="2">Two</Option>
@@ -204,7 +203,7 @@ describe('Select', () => {
   });
 
   it('should not filter options when filterOption is false', () => {
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select filterOption={false}>
         <Option value="1">One</Option>
         <Option value="2">Two</Option>
@@ -216,7 +215,7 @@ describe('Select', () => {
   });
 
   it('specify which prop to filter', () => {
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select optionFilterProp="label">
         <Option value="1" label="One">
           1
@@ -234,7 +233,7 @@ describe('Select', () => {
   });
 
   it('filter array children', () => {
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select optionFilterProp="children">
         <Option value="1" label="One">
           One{1}
@@ -304,7 +303,7 @@ describe('Select', () => {
 
   it('adds label to value', () => {
     const handleChange = jest.fn();
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select onChange={handleChange} labelInValue={true} optionLabelProp="children">
         <Option value="1" testprop="test">
           One
@@ -328,7 +327,7 @@ describe('Select', () => {
 
   it('give right option when use OptGroup', () => {
     const handleChange = jest.fn();
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select onChange={handleChange} labelInValue={true} optionLabelProp="children">
         <OptGroup label="grouplabel">
           <Option value="1" testprop="test">
@@ -353,7 +352,7 @@ describe('Select', () => {
   });
 
   it('use label in props.value', () => {
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select labelInValue={true} value={{ key: 1, label: 'One' }}>
         <Option value="2">Two</Option>
       </Select>,
@@ -363,7 +362,7 @@ describe('Select', () => {
 
   it('fires search event when user input', () => {
     const handleSearch = jest.fn();
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select showSearch={true} onSearch={handleSearch}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
@@ -376,7 +375,7 @@ describe('Select', () => {
 
   it('not fires search event when user select', () => {
     const handleSearch = jest.fn();
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select showSearch={true} onSearch={handleSearch}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
@@ -393,7 +392,7 @@ describe('Select', () => {
   // https://github.com/ant-design/ant-design/issues/10817
   it('not fires extra search event when user search and select', () => {
     const handleSearch = jest.fn();
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select showSearch={true} onSearch={handleSearch}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
@@ -412,7 +411,7 @@ describe('Select', () => {
     let wrapper;
     beforeEach(() => {
       handleFocus = jest.fn();
-      wrapper =mount<Select>(
+      wrapper = mount<Select>(
         <Select onFocus={handleFocus}>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
@@ -442,7 +441,7 @@ describe('Select', () => {
     let wrapper;
     beforeEach(() => {
       handleFocus = jest.fn();
-      wrapper =mount<Select>(
+      wrapper = mount<Select>(
         <Select onFocus={handleFocus}>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
@@ -468,7 +467,7 @@ describe('Select', () => {
 
     it('click placeholder should trigger onFocus', () => {
       const handleFocus2 = jest.fn();
-      const wrapper2 =mount<Select>(
+      const wrapper2 = mount<Select>(
         <Select onFocus={handleFocus2} placeholder="xxxx">
           <Option value="1">1</Option>
           <Option value="2">2</Option>
@@ -490,7 +489,7 @@ describe('Select', () => {
     beforeEach(() => {
       handleChange = jest.fn();
       handleBlur = jest.fn();
-      wrapper =mount<Select>(
+      wrapper = mount<Select>(
         <Select
           onChange={handleChange}
           onBlur={handleBlur}
@@ -538,7 +537,7 @@ describe('Select', () => {
 
     // Fix https://github.com/ant-design/ant-design/issues/6342
     it('should be close when blur Select[showSearch=false]', () => {
-      wrapper =mount<Select>(
+      wrapper = mount<Select>(
         <Select showSearch={false}>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
@@ -555,7 +554,7 @@ describe('Select', () => {
     it('should not trigger onFocus/onBlur when select is disabled', () => {
       const onFocus = jest.fn();
       const onBlur = jest.fn();
-      wrapper =mount<Select>(
+      wrapper = mount<Select>(
         <Select onFocus={onFocus} onBlur={onBlur} disabled={true}>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
@@ -575,7 +574,7 @@ describe('Select', () => {
     let instance;
 
     beforeEach(() => {
-      wrapper =mount<Select>(
+      wrapper = mount<Select>(
         <Select>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
@@ -746,7 +745,7 @@ describe('Select', () => {
     });
 
     it('warns on invalid value when labelInValue', () => {
-     mount<Select>(<Select labelInValue={true} value="foo" />);
+      mount<Select>(<Select labelInValue={true} value="foo" />);
       expect(spy.mock.calls[0][0]).toMatch(
         'Warning: Failed prop type: Invalid prop `value` supplied to `Select`, ' +
           'when you set `labelInValue` to `true`,' +
@@ -755,7 +754,7 @@ describe('Select', () => {
     });
 
     it('warns on invalid value when multiple', () => {
-     mount<Select>(<Select multiple={true} value="" />);
+      mount<Select>(<Select multiple={true} value="" />);
       expect(spy.mock.calls[0][0]).toMatch(
         'Warning: Failed prop type: Invalid prop `value` of type `string` supplied to `Select`, ' +
           'expected `array` when `multiple` or `tags` is `true`',
@@ -764,7 +763,7 @@ describe('Select', () => {
   });
 
   it('set label as key for OptGroup', () => {
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select open={true}>
         <OptGroup key="group1">
           <Option value="1">1</Option>
@@ -777,7 +776,7 @@ describe('Select', () => {
   });
 
   it('filters options by inputValue', () => {
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select open={true}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
@@ -793,7 +792,7 @@ describe('Select', () => {
   });
 
   it('should include disabled item in options', () => {
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select tags={true} open={true} value={['name1']}>
         <Option key="name1" disabled={true}>
           name1
@@ -805,7 +804,7 @@ describe('Select', () => {
   });
 
   it('renders not found when search result is empty', () => {
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select open={true}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
@@ -820,7 +819,7 @@ describe('Select', () => {
   it('warns on invalid children', () => {
     const Foo = value => <div>foo{value}</div>;
     const spy = jest.spyOn(console, 'error').mockImplementation(() => null);
-   mount<Select>(
+    mount<Select>(
       <Select open={true}>
         <Foo value="1" />
       </Select>,
@@ -892,7 +891,7 @@ describe('Select', () => {
     it('support number value', () => {
       const handleChange = jest.fn();
 
-      const wrapper =mount<Select>(
+      const wrapper = mount<Select>(
         <Select defaultValue={1} onChange={handleChange}>
           <Option value={1}>1</Option>
           <Option value={2}>2</Option>
@@ -911,7 +910,7 @@ describe('Select', () => {
     });
 
     it('search number value', () => {
-      const wrapper =mount<Select>(
+      const wrapper = mount<Select>(
         <Select showSearch={true}>
           <Option value={1}>1</Option>
           <Option value={2}>2</Option>
@@ -943,7 +942,7 @@ describe('Select', () => {
 
   it('should trigger click event in custom node', () => {
     const handleClick = jest.fn();
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select
         dropdownRender={menu => (
           <div>
@@ -965,7 +964,7 @@ describe('Select', () => {
   });
 
   it('set showAction', () => {
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select showAction={['mouseEnter']}>
         <Option value="1">1</Option>
       </Select>,
@@ -980,7 +979,7 @@ describe('Select', () => {
   });
 
   it('default filterOption is case insensitive', () => {
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select>
         <Option value="ABC">ABC</Option>
         <Option value="DEF">DEF</Option>
@@ -1051,7 +1050,7 @@ describe('Select', () => {
   // https://github.com/ant-design/ant-design/issues/12172
   it('onChange trigger only once when value is 0', () => {
     const onChange = jest.fn();
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select onChange={onChange}>
         <Option value={0}>0</Option>
       </Select>,
@@ -1077,7 +1076,7 @@ describe('Select', () => {
 
   // https://github.com/ant-design/ant-design/issues/12260
   it('dropdown menu width should not be smaller than trigger even dropdownMatchSelectWidth is false', () => {
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select style={{ width: 1000 }} dropdownMatchSelectWidth={false}>
         <Option value={0}>0</Option>
         <Option value={1}>1</Option>
@@ -1088,7 +1087,7 @@ describe('Select', () => {
   });
 
   it('if loading=true, arrow should show loading icon', () => {
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select style={{ width: 1000 }} loading={true} dropdownMatchSelectWidth={false}>
         <Option value={0}>0</Option>
         <Option value={1}>1</Option>
@@ -1098,7 +1097,7 @@ describe('Select', () => {
   });
   it('if loading=true and multiple=true, has not arrow, but have loading icon', () => {
     // multiple=true loading and arrow don't have
-    const wrapper =mount<Select>(
+    const wrapper = mount<Select>(
       <Select style={{ width: 1000 }} multiple={true} dropdownMatchSelectWidth={false}>
         <Option value={0}>0</Option>
         <Option value={1}>1</Option>

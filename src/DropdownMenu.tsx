@@ -76,7 +76,7 @@ export default class DropdownMenu extends Component<Partial<IDropdownMenuProps>>
 
   public componentDidMount() {
     this.scrollActiveItemToView();
-    this.lastVisible = this.props.visible;
+    this.lastVisible = this.props.visible as boolean;
   }
 
   public shouldComponentUpdate(nextProps) {
@@ -96,8 +96,8 @@ export default class DropdownMenu extends Component<Partial<IDropdownMenuProps>>
     if (!prevProps.visible && props.visible) {
       this.scrollActiveItemToView();
     }
-    this.lastVisible = props.visible;
-    this.lastInputValue = props.inputValue;
+    this.lastVisible = props.visible as boolean;
+    this.lastInputValue = props.inputValue as string;
   }
 
   public componentWillUnmount() {
@@ -159,7 +159,7 @@ export default class DropdownMenu extends Component<Partial<IDropdownMenuProps>>
         menuProps.onClick = onMenuSelect;
       }
       const value = this.props.value as string[];
-      const selectedKeys = getSelectKeys(menuItems, value);
+      const selectedKeys = getSelectKeys(menuItems, value) as string[];
       const activeKeyProps: {
         activeKey?: string;
       } = {};
@@ -169,14 +169,15 @@ export default class DropdownMenu extends Component<Partial<IDropdownMenuProps>>
         if (visible && !this.lastVisible) {
           activeKeyProps.activeKey = selectedKeys[0] || firstActiveValue;
         } else if (!visible) {
-          activeKeyProps.activeKey = null;
+          activeKeyProps.activeKey = undefined;
         }
         let foundFirst = false;
         // set firstActiveItem via cloning menus
         // for scroll into view
-        const clone = item => {
+        const clone = (item: any) => {
+          const key = item.key as string;
           if (
-            (!foundFirst && selectedKeys.indexOf(item.key) !== -1) ||
+            (!foundFirst && selectedKeys.indexOf(key) !== -1) ||
             (!foundFirst && !selectedKeys.length && firstActiveValue.indexOf(item.key) !== -1)
           ) {
             foundFirst = true;

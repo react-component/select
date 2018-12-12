@@ -9,6 +9,11 @@ module.exports = {
   modulePathIgnorePatterns: ['/examples/'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   preset: 'ts-jest',
+  globals: {
+    'ts-jest': {
+      tsConfigFile: './tsconfig.test.json',
+    },
+  },
   snapshotSerializers: ['enzyme-to-json/serializer'],
   transformIgnorePatterns: ['/examples/', '/build/', 'node_modules/[^/]+?/(?!(es|node_modules)/)'],
 };

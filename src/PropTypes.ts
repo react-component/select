@@ -9,7 +9,7 @@ import {
 } from 'react';
 import Option from './Option';
 
-export type emptyFunction = (e?) => void;
+export type emptyFunction = (e?: any) => void;
 export type valueType =
   | number
   | number[]
@@ -77,7 +77,7 @@ export interface ISelectProps {
   removeIcon: ReactNode;
   menuItemSelectedIcon: renderSelect;
   getPopupContainer: renderSelect;
-  dropdownRender: (menu) => JSX.Element;
+  dropdownRender: (menu: any) => JSX.Element;
   mode: 'multiple' | 'tags';
   backfill: boolean;
   dropdownAlign: any;

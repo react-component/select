@@ -54,11 +54,11 @@ function chaining(...fns) {
 
 export interface ISelectState {
   open: boolean;
-  value: valueType;
-  inputValue: string | string[];
-  skipBuildOptionsInfo: boolean;
-  optionsInfo: any;
-  backfillValue: string;
+  value?: valueType;
+  inputValue?: string | string[];
+  skipBuildOptionsInfo?: boolean;
+  optionsInfo?: any;
+  backfillValue?: string;
 }
 
 class Select extends Component<Partial<ISelectProps>, ISelectState> {
@@ -119,7 +119,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     return newState;
   };
 
-  public static getOptionsFromChildren = (children, options = []) => {
+  public static getOptionsFromChildren = (children, options: any[] = []) => {
     React.Children.forEach(children, (child: ReactElement<any>) => {
       if (!child) {
         return;
@@ -194,7 +194,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
   };
 
   public static getValueFromProps = (props: ISelectProps, useDefaultValue?: boolean) => {
-    let value = [];
+    let value: any[] = [];
     if ('value' in props && !useDefaultValue) {
       value = toArray(props.value);
     }
@@ -216,22 +216,22 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
   public saveSelectTriggerRef: (ref) => void;
   public saveRootRef: (ref) => void;
   public saveSelectionRef: (ref) => void;
-  public inputRef: HTMLInputElement;
+  public inputRef: HTMLInputElement | null;
   public inputMirrorRef: HTMLSpanElement;
-  public topCtrlRef: HTMLDivElement;
+  public topCtrlRef: HTMLDivElement | null;
   public selectTriggerRef: SelectTrigger;
-  public rootRef: HTMLDivElement;
-  public selectionRef: HTMLDivElement;
-  public dropdownContainer: Element;
-  public blurTimer: number;
-  public focusTimer: number;
+  public rootRef: HTMLDivElement | null;
+  public selectionRef: HTMLDivElement | null;
+  public dropdownContainer: Element | null;
+  public blurTimer: number | null;
+  public focusTimer: number | null;
 
   // tslint:disable-next-line:variable-name
   private _focused: boolean;
   // tslint:disable-next-line:variable-name
   private _mouseDown: boolean;
   // tslint:disable-next-line:variable-name
-  private _options: Option[];
+  private _options: JSX.Element[];
   constructor(props) {
     super(props);
     const optionsInfo = Select.getOptionsInfoFromProps(props);
@@ -246,7 +246,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
         : '',
       open: props.defaultOpen,
       optionsInfo,
-      backfillValue: undefined,
+      backfillValue: '',
       // a flag for aviod redundant getOptionsInfoFromProps call
       skipBuildOptionsInfo: true,
     };
@@ -270,10 +270,10 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     if (isMultipleOrTags(this.props)) {
       const inputNode = this.getInputDOMNode();
       const mirrorNode = this.getInputMirrorDOMNode();
-      if (inputNode.value) {
+      if (inputNode && inputNode.value) {
         inputNode.style.width = '';
         inputNode.style.width = `${mirrorNode.clientWidth}px`;
-      } else {
+      } else if (inputNode) {
         inputNode.style.width = '';
       }
     }
@@ -290,7 +290,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
   }
 
   public onInputChange = event => {
-    const { tokenSeparators } = this.props;
+    const tokenSeparators = this.props.tokenSeparators as string[];
     const val = event.target.value;
     if (
       isMultipleOrTags(this.props) &&
@@ -451,8 +451,8 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
   };
 
   public onPlaceholderClick = () => {
-    if (this.getInputDOMNode()) {
-      this.getInputDOMNode().focus();
+    if (this.getInputDOMNode && this.getInputDOMNode()) {
+      (this.getInputDOMNode() as HTMLInputElement).focus();
     }
   };
 
@@ -513,7 +513,9 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
               inputValue: '',
             },
             () => {
-              this.getInputDOMNode().value = '';
+              if (this.getInputDOMNode && this.getInputDOMNode()) {
+                (this.getInputDOMNode() as HTMLInputElement).value = '';
+              }
             },
           );
         }
@@ -532,7 +534,9 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
         return;
       }
       this.setOpenState(false);
-      props.onBlur(this.getVLForOnChange(value));
+      if (props.onBlur) {
+        props.onBlur(this.getVLForOnChange(value));
+      }
     }, 10);
   };
 
@@ -663,7 +667,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     if (value.length) {
       hidden = true;
     }
-    if (isCombobox(props) && value.length === 1 && !state.value[0]) {
+    if (isCombobox(props) && value.length === 1 && (state.value && !state.value[0])) {
       hidden = false;
     }
     const placeholder = props.placeholder;
@@ -719,7 +723,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     );
   };
 
-  public getInputDOMNode = (): HTMLInputElement => {
+  public getInputDOMNode = (): HTMLInputElement | null => {
     return this.topCtrlRef
       ? this.topCtrlRef.querySelector('input,textarea,div[contentEditable]')
       : this.inputRef;
@@ -737,7 +741,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     return this.selectTriggerRef.getInnerMenu();
   };
 
-  public setOpenState = (open, needFocus?: boolean) => {
+  public setOpenState = (open: boolean, needFocus?: boolean) => {
     const props = this.props;
     const state = this.state;
     if (state.open === open) {
@@ -746,12 +750,12 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     }
 
     if (this.props.onDropdownVisibleChange) {
-      this.props.onDropdownVisibleChange(open);
+      this.props.onDropdownVisibleChange(open as boolean);
     }
 
-    const nextState = {
+    const nextState: ISelectState = {
       open,
-      backfillValue: undefined,
+      backfillValue: '',
     };
     // clear search input value when open is false in singleMode.
     if (!open && isSingleMode(props) && props.showSearch) {
@@ -760,11 +764,17 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     if (!open) {
       this.maybeFocus(open, needFocus);
     }
-    this.setState(nextState, () => {
-      if (open) {
-        this.maybeFocus(open, needFocus);
-      }
-    });
+    this.setState(
+      {
+        open,
+        ...nextState,
+      },
+      () => {
+        if (open) {
+          this.maybeFocus(open, needFocus);
+        }
+      },
+    );
   };
 
   public setInputValue = (inputValue, fireSearch = true) => {
@@ -775,7 +785,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
         },
         this.forcePopupAlign,
       );
-      if (fireSearch) {
+      if (fireSearch && this.props.onSearch) {
         this.props.onSearch(inputValue);
       }
     }
@@ -785,7 +795,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     const { multiple, tokenSeparators } = this.props;
     let nextValue = this.state.value as string[];
     let hasNewValue = false;
-    splitBySeparators(str, tokenSeparators).forEach(label => {
+    splitBySeparators(str, tokenSeparators as string[]).forEach(label => {
       const selectedValue = [label];
       if (multiple) {
         const value = this.getValueByLabel(label);
@@ -820,18 +830,18 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
   };
 
   public focus() {
-    if (isSingleMode(this.props)) {
+    if (isSingleMode(this.props) && this.selectionRef) {
       this.selectionRef.focus();
-    } else {
-      this.getInputDOMNode().focus();
+    } else if (this.getInputDOMNode()) {
+      (this.getInputDOMNode() as HTMLInputElement).focus();
     }
   }
 
   public blur() {
-    if (isSingleMode(this.props)) {
+    if (isSingleMode(this.props) && this.selectionRef) {
       this.selectionRef.blur();
-    } else {
-      this.getInputDOMNode().blur();
+    } else if (this.getInputDOMNode()) {
+      (this.getInputDOMNode() as HTMLInputElement).blur();
     }
   }
 
@@ -890,7 +900,9 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
       this.clearFocusTime();
     }
     this.focusTimer = window.setTimeout(() => {
-      this.props.onFocus();
+      if (this.props.onFocus) {
+        this.props.onFocus();
+      }
     }, 10);
   };
 
@@ -928,7 +940,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
           input.focus();
           this._focused = true;
         }
-      } else if (activeElement !== this.selectionRef) {
+      } else if (activeElement !== this.selectionRef && this.selectionRef) {
         this.selectionRef.focus();
         this._focused = true;
       }
@@ -960,7 +972,9 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
           label: this.getLabelBySingleValue(selectedKey),
         };
       }
-      props.onDeselect(event, this.getOptionBySingleValue(selectedKey));
+      if (props.onDeselect) {
+        props.onDeselect(event, this.getOptionBySingleValue(selectedKey));
+      }
     }
     this.fireChange(value);
   };
@@ -973,7 +987,9 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
   };
 
   public fireSelect = value => {
-    this.props.onSelect(this.getVLBySingleValue(value), this.getOptionBySingleValue(value));
+    if (this.props.onSelect) {
+      this.props.onSelect(this.getVLBySingleValue(value), this.getOptionBySingleValue(value));
+    }
   };
 
   public fireChange = value => {
@@ -988,7 +1004,9 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     }
     const vls = this.getVLForOnChange(value);
     const options = this.getOptionsBySingleValue(value);
-    props.onChange(vls, isMultipleOrTags(this.props) ? options : options[0]);
+    if (props.onChange) {
+      props.onChange(vls, isMultipleOrTags(this.props) ? options : options[0]);
+    }
   };
 
   public isChildDisabled = key => {
@@ -1008,8 +1026,8 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
   public renderFilterOptions = () => {
     const { inputValue } = this.state;
     const { children, tags, filterOption, notFoundContent } = this.props;
-    const menuItems = [];
-    const childrenKeys = [];
+    const menuItems: JSX.Element[] = [];
+    const childrenKeys: string[] = [];
     let options = this.renderFilterOptionsFromChildren(children, childrenKeys, menuItems);
     if (tags) {
       // tags value must be string
@@ -1081,8 +1099,8 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     return options;
   };
 
-  public renderFilterOptionsFromChildren = (children, childrenKeys, menuItems) => {
-    const sel = [];
+  public renderFilterOptionsFromChildren = (children, childrenKeys, menuItems): JSX.Element[] => {
+    const sel: JSX.Element[] = [];
     const props = this.props;
     const { inputValue } = this.state;
     const tags = props.tags;
@@ -1180,9 +1198,9 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     const maxTagPlaceholder = props.maxTagPlaceholder as (value) => string;
     const className = `${prefixCls}-selection__rendered`;
     // search input is inside topControlNode in single, multiple & combobox. 2016/04/13
-    let innerNode = null;
+    let innerNode: Array<JSX.Element | null> | null | JSX.Element = null;
     if (isSingleMode(props)) {
-      let selectedValue = null;
+      let selectedValue: JSX.Element | null = null;
       if (value.length) {
         let showSelectedValue = false;
         let opacity = 1;
@@ -1229,7 +1247,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
         ];
       }
     } else {
-      let selectedValueNodes = [];
+      let selectedValueNodes: JSX.Element[] = [];
       let limitedCountValue = value;
       let maxTagPlaceholderEl;
       if (maxTagCount !== undefined && value.length > maxTagCount) {
@@ -1422,8 +1440,8 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
       };
     }
     const rootCls = {
-      [className]: !!className,
-      [prefixCls]: 1,
+      [className as string]: !!className,
+      [prefixCls as string]: 1,
       [`${prefixCls}-open`]: open,
       [`${prefixCls}-focused`]: open || !!this._focused,
       [`${prefixCls}-combobox`]: isCombobox(props),

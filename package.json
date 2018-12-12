@@ -40,8 +40,7 @@
     "test": "jest",
     "prepublish": "rc-tools run guard",
     "init-tslint": "rc-tools run init-tslint",
-    "coverage": "jest --coverage",
-    "postinstall": "npm run init-tslint"
+    "coverage": "jest --coverage"
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.15",

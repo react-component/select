@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
 
-export function toTitle(title: string) {
+export function toTitle(title: string): string {
   if (typeof title === 'string') {
     return title;
   }
-  return null;
+  return '';
 }
 
 export function getValuePropValue(child) {
@@ -98,14 +98,14 @@ export function getSelectKeys(menuItems, value) {
   if (value === null || value === undefined) {
     return [];
   }
-  let selectedKeys = [];
+  let selectedKeys: string[] = [];
   React.Children.forEach(menuItems, (item: ReactElement<any>) => {
     const type = item.type as any;
     if (type.isMenuItemGroup) {
       selectedKeys = selectedKeys.concat(getSelectKeys(item.props.children, value));
     } else {
       const itemValue = getValuePropValue(item);
-      const itemKey = item.key;
+      const itemKey = item.key as string;
       if (findIndexInValueBySingleValue(value, itemValue) !== -1 && itemKey) {
         selectedKeys.push(itemKey);
       }

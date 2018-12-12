@@ -105,7 +105,7 @@ export default class SelectTrigger extends Component<
     this.saveTriggerRef = saveRef(this, 'triggerRef');
 
     this.state = {
-      dropdownWidth: null,
+      dropdownWidth: 0,
     };
   }
 
@@ -155,8 +155,10 @@ export default class SelectTrigger extends Component<
         menuItemSelectedIcon={props.menuItemSelectedIcon}
       />
     );
-
-    return dropdownRender(menuNode, props);
+    if (dropdownRender) {
+      return dropdownRender(menuNode, props);
+    }
+    return null;
   };
 
   public getDropdownTransitionName = () => {
@@ -187,7 +189,7 @@ export default class SelectTrigger extends Component<
     } = props;
     const dropdownPrefixCls = this.getDropdownPrefixCls();
     const popupClassName = {
-      [dropdownClassName]: !!dropdownClassName,
+      [dropdownClassName as string]: !!dropdownClassName,
       [`${dropdownPrefixCls}--${multiple ? 'multiple' : 'single'}`]: 1,
     };
     const popupElement = this.getDropdownElement({
