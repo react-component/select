@@ -6,7 +6,6 @@ import {
   ReactNode,
   UIEventHandler,
 } from 'react';
-import Option from './Option';
 
 export type emptyFunction = (e?: any) => void;
 
@@ -23,7 +22,7 @@ export type valueType =
   | IILableValueType[];
 
 type renderNode = () => ReactNode;
-export type filterOptionType = (inputValue: string, option?: Option) => void;
+export type filterOptionType = (inputValue: string, option?: any) => void;
 export type renderSelect = ReactNode | renderNode;
 
 export interface ISelectProps {

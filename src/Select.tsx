@@ -469,7 +469,9 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     }
   };
 
-  public onOuterFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+  public onOuterFocus = (
+    e: React.FocusEvent<HTMLDivElement> | React.FocusEvent<HTMLInputElement>,
+  ) => {
     if (this.props.disabled) {
       e.preventDefault();
       return;
@@ -494,7 +496,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
     this.maybeFocus(true, true);
   };
 
-  public onOuterBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+  public onOuterBlur = (e: React.FocusEvent<HTMLDivElement>) => {
     if (this.props.disabled) {
       e.preventDefault();
       return;
