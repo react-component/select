@@ -9,6 +9,7 @@ jobs:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
       - run: npm install
+      - run: npm run init-tslint
       - save_cache:
           paths:
             - node_modules
@@ -24,6 +25,7 @@ jobs:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
       - run: npm install
+      - run: npm run init-tslint
       - save_cache:
           paths:
             - node_modules
