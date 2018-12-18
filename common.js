@@ -3754,7 +3754,7 @@ var Option = function (_Component) {
 /* harmony default export */ __webpack_exports__["a"] = (Option);
 
 Option.propTypes = {
-    value: __WEBPACK_IMPORTED_MODULE_3_prop_types___default.a.oneOfType([__WEBPACK_IMPORTED_MODULE_3_prop_types___default.a.string, __WEBPACK_IMPORTED_MODULE_3_prop_types___default.a.number])
+    value: __WEBPACK_IMPORTED_MODULE_3_prop_types__["oneOfType"]([__WEBPACK_IMPORTED_MODULE_3_prop_types__["string"], __WEBPACK_IMPORTED_MODULE_3_prop_types__["number"]])
 };
 Option.isSelectOption = true;
 
@@ -3767,14 +3767,14 @@ Option.isSelectOption = true;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_prop_types__);
 
 function propsValueType(props, propName, componentName) {
-    var basicType = __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.oneOfType([__WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string, __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.number]);
-    var labelInValueShape = __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.shape({
+    var basicType = __WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"]([__WEBPACK_IMPORTED_MODULE_0_prop_types__["string"], __WEBPACK_IMPORTED_MODULE_0_prop_types__["number"]]);
+    var labelInValueShape = __WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"]({
         key: basicType,
-        label: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.node
+        label: __WEBPACK_IMPORTED_MODULE_0_prop_types__["node"]
     });
     if (props.labelInValue) {
-        var validate = __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.oneOfType([__WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.arrayOf(labelInValueShape), labelInValueShape]);
-        __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.checkPropTypes(validate, props, propName, componentName);
+        var validate = __WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"]([__WEBPACK_IMPORTED_MODULE_0_prop_types__["arrayOf"](labelInValueShape), labelInValueShape]);
+        __WEBPACK_IMPORTED_MODULE_0_prop_types__["checkPropTypes"](validate, props, propName, componentName);
         // if value is no null, it's a object
         if (props[propName] && typeof props[propName] !== 'object') {
             throw new Error('Invalid prop `' + propName + '` supplied to `' + componentName + '`, ' + ('when you set `labelInValue` to `true`, `' + propName + '` should in ') + 'shape of `{ key: string | number, label?: ReactNode }`.');
@@ -3782,58 +3782,58 @@ function propsValueType(props, propName, componentName) {
     } else if ((props.mode === 'multiple' || props.mode === 'tags' || props.multiple || props.tags) && props[propName] === '') {
         return new Error('Invalid prop `' + propName + '` of type `string` supplied to `' + componentName + '`, ' + 'expected `array` when `multiple` or `tags` is `true`.');
     } else {
-        var _validate = __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.oneOfType([__WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.arrayOf(basicType), basicType]);
-        __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.checkPropTypes(_validate, props, propName, componentName);
+        var _validate = __WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"]([__WEBPACK_IMPORTED_MODULE_0_prop_types__["arrayOf"](basicType), basicType]);
+        __WEBPACK_IMPORTED_MODULE_0_prop_types__["checkPropTypes"](_validate, props, propName, componentName);
     }
     return null;
 }
 var SelectPropTypes = {
-    id: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string,
-    defaultActiveFirstOption: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.bool,
-    multiple: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.bool,
-    filterOption: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.any,
-    children: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.any,
-    showSearch: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.bool,
-    disabled: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.bool,
-    allowClear: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.bool,
-    showArrow: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.bool,
-    tags: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.bool,
-    prefixCls: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string,
-    className: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string,
-    transitionName: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string,
-    optionLabelProp: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string,
-    optionFilterProp: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string,
-    animation: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string,
-    choiceTransitionName: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string,
-    open: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.bool,
-    defaultOpen: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.bool,
-    onChange: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
-    onBlur: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
-    onFocus: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
-    onSelect: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
-    onSearch: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
-    onPopupScroll: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
-    onMouseEnter: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
-    onMouseLeave: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
-    onInputKeyDown: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
-    placeholder: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.any,
-    onDeselect: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
-    labelInValue: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.bool,
-    loading: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.bool,
+    id: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+    defaultActiveFirstOption: __WEBPACK_IMPORTED_MODULE_0_prop_types__["bool"],
+    multiple: __WEBPACK_IMPORTED_MODULE_0_prop_types__["bool"],
+    filterOption: __WEBPACK_IMPORTED_MODULE_0_prop_types__["any"],
+    children: __WEBPACK_IMPORTED_MODULE_0_prop_types__["any"],
+    showSearch: __WEBPACK_IMPORTED_MODULE_0_prop_types__["bool"],
+    disabled: __WEBPACK_IMPORTED_MODULE_0_prop_types__["bool"],
+    allowClear: __WEBPACK_IMPORTED_MODULE_0_prop_types__["bool"],
+    showArrow: __WEBPACK_IMPORTED_MODULE_0_prop_types__["bool"],
+    tags: __WEBPACK_IMPORTED_MODULE_0_prop_types__["bool"],
+    prefixCls: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+    className: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+    transitionName: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+    optionLabelProp: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+    optionFilterProp: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+    animation: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+    choiceTransitionName: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+    open: __WEBPACK_IMPORTED_MODULE_0_prop_types__["bool"],
+    defaultOpen: __WEBPACK_IMPORTED_MODULE_0_prop_types__["bool"],
+    onChange: __WEBPACK_IMPORTED_MODULE_0_prop_types__["func"],
+    onBlur: __WEBPACK_IMPORTED_MODULE_0_prop_types__["func"],
+    onFocus: __WEBPACK_IMPORTED_MODULE_0_prop_types__["func"],
+    onSelect: __WEBPACK_IMPORTED_MODULE_0_prop_types__["func"],
+    onSearch: __WEBPACK_IMPORTED_MODULE_0_prop_types__["func"],
+    onPopupScroll: __WEBPACK_IMPORTED_MODULE_0_prop_types__["func"],
+    onMouseEnter: __WEBPACK_IMPORTED_MODULE_0_prop_types__["func"],
+    onMouseLeave: __WEBPACK_IMPORTED_MODULE_0_prop_types__["func"],
+    onInputKeyDown: __WEBPACK_IMPORTED_MODULE_0_prop_types__["func"],
+    placeholder: __WEBPACK_IMPORTED_MODULE_0_prop_types__["any"],
+    onDeselect: __WEBPACK_IMPORTED_MODULE_0_prop_types__["func"],
+    labelInValue: __WEBPACK_IMPORTED_MODULE_0_prop_types__["bool"],
+    loading: __WEBPACK_IMPORTED_MODULE_0_prop_types__["bool"],
     value: propsValueType,
     defaultValue: propsValueType,
-    dropdownStyle: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.object,
-    maxTagTextLength: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.number,
-    maxTagCount: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.number,
-    maxTagPlaceholder: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.oneOfType([__WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.node, __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func]),
-    tokenSeparators: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.arrayOf(__WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string),
-    getInputElement: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func,
-    showAction: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.arrayOf(__WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.string),
-    clearIcon: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.node,
-    inputIcon: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.node,
-    removeIcon: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.node,
-    menuItemSelectedIcon: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.oneOfType([__WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func, __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.node]),
-    dropdownRender: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func
+    dropdownStyle: __WEBPACK_IMPORTED_MODULE_0_prop_types__["object"],
+    maxTagTextLength: __WEBPACK_IMPORTED_MODULE_0_prop_types__["number"],
+    maxTagCount: __WEBPACK_IMPORTED_MODULE_0_prop_types__["number"],
+    maxTagPlaceholder: __WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"]([__WEBPACK_IMPORTED_MODULE_0_prop_types__["node"], __WEBPACK_IMPORTED_MODULE_0_prop_types__["func"]]),
+    tokenSeparators: __WEBPACK_IMPORTED_MODULE_0_prop_types__["arrayOf"](__WEBPACK_IMPORTED_MODULE_0_prop_types__["string"]),
+    getInputElement: __WEBPACK_IMPORTED_MODULE_0_prop_types__["func"],
+    showAction: __WEBPACK_IMPORTED_MODULE_0_prop_types__["arrayOf"](__WEBPACK_IMPORTED_MODULE_0_prop_types__["string"]),
+    clearIcon: __WEBPACK_IMPORTED_MODULE_0_prop_types__["node"],
+    inputIcon: __WEBPACK_IMPORTED_MODULE_0_prop_types__["node"],
+    removeIcon: __WEBPACK_IMPORTED_MODULE_0_prop_types__["node"],
+    menuItemSelectedIcon: __WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"]([__WEBPACK_IMPORTED_MODULE_0_prop_types__["func"], __WEBPACK_IMPORTED_MODULE_0_prop_types__["node"]]),
+    dropdownRender: __WEBPACK_IMPORTED_MODULE_0_prop_types__["func"]
 };
 /* harmony default export */ __webpack_exports__["a"] = (SelectPropTypes);
 
@@ -32738,7 +32738,7 @@ var Select = function (_Component) {
             this.clearFocusTime();
             this.clearBlurTime();
             if (this.dropdownContainer) {
-                __WEBPACK_IMPORTED_MODULE_13_react_dom___default.a.unmountComponentAtNode(this.dropdownContainer);
+                __WEBPACK_IMPORTED_MODULE_13_react_dom__["unmountComponentAtNode"](this.dropdownContainer);
                 document.body.removeChild(this.dropdownContainer);
                 this.dropdownContainer = null;
             }
@@ -42502,7 +42502,7 @@ var SelectTrigger = function (_Component) {
 
         _this.dropdownMenuRef = null;
         _this.setDropdownWidth = function () {
-            var dom = __WEBPACK_IMPORTED_MODULE_10_react_dom___default.a.findDOMNode(_this);
+            var dom = __WEBPACK_IMPORTED_MODULE_10_react_dom__["findDOMNode"](_this);
             var width = dom.offsetWidth;
             if (width !== _this.state.dropdownWidth) {
                 _this.setState({ dropdownWidth: width });
@@ -42608,25 +42608,25 @@ SelectTrigger.defaultProps = {
     }
 };
 SelectTrigger.propTypes = {
-    onPopupFocus: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.func,
-    onPopupScroll: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.func,
-    dropdownMatchSelectWidth: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.bool,
-    dropdownAlign: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.object,
-    visible: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.bool,
-    disabled: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.bool,
-    showSearch: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.bool,
-    dropdownClassName: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.string,
-    multiple: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.bool,
-    inputValue: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.string,
-    filterOption: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.any,
-    options: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.any,
-    prefixCls: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.string,
-    popupClassName: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.string,
-    children: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.any,
-    showAction: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.arrayOf(__WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.string),
-    menuItemSelectedIcon: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.oneOfType([__WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.func, __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.node]),
-    dropdownRender: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.func,
-    ariaId: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.string
+    onPopupFocus: __WEBPACK_IMPORTED_MODULE_7_prop_types__["func"],
+    onPopupScroll: __WEBPACK_IMPORTED_MODULE_7_prop_types__["func"],
+    dropdownMatchSelectWidth: __WEBPACK_IMPORTED_MODULE_7_prop_types__["bool"],
+    dropdownAlign: __WEBPACK_IMPORTED_MODULE_7_prop_types__["object"],
+    visible: __WEBPACK_IMPORTED_MODULE_7_prop_types__["bool"],
+    disabled: __WEBPACK_IMPORTED_MODULE_7_prop_types__["bool"],
+    showSearch: __WEBPACK_IMPORTED_MODULE_7_prop_types__["bool"],
+    dropdownClassName: __WEBPACK_IMPORTED_MODULE_7_prop_types__["string"],
+    multiple: __WEBPACK_IMPORTED_MODULE_7_prop_types__["bool"],
+    inputValue: __WEBPACK_IMPORTED_MODULE_7_prop_types__["string"],
+    filterOption: __WEBPACK_IMPORTED_MODULE_7_prop_types__["any"],
+    options: __WEBPACK_IMPORTED_MODULE_7_prop_types__["any"],
+    prefixCls: __WEBPACK_IMPORTED_MODULE_7_prop_types__["string"],
+    popupClassName: __WEBPACK_IMPORTED_MODULE_7_prop_types__["string"],
+    children: __WEBPACK_IMPORTED_MODULE_7_prop_types__["any"],
+    showAction: __WEBPACK_IMPORTED_MODULE_7_prop_types__["arrayOf"](__WEBPACK_IMPORTED_MODULE_7_prop_types__["string"]),
+    menuItemSelectedIcon: __WEBPACK_IMPORTED_MODULE_7_prop_types__["oneOfType"]([__WEBPACK_IMPORTED_MODULE_7_prop_types__["func"], __WEBPACK_IMPORTED_MODULE_7_prop_types__["node"]]),
+    dropdownRender: __WEBPACK_IMPORTED_MODULE_7_prop_types__["func"],
+    ariaId: __WEBPACK_IMPORTED_MODULE_7_prop_types__["string"]
 };
 SelectTrigger.displayName = 'SelectTrigger';
 
@@ -44050,21 +44050,21 @@ var DropdownMenu = function (_Component) {
 
 DropdownMenu.displayName = 'DropdownMenu';
 DropdownMenu.propTypes = {
-    ariaId: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.string,
-    defaultActiveFirstOption: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.bool,
-    value: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.any,
-    dropdownMenuStyle: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.object,
-    multiple: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.bool,
-    onPopupFocus: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.func,
-    onPopupScroll: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.func,
-    onMenuDeSelect: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.func,
-    onMenuSelect: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.func,
-    prefixCls: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.string,
-    menuItems: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.any,
-    inputValue: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.string,
-    visible: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.bool,
-    firstActiveValue: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.string,
-    menuItemSelectedIcon: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.oneOfType([__WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.func, __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.node])
+    ariaId: __WEBPACK_IMPORTED_MODULE_6_prop_types__["string"],
+    defaultActiveFirstOption: __WEBPACK_IMPORTED_MODULE_6_prop_types__["bool"],
+    value: __WEBPACK_IMPORTED_MODULE_6_prop_types__["any"],
+    dropdownMenuStyle: __WEBPACK_IMPORTED_MODULE_6_prop_types__["object"],
+    multiple: __WEBPACK_IMPORTED_MODULE_6_prop_types__["bool"],
+    onPopupFocus: __WEBPACK_IMPORTED_MODULE_6_prop_types__["func"],
+    onPopupScroll: __WEBPACK_IMPORTED_MODULE_6_prop_types__["func"],
+    onMenuDeSelect: __WEBPACK_IMPORTED_MODULE_6_prop_types__["func"],
+    onMenuSelect: __WEBPACK_IMPORTED_MODULE_6_prop_types__["func"],
+    prefixCls: __WEBPACK_IMPORTED_MODULE_6_prop_types__["string"],
+    menuItems: __WEBPACK_IMPORTED_MODULE_6_prop_types__["any"],
+    inputValue: __WEBPACK_IMPORTED_MODULE_6_prop_types__["string"],
+    visible: __WEBPACK_IMPORTED_MODULE_6_prop_types__["bool"],
+    firstActiveValue: __WEBPACK_IMPORTED_MODULE_6_prop_types__["string"],
+    menuItemSelectedIcon: __WEBPACK_IMPORTED_MODULE_6_prop_types__["oneOfType"]([__WEBPACK_IMPORTED_MODULE_6_prop_types__["func"], __WEBPACK_IMPORTED_MODULE_6_prop_types__["node"]])
 };
 
 /***/ }),
