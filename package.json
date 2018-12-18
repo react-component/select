@@ -28,7 +28,6 @@
     "port": 8003
   },
   "scripts": {
-    "watch-tsc": "rc-tools run watch-tsc",
     "build": "rc-tools run build",
     "compile": "rc-tools run compile --babel-runtime",
     "gh-pages": "rc-tools run gh-pages",
