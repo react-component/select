@@ -1,5 +1,5 @@
 import { render } from 'enzyme';
-import React from 'react';
+import * as React from 'react';
 import Select from '../../src/Select';
 
 export default function allowClearTest(mode) {

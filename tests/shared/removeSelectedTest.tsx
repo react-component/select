@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
-import React from 'react';
+import * as React from 'react';
 import Option from '../../src/Option';
 import Select from '../../src/Select';
 

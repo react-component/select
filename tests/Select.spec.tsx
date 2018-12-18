@@ -1,6 +1,6 @@
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
-import React from 'react';
+import * as React from 'react';
 import Select, { OptGroup, Option } from '../src';
 import blurTest from './shared/blurTest';
 import focusTest from './shared/focusTest';

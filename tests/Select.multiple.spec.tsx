@@ -1,5 +1,5 @@
 import { mount } from 'enzyme';
-import React from 'react';
+import * as React from 'react';
 import Select, { OptGroup, Option } from '../src';
 import allowClearTest from './shared/allowClearTest';
 import blurTest from './shared/blurTest';

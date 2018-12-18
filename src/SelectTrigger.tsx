@@ -1,8 +1,14 @@
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import Trigger from 'rc-trigger';
-import React, { Component, CSSProperties, MouseEventHandler, UIEventHandler } from 'react';
-import ReactDOM from 'react-dom';
+import {
+  Component,
+  CSSProperties,
+  default as React,
+  MouseEventHandler,
+  UIEventHandler,
+} from 'react';
+import * as ReactDOM from 'react-dom';
 import DropdownMenu, { IDropdownMenuProps } from './DropdownMenu';
 import { renderSelect, valueType } from './PropTypes';
 import { isSingleMode, saveRef } from './util';

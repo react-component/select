@@ -1,6 +1,6 @@
 import { mount, render } from 'enzyme';
 import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
-import React from 'react';
+import * as React from 'react';
 import DropdownMenu from '../src/DropdownMenu';
 
 describe('DropdownMenu', () => {

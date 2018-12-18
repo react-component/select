@@ -1,12 +1,13 @@
 import scrollIntoView from 'dom-scroll-into-view';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import raf from 'raf';
 import Menu from 'rc-menu';
 import toArray from 'rc-util/lib/Children/toArray';
-import React, {
+import {
   cloneElement,
   Component,
   CSSProperties,
+  default as React,
   FocusEventHandler,
   ReactNode,
   UIEventHandler,
