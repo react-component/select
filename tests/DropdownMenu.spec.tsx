@@ -1,7 +1,6 @@
-/* eslint-disable no-undef */
-import React from 'react';
 import { mount, render } from 'enzyme';
 import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
+import React from 'react';
 import DropdownMenu from '../src/DropdownMenu';
 
 describe('DropdownMenu', () => {
@@ -23,7 +22,7 @@ describe('DropdownMenu', () => {
   it('save first active item', () => {
     const menuItems = [<MenuItem key="1">1</MenuItem>, <MenuItem key="2">2</MenuItem>];
 
-    const wrapper = mount(<DropdownMenu menuItems={menuItems} value={['1']} />);
+    const wrapper = mount<DropdownMenu>(<DropdownMenu menuItems={menuItems} value={['1']} />);
 
     expect(wrapper.instance().firstActiveItem.props.children).toBe('1');
   });
@@ -31,19 +30,21 @@ describe('DropdownMenu', () => {
   it('set active key to menu', () => {
     const menuItems = [<MenuItem key="1">1</MenuItem>, <MenuItem key="2">2</MenuItem>];
 
-    const wrapper = mount(<DropdownMenu menuItems={menuItems} value={['1']} />);
+    const wrapper = mount<DropdownMenu>(<DropdownMenu menuItems={menuItems} value={['1']} />);
 
     wrapper.setProps({ visible: true });
-    expect(wrapper.find('Menu').props().activeKey).toBe('1');
+    expect((wrapper.find('Menu').props() as any).activeKey).toBe('1');
 
     wrapper.setProps({ inputValue: 'foo' });
-    expect(wrapper.find('Menu').props().activeKey).toBe('');
+    expect((wrapper.find('Menu').props() as any).activeKey).toBe('');
   });
 
   it('save firstActiveValue', () => {
     const menuItems = [<MenuItem key="1">1</MenuItem>, <MenuItem key="2">2</MenuItem>];
 
-    const wrapper = mount(<DropdownMenu menuItems={menuItems} firstActiveValue="2" />);
+    const wrapper = mount<DropdownMenu>(
+      <DropdownMenu menuItems={menuItems} firstActiveValue="2" />,
+    );
 
     expect(wrapper.instance().firstActiveItem.props.children).toBe('2');
   });
@@ -54,16 +55,16 @@ describe('DropdownMenu', () => {
     const wrapper = mount(<DropdownMenu menuItems={menuItems} firstActiveValue="2" />);
 
     wrapper.setProps({ visible: true });
-    expect(wrapper.find('Menu').props().activeKey).toBe('2');
+    expect(((wrapper.find('Menu').props() as any) as any).activeKey).toBe('2');
 
     wrapper.setProps({ inputValue: 'foo' });
-    expect(wrapper.find('Menu').props().activeKey).toBe('');
+    expect((wrapper.find('Menu').props() as any).activeKey).toBe('');
   });
 
   it('save value not firstActiveValue', () => {
     const menuItems = [<MenuItem key="1">1</MenuItem>, <MenuItem key="2">2</MenuItem>];
 
-    const wrapper = mount(
+    const wrapper = mount<DropdownMenu>(
       <DropdownMenu value={['1']} menuItems={menuItems} firstActiveValue="2" />,
     );
 
@@ -71,7 +72,7 @@ describe('DropdownMenu', () => {
   });
 
   it('save visible and inputValue when update', () => {
-    const wrapper = mount(<DropdownMenu />);
+    const wrapper = mount<DropdownMenu>(<DropdownMenu />);
 
     wrapper.setProps({ visible: true, inputValue: 'foo' });
 
@@ -80,14 +81,14 @@ describe('DropdownMenu', () => {
   });
 
   it('not update when next visible is false', () => {
-    const wrapper = mount(<DropdownMenu />);
+    const wrapper = mount<DropdownMenu>(<DropdownMenu />);
 
     expect(wrapper.instance().shouldComponentUpdate({ visible: true })).toBe(true);
     expect(wrapper.instance().shouldComponentUpdate({ visible: false })).toBe(false);
   });
 
   it('should updated when input value change', () => {
-    const wrapper = mount(<DropdownMenu visible={false} inputValue="test" />);
+    const wrapper = mount<DropdownMenu>(<DropdownMenu visible={false} inputValue="test" />);
 
     expect(wrapper.instance().shouldComponentUpdate({ inputValue: 'test2' })).toBe(true);
   });

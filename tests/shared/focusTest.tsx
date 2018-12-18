@@ -1,8 +1,9 @@
-/* eslint-disable no-undef */
-import React from 'react';
 import { mount } from 'enzyme';
-import Select from '../../src/Select';
+import React from 'react';
 import Option from '../../src/Option';
+import Select from '../../src/Select';
+
+declare const global: any;
 
 export default function focusTest(mode, props) {
   let container;
@@ -21,11 +22,12 @@ export default function focusTest(mode, props) {
     const handleFocus = jest.fn();
 
     class App extends React.Component {
-      componentDidMount() {
+      public select: any;
+      public componentDidMount() {
         this.select.focus();
       }
 
-      render() {
+      public render() {
         return (
           <Select
             ref={node => {
@@ -53,7 +55,7 @@ export default function focusTest(mode, props) {
     const handleFocus = jest.fn();
 
     mount(
-      <Select {...{ [mode]: true }} {...props} autoFocus onFocus={handleFocus}>
+      <Select {...{ [mode]: true }} {...props} autoFocus={true} onFocus={handleFocus}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,

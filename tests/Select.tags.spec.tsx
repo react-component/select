@@ -1,33 +1,32 @@
-/* eslint-disable no-undef */
-import React from 'react';
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
-import Select, { Option, OptGroup } from '../src';
+import React from 'react';
+import Select, { OptGroup, Option } from '../src';
 import allowClearTest from './shared/allowClearTest';
-import focusTest from './shared/focusTest';
 import blurTest from './shared/blurTest';
-import hoverTest from './shared/hoverTest';
-import renderTest from './shared/renderTest';
-import removeSelectedTest from './shared/removeSelectedTest';
-import throwOptionValue from './shared/throwOptionValue';
 import dynamicChildrenTest from './shared/dynamicChildrenTest';
+import focusTest from './shared/focusTest';
+import hoverTest from './shared/hoverTest';
 import inputFilterTest from './shared/inputFilterTest';
 import openControlledTest from './shared/openControlledTest';
+import removeSelectedTest from './shared/removeSelectedTest';
+import renderTest from './shared/renderTest';
+import throwOptionValue from './shared/throwOptionValue';
 
 describe('Select.tags', () => {
   allowClearTest('tags');
-  focusTest('tags');
+  focusTest('tags', {});
   blurTest('tags');
   hoverTest('tags');
   renderTest('tags');
   removeSelectedTest('tags');
   throwOptionValue('tags');
-  dynamicChildrenTest('tags');
+  dynamicChildrenTest('tags', {});
   inputFilterTest('tags');
   openControlledTest('tags');
 
   it('allow user input tags', () => {
-    const wrapper = mount(<Select tags />);
+    const wrapper = mount<Select>(<Select tags={true} />);
 
     wrapper
       .find('input')
@@ -44,7 +43,7 @@ describe('Select.tags', () => {
   });
 
   it('should call onChange on blur', () => {
-    const wrapper = mount(<Select tags />);
+    const wrapper = mount<Select>(<Select tags={true} />);
 
     jest.useFakeTimers();
     wrapper
@@ -66,14 +65,14 @@ describe('Select.tags', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
     const option2 = <Option value="2">2</Option>;
-    const wrapper = mount(
-      <Select tags tokenSeparators={[',']} onChange={handleChange} onSelect={handleSelect}>
+    const wrapper = mount<Select>(
+      <Select tags={true} tokenSeparators={[',']} onChange={handleChange} onSelect={handleSelect}>
         <Option value="1">1</Option>
         {option2}
       </Select>,
     );
-
-    const input = wrapper.find('input');
+    // @HACK
+    const input = wrapper.find('input') as any;
     input.instance().focus = jest.fn();
 
     input.simulate('change', { target: { value: '2,3,4' } });
@@ -112,7 +111,7 @@ describe('Select.tags', () => {
 
   it('renders unlisted item in value', () => {
     const wrapper = render(
-      <Select tags value="3" open>
+      <Select tags={true} value="3" open={true}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -123,7 +122,7 @@ describe('Select.tags', () => {
 
   it('renders search value when not found', () => {
     const wrapper = render(
-      <Select tags value="22" inputValue="2" open>
+      <Select tags={true} value="22" inputValue="2" open={true}>
         <Option value="1">1</Option>
       </Select>,
     );
@@ -136,7 +135,7 @@ describe('Select.tags', () => {
       option.props.value.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1;
 
     const wrapper = render(
-      <Select tags inputValue="red" filterOption={filterOption} open>
+      <Select tags={true} inputValue="red" filterOption={filterOption} open={true}>
         <Option value="Red">Red</Option>
       </Select>,
     );
@@ -145,13 +144,14 @@ describe('Select.tags', () => {
   });
 
   it('filterOption is false', () => {
-    const wrapper = mount(
-      <Select tags filterOption={false}>
+    const wrapper = mount<Select>(
+      <Select tags={true} filterOption={false}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
-    const input = wrapper.find('input');
+    // @HACK
+    const input = wrapper.find('input') as any;
     input.instance().focus = jest.fn();
     input
       .simulate('change', { target: { value: 'a' } })
@@ -164,7 +164,7 @@ describe('Select.tags', () => {
   describe('OptGroup', () => {
     const createSelect = props => (
       <div>
-        <Select tags {...props}>
+        <Select tags={true} {...props}>
           <OptGroup key="Manager" label="Manager">
             <Option key="jack" value="jack">
               Jack
@@ -180,13 +180,13 @@ describe('Select.tags', () => {
     );
 
     it('renders correctly', () => {
-      const wrapper = mount(createSelect({ value: ['jack', 'foo'] }));
+      const wrapper = mount<Select>(createSelect({ value: ['jack', 'foo'] }));
       wrapper.find('.rc-select').simulate('click');
       expect(wrapper.render()).toMatchSnapshot();
     });
 
     it('renders inputValue correctly', () => {
-      const wrapper = mount(createSelect());
+      const wrapper = mount<Select>(createSelect({}));
       wrapper.find('.rc-select').simulate('click');
 
       wrapper.find('input').simulate('change', { target: { value: 'foo' } });

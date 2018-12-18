@@ -1,6 +1,5 @@
-/* eslint-disable no-undef */
+import { mount, render } from 'enzyme';
 import React from 'react';
-import { render, mount } from 'enzyme';
 import SelectTrigger from '../src/SelectTrigger';
 
 describe('SelectTrigger', () => {
@@ -20,7 +19,9 @@ describe('SelectTrigger', () => {
         <div>foo</div>
       </SelectTrigger>,
     );
-
-    expect(wrapper.find('Trigger').props().popupTransitionName).toBe('rc-select-dropdown-slide-up');
+    // HACK
+    expect((wrapper.find('Trigger').props() as any).popupTransitionName).toBe(
+      'rc-select-dropdown-slide-up',
+    );
   });
 });

@@ -38,38 +38,31 @@
     "prettier": "rc-tools run prettier",
     "test": "jest",
     "prepublish": "rc-tools run guard",
+    "init-tslint": "rc-tools run init-tslint",
     "coverage": "jest --coverage"
   },
-  "jest": {
-    "setupFiles": [
-      "./tests/setup.js"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*"
-    ],
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
-    "transform": {
-      "\\.jsx?$": "./node_modules/rc-tools/scripts/jestPreprocessor.js"
-    },
-    "globals": {
-      "__JEST__DEV__": true
-    }
-  },
   "devDependencies": {
-    "enzyme": "^3.1.0",
-    "enzyme-adapter-react-16": "^1.0.2",
+    "@types/classnames": "^2.2.6",
+    "@types/enzyme": "^3.1.15",
+    "@types/jest": "^23.3.10",
+    "@types/react": "^16.7.17",
+    "@types/react-dom": "^16.0.11",
+    "@types/warning": "^3.0.0",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.7.1",
     "enzyme-to-json": "^3.1.4",
-    "jest": "^21.2.1",
+    "jest": "^23.6.0",
     "jsonp": "^0.2.0",
     "pre-commit": "1.x",
     "querystring": "^0.2.0",
-    "rc-dialog": "6.x",
-    "rc-tools": "8.x",
+    "rc-dialog": "7.3.0",
+    "rc-test": "^6.0.1",
+    "rc-tools": "8.4.2",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "react-test-renderer": "^16.0.0"
+    "react-test-renderer": "^16.0.0",
+    "ts-jest": "^23.10.5",
+    "typescript": "^3.2.2"
   },
   "dependencies": {
     "babel-runtime": "^6.23.0",

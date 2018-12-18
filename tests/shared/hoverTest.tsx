@@ -1,8 +1,7 @@
-/* eslint-disable no-undef */
-import React from 'react';
 import { mount } from 'enzyme';
-import Select from '../../src/Select';
+import React from 'react';
 import Option from '../../src/Option';
+import Select from '../../src/Select';
 
 export default function hoverTest(mode) {
   it('triggers mouseEnter and mouseLeave', () => {

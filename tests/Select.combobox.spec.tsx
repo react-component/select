@@ -1,24 +1,23 @@
-/* eslint-disable no-undef, react/no-multi-comp */
-import React from 'react';
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
+import React from 'react';
 import Select, { Option } from '../src';
 import allowClearTest from './shared/allowClearTest';
-import throwOptionValue from './shared/throwOptionValue';
 import focusTest from './shared/focusTest';
 import keyDownTest from './shared/keyDownTest';
 import openControlledTest from './shared/openControlledTest';
+import throwOptionValue from './shared/throwOptionValue';
 
 describe('Select.combobox', () => {
   allowClearTest('combobox');
   throwOptionValue('combobox');
-  focusTest('combobox');
+  focusTest('combobox', {});
   keyDownTest('combobox');
   openControlledTest('combobox');
 
   it('renders correctly', () => {
     const wrapper = render(
-      <Select combobox placeholder="Search">
+      <Select combobox={true} placeholder="Search">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -28,8 +27,8 @@ describe('Select.combobox', () => {
   });
 
   it('set inputValue based on value', () => {
-    const wrapper = mount(
-      <Select combobox value="1">
+    const wrapper = mount<Select>(
+      <Select combobox={true} value="1">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -39,8 +38,8 @@ describe('Select.combobox', () => {
   });
 
   it('placeholder', () => {
-    const wrapper = mount(
-      <Select combobox placeholder="placeholder">
+    const wrapper = mount<Select>(
+      <Select combobox={true} placeholder="placeholder">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -65,7 +64,7 @@ describe('Select.combobox', () => {
   it('fire change event immediately when user inputing', () => {
     const handleChange = jest.fn();
     const wrapper = mount(
-      <Select combobox onChange={handleChange}>
+      <Select combobox={true} onChange={handleChange}>
         <Option value="11">11</Option>
         <Option value="22">22</Option>
       </Select>,
@@ -82,8 +81,8 @@ describe('Select.combobox', () => {
   });
 
   it('set inputValue when user select a option', () => {
-    const wrapper = mount(
-      <Select combobox>
+    const wrapper = mount<Select>(
+      <Select combobox={true}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -100,7 +99,7 @@ describe('Select.combobox', () => {
   describe('input value', () => {
     const createSelect = props =>
       mount(
-        <Select combobox optionLabelProp="children" {...props}>
+        <Select combobox={true} optionLabelProp="children" {...props}>
           <Option value="1">One</Option>
           <Option value="2">Two</Option>
         </Select>,
@@ -154,22 +153,27 @@ describe('Select.combobox', () => {
       it('should popup when input with async data', () => {
         jest.useFakeTimers();
         class AsyncCombobox extends React.Component {
-          state = {
+          public state = {
             data: [],
           };
-          handleChange = () => {
+          public handleChange = () => {
             setTimeout(() => {
               this.setState({
                 data: [{ key: '1', label: '1' }, { key: '2', label: '2' }],
               });
             }, 500);
           };
-          render() {
+          public render() {
             const options = this.state.data.map(item => (
               <Option key={item.key}>{item.label}</Option>
             ));
             return (
-              <Select combobox onChange={this.handleChange} filterOption={false} notFoundContent="">
+              <Select
+                combobox={true}
+                onChange={this.handleChange}
+                filterOption={false}
+                notFoundContent=""
+              >
                 {options}
               </Select>
             );
@@ -191,23 +195,29 @@ describe('Select.combobox', () => {
       // https://github.com/ant-design/ant-design/issues/6600
       it('should not repop menu after select', () => {
         jest.useFakeTimers();
+        // tslint:disable-next-line:max-classes-per-file
         class AsyncCombobox extends React.Component {
-          state = {
+          public state = {
             data: [{ key: '1', label: '1' }, { key: '2', label: '2' }],
           };
-          onSelect = () => {
+          public onSelect = () => {
             setTimeout(() => {
               this.setState({
                 data: [{ key: '3', label: '3' }, { key: '4', label: '4' }],
               });
             }, 500);
           };
-          render() {
+          public render() {
             const options = this.state.data.map(item => (
               <Option key={item.key}>{item.label}</Option>
             ));
             return (
-              <Select combobox onSelect={this.onSelect} filterOption={false} notFoundContent="">
+              <Select
+                combobox={true}
+                onSelect={this.onSelect}
+                filterOption={false}
+                notFoundContent=""
+              >
                 {options}
               </Select>
             );
@@ -240,8 +250,14 @@ describe('Select.combobox', () => {
   it('backfill', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
-    const wrapper = mount(
-      <Select combobox backfill open onChange={handleChange} onSelect={handleSelect}>
+    const wrapper = mount<Select>(
+      <Select
+        combobox={true}
+        backfill={true}
+        open={true}
+        onChange={handleChange}
+        onSelect={handleSelect}
+      >
         <Option value="One">One</Option>
         <Option value="Two">Two</Option>
       </Select>,
@@ -272,7 +288,7 @@ describe('Select.combobox', () => {
 
   it("should hide clear icon when value is ''", () => {
     const wrapper = mount(
-      <Select combobox value="" allowClear>
+      <Select combobox={true} value="" allowClear={true}>
         <Option value="One">One</Option>
         <Option value="Two">Two</Option>
       </Select>,
@@ -283,7 +299,7 @@ describe('Select.combobox', () => {
 
   it("should show clear icon when inputValue is not ''", () => {
     const wrapper = mount(
-      <Select combobox value="One" allowClear>
+      <Select combobox={true} value="One" allowClear={true}>
         <Option value="One">One</Option>
         <Option value="Two">Two</Option>
       </Select>,
@@ -294,7 +310,7 @@ describe('Select.combobox', () => {
 
   it("should hide clear icon when inputValue is ''", () => {
     const wrapper = mount(
-      <Select combobox allowClear>
+      <Select combobox={true} allowClear={true}>
         <Option value="One">One</Option>
         <Option value="Two">Two</Option>
       </Select>,
@@ -307,21 +323,22 @@ describe('Select.combobox', () => {
   });
 
   it('autocomplete - option update when input change', () => {
+    // tslint:disable-next-line:max-classes-per-file
     class App extends React.Component {
-      state = {
+      public state = {
         options: [],
       };
 
-      updateOptions = value => {
+      public updateOptions = value => {
         const options = [value, value + value, value + value + value];
         this.setState({
           options,
         });
       };
 
-      render() {
+      public render() {
         return (
-          <Select combobox optionLabelProp="children" onChange={this.updateOptions}>
+          <Select combobox={true} optionLabelProp="children" onChange={this.updateOptions}>
             {this.state.options.map(opt => {
               return <Option key={opt}>{opt}</Option>;
             })}

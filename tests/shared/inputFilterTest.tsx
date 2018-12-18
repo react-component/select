@@ -1,12 +1,11 @@
-/* eslint-disable no-undef */
-import React from 'react';
 import { mount } from 'enzyme';
-import Select from '../../src/Select';
+import React from 'react';
 import Option from '../../src/Option';
+import Select from '../../src/Select';
 
 export default function inputFilterTest(mode) {
   it('should keep input filter after select when autoClearSearchValue is false', () => {
-    const wrapper = mount(
+    const wrapper = mount<Select>(
       <Select {...{ [mode]: true }} autoClearSearchValue={false}>
         <Option value="11">11</Option>
         <Option value="12">12</Option>
@@ -30,7 +29,7 @@ export default function inputFilterTest(mode) {
   });
 
   it('should clear input filter after select', () => {
-    const wrapper = mount(
+    const wrapper = mount<Select>(
       <Select {...{ [mode]: true }}>
         <Option value="11">11</Option>
         <Option value="12">12</Option>

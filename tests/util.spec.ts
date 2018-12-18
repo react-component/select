@@ -1,9 +1,8 @@
-/* eslint-disable no-undef */
 import {
+  defaultFilterFn,
+  getValuePropValue,
   includesSeparators,
   splitBySeparators,
-  getValuePropValue,
-  defaultFilterFn,
 } from '../src/util';
 
 describe('includesSeparators', () => {
@@ -24,48 +23,48 @@ describe('includesSeparators', () => {
 describe('splitBySeparators', () => {
   const separators = [' ', ','];
   it('split given string by separators', () => {
-    const string = 'foo bar,baz';
-    expect(splitBySeparators(string, separators)).toEqual(['foo', 'bar', 'baz']);
+    const str = 'foo bar,baz';
+    expect(splitBySeparators(str, separators)).toEqual(['foo', 'bar', 'baz']);
   });
 
   it('split string with leading separator ', () => {
-    const string = ',foo';
-    expect(splitBySeparators(string, separators)).toEqual(['foo']);
+    const str = ',foo';
+    expect(splitBySeparators(str, separators)).toEqual(['foo']);
   });
 
   it('split string with trailling separator', () => {
-    const string = 'foo,';
-    expect(splitBySeparators(string, separators)).toEqual(['foo']);
+    const str = 'foo,';
+    expect(splitBySeparators(str, separators)).toEqual(['foo']);
   });
 
   it('split a separator', () => {
-    const string = ',';
-    expect(splitBySeparators(string, separators)).toEqual([]);
+    const str = ',';
+    expect(splitBySeparators(str, separators)).toEqual([]);
   });
 
   it('split two separators', () => {
-    const string = ',,';
-    expect(splitBySeparators(string, separators)).toEqual([]);
+    const str = ',,';
+    expect(splitBySeparators(str, separators)).toEqual([]);
   });
 
   it('split two separators surrounded by valid input', () => {
-    const string = 'a,,b';
-    expect(splitBySeparators(string, separators)).toEqual(['a', 'b']);
+    const str = 'a,,b';
+    expect(splitBySeparators(str, separators)).toEqual(['a', 'b']);
   });
 
   it('split repeating separators with valid input throughout', () => {
-    const string = ',,,a,b,,,c,d,,,e,';
-    expect(splitBySeparators(string, separators)).toEqual(['a', 'b', 'c', 'd', 'e']);
+    const str = ',,,a,b,,,c,d,,,e,';
+    expect(splitBySeparators(str, separators)).toEqual(['a', 'b', 'c', 'd', 'e']);
   });
 
   it('split multiple repeating separators with valid input throughout', () => {
-    const string = ',,,a b,  c,d, ,e    ,f';
-    expect(splitBySeparators(string, separators)).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
+    const str = ',,,a b,  c,d, ,e    ,f';
+    expect(splitBySeparators(str, separators)).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
   });
 });
 
 describe('getValuePropValue', () => {
-  const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
 
   afterEach(() => {
     errorSpy.mockReset();

@@ -1,8 +1,7 @@
-/* eslint-disable no-undef */
+import { render, shallow } from 'enzyme';
 import React from 'react';
-import { shallow, render } from 'enzyme';
-import Select from '../../src/Select';
 import Option from '../../src/Option';
+import Select from '../../src/Select';
 
 export default function maxTagTextLengthTest(mode) {
   describe('render', () => {

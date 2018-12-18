@@ -1,7 +1,6 @@
-/* eslint-disable no-undef, react/no-multi-comp */
-import React from 'react';
 import { mount } from 'enzyme';
-import Select, { Option, OptGroup } from '../src';
+import React from 'react';
+import Select, { OptGroup, Option } from '../src';
 
 describe('Select.optionGroup', () => {
   it('group name support search', () => {

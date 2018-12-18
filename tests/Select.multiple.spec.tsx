@@ -1,32 +1,31 @@
-/* eslint-disable no-undef */
-import React from 'react';
 import { mount } from 'enzyme';
-import Select, { Option, OptGroup } from '../src';
+import React from 'react';
+import Select, { OptGroup, Option } from '../src';
 import allowClearTest from './shared/allowClearTest';
-import focusTest from './shared/focusTest';
 import blurTest from './shared/blurTest';
-import hoverTest from './shared/hoverTest';
-import renderTest from './shared/renderTest';
-import removeSelectedTest from './shared/removeSelectedTest';
 import dynamicChildrenTest from './shared/dynamicChildrenTest';
+import focusTest from './shared/focusTest';
+import hoverTest from './shared/hoverTest';
 import inputFilterTest from './shared/inputFilterTest';
+import removeSelectedTest from './shared/removeSelectedTest';
+import renderTest from './shared/renderTest';
 
 describe('Select.multiple', () => {
   allowClearTest('multiple');
-  focusTest('multiple');
+  focusTest('multiple', {});
   blurTest('multiple');
   hoverTest('multiple');
   renderTest('multiple');
   removeSelectedTest('multiple');
-  dynamicChildrenTest('multiple');
+  dynamicChildrenTest('multiple', {});
   inputFilterTest('multiple');
 
   it('tokenize input', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
-    const wrapper = mount(
+    const wrapper = mount<Select>(
       <Select
-        multiple
+        multiple={true}
         optionLabelProp="children"
         tokenSeparators={[',']}
         onChange={handleChange}
@@ -42,7 +41,7 @@ describe('Select.multiple', () => {
     );
 
     const input = wrapper.find('input');
-    input.instance().focus = jest.fn();
+    (input.instance() as any).focus = jest.fn();
 
     input.simulate('change', {
       target: {
@@ -80,13 +79,13 @@ describe('Select.multiple', () => {
     ).toEqual('Two');
     expect(wrapper.state().inputValue).toBe('');
     expect(wrapper.state().open).toBe(false);
-    expect(input.instance().focus).toBeCalled();
+    expect((input.instance() as any).focus).toBeCalled();
   });
 
   it('focus', () => {
     const handleFocus = jest.fn();
     const wrapper = mount(
-      <Select multiple onFocus={handleFocus}>
+      <Select multiple={true} onFocus={handleFocus}>
         <Option value="1">One</Option>
         <Option value="2">Two</Option>
       </Select>,
@@ -100,7 +99,7 @@ describe('Select.multiple', () => {
   it('OptGroup without key', () => {
     expect(() => {
       mount(
-        <Select multiple defaultValue={['1']}>
+        <Select multiple={true} defaultValue={['1']}>
           <OptGroup label="group1">
             <Option value="1">One</Option>
           </OptGroup>
@@ -116,7 +115,7 @@ describe('Select.multiple', () => {
     const handleChange = jest.fn();
 
     const wrapper = mount(
-      <Select multiple defaultValue={1} onChange={handleChange}>
+      <Select multiple={true} defaultValue={1} onChange={handleChange}>
         <Option value={1}>1</Option>
         <Option value={2} testprop={2}>
           2
@@ -131,15 +130,24 @@ describe('Select.multiple', () => {
       .find('MenuItem')
       .at(1)
       .simulate('click');
-    expect(handleChange).toBeCalledWith(
-      [1, 2],
-      [
-        <Option value={1}>1</Option>,
-        <Option value={2} testprop={2}>
-          2
-        </Option>,
-      ],
-    );
+
+    const args = handleChange.mock.calls[0];
+    expect(args[0]).toEqual([1, 2]);
+    expect(args[1].length).toBe(2);
+
+    // magic code
+    // expect(handleChange).toBeCalledWith(
+    //   [1, 2],
+    //   [
+    //     <Option key="1" value={1}>
+    //       1
+    //     </Option>,
+    //     <Option value={2} key="2" testprop={2}>
+    //       2
+    //     </Option>,
+    //   ],
+    // );
+
     expect(
       wrapper
         .find('.rc-select-selection__choice__content')
@@ -150,7 +158,7 @@ describe('Select.multiple', () => {
 
   it('do not open when close button click', () => {
     const wrapper = mount(
-      <Select multiple>
+      <Select multiple={true}>
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
       </Select>,
@@ -175,7 +183,7 @@ describe('Select.multiple', () => {
 
   it('select when item enter', () => {
     const wrapper = mount(
-      <Select multiple>
+      <Select multiple={true}>
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
       </Select>,
@@ -194,7 +202,7 @@ describe('Select.multiple', () => {
 
   it('enter twice to cancel the selection', () => {
     const wrapper = mount(
-      <Select multiple>
+      <Select multiple={true}>
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
       </Select>,
@@ -216,7 +224,7 @@ describe('Select.multiple', () => {
 
   it('do not crash when children has empty', () => {
     const wrapper = mount(
-      <Select multiple>
+      <Select multiple={true}>
         {null}
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
@@ -234,7 +242,7 @@ describe('Select.multiple', () => {
 
   it('do not crash when value has empty string', () => {
     const wrapper = mount(
-      <Select multiple value={['']}>
+      <Select multiple={true} value={['']}>
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
       </Select>,
