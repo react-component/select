@@ -1,14 +1,14 @@
-webpackJsonp([10],{
+webpackJsonp([8],{
 
-/***/ 234:
+/***/ 227:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(235);
+module.exports = __webpack_require__(228);
 
 
 /***/ }),
 
-/***/ 235:
+/***/ 228:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -91,5 +91,5 @@ __WEBPACK_IMPORTED_MODULE_3_react_dom___default.a.render(c1, document.getElement
 
 /***/ })
 
-},[234]);
+},[227]);
 //# sourceMappingURL=single-animation.js.map
