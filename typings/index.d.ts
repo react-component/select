@@ -15,4 +15,5 @@ declare module 'react-lifecycles-compat';
 declare module 'dom-scroll-into-view';
 
 declare module 'raf';
+
 declare module 'rc-trigger';
