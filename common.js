@@ -31846,8 +31846,8 @@ function chaining() {
     };
 }
 
-var Select = function (_Component) {
-    __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits___default()(Select, _Component);
+var Select = function (_React$Component) {
+    __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits___default()(Select, _React$Component);
 
     function Select(props) {
         __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_classCallCheck___default()(this, Select);
@@ -32140,7 +32140,7 @@ var Select = function (_Component) {
                 }
             }
             var defaultInfo = {
-                option: __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_16__Option__["a" /* default */], { value: value, key: value }, value),
+                option: __WEBPACK_IMPORTED_MODULE_12_react__["createElement"](__WEBPACK_IMPORTED_MODULE_16__Option__["a" /* default */], { value: value, key: value }, value),
                 value: value,
                 label: defaultLabel
             };
@@ -32228,26 +32228,26 @@ var Select = function (_Component) {
             }
             var placeholder = props.placeholder;
             if (placeholder) {
-                return __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement("div", __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({ onMouseDown: __WEBPACK_IMPORTED_MODULE_19__util__["q" /* preventDefaultEvent */], style: __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({ display: hidden ? 'none' : 'block' }, __WEBPACK_IMPORTED_MODULE_19__util__["b" /* UNSELECTABLE_STYLE */]) }, __WEBPACK_IMPORTED_MODULE_19__util__["a" /* UNSELECTABLE_ATTRIBUTE */], { onClick: _this.onPlaceholderClick, className: props.prefixCls + '-selection__placeholder' }), placeholder);
+                return __WEBPACK_IMPORTED_MODULE_12_react__["createElement"]("div", __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({ onMouseDown: __WEBPACK_IMPORTED_MODULE_19__util__["q" /* preventDefaultEvent */], style: __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({ display: hidden ? 'none' : 'block' }, __WEBPACK_IMPORTED_MODULE_19__util__["b" /* UNSELECTABLE_STYLE */]) }, __WEBPACK_IMPORTED_MODULE_19__util__["a" /* UNSELECTABLE_ATTRIBUTE */], { onClick: _this.onPlaceholderClick, className: props.prefixCls + '-selection__placeholder' }), placeholder);
             }
             return null;
         };
         _this.getInputElement = function () {
             var props = _this.props;
-            var defaultInput = __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement("input", { id: props.id, autoComplete: "off" });
+            var defaultInput = __WEBPACK_IMPORTED_MODULE_12_react__["createElement"]("input", { id: props.id, autoComplete: "off" });
             // tslint:disable-next-line:typedef-whitespace
             var inputElement = props.getInputElement ? props.getInputElement() : defaultInput;
             var inputCls = __WEBPACK_IMPORTED_MODULE_6_classnames___default()(inputElement.props.className, __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()({}, props.prefixCls + '-search__field', true));
             // https://github.com/ant-design/ant-design/issues/4992#issuecomment-281542159
             // Add space to the end of the inputValue as the width measurement tolerance
-            return __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement("div", { className: props.prefixCls + '-search__field__wrap' }, __WEBPACK_IMPORTED_MODULE_12_react___default.a.cloneElement(inputElement, {
+            return __WEBPACK_IMPORTED_MODULE_12_react__["createElement"]("div", { className: props.prefixCls + '-search__field__wrap' }, __WEBPACK_IMPORTED_MODULE_12_react__["cloneElement"](inputElement, {
                 ref: _this.saveInputRef,
                 onChange: _this.onInputChange,
                 onKeyDown: chaining(_this.onInputKeyDown, inputElement.props.onKeyDown, _this.props.onInputKeyDown),
                 value: _this.state.inputValue,
                 disabled: props.disabled,
                 className: inputCls
-            }), __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement("span", { ref: _this.saveInputMirrorRef, className: props.prefixCls + '-search__field__mirror' }, _this.state.inputValue, '\xA0'));
+            }), __WEBPACK_IMPORTED_MODULE_12_react__["createElement"]("span", { ref: _this.saveInputMirrorRef, className: props.prefixCls + '-search__field__mirror' }, _this.state.inputValue, '\xA0'));
         };
         _this.getInputDOMNode = function () {
             return _this.topCtrlRef ? _this.topCtrlRef.querySelector('input,textarea,div[contentEditable]') : _this.inputRef;
@@ -32467,7 +32467,7 @@ var Select = function (_Component) {
         };
         _this.openIfHasChildren = function () {
             var props = _this.props;
-            if (__WEBPACK_IMPORTED_MODULE_12_react___default.a.Children.count(props.children) || Object(__WEBPACK_IMPORTED_MODULE_19__util__["p" /* isSingleMode */])(props)) {
+            if (__WEBPACK_IMPORTED_MODULE_12_react__["Children"].count(props.children) || Object(__WEBPACK_IMPORTED_MODULE_19__util__["p" /* isSingleMode */])(props)) {
                 _this.setOpenState(true);
             }
         };
@@ -32522,7 +32522,7 @@ var Select = function (_Component) {
                 });
                 value.forEach(function (singleValue) {
                     var key = singleValue;
-                    var menuItem = __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_rc_menu__["a" /* Item */], { style: __WEBPACK_IMPORTED_MODULE_19__util__["b" /* UNSELECTABLE_STYLE */], role: "option", attribute: __WEBPACK_IMPORTED_MODULE_19__util__["a" /* UNSELECTABLE_ATTRIBUTE */], value: key, key: key }, key);
+                    var menuItem = __WEBPACK_IMPORTED_MODULE_12_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9_rc_menu__["a" /* Item */], { style: __WEBPACK_IMPORTED_MODULE_19__util__["b" /* UNSELECTABLE_STYLE */], role: "option", attribute: __WEBPACK_IMPORTED_MODULE_19__util__["a" /* UNSELECTABLE_ATTRIBUTE */], value: key, key: key }, key);
                     options.push(menuItem);
                     menuItems.push(menuItem);
                 });
@@ -32541,12 +32541,12 @@ var Select = function (_Component) {
                         return !filterFn();
                     });
                     if (notFindInputItem) {
-                        options.unshift(__WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_rc_menu__["a" /* Item */], { style: __WEBPACK_IMPORTED_MODULE_19__util__["b" /* UNSELECTABLE_STYLE */], role: "option", attribute: __WEBPACK_IMPORTED_MODULE_19__util__["a" /* UNSELECTABLE_ATTRIBUTE */], value: inputValue, key: inputValue }, inputValue));
+                        options.unshift(__WEBPACK_IMPORTED_MODULE_12_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9_rc_menu__["a" /* Item */], { style: __WEBPACK_IMPORTED_MODULE_19__util__["b" /* UNSELECTABLE_STYLE */], role: "option", attribute: __WEBPACK_IMPORTED_MODULE_19__util__["a" /* UNSELECTABLE_ATTRIBUTE */], value: inputValue, key: inputValue }, inputValue));
                     }
                 }
             }
             if (!options.length && notFoundContent) {
-                options = [__WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_rc_menu__["a" /* Item */], { style: __WEBPACK_IMPORTED_MODULE_19__util__["b" /* UNSELECTABLE_STYLE */], attribute: __WEBPACK_IMPORTED_MODULE_19__util__["a" /* UNSELECTABLE_ATTRIBUTE */], disabled: true, role: "option", value: "NOT_FOUND", key: "NOT_FOUND" }, notFoundContent)];
+                options = [__WEBPACK_IMPORTED_MODULE_12_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9_rc_menu__["a" /* Item */], { style: __WEBPACK_IMPORTED_MODULE_19__util__["b" /* UNSELECTABLE_STYLE */], attribute: __WEBPACK_IMPORTED_MODULE_19__util__["a" /* UNSELECTABLE_ATTRIBUTE */], disabled: true, role: "option", value: "NOT_FOUND", key: "NOT_FOUND" }, notFoundContent)];
             }
             return options;
         };
@@ -32556,7 +32556,7 @@ var Select = function (_Component) {
             var inputValue = _this.state.inputValue;
 
             var tags = props.tags;
-            __WEBPACK_IMPORTED_MODULE_12_react___default.a.Children.forEach(children, function (child) {
+            __WEBPACK_IMPORTED_MODULE_12_react__["Children"].forEach(children, function (child) {
                 if (!child) {
                     return;
                 }
@@ -32573,14 +32573,14 @@ var Select = function (_Component) {
                     if (inputValue && _this.filterOption(inputValue, child)) {
                         var innerItems = Object(__WEBPACK_IMPORTED_MODULE_10_rc_util_es_Children_toArray__["a" /* default */])(child.props.children).map(function (subChild) {
                             var childValueSub = Object(__WEBPACK_IMPORTED_MODULE_19__util__["k" /* getValuePropValue */])(subChild) || subChild.key;
-                            return __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_rc_menu__["a" /* Item */], __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({ key: childValueSub, value: childValueSub }, subChild.props));
+                            return __WEBPACK_IMPORTED_MODULE_12_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9_rc_menu__["a" /* Item */], __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({ key: childValueSub, value: childValueSub }, subChild.props));
                         });
-                        sel.push(__WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_rc_menu__["b" /* ItemGroup */], { key: key, title: label }, innerItems));
+                        sel.push(__WEBPACK_IMPORTED_MODULE_12_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9_rc_menu__["b" /* ItemGroup */], { key: key, title: label }, innerItems));
                         // Not match
                     } else {
                         var _innerItems = _this.renderFilterOptionsFromChildren(child.props.children, childrenKeys, menuItems);
                         if (_innerItems.length) {
-                            sel.push(__WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_rc_menu__["b" /* ItemGroup */], { key: key, title: label }, _innerItems));
+                            sel.push(__WEBPACK_IMPORTED_MODULE_12_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9_rc_menu__["b" /* ItemGroup */], { key: key, title: label }, _innerItems));
                         }
                     }
                     return;
@@ -32589,7 +32589,7 @@ var Select = function (_Component) {
                 var childValue = Object(__WEBPACK_IMPORTED_MODULE_19__util__["k" /* getValuePropValue */])(child);
                 Object(__WEBPACK_IMPORTED_MODULE_19__util__["v" /* validateOptionValue */])(childValue, _this.props);
                 if (_this.filterOption(inputValue, child)) {
-                    var menuItem = __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_rc_menu__["a" /* Item */], __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({ style: __WEBPACK_IMPORTED_MODULE_19__util__["b" /* UNSELECTABLE_STYLE */], attribute: __WEBPACK_IMPORTED_MODULE_19__util__["a" /* UNSELECTABLE_ATTRIBUTE */], value: childValue, key: childValue, role: "option" }, child.props));
+                    var menuItem = __WEBPACK_IMPORTED_MODULE_12_react__["createElement"](__WEBPACK_IMPORTED_MODULE_9_rc_menu__["a" /* Item */], __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({ style: __WEBPACK_IMPORTED_MODULE_19__util__["b" /* UNSELECTABLE_STYLE */], attribute: __WEBPACK_IMPORTED_MODULE_19__util__["a" /* UNSELECTABLE_ATTRIBUTE */], value: childValue, key: childValue, role: "option" }, child.props));
                     sel.push(menuItem);
                     menuItems.push(menuItem);
                 }
@@ -32638,7 +32638,7 @@ var Select = function (_Component) {
                         label = _this$getOptionInfoBy3.label,
                         title = _this$getOptionInfoBy3.title;
 
-                    selectedValue = __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement("div", { key: "value", className: prefixCls + '-selection-selected-value', title: Object(__WEBPACK_IMPORTED_MODULE_19__util__["u" /* toTitle */])(title || label), style: {
+                    selectedValue = __WEBPACK_IMPORTED_MODULE_12_react__["createElement"]("div", { key: "value", className: prefixCls + '-selection-selected-value', title: Object(__WEBPACK_IMPORTED_MODULE_19__util__["u" /* toTitle */])(title || label), style: {
                             display: showSelectedValue ? 'block' : 'none',
                             opacity: opacity
                         } }, label);
@@ -32646,7 +32646,7 @@ var Select = function (_Component) {
                 if (!showSearch) {
                     innerNode = [selectedValue];
                 } else {
-                    innerNode = [selectedValue, __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement("div", { className: prefixCls + '-search ' + prefixCls + '-search--inline', key: "input", style: {
+                    innerNode = [selectedValue, __WEBPACK_IMPORTED_MODULE_12_react__["createElement"]("div", { className: prefixCls + '-search ' + prefixCls + '-search--inline', key: "input", style: {
                             display: open ? 'block' : 'none'
                         } }, _this.getInputElement())];
                 }
@@ -32661,7 +32661,7 @@ var Select = function (_Component) {
                     if (maxTagPlaceholder) {
                         content = typeof maxTagPlaceholder === 'function' ? maxTagPlaceholder(omittedValues) : maxTagPlaceholder;
                     }
-                    maxTagPlaceholderEl = __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement("li", __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({ style: __WEBPACK_IMPORTED_MODULE_19__util__["b" /* UNSELECTABLE_STYLE */] }, __WEBPACK_IMPORTED_MODULE_19__util__["a" /* UNSELECTABLE_ATTRIBUTE */], { role: "presentation", onMouseDown: __WEBPACK_IMPORTED_MODULE_19__util__["q" /* preventDefaultEvent */], className: prefixCls + '-selection__choice ' + prefixCls + '-selection__choice__disabled', key: "maxTagPlaceholder", title: Object(__WEBPACK_IMPORTED_MODULE_19__util__["u" /* toTitle */])(content) }), __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement("div", { className: prefixCls + '-selection__choice__content' }, content));
+                    maxTagPlaceholderEl = __WEBPACK_IMPORTED_MODULE_12_react__["createElement"]("li", __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({ style: __WEBPACK_IMPORTED_MODULE_19__util__["b" /* UNSELECTABLE_STYLE */] }, __WEBPACK_IMPORTED_MODULE_19__util__["a" /* UNSELECTABLE_ATTRIBUTE */], { role: "presentation", onMouseDown: __WEBPACK_IMPORTED_MODULE_19__util__["q" /* preventDefaultEvent */], className: prefixCls + '-selection__choice ' + prefixCls + '-selection__choice__disabled', key: "maxTagPlaceholder", title: Object(__WEBPACK_IMPORTED_MODULE_19__util__["u" /* toTitle */])(content) }), __WEBPACK_IMPORTED_MODULE_12_react__["createElement"]("div", { className: prefixCls + '-selection__choice__content' }, content));
                 }
                 if (Object(__WEBPACK_IMPORTED_MODULE_19__util__["n" /* isMultipleOrTags */])(props)) {
                     selectedValueNodes = limitedCountValue.map(function (singleValue) {
@@ -32673,22 +32673,22 @@ var Select = function (_Component) {
                         }
                         var disabled = _this.isChildDisabled(singleValue);
                         var choiceClassName = disabled ? prefixCls + '-selection__choice ' + prefixCls + '-selection__choice__disabled' : prefixCls + '-selection__choice';
-                        return __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement("li", __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({ style: __WEBPACK_IMPORTED_MODULE_19__util__["b" /* UNSELECTABLE_STYLE */] }, __WEBPACK_IMPORTED_MODULE_19__util__["a" /* UNSELECTABLE_ATTRIBUTE */], { onMouseDown: __WEBPACK_IMPORTED_MODULE_19__util__["q" /* preventDefaultEvent */], className: choiceClassName, role: "presentation", key: singleValue || SELECT_EMPTY_VALUE_KEY, title: Object(__WEBPACK_IMPORTED_MODULE_19__util__["u" /* toTitle */])(title) }), __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement("div", { className: prefixCls + '-selection__choice__content' }, content), disabled ? null : __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement("span", { onClick: function onClick(event) {
+                        return __WEBPACK_IMPORTED_MODULE_12_react__["createElement"]("li", __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({ style: __WEBPACK_IMPORTED_MODULE_19__util__["b" /* UNSELECTABLE_STYLE */] }, __WEBPACK_IMPORTED_MODULE_19__util__["a" /* UNSELECTABLE_ATTRIBUTE */], { onMouseDown: __WEBPACK_IMPORTED_MODULE_19__util__["q" /* preventDefaultEvent */], className: choiceClassName, role: "presentation", key: singleValue || SELECT_EMPTY_VALUE_KEY, title: Object(__WEBPACK_IMPORTED_MODULE_19__util__["u" /* toTitle */])(title) }), __WEBPACK_IMPORTED_MODULE_12_react__["createElement"]("div", { className: prefixCls + '-selection__choice__content' }, content), disabled ? null : __WEBPACK_IMPORTED_MODULE_12_react__["createElement"]("span", { onClick: function onClick(event) {
                                 _this.removeSelected(singleValue, event);
-                            }, className: prefixCls + '-selection__choice__remove' }, removeIcon || __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement("i", { className: prefixCls + '-selection__choice__remove-icon' }, '\xD7')));
+                            }, className: prefixCls + '-selection__choice__remove' }, removeIcon || __WEBPACK_IMPORTED_MODULE_12_react__["createElement"]("i", { className: prefixCls + '-selection__choice__remove-icon' }, '\xD7')));
                     });
                 }
                 if (maxTagPlaceholderEl) {
                     selectedValueNodes.push(maxTagPlaceholderEl);
                 }
-                selectedValueNodes.push(__WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement("li", { className: prefixCls + '-search ' + prefixCls + '-search--inline', key: "__input" }, _this.getInputElement()));
+                selectedValueNodes.push(__WEBPACK_IMPORTED_MODULE_12_react__["createElement"]("li", { className: prefixCls + '-search ' + prefixCls + '-search--inline', key: "__input" }, _this.getInputElement()));
                 if (Object(__WEBPACK_IMPORTED_MODULE_19__util__["n" /* isMultipleOrTags */])(props) && choiceTransitionName) {
-                    innerNode = __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_rc_animate__["a" /* default */], { onLeave: _this.onChoiceAnimationLeave, component: "ul", transitionName: choiceTransitionName }, selectedValueNodes);
+                    innerNode = __WEBPACK_IMPORTED_MODULE_12_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8_rc_animate__["a" /* default */], { onLeave: _this.onChoiceAnimationLeave, component: "ul", transitionName: choiceTransitionName }, selectedValueNodes);
                 } else {
-                    innerNode = __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement("ul", null, selectedValueNodes);
+                    innerNode = __WEBPACK_IMPORTED_MODULE_12_react__["createElement"]("ul", null, selectedValueNodes);
                 }
             }
-            return __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement("div", { className: className, ref: _this.saveTopCtrlRef }, _this.getPlaceholderElement(), innerNode);
+            return __WEBPACK_IMPORTED_MODULE_12_react__["createElement"]("div", { className: className, ref: _this.saveTopCtrlRef }, _this.getPlaceholderElement(), innerNode);
         };
         var optionsInfo = Select.getOptionsInfoFromProps(props);
         _this.state = {
@@ -32777,8 +32777,8 @@ var Select = function (_Component) {
             if (multiple && !loading) {
                 return null;
             }
-            var defaultIcon = loading ? __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement("i", { className: prefixCls + '-arrow-loading' }) : __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement("i", { className: prefixCls + '-arrow-icon' });
-            return __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement("span", __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({ key: "arrow", className: prefixCls + '-arrow', style: __WEBPACK_IMPORTED_MODULE_19__util__["b" /* UNSELECTABLE_STYLE */] }, __WEBPACK_IMPORTED_MODULE_19__util__["a" /* UNSELECTABLE_ATTRIBUTE */], { onClick: this.onArrowClick }), inputIcon || defaultIcon);
+            var defaultIcon = loading ? __WEBPACK_IMPORTED_MODULE_12_react__["createElement"]("i", { className: prefixCls + '-arrow-loading' }) : __WEBPACK_IMPORTED_MODULE_12_react__["createElement"]("i", { className: prefixCls + '-arrow-icon' });
+            return __WEBPACK_IMPORTED_MODULE_12_react__["createElement"]("span", __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({ key: "arrow", className: prefixCls + '-arrow', style: __WEBPACK_IMPORTED_MODULE_19__util__["b" /* UNSELECTABLE_STYLE */] }, __WEBPACK_IMPORTED_MODULE_19__util__["a" /* UNSELECTABLE_ATTRIBUTE */], { onClick: this.onArrowClick }), inputIcon || defaultIcon);
         }
     }, {
         key: 'renderClear',
@@ -32790,7 +32790,7 @@ var Select = function (_Component) {
             var inputValue = this.state.inputValue;
 
             var value = this.state.value;
-            var clear = __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement("span", __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({ key: "clear", className: prefixCls + '-selection__clear', onMouseDown: __WEBPACK_IMPORTED_MODULE_19__util__["q" /* preventDefaultEvent */], style: __WEBPACK_IMPORTED_MODULE_19__util__["b" /* UNSELECTABLE_STYLE */] }, __WEBPACK_IMPORTED_MODULE_19__util__["a" /* UNSELECTABLE_ATTRIBUTE */], { onClick: this.onClearSelection }), clearIcon || __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement("i", { className: prefixCls + '-selection__clear-icon' }, '\xD7'));
+            var clear = __WEBPACK_IMPORTED_MODULE_12_react__["createElement"]("span", __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({ key: "clear", className: prefixCls + '-selection__clear', onMouseDown: __WEBPACK_IMPORTED_MODULE_19__util__["q" /* preventDefaultEvent */], style: __WEBPACK_IMPORTED_MODULE_19__util__["b" /* UNSELECTABLE_STYLE */] }, __WEBPACK_IMPORTED_MODULE_19__util__["a" /* UNSELECTABLE_ATTRIBUTE */], { onClick: this.onClearSelection }), clearIcon || __WEBPACK_IMPORTED_MODULE_12_react__["createElement"]("i", { className: prefixCls + '-selection__clear-icon' }, '\xD7'));
             if (!allowClear) {
                 return null;
             }
@@ -32844,7 +32844,7 @@ var Select = function (_Component) {
                 extraSelectionProps = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({}, extraSelectionProps, { onKeyDown: this.onKeyDown, tabIndex: props.disabled ? -1 : props.tabIndex });
             }
             var rootCls = (_rootCls = {}, __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()(_rootCls, className, !!className), __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()(_rootCls, prefixCls, 1), __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()(_rootCls, prefixCls + '-open', open), __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()(_rootCls, prefixCls + '-focused', open || !!this._focused), __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()(_rootCls, prefixCls + '-combobox', Object(__WEBPACK_IMPORTED_MODULE_19__util__["m" /* isCombobox */])(props)), __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()(_rootCls, prefixCls + '-disabled', disabled), __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()(_rootCls, prefixCls + '-enabled', !disabled), __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()(_rootCls, prefixCls + '-allow-clear', !!props.allowClear), __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()(_rootCls, prefixCls + '-no-arrow', !props.showArrow), _rootCls);
-            return __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_18__SelectTrigger__["a" /* default */], { onPopupFocus: this.onPopupFocus, onMouseEnter: this.props.onMouseEnter, onMouseLeave: this.props.onMouseLeave, dropdownAlign: props.dropdownAlign, dropdownClassName: props.dropdownClassName, dropdownMatchSelectWidth: props.dropdownMatchSelectWidth, defaultActiveFirstOption: props.defaultActiveFirstOption, dropdownMenuStyle: props.dropdownMenuStyle, transitionName: props.transitionName, animation: props.animation, prefixCls: props.prefixCls, dropdownStyle: props.dropdownStyle, combobox: props.combobox, showSearch: props.showSearch, options: options, multiple: multiple, disabled: disabled, visible: realOpen, inputValue: state.inputValue, value: state.value, backfillValue: state.backfillValue, firstActiveValue: props.firstActiveValue, onDropdownVisibleChange: this.onDropdownVisibleChange, getPopupContainer: props.getPopupContainer, onMenuSelect: this.onMenuSelect, onMenuDeselect: this.onMenuDeselect, onPopupScroll: props.onPopupScroll, showAction: props.showAction, ref: this.saveSelectTriggerRef, menuItemSelectedIcon: props.menuItemSelectedIcon, dropdownRender: props.dropdownRender, ariaId: this.ariaId }, __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement("div", { id: props.id, style: props.style, ref: this.saveRootRef, onBlur: this.onOuterBlur, onFocus: this.onOuterFocus, className: __WEBPACK_IMPORTED_MODULE_6_classnames___default()(rootCls), onMouseDown: this.markMouseDown, onMouseUp: this.markMouseLeave, onMouseOut: this.markMouseLeave }, __WEBPACK_IMPORTED_MODULE_12_react___default.a.createElement("div", __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({ ref: this.saveSelectionRef, key: "selection", className: prefixCls + '-selection\n            ' + prefixCls + '-selection--' + (multiple ? 'multiple' : 'single'), role: "combobox", "aria-autocomplete": "list", "aria-haspopup": "true", "aria-controls": this.ariaId, "aria-expanded": realOpen }, extraSelectionProps), ctrlNode, this.renderClear(), this.renderArrow(!!multiple))));
+            return __WEBPACK_IMPORTED_MODULE_12_react__["createElement"](__WEBPACK_IMPORTED_MODULE_18__SelectTrigger__["a" /* default */], { onPopupFocus: this.onPopupFocus, onMouseEnter: this.props.onMouseEnter, onMouseLeave: this.props.onMouseLeave, dropdownAlign: props.dropdownAlign, dropdownClassName: props.dropdownClassName, dropdownMatchSelectWidth: props.dropdownMatchSelectWidth, defaultActiveFirstOption: props.defaultActiveFirstOption, dropdownMenuStyle: props.dropdownMenuStyle, transitionName: props.transitionName, animation: props.animation, prefixCls: props.prefixCls, dropdownStyle: props.dropdownStyle, combobox: props.combobox, showSearch: props.showSearch, options: options, multiple: multiple, disabled: disabled, visible: realOpen, inputValue: state.inputValue, value: state.value, backfillValue: state.backfillValue, firstActiveValue: props.firstActiveValue, onDropdownVisibleChange: this.onDropdownVisibleChange, getPopupContainer: props.getPopupContainer, onMenuSelect: this.onMenuSelect, onMenuDeselect: this.onMenuDeselect, onPopupScroll: props.onPopupScroll, showAction: props.showAction, ref: this.saveSelectTriggerRef, menuItemSelectedIcon: props.menuItemSelectedIcon, dropdownRender: props.dropdownRender, ariaId: this.ariaId }, __WEBPACK_IMPORTED_MODULE_12_react__["createElement"]("div", { id: props.id, style: props.style, ref: this.saveRootRef, onBlur: this.onOuterBlur, onFocus: this.onOuterFocus, className: __WEBPACK_IMPORTED_MODULE_6_classnames___default()(rootCls), onMouseDown: this.markMouseDown, onMouseUp: this.markMouseLeave, onMouseOut: this.markMouseLeave }, __WEBPACK_IMPORTED_MODULE_12_react__["createElement"]("div", __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({ ref: this.saveSelectionRef, key: "selection", className: prefixCls + '-selection\n            ' + prefixCls + '-selection--' + (multiple ? 'multiple' : 'single'), role: "combobox", "aria-autocomplete": "list", "aria-haspopup": "true", "aria-controls": this.ariaId, "aria-expanded": realOpen }, extraSelectionProps), ctrlNode, this.renderClear(), this.renderArrow(!!multiple))));
         }
     }]);
 
@@ -32904,7 +32904,7 @@ Select.getDerivedStateFromProps = function (nextProps, prevState) {
 Select.getOptionsFromChildren = function (children) {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
-    __WEBPACK_IMPORTED_MODULE_12_react___default.a.Children.forEach(children, function (child) {
+    __WEBPACK_IMPORTED_MODULE_12_react__["Children"].forEach(children, function (child) {
         if (!child) {
             return;
         }
@@ -42492,8 +42492,8 @@ var BUILT_IN_PLACEMENTS = {
     }
 };
 
-var SelectTrigger = function (_Component) {
-    __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits___default()(SelectTrigger, _Component);
+var SelectTrigger = function (_React$Component) {
+    __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits___default()(SelectTrigger, _React$Component);
 
     function SelectTrigger(props) {
         __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_classCallCheck___default()(this, SelectTrigger);
@@ -42519,7 +42519,7 @@ var SelectTrigger = function (_Component) {
             var dropdownRender = props.dropdownRender,
                 ariaId = props.ariaId;
 
-            var menuNode = __WEBPACK_IMPORTED_MODULE_9_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_11__DropdownMenu__["a" /* default */], __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({ ref: _this.saveDropdownMenuRef }, newProps, { ariaId: ariaId, prefixCls: _this.getDropdownPrefixCls(), onMenuSelect: props.onMenuSelect, onMenuDeselect: props.onMenuDeselect, onPopupScroll: props.onPopupScroll, value: props.value, backfillValue: props.backfillValue, firstActiveValue: props.firstActiveValue, defaultActiveFirstOption: props.defaultActiveFirstOption, dropdownMenuStyle: props.dropdownMenuStyle, menuItemSelectedIcon: props.menuItemSelectedIcon }));
+            var menuNode = __WEBPACK_IMPORTED_MODULE_9_react__["createElement"](__WEBPACK_IMPORTED_MODULE_11__DropdownMenu__["a" /* default */], __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({ ref: _this.saveDropdownMenuRef }, newProps, { ariaId: ariaId, prefixCls: _this.getDropdownPrefixCls(), onMenuSelect: props.onMenuSelect, onMenuDeselect: props.onMenuDeselect, onPopupScroll: props.onPopupScroll, value: props.value, backfillValue: props.backfillValue, firstActiveValue: props.firstActiveValue, defaultActiveFirstOption: props.defaultActiveFirstOption, dropdownMenuStyle: props.dropdownMenuStyle, menuItemSelectedIcon: props.menuItemSelectedIcon }));
             if (dropdownRender) {
                 return dropdownRender(menuNode, props);
             }
@@ -42593,7 +42593,7 @@ var SelectTrigger = function (_Component) {
             if (this.state.dropdownWidth) {
                 popupStyle[widthProp] = this.state.dropdownWidth + 'px';
             }
-            return __WEBPACK_IMPORTED_MODULE_9_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_rc_trigger__["a" /* default */], __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({}, props, { showAction: disabled ? [] : this.props.showAction, hideAction: hideAction, ref: this.saveTriggerRef, popupPlacement: "bottomLeft", builtinPlacements: BUILT_IN_PLACEMENTS, prefixCls: dropdownPrefixCls, popupTransitionName: this.getDropdownTransitionName(), onPopupVisibleChange: props.onDropdownVisibleChange, popup: popupElement, popupAlign: dropdownAlign, popupVisible: visible, getPopupContainer: props.getPopupContainer, popupClassName: __WEBPACK_IMPORTED_MODULE_6_classnames___default()(popupClassName), popupStyle: popupStyle }), props.children);
+            return __WEBPACK_IMPORTED_MODULE_9_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8_rc_trigger__["a" /* default */], __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_extends___default()({}, props, { showAction: disabled ? [] : this.props.showAction, hideAction: hideAction, ref: this.saveTriggerRef, popupPlacement: "bottomLeft", builtinPlacements: BUILT_IN_PLACEMENTS, prefixCls: dropdownPrefixCls, popupTransitionName: this.getDropdownTransitionName(), onPopupVisibleChange: props.onDropdownVisibleChange, popup: popupElement, popupAlign: dropdownAlign, popupVisible: visible, getPopupContainer: props.getPopupContainer, popupClassName: __WEBPACK_IMPORTED_MODULE_6_classnames___default()(popupClassName), popupStyle: popupStyle }), props.children);
         }
     }]);
 
@@ -43891,8 +43891,8 @@ PopupInner.propTypes = {
 
 
 
-var DropdownMenu = function (_Component) {
-    __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default()(DropdownMenu, _Component);
+var DropdownMenu = function (_React$Component) {
+    __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default()(DropdownMenu, _React$Component);
 
     function DropdownMenu(props) {
         __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default()(this, DropdownMenu);
@@ -43965,7 +43965,7 @@ var DropdownMenu = function (_Component) {
                         var key = item.key;
                         if (!foundFirst && selectedKeys.indexOf(key) !== -1 || !foundFirst && !selectedKeys.length && firstActiveValue.indexOf(item.key) !== -1) {
                             foundFirst = true;
-                            return Object(__WEBPACK_IMPORTED_MODULE_10_react__["cloneElement"])(item, {
+                            return __WEBPACK_IMPORTED_MODULE_10_react__["cloneElement"](item, {
                                 ref: function ref(_ref) {
                                     _this.firstActiveItem = _ref;
                                 }
@@ -43976,7 +43976,7 @@ var DropdownMenu = function (_Component) {
                     clonedMenuItems = menuItems.map(function (item) {
                         if (item.type.isMenuItemGroup) {
                             var children = Object(__WEBPACK_IMPORTED_MODULE_9_rc_util_es_Children_toArray__["a" /* default */])(item.props.children).map(clone);
-                            return Object(__WEBPACK_IMPORTED_MODULE_10_react__["cloneElement"])(item, {}, children);
+                            return __WEBPACK_IMPORTED_MODULE_10_react__["cloneElement"](item, {}, children);
                         }
                         return clone(item);
                     });
@@ -43991,7 +43991,7 @@ var DropdownMenu = function (_Component) {
                 if (inputValue !== _this.lastInputValue && (!lastValue || lastValue !== backfillValue)) {
                     activeKeyProps.activeKey = '';
                 }
-                return __WEBPACK_IMPORTED_MODULE_10_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_rc_menu__["c" /* default */], __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({ ref: _this.saveMenuRef, style: _this.props.dropdownMenuStyle, defaultActiveFirst: defaultActiveFirstOption, role: "listbox", itemIcon: multiple ? menuItemSelectedIcon : null }, activeKeyProps, { multiple: multiple }, menuProps, { selectedKeys: selectedKeys, prefixCls: prefixCls + '-menu' }), clonedMenuItems);
+                return __WEBPACK_IMPORTED_MODULE_10_react__["createElement"](__WEBPACK_IMPORTED_MODULE_8_rc_menu__["c" /* default */], __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({ ref: _this.saveMenuRef, style: _this.props.dropdownMenuStyle, defaultActiveFirst: defaultActiveFirstOption, role: "listbox", itemIcon: multiple ? menuItemSelectedIcon : null }, activeKeyProps, { multiple: multiple }, menuProps, { selectedKeys: selectedKeys, prefixCls: prefixCls + '-menu' }), clonedMenuItems);
             }
             return null;
         };
@@ -44036,7 +44036,7 @@ var DropdownMenu = function (_Component) {
         key: 'render',
         value: function render() {
             var renderMenu = this.renderMenu();
-            return renderMenu ? __WEBPACK_IMPORTED_MODULE_10_react___default.a.createElement("div", { style: {
+            return renderMenu ? __WEBPACK_IMPORTED_MODULE_10_react__["createElement"]("div", { style: {
                     overflow: 'auto',
                     transform: 'translateZ(0)'
                 }, id: this.props.ariaId, onFocus: this.props.onPopupFocus, onMouseDown: __WEBPACK_IMPORTED_MODULE_12__util__["q" /* preventDefaultEvent */], onScroll: this.props.onPopupScroll }, renderMenu) : null;
