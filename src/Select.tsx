@@ -4,7 +4,7 @@ import Animate from 'rc-animate';
 import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
 import childrenToArray from 'rc-util/lib/Children/toArray';
 import KeyCode from 'rc-util/lib/KeyCode';
-import { Component, default as React, ReactElement } from 'react';
+import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { polyfill } from 'react-lifecycles-compat';
 import warning from 'warning';
@@ -61,7 +61,7 @@ export interface ISelectState {
   backfillValue?: string;
 }
 
-class Select extends Component<Partial<ISelectProps>, ISelectState> {
+class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
   public static propTypes = SelectPropTypes;
   public static Option: typeof Option;
   public static OptGroup: typeof OptGroup;
@@ -120,16 +120,16 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
   };
 
   public static getOptionsFromChildren = (
-    children: Array<ReactElement<any>>,
+    children: Array<React.ReactElement<any>>,
     options: any[] = [],
   ) => {
     React.Children.forEach(children, child => {
       if (!child) {
         return;
       }
-      const type = (child as ReactElement<any>).type as any;
+      const type = (child as React.ReactElement<any>).type as any;
       if (type.isSelectOptGroup) {
-        Select.getOptionsFromChildren((child as ReactElement<any>).props.children, options);
+        Select.getOptionsFromChildren((child as React.ReactElement<any>).props.children, options);
       } else {
         options.push(child);
       }
@@ -1036,7 +1036,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
   };
 
   public isChildDisabled = (key: string | string[]) => {
-    return childrenToArray(this.props.children).some((child: ReactElement<any>) => {
+    return childrenToArray(this.props.children).some((child: React.ReactElement<any>) => {
       const childValue = getValuePropValue(child);
       return childValue === key && child.props && child.props.disabled;
     });
@@ -1128,7 +1128,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
   };
 
   public renderFilterOptionsFromChildren = (
-    children: Array<ReactElement<any>>,
+    children: Array<React.ReactElement<any>>,
     childrenKeys: string[],
     menuItems: JSX.Element[],
   ): JSX.Element[] => {
@@ -1140,10 +1140,10 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
       if (!child) {
         return;
       }
-      const type = (child as ReactElement<any>).type as any;
+      const type = (child as React.ReactElement<any>).type as any;
       if (type.isSelectOptGroup) {
-        let label = (child as ReactElement<any>).props.label;
-        let key = (child as ReactElement<any>).key;
+        let label = (child as React.ReactElement<any>).props.label;
+        let key = (child as React.ReactElement<any>).key;
         if (!key && typeof label === 'string') {
           key = label;
         } else if (!label && key) {
@@ -1151,8 +1151,11 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
         }
 
         // Match option group label
-        if (inputValue && this.filterOption(inputValue as string, child as ReactElement<any>)) {
-          const innerItems = childrenToArray((child as ReactElement<any>).props.children).map(
+        if (
+          inputValue &&
+          this.filterOption(inputValue as string, child as React.ReactElement<any>)
+        ) {
+          const innerItems = childrenToArray((child as React.ReactElement<any>).props.children).map(
             (subChild: JSX.Element) => {
               const childValueSub = getValuePropValue(subChild) || subChild.key;
               return <MenuItem key={childValueSub} value={childValueSub} {...subChild.props} />;
@@ -1168,7 +1171,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
           // Not match
         } else {
           const innerItems = this.renderFilterOptionsFromChildren(
-            (child as ReactElement<any>).props.children,
+            (child as React.ReactElement<any>).props.children,
             childrenKeys,
             menuItems,
           );
@@ -1187,14 +1190,16 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
       warning(
         type.isSelectOption,
         'the children of `Select` should be `Select.Option` or `Select.OptGroup`, ' +
-          `instead of \`${type.name || type.displayName || (child as ReactElement<any>).type}\`.`,
+          `instead of \`${type.name ||
+            type.displayName ||
+            (child as React.ReactElement<any>).type}\`.`,
       );
 
       const childValue = getValuePropValue(child);
 
       validateOptionValue(childValue, this.props);
 
-      if (this.filterOption(inputValue as string, child as ReactElement<any>)) {
+      if (this.filterOption(inputValue as string, child as React.ReactElement<any>)) {
         const menuItem = (
           <MenuItem
             style={UNSELECTABLE_STYLE}
@@ -1202,7 +1207,7 @@ class Select extends Component<Partial<ISelectProps>, ISelectState> {
             value={childValue}
             key={childValue}
             role="option"
-            {...(child as ReactElement<any>).props}
+            {...(child as React.ReactElement<any>).props}
           />
         );
         sel.push(menuItem);

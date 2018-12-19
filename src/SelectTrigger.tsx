@@ -1,13 +1,7 @@
 import classnames from 'classnames';
 import * as PropTypes from 'prop-types';
 import Trigger from 'rc-trigger';
-import {
-  Component,
-  CSSProperties,
-  default as React,
-  MouseEventHandler,
-  UIEventHandler,
-} from 'react';
+import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import DropdownMenu, { IDropdownMenuProps } from './DropdownMenu';
 import { renderSelect, valueType } from './PropTypes';
@@ -36,11 +30,11 @@ const BUILT_IN_PLACEMENTS = {
 
 export interface ISelectTriggerProps extends IDropdownMenuProps {
   onPopupFocus: () => void;
-  onPopupScroll: UIEventHandler<HTMLDivElement>;
-  onMouseEnter: MouseEventHandler<HTMLDivElement>;
-  onMouseLeave: MouseEventHandler<HTMLDivElement>;
+  onPopupScroll: React.UIEventHandler<HTMLDivElement>;
+  onMouseEnter: React.MouseEventHandler<HTMLDivElement>;
+  onMouseLeave: React.MouseEventHandler<HTMLDivElement>;
   dropdownMatchSelectWidth: boolean;
-  dropdownStyle: CSSProperties;
+  dropdownStyle: React.CSSProperties;
   dropdownAlign: object;
   visible: boolean;
   combobox: boolean;
@@ -67,7 +61,7 @@ export interface ISelectTriggerProps extends IDropdownMenuProps {
 export interface ISelectTriggerState {
   dropdownWidth: number;
 }
-export default class SelectTrigger extends Component<
+export default class SelectTrigger extends React.Component<
   Partial<ISelectTriggerProps>,
   ISelectTriggerState
 > {

@@ -3,22 +3,14 @@ import * as PropTypes from 'prop-types';
 import raf from 'raf';
 import Menu from 'rc-menu';
 import toArray from 'rc-util/lib/Children/toArray';
-import {
-  cloneElement,
-  Component,
-  CSSProperties,
-  default as React,
-  FocusEventHandler,
-  ReactNode,
-  UIEventHandler,
-} from 'react';
+import * as React from 'react';
 import { findDOMNode } from 'react-dom';
 import { renderSelect, valueType } from './PropTypes';
 import { getSelectKeys, preventDefaultEvent, saveRef } from './util';
 
 export interface IMenuEvent {
   key: string;
-  item: ReactNode;
+  item: React.ReactNode;
   domEvent: Event;
   selectedKeys: string[];
 }
@@ -27,10 +19,10 @@ export interface IDropdownMenuProps {
   ariaId: string;
   defaultActiveFirstOption: boolean;
   value: valueType;
-  dropdownMenuStyle: CSSProperties;
+  dropdownMenuStyle: React.CSSProperties;
   multiple: boolean;
-  onPopupFocus: FocusEventHandler<HTMLDivElement>;
-  onPopupScroll: UIEventHandler<HTMLDivElement>;
+  onPopupFocus: React.FocusEventHandler<HTMLDivElement>;
+  onPopupScroll: React.UIEventHandler<HTMLDivElement>;
   onMenuDeselect: (e: { item: any; domEvent: KeyboardEvent }) => void;
   onMenuSelect: (e: { item: any; domEvent: KeyboardEvent }) => void;
   prefixCls: string;
@@ -42,7 +34,7 @@ export interface IDropdownMenuProps {
   backfillValue: string;
 }
 
-export default class DropdownMenu extends Component<Partial<IDropdownMenuProps>> {
+export default class DropdownMenu extends React.Component<Partial<IDropdownMenuProps>> {
   public static displayName = 'DropdownMenu';
   public static propTypes = {
     ariaId: PropTypes.string,
@@ -182,7 +174,7 @@ export default class DropdownMenu extends Component<Partial<IDropdownMenuProps>>
             (!foundFirst && !selectedKeys.length && firstActiveValue.indexOf(item.key) !== -1)
           ) {
             foundFirst = true;
-            return cloneElement(item, {
+            return React.cloneElement(item, {
               ref: (ref: HTMLDivElement) => {
                 this.firstActiveItem = ref;
               },
@@ -194,7 +186,7 @@ export default class DropdownMenu extends Component<Partial<IDropdownMenuProps>>
         clonedMenuItems = menuItems.map((item: any) => {
           if (item.type.isMenuItemGroup) {
             const children = toArray(item.props.children).map(clone);
-            return cloneElement(item, {}, children);
+            return React.cloneElement(item, {}, children);
           }
           return clone(item);
         });
