@@ -765,13 +765,13 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     const props = this.props;
     const state = this.state;
 
-    if (this.props.onDropdownVisibleChange) {
-      this.props.onDropdownVisibleChange(open as boolean);
-    }
-
     if (state.open === open) {
       this.maybeFocus(open, !!needFocus);
       return;
+    }
+
+    if (this.props.onDropdownVisibleChange) {
+      this.props.onDropdownVisibleChange(open as boolean);
     }
 
     const nextState: ISelectState = {
