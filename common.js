@@ -38875,14 +38875,14 @@ function (_React$Component) {
       var props = _this.props;
       var state = _this.state;
 
+      if (_this.props.onDropdownVisibleChange) {
+        _this.props.onDropdownVisibleChange(open);
+      }
+
       if (state.open === open) {
         _this.maybeFocus(open, !!needFocus);
 
         return;
-      }
-
-      if (_this.props.onDropdownVisibleChange) {
-        _this.props.onDropdownVisibleChange(open);
       }
 
       var nextState = {
