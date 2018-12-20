@@ -91,20 +91,20 @@ export interface ISelectProps {
   tabIndex: string | number;
 }
 
-function propsValueType(props: ISelectProps, propName: string, componentName: string) {
+function propsValueType(...args: [ISelectProps, string, string, any, any]) {
+  const [props, propName, componentName, ...rest] = args;
   const basicType = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);
 
   const labelInValueShape = PropTypes.shape({
-    key: basicType,
+    key: basicType.isRequired,
     label: PropTypes.node,
   });
+
   if (props.labelInValue) {
     const validate = PropTypes.oneOfType([PropTypes.arrayOf(labelInValueShape), labelInValueShape]);
-    PropTypes.checkPropTypes(validate, props, propName, componentName);
-
-    // if value is no null, it's a object
-    if (props[propName] && typeof props[propName] !== 'object') {
-      throw new Error(
+    const error = validate(props, propName, componentName, ...rest);
+    if (error) {
+      return new Error(
         `Invalid prop \`${propName}\` supplied to \`${componentName}\`, ` +
           `when you set \`labelInValue\` to \`true\`, \`${propName}\` should in ` +
           `shape of \`{ key: string | number, label?: ReactNode }\`.`,
@@ -120,7 +120,7 @@ function propsValueType(props: ISelectProps, propName: string, componentName: st
     );
   } else {
     const validate = PropTypes.oneOfType([PropTypes.arrayOf(basicType), basicType]);
-    PropTypes.checkPropTypes(validate, props, propName, componentName);
+    return validate(props, propName, componentName, ...rest);
   }
   return null;
 }
