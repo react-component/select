@@ -56,7 +56,7 @@
 /******/ 	// undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/ 	// Promise = chunk loading, 0 = chunk loaded
 /******/ 	var installedChunks = {
-/******/ 		"examples/email": 0
+/******/ 		"examples/~debug.1": 0
 /******/ 	};
 /******/
 /******/ 	var deferredModules = [];
@@ -147,17 +147,17 @@
 /******/
 /******/
 /******/ 	// add entry module to deferred list
-/******/ 	deferredModules.push([4,"common"]);
+/******/ 	deferredModules.push([20,"common"]);
 /******/ 	// run deferred modules when ready
 /******/ 	return checkDeferredModules();
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./examples/email.js":
-/*!***************************!*\
-  !*** ./examples/email.js ***!
-  \***************************/
+/***/ "./examples/~debug.1.js":
+/*!******************************!*\
+  !*** ./examples/~debug.1.js ***!
+  \******************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -186,100 +186,119 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-/* eslint no-console: 0 */
+/* eslint-disable */
 
 
 
 
 
-var Test =
+var UserRemoteSelect =
 /*#__PURE__*/
 function (_React$Component) {
-  !(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/inherits'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(Test, _React$Component);
+  !(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/inherits'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(UserRemoteSelect, _React$Component);
 
-  function Test() {
-    var _getPrototypeOf2;
-
+  function UserRemoteSelect(props) {
     var _this;
 
-    !(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/classCallCheck'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(this, Test);
+    !(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/classCallCheck'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(this, UserRemoteSelect);
 
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = !(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/possibleConstructorReturn'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(this, (_getPrototypeOf2 = !(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/getPrototypeOf'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(Test)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this = !(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/possibleConstructorReturn'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(this, !(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/getPrototypeOf'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(UserRemoteSelect).call(this, props));
 
     !(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/defineProperty'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(!(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/assertThisInitialized'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(!(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/assertThisInitialized'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(_this)), "state", {
-      options: []
+      data: [],
+      value: [],
+      fetching: false
     });
 
-    !(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/defineProperty'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(!(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/assertThisInitialized'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(!(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/assertThisInitialized'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(_this)), "onSelect", function (value) {
-      console.log('onSelect', value);
-    });
+    !(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/defineProperty'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(!(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/assertThisInitialized'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(!(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/assertThisInitialized'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(_this)), "fetchUser", function (value) {
+      console.log('fetching user1', value);
+      _this.lastFetchId += 1;
+      var fetchId = _this.lastFetchId;
 
-    !(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/defineProperty'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(!(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/assertThisInitialized'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(!(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/assertThisInitialized'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(_this)), "onChange", function (value) {
-      console.log('onChange', value);
-      var options = [];
+      _this.setState({
+        data: [],
+        fetching: true
+      });
 
-      if (value) {
-        if (value.indexOf('@') >= 0) {
-          options = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(rc_select__WEBPACK_IMPORTED_MODULE_2__["Option"], {
-            key: value
-          }, value);
-        } else {
-          options = ['gmail.com', 'yahoo.com', 'outlook.com'].map(function (domain) {
-            var email = "".concat(value, "@").concat(domain);
-            return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(rc_select__WEBPACK_IMPORTED_MODULE_2__["Option"], {
-              key: email
-            }, email);
-          });
-        }
+      var data = [1, 2, 3, 4, 5, 6].map(function (user, index) {
+        return {
+          text: "".concat(index, "label"),
+          value: "".concat(index)
+        };
+      }); // 模拟：选中的时候，目标数据不在结果集中
+
+      if (!value) {
+        data.shift();
       }
 
       _this.setState({
-        options: options
+        data: data,
+        fetching: false
       });
     });
 
+    !(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/defineProperty'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(!(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/assertThisInitialized'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(!(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/assertThisInitialized'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(_this)), "handleChange", function (value) {
+      console.log('onchange', value);
+
+      _this.setState({
+        value: value,
+        data: [],
+        fetching: false
+      });
+    });
+
+    _this.lastFetchId = 0;
     return _this;
   }
 
-  !(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/createClass'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(Test, [{
+  !(function webpackMissingModule() { var e = new Error("Cannot find module '@babel/runtime/helpers/createClass'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(UserRemoteSelect, [{
     key: "render",
     value: function render() {
-      var options = this.state.options;
+      var _this$state = this.state,
+          fetching = _this$state.fetching,
+          data = _this$state.data,
+          value = _this$state.value;
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(rc_select__WEBPACK_IMPORTED_MODULE_2___default.a, {
-        combobox: true,
-        notFoundContent: false,
+        showSearch: true,
+        labelInValue: true,
+        value: value,
+        placeholder: "Select users",
+        optionFilterProp: "children",
+        notFoundContent: fetching ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Spin, {
+          size: "small"
+        }) : null,
+        onSearch: this.fetchUser,
+        onChange: this.handleChange,
         style: {
-          width: 200
-        },
-        onChange: this.onChange,
-        onSelect: this.onSelect,
-        placeholder: "\u8BF7\u8F93\u5165\u8D26\u6237\u540D"
-      }, options);
+          width: '100%'
+        }
+      }, data.map(function (d) {
+        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(rc_select__WEBPACK_IMPORTED_MODULE_2__["Option"], {
+          key: d.value
+        }, d.text);
+      }));
     }
   }]);
 
-  return Test;
+  return UserRemoteSelect;
 }(react__WEBPACK_IMPORTED_MODULE_1___default.a.Component);
 
-react_dom__WEBPACK_IMPORTED_MODULE_4___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Test, null), document.getElementById('__react-content'));
+react_dom__WEBPACK_IMPORTED_MODULE_4___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(UserRemoteSelect, null), document.getElementById('__react-content'));
+/* eslint-enable */
 
 /***/ }),
 
-/***/ 4:
-/*!*********************************!*\
-  !*** multi ./examples/email.js ***!
-  \*********************************/
+/***/ 20:
+/*!************************************!*\
+  !*** multi ./examples/~debug.1.js ***!
+  \************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! ./examples/email.js */"./examples/email.js");
+module.exports = __webpack_require__(/*! ./examples/~debug.1.js */"./examples/~debug.1.js");
 
 
 /***/ })
 
 /******/ });
-//# sourceMappingURL=email.js.map
+//# sourceMappingURL=~debug.1.js.map

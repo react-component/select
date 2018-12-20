@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>update-option.js - example - rc-select@8.6.6</title>
+  <title>update-option.js - example - rc-select@8.6.7</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-select@8.6.6</h1>
+      <h1>rc-select@8.6.7</h1>
 
       <p>React Select</p>
     </div>
@@ -295,23 +295,21 @@ class Test extends React.Component {
     this.setState({
       label: `newlabel ${this.count++}`,
     });
-  }
+  };
 
-  updateOptions = (value) =&gt; {
-    const options = [
-      value,
-      value + value,
-      value + value + value,
-    ];
+  updateOptions = value =&gt; {
+    const options = [value, value + value, value + value + value];
     this.setState({
       options,
     });
-  }
+  };
 
   render() {
+    const { label, options } = this.state;
+
     return (
       &lt;div&gt;
-        label: {this.state.label}
+        label: {label}
         &lt;hr /&gt;
         &lt;Select
           defaultValue="lucy"
@@ -319,23 +317,21 @@ class Test extends React.Component {
           style={{ width: 120 }}
           onChange={handleChange}
         &gt;
-          &lt;Option value="lucy"&gt;{this.state.label}&lt;/Option&gt;
+          &lt;Option value="lucy"&gt;{label}&lt;/Option&gt;
           &lt;Option value="lucy2"&gt;lucy2&lt;/Option&gt;
         &lt;/Select&gt;
         &lt;p&gt;
-          &lt;button onClick={this.updateLabel}&gt;upadte option label&lt;/button&gt;
+          &lt;button type="button" onClick={this.updateLabel}&gt;
+            update option label
+          &lt;/button&gt;
         &lt;/p&gt;
-        &lt;hr/&gt;
-        &lt;Select
-          combobox
-          optionLabelProp="children"
-          onChange={this.updateOptions}
-        &gt;
-          {this.state.options.map((opt) =&gt; {
+        &lt;hr /&gt;
+        &lt;Select combobox optionLabelProp="children" onChange={this.updateOptions}&gt;
+          {options.map(opt =&gt; {
             return &lt;Option key={opt}&gt;{opt}&lt;/Option&gt;;
           })}
         &lt;/Select&gt;
-        &lt;hr/&gt;
+        &lt;hr /&gt;
       &lt;/div&gt;
     );
   }

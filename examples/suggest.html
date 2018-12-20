@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>suggest.js - example - rc-select@8.6.6</title>
+  <title>suggest.js - example - rc-select@8.6.7</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-select@8.6.6</h1>
+      <h1>rc-select@8.6.7</h1>
 
       <p>React Select</p>
     </div>
@@ -278,7 +278,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 
 <span class="hljs-keyword">import</span> { fetch } <span class="hljs-keyword">from</span> <span class="hljs-string">'./common/tbFetchSuggest'</span>;
 
-<span class="hljs-keyword">const</span> Input = (props) =&gt; <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...props</span>} /&gt;</span>;</span>
+<span class="hljs-keyword">const</span> Input = props =&gt; <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...props</span>} /&gt;</span>;</span>
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Search</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
   state = {
@@ -286,28 +286,29 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     value: <span class="hljs-string">''</span>,
   };
 
-  onKeyDown = (e) =&gt; {
+  onKeyDown = e =&gt; {
     <span class="hljs-keyword">if</span> (e.keyCode === <span class="hljs-number">13</span>) {
-      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onEnter'</span>, <span class="hljs-keyword">this</span>.state.value);
-      <span class="hljs-keyword">this</span>.jump(<span class="hljs-keyword">this</span>.state.value);
+      <span class="hljs-keyword">const</span> { value } = <span class="hljs-keyword">this</span>.state;
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onEnter'</span>, value);
+      <span class="hljs-keyword">this</span>.jump(value);
     }
   };
 
-  onSelect = (value) =&gt; {
+  onSelect = value =&gt; {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'select '</span>, value);
     <span class="hljs-keyword">this</span>.jump(value);
   };
 
-  jump = (v) =&gt; {
+  jump = v =&gt; {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'jump '</span>, v);
     <span class="hljs-comment">// location.href = 'https://s.taobao.com/search?q=' + encodeURIComponent(v);</span>
   };
 
-  fetchData = (value) =&gt; {
+  fetchData = value =&gt; {
     <span class="hljs-keyword">this</span>.setState({
       value,
     });
-    fetch(value, (data) =&gt; {
+    fetch(value, data =&gt; {
       <span class="hljs-keyword">this</span>.setState({
         data,
       });
@@ -315,33 +316,35 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   };
 
   render() {
-    <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">this</span>.state.data;
-    <span class="hljs-keyword">const</span> options = data.map((d) =&gt; {
+    <span class="hljs-keyword">const</span> { data, value } = <span class="hljs-keyword">this</span>.state;
+    <span class="hljs-keyword">const</span> options = data.map(d =&gt; {
       <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{d.value}</span>&gt;</span>{d.text}<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>;</span>
     });
-    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>suggest<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
+    <span class="hljs-keyword">return</span> (
+      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>suggest<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
 
-      <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">onKeyDown</span>=<span class="hljs-value">{this.onKeyDown}</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Select</span>
-          <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">500</span> }}
-          <span class="hljs-attribute">combobox</span>
-          <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value}</span>
-          <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"placeholder"</span>
-          <span class="hljs-attribute">defaultActiveFirstOption</span>=<span class="hljs-value">{false}</span>
-          <span class="hljs-attribute">getInputElement</span>=<span class="hljs-value">{()</span> =&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-title">Input</span> /&gt;</span>}
-          showArrow={false}
-          notFoundContent=""
-          onChange={this.fetchData}
-          onSelect={this.onSelect}
-          filterOption={false}
-          onFocus={() =&gt; console.log('focus')}
-          onBlur={() =&gt; console.log('blur')}
-        &gt;
-          {options}
-        <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">onKeyDown</span>=<span class="hljs-value">{this.onKeyDown}</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">Select</span>
+            <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">500</span> }}
+            <span class="hljs-attribute">combobox</span>
+            <span class="hljs-attribute">value</span>=<span class="hljs-value">{value}</span>
+            <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"placeholder"</span>
+            <span class="hljs-attribute">defaultActiveFirstOption</span>=<span class="hljs-value">{false}</span>
+            <span class="hljs-attribute">getInputElement</span>=<span class="hljs-value">{()</span> =&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-title">Input</span> /&gt;</span>}
+            showArrow={false}
+            notFoundContent=""
+            onChange={this.fetchData}
+            onSelect={this.onSelect}
+            filterOption={false}
+            onFocus={() =&gt; console.log('focus')}
+            onBlur={() =&gt; console.log('blur')}
+          &gt;
+            {options}
+          <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
+    )</span>;
   }
 }
 

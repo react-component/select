@@ -56,7 +56,7 @@
 /******/ 	// undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/ 	// Promise = chunk loading, 0 = chunk loaded
 /******/ 	var installedChunks = {
-/******/ 		"examples/single-animation": 0
+/******/ 		"examples/~debug": 0
 /******/ 	};
 /******/
 /******/ 	var deferredModules = [];
@@ -147,17 +147,17 @@
 /******/
 /******/
 /******/ 	// add entry module to deferred list
-/******/ 	deferredModules.push([15,"common"]);
+/******/ 	deferredModules.push([21,"common"]);
 /******/ 	// run deferred modules when ready
 /******/ 	return checkDeferredModules();
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./examples/single-animation.js":
-/*!**************************************!*\
-  !*** ./examples/single-animation.js ***!
-  \**************************************/
+/***/ "./examples/~debug.js":
+/*!****************************!*\
+  !*** ./examples/~debug.js ***!
+  \****************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -171,63 +171,66 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rc_select_assets_index_less__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(rc_select_assets_index_less__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-dom */ "./node_modules/_react-dom@16.7.0@react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_3__);
-/* eslint no-console: 0 */
+/* harmony import */ var _debug_less__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./~debug.less */ "./examples/~debug.less");
+/* harmony import */ var _debug_less__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_debug_less__WEBPACK_IMPORTED_MODULE_4__);
+/* eslint-disable */
 
 
 
 
 
-function onChange(value) {
-  console.log("selected ".concat(value));
+var options = [];
+
+for (var i = 0; i < 10; i++) {
+  options.push(i);
 }
 
-var c1 = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-  style: {
-    height: 150
-  }
-}), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "Single Select"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-  style: {
-    width: 300
-  }
-}, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(rc_select__WEBPACK_IMPORTED_MODULE_1___default.a, {
-  allowClear: true,
-  placeholder: "placeholder",
-  defaultValue: "lucy",
-  style: {
-    width: 500
-  },
-  animation: "slide-up",
-  showSearch: false,
-  onChange: onChange
-}, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(rc_select__WEBPACK_IMPORTED_MODULE_1__["Option"], {
-  value: "jack"
-}, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("b", {
-  style: {
-    color: 'red'
-  }
-}, "jack")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(rc_select__WEBPACK_IMPORTED_MODULE_1__["Option"], {
-  value: "lucy"
-}, "lucy"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(rc_select__WEBPACK_IMPORTED_MODULE_1__["Option"], {
-  value: "disabled",
-  disabled: true
-}, "disabled"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(rc_select__WEBPACK_IMPORTED_MODULE_1__["Option"], {
-  value: "yiminghe"
-}, "yiminghe"))));
-react_dom__WEBPACK_IMPORTED_MODULE_3___default.a.render(c1, document.getElementById('__react-content'));
+function handleChange(value) {
+  console.log("OnChange:", value);
+}
+
+function App() {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(rc_select__WEBPACK_IMPORTED_MODULE_1___default.a, {
+    style: {
+      width: 120
+    },
+    dropdownClassName: "test",
+    onChange: handleChange
+  }, options.map(function (item) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(rc_select__WEBPACK_IMPORTED_MODULE_1__["Option"], {
+      key: item,
+      value: item
+    }, item);
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", null));
+}
+
+react_dom__WEBPACK_IMPORTED_MODULE_3___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(App, null), document.getElementById('__react-content'));
+/* eslint-enable */
 
 /***/ }),
 
-/***/ 15:
-/*!********************************************!*\
-  !*** multi ./examples/single-animation.js ***!
-  \********************************************/
+/***/ "./examples/~debug.less":
+/*!******************************!*\
+  !*** ./examples/~debug.less ***!
+  \******************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! ./examples/single-animation.js */"./examples/single-animation.js");
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ 21:
+/*!**********************************!*\
+  !*** multi ./examples/~debug.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! ./examples/~debug.js */"./examples/~debug.js");
 
 
 /***/ })
 
 /******/ });
-//# sourceMappingURL=single-animation.js.map
+//# sourceMappingURL=~debug.js.map

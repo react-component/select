@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>email.js - example - rc-select@8.6.6</title>
+  <title>email.js - example - rc-select@8.6.7</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-select@8.6.6</h1>
+      <h1>rc-select@8.6.7</h1>
 
       <p>React Select</p>
     </div>
@@ -281,18 +281,18 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     options: [],
   };
 
-  onSelect = (value) =&gt; {
+  onSelect = value =&gt; {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onSelect'</span>, value);
   };
 
-  onChange = (value) =&gt; {
+  onChange = value =&gt; {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onChange'</span>, value);
     <span class="hljs-keyword">let</span> options = [];
     <span class="hljs-keyword">if</span> (value) {
       <span class="hljs-keyword">if</span> (value.indexOf(<span class="hljs-string">'@'</span>) &gt;= <span class="hljs-number">0</span>) {
         options = <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{value}</span>&gt;</span>{value}<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>;</span>
       } <span class="hljs-keyword">else</span> {
-        options = [<span class="hljs-string">'gmail.com'</span>, <span class="hljs-string">'yahoo.com'</span>, <span class="hljs-string">'outlook.com'</span>].map((domain) =&gt; {
+        options = [<span class="hljs-string">'gmail.com'</span>, <span class="hljs-string">'yahoo.com'</span>, <span class="hljs-string">'outlook.com'</span>].map(domain =&gt; {
           <span class="hljs-keyword">const</span> email = <span class="hljs-string">`<span class="hljs-subst">${value}</span>@<span class="hljs-subst">${domain}</span>`</span>;
           <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{email}</span>&gt;</span>{email}<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>;</span>
         });
@@ -304,16 +304,19 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   };
 
   render() {
-    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Select</span>
-      <span class="hljs-attribute">combobox</span>
-      <span class="hljs-attribute">notFoundContent</span>=<span class="hljs-value">{false}</span>
-      <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">200</span> }}
-      <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>
-      <span class="hljs-attribute">onSelect</span>=<span class="hljs-value">{this.onSelect}</span>
-      <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"请输入账户名"</span>
-    &gt;</span>
-      {this.state.options}
-    <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>)</span>;
+    <span class="hljs-keyword">const</span> { options } = <span class="hljs-keyword">this</span>.state;
+    <span class="hljs-keyword">return</span> (
+      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Select</span>
+        <span class="hljs-attribute">combobox</span>
+        <span class="hljs-attribute">notFoundContent</span>=<span class="hljs-value">{false}</span>
+        <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">200</span> }}
+        <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>
+        <span class="hljs-attribute">onSelect</span>=<span class="hljs-value">{this.onSelect}</span>
+        <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"请输入账户名"</span>
+      &gt;</span>
+        {options}
+      <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span>
+    )</span>;
   }
 }
 

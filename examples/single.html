@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>single.js - example - rc-select@8.6.6</title>
+  <title>single.js - example - rc-select@8.6.7</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-select@8.6.6</h1>
+      <h1>rc-select@8.6.7</h1>
 
       <p>React Select</p>
     </div>
@@ -282,7 +282,7 @@ class Test extends React.Component {
     value: 9,
   };
 
-  onChange = (e) =&gt; {
+  onChange = e =&gt; {
     let value;
     if (e &amp;&amp; e.target) {
       value = e.target.value;
@@ -301,7 +301,7 @@ class Test extends React.Component {
     });
   };
 
-  onBlur = (v) =&gt; {
+  onBlur = v =&gt; {
     console.log('onBlur', v);
   };
 
@@ -310,19 +310,20 @@ class Test extends React.Component {
   };
 
   render() {
-    if (this.state.destroy) {
+    const { value, destroy } = this.state;
+    if (destroy) {
       return null;
     }
     return (
       &lt;div style={{ margin: 20 }}&gt;
-        &lt;div style={{ height: 150 }}/&gt;
+        &lt;div style={{ height: 150 }} /&gt;
 
         &lt;h2&gt;Single Select&lt;/h2&gt;
 
         &lt;div style={{ width: 300 }}&gt;
           &lt;Select
             id="my-select"
-            value={this.state.value}
+            value={value}
             placeholder="placeholder"
             dropdownMenuStyle={{ maxHeight: 200 }}
             style={{ width: 500 }}
@@ -344,31 +345,45 @@ class Test extends React.Component {
                 jack
               &lt;/b&gt;
             &lt;/Option&gt;
-            &lt;Option value="11" text="lucy"&gt;lucy&lt;/Option&gt;
-            &lt;Option value="21" disabled text="disabled"&gt;disabled&lt;/Option&gt;
-            &lt;Option value="31" text="yiminghe"&gt;yiminghe&lt;/Option&gt;
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) =&gt; {
-              return &lt;Option key={i} value={i} text={String(i)}&gt;{i}-text&lt;/Option&gt;;
+            &lt;Option value="11" text="lucy"&gt;
+              lucy
+            &lt;/Option&gt;
+            &lt;Option value="21" disabled text="disabled"&gt;
+              disabled
+            &lt;/Option&gt;
+            &lt;Option value="31" text="yiminghe"&gt;
+              yiminghe
+            &lt;/Option&gt;
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i =&gt; {
+              return (
+                &lt;Option key={i} value={i} text={String(i)}&gt;
+                  {i}-text
+                &lt;/Option&gt;
+              );
             })}
           &lt;/Select&gt;
         &lt;/div&gt;
         &lt;h2&gt;native select&lt;/h2&gt;
-        &lt;select
-          value={this.state.value}
-          style={{ width: 500 }}
-          onChange={this.onChange}
-        &gt;
+        &lt;select value={value} style={{ width: 500 }} onChange={this.onChange}&gt;
           &lt;option value="01"&gt;jack&lt;/option&gt;
           &lt;option value="11"&gt;lucy&lt;/option&gt;
-          &lt;option value="21" disabled&gt;disabled&lt;/option&gt;
+          &lt;option value="21" disabled&gt;
+            disabled
+          &lt;/option&gt;
           &lt;option value="31"&gt;yiminghe&lt;/option&gt;
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) =&gt; {
-            return &lt;option value={i} key={i}&gt;{i}&lt;/option&gt;;
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i =&gt; {
+            return (
+              &lt;option value={i} key={i}&gt;
+                {i}
+              &lt;/option&gt;
+            );
           })}
         &lt;/select&gt;
 
         &lt;p&gt;
-          &lt;button onClick={this.onDestroy}&gt;destroy&lt;/button&gt;
+          &lt;button type="button" onClick={this.onDestroy}&gt;
+            destroy
+          &lt;/button&gt;
         &lt;/p&gt;
       &lt;/div&gt;
     );
