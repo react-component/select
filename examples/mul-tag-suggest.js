@@ -13,19 +13,19 @@ class Search extends React.Component {
     value: [],
   };
 
-  onChange = (value) => {
+  onChange = value => {
     console.log('onChange ', value);
     this.setState({
       value,
     });
   };
 
-  onSelect = (value) => {
+  onSelect = value => {
     console.log('select ', value);
   };
 
-  fetchData = (value) => {
-    fetch(value, (data) => {
+  fetchData = value => {
+    fetch(value, data => {
       this.setState({
         data,
       });
@@ -33,31 +33,37 @@ class Search extends React.Component {
   };
 
   render() {
-    const data = this.state.data;
-    const options = data.map((d) => {
-      return <Option key={d.value}><i>{d.text}</i></Option>;
+    const { value, data } = this.state;
+    const options = data.map(d => {
+      return (
+        <Option key={d.value}>
+          <i>{d.text}</i>
+        </Option>
+      );
     });
-    return (<div>
-      <h2>multiple suggest</h2>
-
+    return (
       <div>
-        <Select
-          style={{ width: 500 }}
-          labelInValue
-          optionLabelProp="children"
-          value={this.state.value}
-          onChange={this.onChange}
-          tags
-          placeholder="placeholder"
-          notFoundContent=""
-          onSearch={this.fetchData}
-          onSelect={this.onSelect}
-          filterOption={false}
-        >
-          {options}
-        </Select>
+        <h2>multiple suggest</h2>
+
+        <div>
+          <Select
+            style={{ width: 500 }}
+            labelInValue
+            optionLabelProp="children"
+            value={value}
+            onChange={this.onChange}
+            tags
+            placeholder="placeholder"
+            notFoundContent=""
+            onSearch={this.fetchData}
+            onSelect={this.onSelect}
+            filterOption={false}
+          >
+            {options}
+          </Select>
+        </div>
       </div>
-    </div>);
+    );
   }
 }
 

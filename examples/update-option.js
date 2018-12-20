@@ -24,23 +24,21 @@ class Test extends React.Component {
     this.setState({
       label: `newlabel ${this.count++}`,
     });
-  }
+  };
 
-  updateOptions = (value) => {
-    const options = [
-      value,
-      value + value,
-      value + value + value,
-    ];
+  updateOptions = value => {
+    const options = [value, value + value, value + value + value];
     this.setState({
       options,
     });
-  }
+  };
 
   render() {
+    const { label, options } = this.state;
+
     return (
       <div>
-        label: {this.state.label}
+        label: {label}
         <hr />
         <Select
           defaultValue="lucy"
@@ -48,23 +46,21 @@ class Test extends React.Component {
           style={{ width: 120 }}
           onChange={handleChange}
         >
-          <Option value="lucy">{this.state.label}</Option>
+          <Option value="lucy">{label}</Option>
           <Option value="lucy2">lucy2</Option>
         </Select>
         <p>
-          <button onClick={this.updateLabel}>upadte option label</button>
+          <button type="button" onClick={this.updateLabel}>
+            update option label
+          </button>
         </p>
-        <hr/>
-        <Select
-          combobox
-          optionLabelProp="children"
-          onChange={this.updateOptions}
-        >
-          {this.state.options.map((opt) => {
+        <hr />
+        <Select combobox optionLabelProp="children" onChange={this.updateOptions}>
+          {options.map(opt => {
             return <Option key={opt}>{opt}</Option>;
           })}
         </Select>
-        <hr/>
+        <hr />
       </div>
     );
   }

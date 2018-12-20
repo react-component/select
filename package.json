@@ -39,7 +39,9 @@
     "test": "rc-tools run test",
     "prepublish": "rc-tools run guard",
     "init-tslint": "rc-tools run init-tslint",
-    "coverage": "rc-tools run test --coverage"
+    "coverage": "rc-tools run test --coverage",
+    "pre-commit": "rc-tools run pre-commit",
+    "lint-staged": "lint-staged"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.6",
@@ -51,6 +53,7 @@
     "enzyme-adapter-react-16": "^1.7.1",
     "enzyme-to-json": "^3.1.4",
     "jsonp": "^0.2.0",
+    "lint-staged": "^8.1.0",
     "pre-commit": "1.x",
     "querystring": "^0.2.0",
     "rc-dialog": "7.3.0",
@@ -76,6 +79,12 @@
     "warning": "^4.0.2"
   },
   "pre-commit": [
-    "lint"
-  ]
+    "lint-staged"
+  ],
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "npm run pre-commit",
+      "git add"
+    ]
+  }
 }

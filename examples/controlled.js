@@ -12,7 +12,7 @@ class Test extends React.Component {
     open: true,
   };
 
-  onChange = (e) => {
+  onChange = e => {
     let value;
     if (e && e.target) {
       value = e.target.value;
@@ -31,7 +31,7 @@ class Test extends React.Component {
     });
   };
 
-  onBlur = (v) => {
+  onBlur = v => {
     console.log('onBlur', v);
   };
 
@@ -39,12 +39,13 @@ class Test extends React.Component {
     console.log('onFocus');
   };
 
-  onDropdownVisibleChange = (open) => {
+  onDropdownVisibleChange = open => {
     this.setState({ open });
-  }
+  };
 
   render() {
-    if (this.state.destroy) {
+    const { open, destroy, value } = this.state;
+    if (destroy) {
       return null;
     }
     return (
@@ -53,13 +54,13 @@ class Test extends React.Component {
         <div style={{ width: 300 }}>
           <Select
             id="my-select"
-            value={this.state.value}
+            value={value}
             placeholder="placeholder"
             dropdownMenuStyle={{ maxHeight: 200 }}
             style={{ width: 500 }}
             onBlur={this.onBlur}
             onFocus={this.onFocus}
-            open={this.state.open}
+            open={open}
             optionLabelProp="children"
             optionFilterProp="text"
             onChange={this.onChange}
@@ -74,11 +75,21 @@ class Test extends React.Component {
                 jack
               </b>
             </Option>
-            <Option value="11" text="lucy">lucy</Option>
-            <Option value="21" disabled text="disabled">disabled</Option>
-            <Option value="31" text="yiminghe">yiminghe</Option>
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => {
-              return <Option key={i} value={i} text={String(i)}>{i}-text</Option>;
+            <Option value="11" text="lucy">
+              lucy
+            </Option>
+            <Option value="21" disabled text="disabled">
+              disabled
+            </Option>
+            <Option value="31" text="yiminghe">
+              yiminghe
+            </Option>
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => {
+              return (
+                <Option key={i} value={i} text={String(i)}>
+                  {i}-text
+                </Option>
+              );
             })}
           </Select>
         </div>

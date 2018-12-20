@@ -7,7 +7,11 @@ import ReactDOM from 'react-dom';
 
 const children = [];
 for (let i = 10; i < 36; i++) {
-  children.push(<Option key={i.toString(36) + i} test={i}>{i.toString(36) + i}</Option>);
+  children.push(
+    <Option key={i.toString(36) + i} test={i}>
+      {i.toString(36) + i}
+    </Option>,
+  );
 }
 
 class Test extends React.Component {
@@ -32,18 +36,20 @@ class Test extends React.Component {
   };
 
   toggleDisabled = () => {
+    const { disabled } = this.state;
     this.setState({
-      disabled: !this.state.disabled,
+      disabled: !disabled,
     });
   };
 
-  toggleMaxTagCount = (count) => {
+  toggleMaxTagCount = count => {
     this.setState({
       maxTagCount: count,
     });
   };
 
   render() {
+    const { value, maxTagCount, disabled } = this.state;
     return (
       <div>
         <h2>tags select（scroll the menu）</h2>
@@ -54,10 +60,10 @@ class Test extends React.Component {
             tags
             dropdownMenuStyle={{ maxHeight: 200 }}
             style={{ width: 500 }}
-            disabled={this.state.disabled}
-            maxTagCount={this.state.maxTagCount}
+            disabled={disabled}
+            maxTagCount={maxTagCount}
             maxTagTextLength={10}
-            value={this.state.value}
+            value={value}
             onChange={this.onChange}
             onSelect={this.onSelect}
             onDeselect={this.onDeselect}
@@ -69,9 +75,15 @@ class Test extends React.Component {
           </Select>
         </div>
         <p>
-          <button onClick={this.toggleDisabled}>toggle disabled</button>
-          <button onClick={() => this.toggleMaxTagCount(0)}>toggle maxTagCount (0)</button>
-          <button onClick={() => this.toggleMaxTagCount(1)}>toggle maxTagCount (1)</button>
+          <button type="button" onClick={this.toggleDisabled}>
+            toggle disabled
+          </button>
+          <button type="button" onClick={() => this.toggleMaxTagCount(0)}>
+            toggle maxTagCount (0)
+          </button>
+          <button type="button" onClick={() => this.toggleMaxTagCount(1)}>
+            toggle maxTagCount (1)
+          </button>
         </p>
       </div>
     );

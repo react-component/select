@@ -11,7 +11,7 @@ class Test extends React.Component {
     value: 9,
   };
 
-  onChange = (e) => {
+  onChange = e => {
     let value;
     if (e && e.target) {
       value = e.target.value;
@@ -30,7 +30,7 @@ class Test extends React.Component {
     });
   };
 
-  onBlur = (v) => {
+  onBlur = v => {
     console.log('onBlur', v);
   };
 
@@ -39,19 +39,20 @@ class Test extends React.Component {
   };
 
   render() {
-    if (this.state.destroy) {
+    const { value, destroy } = this.state;
+    if (destroy) {
       return null;
     }
     return (
       <div style={{ margin: 20 }}>
-        <div style={{ height: 150 }}/>
+        <div style={{ height: 150 }} />
 
         <h2>Single Select</h2>
 
         <div style={{ width: 300 }}>
           <Select
             id="my-select"
-            value={this.state.value}
+            value={value}
             placeholder="placeholder"
             dropdownMenuStyle={{ maxHeight: 200 }}
             style={{ width: 500 }}
@@ -73,31 +74,45 @@ class Test extends React.Component {
                 jack
               </b>
             </Option>
-            <Option value="11" text="lucy">lucy</Option>
-            <Option value="21" disabled text="disabled">disabled</Option>
-            <Option value="31" text="yiminghe">yiminghe</Option>
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => {
-              return <Option key={i} value={i} text={String(i)}>{i}-text</Option>;
+            <Option value="11" text="lucy">
+              lucy
+            </Option>
+            <Option value="21" disabled text="disabled">
+              disabled
+            </Option>
+            <Option value="31" text="yiminghe">
+              yiminghe
+            </Option>
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => {
+              return (
+                <Option key={i} value={i} text={String(i)}>
+                  {i}-text
+                </Option>
+              );
             })}
           </Select>
         </div>
         <h2>native select</h2>
-        <select
-          value={this.state.value}
-          style={{ width: 500 }}
-          onChange={this.onChange}
-        >
+        <select value={value} style={{ width: 500 }} onChange={this.onChange}>
           <option value="01">jack</option>
           <option value="11">lucy</option>
-          <option value="21" disabled>disabled</option>
+          <option value="21" disabled>
+            disabled
+          </option>
           <option value="31">yiminghe</option>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => {
-            return <option value={i} key={i}>{i}</option>;
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => {
+            return (
+              <option value={i} key={i}>
+                {i}
+              </option>
+            );
           })}
         </select>
 
         <p>
-          <button onClick={this.onDestroy}>destroy</button>
+          <button type="button" onClick={this.onDestroy}>
+            destroy
+          </button>
         </p>
       </div>
     );

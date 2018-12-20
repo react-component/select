@@ -7,7 +7,11 @@ import ReactDOM from 'react-dom';
 const children = [];
 for (let i = 10; i < 36; i++) {
   // 11 => readonly selected item
-  children.push(<Option disabled={i === 11} key={i.toString(36) + i}>中文{i}</Option>);
+  children.push(
+    <Option disabled={i === 11} key={i.toString(36) + i}>
+      中文{i}
+    </Option>,
+  );
 }
 
 class Test extends React.Component {
@@ -15,12 +19,13 @@ class Test extends React.Component {
     value: ['b11'],
   };
 
-  onChange = (value) => {
+  onChange = value => {
     console.log('onChange', value);
     this.setState({ value });
   };
 
   render() {
+    const { value } = this.state;
     const dropdownMenuStyle = {
       maxHeight: 200,
     };
@@ -30,7 +35,7 @@ class Test extends React.Component {
         <div style={{ width: 300 }}>
           <Select
             multiple
-            value={this.state.value}
+            value={value}
             animation="slide-up"
             choiceTransitionName="rc-select-selection__choice-zoom"
             dropdownMenuStyle={dropdownMenuStyle}

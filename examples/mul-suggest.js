@@ -13,15 +13,15 @@ class Search extends React.Component {
     value: [],
   };
 
-  onChange = (value) => {
+  onChange = value => {
     console.log('onChange ', value);
     this.setState({
       value,
     });
   };
 
-  fetchData = (value) => {
-    fetch(value, (data) => {
+  fetchData = value => {
+    fetch(value, data => {
       this.setState({
         data,
       });
@@ -29,31 +29,37 @@ class Search extends React.Component {
   };
 
   render() {
-    const data = this.state.data;
-    const options = data.map((d) => {
-      return <Option key={d.value}><i>{d.text}</i></Option>;
+    const { data, value } = this.state;
+    const options = data.map(d => {
+      return (
+        <Option key={d.value}>
+          <i>{d.text}</i>
+        </Option>
+      );
     });
-    return (<div>
-      <h2>multiple suggest</h2>
-
+    return (
       <div>
-        <Select
-          value={this.state.value}
-          labelInValue
-          style={{ width: 500 }}
-          animation="slide-up"
-          placeholder="搜索下"
-          optionLabelProp="children"
-          multiple
-          notFoundContent=""
-          onSearch={this.fetchData}
-          onChange={this.onChange}
-          filterOption={false}
-        >
-          {options}
-        </Select>
+        <h2>multiple suggest</h2>
+
+        <div>
+          <Select
+            value={value}
+            labelInValue
+            style={{ width: 500 }}
+            animation="slide-up"
+            placeholder="搜索下"
+            optionLabelProp="children"
+            multiple
+            notFoundContent=""
+            onSearch={this.fetchData}
+            onChange={this.onChange}
+            filterOption={false}
+          >
+            {options}
+          </Select>
+        </div>
       </div>
-    </div>);
+    );
   }
 }
 

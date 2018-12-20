@@ -11,11 +11,11 @@ class Test extends React.Component {
     destroy: false,
   };
 
-  getPopupContainer = (node) => {
+  getPopupContainer = node => {
     return node.parentNode;
   };
 
-  setVisible = (open) => {
+  setVisible = open => {
     this.setState({
       open,
     });
@@ -36,26 +36,34 @@ class Test extends React.Component {
   };
 
   render() {
-    if (this.state.destroy) {
+    const { open, destroy } = this.state;
+    if (destroy) {
       return null;
     }
-    return (<div>
-      <button onClick={this.open}>open</button>
-      &nbsp;
-      <button onClick={this.destroy}>destroy</button>
-      <Dialog visible={this.state.open} onClose={this.close}>
-        <div style={{ marginTop: 20, position: 'relative' }}>
-          <Select
-            placeholder="placeholder"
-            style={{ width: 200 }}
-            getPopupContainer={this.getPopupContainer}
-          >
-            <Option value="1">1</Option>
-            <Option value="2">2</Option>
-            <Option value="3">3</Option>
-          </Select>
-        </div>
-      </Dialog></div>);
+    return (
+      <div>
+        <button type="button" onClick={this.open}>
+          open
+        </button>
+        &nbsp;
+        <button type="button" onClick={this.destroy}>
+          destroy
+        </button>
+        <Dialog visible={open} onClose={this.close}>
+          <div style={{ marginTop: 20, position: 'relative' }}>
+            <Select
+              placeholder="placeholder"
+              style={{ width: 200 }}
+              getPopupContainer={this.getPopupContainer}
+            >
+              <Option value="1">1</Option>
+              <Option value="2">2</Option>
+              <Option value="3">3</Option>
+            </Select>
+          </div>
+        </Dialog>
+      </div>
+    );
   }
 }
 

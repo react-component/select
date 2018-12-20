@@ -6,7 +6,11 @@ import ReactDOM from 'react-dom';
 
 const children = [];
 for (let i = 10; i < 36; i++) {
-  children.push(<Option key={i.toString(36) + i} test={i}>{i.toString(36) + i}</Option>);
+  children.push(
+    <Option key={i.toString(36) + i} test={i}>
+      {i.toString(36) + i}
+    </Option>,
+  );
 }
 
 class Test extends React.Component {
@@ -30,9 +34,10 @@ class Test extends React.Component {
   };
 
   render() {
+    const { value } = this.state;
     return (
       <div
-        onMouseDown={(e) => {
+        onMouseDown={e => {
           e.preventDefault();
           return false;
         }}
@@ -45,21 +50,19 @@ class Test extends React.Component {
             tags
             dropdownMenuStyle={{ maxHeight: 200 }}
             style={{ width: 500 }}
-            value={this.state.value}
+            value={value}
             onChange={this.onChange}
             onSelect={this.onSelect}
             onDeselect={this.onDeselect}
             tokenSeparators={[' ', ',']}
             onFocus={() => console.log('focus')}
             onBlur={() => console.log('blur')}
-            dropdownRender={(menu) =>
+            dropdownRender={menu => (
               <React.Fragment>
                 <div
-                  onClick={
-                    () => {
-                      console.log('before clicked')
-                    }
-                  }
+                  onClick={() => {
+                    console.log('before clicked');
+                  }}
                 >
                   BEFORE
                 </div>
@@ -67,16 +70,14 @@ class Test extends React.Component {
                 {menu}
 
                 <div
-                  onClick={
-                    () => {
-                      console.log('after clicked')
-                    }
-                  }
+                  onClick={() => {
+                    console.log('after clicked');
+                  }}
                 >
                   AFTER
                 </div>
               </React.Fragment>
-            }
+            )}
           >
             {children}
           </Select>
@@ -87,4 +88,3 @@ class Test extends React.Component {
 }
 
 ReactDOM.render(<Test />, document.getElementById('__react-content'));
-

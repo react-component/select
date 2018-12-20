@@ -11,7 +11,7 @@ class Test extends React.Component {
     value: ['a10'],
     children: [],
   };
-  
+
   componentDidMount() {
     setTimeout(() => {
       this.loadData();
@@ -35,7 +35,7 @@ class Test extends React.Component {
       children.push(
         <Option key={i.toString(36) + i} disabled={i === 10} title={`中文${i}`}>
           中文{i}
-        </Option>
+        </Option>,
       );
     }
     this.setState({
@@ -48,14 +48,14 @@ class Test extends React.Component {
     const dropdownMenuStyle = {
       maxHeight: 200,
     };
-    const { loading } = this.state;
+    const { loading, children, value } = this.state;
     return (
       <div>
         <h2>loading load data</h2>
 
         <div style={{ width: 300 }}>
           <Select
-            value={this.state.value}
+            value={value}
             dropdownMenuStyle={dropdownMenuStyle}
             style={{ width: 500 }}
             multiple
@@ -69,7 +69,7 @@ class Test extends React.Component {
             onBlur={v => console.log('blur', v)}
             tokenSeparators={[' ', ',']}
           >
-            {this.state.children}
+            {children}
           </Select>
         </div>
       </div>
