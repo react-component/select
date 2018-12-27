@@ -1,15 +1,14 @@
 /* eslint no-console: 0 */
 
 import React from 'react';
-import Select, { Option } from 'rc-select';
-import 'rc-select/assets/index.less';
-import ReactDOM from 'react-dom';
+import Select, { Option } from '../src';
+import '../assets/index.less';
 
 import { fetch } from './common/tbFetchSuggest';
 
 const Input = props => <input {...props} />;
 
-class Search extends React.Component {
+class Test extends React.Component {
   state = {
     data: [],
     value: '',
@@ -77,4 +76,4 @@ class Search extends React.Component {
   }
 }
 
-ReactDOM.render(<Search />, document.getElementById('__react-content'));
+export default Test;

@@ -1,7 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Select, { Option } from 'rc-select';
-import 'rc-select/assets/index.less';
+
+import Select, { Option } from '../src';
+import '../assets/index.less';
 import Dialog from 'rc-dialog';
 import 'rc-dialog/assets/index.css';
 
@@ -67,4 +67,4 @@ class Test extends React.Component {
   }
 }
 
-ReactDOM.render(<Test />, document.getElementById('__react-content'));
+export default Test;
