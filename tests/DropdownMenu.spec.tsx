@@ -2,8 +2,13 @@ import { mount, render } from 'enzyme';
 import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
 import * as React from 'react';
 import DropdownMenu from '../src/DropdownMenu';
+import { resetAriaId } from '../src/util';
 
 describe('DropdownMenu', () => {
+  beforeEach(() => {
+    resetAriaId();
+  });
+
   it('renders correctly', () => {
     const menuItems = [
       <MenuItemGroup key="group1">

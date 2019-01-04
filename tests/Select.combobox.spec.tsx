@@ -2,6 +2,7 @@ import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import * as React from 'react';
 import Select, { Option } from '../src';
+import { resetAriaId } from '../src/util';
 import allowClearTest from './shared/allowClearTest';
 import focusTest from './shared/focusTest';
 import keyDownTest from './shared/keyDownTest';
@@ -14,6 +15,10 @@ describe('Select.combobox', () => {
   focusTest('combobox', {});
   keyDownTest('combobox');
   openControlledTest('combobox');
+
+  beforeEach(() => {
+    resetAriaId();
+  });
 
   it('renders correctly', () => {
     const wrapper = render(

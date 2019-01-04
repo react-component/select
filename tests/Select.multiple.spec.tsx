@@ -1,6 +1,7 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
 import Select, { OptGroup, Option } from '../src';
+import { resetAriaId } from '../src/util';
 import allowClearTest from './shared/allowClearTest';
 import blurTest from './shared/blurTest';
 import dynamicChildrenTest from './shared/dynamicChildrenTest';
@@ -19,6 +20,10 @@ describe('Select.multiple', () => {
   removeSelectedTest('multiple');
   dynamicChildrenTest('multiple', {});
   inputFilterTest('multiple');
+
+  beforeEach(() => {
+    resetAriaId();
+  });
 
   it('tokenize input', () => {
     const handleChange = jest.fn();

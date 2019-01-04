@@ -2,6 +2,7 @@ import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import * as React from 'react';
 import Select, { OptGroup, Option } from '../src';
+import { resetAriaId } from '../src/util';
 import blurTest from './shared/blurTest';
 import focusTest from './shared/focusTest';
 import inputFilterTest from './shared/inputFilterTest';
@@ -82,6 +83,10 @@ describe('Select', () => {
       );
       expect(wrapper).toMatchSnapshot();
     });
+  });
+
+  beforeEach(() => {
+    resetAriaId();
   });
 
   it('convert value to array', () => {

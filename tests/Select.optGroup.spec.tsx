@@ -1,8 +1,13 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
 import Select, { OptGroup, Option } from '../src';
+import { resetAriaId } from '../src/util';
 
 describe('Select.optionGroup', () => {
+  beforeEach(() => {
+    resetAriaId();
+  });
+
   it('group name support search', () => {
     const wrapper = mount(
       <Select>

@@ -2,6 +2,7 @@ import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import * as React from 'react';
 import Select, { OptGroup, Option } from '../src';
+import { resetAriaId } from '../src/util';
 import allowClearTest from './shared/allowClearTest';
 import blurTest from './shared/blurTest';
 import dynamicChildrenTest from './shared/dynamicChildrenTest';
@@ -24,6 +25,10 @@ describe('Select.tags', () => {
   dynamicChildrenTest('tags', {});
   inputFilterTest('tags');
   openControlledTest('tags');
+
+  beforeEach(() => {
+    resetAriaId();
+  });
 
   it('allow user input tags', () => {
     const wrapper = mount<Select>(<Select tags={true} />);
