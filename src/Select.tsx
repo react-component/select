@@ -17,7 +17,7 @@ import {
   defaultFilterFn,
   findFirstMenuItem,
   findIndexInValueBySingleValue,
-  generateUUID,
+  generateAriaId,
   getLabelFromPropsValue,
   getMapKey,
   getPropValue,
@@ -68,6 +68,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
   public static displayName: string;
   public static defaultProps = {
     prefixCls: 'rc-select',
+    prefixAria: 'rc-select',
     defaultOpen: false,
     labelInValue: false,
     defaultActiveFirstOption: true,
@@ -242,6 +243,8 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
   private _options: JSX.Element[] = [];
   constructor(props: Partial<ISelectProps>) {
     super(props);
+    const { prefixAria } = props;
+
     const optionsInfo = Select.getOptionsInfoFromProps(props);
     this.state = {
       value: Select.getValueFromProps(props, true), // true: use default value
@@ -265,7 +268,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     this.saveSelectTriggerRef = saveRef(this, 'selectTriggerRef');
     this.saveRootRef = saveRef(this, 'rootRef');
     this.saveSelectionRef = saveRef(this, 'selectionRef');
-    this.ariaId = generateUUID();
+    this.ariaId = generateAriaId(`${prefixAria}-list`);
   }
 
   public componentDidMount() {

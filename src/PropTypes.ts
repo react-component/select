@@ -42,6 +42,7 @@ export interface ISelectProps {
   openClassName: string;
   autoFocus: boolean;
   prefixCls: string;
+  prefixAria: string;
   className: string;
   transitionName: string;
   optionLabelProp: string;
@@ -137,6 +138,7 @@ const SelectPropTypes = {
   showArrow: PropTypes.bool,
   tags: PropTypes.bool,
   prefixCls: PropTypes.string,
+  prefixAria: PropTypes.string,
   className: PropTypes.string,
   transitionName: PropTypes.string,
   optionLabelProp: PropTypes.string,

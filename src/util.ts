@@ -190,17 +190,13 @@ export function saveRef(instance: any, name: string): (node: any) => void {
   };
 }
 
-export function generateUUID(): string {
-  if (process.env.NODE_ENV === 'test') {
-    return 'test-uuid';
-  }
-  let d = new Date().getTime();
-  const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-    // tslint:disable-next-line:no-bitwise
-    const r = (d + Math.random() * 16) % 16 | 0;
-    d = Math.floor(d / 16);
-    // tslint:disable-next-line:no-bitwise
-    return (c === 'x' ? r : (r & 0x7) | 0x8).toString(16);
-  });
-  return uuid;
+let ariaId = 0;
+
+export function resetAriaId(): void {
+  ariaId = 0;
+}
+
+export function generateAriaId(prefix: string) {
+  ariaId += 1;
+  return `${prefix}_${ariaId}`;
 }
