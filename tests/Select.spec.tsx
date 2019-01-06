@@ -824,7 +824,8 @@ describe('Select', () => {
         <Foo value="1" />
       </Select>,
     );
-    expect(spy.mock.calls.length).toBe(1);
+    // Because it will start setState, so it is twice
+    expect(spy.mock.calls.length).toBe(2);
     expect(spy.mock.calls[0][0]).toContain(
       'the children of `Select` should be `Select.Option` or `Select.OptGroup`, ' +
         `instead of \`Foo\`.`,
