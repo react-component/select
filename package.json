@@ -67,7 +67,6 @@
     "typescript": "^3.2.2"
   },
   "dependencies": {
-    "@storybook/addon-knobs": "^4.1.3",
     "babel-runtime": "^6.23.0",
     "classnames": "2.x",
     "component-classes": "1.x",
@@ -80,7 +79,6 @@
     "rc-util": "^4.0.4",
     "react-lifecycles-compat": "^3.0.2",
     "react-markdown": "^4.0.4",
-    "storybook-addon-smart-knobs": "^4.1.0",
     "warning": "^4.0.2"
   },
   "pre-commit": [
