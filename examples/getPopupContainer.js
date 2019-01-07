@@ -1,9 +1,9 @@
-import React from 'react';
-
-import Select, { Option } from '../src';
 import '../assets/index.less';
-import Dialog from 'rc-dialog';
 import 'rc-dialog/assets/index.css';
+
+import Dialog from 'rc-dialog';
+import React from 'react';
+import Select, { Option } from '../src';
 
 class Test extends React.Component {
   state = {

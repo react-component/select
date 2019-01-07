@@ -60,12 +60,11 @@
     "querystring": "^0.2.0",
     "rc-dialog": "7.3.0",
     "rc-test": "^6.0.1",
-    "rc-tools": "9.0.2-alpha.2",
+    "rc-tools": "9.3.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-test-renderer": "^16.0.0",
-    "typescript": "^3.2.2",
-    "react-markdown": "^4.0.6"
+    "typescript": "^3.2.2"
   },
   "dependencies": {
     "babel-runtime": "^6.23.0",
