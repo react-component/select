@@ -60,11 +60,12 @@
     "querystring": "^0.2.0",
     "rc-dialog": "7.3.0",
     "rc-test": "^6.0.1",
-    "rc-tools": "9.0.2-alpha.0",
+    "rc-tools": "9.0.2-alpha.2",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-test-renderer": "^16.0.0",
-    "typescript": "^3.2.2"
+    "typescript": "^3.2.2",
+    "react-markdown": "^4.0.6"
   },
   "dependencies": {
     "babel-runtime": "^6.23.0",
@@ -78,7 +79,6 @@
     "rc-trigger": "^2.5.4",
     "rc-util": "^4.0.4",
     "react-lifecycles-compat": "^3.0.2",
-    "react-markdown": "^4.0.4",
     "warning": "^4.0.2"
   },
   "pre-commit": [

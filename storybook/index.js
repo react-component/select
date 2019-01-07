@@ -3,6 +3,8 @@ import { checkA11y } from '@storybook/addon-a11y';
 import { storiesOf } from '@storybook/react';
 import { withConsole } from '@storybook/addon-console';
 import { withViewport } from '@storybook/addon-viewport';
+import { withInfo } from '@storybook/addon-info';
+import ReactMarkdown from 'react-markdown';
 import Combobox from '../examples/combobox';
 import Controlled from '../examples/controlled';
 import CustomIcon from '../examples/custom-icon';
@@ -23,11 +25,11 @@ import Single from '../examples/single';
 import Suggest from '../examples/suggest';
 import Tags from '../examples/tags';
 import UpdateOption from '../examples/update-option';
-import ReactMarkdown from 'react-markdown';
 import README from '../README.md';
 
 storiesOf('rc-select', module)
   .addDecorator(checkA11y)
+  .addDecorator(withInfo)
   .addDecorator((storyFn, context) => withConsole()(storyFn)(context))
   .addDecorator(withViewport())
   .add('README', () => <ReactMarkdown escapeHtml={false} source={README} />)

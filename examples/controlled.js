@@ -4,7 +4,7 @@ import React from 'react';
 import Select, { Option } from '../src';
 import '../assets/index.less';
 
-class Test extends React.Component {
+class Controlled extends React.Component {
   state = {
     destroy: false,
     value: 9,
@@ -97,4 +97,4 @@ class Test extends React.Component {
   }
 }
 
-export default Test;
+export default Controlled;

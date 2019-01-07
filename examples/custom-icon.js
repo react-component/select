@@ -52,7 +52,7 @@ const getSvg = path => {
   );
 };
 
-class Demo extends React.Component {
+class CustomIconComponent extends React.Component {
   state = {
     disabled: false,
     value: '',
@@ -227,11 +227,11 @@ class Test extends React.Component {
   }
 }
 
-const DemoContent = () => (
+const CustomIcon = () => (
   <div>
-    <Demo />
+    <CustomIconComponent />
     <br />
     <Test />
   </div>
 );
-export default DemoContent;
+export default CustomIcon;
