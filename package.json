@@ -28,9 +28,9 @@
     "port": 8003
   },
   "scripts": {
-    "build": "rc-tools run build",
+    "build": "rc-tools run storybook-build",
     "compile": "rc-tools run compile --babel-runtime",
-    "gh-pages": "rc-tools run gh-pages",
+    "gh-pages": "npm run build && rc-tools run storybook-gh-pages",
     "start": "rc-tools run storybook",
     "pub": "rc-tools run pub --babel-runtime",
     "lint": "rc-tools run lint",
@@ -60,7 +60,7 @@
     "querystring": "^0.2.0",
     "rc-dialog": "7.3.0",
     "rc-test": "^6.0.1",
-    "rc-tools": "9.3.0",
+    "rc-tools": "9.3.3",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-test-renderer": "^16.0.0",
