@@ -1,9 +1,8 @@
 /* eslint no-console: 0 */
 
 import React from 'react';
-import Select, { Option } from 'rc-select';
-import 'rc-select/assets/index.less';
-import ReactDOM from 'react-dom';
+import Select, { Option } from '../src';
+import '../assets/index.less';
 
 function handleChange(value) {
   console.log(`selected ${value}`);
@@ -66,4 +65,4 @@ class Test extends React.Component {
   }
 }
 
-ReactDOM.render(<Test />, document.getElementById('__react-content'));
+export default Test;

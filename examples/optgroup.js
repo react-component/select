@@ -1,15 +1,14 @@
 /* eslint no-console: 0 */
 
 import React from 'react';
-import Select, { Option, OptGroup } from 'rc-select';
-import 'rc-select/assets/index.less';
-import ReactDOM from 'react-dom';
+import Select, { Option, OptGroup } from '../src';
+import '../assets/index.less';
 
 function onChange(value, option) {
   console.log(`selected ${value}`, option);
 }
 
-const c1 = (
+const Test = () => (
   <div>
     <h2>Select OptGroup</h2>
     <div style={{ width: 300 }}>
@@ -29,14 +28,18 @@ const c1 = (
               jack
             </b>
           </Option>
-          <Option value="lucy" test-prop="lucy-prop">lucy</Option>
+          <Option value="lucy" test-prop="lucy-prop">
+            lucy
+          </Option>
         </OptGroup>
         <OptGroup label="engineer">
-          <Option value="yiminghe" test-prop="yiminghe-prop">yiminghe</Option>
+          <Option value="yiminghe" test-prop="yiminghe-prop">
+            yiminghe
+          </Option>
         </OptGroup>
       </Select>
     </div>
   </div>
 );
 
-ReactDOM.render(c1, document.getElementById('__react-content'));
+export default Test;

@@ -1,15 +1,14 @@
 /* eslint no-console: 0 */
 
 import React from 'react';
-import Select, { Option } from 'rc-select';
-import 'rc-select/assets/index.less';
-import ReactDOM from 'react-dom';
+import Select, { Option } from '../src';
+import '../assets/index.less';
 
 function onChange(value) {
   console.log(`selected ${value}`);
 }
 
-const c1 = (
+const Test = () => (
   <div>
     <h2>Select optionFilterProp</h2>
     <div style={{ width: 300 }}>
@@ -20,12 +19,18 @@ const c1 = (
         optionFilterProp="desc"
         onChange={onChange}
       >
-        <Option value="张三" desc="张三 zhang san">张三</Option>
-        <Option value="李四" desc="李四 li si">李四</Option>
-        <Option value="王五" desc="王五 wang wu">王五</Option>
+        <Option value="张三" desc="张三 zhang san">
+          张三
+        </Option>
+        <Option value="李四" desc="李四 li si">
+          李四
+        </Option>
+        <Option value="王五" desc="王五 wang wu">
+          王五
+        </Option>
       </Select>
     </div>
   </div>
 );
 
-ReactDOM.render(c1, document.getElementById('__react-content'));
+export default Test;

@@ -2,9 +2,9 @@
 /* eslint react/no-multi-comp: 0 */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Select, { Option } from 'rc-select';
-import 'rc-select/assets/index.less';
+
+import Select, { Option } from '../src';
+import '../assets/index.less';
 
 const arrowPath =
   'M632 888H392c-4.4 0-8 3.6-8 8v32c0 ' +
@@ -52,7 +52,7 @@ const getSvg = path => {
   );
 };
 
-class Demo extends React.Component {
+class CustomIconComponent extends React.Component {
   state = {
     disabled: false,
     value: '',
@@ -227,11 +227,11 @@ class Test extends React.Component {
   }
 }
 
-ReactDOM.render(
+const CustomIcon = () => (
   <div>
-    <Demo />
+    <CustomIconComponent />
     <br />
     <Test />
-  </div>,
-  document.getElementById('__react-content'),
+  </div>
 );
+export default CustomIcon;

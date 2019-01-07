@@ -24,7 +24,7 @@ React Select
 
 ## Screenshots
 
-<img src="https://tfsimg.alipay.com/images/T1CUBeXa0kXXXXXXXX.png" />
+<img src="https://user-images.githubusercontent.com/8186664/50768510-a8b30680-12bb-11e9-8251-0e0ed82c5076.png" />
 
 ## Feature
 
@@ -154,7 +154,7 @@ npm start
 
 ## Example
 
-http://localhost:8003/examples/
+http://localhost:9001/
 
 online example: http://react-component.github.io/select/examples/
 

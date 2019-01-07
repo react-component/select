@@ -22,7 +22,7 @@ export function fetch(value, callback) {
       if (currentValue === value) {
         const result = d.result;
         const data = [];
-        result.forEach((r) => {
+        result.forEach(r => {
           data.push({
             value: r[0],
             text: r[0],

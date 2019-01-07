@@ -1,11 +1,10 @@
 /* eslint no-console: 0 */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Select, { Option } from 'rc-select';
-import 'rc-select/assets/index.less';
+import Select, { Option, SelectPropTypes } from '../src';
+import '../assets/index.less';
 
-class Demo extends React.Component {
+class Combobox extends React.Component {
   state = {
     disabled: false,
     value: '',
@@ -77,4 +76,6 @@ class Demo extends React.Component {
   }
 }
 
-ReactDOM.render(<Demo />, document.getElementById('__react-content'));
+Combobox.propTypes = SelectPropTypes;
+
+export default Combobox;

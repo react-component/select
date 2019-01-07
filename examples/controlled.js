@@ -1,11 +1,10 @@
 /* eslint no-console: 0 */
 
 import React from 'react';
-import Select, { Option } from 'rc-select';
-import 'rc-select/assets/index.less';
-import ReactDOM from 'react-dom';
+import Select, { Option } from '../src';
+import '../assets/index.less';
 
-class Test extends React.Component {
+class Controlled extends React.Component {
   state = {
     destroy: false,
     value: 9,
@@ -98,4 +97,4 @@ class Test extends React.Component {
   }
 }
 
-ReactDOM.render(<Test />, document.getElementById('__react-content'));
+export default Controlled;
