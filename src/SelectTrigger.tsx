@@ -53,7 +53,7 @@ export interface ISelectTriggerProps extends IDropdownMenuProps {
   dropdownRender: (menu: React.ReactNode, props: Partial<ISelectTriggerProps>) => React.ReactNode;
   onDropdownVisibleChange: (value: boolean) => void;
   getPopupContainer: renderSelect;
-  ariaId: string;
+  popupId: string;
   value: valueType;
   transitionName: string;
   animation: string;
@@ -90,7 +90,7 @@ export default class SelectTrigger extends React.Component<
     showAction: PropTypes.arrayOf(PropTypes.string),
     menuItemSelectedIcon: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     dropdownRender: PropTypes.func,
-    ariaId: PropTypes.string,
+    popupId: PropTypes.string,
   };
 
   public saveDropdownMenuRef: (ref: any) => void;
@@ -136,13 +136,13 @@ export default class SelectTrigger extends React.Component<
   public getDropdownElement = (newProps: Partial<ISelectTriggerProps>) => {
     const props = this.props;
 
-    const { dropdownRender, ariaId } = props;
+    const { dropdownRender, popupId } = props;
 
     const menuNode = (
       <DropdownMenu
         ref={this.saveDropdownMenuRef}
         {...newProps}
-        ariaId={ariaId}
+        id={popupId}
         prefixCls={this.getDropdownPrefixCls()}
         onMenuSelect={props.onMenuSelect}
         onMenuDeselect={props.onMenuDeselect}

@@ -6,7 +6,6 @@ exports[`Select.combobox allowClear renders correctly 1`] = `
 >
   <div
     aria-autocomplete="list"
-    aria-controls=""
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
@@ -56,7 +55,6 @@ exports[`Select.combobox renders correctly 1`] = `
 >
   <div
     aria-autocomplete="list"
-    aria-controls=""
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection

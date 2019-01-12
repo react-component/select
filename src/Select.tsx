@@ -59,7 +59,7 @@ export interface ISelectState {
   skipBuildOptionsInfo?: boolean;
   optionsInfo?: any;
   backfillValue?: string;
-  ariaId?: string;
+  id?: string;
 }
 
 class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
@@ -117,6 +117,11 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
         newState.inputValue = Select.getInputValueForCombobox(nextProps, optionsInfo);
       }
     }
+
+    if ('id' in nextProps) {
+      newState.id = nextProps.id;
+    }
+
     return newState;
   };
 
@@ -257,7 +262,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
       backfillValue: '',
       // a flag for aviod redundant getOptionsInfoFromProps call
       skipBuildOptionsInfo: true,
-      ariaId: '',
+      id: props.id,
     };
 
     this.saveInputRef = saveRef(this, 'inputRef');
@@ -272,9 +277,11 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     if (this.props.autoFocus) {
       this.focus();
     }
-    this.setState({
-      ariaId: generateUUID(),
-    });
+    if (!this.state.id) {
+      this.setState({
+        id: generateUUID(),
+      });
+    }
   }
 
   public componentDidUpdate() {
@@ -1451,10 +1458,11 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     const state = this.state;
     const { className, disabled, prefixCls } = props;
     const ctrlNode = this.renderTopControlNode();
-    const { open, ariaId } = this.state;
+    const { open, id } = this.state;
     if (open) {
       this._options = this.renderFilterOptions();
     }
+    const popupId = id && `${id}__popup`;
     const realOpen = this.getRealOpenState();
     const options = this._options || [];
     const dataOrAriaAttributeProps = {};
@@ -1526,10 +1534,10 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
         ref={this.saveSelectTriggerRef}
         menuItemSelectedIcon={props.menuItemSelectedIcon}
         dropdownRender={props.dropdownRender}
-        ariaId={ariaId}
+        popupId={popupId}
       >
         <div
-          id={props.id}
+          id={id}
           style={props.style}
           ref={this.saveRootRef}
           onBlur={this.onOuterBlur}
@@ -1547,7 +1555,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
             role="combobox"
             aria-autocomplete="list"
             aria-haspopup="true"
-            aria-controls={ariaId}
+            aria-controls={id}
             aria-expanded={realOpen}
             {...extraSelectionProps}
           >

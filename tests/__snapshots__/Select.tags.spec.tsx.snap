@@ -4,6 +4,7 @@ exports[`Select.tags OptGroup renders correctly 1`] = `
 <div>
   <div
     class="rc-select rc-select-open rc-select-focused rc-select-enabled"
+    id="test-uuid"
     style=""
   >
     <div
@@ -89,7 +90,7 @@ exports[`Select.tags OptGroup renders correctly 1`] = `
       style="left: -999px; top: -995px;"
     >
       <div
-        id="test-uuid"
+        id="test-uuid__popup"
         style="overflow: auto; transform: translateZ(0);"
       >
         <ul
@@ -160,6 +161,7 @@ exports[`Select.tags OptGroup renders inputValue correctly 1`] = `
 <div>
   <div
     class="rc-select rc-select-open rc-select-focused rc-select-enabled"
+    id="test-uuid"
     style=""
   >
     <div
@@ -204,7 +206,7 @@ exports[`Select.tags OptGroup renders inputValue correctly 1`] = `
       style="left: -999px; top: -995px;"
     >
       <div
-        id="test-uuid"
+        id="test-uuid__popup"
         style="overflow: auto; transform: translateZ(0);"
       >
         <ul
@@ -232,6 +234,7 @@ exports[`Select.tags OptGroup renders inputValue correctly 2`] = `
 <div>
   <div
     class="rc-select rc-select-open rc-select-focused rc-select-enabled"
+    id="test-uuid"
     style=""
   >
     <div
@@ -297,7 +300,7 @@ exports[`Select.tags OptGroup renders inputValue correctly 2`] = `
       style="left: -999px; top: -995px;"
     >
       <div
-        id="test-uuid"
+        id="test-uuid__popup"
         style="overflow: auto; transform: translateZ(0);"
       >
         <ul
@@ -372,7 +375,6 @@ exports[`Select.tags allowClear renders correctly 1`] = `
 >
   <div
     aria-autocomplete="list"
-    aria-controls=""
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
@@ -409,7 +411,6 @@ exports[`Select.tags allowClear renders correctly 1`] = `
 
 exports[`Select.tags render render animation 1`] = `
 <SelectTrigger
-  ariaId="test-uuid"
   backfillValue=""
   defaultActiveFirstOption={true}
   dropdownMatchSelectWidth={true}
@@ -423,6 +424,7 @@ exports[`Select.tags render render animation 1`] = `
   onMenuSelect={[Function]}
   onPopupFocus={[Function]}
   options={Array []}
+  popupId="test-uuid__popup"
   prefixCls="rc-select"
   showAction={
     Array [
@@ -435,6 +437,7 @@ exports[`Select.tags render render animation 1`] = `
 >
   <div
     className="rc-select rc-select-enabled"
+    id="test-uuid"
     onBlur={[Function]}
     onFocus={[Function]}
     onMouseDown={[Function]}
@@ -501,7 +504,6 @@ exports[`Select.tags render truncates tags by maxTagCount 1`] = `
 >
   <div
     aria-autocomplete="list"
-    aria-controls=""
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
@@ -599,7 +601,6 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
 >
   <div
     aria-autocomplete="list"
-    aria-controls=""
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
@@ -699,7 +700,6 @@ exports[`Select.tags render truncates tags by maxTagCount and show maxTagPlaceho
 >
   <div
     aria-autocomplete="list"
-    aria-controls=""
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
@@ -799,7 +799,6 @@ exports[`Select.tags render truncates tags by maxTagCount while maxTagCount is 0
 >
   <div
     aria-autocomplete="list"
-    aria-controls=""
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
@@ -853,7 +852,6 @@ exports[`Select.tags render truncates values by maxTagTextLength 1`] = `
 >
   <div
     aria-autocomplete="list"
-    aria-controls=""
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
@@ -939,7 +937,6 @@ Array [
   >
     <div
       aria-autocomplete="list"
-      aria-controls=""
       aria-expanded="true"
       aria-haspopup="true"
       class="rc-select-selection
@@ -999,7 +996,6 @@ Array [
       class="rc-select-dropdown rc-select-dropdown--multiple rc-select-dropdown-placement-bottomLeft "
     >
       <div
-        id=""
         style="overflow:auto;transform:translateZ(0)"
       >
         <ul
@@ -1039,7 +1035,6 @@ Array [
   >
     <div
       aria-autocomplete="list"
-      aria-controls=""
       aria-expanded="true"
       aria-haspopup="true"
       class="rc-select-selection
@@ -1099,7 +1094,6 @@ Array [
       class="rc-select-dropdown rc-select-dropdown--multiple rc-select-dropdown-placement-bottomLeft "
     >
       <div
-        id=""
         style="overflow:auto;transform:translateZ(0)"
       >
         <ul
@@ -1148,7 +1142,6 @@ Array [
   >
     <div
       aria-autocomplete="list"
-      aria-controls=""
       aria-expanded="true"
       aria-haspopup="true"
       class="rc-select-selection
@@ -1186,7 +1179,6 @@ Array [
       class="rc-select-dropdown rc-select-dropdown--multiple rc-select-dropdown-placement-bottomLeft "
     >
       <div
-        id=""
         style="overflow:auto;transform:translateZ(0)"
       >
         <ul

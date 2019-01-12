@@ -16,7 +16,7 @@ export interface IMenuEvent {
 }
 
 export interface IDropdownMenuProps {
-  ariaId: string;
+  id: string;
   defaultActiveFirstOption: boolean;
   value: valueType;
   dropdownMenuStyle: React.CSSProperties;
@@ -37,7 +37,7 @@ export interface IDropdownMenuProps {
 export default class DropdownMenu extends React.Component<Partial<IDropdownMenuProps>> {
   public static displayName = 'DropdownMenu';
   public static propTypes = {
-    ariaId: PropTypes.string,
+    id: PropTypes.string,
     defaultActiveFirstOption: PropTypes.bool,
     value: PropTypes.any,
     dropdownMenuStyle: PropTypes.object,
@@ -230,7 +230,7 @@ export default class DropdownMenu extends React.Component<Partial<IDropdownMenuP
           overflow: 'auto',
           transform: 'translateZ(0)',
         }}
-        id={this.props.ariaId}
+        id={this.props.id}
         onFocus={this.props.onPopupFocus}
         onMouseDown={preventDefaultEvent}
         onScroll={this.props.onPopupScroll}

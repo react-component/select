@@ -6,7 +6,6 @@ exports[`Select.multiple allowClear renders correctly 1`] = `
 >
   <div
     aria-autocomplete="list"
-    aria-controls=""
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
@@ -43,7 +42,6 @@ exports[`Select.multiple allowClear renders correctly 1`] = `
 
 exports[`Select.multiple render render animation 1`] = `
 <SelectTrigger
-  ariaId="test-uuid"
   backfillValue=""
   defaultActiveFirstOption={true}
   dropdownMatchSelectWidth={true}
@@ -57,6 +55,7 @@ exports[`Select.multiple render render animation 1`] = `
   onMenuSelect={[Function]}
   onPopupFocus={[Function]}
   options={Array []}
+  popupId="test-uuid__popup"
   prefixCls="rc-select"
   showAction={
     Array [
@@ -69,6 +68,7 @@ exports[`Select.multiple render render animation 1`] = `
 >
   <div
     className="rc-select rc-select-enabled"
+    id="test-uuid"
     onBlur={[Function]}
     onFocus={[Function]}
     onMouseDown={[Function]}
@@ -135,7 +135,6 @@ exports[`Select.multiple render truncates tags by maxTagCount 1`] = `
 >
   <div
     aria-autocomplete="list"
-    aria-controls=""
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
@@ -233,7 +232,6 @@ exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPla
 >
   <div
     aria-autocomplete="list"
-    aria-controls=""
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
@@ -333,7 +331,6 @@ exports[`Select.multiple render truncates tags by maxTagCount and show maxTagPla
 >
   <div
     aria-autocomplete="list"
-    aria-controls=""
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
@@ -433,7 +430,6 @@ exports[`Select.multiple render truncates tags by maxTagCount while maxTagCount 
 >
   <div
     aria-autocomplete="list"
-    aria-controls=""
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
@@ -487,7 +483,6 @@ exports[`Select.multiple render truncates values by maxTagTextLength 1`] = `
 >
   <div
     aria-autocomplete="list"
-    aria-controls=""
     aria-expanded="false"
     aria-haspopup="true"
     class="rc-select-selection
