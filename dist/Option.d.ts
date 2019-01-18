@@ -11,7 +11,7 @@ export interface IOptProps {
 }
 export default class Option extends Component<Partial<IOptProps>> {
     static propTypes: {
-        value: PropTypes.Requireable<import("react").ReactText>;
+        value: PropTypes.Requireable<import("_@types_react@16.7.20@@types/react").ReactText>;
     };
     static isSelectOption: boolean;
 }
