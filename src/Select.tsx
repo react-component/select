@@ -525,19 +525,12 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
           this.setInputValue('');
         } else {
           // why not use setState?
-          // this.state.inputValue = '';
-          this.setState(
-            {
-              inputValue: '',
-            },
-            () => {
-              if (this.getInputDOMNode && this.getInputDOMNode()) {
-                (this.getInputDOMNode() as HTMLInputElement).value = '';
-              }
-            },
-          );
+          // https://github.com/ant-design/ant-design/issues/14262
+          (this.state as any).inputValue = '';
+          if (this.getInputDOMNode && this.getInputDOMNode()) {
+            (this.getInputDOMNode() as HTMLInputElement).value = '';
+          }
         }
-
         const tmpValue = this.getValueByInput(inputValue);
         if (tmpValue !== undefined) {
           value = tmpValue;
