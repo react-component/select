@@ -156,7 +156,7 @@ npm start
 
 http://localhost:9001/
 
-online example: http://react-component.github.io/select/examples/
+online example: http://react-component.github.io/select/
 
 ## Test Case
 

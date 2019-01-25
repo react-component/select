@@ -360,15 +360,17 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
   };
 
   public onInputKeyDown = (event: React.ChangeEvent<HTMLInputElement> | KeyboardEvent) => {
-    const props = this.props;
-    if (props.disabled) {
+    const { disabled, combobox } = this.props;
+    if (disabled) {
       return;
     }
     const state = this.state;
+    const isRealOpen = this.getRealOpenState(state);
+
     // magic code
     const keyCode = (event as KeyboardEvent).keyCode;
     if (
-      isMultipleOrTags(props) &&
+      isMultipleOrTags(this.props) &&
       !(event as React.ChangeEvent<HTMLInputElement>).target.value &&
       keyCode === KeyCode.BACKSPACE
     ) {
@@ -389,7 +391,10 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     } else if (keyCode === KeyCode.ENTER && state.open) {
       // Aviod trigger form submit when select item
       // https://github.com/ant-design/ant-design/issues/10861
-      event.preventDefault();
+      // https://github.com/ant-design/ant-design/issues/14544
+      if (isRealOpen || !combobox) {
+        event.preventDefault();
+      }
     } else if (keyCode === KeyCode.ESC) {
       if (state.open) {
         this.setOpenState(false);
@@ -399,7 +404,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
       return;
     }
 
-    if (this.getRealOpenState(state) && this.selectTriggerRef) {
+    if (isRealOpen && this.selectTriggerRef) {
       const menu = this.selectTriggerRef.getInnerMenu();
       if (menu && menu.onKeyDown(event, this.handleBackfill)) {
         event.preventDefault();
