@@ -416,6 +416,7 @@ exports[`Select.tags render render animation 1`] = `
   dropdownMenuStyle={Object {}}
   dropdownRender={[Function]}
   dropdownStyle={Object {}}
+  empty={false}
   inputValue=""
   multiple={true}
   onDropdownVisibleChange={[Function]}

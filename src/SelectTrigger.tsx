@@ -44,6 +44,7 @@ export interface ISelectTriggerProps extends IDropdownMenuProps {
   multiple: boolean;
   inputValue: string | string[];
   filterOption: any;
+  empty: boolean;
   options: any;
   prefixCls: string;
   popupClassName: string;
@@ -175,7 +176,7 @@ export default class SelectTrigger extends React.Component<
   };
 
   public render() {
-    const { onPopupFocus, ...props } = this.props;
+    const { onPopupFocus, empty, ...props } = this.props;
     const {
       multiple,
       visible,
@@ -191,6 +192,7 @@ export default class SelectTrigger extends React.Component<
     const popupClassName = {
       [dropdownClassName as string]: !!dropdownClassName,
       [`${dropdownPrefixCls}--${multiple ? 'multiple' : 'single'}`]: 1,
+      [`${dropdownPrefixCls}--empty`]: empty,
     };
     const popupElement = this.getDropdownElement({
       menuItems: props.options,
