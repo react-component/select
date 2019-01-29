@@ -37455,7 +37455,9 @@ function (_React$Component) {
 
     _this._mouseDown = false; // tslint:disable-next-line:variable-name
 
-    _this._options = [];
+    _this._options = []; // tslint:disable-next-line:variable-name
+
+    _this._empty = false;
 
     _this.onInputChange = function (event) {
       var tokenSeparators = _this.props.tokenSeparators;
@@ -38294,6 +38296,7 @@ function (_React$Component) {
           notFoundContent = _this$props3.notFoundContent;
       var menuItems = [];
       var childrenKeys = [];
+      var empty = false;
 
       var options = _this.renderFilterOptionsFromChildren(children, childrenKeys, menuItems);
 
@@ -38346,6 +38349,7 @@ function (_React$Component) {
       }
 
       if (!options.length && notFoundContent) {
+        empty = true;
         options = [react__WEBPACK_IMPORTED_MODULE_6__["createElement"](rc_menu__WEBPACK_IMPORTED_MODULE_3__["Item"], {
           style: _util__WEBPACK_IMPORTED_MODULE_13__["UNSELECTABLE_STYLE"],
           attribute: _util__WEBPACK_IMPORTED_MODULE_13__["UNSELECTABLE_ATTRIBUTE"],
@@ -38356,7 +38360,10 @@ function (_React$Component) {
         }, notFoundContent)];
       }
 
-      return options;
+      return {
+        empty: empty,
+        options: options
+      };
     };
 
     _this.renderFilterOptionsFromChildren = function (children, childrenKeys, menuItems) {
@@ -38749,10 +38756,13 @@ function (_React$Component) {
           ariaId = _this$state2.ariaId;
 
       if (open) {
-        this._options = this.renderFilterOptions();
+        var filterOptions = this.renderFilterOptions();
+        this._empty = filterOptions.empty;
+        this._options = filterOptions.options;
       }
 
       var realOpen = this.getRealOpenState();
+      var empty = this._empty;
       var options = this._options || [];
       var dataOrAriaAttributeProps = {};
       Object.keys(props).forEach(function (key) {
@@ -38794,6 +38804,7 @@ function (_React$Component) {
         combobox: props.combobox,
         showSearch: props.showSearch,
         options: options,
+        empty: empty,
         multiple: multiple,
         disabled: disabled,
         visible: realOpen,
@@ -39185,7 +39196,8 @@ function (_React$Component) {
 
       var _a = this.props,
           onPopupFocus = _a.onPopupFocus,
-          props = __rest(_a, ["onPopupFocus"]);
+          empty = _a.empty,
+          props = __rest(_a, ["onPopupFocus", "empty"]);
 
       var multiple = props.multiple,
           visible = props.visible,
@@ -39197,7 +39209,7 @@ function (_React$Component) {
           dropdownStyle = props.dropdownStyle,
           dropdownMatchSelectWidth = props.dropdownMatchSelectWidth;
       var dropdownPrefixCls = this.getDropdownPrefixCls();
-      var popupClassName = (_popupClassName = {}, _defineProperty(_popupClassName, dropdownClassName, !!dropdownClassName), _defineProperty(_popupClassName, "".concat(dropdownPrefixCls, "--").concat(multiple ? 'multiple' : 'single'), 1), _popupClassName);
+      var popupClassName = (_popupClassName = {}, _defineProperty(_popupClassName, dropdownClassName, !!dropdownClassName), _defineProperty(_popupClassName, "".concat(dropdownPrefixCls, "--").concat(multiple ? 'multiple' : 'single'), 1), _defineProperty(_popupClassName, "".concat(dropdownPrefixCls, "--empty"), empty), _popupClassName);
       var popupElement = this.getDropdownElement({
         menuItems: props.options,
         onPopupFocus: onPopupFocus,
