@@ -121,6 +121,16 @@ describe('Select', () => {
     expect(select.props().className).not.toContain('-open');
   });
 
+  it('should show empty class', () => {
+    const wrapper = mount<Select>(<Select open={true} />);
+    expect(
+      wrapper
+        .find('.rc-select-dropdown')
+        .first()
+        .hasClass('rc-select-dropdown--single'),
+    ).toBeTruthy();
+  });
+
   it('should default select the right option', () => {
     const wrapper = mount<Select>(
       <Select defaultValue="2">

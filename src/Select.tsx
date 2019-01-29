@@ -240,6 +240,8 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
   private _mouseDown: boolean = false;
   // tslint:disable-next-line:variable-name
   private _options: JSX.Element[] = [];
+  // tslint:disable-next-line:variable-name
+  private _empty: boolean = false;
   constructor(props: Partial<ISelectProps>) {
     super(props);
     const optionsInfo = Select.getOptionsInfoFromProps(props);
@@ -1053,11 +1055,12 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     }
   };
 
-  public renderFilterOptions = () => {
+  public renderFilterOptions = (): { empty: boolean; options: JSX.Element[] } => {
     const { inputValue } = this.state;
     const { children, tags, filterOption, notFoundContent } = this.props;
     const menuItems: JSX.Element[] = [];
     const childrenKeys: string[] = [];
+    let empty = false;
     let options = this.renderFilterOptionsFromChildren(children, childrenKeys, menuItems);
     if (tags) {
       // tags value must be string
@@ -1113,6 +1116,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     }
 
     if (!options.length && notFoundContent) {
+      empty = true;
       options = [
         <MenuItem
           style={UNSELECTABLE_STYLE}
@@ -1126,7 +1130,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
         </MenuItem>,
       ];
     }
-    return options;
+    return { empty, options };
   };
 
   public renderFilterOptionsFromChildren = (
@@ -1451,9 +1455,12 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     const ctrlNode = this.renderTopControlNode();
     const { open, ariaId } = this.state;
     if (open) {
-      this._options = this.renderFilterOptions();
+      const filterOptions = this.renderFilterOptions();
+      this._empty = filterOptions.empty;
+      this._options = filterOptions.options;
     }
     const realOpen = this.getRealOpenState();
+    const empty = this._empty;
     const options = this._options || [];
     const dataOrAriaAttributeProps = {};
     Object.keys(props).forEach(key => {
@@ -1508,6 +1515,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
         combobox={props.combobox}
         showSearch={props.showSearch}
         options={options}
+        empty={empty}
         multiple={multiple}
         disabled={disabled}
         visible={realOpen}
