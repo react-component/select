@@ -1,6 +1,10 @@
 # History
 ----
 
+## 8.8.0 / 2019-01-29
+
+- Add an additional className when popup is empty
+
 ## 8.6.0 / 2018-11-27
 
 - Added `loading` prop.
