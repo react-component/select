@@ -271,7 +271,9 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
   }
 
   public componentDidMount() {
-    if (this.props.autoFocus) {
+    // when defaultOpen is true, we should auto focus search input
+    // https://github.com/ant-design/ant-design/issues/14254
+    if (this.props.autoFocus || this.state.open) {
       this.focus();
     }
     this.setState({

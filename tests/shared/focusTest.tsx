@@ -66,4 +66,21 @@ export default function focusTest(mode, props) {
 
     expect(handleFocus).toBeCalled();
   });
+
+  // https://github.com/ant-design/ant-design/issues/14254
+  it('auto focus when defaultOpen is ture', () => {
+    const handleFocus = jest.fn();
+
+    mount(
+      <Select {...{ [mode]: true }} {...props} defaultOpen={true} onFocus={handleFocus}>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+      { attachTo: container },
+    );
+
+    jest.runAllTimers();
+
+    expect(handleFocus).toBeCalled();
+  });
 }
