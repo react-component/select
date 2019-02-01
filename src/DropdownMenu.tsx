@@ -157,11 +157,16 @@ export default class DropdownMenu extends React.Component<Partial<IDropdownMenuP
         activeKey?: string;
       } = {};
 
+      let defaultActiveFirst: boolean | undefined = defaultActiveFirstOption;
       let clonedMenuItems = menuItems;
       if (selectedKeys.length || firstActiveValue) {
         if (visible && !this.lastVisible) {
           activeKeyProps.activeKey = selectedKeys[0] || firstActiveValue;
         } else if (!visible) {
+          // Do not trigger auto active since we already have selectedKeys
+          if (selectedKeys[0]) {
+            defaultActiveFirst = false;
+          }
           activeKeyProps.activeKey = undefined;
         }
         let foundFirst = false;
@@ -202,11 +207,12 @@ export default class DropdownMenu extends React.Component<Partial<IDropdownMenuP
       if (inputValue !== this.lastInputValue && (!lastValue || lastValue !== backfillValue)) {
         activeKeyProps.activeKey = '';
       }
+
       return (
         <Menu
           ref={this.saveMenuRef}
           style={this.props.dropdownMenuStyle}
-          defaultActiveFirst={defaultActiveFirstOption}
+          defaultActiveFirst={defaultActiveFirst}
           role="listbox"
           itemIcon={multiple ? menuItemSelectedIcon : null}
           {...activeKeyProps}

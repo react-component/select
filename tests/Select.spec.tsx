@@ -1058,6 +1058,24 @@ describe('Select', () => {
     expect(handleSelect).not.toBeCalled();
   });
 
+  // https://github.com/ant-design/ant-design/issues/14352
+  it('dont change activeKey if value provided', () => {
+    const wrapper = mount<Select>(
+      <Select value="light" open={true}>
+        <Option value="bamboo">bamboo</Option>
+        <Option value="light">light</Option>
+      </Select>,
+    );
+
+    wrapper.setProps({ open: false });
+    expect(
+      (wrapper
+        .find('MenuItem')
+        .first()
+        .props() as any).active,
+    ).toBe(false);
+  });
+
   // https://github.com/ant-design/ant-design/issues/12172
   it('onChange trigger only once when value is 0', () => {
     const onChange = jest.fn();
