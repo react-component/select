@@ -435,6 +435,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
       value = value.concat([selectedValue]);
     } else {
       if (
+        !isCombobox(props) &&
         lastValue !== undefined &&
         lastValue === selectedValue &&
         selectedValue !== this.state.backfillValue
