@@ -184,6 +184,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
         value: singleValue,
         label: Select.getLabelFromOption(props, option),
         title: option.props.title,
+        disabled: option.props.disabled,
       };
     });
     if (preState) {
@@ -630,6 +631,10 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     let value = null;
     Object.keys(this.state.optionsInfo).forEach(key => {
       const info = this.state.optionsInfo[key];
+      const { disabled } = info;
+      if (disabled) {
+        return;
+      }
       const oldLable = toArray(info.label) as string[];
       if (oldLable && oldLable.join('') === label) {
         value = info.value;
