@@ -357,4 +357,21 @@ describe('Select.combobox', () => {
       .simulate('click');
     expect(wrapper.find('input').prop('value')).toBe('abab');
   });
+
+  // https://github.com/ant-design/ant-design/issues/10367
+  it('should  autocomplete with correct option value', () => {
+    const wrapper = mount(
+      <Select combobox={true} optionLabelProp="children">
+        {[1, 11, 111, 1111].map(opt => {
+          return <Option key={opt}>{`xxx-${opt}`}</Option>;
+        })}
+      </Select>,
+    );
+    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    wrapper
+      .find('MenuItem')
+      .at(0)
+      .simulate('click');
+    expect(wrapper.find('input').prop('value')).toBe('xxx-1');
+  });
 });
