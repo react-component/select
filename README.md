@@ -8,7 +8,7 @@ React Select
 [![Test coverage][coveralls-image]][coveralls-url]
 [![gemnasium deps][gemnasium-image]][gemnasium-url]
 [![npm download][download-image]][download-url]
-[![Storybook](https://github.com/storybooks/press/blob/master/badges/storybook.svg)](https://github.com/react-component/select)
+[![Storybook](https://gw.alipayobjects.com/mdn/ob_info/afts/img/A*CQXNTZfK1vwAAAAAAAAAAABjAQAAAQ/original)](https://github.com/react-component/select)
 
 [Storybook]: https://github.com/storybooks/press/blob/master/badges/storybook.svg
 [npm-image]: http://img.shields.io/npm/v/rc-select.svg?style=flat-square
