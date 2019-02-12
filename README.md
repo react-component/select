@@ -8,6 +8,8 @@ React Select
 [![Test coverage][coveralls-image]][coveralls-url]
 [![gemnasium deps][gemnasium-image]][gemnasium-url]
 [![npm download][download-image]][download-url]
+[![Storybook](https://github.com/storybooks/press/blob/master/badges/storybook.svg)](link to site)
+
 
 [npm-image]: http://img.shields.io/npm/v/rc-select.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/rc-select
