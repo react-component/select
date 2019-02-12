@@ -1,12 +1,13 @@
 /* eslint-disable import/no-webpack-loader-syntax */
 import React from 'react';
+import Markdown from 'react-markdown';
 import { checkA11y } from '@storybook/addon-a11y';
 import { storiesOf } from '@storybook/react';
 import { withConsole } from '@storybook/addon-console';
 import { withViewport } from '@storybook/addon-viewport';
 import { withInfo } from '@storybook/addon-info';
-import ControlledSource from 'rc-source-loader!../examples/controlled';
 import ComboboxSource from 'rc-source-loader!../examples/combobox';
+import ControlledSource from 'rc-source-loader!../examples/controlled';
 import CustomIconSource from 'rc-source-loader!../examples/custom-icon';
 import DropdownRenderSource from 'rc-source-loader!../examples/dropdownRender';
 import EmailSource from 'rc-source-loader!../examples/email';
@@ -45,12 +46,31 @@ import Single from '../examples/single';
 import Suggest from '../examples/suggest';
 import Tags from '../examples/tags';
 import UpdateOption from '../examples/update-option';
+import READMECode from '../README.md';
 
 storiesOf('rc-select', module)
   .addDecorator(checkA11y)
   .addDecorator(withInfo)
   .addDecorator((storyFn, context) => withConsole()(storyFn)(context))
   .addDecorator(withViewport())
+  .add(
+    'README',
+    () => (
+      <div
+        className="markdown-body entry-content"
+        style={{
+          padding: 24,
+        }}
+      >
+        <Markdown escapeHtml={false} source={READMECode} />
+      </div>
+    ),
+    {
+      source: {
+        code: READMECode,
+      },
+    },
+  )
   .add('combobox', () => <Combobox />, {
     source: {
       code: ComboboxSource,
