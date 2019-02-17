@@ -1455,6 +1455,10 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     return null;
   }
 
+  public tabFoucs = () => {
+    this.setOpenState(true, true);
+  };
+
   public render() {
     const props = this.props;
     const multiple = isMultipleOrTags(props);
@@ -1563,6 +1567,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
             aria-haspopup="true"
             aria-controls={ariaId}
             aria-expanded={realOpen}
+            onFocus={this.tabFoucs}
             {...extraSelectionProps}
           >
             {ctrlNode}
