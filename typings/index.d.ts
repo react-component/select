@@ -10,8 +10,6 @@ declare module 'rc-util/lib/Children/toArray';
 
 declare module 'rc-util/lib/KeyCode';
 
-declare module 'react-lifecycles-compat';
-
 declare module 'dom-scroll-into-view';
 
 declare module 'raf';
