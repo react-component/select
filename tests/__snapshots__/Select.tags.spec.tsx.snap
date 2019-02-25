@@ -22,6 +22,7 @@ exports[`Select.tags OptGroup renders correctly 1`] = `
           <li
             class="rc-select-selection__choice"
             role="presentation"
+            style="user-select: none;"
             title="jack"
             unselectable="on"
           >
@@ -43,6 +44,7 @@ exports[`Select.tags OptGroup renders correctly 1`] = `
           <li
             class="rc-select-selection__choice"
             role="presentation"
+            style="user-select: none;"
             title="foo"
             unselectable="on"
           >
@@ -113,6 +115,7 @@ exports[`Select.tags OptGroup renders correctly 1`] = `
                 aria-selected="true"
                 class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item-selected"
                 role="option"
+                style="user-select: none;"
                 unselectable="on"
               >
                 Jack
@@ -135,6 +138,7 @@ exports[`Select.tags OptGroup renders correctly 1`] = `
                 aria-selected="false"
                 class="rc-select-dropdown-menu-item"
                 role="option"
+                style="user-select: none;"
                 unselectable="on"
               >
                 yiminghe
@@ -145,6 +149,7 @@ exports[`Select.tags OptGroup renders correctly 1`] = `
             aria-selected="true"
             class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-selected"
             role="option"
+            style="user-select: none;"
             unselectable="on"
           >
             foo
@@ -216,7 +221,7 @@ exports[`Select.tags OptGroup renders inputValue correctly 1`] = `
             aria-selected="false"
             class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
             role="option"
-            style=""
+            style="user-select: none;"
             unselectable="on"
           >
             foo
@@ -250,6 +255,7 @@ exports[`Select.tags OptGroup renders inputValue correctly 2`] = `
           <li
             class="rc-select-selection__choice"
             role="presentation"
+            style="user-select: none;"
             title="foo"
             unselectable="on"
           >
@@ -321,7 +327,7 @@ exports[`Select.tags OptGroup renders inputValue correctly 2`] = `
                 aria-selected="false"
                 class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active"
                 role="option"
-                style=""
+                style="user-select: none;"
                 unselectable="on"
               >
                 Jack
@@ -344,6 +350,7 @@ exports[`Select.tags OptGroup renders inputValue correctly 2`] = `
                 aria-selected="false"
                 class="rc-select-dropdown-menu-item"
                 role="option"
+                style="user-select: none;"
                 unselectable="on"
               >
                 yiminghe
@@ -354,7 +361,7 @@ exports[`Select.tags OptGroup renders inputValue correctly 2`] = `
             aria-selected="true"
             class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-selected"
             role="option"
-            style=""
+            style="user-select: none;"
             unselectable="on"
           >
             foo
@@ -405,6 +412,33 @@ exports[`Select.tags allowClear renders correctly 1`] = `
     </div>
   </div>
 </div>
+`;
+
+exports[`Select.tags dropdown keeps order 1`] = `
+<ul
+  class="rc-select-dropdown-menu  rc-select-dropdown-menu-root rc-select-dropdown-menu-vertical"
+  role="listbox"
+  tabindex="0"
+>
+  <li
+    aria-selected="true"
+    class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-active rc-select-dropdown-menu-item-selected"
+    role="option"
+    style="user-select: none;"
+    unselectable="on"
+  >
+    aaa
+  </li>
+  <li
+    aria-selected="true"
+    class="rc-select-dropdown-menu-item rc-select-dropdown-menu-item-selected"
+    role="option"
+    style="user-select: none;"
+    unselectable="on"
+  >
+    aaaaa
+  </li>
+</ul>
 `;
 
 exports[`Select.tags render render animation 1`] = `

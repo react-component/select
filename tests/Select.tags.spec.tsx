@@ -120,6 +120,20 @@ describe('Select.tags', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
+  it('dropdown keeps order', () => {
+    const wrapper = mount<Select>(<Select tags={true} open={true} value={['aaaaa', 'aaa']} />);
+
+    wrapper.find('input').simulate('change', { target: { value: 'aaa' } });
+    wrapper.update();
+    expect(wrapper.state().open).toBe(true);
+    expect(
+      wrapper
+        .find('.rc-select-dropdown-menu')
+        .at(0)
+        .render(),
+    ).toMatchSnapshot();
+  });
+
   it('renders search value when not found', () => {
     const wrapper = render(
       <Select tags={true} value="22" inputValue="2" open={true}>

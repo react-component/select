@@ -1079,6 +1079,12 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
           (!inputValue || String(singleValue).indexOf(String(inputValue)) > -1)
         );
       });
+
+      // sort by length
+      value.sort((val1, val2) => {
+        return val1.length - val2.length;
+      });
+
       value.forEach(singleValue => {
         const key = singleValue;
         const menuItem = (
