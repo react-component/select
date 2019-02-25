@@ -250,4 +250,22 @@ describe('Select.multiple', () => {
 
     expect(wrapper.find('.rc-select-selection__choice__content').length).toBe(1);
   });
+
+  it('show arrow on multiple mode when explicitly set', () => {
+    // multiple=true arrow don't have
+    const wrapper = mount(
+      <Select multiple={true} value={['']}>
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>,
+    );
+
+    expect(wrapper.find('.rc-select-arrow-icon').length).toBe(0);
+
+    // multiple=true showArrow=true  arrow do have
+    wrapper.setProps({
+      showArrow: true,
+    });
+    expect(wrapper.find('.rc-select-arrow-icon').length).toBe(1);
+  });
 });
