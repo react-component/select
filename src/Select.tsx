@@ -1468,7 +1468,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     const { showArrow = true } = props;
 
     const state = this.state;
-    const { className, disabled, prefixCls } = props;
+    const { className, disabled, prefixCls, loading } = props;
     const ctrlNode = this.renderTopControlNode();
     const { open, ariaId } = this.state;
     if (open) {
@@ -1514,7 +1514,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
       [`${prefixCls}-enabled`]: !disabled,
       [`${prefixCls}-allow-clear`]: !!props.allowClear,
       [`${prefixCls}-no-arrow`]: !showArrow,
-      [`${prefixCls}-loading`]: !!props.loading,
+      [`${prefixCls}-loading`]: !!loading,
     };
     return (
       <SelectTrigger
