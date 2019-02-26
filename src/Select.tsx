@@ -364,7 +364,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
   };
 
   public onInputKeyDown = (event: React.ChangeEvent<HTMLInputElement> | KeyboardEvent) => {
-    const { disabled, combobox } = this.props;
+    const { disabled, combobox, maxSelectionLength } = this.props;
     if (disabled) {
       return;
     }
@@ -373,17 +373,25 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
 
     // magic code
     const keyCode = (event as KeyboardEvent).keyCode;
+
     if (
       isMultipleOrTags(this.props) &&
-      !(event as React.ChangeEvent<HTMLInputElement>).target.value &&
-      keyCode === KeyCode.BACKSPACE
+      !(event as React.ChangeEvent<HTMLInputElement>).target.value
     ) {
-      event.preventDefault();
       const value = state.value as string[];
-      if (value.length) {
+
+      if (value.length && keyCode === KeyCode.BACKSPACE) {
+        event.preventDefault();
         this.removeSelected(value[value.length - 1]);
+        return;
+      } else if (
+        maxSelectionLength !== undefined &&
+        value.length >= maxSelectionLength &&
+        keyCode !== KeyCode.TAB
+      ) {
+        event.preventDefault();
+        return;
       }
-      return;
     }
     if (keyCode === KeyCode.DOWN) {
       if (!state.open) {
@@ -1064,14 +1072,33 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
 
   public renderFilterOptions = (): { empty: boolean; options: JSX.Element[] } => {
     const { inputValue } = this.state;
-    const { children, tags, filterOption, notFoundContent } = this.props;
+    const { children, tags, filterOption, notFoundContent, maxSelectionLength } = this.props;
     const menuItems: JSX.Element[] = [];
     const childrenKeys: string[] = [];
     let empty = false;
+
+    // tags value must be string
+    let value = this.state.value as string[];
     let options = this.renderFilterOptionsFromChildren(children, childrenKeys, menuItems);
+
+    if (isMultipleOrTags(this.props)) {
+      if (maxSelectionLength !== undefined && value.length >= maxSelectionLength) {
+        options = [
+          <MenuItem
+            attribute={UNSELECTABLE_ATTRIBUTE}
+            disabled={true}
+            role="option"
+            value="UNSELECTABLE_VALUE"
+            key="UNSELECTABLE_VALUE"
+          >
+            {`You can only select ${maxSelectionLength} items`}
+          </MenuItem>,
+        ];
+        return { empty, options };
+      }
+    }
+
     if (tags) {
-      // tags value must be string
-      let value = this.state.value as string[];
       value = value.filter(singleValue => {
         return (
           childrenKeys.indexOf(singleValue) === -1 &&

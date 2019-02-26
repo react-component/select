@@ -88,6 +88,7 @@ React.render(c, container);
 |maxTagTextLength | max tag text length to show | number | - |
 |maxTagCount | max tag count to show | number | - |
 |maxTagPlaceholder | placeholder for omitted values | ReactNode/function(omittedValues) | - |
+|maxSelectionLength | max amount of items that can be selected | number | - |
 |combobox | enable combobox mode(can not set multiple at the same time) | bool | false |
 |multiple | whether multiple select | bool | false |
 |disabled | whether disabled select | bool | false |

@@ -268,4 +268,19 @@ describe('Select.multiple', () => {
     });
     expect(wrapper.find('.rc-select-arrow-icon').length).toBe(1);
   });
+
+  it('can select only one item', () => {
+    const handleSelect = jest.fn();
+    const wrapper = mount(
+      <Select multiple={true} value={['1']} maxSelectionLength={1} onSelect={handleSelect}>
+        <Option value="1">One</Option>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
+
+    const select = wrapper.find('.rc-select');
+    select.simulate('click');
+    expect(wrapper.find('MenuItem').length).toBe(1);
+    expect(wrapper.find('MenuItem').props().value).toBe('UNSELECTABLE_VALUE');
+  });
 });

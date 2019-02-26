@@ -72,6 +72,7 @@ export interface ISelectProps {
   maxTagTextLength: number;
   maxTagCount: number;
   maxTagPlaceholder: renderSelect;
+  maxSelectionLength: number;
   tokenSeparators: string[];
   getInputElement: () => JSX.Element;
   showAction: string[];
