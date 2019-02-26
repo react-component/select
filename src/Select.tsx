@@ -1514,6 +1514,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
       [`${prefixCls}-enabled`]: !disabled,
       [`${prefixCls}-allow-clear`]: !!props.allowClear,
       [`${prefixCls}-no-arrow`]: !showArrow,
+      [`${prefixCls}-loading`]: !!props.loading,
     };
     return (
       <SelectTrigger
