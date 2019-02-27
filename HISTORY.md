@@ -1,7 +1,7 @@
 # History
 ----
 
-## 8.9.0 / 2019-02-27
+## 9.0.0 / 2019-02-27
 
 - Multiple mode also support `showArrow`
 - Add loading className
