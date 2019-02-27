@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>multiple.js - example - rc-select@8.8.4</title>
+  <title>multiple.js - example - rc-select@8.9.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-select@8.8.4</h1>
+      <h1>rc-select@8.9.0</h1>
 
       <p>React Select</p>
     </div>
@@ -287,6 +287,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 class Test extends React.Component {
   state = {
     useAnim: 0,
+    showArrow: 0,
+    loading: 0,
     value: ['a10'],
   };
 
@@ -311,8 +313,20 @@ class Test extends React.Component {
     });
   };
 
+  showArrow = e =&gt; {
+    this.setState({
+      showArrow: e.target.checked,
+    });
+  };
+
+  loading = e =&gt; {
+    this.setState({
+      loading: e.target.checked,
+    });
+  };
+
   render() {
-    const { useAnim, value } = this.state;
+    const { useAnim, showArrow, loading, value } = this.state;
     const dropdownMenuStyle = {
       maxHeight: 200,
     };
@@ -325,7 +339,19 @@ class Test extends React.Component {
             anim
             <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"useAnim"</span> <span class="hljs-attribute">checked</span>=<span class="hljs-value">{useAnim}</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"checkbox"</span> <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.useAnim}</span> /&gt;</span>
           <span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">p</span> /&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">label</span> <span class="hljs-attribute">htmlFor</span>=<span class="hljs-value">"showArrow"</span>&gt;</span>
+            showArrow
+            <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"showArrow"</span> <span class="hljs-attribute">checked</span>=<span class="hljs-value">{showArrow}</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"checkbox"</span> <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.showArrow}</span> /&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">label</span> <span class="hljs-attribute">htmlFor</span>=<span class="hljs-value">"loading"</span>&gt;</span>
+            loading
+            <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"loading"</span> <span class="hljs-attribute">checked</span>=<span class="hljs-value">{loading}</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"checkbox"</span> <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.loading}</span> /&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+
         <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">300</span> }}&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">Select</span>
             <span class="hljs-attribute">value</span>=<span class="hljs-value">{value}</span>
@@ -334,6 +360,8 @@ class Test extends React.Component {
             <span class="hljs-attribute">dropdownMenuStyle</span>=<span class="hljs-value">{dropdownMenuStyle}</span>
             <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">width:</span> <span class="hljs-attribute">500</span> }}
             <span class="hljs-attribute">multiple</span>
+            <span class="hljs-attribute">loading</span>=<span class="hljs-value">{loading}</span>
+            <span class="hljs-attribute">showArrow</span>=<span class="hljs-value">{showArrow}</span>
             <span class="hljs-attribute">allowClear</span>
             <span class="hljs-attribute">optionFilterProp</span>=<span class="hljs-value">"children"</span>
             <span class="hljs-attribute">optionLabelProp</span>=<span class="hljs-value">"children"</span>

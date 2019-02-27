@@ -40025,20 +40025,18 @@ function (_React$Component) {
   }, {
     key: "renderArrow",
     value: function renderArrow(multiple) {
+      // showArrow : Set to true if not multiple by default but keep set value.
       var _this$props4 = this.props,
-          showArrow = _this$props4.showArrow,
+          _this$props4$showArro = _this$props4.showArrow,
+          showArrow = _this$props4$showArro === void 0 ? !multiple : _this$props4$showArro,
           loading = _this$props4.loading,
           inputIcon = _this$props4.inputIcon,
           prefixCls = _this$props4.prefixCls;
 
-      if (!showArrow) {
+      if (!showArrow && !loading) {
         return null;
       } // if loading  have loading icon
 
-
-      if (multiple && !loading) {
-        return null;
-      }
 
       var defaultIcon = loading ? react__WEBPACK_IMPORTED_MODULE_6__["createElement"]("i", {
         className: "".concat(prefixCls, "-arrow-loading")
@@ -40097,11 +40095,15 @@ function (_React$Component) {
       var _rootCls;
 
       var props = this.props;
-      var multiple = Object(_util__WEBPACK_IMPORTED_MODULE_13__["isMultipleOrTags"])(props);
+      var multiple = Object(_util__WEBPACK_IMPORTED_MODULE_13__["isMultipleOrTags"])(props); // Default set showArrow to true if not set (not set directly in defaultProps to handle multiple case)
+
+      var _props$showArrow = props.showArrow,
+          showArrow = _props$showArrow === void 0 ? true : _props$showArrow;
       var state = this.state;
       var className = props.className,
           disabled = props.disabled,
-          prefixCls = props.prefixCls;
+          prefixCls = props.prefixCls,
+          loading = props.loading;
       var ctrlNode = this.renderTopControlNode();
       var _this$state2 = this.state,
           open = _this$state2.open,
@@ -40139,7 +40141,7 @@ function (_React$Component) {
         });
       }
 
-      var rootCls = (_rootCls = {}, _defineProperty(_rootCls, className, !!className), _defineProperty(_rootCls, prefixCls, 1), _defineProperty(_rootCls, "".concat(prefixCls, "-open"), open), _defineProperty(_rootCls, "".concat(prefixCls, "-focused"), open || !!this._focused), _defineProperty(_rootCls, "".concat(prefixCls, "-combobox"), Object(_util__WEBPACK_IMPORTED_MODULE_13__["isCombobox"])(props)), _defineProperty(_rootCls, "".concat(prefixCls, "-disabled"), disabled), _defineProperty(_rootCls, "".concat(prefixCls, "-enabled"), !disabled), _defineProperty(_rootCls, "".concat(prefixCls, "-allow-clear"), !!props.allowClear), _defineProperty(_rootCls, "".concat(prefixCls, "-no-arrow"), !props.showArrow), _rootCls);
+      var rootCls = (_rootCls = {}, _defineProperty(_rootCls, className, !!className), _defineProperty(_rootCls, prefixCls, 1), _defineProperty(_rootCls, "".concat(prefixCls, "-open"), open), _defineProperty(_rootCls, "".concat(prefixCls, "-focused"), open || !!this._focused), _defineProperty(_rootCls, "".concat(prefixCls, "-combobox"), Object(_util__WEBPACK_IMPORTED_MODULE_13__["isCombobox"])(props)), _defineProperty(_rootCls, "".concat(prefixCls, "-disabled"), disabled), _defineProperty(_rootCls, "".concat(prefixCls, "-enabled"), !disabled), _defineProperty(_rootCls, "".concat(prefixCls, "-allow-clear"), !!props.allowClear), _defineProperty(_rootCls, "".concat(prefixCls, "-no-arrow"), !showArrow), _defineProperty(_rootCls, "".concat(prefixCls, "-loading"), !!loading), _rootCls);
       return react__WEBPACK_IMPORTED_MODULE_6__["createElement"](_SelectTrigger__WEBPACK_IMPORTED_MODULE_12__["default"], {
         onPopupFocus: this.onPopupFocus,
         onMouseEnter: this.props.onMouseEnter,
@@ -40216,7 +40218,6 @@ Select.defaultProps = {
   onSearch: noop,
   onDeselect: noop,
   onInputKeyDown: noop,
-  showArrow: true,
   dropdownMatchSelectWidth: true,
   dropdownStyle: {},
   dropdownMenuStyle: {},

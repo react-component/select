@@ -75,6 +75,10 @@
   top: 50%;
   left: 50%;
 }
+.rc-select:not(.rc-select-no-arrow) .rc-select-selection--multiple .rc-select-selection__clear,
+.rc-select-loading .rc-select-selection--multiple .rc-select-selection__clear {
+  right: 20px;
+}
 .rc-select-selection {
   outline: none;
   -moz-user-select: none;
