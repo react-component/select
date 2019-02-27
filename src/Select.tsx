@@ -82,7 +82,6 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     onSearch: noop,
     onDeselect: noop,
     onInputKeyDown: noop,
-    showArrow: true,
     dropdownMatchSelectWidth: true,
     dropdownStyle: {},
     dropdownMenuStyle: {},
@@ -1405,14 +1404,14 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     );
   };
   public renderArrow(multiple: boolean) {
-    const { showArrow, loading, inputIcon, prefixCls } = this.props;
-    if (!showArrow) {
+    // showArrow : Set to true if not multiple by default but keep set value.
+    const { showArrow = !multiple, loading, inputIcon, prefixCls } = this.props;
+
+    if (!showArrow && !loading) {
       return null;
     }
+
     // if loading  have loading icon
-    if (multiple && !loading) {
-      return null;
-    }
     const defaultIcon = loading ? (
       <i className={`${prefixCls}-arrow-loading`} />
     ) : (
@@ -1464,8 +1463,12 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
   public render() {
     const props = this.props;
     const multiple = isMultipleOrTags(props);
+
+    // Default set showArrow to true if not set (not set directly in defaultProps to handle multiple case)
+    const { showArrow = true } = props;
+
     const state = this.state;
-    const { className, disabled, prefixCls } = props;
+    const { className, disabled, prefixCls, loading } = props;
     const ctrlNode = this.renderTopControlNode();
     const { open, ariaId } = this.state;
     if (open) {
@@ -1510,7 +1513,8 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
       [`${prefixCls}-disabled`]: disabled,
       [`${prefixCls}-enabled`]: !disabled,
       [`${prefixCls}-allow-clear`]: !!props.allowClear,
-      [`${prefixCls}-no-arrow`]: !props.showArrow,
+      [`${prefixCls}-no-arrow`]: !showArrow,
+      [`${prefixCls}-loading`]: !!loading,
     };
     return (
       <SelectTrigger

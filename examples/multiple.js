@@ -16,6 +16,8 @@ for (let i = 10; i < 36; i++) {
 class Test extends React.Component {
   state = {
     useAnim: 0,
+    showArrow: 0,
+    loading: 0,
     value: ['a10'],
   };
 
@@ -40,8 +42,20 @@ class Test extends React.Component {
     });
   };
 
+  showArrow = e => {
+    this.setState({
+      showArrow: e.target.checked,
+    });
+  };
+
+  loading = e => {
+    this.setState({
+      loading: e.target.checked,
+    });
+  };
+
   render() {
-    const { useAnim, value } = this.state;
+    const { useAnim, showArrow, loading, value } = this.state;
     const dropdownMenuStyle = {
       maxHeight: 200,
     };
@@ -54,7 +68,19 @@ class Test extends React.Component {
             anim
             <input id="useAnim" checked={useAnim} type="checkbox" onChange={this.useAnim} />
           </label>
+          <p />
+          <label htmlFor="showArrow">
+            showArrow
+            <input id="showArrow" checked={showArrow} type="checkbox" onChange={this.showArrow} />
+          </label>
         </p>
+        <p>
+          <label htmlFor="loading">
+            loading
+            <input id="loading" checked={loading} type="checkbox" onChange={this.loading} />
+          </label>
+        </p>
+
         <div style={{ width: 300 }}>
           <Select
             value={value}
@@ -63,6 +89,8 @@ class Test extends React.Component {
             dropdownMenuStyle={dropdownMenuStyle}
             style={{ width: 500 }}
             multiple
+            loading={loading}
+            showArrow={showArrow}
             allowClear
             optionFilterProp="children"
             optionLabelProp="children"
