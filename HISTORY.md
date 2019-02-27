@@ -1,6 +1,11 @@
 # History
 ----
 
+## 8.9.0 / 2019-02-27
+
+- Multiple mode also support `showArrow`
+- Add loading className
+
 ## 8.8.0 / 2019-01-29
 
 - Add an additional className when popup is empty
