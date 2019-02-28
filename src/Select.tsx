@@ -1100,32 +1100,27 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
         options.push(menuItem);
         menuItems.push(menuItem);
       });
-      if (inputValue) {
-        const notFindInputItem = menuItems.every(option => {
-          // this.filterOption return true has two meaning,
-          // 1, some one exists after filtering
-          // 2, filterOption is set to false
-          // condition 2 does not mean the option has same value with inputValue
-          const filterFn = () => getValuePropValue(option) === inputValue;
-          // ref: https://github.com/ant-design/ant-design/issues/14090
-          // if (filterOption !== false) {
-          //   return !this.filterOption.call(this, inputValue, option, filterFn);
-          // }
-          return !filterFn();
-        });
-        if (notFindInputItem) {
-          options.unshift(
-            <MenuItem
-              style={UNSELECTABLE_STYLE}
-              role="option"
-              attribute={UNSELECTABLE_ATTRIBUTE}
-              value={inputValue}
-              key={inputValue}
-            >
-              {inputValue}
-            </MenuItem>,
-          );
-        }
+      if (inputValue && menuItems.every(option => getValuePropValue(option) !== inputValue)) {
+        // this.filterOption return true has two meaning,
+        // 1, some one exists after filtering
+        // 2, filterOption is set to false
+        // condition 2 does not mean the option has same value with inputValue
+
+        // ref: https://github.com/ant-design/ant-design/issues/14090
+        // if (filterOption !== false) {
+        //   return !this.filterOption.call(this, inputValue, option, filterFn);
+        // }
+        options.unshift(
+          <MenuItem
+            style={UNSELECTABLE_STYLE}
+            role="option"
+            attribute={UNSELECTABLE_ATTRIBUTE}
+            value={inputValue}
+            key={inputValue}
+          >
+            {inputValue}
+          </MenuItem>,
+        );
       }
     }
 
