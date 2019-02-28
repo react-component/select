@@ -797,8 +797,13 @@ describe('Select', () => {
     );
 
     wrapper.find('input').simulate('change', { target: { value: '1' } });
-    expect(wrapper.find('li')).toHaveLength(1);
-    expect(wrapper.find('li').text()).toEqual('1');
+    expect(wrapper.find('li')).toHaveLength(2);
+    expect(
+      wrapper
+        .find('li')
+        .first()
+        .text(),
+    ).toEqual('1');
   });
 
   it('should include disabled item in options', () => {
