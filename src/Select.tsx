@@ -245,7 +245,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
   constructor(props: Partial<ISelectProps>) {
     super(props);
     const optionsInfo = Select.getOptionsInfoFromProps(props);
-    if (props.tags) {
+    if (props.tags && typeof props.filterOption !== 'function') {
       const keys = Object.keys(optionsInfo);
       const isDisabledExist = keys.some(key => optionsInfo[key].disabled);
       warning(!isDisabledExist, "Please don't set the option to disabled in tags mode");
