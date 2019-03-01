@@ -1064,7 +1064,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
 
   public renderFilterOptions = (): { empty: boolean; options: JSX.Element[] } => {
     const { inputValue } = this.state;
-    const { children, tags, filterOption, notFoundContent } = this.props;
+    const { children, tags, notFoundContent } = this.props;
     const menuItems: JSX.Element[] = [];
     const childrenKeys: string[] = [];
     let empty = false;
@@ -1100,31 +1100,19 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
         options.push(menuItem);
         menuItems.push(menuItem);
       });
-      if (inputValue) {
-        const notFindInputItem = menuItems.every(option => {
-          // this.filterOption return true has two meaning,
-          // 1, some one exists after filtering
-          // 2, filterOption is set to false
-          // condition 2 does not mean the option has same value with inputValue
-          const filterFn = () => getValuePropValue(option) === inputValue;
-          if (filterOption !== false) {
-            return !this.filterOption.call(this, inputValue, option, filterFn);
-          }
-          return !filterFn();
-        });
-        if (notFindInputItem) {
-          options.unshift(
-            <MenuItem
-              style={UNSELECTABLE_STYLE}
-              role="option"
-              attribute={UNSELECTABLE_ATTRIBUTE}
-              value={inputValue}
-              key={inputValue}
-            >
-              {inputValue}
-            </MenuItem>,
-          );
-        }
+      // ref: https://github.com/ant-design/ant-design/issues/14090
+      if (inputValue && menuItems.every(option => getValuePropValue(option) !== inputValue)) {
+        options.unshift(
+          <MenuItem
+            style={UNSELECTABLE_STYLE}
+            role="option"
+            attribute={UNSELECTABLE_ATTRIBUTE}
+            value={inputValue}
+            key={inputValue}
+          >
+            {inputValue}
+          </MenuItem>,
+        );
       }
     }
 

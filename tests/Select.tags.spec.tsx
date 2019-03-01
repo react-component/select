@@ -209,5 +209,33 @@ describe('Select.tags', () => {
       wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ENTER });
       expect(wrapper.render()).toMatchSnapshot();
     });
+
+    it('should work fine when filterOption function exists', () => {
+      const children = [];
+      for (let i = 10; i < 36; i++) {
+        children.push(
+          <Option key={i.toString(36) + i} disabled={!(i % 3)}>
+            {i.toString(36) + i}
+          </Option>,
+        );
+      }
+      const wrapper = mount<Select>(
+        <Select
+          tags={true}
+          style={{ width: '100%' }}
+          placeholder="Tags Mode"
+          filterOption={(input, { key }) => key.indexOf(input) >= 0}
+        >
+          {children}
+        </Select>,
+      );
+      wrapper.find('.rc-select').simulate('click');
+
+      wrapper.find('input').simulate('change', { target: { value: 'f' } });
+      expect(wrapper.find('.rc-select-dropdown-menu-item').length).toBe(2);
+
+      wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ENTER });
+      expect(wrapper.find('.rc-select-selection__choice__content').text()).toEqual('f');
+    });
   });
 });
