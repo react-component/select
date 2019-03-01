@@ -165,6 +165,9 @@ export function splitBySeparators(str: string | string[], separators: string[]) 
 }
 
 export function defaultFilterFn(input: string, child: any): filterOptionType | boolean {
+  if (child.props.disabled) {
+    return false;
+  }
   const value = (toArray(getPropValue(child, this.props.optionFilterProp)) as string[]).join('');
   return value.toLowerCase().indexOf(input.toLowerCase()) > -1;
 }
