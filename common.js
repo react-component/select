@@ -3218,16 +3218,16 @@ cssAnimation.isCssAnimationSupported = isCssAnimationSupported;
 
 /***/ }),
 
-/***/ "./node_modules/_dom-align@1.8.0@dom-align/es/adjustForViewport.js":
+/***/ "./node_modules/_dom-align@1.8.1@dom-align/es/adjustForViewport.js":
 /*!*************************************************************************!*\
-  !*** ./node_modules/_dom-align@1.8.0@dom-align/es/adjustForViewport.js ***!
+  !*** ./node_modules/_dom-align@1.8.1@dom-align/es/adjustForViewport.js ***!
   \*************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./node_modules/_dom-align@1.8.0@dom-align/es/utils.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./node_modules/_dom-align@1.8.1@dom-align/es/utils.js");
 
 
 function adjustForViewport(elFuturePos, elRegion, visibleRect, overflow) {
@@ -3275,20 +3275,20 @@ function adjustForViewport(elFuturePos, elRegion, visibleRect, overflow) {
 
 /***/ }),
 
-/***/ "./node_modules/_dom-align@1.8.0@dom-align/es/align/align.js":
+/***/ "./node_modules/_dom-align@1.8.1@dom-align/es/align/align.js":
 /*!*******************************************************************!*\
-  !*** ./node_modules/_dom-align@1.8.0@dom-align/es/align/align.js ***!
+  !*** ./node_modules/_dom-align@1.8.1@dom-align/es/align/align.js ***!
   \*******************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils */ "./node_modules/_dom-align@1.8.0@dom-align/es/utils.js");
-/* harmony import */ var _getVisibleRectForElement__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../getVisibleRectForElement */ "./node_modules/_dom-align@1.8.0@dom-align/es/getVisibleRectForElement.js");
-/* harmony import */ var _adjustForViewport__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../adjustForViewport */ "./node_modules/_dom-align@1.8.0@dom-align/es/adjustForViewport.js");
-/* harmony import */ var _getRegion__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../getRegion */ "./node_modules/_dom-align@1.8.0@dom-align/es/getRegion.js");
-/* harmony import */ var _getElFuturePos__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../getElFuturePos */ "./node_modules/_dom-align@1.8.0@dom-align/es/getElFuturePos.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils */ "./node_modules/_dom-align@1.8.1@dom-align/es/utils.js");
+/* harmony import */ var _getVisibleRectForElement__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../getVisibleRectForElement */ "./node_modules/_dom-align@1.8.1@dom-align/es/getVisibleRectForElement.js");
+/* harmony import */ var _adjustForViewport__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../adjustForViewport */ "./node_modules/_dom-align@1.8.1@dom-align/es/adjustForViewport.js");
+/* harmony import */ var _getRegion__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../getRegion */ "./node_modules/_dom-align@1.8.1@dom-align/es/getRegion.js");
+/* harmony import */ var _getElFuturePos__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../getElFuturePos */ "./node_modules/_dom-align@1.8.1@dom-align/es/getElFuturePos.js");
 /**
  * align dom node flexibly
  * @author yiminghe@gmail.com
@@ -3488,19 +3488,19 @@ function doAlign(el, tgtRegion, align, isTgtRegionVisible) {
 
 /***/ }),
 
-/***/ "./node_modules/_dom-align@1.8.0@dom-align/es/align/alignElement.js":
+/***/ "./node_modules/_dom-align@1.8.1@dom-align/es/align/alignElement.js":
 /*!**************************************************************************!*\
-  !*** ./node_modules/_dom-align@1.8.0@dom-align/es/align/alignElement.js ***!
+  !*** ./node_modules/_dom-align@1.8.1@dom-align/es/align/alignElement.js ***!
   \**************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _align__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./align */ "./node_modules/_dom-align@1.8.0@dom-align/es/align/align.js");
-/* harmony import */ var _getOffsetParent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../getOffsetParent */ "./node_modules/_dom-align@1.8.0@dom-align/es/getOffsetParent.js");
-/* harmony import */ var _getVisibleRectForElement__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../getVisibleRectForElement */ "./node_modules/_dom-align@1.8.0@dom-align/es/getVisibleRectForElement.js");
-/* harmony import */ var _getRegion__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../getRegion */ "./node_modules/_dom-align@1.8.0@dom-align/es/getRegion.js");
+/* harmony import */ var _align__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./align */ "./node_modules/_dom-align@1.8.1@dom-align/es/align/align.js");
+/* harmony import */ var _getOffsetParent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../getOffsetParent */ "./node_modules/_dom-align@1.8.1@dom-align/es/getOffsetParent.js");
+/* harmony import */ var _getVisibleRectForElement__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../getVisibleRectForElement */ "./node_modules/_dom-align@1.8.1@dom-align/es/getVisibleRectForElement.js");
+/* harmony import */ var _getRegion__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../getRegion */ "./node_modules/_dom-align@1.8.1@dom-align/es/getRegion.js");
 
 
 
@@ -3530,17 +3530,17 @@ alignElement.__getVisibleRectForElement = _getVisibleRectForElement__WEBPACK_IMP
 
 /***/ }),
 
-/***/ "./node_modules/_dom-align@1.8.0@dom-align/es/align/alignPoint.js":
+/***/ "./node_modules/_dom-align@1.8.1@dom-align/es/align/alignPoint.js":
 /*!************************************************************************!*\
-  !*** ./node_modules/_dom-align@1.8.0@dom-align/es/align/alignPoint.js ***!
+  !*** ./node_modules/_dom-align@1.8.1@dom-align/es/align/alignPoint.js ***!
   \************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils */ "./node_modules/_dom-align@1.8.0@dom-align/es/utils.js");
-/* harmony import */ var _align__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./align */ "./node_modules/_dom-align@1.8.0@dom-align/es/align/align.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils */ "./node_modules/_dom-align@1.8.1@dom-align/es/utils.js");
+/* harmony import */ var _align__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./align */ "./node_modules/_dom-align@1.8.1@dom-align/es/align/align.js");
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 
@@ -3594,9 +3594,9 @@ function alignPoint(el, tgtPoint, align) {
 
 /***/ }),
 
-/***/ "./node_modules/_dom-align@1.8.0@dom-align/es/getAlignOffset.js":
+/***/ "./node_modules/_dom-align@1.8.1@dom-align/es/getAlignOffset.js":
 /*!**********************************************************************!*\
-  !*** ./node_modules/_dom-align@1.8.0@dom-align/es/getAlignOffset.js ***!
+  !*** ./node_modules/_dom-align@1.8.1@dom-align/es/getAlignOffset.js ***!
   \**********************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -3638,16 +3638,16 @@ function getAlignOffset(region, align) {
 
 /***/ }),
 
-/***/ "./node_modules/_dom-align@1.8.0@dom-align/es/getElFuturePos.js":
+/***/ "./node_modules/_dom-align@1.8.1@dom-align/es/getElFuturePos.js":
 /*!**********************************************************************!*\
-  !*** ./node_modules/_dom-align@1.8.0@dom-align/es/getElFuturePos.js ***!
+  !*** ./node_modules/_dom-align@1.8.1@dom-align/es/getElFuturePos.js ***!
   \**********************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _getAlignOffset__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getAlignOffset */ "./node_modules/_dom-align@1.8.0@dom-align/es/getAlignOffset.js");
+/* harmony import */ var _getAlignOffset__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getAlignOffset */ "./node_modules/_dom-align@1.8.1@dom-align/es/getAlignOffset.js");
 
 
 function getElFuturePos(elRegion, refNodeRegion, points, offset, targetOffset) {
@@ -3665,16 +3665,16 @@ function getElFuturePos(elRegion, refNodeRegion, points, offset, targetOffset) {
 
 /***/ }),
 
-/***/ "./node_modules/_dom-align@1.8.0@dom-align/es/getOffsetParent.js":
+/***/ "./node_modules/_dom-align@1.8.1@dom-align/es/getOffsetParent.js":
 /*!***********************************************************************!*\
-  !*** ./node_modules/_dom-align@1.8.0@dom-align/es/getOffsetParent.js ***!
+  !*** ./node_modules/_dom-align@1.8.1@dom-align/es/getOffsetParent.js ***!
   \***********************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./node_modules/_dom-align@1.8.0@dom-align/es/utils.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./node_modules/_dom-align@1.8.1@dom-align/es/utils.js");
 
 
 /**
@@ -3723,16 +3723,16 @@ function getOffsetParent(element) {
 
 /***/ }),
 
-/***/ "./node_modules/_dom-align@1.8.0@dom-align/es/getRegion.js":
+/***/ "./node_modules/_dom-align@1.8.1@dom-align/es/getRegion.js":
 /*!*****************************************************************!*\
-  !*** ./node_modules/_dom-align@1.8.0@dom-align/es/getRegion.js ***!
+  !*** ./node_modules/_dom-align@1.8.1@dom-align/es/getRegion.js ***!
   \*****************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./node_modules/_dom-align@1.8.0@dom-align/es/utils.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./node_modules/_dom-align@1.8.1@dom-align/es/utils.js");
 
 
 function getRegion(node) {
@@ -3761,18 +3761,18 @@ function getRegion(node) {
 
 /***/ }),
 
-/***/ "./node_modules/_dom-align@1.8.0@dom-align/es/getVisibleRectForElement.js":
+/***/ "./node_modules/_dom-align@1.8.1@dom-align/es/getVisibleRectForElement.js":
 /*!********************************************************************************!*\
-  !*** ./node_modules/_dom-align@1.8.0@dom-align/es/getVisibleRectForElement.js ***!
+  !*** ./node_modules/_dom-align@1.8.1@dom-align/es/getVisibleRectForElement.js ***!
   \********************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./node_modules/_dom-align@1.8.0@dom-align/es/utils.js");
-/* harmony import */ var _getOffsetParent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getOffsetParent */ "./node_modules/_dom-align@1.8.0@dom-align/es/getOffsetParent.js");
-/* harmony import */ var _isAncestorFixed__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./isAncestorFixed */ "./node_modules/_dom-align@1.8.0@dom-align/es/isAncestorFixed.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./node_modules/_dom-align@1.8.1@dom-align/es/utils.js");
+/* harmony import */ var _getOffsetParent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getOffsetParent */ "./node_modules/_dom-align@1.8.1@dom-align/es/getOffsetParent.js");
+/* harmony import */ var _isAncestorFixed__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./isAncestorFixed */ "./node_modules/_dom-align@1.8.1@dom-align/es/isAncestorFixed.js");
 
 
 
@@ -3837,6 +3837,16 @@ function getVisibleRectForElement(element) {
   var documentWidth = documentElement.scrollWidth;
   var documentHeight = documentElement.scrollHeight;
 
+  // scrollXXX on html is sync with body which means overflow: hidden on body gets wrong scrollXXX.
+  // We should cut this ourself.
+  var bodyStyle = getComputedStyle(body);
+  if (bodyStyle.overflowX === 'hidden') {
+    documentWidth = win.innerWidth;
+  }
+  if (bodyStyle.overflowY === 'hidden') {
+    documentHeight = win.innerHeight;
+  }
+
   // Reset element position after calculate the visible area
   if (element.style) {
     element.style.position = originalPosition;
@@ -3864,19 +3874,19 @@ function getVisibleRectForElement(element) {
 
 /***/ }),
 
-/***/ "./node_modules/_dom-align@1.8.0@dom-align/es/index.js":
+/***/ "./node_modules/_dom-align@1.8.1@dom-align/es/index.js":
 /*!*************************************************************!*\
-  !*** ./node_modules/_dom-align@1.8.0@dom-align/es/index.js ***!
+  !*** ./node_modules/_dom-align@1.8.1@dom-align/es/index.js ***!
   \*************************************************************/
 /*! exports provided: alignElement, alignPoint, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _align_alignElement__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./align/alignElement */ "./node_modules/_dom-align@1.8.0@dom-align/es/align/alignElement.js");
+/* harmony import */ var _align_alignElement__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./align/alignElement */ "./node_modules/_dom-align@1.8.1@dom-align/es/align/alignElement.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "alignElement", function() { return _align_alignElement__WEBPACK_IMPORTED_MODULE_0__["default"]; });
 
-/* harmony import */ var _align_alignPoint__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./align/alignPoint */ "./node_modules/_dom-align@1.8.0@dom-align/es/align/alignPoint.js");
+/* harmony import */ var _align_alignPoint__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./align/alignPoint */ "./node_modules/_dom-align@1.8.1@dom-align/es/align/alignPoint.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "alignPoint", function() { return _align_alignPoint__WEBPACK_IMPORTED_MODULE_1__["default"]; });
 
 
@@ -3888,9 +3898,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/_dom-align@1.8.0@dom-align/es/isAncestorFixed.js":
+/***/ "./node_modules/_dom-align@1.8.1@dom-align/es/isAncestorFixed.js":
 /*!***********************************************************************!*\
-  !*** ./node_modules/_dom-align@1.8.0@dom-align/es/isAncestorFixed.js ***!
+  !*** ./node_modules/_dom-align@1.8.1@dom-align/es/isAncestorFixed.js ***!
   \***********************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -3898,7 +3908,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return isAncestorFixed; });
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./node_modules/_dom-align@1.8.0@dom-align/es/utils.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./node_modules/_dom-align@1.8.1@dom-align/es/utils.js");
 
 
 function isAncestorFixed(element) {
@@ -3920,9 +3930,9 @@ function isAncestorFixed(element) {
 
 /***/ }),
 
-/***/ "./node_modules/_dom-align@1.8.0@dom-align/es/propertyUtils.js":
+/***/ "./node_modules/_dom-align@1.8.1@dom-align/es/propertyUtils.js":
 /*!*********************************************************************!*\
-  !*** ./node_modules/_dom-align@1.8.0@dom-align/es/propertyUtils.js ***!
+  !*** ./node_modules/_dom-align@1.8.1@dom-align/es/propertyUtils.js ***!
   \*********************************************************************/
 /*! exports provided: getTransformName, setTransitionProperty, getTransitionProperty, getTransformXY, setTransformXY */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -4037,16 +4047,16 @@ function setTransformXY(node, xy) {
 
 /***/ }),
 
-/***/ "./node_modules/_dom-align@1.8.0@dom-align/es/utils.js":
+/***/ "./node_modules/_dom-align@1.8.1@dom-align/es/utils.js":
 /*!*************************************************************!*\
-  !*** ./node_modules/_dom-align@1.8.0@dom-align/es/utils.js ***!
+  !*** ./node_modules/_dom-align@1.8.1@dom-align/es/utils.js ***!
   \*************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _propertyUtils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./propertyUtils */ "./node_modules/_dom-align@1.8.0@dom-align/es/propertyUtils.js");
+/* harmony import */ var _propertyUtils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./propertyUtils */ "./node_modules/_dom-align@1.8.1@dom-align/es/propertyUtils.js");
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 
@@ -6900,7 +6910,7 @@ module.exports.polyfill = function(object) {
   object.cancelAnimationFrame = caf
 }
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../_webpack@4.29.5@webpack/buildin/global.js */ "./node_modules/_webpack@4.29.5@webpack/buildin/global.js")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../_webpack@4.29.6@webpack/buildin/global.js */ "./node_modules/_webpack@4.29.6@webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -6927,7 +6937,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-dom */ "./node_modules/_react-dom@16.8.3@react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var dom_align__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! dom-align */ "./node_modules/_dom-align@1.8.0@dom-align/es/index.js");
+/* harmony import */ var dom_align__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! dom-align */ "./node_modules/_dom-align@1.8.1@dom-align/es/index.js");
 /* harmony import */ var rc_util_es_Dom_addEventListener__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rc-util/es/Dom/addEventListener */ "./node_modules/_rc-util@4.6.0@rc-util/es/Dom/addEventListener.js");
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./util */ "./node_modules/_rc-align@2.4.5@rc-align/es/util.js");
 
@@ -36858,7 +36868,7 @@ var index = (function () {
 
 /* harmony default export */ __webpack_exports__["default"] = (index);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../_webpack@4.29.5@webpack/buildin/global.js */ "./node_modules/_webpack@4.29.5@webpack/buildin/global.js")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../_webpack@4.29.6@webpack/buildin/global.js */ "./node_modules/_webpack@4.29.6@webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -38005,7 +38015,7 @@ exports.unstable_getFirstCallbackNode = unstable_getFirstCallbackNode;
   })();
 }
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../_webpack@4.29.5@webpack/buildin/global.js */ "./node_modules/_webpack@4.29.5@webpack/buildin/global.js")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../_webpack@4.29.6@webpack/buildin/global.js */ "./node_modules/_webpack@4.29.6@webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -38174,7 +38184,7 @@ module.exports = warning;
 
 /***/ }),
 
-/***/ "./node_modules/_webpack@4.29.5@webpack/buildin/global.js":
+/***/ "./node_modules/_webpack@4.29.6@webpack/buildin/global.js":
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
   \***********************************/
@@ -39638,7 +39648,6 @@ function (_React$Component) {
       var _this$props3 = _this.props,
           children = _this$props3.children,
           tags = _this$props3.tags,
-          filterOption = _this$props3.filterOption,
           notFoundContent = _this$props3.notFoundContent;
       var menuItems = [];
       var childrenKeys = [];
@@ -39667,34 +39676,18 @@ function (_React$Component) {
           }, key);
           options.push(menuItem);
           menuItems.push(menuItem);
-        });
+        }); // ref: https://github.com/ant-design/ant-design/issues/14090
 
-        if (inputValue) {
-          var notFindInputItem = menuItems.every(function (option) {
-            // this.filterOption return true has two meaning,
-            // 1, some one exists after filtering
-            // 2, filterOption is set to false
-            // condition 2 does not mean the option has same value with inputValue
-            var filterFn = function filterFn() {
-              return Object(_util__WEBPACK_IMPORTED_MODULE_13__["getValuePropValue"])(option) === inputValue;
-            };
-
-            if (filterOption !== false) {
-              return !_this.filterOption.call(_assertThisInitialized(_this), inputValue, option, filterFn);
-            }
-
-            return !filterFn();
-          });
-
-          if (notFindInputItem) {
-            options.unshift(react__WEBPACK_IMPORTED_MODULE_6__["createElement"](rc_menu__WEBPACK_IMPORTED_MODULE_3__["Item"], {
-              style: _util__WEBPACK_IMPORTED_MODULE_13__["UNSELECTABLE_STYLE"],
-              role: "option",
-              attribute: _util__WEBPACK_IMPORTED_MODULE_13__["UNSELECTABLE_ATTRIBUTE"],
-              value: inputValue,
-              key: inputValue
-            }, inputValue));
-          }
+        if (inputValue && menuItems.every(function (option) {
+          return Object(_util__WEBPACK_IMPORTED_MODULE_13__["getValuePropValue"])(option) !== inputValue;
+        })) {
+          options.unshift(react__WEBPACK_IMPORTED_MODULE_6__["createElement"](rc_menu__WEBPACK_IMPORTED_MODULE_3__["Item"], {
+            style: _util__WEBPACK_IMPORTED_MODULE_13__["UNSELECTABLE_STYLE"],
+            role: "option",
+            attribute: _util__WEBPACK_IMPORTED_MODULE_13__["UNSELECTABLE_ATTRIBUTE"],
+            value: inputValue,
+            key: inputValue
+          }, inputValue));
         }
       }
 
