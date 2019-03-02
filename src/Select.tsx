@@ -245,6 +245,13 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
   constructor(props: Partial<ISelectProps>) {
     super(props);
     const optionsInfo = Select.getOptionsInfoFromProps(props);
+    if (props.tags && typeof props.filterOption !== 'function') {
+      const isDisabledExist = Object.keys(optionsInfo).some(key => optionsInfo[key].disabled);
+      warning(
+        !isDisabledExist,
+        'Please avoid setting option to disabled in tags mode since user can always type text as tag.',
+      );
+    }
     this.state = {
       value: Select.getValueFromProps(props, true), // true: use default value
       inputValue: props.combobox
