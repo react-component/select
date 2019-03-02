@@ -39936,6 +39936,14 @@ function (_React$Component) {
     };
 
     var optionsInfo = Select.getOptionsInfoFromProps(props);
+
+    if (props.tags && typeof props.filterOption !== 'function') {
+      var isDisabledExist = Object.keys(optionsInfo).some(function (key) {
+        return optionsInfo[key].disabled;
+      });
+      warning__WEBPACK_IMPORTED_MODULE_9___default()(!isDisabledExist, 'Please avoid setting option to disabled in tags mode since user can always type text as tag.');
+    }
+
     _this.state = {
       value: Select.getValueFromProps(props, true),
       inputValue: props.combobox ? Select.getInputValueForCombobox(props, optionsInfo, true) : '',
