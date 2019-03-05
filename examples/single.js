@@ -29,8 +29,8 @@ class Test extends React.Component {
     });
   };
 
-  onBlur = v => {
-    console.log('onBlur', v);
+  onBlur = (value, e) => {
+    console.log('onBlur', value, e);
   };
 
   onFocus = () => {

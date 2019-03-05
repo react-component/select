@@ -52,7 +52,7 @@ export interface ISelectProps {
   defaultOpen: boolean;
   inputValue: string;
   onChange: (value: valueType, option: JSX.Element | JSX.Element[]) => void;
-  onBlur: emptyFunction;
+  onBlur: (value: valueType, FocusEvent?) => void;
   onFocus: emptyFunction;
   onSelect: (value: valueType, option: JSX.Element | JSX.Element[]) => void;
   onSearch: (value: string) => void;
