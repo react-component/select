@@ -9,6 +9,12 @@ import { isSingleMode, saveRef } from './util';
 
 Trigger.displayName = 'Trigger';
 
+const raf = window.requestAnimationFrame
+  || window.webkitRequestAnimationFrame
+  || window.mozRequestAnimationFrame
+  || window.msRequestAnimationFrame
+  || function(cb) { return setTimeout(cb, 16); };
+
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
     points: ['tl', 'bl'],
@@ -111,11 +117,11 @@ export default class SelectTrigger extends React.Component<
   }
 
   public componentDidMount() {
-    this.setDropdownWidth();
+    raf(this.setDropdownWidth);
   }
 
   public componentDidUpdate() {
-    this.setDropdownWidth();
+    raf(this.setDropdownWidth);
   }
 
   public setDropdownWidth = () => {
