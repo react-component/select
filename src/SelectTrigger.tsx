@@ -1,5 +1,6 @@
 import classnames from 'classnames';
 import * as PropTypes from 'prop-types';
+import raf from 'raf';
 import Trigger from 'rc-trigger';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -8,12 +9,6 @@ import { renderSelect, valueType } from './PropTypes';
 import { isSingleMode, saveRef } from './util';
 
 Trigger.displayName = 'Trigger';
-
-const raf = window.requestAnimationFrame
-  || window.webkitRequestAnimationFrame
-  || window.mozRequestAnimationFrame
-  || window.msRequestAnimationFrame
-  || function(cb) { return setTimeout(cb, 16); };
 
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
@@ -104,6 +99,9 @@ export default class SelectTrigger extends React.Component<
   public saveTriggerRef: (ref: any) => void;
   public dropdownMenuRef: DropdownMenu | null = null;
   public triggerRef: any;
+  public rafInstance: {
+    cancel: () => void;
+  } = { cancel: () => null };
 
   constructor(props: Partial<ISelectTriggerProps>) {
     super(props);
@@ -117,19 +115,27 @@ export default class SelectTrigger extends React.Component<
   }
 
   public componentDidMount() {
-    raf(this.setDropdownWidth);
+    this.setDropdownWidth();
   }
 
   public componentDidUpdate() {
-    raf(this.setDropdownWidth);
+    this.setDropdownWidth();
+  }
+
+  public componentWillUnmount() {
+    if (this.rafInstance && this.rafInstance.cancel) {
+      this.rafInstance.cancel();
+    }
   }
 
   public setDropdownWidth = () => {
-    const dom = ReactDOM.findDOMNode(this) as HTMLDivElement;
-    const width = dom.offsetWidth;
-    if (width !== this.state.dropdownWidth) {
-      this.setState({ dropdownWidth: width });
-    }
+    this.rafInstance = raf(() => {
+      const dom = ReactDOM.findDOMNode(this) as HTMLDivElement;
+      const width = dom.offsetWidth;
+      if (width !== this.state.dropdownWidth) {
+        this.setState({ dropdownWidth: width });
+      }
+    });
   };
 
   public getInnerMenu = () => {
