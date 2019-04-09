@@ -129,6 +129,9 @@ export default class SelectTrigger extends React.Component<
   }
 
   public setDropdownWidth = () => {
+    if (this.rafInstance && this.rafInstance.cancel) {
+      this.rafInstance.cancel();
+    }
     this.rafInstance = raf(() => {
       const dom = ReactDOM.findDOMNode(this) as HTMLDivElement;
       const width = dom.offsetWidth;
