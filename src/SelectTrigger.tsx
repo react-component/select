@@ -121,15 +121,11 @@ export default class SelectTrigger extends React.Component<
   }
 
   public componentWillUnmount() {
-    if (this.rafInstance) {
-      raf.cancel(this.rafInstance);
-    }
+    this.cancelRafInstance();
   }
 
   public setDropdownWidth = () => {
-    if (this.rafInstance) {
-      raf.cancel(this.rafInstance);
-    }
+    this.cancelRafInstance();
     this.rafInstance = raf(() => {
       const dom = ReactDOM.findDOMNode(this) as HTMLDivElement;
       const width = dom.offsetWidth;
@@ -137,6 +133,12 @@ export default class SelectTrigger extends React.Component<
         this.setState({ dropdownWidth: width });
       }
     });
+  };
+
+  public cancelRafInstance = () => {
+    if (this.rafInstance) {
+      raf.cancel(this.rafInstance);
+    }
   };
 
   public getInnerMenu = () => {
