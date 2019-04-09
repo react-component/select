@@ -6,7 +6,8 @@ React Select
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
 [![Test coverage][coveralls-image]][coveralls-url]
-[![gemnasium deps][gemnasium-image]][gemnasium-url]
+[![Dependencies](https://img.shields.io/david/react-component/select.svg?style=flat-square)](https://david-dm.org/react-component/select)
+[![DevDependencies](https://img.shields.io/david/dev/react-component/select.svg?style=flat-square)](https://david-dm.org/react-component/select?type=dev)
 [![npm download][download-image]][download-url]
 [![Storybook](https://gw.alipayobjects.com/mdn/ob_info/afts/img/A*CQXNTZfK1vwAAAAAAAAAAABjAQAAAQ/original)](https://github.com/react-component/select)
 
@@ -16,9 +17,7 @@ React Select
 [travis-image]: https://img.shields.io/travis/react-component/select.svg?style=flat-square
 [travis-url]: https://travis-ci.org/react-component/select
 [coveralls-image]: https://img.shields.io/coveralls/react-component/select.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/react-component/select?branch=master
-[gemnasium-image]: http://img.shields.io/gemnasium/react-component/select.svg?style=flat-square
-[gemnasium-url]: https://gemnasium.com/react-component/select
+[coveralls-url]: https://coveralls.io/r/react-component/select?branch=maste
 [node-image]: https://img.shields.io/badge/node.js-%3E=_0.10-green.svg?style=flat-square
 [node-url]: http://nodejs.org/download/
 [download-image]: https://img.shields.io/npm/dm/rc-select.svg?style=flat-square
