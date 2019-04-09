@@ -99,9 +99,7 @@ export default class SelectTrigger extends React.Component<
   public saveTriggerRef: (ref: any) => void;
   public dropdownMenuRef: DropdownMenu | null = null;
   public triggerRef: any;
-  public rafInstance: {
-    cancel: () => void;
-  } = { cancel: () => null };
+  public rafInstance: number | null = null;
 
   constructor(props: Partial<ISelectTriggerProps>) {
     super(props);
@@ -123,14 +121,14 @@ export default class SelectTrigger extends React.Component<
   }
 
   public componentWillUnmount() {
-    if (this.rafInstance && this.rafInstance.cancel) {
-      this.rafInstance.cancel();
+    if (this.rafInstance) {
+      raf.cancel(this.rafInstance);
     }
   }
 
   public setDropdownWidth = () => {
-    if (this.rafInstance && this.rafInstance.cancel) {
-      this.rafInstance.cancel();
+    if (this.rafInstance) {
+      raf.cancel(this.rafInstance);
     }
     this.rafInstance = raf(() => {
       const dom = ReactDOM.findDOMNode(this) as HTMLDivElement;
