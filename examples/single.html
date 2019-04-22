@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>single.js - example - rc-select@9.0.2</title>
+  <title>single.js - example - rc-select@9.1.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-select@9.0.2</h1>
+      <h1>rc-select@9.1.0</h1>
 
       <p>React Select</p>
     </div>
@@ -308,6 +308,10 @@ class Test extends React.Component {
     console.log('onFocus');
   };
 
+  onSearch = val =&gt; {
+    console.log('Search:', val);
+  };
+
   render() {
     const { value, destroy } = this.state;
     if (destroy) {
@@ -328,6 +332,7 @@ class Test extends React.Component {
             style={{ width: 500 }}
             onBlur={this.onBlur}
             onFocus={this.onFocus}
+            onSearch={this.onSearch}
             allowClear
             optionLabelProp="children"
             optionFilterProp="text"
