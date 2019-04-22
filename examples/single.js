@@ -115,7 +115,7 @@ class Test extends React.Component {
 
         <p>
           <button type="button" onClick={this.onDestroy}>
-            destroy
+            destroy!
           </button>
         </p>
       </div>
