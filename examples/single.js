@@ -37,6 +37,10 @@ class Test extends React.Component {
     console.log('onFocus');
   };
 
+  onSearch = val => {
+    console.log('Search:', val);
+  };
+
   render() {
     const { value, destroy } = this.state;
     if (destroy) {
@@ -57,6 +61,7 @@ class Test extends React.Component {
             style={{ width: 500 }}
             onBlur={this.onBlur}
             onFocus={this.onFocus}
+            onSearch={this.onSearch}
             allowClear
             optionLabelProp="children"
             optionFilterProp="text"

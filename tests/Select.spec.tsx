@@ -399,8 +399,10 @@ describe('Select', () => {
     expect(handleSearch).not.toBeCalled();
   });
 
+  // Should always trigger search event:
+  // https://github.com/ant-design/ant-design/issues/16223
   // https://github.com/ant-design/ant-design/issues/10817
-  it('not fires extra search event when user search and select', () => {
+  it('should also fires extra search event when user search and select', () => {
     const handleSearch = jest.fn();
     const wrapper = mount<Select>(
       <Select showSearch={true} onSearch={handleSearch}>
@@ -409,11 +411,12 @@ describe('Select', () => {
       </Select>,
     );
     wrapper.find('input').simulate('change', { target: { value: '1' } });
+    expect(handleSearch).toHaveBeenCalledTimes(1);
     wrapper
       .find('MenuItem')
       .first()
       .simulate('click');
-    expect(handleSearch).toHaveBeenCalledTimes(1);
+    expect(handleSearch).toHaveBeenCalledTimes(2);
   });
 
   describe('focus', () => {
@@ -793,6 +796,7 @@ describe('Select', () => {
         <Option value="11" disabled={true}>
           11
         </Option>
+        <Option value="111">111</Option>
       </Select>,
     );
 
