@@ -457,7 +457,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     const inputValue = isCombobox(props) ? getPropValue(item, props.optionLabelProp) : '';
 
     if (props.autoClearSearchValue) {
-      this.setInputValue(inputValue, false);
+      this.setInputValue(inputValue);
     }
   };
 
@@ -471,7 +471,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     }
     const props = this.props;
     if (props.autoClearSearchValue) {
-      this.setInputValue('', false);
+      this.setInputValue('');
     }
   };
 
@@ -797,7 +797,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     };
     // clear search input value when open is false in singleMode.
     if (!open && isSingleMode(props) && props.showSearch) {
-      this.setInputValue('', false);
+      this.setInputValue('');
     }
     if (!open) {
       this.maybeFocus(open, !!needFocus);
@@ -816,16 +816,15 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
   };
 
   public setInputValue = (inputValue: string, fireSearch = true) => {
+    const { onSearch } = this.props;
     if (inputValue !== this.state.inputValue) {
-      this.setState(
-        {
-          inputValue,
-        },
-        this.forcePopupAlign,
-      );
-      if (fireSearch && this.props.onSearch) {
-        this.props.onSearch(inputValue);
-      }
+      this.setState(prevState => {
+        // Additional check if `inputValue` changed in latest state.
+        if (fireSearch && inputValue !== prevState.inputValue && onSearch) {
+          onSearch(inputValue);
+        }
+        return { inputValue };
+      }, this.forcePopupAlign);
     }
   };
 
