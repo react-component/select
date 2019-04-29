@@ -412,11 +412,21 @@ describe('Select', () => {
     );
     wrapper.find('input').simulate('change', { target: { value: '1' } });
     expect(handleSearch).toHaveBeenCalledTimes(1);
+
+    // Not fire onSearch when value selected
+    // https://github.com/ant-design/ant-design/pull/16235#issuecomment-487506523
     wrapper
       .find('MenuItem')
       .first()
       .simulate('click');
+    expect(handleSearch).toHaveBeenCalledTimes(1);
+
+    // Should trigger onBlur
+    wrapper.find('input').simulate('change', { target: { value: '3' } });
     expect(handleSearch).toHaveBeenCalledTimes(2);
+    wrapper.find('.rc-select').simulate('blur');
+    jest.runAllTimers();
+    expect(handleSearch).toHaveBeenCalledTimes(3);
   });
 
   describe('focus', () => {
