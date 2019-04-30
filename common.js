@@ -39023,7 +39023,9 @@ function (_React$Component) {
           _this.fireChange(nextValue);
         }
 
-        _this.setOpenState(false, true);
+        _this.setOpenState(false, {
+          needFocus: true
+        });
 
         _this.setInputValue('', false);
 
@@ -39169,14 +39171,20 @@ function (_React$Component) {
         value = value.concat([selectedValue]);
       } else {
         if (!Object(_util__WEBPACK_IMPORTED_MODULE_13__["isCombobox"])(props) && lastValue !== undefined && lastValue === selectedValue && selectedValue !== _this.state.backfillValue) {
-          _this.setOpenState(false, true);
+          _this.setOpenState(false, {
+            needFocus: true,
+            fireSearch: false
+          });
 
           return;
         }
 
         value = [selectedValue];
 
-        _this.setOpenState(false, true);
+        _this.setOpenState(false, {
+          needFocus: true,
+          fireSearch: false
+        });
       }
 
       _this.fireChange(value);
@@ -39184,7 +39192,7 @@ function (_React$Component) {
       var inputValue = Object(_util__WEBPACK_IMPORTED_MODULE_13__["isCombobox"])(props) ? Object(_util__WEBPACK_IMPORTED_MODULE_13__["getPropValue"])(item, props.optionLabelProp) : '';
 
       if (props.autoClearSearchValue) {
-        _this.setInputValue(inputValue);
+        _this.setInputValue(inputValue, false);
       }
     };
 
@@ -39214,7 +39222,9 @@ function (_React$Component) {
       e.preventDefault();
 
       if (!_this.props.disabled) {
-        _this.setOpenState(!_this.state.open, !_this.state.open);
+        _this.setOpenState(!_this.state.open, {
+          needFocus: !_this.state.open
+        });
       }
     };
 
@@ -39338,7 +39348,9 @@ function (_React$Component) {
           _this.fireChange([]);
         }
 
-        _this.setOpenState(false, true);
+        _this.setOpenState(false, {
+          needFocus: true
+        });
 
         if (inputValue) {
           _this.setInputValue('');
@@ -39551,7 +39563,10 @@ function (_React$Component) {
       }
     };
 
-    _this.setOpenState = function (open, needFocus) {
+    _this.setOpenState = function (open) {
+      var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var needFocus = config.needFocus,
+          fireSearch = config.fireSearch;
       var props = _this.props;
       var state = _this.state;
 
@@ -39571,7 +39586,7 @@ function (_React$Component) {
       }; // clear search input value when open is false in singleMode.
 
       if (!open && Object(_util__WEBPACK_IMPORTED_MODULE_13__["isSingleMode"])(props) && props.showSearch) {
-        _this.setInputValue('');
+        _this.setInputValue('', fireSearch);
       }
 
       if (!open) {
