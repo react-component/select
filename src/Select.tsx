@@ -323,7 +323,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
       if (nextValue !== undefined) {
         this.fireChange(nextValue);
       }
-      this.setOpenState(false, true);
+      this.setOpenState(false, { needFocus: true });
       this.setInputValue('', false);
       return;
     }
@@ -446,18 +446,18 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
         lastValue === selectedValue &&
         selectedValue !== this.state.backfillValue
       ) {
-        this.setOpenState(false, true);
+        this.setOpenState(false, { needFocus: true, fireSearch: false });
         return;
       }
       value = [selectedValue];
-      this.setOpenState(false, true);
+      this.setOpenState(false, { needFocus: true, fireSearch: false });
     }
 
     this.fireChange(value);
     const inputValue = isCombobox(props) ? getPropValue(item, props.optionLabelProp) : '';
 
     if (props.autoClearSearchValue) {
-      this.setInputValue(inputValue);
+      this.setInputValue(inputValue, false);
     }
   };
 
@@ -479,7 +479,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     e.stopPropagation();
     e.preventDefault();
     if (!this.props.disabled) {
-      this.setOpenState(!this.state.open, !this.state.open);
+      this.setOpenState(!this.state.open, { needFocus: !this.state.open });
     }
   };
 
@@ -581,7 +581,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
       if (value.length) {
         this.fireChange([]);
       }
-      this.setOpenState(false, true);
+      this.setOpenState(false, { needFocus: true });
       if (inputValue) {
         this.setInputValue('');
       }
@@ -778,7 +778,11 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     }
   };
 
-  public setOpenState = (open: boolean, needFocus?: boolean) => {
+  public setOpenState = (
+    open: boolean,
+    config: { needFocus?: boolean; fireSearch?: boolean } = {},
+  ) => {
+    const { needFocus, fireSearch } = config;
     const props = this.props;
     const state = this.state;
 
@@ -797,7 +801,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     };
     // clear search input value when open is false in singleMode.
     if (!open && isSingleMode(props) && props.showSearch) {
-      this.setInputValue('');
+      this.setInputValue('', fireSearch);
     }
     if (!open) {
       this.maybeFocus(open, !!needFocus);

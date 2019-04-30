@@ -43,7 +43,8 @@
     "coverage": "rc-tools run test --coverage",
     "pre-commit": "rc-tools run pre-commit",
     "storybook": "rc-tools run storybook",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "now-build": "npm run build"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.6",
