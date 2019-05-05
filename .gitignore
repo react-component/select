@@ -38,3 +38,4 @@ tslint.json
 tsconfig.test.json
 .eslintrc.js
 .prettierignore
+.storybook
