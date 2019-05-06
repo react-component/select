@@ -39,3 +39,4 @@ tsconfig.test.json
 .eslintrc.js
 .prettierignore
 .storybook
+storybook/index.js
