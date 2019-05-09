@@ -33,7 +33,6 @@ src/*.js
 src/*.map
 .prettierrc
 jest.config.js
-tsconfig.json
 tslint.json
 tsconfig.test.json
 .eslintrc.js
