@@ -233,6 +233,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
   public dropdownContainer: Element | null = null;
   public blurTimer: number | null = null;
   public focusTimer: number | null = null;
+  public comboboxTimer: number | null = null;
 
   // tslint:disable-next-line:variable-name
   private _focused: boolean = false;
@@ -304,6 +305,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
   public componentWillUnmount() {
     this.clearFocusTime();
     this.clearBlurTime();
+    this.clearComboboxTime();
     if (this.dropdownContainer) {
       ReactDOM.unmountComponentAtNode(this.dropdownContainer);
       document.body.removeChild(this.dropdownContainer);
@@ -371,7 +373,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
   };
 
   public onInputKeyDown = (event: React.ChangeEvent<HTMLInputElement> | KeyboardEvent) => {
-    const { disabled, combobox } = this.props;
+    const { disabled, combobox, defaultActiveFirstOption } = this.props;
     if (disabled) {
       return;
     }
@@ -405,6 +407,13 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
       // https://github.com/ant-design/ant-design/issues/14544
       if (isRealOpen || !combobox) {
         event.preventDefault();
+      }
+
+      // Hard close popup to avoid lock of non option in combobox mode
+      if (isRealOpen && combobox && defaultActiveFirstOption === false) {
+        this.comboboxTimer = setTimeout(() => {
+          this.setOpenState(false);
+        });
       }
     } else if (keyCode === KeyCode.ESC) {
       if (state.open) {
@@ -800,6 +809,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
       backfillValue: '',
     };
     // clear search input value when open is false in singleMode.
+    // https://github.com/ant-design/ant-design/issues/16572
     if (!open && isSingleMode(props) && props.showSearch) {
       this.setInputValue('', fireSearch);
     }
@@ -958,6 +968,13 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     if (this.blurTimer) {
       clearTimeout(this.blurTimer);
       this.blurTimer = null;
+    }
+  };
+
+  public clearComboboxTime = () => {
+    if (this.comboboxTimer) {
+      clearTimeout(this.comboboxTimer);
+      this.comboboxTimer = null;
     }
   };
 
