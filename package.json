@@ -28,9 +28,9 @@
     "port": 8003
   },
   "scripts": {
-    "build": "rc-tools run storybook-build",
+    "build": "rc-tools run build",
     "compile": "rc-tools run compile --babel-runtime",
-    "gh-pages": "npm run build && rc-tools run storybook-gh-pages",
+    "gh-pages": "rc-tools run gh-pages",
     "start": "rc-tools run storybook",
     "pub": "rc-tools run pub --babel-runtime",
     "lint": "rc-tools run lint",
@@ -39,10 +39,8 @@
     "test": "rc-tools run test",
     "prepublish": "rc-tools run guard",
     "init-tslint": "rc-tools run gen-lint-config",
-    "init-storybook": "rc-tools run genStorybook",
     "coverage": "rc-tools run test --coverage",
     "pre-commit": "rc-tools run pre-commit",
-    "storybook": "rc-tools run storybook",
     "lint-staged": "lint-staged",
     "now-build": "npm run build"
   },
