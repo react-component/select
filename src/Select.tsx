@@ -371,7 +371,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
   };
 
   public onInputKeyDown = (event: React.ChangeEvent<HTMLInputElement> | KeyboardEvent) => {
-    const { disabled, combobox } = this.props;
+    const { disabled, combobox, defaultActiveFirstOption } = this.props;
     if (disabled) {
       return;
     }
@@ -405,6 +405,13 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
       // https://github.com/ant-design/ant-design/issues/14544
       if (isRealOpen || !combobox) {
         event.preventDefault();
+      }
+
+      // Hard close popup to avoid lock of non option in combobox mode
+      if (isRealOpen && combobox && defaultActiveFirstOption === false) {
+        setTimeout(() => {
+          this.setOpenState(false);
+        });
       }
     } else if (keyCode === KeyCode.ESC) {
       if (state.open) {
@@ -800,6 +807,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
       backfillValue: '',
     };
     // clear search input value when open is false in singleMode.
+    // https://github.com/ant-design/ant-design/issues/16572
     if (!open && isSingleMode(props) && props.showSearch) {
       this.setInputValue('', fireSearch);
     }
