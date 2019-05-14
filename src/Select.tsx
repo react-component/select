@@ -233,6 +233,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
   public dropdownContainer: Element | null = null;
   public blurTimer: number | null = null;
   public focusTimer: number | null = null;
+  public comboboxTimer: number | null = null;
 
   // tslint:disable-next-line:variable-name
   private _focused: boolean = false;
@@ -304,6 +305,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
   public componentWillUnmount() {
     this.clearFocusTime();
     this.clearBlurTime();
+    this.clearComboboxTime();
     if (this.dropdownContainer) {
       ReactDOM.unmountComponentAtNode(this.dropdownContainer);
       document.body.removeChild(this.dropdownContainer);
@@ -409,7 +411,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
 
       // Hard close popup to avoid lock of non option in combobox mode
       if (isRealOpen && combobox && defaultActiveFirstOption === false) {
-        setTimeout(() => {
+        this.comboboxTimer = setTimeout(() => {
           this.setOpenState(false);
         });
       }
@@ -966,6 +968,13 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     if (this.blurTimer) {
       clearTimeout(this.blurTimer);
       this.blurTimer = null;
+    }
+  };
+
+  public clearComboboxTime = () => {
+    if (this.comboboxTimer) {
+      clearTimeout(this.comboboxTimer);
+      this.comboboxTimer = null;
     }
   };
 
