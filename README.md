@@ -25,7 +25,7 @@ React Select
 
 ## Screenshots
 
-<img src="https://user-images.githubusercontent.com/8186664/50768510-a8b30680-12bb-11e9-8251-0e0ed82c5076.png" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/d13eUZlgdJ/tupian.png" />
 
 ## Feature
 
