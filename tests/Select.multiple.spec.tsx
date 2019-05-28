@@ -91,7 +91,7 @@ describe('Select.multiple', () => {
       </Select>,
     );
     jest.useFakeTimers();
-    wrapper.find('.rc-select').simulate('focus');
+    wrapper.find('input').simulate('focus');
     jest.runAllTimers();
     expect(handleFocus).toBeCalled();
   });

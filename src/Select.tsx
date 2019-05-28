@@ -506,7 +506,19 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
       return;
     }
     this.clearBlurTime();
-    if (!isMultipleOrTagsOrCombobox(this.props) && e.target === this.getInputDOMNode()) {
+
+    // In IE11, onOuterFocus will be trigger twice when focus input
+    // First one: e.target is div
+    // Second one: e.target is input
+    // other browser only trigger second one
+    // https://github.com/ant-design/ant-design/issues/15942
+    // Here we ignore the first one when e.target is div
+    const inputNode = this.getInputDOMNode();
+    if (inputNode && e.target === this.rootRef) {
+      return;
+    }
+
+    if (!isMultipleOrTagsOrCombobox(this.props) && e.target === inputNode) {
       return;
     }
     if (this._focused) {

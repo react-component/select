@@ -435,7 +435,7 @@ describe('Select', () => {
     beforeEach(() => {
       handleFocus = jest.fn();
       wrapper = mount<Select>(
-        <Select onFocus={handleFocus}>
+        <Select onFocus={handleFocus} showSearch={false}>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
         </Select>,
