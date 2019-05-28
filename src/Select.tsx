@@ -947,12 +947,13 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
   };
 
   public timeoutFocus = () => {
+    const { onFocus } = this.props;
     if (this.focusTimer) {
       this.clearFocusTime();
     }
     this.focusTimer = window.setTimeout(() => {
-      if (this.props.onFocus) {
-        this.props.onFocus();
+      if (onFocus) {
+        onFocus();
       }
     }, 10);
   };
