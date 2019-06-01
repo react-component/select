@@ -29,7 +29,7 @@
   },
   "scripts": {
     "build": "rc-tools run storybook-build",
-    "compile": "umi-lib build",
+    "compile": "father build",
     "gh-pages": "npm run build && rc-tools run storybook-gh-pages",
     "start": "rc-tools run storybook",
     "pub": "rc-tools run pub --babel-runtime",
@@ -66,7 +66,7 @@
     "react-dom": "^16.0.0",
     "react-test-renderer": "^16.0.0",
     "typescript": "^3.2.2",
-    "umi-library": "^1.5.1"
+    "father": "^2.2.1"
   },
   "dependencies": {
     "babel-runtime": "^6.23.0",
