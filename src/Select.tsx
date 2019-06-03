@@ -624,9 +624,12 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     }
     let defaultLabel = value;
     if (this.props.labelInValue) {
-      const label = getLabelFromPropsValue(this.props.value, value);
-      if (label !== undefined) {
-        defaultLabel = label;
+      const valueLabel = getLabelFromPropsValue(this.props.value, value);
+      const defaultValueLabel = getLabelFromPropsValue(this.props.defaultValue, value);
+      if (valueLabel !== undefined) {
+        defaultLabel = valueLabel;
+      } else if (defaultValueLabel !== undefined) {
+        defaultLabel = defaultValueLabel;
       }
     }
     const defaultInfo = {

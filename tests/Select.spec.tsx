@@ -370,6 +370,15 @@ describe('Select', () => {
     expect(wrapper.find('.rc-select-selection-selected-value').text()).toEqual('One');
   });
 
+  it('use label in props.defaultValue', () => {
+    const wrapper = mount<Select>(
+      <Select labelInValue={true} defaultValue={{ key: 1, label: 'One' }}>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
+    expect(wrapper.find('.rc-select-selection-selected-value').text()).toEqual('One');
+  });
+
   it('fires search event when user input', () => {
     const handleSearch = jest.fn();
     const wrapper = mount<Select>(
