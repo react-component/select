@@ -614,7 +614,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
   };
 
   public getOptionInfoBySingleValue = (value: valueType, optionsInfo?: any) => {
-    let info;
+    let info: any;
     optionsInfo = optionsInfo || this.state.optionsInfo;
     if (optionsInfo[getMapKey(value)]) {
       info = optionsInfo[getMapKey(value)];

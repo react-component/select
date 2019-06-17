@@ -53,9 +53,7 @@ export default class DropdownMenu extends React.Component<Partial<IDropdownMenuP
     firstActiveValue: PropTypes.string,
     menuItemSelectedIcon: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
   };
-  public rafInstance: {
-    cancel: () => void;
-  } = { cancel: () => null };
+  public rafInstance: number | null = null;
   public lastInputValue: string | string[] | undefined;
   public saveMenuRef: any;
   public menuRef: any;
@@ -94,8 +92,8 @@ export default class DropdownMenu extends React.Component<Partial<IDropdownMenuP
   }
 
   public componentWillUnmount() {
-    if (this.rafInstance && this.rafInstance.cancel) {
-      this.rafInstance.cancel();
+    if (this.rafInstance) {
+      raf.cancel(this.rafInstance);
     }
   }
 
