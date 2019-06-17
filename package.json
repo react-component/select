@@ -47,6 +47,7 @@
   "devDependencies": {
     "@types/classnames": "^2.2.6",
     "@types/enzyme": "^3.1.15",
+    "@types/raf": "^3.4.0",
     "@types/react": "^16.7.17",
     "@types/react-dom": "^16.0.11",
     "@types/warning": "^3.0.0",

@@ -1,5 +1,6 @@
 import classnames from 'classnames';
 import * as PropTypes from 'prop-types';
+import raf from 'raf';
 import Trigger from 'rc-trigger';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -98,6 +99,7 @@ export default class SelectTrigger extends React.Component<
   public saveTriggerRef: (ref: any) => void;
   public dropdownMenuRef: DropdownMenu | null = null;
   public triggerRef: any;
+  public rafInstance: number | null = null;
 
   constructor(props: Partial<ISelectTriggerProps>) {
     super(props);
@@ -118,11 +120,24 @@ export default class SelectTrigger extends React.Component<
     this.setDropdownWidth();
   }
 
+  public componentWillUnmount() {
+    this.cancelRafInstance();
+  }
+
   public setDropdownWidth = () => {
-    const dom = ReactDOM.findDOMNode(this) as HTMLDivElement;
-    const width = dom.offsetWidth;
-    if (width !== this.state.dropdownWidth) {
-      this.setState({ dropdownWidth: width });
+    this.cancelRafInstance();
+    this.rafInstance = raf(() => {
+      const dom = ReactDOM.findDOMNode(this) as HTMLDivElement;
+      const width = dom.offsetWidth;
+      if (width !== this.state.dropdownWidth) {
+        this.setState({ dropdownWidth: width });
+      }
+    });
+  };
+
+  public cancelRafInstance = () => {
+    if (this.rafInstance) {
+      raf.cancel(this.rafInstance);
     }
   };
 
