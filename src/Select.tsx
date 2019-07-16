@@ -442,7 +442,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     const props = this.props;
     const selectedValue = getValuePropValue(item);
     const lastValue = value[value.length - 1];
-    this.fireSelect(selectedValue);
+
     if (isMultipleOrTags(props)) {
       if (findIndexInValueBySingleValue(value, selectedValue) !== -1) {
         return;
@@ -463,6 +463,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     }
 
     this.fireChange(value);
+    this.fireSelect(selectedValue);
     const inputValue = isCombobox(props) ? getPropValue(item, props.optionLabelProp) : '';
 
     if (props.autoClearSearchValue) {
