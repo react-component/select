@@ -1,6 +1,10 @@
 # History
 ----
 
+## 9.2.0 / 2019-07-16
+
+- Adjust trigger order of `onChange` & `onSelect`
+
 ## 9.0.0 / 2019-02-27
 
 - Multiple mode also support `showArrow`
