@@ -894,8 +894,13 @@ describe('Select', () => {
   });
 
   it('backfill', () => {
-    const handleChange = jest.fn();
-    const handleSelect = jest.fn();
+    const triggerQueue: string[] = [];
+    const handleChange = jest.fn(() => {
+      triggerQueue.push('change');
+    });
+    const handleSelect = jest.fn(() => {
+      triggerQueue.push('select');
+    });
     const wrapper = mount<Select>(
       <Select
         backfill={true}
@@ -924,6 +929,8 @@ describe('Select', () => {
     expect(handleChange).toBeCalledWith('2', expect.anything());
     expect(handleSelect).toBeCalledWith('2', expect.anything());
     expect(wrapper.find('.rc-select-selection-selected-value').text()).toEqual('Two');
+
+    expect(triggerQueue).toEqual(['change', 'select']);
   });
 
   describe('number value', () => {
