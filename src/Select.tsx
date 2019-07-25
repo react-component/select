@@ -443,11 +443,14 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     const selectedValue = getValuePropValue(item);
     const lastValue = value[value.length - 1];
 
+    let skipTrigger = false;
+
     if (isMultipleOrTags(props)) {
       if (findIndexInValueBySingleValue(value, selectedValue) !== -1) {
-        return;
+        skipTrigger = true;
+      } else {
+        value = value.concat([selectedValue]);
       }
-      value = value.concat([selectedValue]);
     } else {
       if (
         !isCombobox(props) &&
@@ -456,18 +459,24 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
         selectedValue !== this.state.backfillValue
       ) {
         this.setOpenState(false, { needFocus: true, fireSearch: false });
-        return;
+        skipTrigger = true;
+      } else {
+        value = [selectedValue];
+        this.setOpenState(false, { needFocus: true, fireSearch: false });
       }
-      value = [selectedValue];
-      this.setOpenState(false, { needFocus: true, fireSearch: false });
     }
 
-    this.fireChange(value);
+    if (!skipTrigger) {
+      this.fireChange(value);
+    }
     this.fireSelect(selectedValue);
-    const inputValue = isCombobox(props) ? getPropValue(item, props.optionLabelProp) : '';
 
-    if (props.autoClearSearchValue) {
-      this.setInputValue(inputValue, false);
+    if (!skipTrigger) {
+      const inputValue = isCombobox(props) ? getPropValue(item, props.optionLabelProp) : '';
+
+      if (props.autoClearSearchValue) {
+        this.setInputValue(inputValue, false);
+      }
     }
   };
 
