@@ -1176,4 +1176,22 @@ describe('Select', () => {
     });
     expect(wrapper.find('.rc-select-arrow-loading').length).toBe(1);
   });
+
+  it('should keep trigger onSelect by select', () => {
+    const onSelect = jest.fn();
+
+    const wrapper = mount<Select>(
+      <Select backfill={true} open={true} onSelect={onSelect} optionLabelProp="children">
+        <Option value="1">One</Option>
+      </Select>,
+    );
+
+    const input = wrapper.find('input');
+
+    for (let i = 0; i < 10; i += 1) {
+      onSelect.mockReset();
+      input.simulate('keyDown', { keyCode: KeyCode.ENTER });
+      expect(onSelect).toBeCalledWith('1', expect.anything());
+    }
+  });
 });
