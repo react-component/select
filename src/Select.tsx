@@ -858,12 +858,11 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     const { onSearch } = this.props;
     if (inputValue !== this.state.inputValue) {
       this.setState(prevState => {
-        // Additional check if `inputValue` changed in latest state.
-        if (fireSearch && inputValue !== prevState.inputValue && onSearch) {
-          onSearch(inputValue);
-        }
         return { inputValue };
       }, this.forcePopupAlign);
+      if (fireSearch && onSearch) {
+        onSearch(inputValue);
+      }
     }
   };
 
