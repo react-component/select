@@ -100,7 +100,7 @@ React.render(c, container);
 |backfill| whether backfill select option to search input (Only works in single and combobox mode) | Bool | false |
 |onChange | called when select an option or input value change(combobox) | function(value, option:Option/Array<Option>) | - |
 |onSearch | called when input changed | function | - |
-|onBlur | called when blur | function | - |
+|onBlur | called when blur | function(value, event) | - |
 |onFocus | called when focus | function | - |
 |onPopupScroll | called when menu is scrolled | function | - |
 |onSelect | called when a option is selected. param is option's value and option instance | Function(value, option:Option) | - |

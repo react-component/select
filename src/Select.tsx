@@ -594,7 +594,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
       }
       this.setOpenState(false);
       if (props.onBlur) {
-        props.onBlur(this.getVLForOnChange(value as valueType));
+        props.onBlur(this.getVLForOnChange(value as valueType), e);
       }
     }, 10);
   };
