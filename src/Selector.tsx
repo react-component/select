@@ -1,5 +1,4 @@
 import * as React from 'react';
-import KeyCode from 'rc-util/lib/KeyCode';
 import { SelectContext } from './Context';
 
 export interface SelectorProps {
@@ -26,12 +25,6 @@ const Selector: React.FC<SelectorProps> = props => {
     onToggleOpen();
   };
 
-  const onInternalKeyDown: React.KeyboardEventHandler = ({ which }) => {
-    if (which === KeyCode.SPACE || which === KeyCode.ENTER) {
-      onToggleOpen(true);
-    }
-  };
-
   return (
     <div className={`${prefixCls}-selector`} onClick={onClick}>
       Selector
@@ -39,7 +32,6 @@ const Selector: React.FC<SelectorProps> = props => {
         ref={inputRef}
         onFocus={onFocus}
         onBlur={onBlur}
-        onKeyDown={onInternalKeyDown}
         readOnly={showSearch}
         aria-haspopup="listbox"
         aria-expanded={open}

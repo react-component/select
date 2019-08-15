@@ -8,16 +8,24 @@ export interface OptionListProps {
   options: OptionsType;
 }
 
-function getKey({ key, value }: LabelValueType): string {
-  return String(key === undefined || key === null ? value : key);
+export interface RefProps {
+  onKeyDown: React.KeyboardEventHandler;
 }
 
 /**
  * Using virtual list of option display.
  * Will fallback to dom if use customize render.
  */
-const OptionList: React.FC<OptionListProps> = ({ id, options }) => {
-  console.log('List:', options);
+const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
+  { id, options },
+  ref,
+) => {
+  // Keyboard operation
+  React.useImperativeHandle(ref, () => ({
+    onKeyDown: () => {
+      console.log(2333);
+    },
+  }));
 
   const flattenList: FlattenOptionData[] = React.useMemo<FlattenOptionData[]>(
     () => flattenOptions(options),
@@ -25,7 +33,7 @@ const OptionList: React.FC<OptionListProps> = ({ id, options }) => {
   );
 
   return (
-    <List<FlattenOptionData> data={flattenList} itemKey={getKey} role="listbox">
+    <List<FlattenOptionData> data={flattenList} itemKey="key" role="listbox">
       {({ key, group, groupOption, data }) => {
         const { label } = data;
 
@@ -45,4 +53,4 @@ const OptionList: React.FC<OptionListProps> = ({ id, options }) => {
   );
 };
 
-export default OptionList;
+export default React.forwardRef<RefProps, OptionListProps>(OptionList);

@@ -1,10 +1,11 @@
 import * as React from 'react';
+import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
 import Selector from './Selector';
 import SelectTrigger from './SelectTrigger';
 import { SelectContext } from './Context';
 import { ValueType, RenderNode, OptionsType as SelectOptionsType, OptionsType } from './interface';
-import OptionList, { OptionListProps } from './OptionList';
+import OptionList, { OptionListProps, RefProps } from './OptionList';
 import Option from './Option';
 import OptGroup from './OptGroup';
 import { convertChildrenToData as convertSelectChildrenToData } from './utils/legacyUtil';
@@ -13,14 +14,23 @@ import { convertChildrenToData as convertSelectChildrenToData } from './utils/le
  * To match accessibility requirement, we always provide an input in the component.
  * Other element will not set `tabIndex` to avoid `onBlur` sequence problem.
  * For focused select, we set `aria-live="polite"` to update the accessibility content.
+ *
+ * ref:
+ * - keyboard: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role#Keyboard_interactions
  */
 
 export interface SelectProps {
+  id?: string;
+
   // Options
   options?: SelectOptionsType;
   children?: React.ReactNode;
 
-  id?: string;
+  // Events
+  onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
+
+  // Legacy
+
   defaultActiveFirstOption?: boolean;
   multiple?: boolean;
   combobox?: boolean;
@@ -88,7 +98,10 @@ export interface SelectProps {
 
 export interface GenerateConfig<OptionsType, StaticProps> {
   components: {
-    optionList: React.ComponentType<Omit<OptionListProps, 'options'> & { options: OptionsType }>;
+    optionList: React.ForwardRefExoticComponent<
+      React.PropsWithoutRef<Omit<OptionListProps, 'options'> & { options: OptionsType }> &
+        React.RefAttributes<RefProps>
+    >;
   };
   staticProps?: StaticProps;
   convertChildrenToData: (children: React.ReactNode) => OptionsType;
@@ -125,15 +138,19 @@ export function generateSelector<OptionsType, StaticProps>(
       options,
       children,
       onClick,
+
       onFocus,
       onBlur,
+      onKeyDown,
       onMouseDown,
-      ...restProps
+      onChange,
+      onSelect,
+      showSearch,
+      ...domProps
     } = props;
 
     const [innerValue, setInnerValue] = React.useState<ValueType>(value || defaultValue);
-
-    const { onChange, onSelect, showSearch, ...domProps } = restProps;
+    const listRef = React.useRef<RefProps>(null);
 
     // Inner id for accessibility usage
     const [innerId, setInnerId] = React.useState<string>();
@@ -164,6 +181,25 @@ export function generateSelector<OptionsType, StaticProps>(
         setInnerOpen(newOpen !== undefined ? newOpen : !mergeOpen);
       },
       [innerOpen],
+    );
+
+    // KeyDown
+    const onInternalKeyDown = React.useCallback<React.KeyboardEventHandler<HTMLDivElement>>(
+      (event, ...rest) => {
+        const { which } = event;
+        if (!mergeOpen && (which === KeyCode.SPACE || which === KeyCode.ENTER)) {
+          onToggleOpen(true);
+        }
+
+        if (listRef.current) {
+          listRef.current.onKeyDown(event, ...rest);
+        }
+
+        if (onKeyDown) {
+          onKeyDown(event, ...rest);
+        }
+      },
+      [onKeyDown],
     );
 
     // ========================== Focus / Blur ==========================
@@ -203,7 +239,7 @@ export function generateSelector<OptionsType, StaticProps>(
     };
 
     // ============================= Popup ==============================
-    const popupNode = <OptionList id={mergedId} options={innerOptions} />;
+    const popupNode = <OptionList ref={listRef} id={mergedId} options={innerOptions} />;
 
     // ============================= Render =============================
     const mergedClassName = classNames(prefixCls, className, {
@@ -212,14 +248,19 @@ export function generateSelector<OptionsType, StaticProps>(
 
     return (
       <SelectContext.Provider value={{ prefixCls }}>
-        <div className={mergedClassName} {...domProps} onMouseDown={onInternalMouseDown}>
+        <div
+          className={mergedClassName}
+          {...domProps}
+          onMouseDown={onInternalMouseDown}
+          onKeyDown={onInternalKeyDown}
+        >
           {mergeOpen && (
-            <div
-              style={{ width: 0, height: 0, overflow: 'hidden', opacity: 0 }}
+            <span
+              style={{ width: 0, height: 0, display: 'flex', overflow: 'hidden', opacity: 0 }}
               aria-live="assertive"
             >
               TODO: Options
-            </div>
+            </span>
           )}
           <SelectTrigger
             disabled={disabled}
