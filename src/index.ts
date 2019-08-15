@@ -1,9 +1,7 @@
-import OptGroup from './OptGroup';
-import Option from './Option';
-import SelectPropTypes from './PropTypes';
 import Select from './Select';
+import Option from './Option';
+import OptGroup from './OptGroup';
 
-Select.Option = Option;
-Select.OptGroup = OptGroup;
-export { Option, OptGroup, SelectPropTypes };
+export { Option, OptGroup };
+
 export default Select;

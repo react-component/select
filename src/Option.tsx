@@ -1,20 +1,11 @@
-import * as PropTypes from 'prop-types';
-import { Component } from 'react';
+import * as React from 'react';
+import { Key, OptionData } from './interface';
 
-export interface IOptProps {
-  title: string | number;
-  label: string | number;
-  value: string | number;
-  key: string | number;
-  className: string;
-  disabled: boolean;
-  // Everything for testing
-  testprop?: any;
+export interface OptionProps extends Omit<OptionData, 'label'> {
+  children: React.ReactNode;
 }
-export default class Option extends Component<Partial<IOptProps>> {
-  public static propTypes = {
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  };
 
-  public static isSelectOption = true;
-}
+/** This is a placeholder, not real render in dom */
+const Option: React.FC<OptionProps> = () => null;
+
+export default Option;
