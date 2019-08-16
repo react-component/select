@@ -27,9 +27,36 @@
     border: 1px solid green;
     width: 300px;
     min-height: 100px;
+    position: absolute;
 
     &-hidden {
       display: none;
+    }
+  }
+
+  // =============== Option ================
+  &-item {
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 4px 16px;
+
+    // >>> Group
+    &-group {
+      color: #999;
+      font-weight: bold;
+      font-size: 80%;
+    }
+
+    // >>> Option
+    &-option {
+      &-grouped {
+        padding-left: 24px;
+      }
+
+      // ------- Active -------
+      &-active {
+        background: green;
+      }
     }
   }
 }

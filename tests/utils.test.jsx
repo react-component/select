@@ -19,9 +19,9 @@ describe('Utils', () => {
       );
 
       expect(convertChildrenToData(node.props.children)).toEqual([
-        { key: 'light', label: 'Light' },
+        { key: 'light', value: 'light', label: 'Light' },
         { key: null, label: 'Group', options: [{ key: null, label: 'Bamboo', value: 'bamboo' }] },
-        { key: null, label: 'Not Good' },
+        { key: null, label: 'Not Good', value: null },
       ]);
     });
   });
@@ -29,7 +29,11 @@ describe('Utils', () => {
   describe('value', () => {
     it('flattenOptions', () => {
       const raw = [{ key: 1 }, { options: [{ key: 2 }] }];
-      flattenOptions();
+      expect(flattenOptions(raw)).toEqual([
+        { key: 1, groupOption: false, data: { key: 1 } },
+        { key: 'rc-index-key-1', group: true, data: { options: [{ key: 2 }] } },
+        { key: 2, groupOption: true, data: { key: 2 } },
+      ]);
     });
   });
 });

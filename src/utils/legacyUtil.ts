@@ -9,10 +9,10 @@ function convertNodeToOption(node: React.ReactElement): OptionData {
 
   const {
     key,
-    props: { children, ...restProps },
+    props: { children, value, ...restProps },
   } = node as React.ReactElement;
 
-  return { key, label: children, ...restProps };
+  return { key, value: value !== undefined ? value : key, label: children, ...restProps };
 }
 
 export function convertChildrenToData(

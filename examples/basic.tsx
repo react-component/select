@@ -23,6 +23,7 @@ const Demo = () => (
         <OptGroup label={<span>Group Title</span>}>
           <Option value={2}>Value 2</Option>
         </OptGroup>
+        <Option value="light">String Value</Option>
       </Select>
       <input type="hidden" />
       <button type="button" {...focusProps}>

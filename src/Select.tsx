@@ -239,7 +239,9 @@ export function generateSelector<OptionsType, StaticProps>(
     };
 
     // ============================= Popup ==============================
-    const popupNode = <OptionList ref={listRef} id={mergedId} options={innerOptions} />;
+    const popupNode = (
+      <OptionList ref={listRef} prefixCls={prefixCls} id={mergedId} options={innerOptions} />
+    );
 
     // ============================= Render =============================
     const mergedClassName = classNames(prefixCls, className, {
