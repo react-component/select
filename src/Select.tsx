@@ -5,16 +5,23 @@ import Selector, { RefSelectorProps } from './Selector';
 import SelectTrigger from './SelectTrigger';
 import { SelectContext } from './Context';
 import { RenderNode, OptionsType as SelectOptionsType } from './interface';
-import { RawValueType, LabelValueType, ValueType, GetLabeledValue } from './interface/generator';
-import OptionList, { OptionListProps, RefProps } from './OptionList';
+import {
+  RawValueType,
+  LabelValueType,
+  ValueType,
+  GetLabeledValue,
+  FilterOptions,
+  FilterFunc,
+} from './interface/generator';
+import SelectOptionList, { OptionListProps, RefProps } from './OptionList';
 import Option from './Option';
 import OptGroup from './OptGroup';
 import { convertChildrenToData as convertSelectChildrenToData } from './utils/legacyUtil';
 import {
-  toInnerValue,
   getLabeledValue as getSelectLabeledValue,
-  toOuterValue,
+  filterOptions as selectDefaultFilterOptions,
 } from './utils/valueUtil';
+import { toInnerValue, toOuterValue } from './utils/commonUtil';
 
 /**
  * To match accessibility requirement, we always provide an input in the component.
@@ -34,7 +41,20 @@ export interface SelectProps<OptionsType> {
   mode?: 'multiple' | 'tags';
 
   // Value
+  value?: ValueType;
+  defaultValue?: ValueType;
   labelInValue?: boolean;
+
+  // Search
+  searchValue?: string;
+  optionFilterProp?: string;
+  /**
+   * In Select, `false` means do nothing.
+   * In TreeSelect, `false` will highlight match item.
+   * It's by design.
+   */
+  filterOption?: boolean | FilterFunc;
+  onSearch?: (value: string) => void;
 
   // Events
   onKeyUp?: React.KeyboardEventHandler<HTMLDivElement>;
@@ -44,7 +64,7 @@ export interface SelectProps<OptionsType> {
   defaultActiveFirstOption?: boolean;
   combobox?: boolean;
   autoClearSearchValue?: boolean;
-  filterOption?: boolean | ((inputValue: string, option?: any) => boolean);
+
   showSearch?: boolean;
   disabled?: boolean;
   style?: React.CSSProperties;
@@ -56,7 +76,6 @@ export interface SelectProps<OptionsType> {
   className?: string;
   transitionName?: string;
   optionLabelProp?: string;
-  optionFilterProp?: string;
   animation?: string;
   choiceTransitionName?: string;
   open?: boolean;
@@ -67,7 +86,6 @@ export interface SelectProps<OptionsType> {
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onSelect?: (value: ValueType, option: JSX.Element | JSX.Element[]) => void;
-  onSearch?: (value: string) => void;
   onDropdownVisibleChange?: (open: boolean | undefined) => void;
   onPopupScroll?: React.UIEventHandler<HTMLDivElement>;
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
@@ -77,9 +95,7 @@ export interface SelectProps<OptionsType> {
   placeholder?: string;
   onDeselect?: (value: ValueType, option: JSX.Element | JSX.Element[]) => void;
   loading?: boolean;
-  value?: ValueType;
   firstActiveValue?: ValueType;
-  defaultValue?: ValueType;
   dropdownStyle?: React.CSSProperties;
   maxTagTextLength?: number;
   maxTagCount?: number;
@@ -110,8 +126,11 @@ export interface GenerateConfig<OptionsType, StaticProps> {
     >;
   };
   staticProps?: StaticProps;
+  /** Convert jsx tree into `OptionsType` */
   convertChildrenToData: (children: React.ReactNode) => OptionsType;
+  /** Convert single raw value into { label, value } format. Will be called by each value */
   getLabeledValue: GetLabeledValue<OptionsType>;
+  filterOptions: FilterOptions<OptionsType>;
 }
 
 /**
@@ -122,13 +141,14 @@ export function generateSelector<OptionsType, StaticProps>(
   config: GenerateConfig<OptionsType, StaticProps>,
 ): React.ComponentType<SelectProps<OptionsType>> {
   /** Used for accessibility id generate */
-  let uuid: number = 0;
+  let uuid = 0;
 
   const {
     components: { optionList: OptionList },
     staticProps,
     convertChildrenToData,
     getLabeledValue,
+    filterOptions,
   } = config;
 
   type SelectComponent = React.FC<SelectProps<OptionsType>> & StaticProps;
@@ -141,7 +161,13 @@ export function generateSelector<OptionsType, StaticProps>(
       value,
       defaultValue,
 
+      // Search related
       showSearch,
+      searchValue,
+      filterOption,
+      optionFilterProp,
+      onSearch,
+
       id,
       disabled,
       labelInValue,
@@ -177,13 +203,31 @@ export function generateSelector<OptionsType, StaticProps>(
     const mergedId = id || innerId;
 
     // ============================= Option =============================
-    const mergedOptions = React.useMemo<OptionsType>((): OptionsType => {
+    const [innerSearchValue, setInnerSearchValue] = React.useState('');
+    const mergedSearchValue = searchValue !== undefined ? searchValue : innerSearchValue;
+
+    const baseOptions = React.useMemo<OptionsType>((): OptionsType => {
       if (options !== undefined) {
         return options;
       }
 
       return convertChildrenToData(children);
     }, [options, children]);
+
+    const mergedOptions = React.useMemo<OptionsType>(() => {
+      if (!mergedSearchValue) {
+        return baseOptions;
+      }
+      return filterOptions(mergedSearchValue, baseOptions, props);
+    }, [baseOptions, mergedSearchValue]);
+
+    const onInternalSearch = (searchText: string) => {
+      setInnerSearchValue(searchText);
+
+      if (onSearch) {
+        onSearch(searchText);
+      }
+    };
 
     // ============================= Value ==============================
     const [innerValue, setInnerValue] = React.useState<ValueType>(value || defaultValue);
@@ -199,11 +243,11 @@ export function generateSelector<OptionsType, StaticProps>(
       mergedRawValue,
     ]);
 
-    const displayValues = React.useMemo<LabelValueType[]>(() => {
-      return mergedRawValue.map((val: RawValueType) =>
-        getLabeledValue(val, mergedOptions, baseValue),
-      );
-    }, [baseValue]);
+    const displayValues = React.useMemo<LabelValueType[]>(
+      () =>
+        mergedRawValue.map((val: RawValueType) => getLabeledValue(val, mergedOptions, baseValue)),
+      [baseValue],
+    );
 
     const isMultiple = mode === 'tags' || mode === 'multiple';
 
@@ -268,7 +312,7 @@ export function generateSelector<OptionsType, StaticProps>(
       const { which } = event;
 
       // We only manage open state here, close logic should handle by list component
-      if (!mergeOpen && (which === KeyCode.ENTER)) {
+      if (!mergeOpen && which === KeyCode.ENTER) {
         onToggleOpen(true);
       }
 
@@ -381,11 +425,17 @@ export function generateSelector<OptionsType, StaticProps>(
               onToggleOpen={onToggleOpen}
               onFocus={onInternalFocus}
               onBlur={onInternalBlur}
+              searchValue={mergedSearchValue}
+              onSearch={onInternalSearch}
             />
           </SelectTrigger>
         </div>
       </SelectContext.Provider>
     );
+  };
+
+  Select.defaultProps = {
+    optionFilterProp: 'value',
   };
 
   // Inject static props
@@ -405,7 +455,7 @@ interface SelectStaticProps {
 
 export default generateSelector<SelectOptionsType, SelectStaticProps>({
   components: {
-    optionList: OptionList,
+    optionList: SelectOptionList,
   },
   staticProps: {
     Option,
@@ -413,4 +463,5 @@ export default generateSelector<SelectOptionsType, SelectStaticProps>({
   },
   convertChildrenToData: convertSelectChildrenToData,
   getLabeledValue: getSelectLabeledValue,
+  filterOptions: selectDefaultFilterOptions,
 });

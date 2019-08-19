@@ -41,16 +41,17 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
   // ========================== Active ==========================
   const getEnabledActiveIndex = (index: number, offset: number = 1): number => {
     const len = flattenList.length;
-    let current = (index + len) % len;
 
-    for (; current < len && current >= 0; current += offset) {
+    for (let i = 0; i < len; i += 1) {
+      const current = (index + i * offset + len) % len;
+
       const { group, data } = flattenList[current];
       if (!group && !(data as OptionData).disabled) {
-        break;
+        return current;
       }
     }
 
-    return current !== len ? current : 0;
+    return -1;
   };
 
   const [activeIndex, setActiveIndex] = React.useState(() => getEnabledActiveIndex(0));
@@ -119,17 +120,20 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
         const { disabled, value } = data as OptionData;
 
         // Option
+        const selected = values.has(value);
+
         const optionClassName = classNames(itemPrefixCls, `${itemPrefixCls}-option`, {
           [`${itemPrefixCls}-option-grouped`]: groupOption,
           [`${itemPrefixCls}-option-active`]: activeIndex === itemIndex && !disabled,
           [`${itemPrefixCls}-option-disabled`]: disabled,
-          [`${itemPrefixCls}-option-selected`]: values.has(value),
+          [`${itemPrefixCls}-option-selected`]: selected,
         });
 
         return (
           <div
             id={`${id}_list`}
-            role="item"
+            role="option"
+            aria-selected={selected}
             className={optionClassName}
             onMouseMove={() => {
               if (activeIndex === itemIndex) {

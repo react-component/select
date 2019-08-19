@@ -16,3 +16,12 @@ export type GetLabeledValue<OptionsType> = (
   options: OptionsType,
   prevValue: ValueType,
 ) => LabelValueType;
+
+export type FilterOptions<OptionsType> = (
+  searchValue: string,
+  options: OptionsType,
+  /** Component props, since Select & TreeSelect use different prop name, use any here */
+  props: any,
+) => OptionsType;
+
+export type FilterFunc = (inputValue: string, option?: any) => boolean;

@@ -4,20 +4,22 @@ import {
   OptionGroupData,
   FlattenOptionData,
 } from '../interface';
-import { LabelValueType, ValueType, GetLabeledValue } from '../interface/generator';
-import { RawValueType } from '../interface/generator';
+import { LabelValueType, ValueType, FilterFunc, RawValueType } from '../interface/generator';
+
+import { SelectProps } from '../Select';
 
 function getKey(data: OptionData | OptionGroupData, index: number) {
   const { key } = data;
   let value: RawValueType;
 
   if ('value' in data) {
-    value = data.value;
+    ({ value } = data);
   }
 
   if (key !== null && key !== undefined) {
     return key;
-  } else if (value !== undefined) {
+  }
+  if (value !== undefined) {
     return value;
   }
   return `rc-index-key-${index}`;
@@ -58,58 +60,6 @@ export function flattenOptions(
   return flattenList;
 }
 
-/**
- * Convert internal value into out event value
- */
-export function toOuterValue<OptionsType>(
-  valueList: RawValueType[],
-  {
-    multiple,
-    labelInValue,
-    prevValue,
-    options,
-    getLabeledValue,
-  }: {
-    multiple: boolean;
-    labelInValue: boolean;
-    getLabeledValue: GetLabeledValue<OptionsType>;
-    options: OptionsType;
-    prevValue: ValueType;
-  },
-): ValueType {
-  let values: ValueType = valueList;
-
-  if (labelInValue) {
-    values = values.map(val => getLabeledValue(val, options, prevValue));
-  }
-
-  if (!multiple) {
-    return values[0];
-  }
-
-  return values;
-}
-
-/**
- * Convert outer props value into internal value
- */
-export function toInnerValue(
-  value: ValueType,
-  { labelInValue }: { labelInValue: boolean },
-): RawValueType[] {
-  if (value === undefined || value === null) {
-    return [];
-  }
-
-  let values = Array.isArray(value) ? value : [value];
-
-  if (labelInValue) {
-    return values.map(item => (item as LabelValueType).value);
-  }
-
-  return values as RawValueType[];
-}
-
 function findValueItem(value: RawValueType, options: SelectOptionsType): OptionData {
   let optionItem: OptionData;
 
@@ -122,6 +72,7 @@ function findValueItem(value: RawValueType, options: SelectOptionsType): OptionD
           optionItem = subOption;
           return true;
         }
+        return false;
       })
     ) {
       return true;
@@ -132,6 +83,8 @@ function findValueItem(value: RawValueType, options: SelectOptionsType): OptionD
       optionItem = option as OptionData;
       return true;
     }
+
+    return false;
   });
 
   return optionItem;
@@ -154,7 +107,7 @@ export function getLabeledValue(
 
     // Try to find item in the prev values
     const prevValItem = prevValues.find(
-      (item: LabelValueType) => 'value' in item && item.value === value,
+      (prevItem: LabelValueType) => 'value' in prevItem && prevItem.value === value,
     ) as LabelValueType;
 
     if (prevValItem && prevValItem.label) {
@@ -163,4 +116,52 @@ export function getLabeledValue(
   }
 
   return result;
+}
+
+/** Filter single option if match the search text */
+function getFilterFunction(optionFilterProp: string) {
+  return (searchValue: string, option: OptionData) => {
+    const value = String(option[optionFilterProp]).toLowerCase();
+    return value.includes(searchValue.toLowerCase());
+  };
+}
+
+/** Filter options and return a new options by the search text */
+export function filterOptions(
+  searchValue: string,
+  options: SelectOptionsType,
+  { optionFilterProp, filterOption }: SelectProps<SelectOptionsType>,
+) {
+  const filteredOptions: SelectOptionsType = [];
+  let filterFunc: FilterFunc;
+
+  if (filterOption === false) {
+    return options;
+  }
+  if (typeof filterOption === 'function') {
+    filterFunc = filterOption;
+  } else {
+    filterFunc = getFilterFunction(optionFilterProp);
+  }
+
+  options.forEach(item => {
+    // Group should check child options
+    if ('options' in item) {
+      const subOptions = item.options.filter(subItem => filterFunc(searchValue, subItem));
+      if (subOptions.length) {
+        filteredOptions.push({
+          ...item,
+          options: subOptions,
+        });
+      }
+
+      return;
+    }
+
+    if (filterFunc(searchValue, item)) {
+      filteredOptions.push(item);
+    }
+  });
+
+  return filteredOptions;
 }

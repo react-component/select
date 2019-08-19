@@ -1,4 +1,5 @@
 import * as React from 'react';
+import KeyCode from 'rc-util/lib/KeyCode';
 import { SelectContext } from './Context';
 import { LabelValueType } from './interface/generator';
 
@@ -13,10 +14,12 @@ export interface SelectorProps {
   /** Display in the Selector value, it's not same as `value` prop */
   values: LabelValueType[];
   multiple: boolean;
+  searchValue: string;
 
   onToggleOpen: (open?: boolean) => void;
   onFocus: React.FocusEventHandler<HTMLInputElement>;
   onBlur: React.FocusEventHandler<HTMLInputElement>;
+  onSearch: (searchValue: string) => void;
 }
 
 const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = (props, ref) => {
@@ -24,9 +27,19 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   const inputRef = React.useRef<HTMLInputElement>(null);
   const measureRef = React.useRef<HTMLSpanElement>(null);
 
-  const { id, showSearch, open, values, multiple, onToggleOpen, onFocus, onBlur } = props;
+  const {
+    id,
+    showSearch,
+    open,
+    values,
+    multiple,
+    searchValue,
+    onToggleOpen,
+    onFocus,
+    onBlur,
+    onSearch,
+  } = props;
 
-  const [inputValue, setInputValue] = React.useState('');
   const [inputWidth, setInputWidth] = React.useState(0);
 
   // ======================= Ref =======================
@@ -35,9 +48,17 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   }));
 
   // ===================== Measure =====================
+  const onInputKeyDown = React.useCallback<React.KeyboardEventHandler<HTMLInputElement>>(event => {
+    const { which } = event;
+
+    if (which === KeyCode.UP || which === KeyCode.DOWN) {
+      event.preventDefault();
+    }
+  }, []);
+
   const onInputChange = React.useCallback<React.ChangeEventHandler<HTMLInputElement>>(
     ({ target: { value } }) => {
-      setInputValue(value);
+      onSearch(value);
       onToggleOpen(true);
     },
     [],
@@ -46,7 +67,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   // We measure width and set to the input immediately
   React.useLayoutEffect(() => {
     setInputWidth(measureRef.current.scrollWidth);
-  }, [inputValue]);
+  }, [searchValue]);
 
   // ====================== Focus ======================
   // Should focus input if click the selector
@@ -73,7 +94,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
         {label}
       </span>
     ));
-  } else if (!inputValue && values.length) {
+  } else if (!searchValue && values.length) {
     selectionNode = <span className={`${prefixCls}-selection-item`}>{values[0].label}</span>;
   }
 
@@ -88,15 +109,17 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
           onFocus={onFocus}
           onBlur={onBlur}
           readOnly={!showSearch}
+          role="button"
           aria-haspopup="listbox"
           aria-expanded={open}
           aria-owns={`${id}_list`}
-          value={inputValue}
+          value={searchValue}
+          onKeyDown={onInputKeyDown}
           onChange={onInputChange}
         />
 
         <span ref={measureRef} className={`${prefixCls}-selection-search-mirror`} aria-hidden>
-          {inputValue}
+          {searchValue}
         </span>
       </span>
     </div>

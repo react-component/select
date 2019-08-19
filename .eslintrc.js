@@ -4,5 +4,7 @@ module.exports = {
   ...base,
   rules: {
     ...base.rules,
+    'default-case': 0,
+    'jsx-a11y/interactive-supports-focus': 0,
   },
 };
