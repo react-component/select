@@ -56,6 +56,11 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
 
   const [activeIndex, setActiveIndex] = React.useState(() => getEnabledActiveIndex(0));
 
+  // TODO: Check if this is necessary
+  React.useEffect(() => {
+    setActiveIndex(getEnabledActiveIndex(0));
+  }, [flattenList.length]);
+
   // ========================== Values ==========================
   const onSelectValue = (value: RawValueType) => {
     onSelect(value, { selected: !values.has(value) });
