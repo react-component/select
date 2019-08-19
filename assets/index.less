@@ -3,9 +3,11 @@
 .@{select-prefix} {
   display: inline-block;
   font-size: 12px;
+  width: 100px;
 
   &-selector {
     display: flex;
+    flex-wrap: wrap;
     padding: 1px;
     border: 1px solid #000;
 
@@ -14,10 +16,10 @@
     }
 
     .@{select-prefix}-selection-search {
-      flex: none;
       position: relative;
 
-      &-input, &-mirror {
+      &-input,
+      &-mirror {
         padding: 1px;
         font-family: system-ui;
       }
@@ -26,6 +28,7 @@
         border: none;
         outline: none;
         background: rgba(255, 0, 0, 0.2);
+        width: 100%;
       }
       &-mirror {
         position: absolute;
@@ -34,6 +37,7 @@
         position: none;
         left: 0;
         top: 0;
+        visibility: hidden;
       }
     }
   }

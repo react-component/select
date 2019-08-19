@@ -67,25 +67,25 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   return (
     <div className={`${prefixCls}-selector`} onClick={onClick}>
       {/* Multiple values */}
-      {values.map(({ label, value }) => (
-        <span key={value} className={`${prefixCls}-selection-item`}>
-          {label}
-        </span>
-      ))}
+      {multiple &&
+        values.map(({ label, value }) => (
+          <span key={value} className={`${prefixCls}-selection-item`}>
+            {label}
+          </span>
+        ))}
 
-      <span className={`${prefixCls}-selection-search`}>
+      <span className={`${prefixCls}-selection-search`} style={{ width: inputWidth }}>
         <input
           ref={inputRef}
           className={`${prefixCls}-selection-search-input`}
           onFocus={onFocus}
           onBlur={onBlur}
-          readOnly={showSearch}
+          readOnly={!showSearch}
           aria-haspopup="listbox"
           aria-expanded={open}
           aria-owns={`${id}_list`}
           value={inputValue}
           onChange={onInputChange}
-          style={{ width: inputWidth }}
         />
 
         <span ref={measureRef} className={`${prefixCls}-selection-search-mirror`} aria-hidden>
