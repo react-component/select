@@ -36,13 +36,17 @@ const Demo = () => {
           {...selectProps}
           mode="multiple"
           showSearch
+          labelInValue
           options={[
             { value: 'light' },
             { value: 'bamboo' },
             {
               value: 'dog',
-              label: <span style={{ color: 'orange' }}>Dog</span>,
-              options: [{ value: 'small' }, { value: 'golden' }],
+              label: <span style={{ color: 'red' }}>Dog</span>,
+              options: [
+                { value: 'small' },
+                { value: 'golden', label: <span style={{ color: 'orange' }}>GOLDEN</span> },
+              ],
             },
           ]}
         />

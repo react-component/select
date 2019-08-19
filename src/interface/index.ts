@@ -1,15 +1,5 @@
 import * as React from 'react';
-
-export type Key = string | number;
-
-export type RawValueType = string | number;
-
-export interface LabelValueType {
-  key?: Key;
-  value?: RawValueType;
-  label?: React.ReactNode;
-}
-export type ValueType = RawValueType | RawValueType[] | LabelValueType | LabelValueType[];
+import { Key } from './generator';
 
 export type RenderNode = React.ReactNode | (() => React.ReactNode);
 

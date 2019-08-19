@@ -2,7 +2,8 @@ import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
 import List from 'rc-virtual-list';
-import { OptionsType, FlattenOptionData, Key, RawValueType, OptionData } from './interface';
+import { OptionsType, FlattenOptionData, OptionData } from './interface';
+import { RawValueType } from './interface/generator';
 import { flattenOptions } from './utils/valueUtil';
 
 export interface OptionListProps {

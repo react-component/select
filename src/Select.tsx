@@ -4,18 +4,17 @@ import classNames from 'classnames';
 import Selector from './Selector';
 import SelectTrigger from './SelectTrigger';
 import { SelectContext } from './Context';
-import {
-  ValueType,
-  RenderNode,
-  OptionsType as SelectOptionsType,
-  OptionsType,
-  RawValueType,
-} from './interface';
+import { RenderNode, OptionsType as SelectOptionsType } from './interface';
+import { RawValueType, LabelValueType, ValueType, GetLabeledValue } from './interface/generator';
 import OptionList, { OptionListProps, RefProps } from './OptionList';
 import Option from './Option';
 import OptGroup from './OptGroup';
 import { convertChildrenToData as convertSelectChildrenToData } from './utils/legacyUtil';
-import { toInnerValue, isSameValue, toOuterValue } from './utils/valueUtil';
+import {
+  toInnerValue,
+  getLabeledValue as getSelectLabeledValue,
+  toOuterValue,
+} from './utils/valueUtil';
 
 /**
  * To match accessibility requirement, we always provide an input in the component.
@@ -34,12 +33,14 @@ export interface SelectProps<OptionsType> {
   children?: React.ReactNode;
   mode?: 'multiple' | 'tags';
 
+  // Value
+  labelInValue?: boolean;
+
   // Events
   onKeyUp?: React.KeyboardEventHandler<HTMLDivElement>;
   onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
 
   // Legacy
-
   defaultActiveFirstOption?: boolean;
   combobox?: boolean;
   autoClearSearchValue?: boolean;
@@ -75,7 +76,6 @@ export interface SelectProps<OptionsType> {
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
   placeholder?: string;
   onDeselect?: (value: ValueType, option: JSX.Element | JSX.Element[]) => void;
-  labelInValue?: boolean;
   loading?: boolean;
   value?: ValueType;
   firstActiveValue?: ValueType;
@@ -111,6 +111,7 @@ export interface GenerateConfig<OptionsType, StaticProps> {
   };
   staticProps?: StaticProps;
   convertChildrenToData: (children: React.ReactNode) => OptionsType;
+  getLabeledValue: GetLabeledValue<OptionsType>;
 }
 
 /**
@@ -127,6 +128,7 @@ export function generateSelector<OptionsType, StaticProps>(
     components: { optionList: OptionList },
     staticProps,
     convertChildrenToData,
+    getLabeledValue,
   } = config;
 
   type SelectComponent = React.FC<SelectProps<OptionsType>> & StaticProps;
@@ -174,7 +176,7 @@ export function generateSelector<OptionsType, StaticProps>(
     const mergedId = id || innerId;
 
     // ============================= Option =============================
-    const innerOptions = React.useMemo<OptionsType>((): OptionsType => {
+    const mergedOptions = React.useMemo<OptionsType>((): OptionsType => {
       if (options !== undefined) {
         return options;
       }
@@ -210,10 +212,14 @@ export function generateSelector<OptionsType, StaticProps>(
       // Multiple always trigger change and single should change if value changed
       if (isMultiple || (!isMultiple && Array.from(mergedRawValue)[0] !== newValue)) {
         // TODO: handle `labelInValue`
-        const outValue = toOuterValue(Array.from(newRawValue), {
+        const outValue = toOuterValue<OptionsType>(Array.from(newRawValue), {
           multiple: isMultiple,
           labelInValue,
+          options: mergedOptions,
+          getLabeledValue,
+          prevValue: baseValue,
         });
+
         if (onChange) {
           onChange(outValue, null);
         }
@@ -315,7 +321,7 @@ export function generateSelector<OptionsType, StaticProps>(
         ref={listRef}
         prefixCls={prefixCls}
         id={mergedId}
-        options={innerOptions}
+        options={mergedOptions}
         multiple={isMultiple}
         values={mergedRawValue}
         onSelect={onInternalSelect}
@@ -380,7 +386,7 @@ interface SelectStaticProps {
   OptGroup: typeof OptGroup;
 }
 
-export default generateSelector<OptionsType, SelectStaticProps>({
+export default generateSelector<SelectOptionsType, SelectStaticProps>({
   components: {
     optionList: OptionList,
   },
@@ -389,4 +395,5 @@ export default generateSelector<OptionsType, SelectStaticProps>({
     OptGroup,
   },
   convertChildrenToData: convertSelectChildrenToData,
+  getLabeledValue: getSelectLabeledValue,
 });

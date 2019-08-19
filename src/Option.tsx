@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Key, OptionData } from './interface';
+import { OptionData } from './interface';
 
 export interface OptionProps extends Omit<OptionData, 'label'> {
   children: React.ReactNode;
