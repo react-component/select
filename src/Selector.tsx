@@ -38,6 +38,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   const onInputChange = React.useCallback<React.ChangeEventHandler<HTMLInputElement>>(
     ({ target: { value } }) => {
       setInputValue(value);
+      onToggleOpen(true);
     },
     [],
   );
@@ -72,7 +73,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
         {label}
       </span>
     ));
-  } else if (values.length) {
+  } else if (!inputValue && values.length) {
     selectionNode = <span className={`${prefixCls}-selection-item`}>{values[0].label}</span>;
   }
 
