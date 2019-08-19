@@ -54,6 +54,7 @@ export interface SelectProps<OptionsType> {
    * It's by design.
    */
   filterOption?: boolean | FilterFunc;
+  autoClearSearchValue?: boolean;
   onSearch?: (value: string) => void;
 
   // Events
@@ -63,7 +64,6 @@ export interface SelectProps<OptionsType> {
   // Legacy
   defaultActiveFirstOption?: boolean;
   combobox?: boolean;
-  autoClearSearchValue?: boolean;
 
   showSearch?: boolean;
   disabled?: boolean;
@@ -166,6 +166,7 @@ export function generateSelector<OptionsType, StaticProps>(
       searchValue,
       filterOption,
       optionFilterProp,
+      autoClearSearchValue,
       onSearch,
 
       id,
@@ -290,6 +291,11 @@ export function generateSelector<OptionsType, StaticProps>(
         onSelect(newValue, null);
       } else if (!selected && onDeselect) {
         onDeselect(newValue, null);
+      }
+
+      // Clean search value if single or configured
+      if (!isMultiple || autoClearSearchValue) {
+        setInnerSearchValue('');
       }
     };
 

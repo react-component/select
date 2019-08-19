@@ -65,7 +65,6 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
   const onSelectValue = (value: RawValueType) => {
     onSelect(value, { selected: !values.has(value) });
 
-    // TODO: handle multiple
     if (!multiple) {
       onToggleOpen(false);
     }
@@ -148,7 +147,9 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
               setActiveIndex(itemIndex);
             }}
             onClick={() => {
-              onSelectValue(value);
+              if (!disabled) {
+                onSelectValue(value);
+              }
             }}
           >
             {label || value}
