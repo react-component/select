@@ -268,7 +268,7 @@ export function generateSelector<OptionsType, StaticProps>(
       const { which } = event;
 
       // We only manage open state here, close logic should handle by list component
-      if (!mergeOpen && (which === KeyCode.SPACE || which === KeyCode.ENTER)) {
+      if (!mergeOpen && (which === KeyCode.ENTER)) {
         onToggleOpen(true);
       }
 
@@ -345,6 +345,7 @@ export function generateSelector<OptionsType, StaticProps>(
     // ============================= Render =============================
     const mergedClassName = classNames(prefixCls, className, {
       [`${prefixCls}-focused`]: focused,
+      [`${prefixCls}-multiple`]: isMultiple,
     });
 
     return (

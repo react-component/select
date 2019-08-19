@@ -50,7 +50,7 @@ const Demo = () => {
             },
           ]}
         />
-        <Select {...focusProps} {...selectProps}>
+        <Select {...focusProps} {...selectProps} showSearch>
           <Option value={1}>Value 1</Option>
           <OptGroup label={<span>Group Title</span>}>
             <Option value={2}>Value 2</Option>

@@ -47,7 +47,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     setInputWidth(measureRef.current.scrollWidth);
   }, [inputValue]);
 
-  // ====================== Event ======================
+  // ====================== Focus ======================
   // Should focus input if click the selector
   const onClick = ({ target }) => {
     if (target !== inputRef.current) {
@@ -64,15 +64,21 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     }
   };
 
+  // ==================== Selection ====================
+  let selectionNode: React.ReactNode;
+  if (multiple) {
+    selectionNode = values.map(({ label, value }) => (
+      <span key={value} className={`${prefixCls}-selection-item`}>
+        {label}
+      </span>
+    ));
+  } else if (values.length) {
+    selectionNode = <span className={`${prefixCls}-selection-item`}>{values[0].label}</span>;
+  }
+
   return (
     <div className={`${prefixCls}-selector`} onClick={onClick}>
-      {/* Multiple values */}
-      {multiple &&
-        values.map(({ label, value }) => (
-          <span key={value} className={`${prefixCls}-selection-item`}>
-            {label}
-          </span>
-        ))}
+      {selectionNode}
 
       <span className={`${prefixCls}-selection-search`} style={{ width: inputWidth }}>
         <input

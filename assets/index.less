@@ -7,9 +7,12 @@
 
   &-selector {
     display: flex;
-    flex-wrap: wrap;
     padding: 1px;
     border: 1px solid #000;
+
+    .@{select-prefix}-multiple & {
+      flex-wrap: wrap;
+    }
 
     .@{select-prefix}-selection-item {
       flex: none;
