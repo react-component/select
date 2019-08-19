@@ -37,11 +37,11 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
   );
 
   // ========================== Active ==========================
-  const getEnabledActiveIndex = (index: number): number => {
+  const getEnabledActiveIndex = (index: number, offset: number = 1): number => {
     const len = flattenList.length;
     let current = (index + len) % len;
 
-    for (; current < len; current += 1) {
+    for (; current < len && current >= 0; current += offset) {
       const { group, data } = flattenList[current];
       if (!group && !(data as OptionData).disabled) {
         break;
@@ -56,6 +56,11 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
   // ========================== Values ==========================
   const onSelectValue = (value: RawValueType) => {
     onSelect(value, { selected: !values.has(value) });
+
+    // TODO: handle multiple
+    if (open) {
+      onToggleOpen(false);
+    }
   };
 
   // ========================= Keyboard =========================
@@ -73,7 +78,7 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
           }
 
           if (offset !== 0) {
-            setActiveIndex(getEnabledActiveIndex(activeIndex + offset));
+            setActiveIndex(getEnabledActiveIndex(activeIndex + offset, offset));
           }
 
           break;
@@ -82,9 +87,9 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
         // >>> Select
         case KeyCode.ENTER: {
           // value
-
-          if (open) {
-            onToggleOpen(false);
+          const item = flattenList[activeIndex];
+          if (item && !(item.data as OptionData).disabled) {
+            onSelectValue((item.data as OptionData).value);
           }
 
           break;
@@ -109,6 +114,7 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
           [`${itemPrefixCls}-option-grouped`]: groupOption,
           [`${itemPrefixCls}-option-active`]:
             activeIndex === itemIndex && !(data as OptionData).disabled,
+          [`${itemPrefixCls}-option-disabled`]: (data as OptionData).disabled,
         });
 
         return (
@@ -124,7 +130,6 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
               setActiveIndex(itemIndex);
             }}
             onClick={() => {
-              // TODO: handle selected
               const selectedValue: RawValueType = (data as OptionData).value;
               onSelectValue(selectedValue);
             }}
