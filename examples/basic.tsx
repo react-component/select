@@ -31,7 +31,7 @@ const Demo = () => {
       <div style={{ border: '1px solid rgba(255, 0, 0, .5)' }}>
         <input placeholder="tab usage" {...focusProps} />
         <span>I am span</span>
-        <Select {...focusProps} showSearch {...selectProps}>
+        <Select {...focusProps} {...selectProps}>
           <Option value={1}>Value 1</Option>
           <OptGroup label={<span>Group Title</span>}>
             <Option value={2}>Value 2</Option>
@@ -42,6 +42,20 @@ const Demo = () => {
             Disabled Value
           </Option>
         </Select>
+        <Select
+          {...focusProps}
+          {...selectProps}
+          showSearch
+          options={[
+            { value: 'light' },
+            { value: 'bamboo' },
+            {
+              value: 'dog',
+              label: <span style={{ color: 'orange' }}>Dog</span>,
+              options: [{ value: 'small' }, { value: 'golden' }],
+            },
+          ]}
+        />
         <input type="hidden" />
         <button type="button" {...focusProps}>
           tab button

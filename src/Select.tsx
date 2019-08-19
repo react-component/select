@@ -26,12 +26,13 @@ import { toInnerValue, isSameValue, toOuterValue } from './utils/valueUtil';
  * - keyboard: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role#Keyboard_interactions
  */
 
-export interface SelectProps {
+export interface SelectProps<OptionsType> {
   id?: string;
 
   // Options
-  options?: SelectOptionsType;
+  options?: OptionsType;
   children?: React.ReactNode;
+  mode?: 'multiple' | 'tags';
 
   // Events
   onKeyUp?: React.KeyboardEventHandler<HTMLDivElement>;
@@ -40,7 +41,6 @@ export interface SelectProps {
   // Legacy
 
   defaultActiveFirstOption?: boolean;
-  multiple?: boolean;
   combobox?: boolean;
   autoClearSearchValue?: boolean;
   filterOption?: boolean | ((inputValue: string, option?: any) => boolean);
@@ -49,7 +49,6 @@ export interface SelectProps {
   style?: React.CSSProperties;
   allowClear?: boolean;
   showArrow?: boolean;
-  tags?: boolean;
   openClassName?: string;
   autoFocus?: boolean;
   prefixCls?: string;
@@ -94,7 +93,6 @@ export interface SelectProps {
   menuItemSelectedIcon?: RenderNode;
   getPopupContainer?: RenderNode;
   dropdownRender?: (menu: any) => JSX.Element;
-  mode?: 'multiple' | 'tags';
   backfill?: boolean;
   dropdownAlign?: any;
   dropdownClassName?: string;
@@ -121,7 +119,7 @@ export interface GenerateConfig<OptionsType, StaticProps> {
  */
 export function generateSelector<OptionsType, StaticProps>(
   config: GenerateConfig<OptionsType, StaticProps>,
-): React.ComponentType<SelectProps> {
+): React.ComponentType<SelectProps<OptionsType>> {
   /** Used for accessibility id generate */
   let uuid: number = 0;
 
@@ -131,16 +129,19 @@ export function generateSelector<OptionsType, StaticProps>(
     convertChildrenToData,
   } = config;
 
-  type SelectComponent = React.FC<SelectProps> & StaticProps;
+  type SelectComponent = React.FC<SelectProps<OptionsType>> & StaticProps;
 
-  const Select: React.FC<SelectProps> = props => {
+  const Select: React.FC<SelectProps<OptionsType>> = props => {
     const {
       prefixCls = 'rc-select',
+
+      mode,
+      value,
+      defaultValue,
+
       showSearch,
       id,
       disabled,
-      defaultValue,
-      value,
       labelInValue,
       className,
       open,
@@ -174,9 +175,9 @@ export function generateSelector<OptionsType, StaticProps>(
 
     // ============================= Option =============================
     const innerOptions = React.useMemo<OptionsType>((): OptionsType => {
-      // if (options !== undefined) {
-      //   return options;
-      // }
+      if (options !== undefined) {
+        return options;
+      }
 
       return convertChildrenToData(children);
     }, [options, children]);
@@ -189,7 +190,8 @@ export function generateSelector<OptionsType, StaticProps>(
       [baseValue],
     );
 
-    // TODO: Cache this
+    const isMultiple = mode === 'tags' || mode === 'multiple';
+
     const onInternalSelect = (newValue: RawValueType, { selected }: { selected: boolean }) => {
       const cloneRawValue = new Set(mergedRawValue);
 
@@ -204,6 +206,8 @@ export function generateSelector<OptionsType, StaticProps>(
         // TODO: handle multiple & labelInValue
         const outValue = toOuterValue(Array.from(cloneRawValue), { multiple: false, labelInValue });
         onChange(outValue, null);
+
+        setInnerValue(outValue);
       }
 
       // TODO: handle label in value
@@ -220,7 +224,10 @@ export function generateSelector<OptionsType, StaticProps>(
 
     const onToggleOpen = React.useCallback<(open?: boolean) => void>(
       (newOpen?: boolean) => {
-        setInnerOpen(newOpen !== undefined ? newOpen : !mergeOpen);
+        const nextOpen = newOpen !== undefined ? newOpen : !mergeOpen;
+        if (innerOpen !== nextOpen) {
+          setInnerOpen(nextOpen);
+        }
       },
       [innerOpen],
     );
@@ -297,6 +304,7 @@ export function generateSelector<OptionsType, StaticProps>(
         prefixCls={prefixCls}
         id={mergedId}
         options={innerOptions}
+        multiple={isMultiple}
         values={mergedRawValue}
         onSelect={onInternalSelect}
         onToggleOpen={onToggleOpen}

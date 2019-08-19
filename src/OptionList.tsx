@@ -10,6 +10,7 @@ export interface OptionListProps {
   id: string;
   options: OptionsType;
   values: Set<RawValueType>;
+  multiple: boolean;
 
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
   onToggleOpen: (open?: boolean) => void;
@@ -25,7 +26,7 @@ export interface RefProps {
  * Will fallback to dom if use customize render.
  */
 const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
-  { prefixCls, id, options, values, onSelect, onToggleOpen },
+  { prefixCls, id, options, values, multiple, onSelect, onToggleOpen },
   ref,
 ) => {
   const itemPrefixCls = `${prefixCls}-item`;
@@ -54,11 +55,11 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
   const [activeIndex, setActiveIndex] = React.useState(() => getEnabledActiveIndex(0));
 
   // ========================== Values ==========================
-  const onSelectValue = (value: RawValueType) => {
+  const onSelectValue = (value: RawValueType, source?: 'SPACE' | 'ENTER') => {
     onSelect(value, { selected: !values.has(value) });
 
     // TODO: handle multiple
-    if (open) {
+    if (!multiple || source === 'ENTER') {
       onToggleOpen(false);
     }
   };
@@ -85,11 +86,15 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
         }
 
         // >>> Select
+        case KeyCode.SPACE:
         case KeyCode.ENTER: {
           // value
           const item = flattenList[activeIndex];
           if (item && !(item.data as OptionData).disabled) {
-            onSelectValue((item.data as OptionData).value);
+            onSelectValue(
+              (item.data as OptionData).value,
+              which === KeyCode.SPACE ? 'SPACE' : 'ENTER',
+            );
           }
 
           break;
@@ -109,12 +114,13 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
           return <div className={classNames(itemPrefixCls, `${itemPrefixCls}-group`)}>{label}</div>;
         }
 
+        const { disabled, value } = data as OptionData;
+
         // Option
         const optionClassName = classNames(itemPrefixCls, `${itemPrefixCls}-option`, {
           [`${itemPrefixCls}-option-grouped`]: groupOption,
-          [`${itemPrefixCls}-option-active`]:
-            activeIndex === itemIndex && !(data as OptionData).disabled,
-          [`${itemPrefixCls}-option-disabled`]: (data as OptionData).disabled,
+          [`${itemPrefixCls}-option-active`]: activeIndex === itemIndex && !disabled,
+          [`${itemPrefixCls}-option-disabled`]: disabled,
         });
 
         return (
@@ -130,11 +136,10 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
               setActiveIndex(itemIndex);
             }}
             onClick={() => {
-              const selectedValue: RawValueType = (data as OptionData).value;
-              onSelectValue(selectedValue);
+              onSelectValue(value);
             }}
           >
-            {label}
+            {label || value}
           </div>
         );
       }}
