@@ -70,3 +70,51 @@ export function flattenOptions(
 
   return flattenList;
 }
+
+export function isSameValue(prev: RawValueType[], next: RawValueType[]) {
+  if (prev.length !== next.length) {
+    return false;
+  }
+
+  const set: Set<RawValueType> = new Set(prev);
+
+  return next.every(val => set.has(val));
+}
+
+/**
+ * Convert internal value into out event value
+ */
+export function toOuterValue(
+  valueList: RawValueType[],
+  { multiple, labelInValue }: { multiple: boolean; labelInValue: boolean },
+): ValueType {
+  let values = valueList;
+
+  // TODO: handle label in value
+
+  if (!multiple) {
+    return values[0];
+  }
+
+  return values;
+}
+
+/**
+ * Convert outer props value into internal value
+ */
+export function toInnerValue(
+  value: ValueType,
+  { labelInValue }: { labelInValue: boolean },
+): RawValueType[] {
+  if (value === undefined || value === null) {
+    return [];
+  }
+
+  let values = Array.isArray(value) ? value : [value];
+
+  if (labelInValue) {
+    return values.map(item => (item as LabelValueType).value);
+  }
+
+  return values as RawValueType[];
+}

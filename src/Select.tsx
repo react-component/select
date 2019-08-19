@@ -4,11 +4,18 @@ import classNames from 'classnames';
 import Selector from './Selector';
 import SelectTrigger from './SelectTrigger';
 import { SelectContext } from './Context';
-import { ValueType, RenderNode, OptionsType as SelectOptionsType, OptionsType } from './interface';
+import {
+  ValueType,
+  RenderNode,
+  OptionsType as SelectOptionsType,
+  OptionsType,
+  RawValueType,
+} from './interface';
 import OptionList, { OptionListProps, RefProps } from './OptionList';
 import Option from './Option';
 import OptGroup from './OptGroup';
 import { convertChildrenToData as convertSelectChildrenToData } from './utils/legacyUtil';
+import { toInnerValue, isSameValue, toOuterValue } from './utils/valueUtil';
 
 /**
  * To match accessibility requirement, we always provide an input in the component.
@@ -27,6 +34,7 @@ export interface SelectProps {
   children?: React.ReactNode;
 
   // Events
+  onKeyUp?: React.KeyboardEventHandler<HTMLDivElement>;
   onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
 
   // Legacy
@@ -128,10 +136,12 @@ export function generateSelector<OptionsType, StaticProps>(
   const Select: React.FC<SelectProps> = props => {
     const {
       prefixCls = 'rc-select',
+      showSearch,
       id,
       disabled,
       defaultValue,
       value,
+      labelInValue,
       className,
       open,
       defaultOpen,
@@ -141,15 +151,17 @@ export function generateSelector<OptionsType, StaticProps>(
 
       onFocus,
       onBlur,
+      onKeyUp,
       onKeyDown,
       onMouseDown,
+
       onChange,
       onSelect,
-      showSearch,
+      onDeselect,
+
       ...domProps
     } = props;
 
-    const [innerValue, setInnerValue] = React.useState<ValueType>(value || defaultValue);
     const listRef = React.useRef<RefProps>(null);
 
     // Inner id for accessibility usage
@@ -170,7 +182,37 @@ export function generateSelector<OptionsType, StaticProps>(
     }, [options, children]);
 
     // ============================= Value ==============================
-    React.useEffect(() => {}, [value]);
+    const [innerValue, setInnerValue] = React.useState<ValueType>(value || defaultValue);
+    const baseValue = value !== undefined && value !== null ? value : innerValue;
+    const mergedRawValue = React.useMemo<Set<RawValueType>>(
+      () => new Set(toInnerValue(baseValue, { labelInValue })),
+      [baseValue],
+    );
+
+    // TODO: Cache this
+    const onInternalSelect = (newValue: RawValueType, { selected }: { selected: boolean }) => {
+      const cloneRawValue = new Set(mergedRawValue);
+
+      if (selected) {
+        cloneRawValue.add(newValue);
+      } else {
+        cloneRawValue.delete(newValue);
+      }
+
+      // Don't care is add or remove, just trigger if size changed
+      if (mergedRawValue.size !== cloneRawValue.size && onChange) {
+        // TODO: handle multiple & labelInValue
+        const outValue = toOuterValue(Array.from(cloneRawValue), { multiple: false, labelInValue });
+        onChange(outValue, null);
+      }
+
+      // TODO: handle label in value
+      if (selected && onSelect) {
+        onSelect(newValue, null);
+      } else if (!selected && onDeselect) {
+        onDeselect(newValue, null);
+      }
+    };
 
     // ============================== Open ==============================
     const [innerOpen, setInnerOpen] = React.useState<boolean>(defaultOpen);
@@ -184,23 +226,33 @@ export function generateSelector<OptionsType, StaticProps>(
     );
 
     // KeyDown
-    const onInternalKeyDown = React.useCallback<React.KeyboardEventHandler<HTMLDivElement>>(
-      (event, ...rest) => {
-        const { which } = event;
-        if (!mergeOpen && (which === KeyCode.SPACE || which === KeyCode.ENTER)) {
-          onToggleOpen(true);
-        }
+    const onInternalKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event, ...rest) => {
+      const { which } = event;
 
-        if (listRef.current) {
-          listRef.current.onKeyDown(event, ...rest);
-        }
+      // We only manage open state here, close logic should handle by list component
+      if (!mergeOpen && (which === KeyCode.SPACE || which === KeyCode.ENTER)) {
+        onToggleOpen(true);
+      }
 
-        if (onKeyDown) {
-          onKeyDown(event, ...rest);
-        }
-      },
-      [onKeyDown],
-    );
+      if (mergeOpen && listRef.current) {
+        listRef.current.onKeyDown(event, ...rest);
+      }
+
+      if (onKeyDown) {
+        onKeyDown(event, ...rest);
+      }
+    };
+
+    // KeyUp
+    const onInternalKeyUp: React.KeyboardEventHandler<HTMLDivElement> = (event, ...rest) => {
+      if (mergeOpen && listRef.current) {
+        listRef.current.onKeyUp(event, ...rest);
+      }
+
+      if (onKeyUp) {
+        onKeyUp(event, ...rest);
+      }
+    };
 
     // ========================== Focus / Blur ==========================
     const [focused, setFocused] = React.useState(false);
@@ -240,7 +292,15 @@ export function generateSelector<OptionsType, StaticProps>(
 
     // ============================= Popup ==============================
     const popupNode = (
-      <OptionList ref={listRef} prefixCls={prefixCls} id={mergedId} options={innerOptions} />
+      <OptionList
+        ref={listRef}
+        prefixCls={prefixCls}
+        id={mergedId}
+        options={innerOptions}
+        values={mergedRawValue}
+        onSelect={onInternalSelect}
+        onToggleOpen={onToggleOpen}
+      />
     );
 
     // ============================= Render =============================
@@ -255,6 +315,7 @@ export function generateSelector<OptionsType, StaticProps>(
           {...domProps}
           onMouseDown={onInternalMouseDown}
           onKeyDown={onInternalKeyDown}
+          onKeyUp={onInternalKeyUp}
         >
           {mergeOpen && (
             <span

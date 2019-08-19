@@ -2,19 +2,22 @@ import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
 import List from 'rc-virtual-list';
-import { OptionsType, FlattenOptionData, Key, RawValueType } from './interface';
+import { OptionsType, FlattenOptionData, Key, RawValueType, OptionData } from './interface';
 import { flattenOptions } from './utils/valueUtil';
 
 export interface OptionListProps {
   prefixCls: string;
   id: string;
   options: OptionsType;
-  /** Always return as array */
-  onSelect: (value: RawValueType[]) => void;
+  values: Set<RawValueType>;
+
+  onSelect: (value: RawValueType, option: { selected: boolean }) => void;
+  onToggleOpen: (open?: boolean) => void;
 }
 
 export interface RefProps {
   onKeyDown: React.KeyboardEventHandler;
+  onKeyUp: React.KeyboardEventHandler;
 }
 
 /**
@@ -22,7 +25,7 @@ export interface RefProps {
  * Will fallback to dom if use customize render.
  */
 const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
-  { prefixCls, id, options, onSelect },
+  { prefixCls, id, options, values, onSelect, onToggleOpen },
   ref,
 ) => {
   const itemPrefixCls = `${prefixCls}-item`;
@@ -34,46 +37,66 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
   );
 
   // ========================== Active ==========================
-  /**
-   * `activeIndex` only consider option and ignore option group,
-   * since option group is no need to be focused.
-   */
-  const [activeIndex, setActiveIndex] = React.useState(0);
-  const indexKeyMap: Key[] = React.useMemo<Key[]>(() => {
-    let index = 0;
-    const indexList: Key[] = [];
-    flattenList.forEach(item => {
-      if (!item.group) {
-        indexList[index] = item.key;
-        index += 1;
+  const getEnabledActiveIndex = (index: number): number => {
+    const len = flattenList.length;
+    let current = (index + len) % len;
+
+    for (; current < len; current += 1) {
+      const { group, data } = flattenList[current];
+      if (!group && !(data as OptionData).disabled) {
+        break;
       }
-    });
+    }
 
-    return indexList;
-  }, [flattenList]);
+    return current !== len ? current : 0;
+  };
 
-  const activeKey = indexKeyMap[activeIndex];
+  const [activeIndex, setActiveIndex] = React.useState(() => getEnabledActiveIndex(0));
+
+  // ========================== Values ==========================
+  const onSelectValue = (value: RawValueType) => {
+    onSelect(value, { selected: !values.has(value) });
+  };
 
   // ========================= Keyboard =========================
   React.useImperativeHandle(ref, () => ({
     onKeyDown: ({ which }) => {
-      let offset = 0;
-      if (which === KeyCode.UP) {
-        offset = -1;
-      } else if (which === KeyCode.DOWN) {
-        offset = 1;
-      }
+      switch (which) {
+        // >>> Arrow keys
+        case KeyCode.UP:
+        case KeyCode.DOWN: {
+          let offset = 0;
+          if (which === KeyCode.UP) {
+            offset = -1;
+          } else if (which === KeyCode.DOWN) {
+            offset = 1;
+          }
 
-      if (offset !== 0) {
-        const len = indexKeyMap.length;
-        setActiveIndex((activeIndex + offset + len) % len);
+          if (offset !== 0) {
+            setActiveIndex(getEnabledActiveIndex(activeIndex + offset));
+          }
+
+          break;
+        }
+
+        // >>> Select
+        case KeyCode.ENTER: {
+          // value
+
+          if (open) {
+            onToggleOpen(false);
+          }
+
+          break;
+        }
       }
     },
+    onKeyUp: () => {},
   }));
 
   return (
     <List<FlattenOptionData> data={flattenList} itemKey="key" role="listbox">
-      {({ key, group, groupOption, data }) => {
+      {({ key, group, groupOption, data }, itemIndex) => {
         const { label } = data;
 
         // Group
@@ -84,7 +107,8 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
         // Option
         const optionClassName = classNames(itemPrefixCls, `${itemPrefixCls}-option`, {
           [`${itemPrefixCls}-option-grouped`]: groupOption,
-          [`${itemPrefixCls}-option-active`]: activeKey === key,
+          [`${itemPrefixCls}-option-active`]:
+            activeIndex === itemIndex && !(data as OptionData).disabled,
         });
 
         return (
@@ -92,12 +116,17 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
             id={`${id}_list`}
             role="item"
             className={optionClassName}
-            onMouseEnter={() => {
-              const index = indexKeyMap.findIndex(indexKey => indexKey === key);
-              setActiveIndex(index);
+            onMouseMove={() => {
+              if (activeIndex === itemIndex) {
+                return;
+              }
+
+              setActiveIndex(itemIndex);
             }}
             onClick={() => {
-              onSelect([data.value]);
+              // TODO: handle selected
+              const selectedValue: RawValueType = (data as OptionData).value;
+              onSelectValue(selectedValue);
             }}
           >
             {label}

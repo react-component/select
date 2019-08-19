@@ -12,29 +12,49 @@ const focusProps = {
   },
 };
 
-const Demo = () => (
-  <div>
-    <h1>Basic</h1>
-    <div style={{ border: '1px solid rgba(255, 0, 0, .5)' }}>
-      <input placeholder="tab usage" {...focusProps} />
-      <span>I am span</span>
-      <Select {...focusProps} showSearch>
-        <Option value={1}>Value 1</Option>
-        <OptGroup label={<span>Group Title</span>}>
-          <Option value={2}>Value 2</Option>
-        </OptGroup>
-        <Option value="light">String Value</Option>
-      </Select>
-      <input type="hidden" />
-      <button type="button" {...focusProps}>
-        tab button
-      </button>
-      <input placeholder="tab usage" {...focusProps} />
-      <select>
-        <option>233</option>
-      </select>
+const consoleEvent = (name: string) => {
+  return (...args: any[]) => {
+    console.log(name, ':', ...args);
+  };
+};
+
+const Demo = () => {
+  const selectProps = {
+    onChange: consoleEvent('Change'),
+    onSelect: consoleEvent('Select'),
+    onDeselect: consoleEvent('Deselect'),
+  };
+
+  return (
+    <div>
+      <h1>Basic</h1>
+      <div style={{ border: '1px solid rgba(255, 0, 0, .5)' }}>
+        <input placeholder="tab usage" {...focusProps} />
+        <span>I am span</span>
+        <Select {...focusProps} showSearch {...selectProps}>
+          <Option value={1}>Value 1</Option>
+          <OptGroup label={<span>Group Title</span>}>
+            <Option value={2}>Value 2</Option>
+          </OptGroup>
+          <Option value="light">String Value</Option>
+          <Option value={903}>Number Value</Option>
+          <Option value={1128} disabled>
+            Disabled Value
+          </Option>
+        </Select>
+        <input type="hidden" />
+        <button type="button" {...focusProps}>
+          tab button
+        </button>
+        <input placeholder="tab usage" {...focusProps} />
+        <select>
+          <option>233</option>
+          <option disabled>1222</option>
+          <option>ddd</option>
+        </select>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default Demo;
