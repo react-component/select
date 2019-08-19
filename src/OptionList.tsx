@@ -56,11 +56,11 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
   const [activeIndex, setActiveIndex] = React.useState(() => getEnabledActiveIndex(0));
 
   // ========================== Values ==========================
-  const onSelectValue = (value: RawValueType, source?: 'SPACE' | 'ENTER') => {
+  const onSelectValue = (value: RawValueType) => {
     onSelect(value, { selected: !values.has(value) });
 
     // TODO: handle multiple
-    if (!multiple || source === 'ENTER') {
+    if (!multiple) {
       onToggleOpen(false);
     }
   };
@@ -87,18 +87,19 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
         }
 
         // >>> Select
-        case KeyCode.SPACE:
         case KeyCode.ENTER: {
           // value
           const item = flattenList[activeIndex];
           if (item && !(item.data as OptionData).disabled) {
-            onSelectValue(
-              (item.data as OptionData).value,
-              which === KeyCode.SPACE ? 'SPACE' : 'ENTER',
-            );
+            onSelectValue((item.data as OptionData).value);
           }
 
           break;
+        }
+
+        // >>> Close
+        case KeyCode.ESC: {
+          onToggleOpen(false);
         }
       }
     },

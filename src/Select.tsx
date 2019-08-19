@@ -1,7 +1,7 @@
 import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
-import Selector from './Selector';
+import Selector, { RefSelectorProps } from './Selector';
 import SelectTrigger from './SelectTrigger';
 import { SelectContext } from './Context';
 import { RenderNode, OptionsType as SelectOptionsType } from './interface';
@@ -165,9 +165,10 @@ export function generateSelector<OptionsType, StaticProps>(
       ...domProps
     } = props;
 
+    const selectorRef = React.useRef<RefSelectorProps>(null);
     const listRef = React.useRef<RefProps>(null);
 
-    // Inner id for accessibility usage
+    // Inner id for accessibility usage. Only work in client side
     const [innerId, setInnerId] = React.useState<string>();
     React.useEffect(() => {
       setInnerId(`rc_select_${uuid}`);
@@ -187,10 +188,22 @@ export function generateSelector<OptionsType, StaticProps>(
     // ============================= Value ==============================
     const [innerValue, setInnerValue] = React.useState<ValueType>(value || defaultValue);
     const baseValue = value !== undefined && value !== null ? value : innerValue;
-    const mergedRawValue = React.useMemo<Set<RawValueType>>(
-      () => new Set(toInnerValue(baseValue, { labelInValue })),
+
+    /** Unique raw values */
+    const mergedRawValue = React.useMemo<RawValueType[]>(
+      () => toInnerValue(baseValue, { labelInValue }),
       [baseValue],
     );
+    /** We cache a set of raw values to speed up check */
+    const rawValues = React.useMemo<Set<RawValueType>>(() => new Set(mergedRawValue), [
+      mergedRawValue,
+    ]);
+
+    const displayValues = React.useMemo<LabelValueType[]>(() => {
+      return mergedRawValue.map((val: RawValueType) =>
+        getLabeledValue(val, mergedOptions, baseValue),
+      );
+    }, [baseValue]);
 
     const isMultiple = mode === 'tags' || mode === 'multiple';
 
@@ -306,7 +319,7 @@ export function generateSelector<OptionsType, StaticProps>(
 
     const onInternalMouseDown: React.MouseEventHandler<HTMLDivElement> = (...args) => {
       // Not lose focus if have
-      if (focused) {
+      if (focused && args[0].target !== selectorRef.current.getInputElement()) {
         args[0].preventDefault();
       }
 
@@ -323,7 +336,7 @@ export function generateSelector<OptionsType, StaticProps>(
         id={mergedId}
         options={mergedOptions}
         multiple={isMultiple}
-        values={mergedRawValue}
+        values={rawValues}
         onSelect={onInternalSelect}
         onToggleOpen={onToggleOpen}
       />
@@ -359,7 +372,10 @@ export function generateSelector<OptionsType, StaticProps>(
           >
             <Selector
               {...props}
+              ref={selectorRef}
               id={mergedId}
+              multiple={isMultiple}
+              values={displayValues}
               open={mergeOpen}
               onToggleOpen={onToggleOpen}
               onFocus={onInternalFocus}

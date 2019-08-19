@@ -2,16 +2,39 @@
 
 .@{select-prefix} {
   display: inline-block;
+  font-size: 12px;
 
   &-selector {
     display: flex;
     padding: 1px;
     border: 1px solid #000;
 
-    input {
-      vertical-align: top;
-      border: none;
-      outline: none;
+    .@{select-prefix}-selection-item {
+      flex: none;
+    }
+
+    .@{select-prefix}-selection-search {
+      flex: none;
+      position: relative;
+
+      &-input, &-mirror {
+        padding: 1px;
+        font-family: system-ui;
+      }
+
+      &-input {
+        border: none;
+        outline: none;
+        background: rgba(255, 0, 0, 0.2);
+      }
+      &-mirror {
+        position: absolute;
+        z-index: 999;
+        white-space: nowrap;
+        position: none;
+        left: 0;
+        top: 0;
+      }
     }
   }
 
