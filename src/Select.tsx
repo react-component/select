@@ -193,25 +193,37 @@ export function generateSelector<OptionsType, StaticProps>(
     const isMultiple = mode === 'tags' || mode === 'multiple';
 
     const onInternalSelect = (newValue: RawValueType, { selected }: { selected: boolean }) => {
-      const cloneRawValue = new Set(mergedRawValue);
+      let newRawValue: Set<RawValueType>;
 
-      if (selected) {
-        cloneRawValue.add(newValue);
+      if (isMultiple) {
+        newRawValue = new Set(mergedRawValue);
+        if (selected) {
+          newRawValue.add(newValue);
+        } else {
+          newRawValue.delete(newValue);
+        }
       } else {
-        cloneRawValue.delete(newValue);
+        newRawValue = new Set();
+        newRawValue.add(newValue);
       }
 
-      // Don't care is add or remove, just trigger if size changed
-      if (mergedRawValue.size !== cloneRawValue.size && onChange) {
-        // TODO: handle multiple & labelInValue
-        const outValue = toOuterValue(Array.from(cloneRawValue), { multiple: false, labelInValue });
-        onChange(outValue, null);
+      // Multiple always trigger change and single should change if value changed
+      if (isMultiple || (!isMultiple && Array.from(mergedRawValue)[0] !== newValue)) {
+        // TODO: handle `labelInValue`
+        const outValue = toOuterValue(Array.from(newRawValue), {
+          multiple: isMultiple,
+          labelInValue,
+        });
+        if (onChange) {
+          onChange(outValue, null);
+        }
 
         setInnerValue(outValue);
       }
 
       // TODO: handle label in value
-      if (selected && onSelect) {
+      // Single mode always trigger `onSelect`
+      if ((!isMultiple || selected) && onSelect) {
         onSelect(newValue, null);
       } else if (!selected && onDeselect) {
         onDeselect(newValue, null);

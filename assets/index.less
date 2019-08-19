@@ -49,6 +49,8 @@
 
     // >>> Option
     &-option {
+      position: relative;
+
       &-grouped {
         padding-left: 24px;
       }
@@ -61,6 +63,16 @@
       // ------ Disabled ------
       &-disabled {
         color: #999;
+      }
+
+      // ------ Selected ------
+      &-selected {
+        &::after {
+          content: '✅';
+          position: absolute;
+          right: 0;
+          top: 0;
+        }
       }
     }
   }

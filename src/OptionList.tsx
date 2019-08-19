@@ -121,6 +121,7 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
           [`${itemPrefixCls}-option-grouped`]: groupOption,
           [`${itemPrefixCls}-option-active`]: activeIndex === itemIndex && !disabled,
           [`${itemPrefixCls}-option-disabled`]: disabled,
+          [`${itemPrefixCls}-option-selected`]: values.has(value),
         });
 
         return (
