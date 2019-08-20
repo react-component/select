@@ -12,12 +12,31 @@
     padding: 1px;
     border: 1px solid #000;
 
-    .@{select-prefix}-multiple & {
-      flex-wrap: wrap;
-    }
-
     .@{select-prefix}-selection-item {
       flex: none;
+    }
+
+    .@{select-prefix}-selection-search-input {
+      border: none;
+      outline: none;
+      background: rgba(255, 0, 0, 0.2);
+      width: 100%;
+    }
+  }
+
+  // --------------- Single ----------------
+  &:not(&-multiple) {
+    .@{select-prefix}-selection-item {
+      position: absolute;
+      left: 1px;
+      top: 2px;
+    }
+  }
+
+  // -------------- Multiple ---------------
+  &&-multiple {
+    .@{select-prefix}-selector {
+      flex-wrap: wrap;
     }
 
     .@{select-prefix}-selection-search {
@@ -29,12 +48,6 @@
         font-family: system-ui;
       }
 
-      &-input {
-        border: none;
-        outline: none;
-        background: rgba(255, 0, 0, 0.2);
-        width: 100%;
-      }
       &-mirror {
         position: absolute;
         z-index: 999;

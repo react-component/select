@@ -35,6 +35,7 @@ const Demo = () => {
         <Select
           {...focusProps}
           {...selectProps}
+          defaultActiveFirstOption={false}
           mode="multiple"
           showSearch
           labelInValue
@@ -56,8 +57,9 @@ const Demo = () => {
           {...focusProps}
           {...selectProps}
           showSearch
-          searchValue={search}
-          onSearch={setSearch}
+          // searchValue={search}
+          // onSearch={setSearch}
+          defaultValue={2}
         >
           <Option value={1}>Value 1</Option>
           <OptGroup label={<span>Group Title</span>}>

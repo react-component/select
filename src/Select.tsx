@@ -67,15 +67,13 @@ export interface SelectProps<OptionsType> {
   // Others
   autoFocus?: boolean;
   allowClear?: boolean;
+  defaultActiveFirstOption?: boolean;
 
   // Events
   onKeyUp?: React.KeyboardEventHandler<HTMLDivElement>;
   onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
 
   // Legacy
-  defaultActiveFirstOption?: boolean;
-  combobox?: boolean;
-
   showSearch?: boolean;
   disabled?: boolean;
   style?: React.CSSProperties;
@@ -179,6 +177,9 @@ export function generateSelector<OptionsType, StaticProps>(
       // Icons
       allowClear,
       clearIcon,
+
+      // Others
+      defaultActiveFirstOption,
 
       disabled,
       labelInValue,
@@ -439,6 +440,7 @@ export function generateSelector<OptionsType, StaticProps>(
         onSelect={onInternalSelect}
         onToggleOpen={onToggleOpen}
         onActiveTitle={onActiveTitle}
+        defaultActiveFirstOption={defaultActiveFirstOption}
       />
     );
 

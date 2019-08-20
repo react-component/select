@@ -55,11 +55,17 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   }));
 
   // ===================== Measure =====================
+  const [typing, setTyping] = React.useState<boolean>(false);
+
   const onInputKeyDown = React.useCallback<React.KeyboardEventHandler<HTMLInputElement>>(event => {
     const { which } = event;
 
     if (which === KeyCode.UP || which === KeyCode.DOWN) {
       event.preventDefault();
+    }
+
+    if (which === KeyCode.ENTER) {
+      setTyping(false);
     }
   }, []);
 
@@ -70,7 +76,9 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
 
   // We measure width and set to the input immediately
   React.useLayoutEffect(() => {
-    setInputWidth(measureRef.current.scrollWidth);
+    if (multiple) {
+      setInputWidth(measureRef.current.scrollWidth);
+    }
   }, [searchValue]);
 
   // ====================== Focus ======================
@@ -90,6 +98,15 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     }
   };
 
+  const onInternalFocus: React.FocusEventHandler<HTMLInputElement> = (...args) => {
+    setTyping(true);
+    onFocus(...args);
+  };
+  const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = (...args) => {
+    setTyping(false);
+    onBlur(...args);
+  };
+
   // ==================== Selection ====================
   let selectionNode: React.ReactNode;
   if (multiple) {
@@ -98,22 +115,32 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
         {label}
       </span>
     ));
-  } else if (!searchValue && values.length) {
-    selectionNode = <span className={`${prefixCls}-selection-item`}>{values[0].label}</span>;
+  } else if (!searchValue) {
+    selectionNode = (
+      <span
+        className={`${prefixCls}-selection-item`}
+        style={{ opacity: typing || open ? 0.4 : null }}
+      >
+        {values[0].label}
+      </span>
+    );
   }
 
   return (
     <div className={`${prefixCls}-selector`} onClick={onClick}>
       {selectionNode}
 
-      <span className={`${prefixCls}-selection-search`} style={{ width: inputWidth }}>
+      <span
+        className={`${prefixCls}-selection-search`}
+        style={{ width: multiple ? inputWidth : null }}
+      >
         <input
           ref={inputRef}
           autoComplete="off"
           autoFocus={autoFocus}
           className={`${prefixCls}-selection-search-input`}
-          onFocus={onFocus}
-          onBlur={onBlur}
+          onFocus={onInternalFocus}
+          onBlur={onInternalBlur}
           readOnly={!showSearch}
           role="combobox"
           aria-expanded={open}
@@ -127,9 +154,11 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
           onChange={onInputChange}
         />
 
-        <span ref={measureRef} className={`${prefixCls}-selection-search-mirror`} aria-hidden>
-          {searchValue}
-        </span>
+        {multiple && (
+          <span ref={measureRef} className={`${prefixCls}-selection-search-mirror`} aria-hidden>
+            {searchValue}
+          </span>
+        )}
       </span>
     </div>
   );

@@ -12,6 +12,7 @@ export interface OptionListProps {
   options: OptionsType;
   values: Set<RawValueType>;
   multiple: boolean;
+  defaultActiveFirstOption?: boolean;
 
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
   onToggleOpen: (open?: boolean) => void;
@@ -29,7 +30,17 @@ export interface RefProps {
  * Will fallback to dom if use customize render.
  */
 const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
-  { prefixCls, id, options, values, multiple, onSelect, onToggleOpen, onActiveTitle },
+  {
+    prefixCls,
+    id,
+    options,
+    values,
+    multiple,
+    defaultActiveFirstOption,
+    onSelect,
+    onToggleOpen,
+    onActiveTitle,
+  },
   ref,
 ) => {
   const itemPrefixCls = `${prefixCls}-item`;
@@ -67,23 +78,11 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
       return;
     }
 
-    const { value, label, title } = flattenItem.data as OptionData;
-
-    let accessibilityTitle: string | number;
-    if (title) {
-      accessibilityTitle = title;
-    } else if (typeof label === 'string' || typeof label === 'number') {
-      accessibilityTitle = label;
-    } else {
-      accessibilityTitle = value;
-    }
-
     onActiveTitle(index);
   };
 
-  // TODO: Check if this is necessary
   React.useEffect(() => {
-    setActive(getEnabledActiveIndex(0));
+    setActive(defaultActiveFirstOption !== false ? getEnabledActiveIndex(0) : -1);
   }, [flattenList.length]);
 
   // ========================== Values ==========================
