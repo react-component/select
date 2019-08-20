@@ -22,9 +22,15 @@ const BUILT_IN_PLACEMENTS = {
 
 export interface SelectTriggerProps {
   prefixCls: string;
+  children: React.ReactElement;
   disabled: boolean;
   visible: boolean;
   popupElement: React.ReactElement;
+
+  containerWidth: number;
+  dropdownStyle: React.CSSProperties;
+  dropdownClassName: string;
+  dropdownMatchSelectWidth: boolean;
 }
 
 const SelectTrigger: React.FC<SelectTriggerProps> = ({
@@ -33,6 +39,10 @@ const SelectTrigger: React.FC<SelectTriggerProps> = ({
   visible,
   children,
   popupElement,
+  containerWidth,
+  dropdownStyle,
+  dropdownClassName,
+  dropdownMatchSelectWidth = true,
   ...props
 }) => {
   const dropdownPrefixCls = `${prefixCls}-dropdown`;
@@ -51,8 +61,11 @@ const SelectTrigger: React.FC<SelectTriggerProps> = ({
       popupAlign={{}}
       popupVisible={visible}
       getPopupContainer={null}
-      popupClassName={`sss`}
-      popupStyle={{}}
+      popupClassName={dropdownClassName}
+      popupStyle={{
+        ...dropdownStyle,
+        [dropdownMatchSelectWidth ? 'width' : 'minWidth']: containerWidth,
+      }}
     >
       {children}
     </Trigger>

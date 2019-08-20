@@ -41,6 +41,7 @@
   "dependencies": {
     "classnames": "2.x",
     "rc-animate": "^2.9.2",
+    "rc-trigger": "^2.6.5",
     "rc-util": "^4.9.0",
     "rc-virtual-list": "^0.0.0-alpha.18",
     "warning": "^4.0.3"

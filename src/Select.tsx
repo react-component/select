@@ -64,6 +64,11 @@ export interface SelectProps<OptionsType> {
   // Icons
   clearIcon?: React.ReactNode;
 
+  // Trigger
+  dropdownStyle?: React.CSSProperties;
+  dropdownClassName?: string;
+  dropdownMatchSelectWidth?: boolean;
+
   // Others
   disabled?: boolean;
   autoFocus?: boolean;
@@ -101,7 +106,6 @@ export interface SelectProps<OptionsType> {
   onDeselect?: (value: ValueType, option: JSX.Element | JSX.Element[]) => void;
   loading?: boolean;
   firstActiveValue?: ValueType;
-  dropdownStyle?: React.CSSProperties;
   maxTagTextLength?: number;
   maxTagCount?: number;
   maxTagPlaceholder?: RenderNode;
@@ -115,8 +119,6 @@ export interface SelectProps<OptionsType> {
   dropdownRender?: (menu: any) => JSX.Element;
   backfill?: boolean;
   dropdownAlign?: any;
-  dropdownClassName?: string;
-  dropdownMatchSelectWidth?: boolean;
   dropdownMenuStyle?: React.CSSProperties;
   notFoundContent?: string | false;
   tabIndex?: number;
@@ -181,6 +183,11 @@ export function generateSelector<OptionsType, StaticProps>(
       // Others
       disabled,
       defaultActiveFirstOption,
+
+      // Dropdown
+      dropdownStyle,
+      dropdownClassName,
+      dropdownMatchSelectWidth,
 
       labelInValue,
       className,
@@ -429,6 +436,16 @@ export function generateSelector<OptionsType, StaticProps>(
     };
 
     // ============================= Popup ==============================
+    const containerRef = React.useRef<HTMLDivElement>(null);
+    const [containerWidth, setContainerWidth] = React.useState(null);
+
+    React.useLayoutEffect(() => {
+      const newWidth = Math.ceil(containerRef.current.offsetWidth);
+      if (containerWidth !== newWidth) {
+        setContainerWidth(newWidth);
+      }
+    });
+
     const popupNode = (
       <OptionList
         ref={listRef}
@@ -474,6 +491,7 @@ export function generateSelector<OptionsType, StaticProps>(
         <div
           className={mergedClassName}
           {...domProps}
+          ref={containerRef}
           onMouseDown={onInternalMouseDown}
           onKeyDown={onInternalKeyDown}
           onKeyUp={onInternalKeyUp}
@@ -492,6 +510,10 @@ export function generateSelector<OptionsType, StaticProps>(
             prefixCls={prefixCls}
             visible={mergeOpen}
             popupElement={popupNode}
+            containerWidth={containerWidth}
+            dropdownStyle={dropdownStyle}
+            dropdownClassName={dropdownClassName}
+            dropdownMatchSelectWidth={dropdownMatchSelectWidth}
           >
             <Selector
               {...props}

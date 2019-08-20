@@ -1,5 +1,9 @@
 @select-prefix: ~'rc-select';
 
+* {
+  box-sizing: border-box;
+}
+
 .@{select-prefix} {
   display: inline-block;
   font-size: 12px;
@@ -94,7 +98,6 @@
   // ============== Dropdown ===============
   &-dropdown {
     border: 1px solid green;
-    width: 300px;
     min-height: 100px;
     position: absolute;
 
