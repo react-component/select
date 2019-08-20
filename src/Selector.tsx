@@ -59,13 +59,10 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     }
   }, []);
 
-  const onInputChange = React.useCallback<React.ChangeEventHandler<HTMLInputElement>>(
-    ({ target: { value } }) => {
-      onSearch(value);
-      onToggleOpen(true);
-    },
-    [],
-  );
+  const onInputChange = ({ target: { value } }) => {
+    onSearch(value);
+    onToggleOpen(true);
+  };
 
   // We measure width and set to the input immediately
   React.useLayoutEffect(() => {

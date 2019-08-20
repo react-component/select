@@ -24,6 +24,8 @@ const Demo = () => {
     onSearch: consoleEvent('Search'),
   };
 
+  const [search, setSearch] = React.useState('');
+
   return (
     <div>
       <h1>Basic</h1>
@@ -50,7 +52,13 @@ const Demo = () => {
             },
           ]}
         />
-        <Select {...focusProps} {...selectProps} showSearch>
+        <Select
+          {...focusProps}
+          {...selectProps}
+          showSearch
+          searchValue={search}
+          onSearch={setSearch}
+        >
           <Option value={1}>Value 1</Option>
           <OptGroup label={<span>Group Title</span>}>
             <Option value={2}>Value 2</Option>

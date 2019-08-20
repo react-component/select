@@ -261,19 +261,16 @@ export function generateSelector<OptionsType, StaticProps>(
 
     const isMultiple = mode === 'tags' || mode === 'multiple';
 
-    const triggerChange = React.useCallback(
-      (values: RawValueType[] | LabelValueType[]) => {
-        const outValue: ValueType = isMultiple ? values : values[0];
-        // Skip trigger if prev & current value is both empty
-        if (onChange && (mergedRawValue.length !== 0 || values.length !== 0)) {
-          // TODO: handle this
-          onChange(outValue, null);
-        }
+    const triggerChange = (values: RawValueType[] | LabelValueType[]) => {
+      const outValue: ValueType = isMultiple ? values : values[0];
+      // Skip trigger if prev & current value is both empty
+      if (onChange && (mergedRawValue.length !== 0 || values.length !== 0)) {
+        // TODO: handle this
+        onChange(outValue, null);
+      }
 
-        setInnerValue(outValue);
-      },
-      [onChange, isMultiple, mergedRawValue],
-    );
+      setInnerValue(outValue);
+    };
 
     const onInternalSelect = (newValue: RawValueType, { selected }: { selected: boolean }) => {
       let newRawValue: Set<RawValueType>;
@@ -335,6 +332,15 @@ export function generateSelector<OptionsType, StaticProps>(
       [innerOpen],
     );
 
+    // ============================ Keyboard ============================
+    /**
+     * We record input value here to check if can press to clean up by backspace
+     * - null: Key is not down, this is reset by key up
+     * - true: Search text is empty when first time backspace down
+     * - false: Search text is not empty when first time backspace down
+     */
+    const keyCleanRef = React.useRef<null | boolean>(null);
+
     // KeyDown
     const onInternalKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event, ...rest) => {
       const { which } = event;
@@ -342,6 +348,25 @@ export function generateSelector<OptionsType, StaticProps>(
       // We only manage open state here, close logic should handle by list component
       if (!mergeOpen && which === KeyCode.ENTER) {
         onToggleOpen(true);
+      }
+
+      // Set clean mark
+      if (keyCleanRef.current === null) {
+        keyCleanRef.current = !mergedSearchValue;
+      }
+
+      /**
+       * Clean up values if multiple mode,
+       * only trigger when input is empty at BACKSPACE start.
+       */
+      if (
+        which === KeyCode.BACKSPACE &&
+        keyCleanRef.current &&
+        isMultiple &&
+        !mergedSearchValue &&
+        mergedRawValue.length
+      ) {
+        triggerChange((baseValue as LabelValueType[]).slice(0, -1));
       }
 
       if (mergeOpen && listRef.current) {
@@ -355,9 +380,13 @@ export function generateSelector<OptionsType, StaticProps>(
 
     // KeyUp
     const onInternalKeyUp: React.KeyboardEventHandler<HTMLDivElement> = (event, ...rest) => {
+      const { which } = event;
+
       if (mergeOpen && listRef.current) {
         listRef.current.onKeyUp(event, ...rest);
       }
+
+      keyCleanRef.current = null;
 
       if (onKeyUp) {
         onKeyUp(event, ...rest);
