@@ -15,6 +15,8 @@ export interface OptionListProps {
 
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
   onToggleOpen: (open?: boolean) => void;
+  /** Tell Select that some value is now active to make accessibility work */
+  onActiveTitle: (value: string | number, index: number, totalCount: number) => void;
 }
 
 export interface RefProps {
@@ -27,7 +29,7 @@ export interface RefProps {
  * Will fallback to dom if use customize render.
  */
 const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
-  { prefixCls, id, options, values, multiple, onSelect, onToggleOpen },
+  { prefixCls, id, options, values, multiple, onSelect, onToggleOpen, onActiveTitle },
   ref,
 ) => {
   const itemPrefixCls = `${prefixCls}-item`;
@@ -36,6 +38,10 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
   const flattenList: FlattenOptionData[] = React.useMemo<FlattenOptionData[]>(
     () => flattenOptions(options),
     [options],
+  );
+  const totalCount: number = React.useMemo<number>(
+    () => flattenList.filter(item => !item.group).length,
+    [flattenList],
   );
 
   // ========================== Active ==========================
@@ -55,10 +61,48 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
   };
 
   const [activeIndex, setActiveIndex] = React.useState(() => getEnabledActiveIndex(0));
+  const indexMap: number[] = React.useMemo(() => {
+    // We cache index to faster accessibility here
+    const indexes: number[] = [];
+
+    let index = 0;
+    flattenList.forEach((item, itemIndex) => {
+      indexes[itemIndex] = index;
+
+      if (!item.group) {
+        index += 1;
+      }
+    });
+
+    return indexes;
+  }, [flattenList]);
+  const setActive = (index: number) => {
+    setActiveIndex(index);
+
+    // Trigger active event
+    const flattenItem = flattenList[index];
+    if (!flattenItem) {
+      onActiveTitle(null, -1, -1);
+      return;
+    }
+
+    const { value, label, title } = flattenItem.data as OptionData;
+
+    let accessibilityTitle: string | number;
+    if (title) {
+      accessibilityTitle = title;
+    } else if (typeof label === 'string' || typeof label === 'number') {
+      accessibilityTitle = label;
+    } else {
+      accessibilityTitle = value;
+    }
+
+    onActiveTitle(accessibilityTitle, indexMap[index], totalCount);
+  };
 
   // TODO: Check if this is necessary
   React.useEffect(() => {
-    setActiveIndex(getEnabledActiveIndex(0));
+    setActive(getEnabledActiveIndex(0));
   }, [flattenList.length]);
 
   // ========================== Values ==========================
@@ -85,7 +129,7 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
           }
 
           if (offset !== 0) {
-            setActiveIndex(getEnabledActiveIndex(activeIndex + offset, offset));
+            setActive(getEnabledActiveIndex(activeIndex + offset, offset));
           }
 
           break;
@@ -112,7 +156,7 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
   }));
 
   return (
-    <List<FlattenOptionData> data={flattenList} itemKey="key" role="listbox">
+    <List<FlattenOptionData> data={flattenList} itemKey="key" role="listbox" id={`${id}_list`}>
       {({ key, group, groupOption, data }, itemIndex) => {
         const { label } = data;
 
@@ -135,7 +179,6 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
 
         return (
           <div
-            id={`${id}_list`}
             role="option"
             aria-selected={selected}
             className={optionClassName}
@@ -144,7 +187,7 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
                 return;
               }
 
-              setActiveIndex(itemIndex);
+              setActive(itemIndex);
             }}
             onClick={() => {
               if (!disabled) {

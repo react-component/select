@@ -1,7 +1,7 @@
 import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { SelectContext } from './Context';
-import { LabelValueType } from './interface/generator';
+import { LabelValueType, RawValueType } from './interface/generator';
 
 export interface RefSelectorProps {
   getInputElement: () => HTMLInputElement;
@@ -105,6 +105,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
       <span className={`${prefixCls}-selection-search`} style={{ width: inputWidth }}>
         <input
           ref={inputRef}
+          autoComplete="off"
           autoFocus={autoFocus}
           className={`${prefixCls}-selection-search-input`}
           onFocus={onFocus}
@@ -117,6 +118,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
           value={searchValue}
           onKeyDown={onInputKeyDown}
           onChange={onInputChange}
+          title={values.map(item => item.value).join(',')}
         />
 
         <span ref={measureRef} className={`${prefixCls}-selection-search-mirror`} aria-hidden>

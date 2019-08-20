@@ -8,7 +8,7 @@ export interface OptionData {
   key?: Key;
   disabled?: boolean;
   value: Key;
-  title?: React.ReactNode;
+  title?: string;
   className?: string;
   style?: React.CSSProperties;
   label?: React.ReactElement;

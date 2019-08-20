@@ -20,6 +20,7 @@ const TransBtn: React.FC<TransBtnProps> = ({ className, customizeIcon, onClick }
     }}
     unselectable="on"
     onClick={onClick}
+    aria-hidden
   >
     {customizeIcon || <i className={`${className}-icon`}>×</i>}
   </span>

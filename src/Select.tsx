@@ -429,6 +429,17 @@ export function generateSelector<OptionsType, StaticProps>(
       }
     };
 
+    // ========================= Accessibility ==========================
+    const [accessibilityTitle, setAccessibilityTitle] = React.useState<string | number>('');
+    const [accessibilityIndex, setAccessibilityIndex] = React.useState<number>(0);
+    const [accessibilityTotal, setAccessibilityTotal] = React.useState<number>(0);
+
+    const onActiveTitle = (title: string | number, index: number, total: number) => {
+      setAccessibilityTitle(title);
+      setAccessibilityIndex(index);
+      setAccessibilityTotal(total);
+    };
+
     // ============================= Popup ==============================
     const popupNode = (
       <OptionList
@@ -440,6 +451,7 @@ export function generateSelector<OptionsType, StaticProps>(
         values={rawValues}
         onSelect={onInternalSelect}
         onToggleOpen={onToggleOpen}
+        onActiveTitle={onActiveTitle}
       />
     );
 
@@ -476,12 +488,13 @@ export function generateSelector<OptionsType, StaticProps>(
           onKeyDown={onInternalKeyDown}
           onKeyUp={onInternalKeyUp}
         >
-          {mergeOpen && (
+          {mergeOpen && accessibilityTitle && (
             <span
               style={{ width: 0, height: 0, display: 'flex', overflow: 'hidden', opacity: 0 }}
               aria-live="assertive"
             >
-              TODO: Options
+              {/* Merge into one string to make screen reader work as expect */}
+              {`${accessibilityTitle} (${accessibilityIndex + 1}/${accessibilityTotal})`}
             </span>
           )}
           <SelectTrigger
