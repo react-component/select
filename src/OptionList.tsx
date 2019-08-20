@@ -16,7 +16,7 @@ export interface OptionListProps {
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
   onToggleOpen: (open?: boolean) => void;
   /** Tell Select that some value is now active to make accessibility work */
-  onActiveTitle: (value: string | number, index: number, totalCount: number) => void;
+  onActiveTitle: (index: number) => void;
 }
 
 export interface RefProps {
@@ -39,10 +39,6 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
     () => flattenOptions(options),
     [options],
   );
-  const totalCount: number = React.useMemo<number>(
-    () => flattenList.filter(item => !item.group).length,
-    [flattenList],
-  );
 
   // ========================== Active ==========================
   const getEnabledActiveIndex = (index: number, offset: number = 1): number => {
@@ -61,28 +57,13 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
   };
 
   const [activeIndex, setActiveIndex] = React.useState(() => getEnabledActiveIndex(0));
-  const indexMap: number[] = React.useMemo(() => {
-    // We cache index to faster accessibility here
-    const indexes: number[] = [];
-
-    let index = 0;
-    flattenList.forEach((item, itemIndex) => {
-      indexes[itemIndex] = index;
-
-      if (!item.group) {
-        index += 1;
-      }
-    });
-
-    return indexes;
-  }, [flattenList]);
   const setActive = (index: number) => {
     setActiveIndex(index);
 
     // Trigger active event
     const flattenItem = flattenList[index];
     if (!flattenItem) {
-      onActiveTitle(null, -1, -1);
+      onActiveTitle(-1);
       return;
     }
 
@@ -97,7 +78,7 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
       accessibilityTitle = value;
     }
 
-    onActiveTitle(accessibilityTitle, indexMap[index], totalCount);
+    onActiveTitle(index);
   };
 
   // TODO: Check if this is necessary
@@ -180,6 +161,7 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
         return (
           <div
             role="option"
+            id={`${id}_list_${itemIndex}`}
             aria-selected={selected}
             className={optionClassName}
             onMouseMove={() => {

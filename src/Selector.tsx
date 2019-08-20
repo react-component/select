@@ -1,3 +1,5 @@
+// https://www.w3.org/TR/wai-aria-practices/examples/combobox/aria1.1pattern/listbox-combo.html
+
 import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { SelectContext } from './Context';
@@ -17,6 +19,7 @@ export interface SelectorProps {
   searchValue: string;
 
   autoFocus?: boolean;
+  accessibilityIndex: number;
 
   onToggleOpen: (open?: boolean) => void;
   onFocus: React.FocusEventHandler<HTMLInputElement>;
@@ -37,6 +40,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     values,
     multiple,
     searchValue,
+    accessibilityIndex,
     onToggleOpen,
     onFocus,
     onBlur,
@@ -111,14 +115,16 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
           onFocus={onFocus}
           onBlur={onBlur}
           readOnly={!showSearch}
-          role="button"
-          aria-haspopup="listbox"
+          role="combobox"
           aria-expanded={open}
+          aria-haspopup="listbox"
           aria-owns={`${id}_list`}
+          aria-autocomplete="list"
+          aria-controls={`${id}_list`}
+          aria-activedescendant={`${id}_list_${accessibilityIndex}`}
           value={searchValue}
           onKeyDown={onInputKeyDown}
           onChange={onInputChange}
-          title={values.map(item => item.value).join(',')}
         />
 
         <span ref={measureRef} className={`${prefixCls}-selection-search-mirror`} aria-hidden>

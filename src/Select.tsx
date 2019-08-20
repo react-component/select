@@ -430,14 +430,10 @@ export function generateSelector<OptionsType, StaticProps>(
     };
 
     // ========================= Accessibility ==========================
-    const [accessibilityTitle, setAccessibilityTitle] = React.useState<string | number>('');
     const [accessibilityIndex, setAccessibilityIndex] = React.useState<number>(0);
-    const [accessibilityTotal, setAccessibilityTotal] = React.useState<number>(0);
 
-    const onActiveTitle = (title: string | number, index: number, total: number) => {
-      setAccessibilityTitle(title);
+    const onActiveTitle = (index: number) => {
       setAccessibilityIndex(index);
-      setAccessibilityTotal(total);
     };
 
     // ============================= Popup ==============================
@@ -488,13 +484,13 @@ export function generateSelector<OptionsType, StaticProps>(
           onKeyDown={onInternalKeyDown}
           onKeyUp={onInternalKeyUp}
         >
-          {mergeOpen && accessibilityTitle && (
+          {focused && !mergeOpen && (
             <span
               style={{ width: 0, height: 0, display: 'flex', overflow: 'hidden', opacity: 0 }}
-              aria-live="assertive"
+              aria-live="polite"
             >
               {/* Merge into one string to make screen reader work as expect */}
-              {`${accessibilityTitle} (${accessibilityIndex + 1}/${accessibilityTotal})`}
+              {`${mergedRawValue.join(', ')}`}
             </span>
           )}
           <SelectTrigger
@@ -507,6 +503,7 @@ export function generateSelector<OptionsType, StaticProps>(
               {...props}
               ref={selectorRef}
               id={mergedId}
+              accessibilityIndex={accessibilityIndex}
               multiple={isMultiple}
               values={displayValues}
               open={mergeOpen}
