@@ -23,6 +23,7 @@ import {
 } from './utils/valueUtil';
 import { toInnerValue, toOuterValues } from './utils/commonUtil';
 import TransBtn from './TransBtn';
+import { useLock } from './hooks/lockHooks';
 
 /**
  * To match accessibility requirement, we always provide an input in the component.
@@ -339,7 +340,7 @@ export function generateSelector<OptionsType, StaticProps>(
      * - true: Search text is empty when first time backspace down
      * - false: Search text is not empty when first time backspace down
      */
-    const keyCleanRef = React.useRef<null | boolean>(null);
+    const [clearLock, setClearLock] = useLock();
 
     // KeyDown
     const onInternalKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event, ...rest) => {
@@ -350,18 +351,10 @@ export function generateSelector<OptionsType, StaticProps>(
         onToggleOpen(true);
       }
 
-      // Set clean mark
-      if (keyCleanRef.current === null) {
-        keyCleanRef.current = !mergedSearchValue;
-      }
-
-      /**
-       * Clean up values if multiple mode,
-       * only trigger when input is empty at BACKSPACE start.
-       */
+      setClearLock(!!mergedSearchValue);
       if (
         which === KeyCode.BACKSPACE &&
-        keyCleanRef.current &&
+        !clearLock &&
         isMultiple &&
         !mergedSearchValue &&
         mergedRawValue.length
@@ -385,8 +378,6 @@ export function generateSelector<OptionsType, StaticProps>(
       if (mergeOpen && listRef.current) {
         listRef.current.onKeyUp(event, ...rest);
       }
-
-      keyCleanRef.current = null;
 
       if (onKeyUp) {
         onKeyUp(event, ...rest);
