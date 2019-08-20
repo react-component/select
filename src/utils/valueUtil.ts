@@ -115,6 +115,9 @@ export function getLabeledValue(
     }
   }
 
+  // [Legacy] We need fill `key` as `value` to compatible old code usage
+  result.key = result.value;
+
   return result;
 }
 

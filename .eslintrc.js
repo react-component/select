@@ -6,5 +6,6 @@ module.exports = {
     ...base.rules,
     'default-case': 0,
     'jsx-a11y/interactive-supports-focus': 0,
+    'jsx-a11y/no-autofocus': 0,
   },
 };

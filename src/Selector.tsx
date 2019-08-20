@@ -16,6 +16,8 @@ export interface SelectorProps {
   multiple: boolean;
   searchValue: string;
 
+  autoFocus?: boolean;
+
   onToggleOpen: (open?: boolean) => void;
   onFocus: React.FocusEventHandler<HTMLInputElement>;
   onBlur: React.FocusEventHandler<HTMLInputElement>;
@@ -29,6 +31,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
 
   const {
     id,
+    autoFocus,
     showSearch,
     open,
     values,
@@ -105,6 +108,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
       <span className={`${prefixCls}-selection-search`} style={{ width: inputWidth }}>
         <input
           ref={inputRef}
+          autoFocus={autoFocus}
           className={`${prefixCls}-selection-search-input`}
           onFocus={onFocus}
           onBlur={onBlur}

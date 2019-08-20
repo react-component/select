@@ -21,7 +21,8 @@ import {
   getLabeledValue as getSelectLabeledValue,
   filterOptions as selectDefaultFilterOptions,
 } from './utils/valueUtil';
-import { toInnerValue, toOuterValue } from './utils/commonUtil';
+import { toInnerValue, toOuterValues } from './utils/commonUtil';
+import TransBtn from './TransBtn';
 
 /**
  * To match accessibility requirement, we always provide an input in the component.
@@ -33,12 +34,14 @@ import { toInnerValue, toOuterValue } from './utils/commonUtil';
  */
 
 export interface SelectProps<OptionsType> {
+  prefixCls?: string;
   id?: string;
+  className?: string;
 
   // Options
   options?: OptionsType;
   children?: React.ReactNode;
-  mode?: 'multiple' | 'tags';
+  mode?: 'multiple' | 'tags' | 'combobox';
 
   // Value
   value?: ValueType;
@@ -57,6 +60,13 @@ export interface SelectProps<OptionsType> {
   autoClearSearchValue?: boolean;
   onSearch?: (value: string) => void;
 
+  // Icons
+  clearIcon?: React.ReactNode;
+
+  // Others
+  autoFocus?: boolean;
+  allowClear?: boolean;
+
   // Events
   onKeyUp?: React.KeyboardEventHandler<HTMLDivElement>;
   onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
@@ -68,12 +78,8 @@ export interface SelectProps<OptionsType> {
   showSearch?: boolean;
   disabled?: boolean;
   style?: React.CSSProperties;
-  allowClear?: boolean;
   showArrow?: boolean;
   openClassName?: string;
-  autoFocus?: boolean;
-  prefixCls?: string;
-  className?: string;
   transitionName?: string;
   optionLabelProp?: string;
   animation?: string;
@@ -103,7 +109,6 @@ export interface SelectProps<OptionsType> {
   tokenSeparators?: string[];
   getInputElement?: () => JSX.Element;
   showAction?: string[];
-  clearIcon?: React.ReactNode;
   inputIcon?: React.ReactNode;
   removeIcon?: React.ReactNode;
   menuItemSelectedIcon?: RenderNode;
@@ -157,6 +162,7 @@ export function generateSelector<OptionsType, StaticProps>(
     const {
       prefixCls = 'rc-select',
 
+      id,
       mode,
       value,
       defaultValue,
@@ -166,10 +172,13 @@ export function generateSelector<OptionsType, StaticProps>(
       searchValue,
       filterOption,
       optionFilterProp,
-      autoClearSearchValue,
+      autoClearSearchValue = true,
       onSearch,
 
-      id,
+      // Icons
+      allowClear,
+      clearIcon,
+
       disabled,
       labelInValue,
       className,
@@ -222,10 +231,10 @@ export function generateSelector<OptionsType, StaticProps>(
       return filterOptions(mergedSearchValue, baseOptions, props);
     }, [baseOptions, mergedSearchValue]);
 
-    const onInternalSearch = (searchText: string) => {
+    const triggerSearch = (searchText: string) => {
       setInnerSearchValue(searchText);
 
-      if (onSearch) {
+      if (onSearch && mergedSearchValue !== searchText) {
         onSearch(searchText);
       }
     };
@@ -252,6 +261,20 @@ export function generateSelector<OptionsType, StaticProps>(
 
     const isMultiple = mode === 'tags' || mode === 'multiple';
 
+    const triggerChange = React.useCallback(
+      (values: RawValueType[] | LabelValueType[]) => {
+        const outValue: ValueType = isMultiple ? values : values[0];
+        // Skip trigger if prev & current value is both empty
+        if (onChange && (mergedRawValue.length !== 0 || values.length !== 0)) {
+          // TODO: handle this
+          onChange(outValue, null);
+        }
+
+        setInnerValue(outValue);
+      },
+      [onChange, isMultiple, mergedRawValue],
+    );
+
     const onInternalSelect = (newValue: RawValueType, { selected }: { selected: boolean }) => {
       let newRawValue: Set<RawValueType>;
 
@@ -269,28 +292,27 @@ export function generateSelector<OptionsType, StaticProps>(
 
       // Multiple always trigger change and single should change if value changed
       if (isMultiple || (!isMultiple && Array.from(mergedRawValue)[0] !== newValue)) {
-        // TODO: handle `labelInValue`
-        const outValue = toOuterValue<OptionsType>(Array.from(newRawValue), {
-          multiple: isMultiple,
+        const outValue = toOuterValues<OptionsType>(Array.from(newRawValue), {
           labelInValue,
           options: mergedOptions,
           getLabeledValue,
           prevValue: baseValue,
         });
 
-        if (onChange) {
-          onChange(outValue, null);
-        }
-
-        setInnerValue(outValue);
+        triggerChange(outValue);
       }
 
-      // TODO: handle label in value
+      // Trigger `onSelect`
+      const selectValue = labelInValue
+        ? getLabeledValue(newValue, mergedOptions, baseValue)
+        : newValue;
+
+      // TODO: second param
       // Single mode always trigger `onSelect`
       if ((!isMultiple || selected) && onSelect) {
-        onSelect(newValue, null);
+        onSelect(selectValue, null);
       } else if (!selected && onDeselect) {
-        onDeselect(newValue, null);
+        onDeselect(selectValue, null);
       }
 
       // Clean search value if single or configured
@@ -392,10 +414,28 @@ export function generateSelector<OptionsType, StaticProps>(
       />
     );
 
+    // ============================= Clear ==============================
+    let clearNode: React.ReactNode;
+    const onClearClick: React.MouseEventHandler<HTMLSpanElement> = () => {
+      triggerChange([]);
+      triggerSearch('');
+    };
+
+    if (allowClear && (mergedRawValue.length || mergedSearchValue)) {
+      clearNode = (
+        <TransBtn
+          className={`${prefixCls}-selection-clear`}
+          onClick={onClearClick}
+          customizeIcon={clearIcon}
+        />
+      );
+    }
+
     // ============================= Render =============================
     const mergedClassName = classNames(prefixCls, className, {
       [`${prefixCls}-focused`]: focused,
       [`${prefixCls}-multiple`]: isMultiple,
+      [`${prefixCls}-allow-clear`]: allowClear,
     });
 
     return (
@@ -432,9 +472,11 @@ export function generateSelector<OptionsType, StaticProps>(
               onFocus={onInternalFocus}
               onBlur={onInternalBlur}
               searchValue={mergedSearchValue}
-              onSearch={onInternalSearch}
+              onSearch={triggerSearch}
             />
           </SelectTrigger>
+
+          {clearNode}
         </div>
       </SelectContext.Provider>
     );

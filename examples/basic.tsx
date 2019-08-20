@@ -12,10 +12,8 @@ const focusProps = {
   },
 };
 
-const consoleEvent = (name: string) => {
-  return (...args: any[]) => {
-    console.log(name, ':', ...args);
-  };
+const consoleEvent = (name: string) => (...args: any[]) => {
+  console.log(name, ':', ...args);
 };
 
 const Demo = () => {
@@ -23,6 +21,7 @@ const Demo = () => {
     onChange: consoleEvent('Change'),
     onSelect: consoleEvent('Select'),
     onDeselect: consoleEvent('Deselect'),
+    onSearch: consoleEvent('Search'),
   };
 
   return (
@@ -37,6 +36,7 @@ const Demo = () => {
           mode="multiple"
           showSearch
           labelInValue
+          allowClear
           options={[
             { value: 'light' },
             { value: 'bamboo' },

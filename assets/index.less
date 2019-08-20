@@ -4,7 +4,9 @@
   display: inline-block;
   font-size: 12px;
   width: 100px;
+  position: relative;
 
+  // ============== Selector ===============
   &-selector {
     display: flex;
     padding: 1px;
@@ -42,6 +44,19 @@
         top: 0;
         visibility: hidden;
       }
+    }
+  }
+
+  // ================ Icons ================
+  &-allow-clear {
+    .@{select-prefix}-selector {
+      padding-right: 20px;
+    }
+
+    .@{select-prefix}-selection-clear {
+      position: absolute;
+      right: 5px;
+      top: 0;
     }
   }
 

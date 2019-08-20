@@ -23,30 +23,24 @@ export function toInnerValue(
 /**
  * Convert internal value into out event value
  */
-export function toOuterValue<OptionsType>(
+export function toOuterValues<OptionsType>(
   valueList: RawValueType[],
   {
-    multiple,
     labelInValue,
     prevValue,
     options,
     getLabeledValue,
   }: {
-    multiple: boolean;
     labelInValue: boolean;
     getLabeledValue: GetLabeledValue<OptionsType>;
     options: OptionsType;
     prevValue: ValueType;
   },
-): ValueType {
+): RawValueType[] | LabelValueType[] {
   let values: ValueType = valueList;
 
   if (labelInValue) {
     values = values.map(val => getLabeledValue(val, options, prevValue));
-  }
-
-  if (!multiple) {
-    return values[0];
   }
 
   return values;
