@@ -59,6 +59,7 @@ const Demo = () => {
           showSearch
           // searchValue={search}
           // onSearch={setSearch}
+          disabled
           defaultValue={2}
         >
           <Option value={1}>Value 1</Option>

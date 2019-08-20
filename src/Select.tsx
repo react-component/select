@@ -65,6 +65,7 @@ export interface SelectProps<OptionsType> {
   clearIcon?: React.ReactNode;
 
   // Others
+  disabled?: boolean;
   autoFocus?: boolean;
   allowClear?: boolean;
   defaultActiveFirstOption?: boolean;
@@ -75,7 +76,6 @@ export interface SelectProps<OptionsType> {
 
   // Legacy
   showSearch?: boolean;
-  disabled?: boolean;
   style?: React.CSSProperties;
   showArrow?: boolean;
   openClassName?: string;
@@ -179,9 +179,9 @@ export function generateSelector<OptionsType, StaticProps>(
       clearIcon,
 
       // Others
+      disabled,
       defaultActiveFirstOption,
 
-      disabled,
       labelInValue,
       className,
       open,
@@ -327,11 +327,11 @@ export function generateSelector<OptionsType, StaticProps>(
     const onToggleOpen = React.useCallback<(open?: boolean) => void>(
       (newOpen?: boolean) => {
         const nextOpen = newOpen !== undefined ? newOpen : !mergeOpen;
-        if (innerOpen !== nextOpen) {
+        if (innerOpen !== nextOpen && !disabled) {
           setInnerOpen(nextOpen);
         }
       },
-      [innerOpen],
+      [mergeOpen, disabled],
     );
 
     // ============================ Keyboard ============================
@@ -402,7 +402,7 @@ export function generateSelector<OptionsType, StaticProps>(
         setFocused(false);
 
         // TODO: cancel comment this
-        // setInnerOpen(false);
+        // onToggleOpen(false);
         if (onBlur) {
           onBlur(...args);
         }
@@ -466,6 +466,7 @@ export function generateSelector<OptionsType, StaticProps>(
       [`${prefixCls}-focused`]: focused,
       [`${prefixCls}-multiple`]: isMultiple,
       [`${prefixCls}-allow-clear`]: allowClear,
+      [`${prefixCls}-disabled`]: disabled,
     });
 
     return (

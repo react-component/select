@@ -6,6 +6,17 @@
   width: 100px;
   position: relative;
 
+  &-disabled {
+    &,
+    & input {
+      cursor: not-allowed;
+    }
+
+    .@{select-prefix}-selector {
+      opacity: 0.3;
+    }
+  }
+
   // ============== Selector ===============
   &-selector {
     display: flex;

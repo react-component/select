@@ -20,6 +20,7 @@ export interface SelectorProps {
 
   autoFocus?: boolean;
   accessibilityIndex: number;
+  disabled?: boolean;
 
   onToggleOpen: (open?: boolean) => void;
   onFocus: React.FocusEventHandler<HTMLInputElement>;
@@ -41,6 +42,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     multiple,
     searchValue,
     accessibilityIndex,
+    disabled,
     onToggleOpen,
     onFocus,
     onBlur,
@@ -136,6 +138,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
       >
         <input
           ref={inputRef}
+          disabled={disabled}
           autoComplete="off"
           autoFocus={autoFocus}
           className={`${prefixCls}-selection-search-input`}
