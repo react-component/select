@@ -31,25 +31,34 @@ export interface SelectTriggerProps {
   dropdownStyle: React.CSSProperties;
   dropdownClassName: string;
   dropdownMatchSelectWidth: boolean;
+  dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
 }
 
-const SelectTrigger: React.FC<SelectTriggerProps> = ({
-  prefixCls,
-  disabled,
-  visible,
-  children,
-  popupElement,
-  containerWidth,
-  dropdownStyle,
-  dropdownClassName,
-  dropdownMatchSelectWidth = true,
-  ...props
-}) => {
+const SelectTrigger: React.FC<SelectTriggerProps> = props => {
+  const {
+    prefixCls,
+    disabled,
+    visible,
+    children,
+    popupElement,
+    containerWidth,
+    dropdownStyle,
+    dropdownClassName,
+    dropdownMatchSelectWidth = true,
+    dropdownRender,
+    ...restProps
+  } = props;
+
   const dropdownPrefixCls = `${prefixCls}-dropdown`;
+
+  let popupNode = popupElement;
+  if (dropdownRender) {
+    popupNode = dropdownRender(popupElement);
+  }
 
   return (
     <Trigger
-      {...props}
+      {...restProps}
       showAction={['click']}
       hideAction={['click']}
       popupPlacement="bottomLeft"
@@ -57,7 +66,7 @@ const SelectTrigger: React.FC<SelectTriggerProps> = ({
       prefixCls={dropdownPrefixCls}
       popupTransitionName={null}
       onPopupVisibleChange={() => {}}
-      popup={popupElement}
+      popup={popupNode}
       popupAlign={{}}
       popupVisible={visible}
       getPopupContainer={null}

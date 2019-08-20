@@ -23,7 +23,8 @@ import {
 } from './utils/valueUtil';
 import { toInnerValue, toOuterValues } from './utils/commonUtil';
 import TransBtn from './TransBtn';
-import { useLock } from './hooks/lockHooks';
+import { useLock } from './hooks/useLock';
+import useDelayReset from './hooks/useDelayReset';
 
 /**
  * To match accessibility requirement, we always provide an input in the component.
@@ -68,6 +69,7 @@ export interface SelectProps<OptionsType> {
   dropdownStyle?: React.CSSProperties;
   dropdownClassName?: string;
   dropdownMatchSelectWidth?: boolean;
+  dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
 
   // Others
   disabled?: boolean;
@@ -116,7 +118,6 @@ export interface SelectProps<OptionsType> {
   removeIcon?: React.ReactNode;
   menuItemSelectedIcon?: RenderNode;
   getPopupContainer?: RenderNode;
-  dropdownRender?: (menu: any) => JSX.Element;
   backfill?: boolean;
   dropdownAlign?: any;
   dropdownMenuStyle?: React.CSSProperties;
@@ -188,6 +189,7 @@ export function generateSelector<OptionsType, StaticProps>(
       dropdownStyle,
       dropdownClassName,
       dropdownMatchSelectWidth,
+      dropdownRender,
 
       labelInValue,
       className,
@@ -393,11 +395,22 @@ export function generateSelector<OptionsType, StaticProps>(
     };
 
     // ========================== Focus / Blur ==========================
-    const [focused, setFocused] = React.useState(false);
+    // const [focused, setFocused] = React.useState(false);
+    const [mockFocused, setMockFocused] = useDelayReset();
+
+    const onContainerFocus = () => {
+      setMockFocused(true);
+    };
+
+    const onContainerBlur = () => {
+      setMockFocused(false, () => {
+        onToggleOpen(false);
+      });
+    };
 
     const onInternalFocus = React.useCallback<React.FocusEventHandler<HTMLInputElement>>(
       (...args) => {
-        setFocused(true);
+        // setFocused(true);
         if (onFocus) {
           onFocus(...args);
         }
@@ -406,7 +419,7 @@ export function generateSelector<OptionsType, StaticProps>(
     );
     const onInternalBlur = React.useCallback<React.FocusEventHandler<HTMLInputElement>>(
       (...args) => {
-        setFocused(false);
+        // setFocused(false);
 
         // TODO: cancel comment this
         // onToggleOpen(false);
@@ -419,9 +432,9 @@ export function generateSelector<OptionsType, StaticProps>(
 
     const onInternalMouseDown: React.MouseEventHandler<HTMLDivElement> = (...args) => {
       // Not lose focus if have
-      if (focused && args[0].target !== selectorRef.current.getInputElement()) {
-        args[0].preventDefault();
-      }
+      // if (focused && args[0].target !== selectorRef.current.getInputElement()) {
+      //   args[0].preventDefault();
+      // }
 
       if (onMouseDown) {
         onMouseDown(...args);
@@ -480,7 +493,7 @@ export function generateSelector<OptionsType, StaticProps>(
 
     // ============================= Render =============================
     const mergedClassName = classNames(prefixCls, className, {
-      [`${prefixCls}-focused`]: focused,
+      [`${prefixCls}-focused`]: mockFocused,
       [`${prefixCls}-multiple`]: isMultiple,
       [`${prefixCls}-allow-clear`]: allowClear,
       [`${prefixCls}-disabled`]: disabled,
@@ -495,8 +508,10 @@ export function generateSelector<OptionsType, StaticProps>(
           onMouseDown={onInternalMouseDown}
           onKeyDown={onInternalKeyDown}
           onKeyUp={onInternalKeyUp}
+          onFocus={onContainerFocus}
+          onBlur={onContainerBlur}
         >
-          {focused && !mergeOpen && (
+          {mockFocused && !mergeOpen && (
             <span
               style={{ width: 0, height: 0, display: 'flex', overflow: 'hidden', opacity: 0 }}
               aria-live="polite"
@@ -514,6 +529,7 @@ export function generateSelector<OptionsType, StaticProps>(
             dropdownStyle={dropdownStyle}
             dropdownClassName={dropdownClassName}
             dropdownMatchSelectWidth={dropdownMatchSelectWidth}
+            dropdownRender={dropdownRender}
           >
             <Selector
               {...props}

@@ -24,7 +24,7 @@ const Demo = () => {
     onSearch: consoleEvent('Search'),
   };
 
-  const [search, setSearch] = React.useState('');
+  // const [search, setSearch] = React.useState('');
 
   return (
     <div>
@@ -53,6 +53,13 @@ const Demo = () => {
               ],
             },
           ]}
+          dropdownRender={node => (
+            <div>
+              <h1>23333</h1>
+              {node}
+              <button>A BUTTON</button>
+            </div>
+          )}
         />
         <Select
           {...focusProps}
