@@ -1,7 +1,7 @@
 import React from 'react';
 import Select from '../src';
 import { convertChildrenToData } from '../src/utils/legacyUtil';
-import { flattenOptions } from '../src/utils/valueUtil';
+import { flattenOptions, getSeparatedContent } from '../src/utils/valueUtil';
 
 describe('Utils', () => {
   describe('legacy', () => {
@@ -34,6 +34,26 @@ describe('Utils', () => {
         { key: 'rc-index-key-1', group: true, data: { options: [{ key: 2 }] } },
         { key: 2, groupOption: true, data: { key: 2 } },
       ]);
+    });
+
+    describe('getSeparatedContent', () => {
+      it('match', () => {
+        expect(getSeparatedContent('1 2,3;4;5,,,,;6 7,8 ', [' ', ',', ';'])).toEqual([
+          '1',
+          '2',
+          '3',
+          '4',
+          '5',
+          '6',
+          '7',
+          '8',
+        ]);
+      });
+
+      it('not match', () => {
+        expect(getSeparatedContent('12312313123123', [' ', ','])).toEqual(null);
+        expect(getSeparatedContent('12312313123123', [])).toEqual(null);
+      });
     });
   });
 });

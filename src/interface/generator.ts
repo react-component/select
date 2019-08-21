@@ -14,7 +14,7 @@ export type DefaultValueType = RawValueType | RawValueType[] | LabelValueType | 
 export type GetLabeledValue<OptionsType> = (
   value: RawValueType,
   options: OptionsType,
-  prevValue: ValueType,
+  prevValue: DefaultValueType,
   labelInValue: boolean,
 ) => LabelValueType;
 

@@ -5,7 +5,7 @@ import {
   OptionGroupData,
   FlattenOptionData,
 } from '../interface';
-import { LabelValueType, ValueType, FilterFunc, RawValueType } from '../interface/generator';
+import { LabelValueType, FilterFunc, RawValueType, DefaultValueType } from '../interface/generator';
 
 import { SelectProps } from '../Select';
 import { toArray } from './commonUtil';
@@ -95,7 +95,7 @@ function findValueItem(value: RawValueType, options: SelectOptionsType): OptionD
 export function getLabeledValue(
   value: RawValueType,
   options: SelectOptionsType,
-  prevValue: ValueType,
+  prevValue: DefaultValueType,
   labelInValue: boolean,
 ) {
   const item = findValueItem(value, options);
@@ -146,7 +146,7 @@ function getFilterFunction(optionFilterProp: string) {
 export function filterOptions(
   searchValue: string,
   options: SelectOptionsType,
-  { optionFilterProp, filterOption }: SelectProps<SelectOptionsType>,
+  { optionFilterProp, filterOption }: SelectProps<SelectOptionsType, DefaultValueType>,
 ) {
   const filteredOptions: SelectOptionsType = [];
   let filterFunc: FilterFunc;
@@ -180,4 +180,24 @@ export function filterOptions(
   });
 
   return filteredOptions;
+}
+
+export function getSeparatedContent(text: string, tokens: string[]): string[] {
+  let match = false;
+
+  function separate(str: string, [token, ...restTokens]: string[]) {
+    if (!token) {
+      return [str];
+    }
+
+    const list = str.split(token);
+    match = match || list.length > 1;
+
+    return list
+      .reduce((prevList, unitStr) => [...prevList, ...separate(unitStr, restTokens)], [])
+      .filter(unit => unit);
+  }
+
+  const list = separate(text, tokens);
+  return match ? list : null;
 }

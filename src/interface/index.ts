@@ -3,6 +3,8 @@ import { Key } from './generator';
 
 export type RenderNode = React.ReactNode | (() => React.ReactNode);
 
+export type Mode = 'multiple' | 'tags' | 'combobox';
+
 // ======================== Option ========================
 export interface OptionData {
   key?: Key;

@@ -21,10 +21,11 @@
 import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
+import warning from 'rc-util/lib/warning';
 import Selector, { RefSelectorProps } from './Selector';
 import SelectTrigger, { RefTriggerProps } from './SelectTrigger';
 import { SelectContext } from './Context';
-import { RenderNode, OptionsType as SelectOptionsType } from './interface';
+import { RenderNode, OptionsType as SelectOptionsType, Mode } from './interface';
 import {
   GetLabeledValue,
   FilterOptions,
@@ -32,6 +33,7 @@ import {
   DefaultValueType,
   RawValueType,
   LabelValueType,
+  Key,
 } from './interface/generator';
 import SelectOptionList, { OptionListProps, RefProps } from './OptionList';
 import Option from './Option';
@@ -40,6 +42,7 @@ import { convertChildrenToData as convertSelectChildrenToData } from './utils/le
 import {
   getLabeledValue as getSelectLabeledValue,
   filterOptions as selectDefaultFilterOptions,
+  getSeparatedContent,
 } from './utils/valueUtil';
 import { toInnerValue, toOuterValues } from './utils/commonUtil';
 import TransBtn from './TransBtn';
@@ -54,7 +57,7 @@ export interface SelectProps<OptionsType, ValueType> {
   // Options
   options?: OptionsType;
   children?: React.ReactNode;
-  mode?: 'multiple' | 'tags' | 'combobox';
+  mode?: Mode;
 
   // Value
   value?: ValueType;
@@ -162,9 +165,15 @@ export interface GenerateConfig<OptionsType, StaticProps> {
  * This function is in internal usage.
  * Do not use it in your prod env since we may refactor this.
  */
-export function generateSelector<OptionsType, StaticProps>(
-  config: GenerateConfig<OptionsType, StaticProps>,
-) {
+export function generateSelector<
+  OptionsType extends {
+    value?: RawValueType;
+    label?: React.ReactNode;
+    key?: Key;
+    disabled?: boolean;
+  }[],
+  StaticProps
+>(config: GenerateConfig<OptionsType, StaticProps>) {
   /** Used for accessibility id generate */
   let uuid = 0;
 
@@ -254,7 +263,7 @@ export function generateSelector<OptionsType, StaticProps>(
     const [innerSearchValue, setInnerSearchValue] = React.useState('');
     const mergedSearchValue = searchValue !== undefined ? searchValue : innerSearchValue;
 
-    const baseOptions = React.useMemo<OptionsType>((): OptionsType => {
+    const mergedOptions = React.useMemo<OptionsType>((): OptionsType => {
       if (options !== undefined) {
         return options;
       }
@@ -262,20 +271,28 @@ export function generateSelector<OptionsType, StaticProps>(
       return convertChildrenToData(children);
     }, [options, children]);
 
-    const mergedOptions = React.useMemo<OptionsType>(() => {
+    const displayOptions = React.useMemo<OptionsType>(() => {
       if (!mergedSearchValue) {
-        return baseOptions;
+        return mergedOptions;
       }
-      return filterOptions(mergedSearchValue, baseOptions, props);
-    }, [baseOptions, mergedSearchValue]);
-
-    const triggerSearch = (searchText: string) => {
-      setInnerSearchValue(searchText);
-
-      if (onSearch && mergedSearchValue !== searchText) {
-        onSearch(searchText);
+      const filteredOptions: OptionsType = filterOptions(mergedSearchValue, mergedOptions, props);
+      if (mode === 'tags' && filteredOptions.every(opt => opt.value !== mergedSearchValue)) {
+        filteredOptions.unshift({
+          value: mergedSearchValue,
+          label: mergedSearchValue,
+          key: '__RC_SELECT_TAG_PLACEHOLDER__',
+        });
       }
-    };
+
+      return filteredOptions;
+    }, [mergedOptions, mergedSearchValue, mode]);
+
+    if (process.env.NODE_ENV !== 'production' && mode === 'tags') {
+      warning(
+        mergedOptions.every(opt => !opt.disabled),
+        'Please avoid setting option to disabled in tags mode since user can always type text as tag.',
+      );
+    }
 
     // ============================= Value ==============================
     const [innerValue, setInnerValue] = React.useState<ValueType>(value || defaultValue);
@@ -355,6 +372,42 @@ export function generateSelector<OptionsType, StaticProps>(
       // Clean search value if single or configured
       if (!isMultiple || autoClearSearchValue) {
         setInnerSearchValue('');
+      }
+    };
+
+    // ============================= Search =============================
+    const triggerSearch = (searchText: string) => {
+      let newSearchText = searchText;
+
+      // Check if match the `tokenSeparators`
+      let patchRawValues: RawValueType[] = getSeparatedContent(searchText, tokenSeparators);
+
+      if (patchRawValues) {
+        newSearchText = '';
+
+        if (mode !== 'tags') {
+          patchRawValues = patchRawValues.filter(rawValue =>
+            mergedOptions.some(opt => opt.value === rawValue),
+          );
+        }
+
+        const newRawValues = Array.from(
+          new Set<RawValueType>([...mergedRawValue, ...patchRawValues]),
+        );
+        triggerChange(
+          toOuterValues<OptionsType>(newRawValues, {
+            labelInValue,
+            getLabeledValue,
+            options: mergedOptions,
+            prevValue: baseValue,
+          }),
+        );
+      }
+
+      setInnerSearchValue(newSearchText);
+
+      if (onSearch && mergedSearchValue !== newSearchText) {
+        onSearch(newSearchText);
       }
     };
 
@@ -491,7 +544,7 @@ export function generateSelector<OptionsType, StaticProps>(
         prefixCls={prefixCls}
         id={mergedId}
         open={mergeOpen}
-        options={mergedOptions}
+        options={displayOptions}
         multiple={isMultiple}
         values={rawValues}
         height={listHeight}
@@ -565,6 +618,8 @@ export function generateSelector<OptionsType, StaticProps>(
               {...props}
               ref={selectorRef}
               id={mergedId}
+              showSearch={showSearch}
+              mode={mode}
               accessibilityIndex={accessibilityIndex}
               multiple={isMultiple}
               values={displayValues}

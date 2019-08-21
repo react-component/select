@@ -12,7 +12,7 @@ import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { SelectContext } from './Context';
 import { LabelValueType, RawValueType } from './interface/generator';
-import { RenderNode } from './interface';
+import { RenderNode, Mode } from './interface';
 
 export interface RefSelectorProps {
   getInputElement: () => HTMLInputElement;
@@ -26,6 +26,7 @@ export interface SelectorProps {
   /** Display in the Selector value, it's not same as `value` prop */
   values: LabelValueType[];
   multiple: boolean;
+  mode: Mode;
   searchValue: string;
 
   autoFocus?: boolean;
@@ -53,6 +54,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     showSearch,
     open,
     values,
+    mode,
     multiple,
     searchValue,
     accessibilityIndex,
@@ -77,7 +79,13 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     },
   }));
 
-  // ===================== Measure =====================
+  // ====================== Input ======================
+  const inputEditable: boolean =
+    open &&
+    (showSearch ||
+      mode === 'tags' ||
+      (mode === 'multiple' && tokenSeparators && !!tokenSeparators.length));
+
   const onInputKeyDown = React.useCallback<React.KeyboardEventHandler<HTMLInputElement>>(event => {
     const { which } = event;
 
@@ -122,11 +130,11 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     let displayValues: LabelValueType[] = values;
 
     // Filter display selection
-    if (maxTagCount !== undefined) {
+    if (typeof maxTagCount === 'number') {
       const restCount = values.length - maxTagCount;
 
       displayValues = values.slice(0, maxTagCount);
-      if (maxTagTextLength !== undefined) {
+      if (typeof maxTagTextLength === 'number') {
         displayValues = displayValues.map(({ label, ...rest }) => {
           let displayLabel: React.ReactNode = label;
 
@@ -183,7 +191,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
           autoComplete="off"
           autoFocus={autoFocus}
           className={`${prefixCls}-selection-search-input`}
-          readOnly={!showSearch || !open}
+          readOnly={!inputEditable}
           role="combobox"
           aria-expanded={open}
           aria-haspopup="listbox"

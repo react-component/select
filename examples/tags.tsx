@@ -14,7 +14,7 @@ for (let i = 10; i < 36; i += 1) {
 const Test: React.FC = () => {
   const [disabled, setDisabled] = React.useState(false);
   const [value, setValue] = React.useState<string[]>(['name2', 'name3']);
-  const [maxTagCount, setMaxTagCount] = React.useState<number>(1);
+  const [maxTagCount, setMaxTagCount] = React.useState<number>(null);
 
   const toggleMaxTagCount = (count: number) => {
     setMaxTagCount(count);
@@ -64,6 +64,9 @@ const Test: React.FC = () => {
         </button>
         <button type="button" onClick={() => toggleMaxTagCount(1)}>
           toggle maxTagCount (1)
+        </button>
+        <button type="button" onClick={() => toggleMaxTagCount(null)}>
+          toggle maxTagCount (null)
         </button>
       </p>
     </div>
