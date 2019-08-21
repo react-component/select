@@ -183,6 +183,10 @@ export function filterOptions(
 }
 
 export function getSeparatedContent(text: string, tokens: string[]): string[] {
+  if (!tokens || !tokens.length) {
+    return null;
+  }
+
   let match = false;
 
   function separate(str: string, [token, ...restTokens]: string[]) {

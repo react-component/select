@@ -93,6 +93,7 @@ export interface SelectProps<OptionsType, ValueType> {
   autoFocus?: boolean;
   allowClear?: boolean;
   defaultActiveFirstOption?: boolean;
+  notFoundContent?: React.ReactNode;
 
   // Events
   onKeyUp?: React.KeyboardEventHandler<HTMLDivElement>;
@@ -142,7 +143,6 @@ export interface SelectProps<OptionsType, ValueType> {
   getPopupContainer?: RenderNode;
   backfill?: boolean;
   dropdownAlign?: any;
-  notFoundContent?: string | false;
   tabIndex?: number;
 }
 
@@ -212,6 +212,7 @@ export function generateSelector<
       // Others
       disabled,
       defaultActiveFirstOption,
+      notFoundContent = 'Not Found',
 
       // Dropdown
       listHeight = 200,
@@ -553,6 +554,7 @@ export function generateSelector<
         onToggleOpen={onToggleOpen}
         onActiveTitle={onActiveTitle}
         defaultActiveFirstOption={defaultActiveFirstOption}
+        notFoundContent={notFoundContent}
       />
     );
 

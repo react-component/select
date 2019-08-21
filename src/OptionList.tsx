@@ -16,6 +16,7 @@ export interface OptionListProps {
   multiple: boolean;
   open: boolean;
   defaultActiveFirstOption?: boolean;
+  notFoundContent?: React.ReactNode;
 
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
   onToggleOpen: (open?: boolean) => void;
@@ -42,6 +43,7 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
     defaultActiveFirstOption,
     height,
     itemHeight,
+    notFoundContent,
     open,
     onSelect,
     onToggleOpen,
@@ -63,7 +65,9 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
   };
 
   const scrollIntoView = (index: number) => {
-    listRef.current.scrollTo({ index });
+    if (listRef.current) {
+      listRef.current.scrollTo({ index });
+    }
   };
 
   // ========================== Active ==========================
@@ -162,6 +166,20 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
     },
     onKeyUp: () => {},
   }));
+
+  // ========================== Render ==========================
+  if (flattenList.length === 0) {
+    return (
+      <div
+        role="listbox"
+        id={`${id}_list`}
+        className={`${itemPrefixCls}-empty`}
+        onMouseDown={onListMouseDown}
+      >
+        {notFoundContent}
+      </div>
+    );
+  }
 
   return (
     <List<FlattenOptionData>
