@@ -59,17 +59,22 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   // ===================== Measure =====================
   const [typing, setTyping] = React.useState<boolean>(false);
 
-  const onInputKeyDown = React.useCallback<React.KeyboardEventHandler<HTMLInputElement>>(event => {
-    const { which } = event;
+  const onInputKeyDown = React.useCallback<React.KeyboardEventHandler<HTMLInputElement>>(
+    event => {
+      const { which } = event;
 
-    if (which === KeyCode.UP || which === KeyCode.DOWN) {
-      event.preventDefault();
-    }
+      if (which === KeyCode.UP || which === KeyCode.DOWN) {
+        event.preventDefault();
+      }
 
-    if (which === KeyCode.ENTER) {
-      setTyping(false);
-    }
-  }, []);
+      if (!typing) {
+        setTyping(true);
+      } else if (which === KeyCode.ENTER) {
+        setTyping(false);
+      }
+    },
+    [typing],
+  );
 
   const onInputChange = ({ target: { value } }) => {
     onSearch(value);
@@ -96,13 +101,11 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
       event.preventDefault();
     }
 
+    setTyping(true);
     onToggleOpen();
   };
 
-  const onInternalFocus: React.FocusEventHandler<HTMLInputElement> = React.useCallback(() => {
-    setTyping(true);
-  }, []);
-  const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = React.useCallback(() => {
+  const onInputBlur: React.FocusEventHandler<HTMLInputElement> = React.useCallback(() => {
     setTyping(false);
   }, []);
 
@@ -139,9 +142,8 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
           autoComplete="off"
           autoFocus={autoFocus}
           className={`${prefixCls}-selection-search-input`}
-          onFocus={onInternalFocus}
-          onBlur={onInternalBlur}
-          readOnly={!showSearch}
+          onBlur={onInputBlur}
+          readOnly={!typing}
           role="combobox"
           aria-expanded={open}
           aria-haspopup="listbox"

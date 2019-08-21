@@ -95,8 +95,8 @@ export interface SelectProps<OptionsType> {
   inputValue?: string;
   onClick?: React.MouseEventHandler;
   onChange?: (value: ValueType, option: JSX.Element | JSX.Element[]) => void;
-  onBlur?: React.FocusEventHandler<HTMLInputElement>;
-  onFocus?: React.FocusEventHandler<HTMLInputElement>;
+  onBlur?: React.FocusEventHandler<HTMLElement>;
+  onFocus?: React.FocusEventHandler<HTMLElement>;
   onSelect?: (value: ValueType, option: JSX.Element | JSX.Element[]) => void;
   onDropdownVisibleChange?: (open: boolean | undefined) => void;
   onPopupScroll?: React.UIEventHandler<HTMLDivElement>;
@@ -398,16 +398,28 @@ export function generateSelector<OptionsType, StaticProps>(
 
     // ========================== Focus / Blur ==========================
     const triggerRef = React.useRef<RefTriggerProps>(null);
+    /** Used for component focused management */
     const [mockFocused, setMockFocused, cancelSetMockFocused] = useDelayReset();
+    /** Record real focus status */
+    const focusRef = React.useRef<boolean>(false);
 
-    const onContainerFocus = () => {
+    const onContainerFocus: React.FocusEventHandler<HTMLElement> = (...args) => {
       setMockFocused(true);
+
+      if (onFocus && !focusRef.current) {
+        onFocus(...args);
+      }
+      focusRef.current = true;
     };
 
-    const onContainerBlur = () => {
+    const onContainerBlur: React.FocusEventHandler<HTMLElement> = (...args) => {
       setMockFocused(false, () => {
+        focusRef.current = false;
         onToggleOpen(false);
       });
+      if (onBlur) {
+        onBlur(...args);
+      }
     };
 
     const onInternalMouseDown: React.MouseEventHandler<HTMLDivElement> = (event, ...restArgs) => {
