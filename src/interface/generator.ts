@@ -8,7 +8,7 @@ export interface LabelValueType {
   value?: RawValueType;
   label?: React.ReactNode;
 }
-export type ValueType = RawValueType | RawValueType[] | LabelValueType | LabelValueType[];
+export type DefaultValueType = RawValueType | RawValueType[] | LabelValueType | LabelValueType[];
 
 // ==================================== Generator ====================================
 export type GetLabeledValue<OptionsType> = (

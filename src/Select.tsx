@@ -26,12 +26,12 @@ import SelectTrigger, { RefTriggerProps } from './SelectTrigger';
 import { SelectContext } from './Context';
 import { RenderNode, OptionsType as SelectOptionsType } from './interface';
 import {
-  RawValueType,
-  LabelValueType,
-  ValueType,
   GetLabeledValue,
   FilterOptions,
   FilterFunc,
+  DefaultValueType,
+  RawValueType,
+  LabelValueType,
 } from './interface/generator';
 import SelectOptionList, { OptionListProps, RefProps } from './OptionList';
 import Option from './Option';
@@ -46,7 +46,7 @@ import TransBtn from './TransBtn';
 import { useLock } from './hooks/useLock';
 import useDelayReset from './hooks/useDelayReset';
 
-export interface SelectProps<OptionsType> {
+export interface SelectProps<OptionsType, ValueType> {
   prefixCls?: string;
   id?: string;
   className?: string;
@@ -111,7 +111,14 @@ export interface SelectProps<OptionsType> {
   onChange?: (value: ValueType, option: JSX.Element | JSX.Element[]) => void;
   onBlur?: React.FocusEventHandler<HTMLElement>;
   onFocus?: React.FocusEventHandler<HTMLElement>;
-  onSelect?: (value: ValueType, option: JSX.Element | JSX.Element[]) => void;
+  onSelect?: (
+    value: ValueType extends (infer SingleValueType)[] ? SingleValueType : ValueType,
+    option: JSX.Element | JSX.Element[],
+  ) => void;
+  onDeselect?: (
+    value: ValueType extends (infer SingleValueType)[] ? SingleValueType : ValueType,
+    option: JSX.Element | JSX.Element[],
+  ) => void;
   onDropdownVisibleChange?: (open: boolean | undefined) => void;
   onPopupScroll?: React.UIEventHandler<HTMLDivElement>;
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
@@ -119,7 +126,6 @@ export interface SelectProps<OptionsType> {
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
   placeholder?: string;
-  onDeselect?: (value: ValueType, option: JSX.Element | JSX.Element[]) => void;
   loading?: boolean;
   maxTagTextLength?: number;
   maxTagCount?: number;
@@ -158,7 +164,7 @@ export interface GenerateConfig<OptionsType, StaticProps> {
  */
 export function generateSelector<OptionsType, StaticProps>(
   config: GenerateConfig<OptionsType, StaticProps>,
-): React.ComponentType<SelectProps<OptionsType>> {
+) {
   /** Used for accessibility id generate */
   let uuid = 0;
 
@@ -170,9 +176,10 @@ export function generateSelector<OptionsType, StaticProps>(
     filterOptions,
   } = config;
 
-  type SelectComponent = React.FC<SelectProps<OptionsType>> & StaticProps;
-
-  const Select: React.FC<SelectProps<OptionsType>> = props => {
+  // Use raw define since `React.FC` not support generic
+  function Select<ValueType extends DefaultValueType>(
+    props: SelectProps<OptionsType, ValueType>,
+  ): React.ReactElement {
     const {
       prefixCls = 'rc-select',
 
@@ -295,7 +302,7 @@ export function generateSelector<OptionsType, StaticProps>(
     const isMultiple = mode === 'tags' || mode === 'multiple';
 
     const triggerChange = (values: RawValueType[] | LabelValueType[]) => {
-      const outValue: ValueType = isMultiple ? values : values[0];
+      const outValue: ValueType = (isMultiple ? values : values[0]) as ValueType;
       // Skip trigger if prev & current value is both empty
       if (onChange && (mergedRawValue.length !== 0 || values.length !== 0)) {
         // TODO: handle this
@@ -333,7 +340,7 @@ export function generateSelector<OptionsType, StaticProps>(
       }
 
       // Trigger `onSelect`
-      const selectValue = labelInValue
+      const selectValue: any = labelInValue
         ? getLabeledValue(newValue, mergedOptions, baseValue, labelInValue)
         : newValue;
 
@@ -571,9 +578,11 @@ export function generateSelector<OptionsType, StaticProps>(
         </div>
       </SelectContext.Provider>
     );
-  };
+  }
 
-  Select.defaultProps = {
+  type SelectType = typeof Select & StaticProps;
+
+  (Select as any).defaultProps = {
     optionFilterProp: 'value',
   };
 
@@ -584,7 +593,7 @@ export function generateSelector<OptionsType, StaticProps>(
     });
   }
 
-  return Select as SelectComponent;
+  return Select as SelectType;
 }
 
 interface SelectStaticProps {

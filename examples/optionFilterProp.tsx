@@ -1,10 +1,9 @@
 import * as React from 'react';
-import Select, { Option, OptGroup } from '../src';
+import Select, { Option } from '../src';
 import '../assets/index.less';
-import { ValueType } from '../src/interface/generator';
 
 const Test = () => {
-  const [value, setValue] = React.useState<ValueType>('');
+  const [value, setValue] = React.useState<string>('');
 
   return (
     <div>
@@ -15,7 +14,9 @@ const Test = () => {
           style={{ width: 500 }}
           placeholder="placeholder"
           optionFilterProp="desc"
-          onChange={setValue}
+          onChange={(val: string) => {
+            setValue(val);
+          }}
           value={value}
           showSearch
         >

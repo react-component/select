@@ -13,7 +13,7 @@ for (let i = 10; i < 36; i += 1) {
 
 const Test: React.FC = () => {
   const [disabled, setDisabled] = React.useState(false);
-  const [value, setValue] = React.useState<any>(['name2', 'name3']);
+  const [value, setValue] = React.useState<string[]>(['name2', 'name3']);
   const [maxTagCount, setMaxTagCount] = React.useState<number>(1);
 
   const toggleMaxTagCount = (count: number) => {
@@ -28,7 +28,6 @@ const Test: React.FC = () => {
         <Select
           placeholder="placeholder"
           mode="tags"
-          dropdownScrollHeight={200}
           style={{ width: 500 }}
           disabled={disabled}
           maxTagCount={maxTagCount}
