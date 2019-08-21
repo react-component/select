@@ -94,6 +94,7 @@ export interface SelectProps<OptionsType, ValueType> {
   allowClear?: boolean;
   defaultActiveFirstOption?: boolean;
   notFoundContent?: React.ReactNode;
+  placeholder?: React.ReactNode;
 
   // Events
   onKeyUp?: React.KeyboardEventHandler<HTMLDivElement>;
@@ -129,7 +130,6 @@ export interface SelectProps<OptionsType, ValueType> {
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
-  placeholder?: string;
   loading?: boolean;
   maxTagTextLength?: number;
   maxTagCount?: number;
@@ -214,6 +214,7 @@ export function generateSelector<
       defaultActiveFirstOption,
       notFoundContent = 'Not Found',
       optionLabelProp,
+      placeholder,
 
       // Dropdown
       listHeight = 200,
@@ -655,7 +656,7 @@ export function generateSelector<
 
   (Select as any).defaultProps = {
     optionFilterProp: 'value',
-    optionLabelProp: 'children',
+    optionLabelProp: 'label',
   };
 
   // Inject static props

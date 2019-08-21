@@ -40,6 +40,7 @@ const Demo = () => {
           showSearch
           labelInValue
           allowClear
+          placeholder="ddd"
           style={{ width: 200 }}
           options={[
             { value: 'light' },

@@ -32,6 +32,7 @@ export interface SelectorProps {
   autoFocus?: boolean;
   accessibilityIndex: number;
   disabled?: boolean;
+  placeholder?: React.ReactNode;
 
   // Tags
   maxTagCount?: number;
@@ -59,6 +60,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     searchValue,
     accessibilityIndex,
     disabled,
+    placeholder,
 
     maxTagCount,
     maxTagTextLength,
@@ -172,7 +174,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   } else if (!searchValue) {
     selectionNode = (
       <span className={`${prefixCls}-selection-item`} style={{ opacity: open ? 0.4 : null }}>
-        {values[0].label}
+        {values.length ? values[0].label : null}
       </span>
     );
   }
@@ -210,6 +212,10 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
           </span>
         )}
       </span>
+
+      {!values.length && !searchValue && (
+        <span className={`${prefixCls}-selection-placeholder`}>{placeholder}</span>
+      )}
     </div>
   );
 };

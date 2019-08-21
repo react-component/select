@@ -37,14 +37,20 @@
       background: rgba(255, 0, 0, 0.2);
       width: 100%;
     }
+
+    .@{select-prefix}-selection-placeholder {
+      opacity: 0.4;
+    }
   }
 
   // --------------- Single ----------------
   &:not(&-multiple) {
-    .@{select-prefix}-selection-item {
+    .@{select-prefix}-selection-item,
+    .@{select-prefix}-selection-placeholder {
       position: absolute;
       left: 1px;
       top: 2px;
+      pointer-events: none;
     }
 
     .@{select-prefix}-selection-search {
