@@ -490,6 +490,7 @@ export function generateSelector<OptionsType, StaticProps>(
         ref={listRef}
         prefixCls={prefixCls}
         id={mergedId}
+        open={mergeOpen}
         options={mergedOptions}
         multiple={isMultiple}
         values={rawValues}

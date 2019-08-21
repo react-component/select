@@ -14,6 +14,7 @@ export interface OptionListProps {
   itemHeight: number;
   values: Set<RawValueType>;
   multiple: boolean;
+  open: boolean;
   defaultActiveFirstOption?: boolean;
 
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
@@ -41,6 +42,7 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
     defaultActiveFirstOption,
     height,
     itemHeight,
+    open,
     onSelect,
     onToggleOpen,
     onActiveTitle,
@@ -58,6 +60,10 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
 
   const onListMouseDown: React.MouseEventHandler<HTMLDivElement> = event => {
     event.preventDefault();
+  };
+
+  const scrollIntoView = (index: number) => {
+    listRef.current.scrollTo({ index });
   };
 
   // ========================== Active ==========================
@@ -90,9 +96,20 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
     onActiveTitle(index);
   };
 
+  // Auto active first item when list length changed
   React.useEffect(() => {
     setActive(defaultActiveFirstOption !== false ? getEnabledActiveIndex(0) : -1);
   }, [flattenList.length]);
+
+  // Auto scroll to item position in single mode
+  React.useEffect(() => {
+    if (!multiple && open && values.size === 1) {
+      const value: RawValueType = Array.from(values)[0];
+      const index = flattenList.findIndex(({ data }) => (data as OptionData).value === value);
+      setActive(index);
+      scrollIntoView(index);
+    }
+  }, [open]);
 
   // ========================== Values ==========================
   const onSelectValue = (value: RawValueType) => {
@@ -119,7 +136,7 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
 
           if (offset !== 0) {
             const nextActiveIndex = getEnabledActiveIndex(activeIndex + offset, offset);
-            listRef.current.scrollTo({ index: nextActiveIndex });
+            scrollIntoView(nextActiveIndex);
             setActive(nextActiveIndex);
           }
 
@@ -157,7 +174,7 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
       itemHeight={itemHeight}
       onMouseDown={onListMouseDown}
     >
-      {({ key, group, groupOption, data }, itemIndex) => {
+      {({ group, groupOption, data }, itemIndex) => {
         const { label } = data;
 
         // Group
