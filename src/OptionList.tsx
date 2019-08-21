@@ -50,6 +50,7 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
   const itemPrefixCls = `${prefixCls}-item`;
 
   // =========================== List ===========================
+  const listRef = React.useRef<List>(null);
   const flattenList: FlattenOptionData[] = React.useMemo<FlattenOptionData[]>(
     () => flattenOptions(options),
     [options],
@@ -117,7 +118,9 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
           }
 
           if (offset !== 0) {
-            setActive(getEnabledActiveIndex(activeIndex + offset, offset));
+            const nextActiveIndex = getEnabledActiveIndex(activeIndex + offset, offset);
+            listRef.current.scrollTo({ index: nextActiveIndex });
+            setActive(nextActiveIndex);
           }
 
           break;
@@ -145,6 +148,7 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
 
   return (
     <List<FlattenOptionData>
+      ref={listRef}
       data={flattenList}
       itemKey="key"
       role="listbox"
