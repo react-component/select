@@ -3,14 +3,15 @@ import * as React from 'react';
 export interface TransBtnProps {
   className: string;
   customizeIcon: React.ReactNode;
-  onClick: React.MouseEventHandler<HTMLSpanElement>;
+  onClick?: React.MouseEventHandler<HTMLSpanElement>;
+  children?: React.ReactNode;
 }
 
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
 }
 
-const TransBtn: React.FC<TransBtnProps> = ({ className, customizeIcon, onClick }) => (
+const TransBtn: React.FC<TransBtnProps> = ({ className, customizeIcon, onClick, children }) => (
   <span
     className={className}
     onMouseDown={preventDefault}
@@ -22,7 +23,7 @@ const TransBtn: React.FC<TransBtnProps> = ({ className, customizeIcon, onClick }
     onClick={onClick}
     aria-hidden
   >
-    {customizeIcon || <i className={`${className}-icon`}>×</i>}
+    {customizeIcon || <span className={`${className}-icon`}>{children}</span>}
   </span>
 );
 

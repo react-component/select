@@ -77,7 +77,10 @@ export interface SelectProps<OptionsType, ValueType> {
   onSearch?: (value: string) => void;
 
   // Icons
+  allowClear?: boolean;
   clearIcon?: React.ReactNode;
+  showArrow?: boolean;
+  inputIcon?: React.ReactNode;
 
   // Trigger
   /** TODO: Confirm if this is a good name */
@@ -91,7 +94,6 @@ export interface SelectProps<OptionsType, ValueType> {
   // Others
   disabled?: boolean;
   autoFocus?: boolean;
-  allowClear?: boolean;
   defaultActiveFirstOption?: boolean;
   notFoundContent?: React.ReactNode;
   placeholder?: React.ReactNode;
@@ -103,7 +105,6 @@ export interface SelectProps<OptionsType, ValueType> {
   // Legacy
   showSearch?: boolean;
   style?: React.CSSProperties;
-  showArrow?: boolean;
   openClassName?: string;
   transitionName?: string;
   optionLabelProp?: string;
@@ -137,7 +138,6 @@ export interface SelectProps<OptionsType, ValueType> {
   tokenSeparators?: string[];
   getInputElement?: () => JSX.Element;
   showAction?: string[];
-  inputIcon?: React.ReactNode;
   removeIcon?: React.ReactNode;
   menuItemSelectedIcon?: RenderNode;
   getPopupContainer?: RenderNode;
@@ -208,6 +208,8 @@ export function generateSelector<
       // Icons
       allowClear,
       clearIcon,
+      showArrow,
+      inputIcon,
 
       // Others
       disabled,
@@ -585,7 +587,21 @@ export function generateSelector<
           className={`${prefixCls}-selection-clear`}
           onClick={onClearClick}
           customizeIcon={clearIcon}
-        />
+        >
+          ×
+        </TransBtn>
+      );
+    }
+
+    // ============================= Arrow ==============================
+    const mergedShowArrow = showArrow !== undefined ? showArrow : !isMultiple;
+    let arrowNode: React.ReactNode;
+
+    if (mergedShowArrow) {
+      arrowNode = (
+        <TransBtn className={`${prefixCls}-selection-arrow`} customizeIcon={inputIcon}>
+          ↓
+        </TransBtn>
       );
     }
 
@@ -594,6 +610,7 @@ export function generateSelector<
       [`${prefixCls}-focused`]: mockFocused,
       [`${prefixCls}-multiple`]: isMultiple,
       [`${prefixCls}-allow-clear`]: allowClear,
+      [`${prefixCls}-show-arrow`]: mergedShowArrow,
       [`${prefixCls}-disabled`]: disabled,
     });
 
@@ -646,6 +663,7 @@ export function generateSelector<
             />
           </SelectTrigger>
 
+          {arrowNode}
           {clearNode}
         </div>
       </SelectContext.Provider>

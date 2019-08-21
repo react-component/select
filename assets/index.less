@@ -99,6 +99,20 @@
     }
 
     .@{select-prefix}-selection-clear {
+      pointer-events: none;
+      position: absolute;
+      right: 5px;
+      top: 0;
+    }
+  }
+
+  &-show-arrow {
+    &.@{select-prefix}-multiple .@{select-prefix}-selector {
+      padding-right: 20px;
+    }
+
+    .@{select-prefix}-selection-arrow {
+      pointer-events: none;
       position: absolute;
       right: 5px;
       top: 0;

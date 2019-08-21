@@ -39,7 +39,8 @@ const Demo = () => {
           mode="multiple"
           showSearch
           labelInValue
-          allowClear
+          // allowClear
+          showArrow
           placeholder="ddd"
           style={{ width: 200 }}
           options={[
