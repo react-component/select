@@ -6,28 +6,26 @@ import * as React from 'react';
  */
 export default function useDelayReset(
   timeout: number = 10,
-): [boolean, (val: boolean, callback?: () => void) => void] {
+): [boolean, (val: boolean, callback?: () => void) => void, () => void] {
   const [bool, setBool] = React.useState<boolean>(false);
   const delayRef = React.useRef<number>(null);
 
-  React.useEffect(() => {
+  const cancelLatest = () => {
     window.clearTimeout(delayRef.current);
-  }, []);
-
-  const delaySetBool = (value: boolean, callback: () => void) => {
-    window.clearTimeout(delayRef.current);
-
-    if (value) {
-      setBool(value);
-    } else {
-      delayRef.current = window.setTimeout(() => {
-        setBool(value);
-        if (callback) {
-          callback();
-        }
-      }, timeout);
-    }
   };
 
-  return [bool, delaySetBool];
+  React.useEffect(cancelLatest, []);
+
+  const delaySetBool = (value: boolean, callback: () => void) => {
+    cancelLatest();
+
+    delayRef.current = window.setTimeout(() => {
+      setBool(value);
+      if (callback) {
+        callback();
+      }
+    }, timeout);
+  };
+
+  return [bool, delaySetBool, cancelLatest];
 }

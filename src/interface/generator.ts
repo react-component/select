@@ -15,6 +15,7 @@ export type GetLabeledValue<OptionsType> = (
   value: RawValueType,
   options: OptionsType,
   prevValue: ValueType,
+  labelInValue: boolean,
 ) => LabelValueType;
 
 export type FilterOptions<OptionsType> = (

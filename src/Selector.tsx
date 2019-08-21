@@ -7,6 +7,7 @@ import { LabelValueType, RawValueType } from './interface/generator';
 
 export interface RefSelectorProps {
   getInputElement: () => HTMLInputElement;
+  focus: () => void;
 }
 
 export interface SelectorProps {
@@ -23,8 +24,6 @@ export interface SelectorProps {
   disabled?: boolean;
 
   onToggleOpen: (open?: boolean) => void;
-  onFocus: React.FocusEventHandler<HTMLInputElement>;
-  onBlur: React.FocusEventHandler<HTMLInputElement>;
   onSearch: (searchValue: string) => void;
 }
 
@@ -44,8 +43,6 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     accessibilityIndex,
     disabled,
     onToggleOpen,
-    onFocus,
-    onBlur,
     onSearch,
   } = props;
 
@@ -54,6 +51,9 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   // ======================= Ref =======================
   React.useImperativeHandle(ref, () => ({
     getInputElement: () => inputRef.current,
+    focus: () => {
+      inputRef.current.focus();
+    },
   }));
 
   // ===================== Measure =====================
@@ -89,25 +89,22 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     if (target !== inputRef.current) {
       inputRef.current.focus();
     }
+  };
 
-    /**
-     * When to trigger open?
-     * 1. Not open
-     * 2. open but click item is not input
-     */
-    if (!open || target !== inputRef.current) {
-      onToggleOpen();
+  const onMouseDown: React.MouseEventHandler<HTMLElement> = event => {
+    if (event.target !== inputRef.current) {
+      event.preventDefault();
     }
+
+    onToggleOpen();
   };
 
-  const onInternalFocus: React.FocusEventHandler<HTMLInputElement> = (...args) => {
+  const onInternalFocus: React.FocusEventHandler<HTMLInputElement> = React.useCallback(() => {
     setTyping(true);
-    onFocus(...args);
-  };
-  const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = (...args) => {
+  }, []);
+  const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = React.useCallback(() => {
     setTyping(false);
-    onBlur(...args);
-  };
+  }, []);
 
   // ==================== Selection ====================
   let selectionNode: React.ReactNode;
@@ -129,7 +126,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   }
 
   return (
-    <div className={`${prefixCls}-selector`} onClick={onClick}>
+    <div className={`${prefixCls}-selector`} onClick={onClick} onMouseDown={onMouseDown}>
       {selectionNode}
 
       <span

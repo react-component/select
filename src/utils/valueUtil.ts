@@ -94,6 +94,7 @@ export function getLabeledValue(
   value: RawValueType,
   options: SelectOptionsType,
   prevValue: ValueType,
+  labelInValue: boolean,
 ) {
   const item = findValueItem(value, options);
   const result: LabelValueType = {
@@ -102,7 +103,7 @@ export function getLabeledValue(
 
   if (item) {
     result.label = 'label' in item ? item.label : item.value;
-  } else {
+  } else if (labelInValue) {
     const prevValues = Array.isArray(prevValue) ? prevValue : [prevValue];
 
     // Try to find item in the prev values

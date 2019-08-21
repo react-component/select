@@ -40,7 +40,7 @@ export function toOuterValues<OptionsType>(
   let values: ValueType = valueList;
 
   if (labelInValue) {
-    values = values.map(val => getLabeledValue(val, options, prevValue));
+    values = values.map(val => getLabeledValue(val, options, prevValue, labelInValue));
   }
 
   return values;

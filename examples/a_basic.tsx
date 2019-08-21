@@ -56,8 +56,12 @@ const Demo = () => {
           dropdownRender={node => (
             <div>
               <h1>23333</h1>
+              <a href="https://ant.design" target="_blank" rel="noopener noreferrer">
+                a link
+              </a>
               {node}
-              <button>A BUTTON</button>
+              <input />
+              <button type="button">A BUTTON</button>
             </div>
           )}
         />

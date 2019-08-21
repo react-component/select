@@ -20,6 +20,10 @@ const BUILT_IN_PLACEMENTS = {
   },
 };
 
+export interface RefTriggerProps {
+  getPopupElement: () => HTMLDivElement;
+}
+
 export interface SelectTriggerProps {
   prefixCls: string;
   children: React.ReactElement;
@@ -34,7 +38,10 @@ export interface SelectTriggerProps {
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
 }
 
-const SelectTrigger: React.FC<SelectTriggerProps> = props => {
+const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTriggerProps> = (
+  props,
+  ref,
+) => {
   const {
     prefixCls,
     disabled,
@@ -56,6 +63,13 @@ const SelectTrigger: React.FC<SelectTriggerProps> = props => {
     popupNode = dropdownRender(popupElement);
   }
 
+  // ======================= Ref =======================
+  const popupRef = React.useRef<HTMLDivElement>(null);
+
+  React.useImperativeHandle(ref, () => ({
+    getPopupElement: () => popupRef.current,
+  }));
+
   return (
     <Trigger
       {...restProps}
@@ -66,7 +80,7 @@ const SelectTrigger: React.FC<SelectTriggerProps> = props => {
       prefixCls={dropdownPrefixCls}
       popupTransitionName={null}
       onPopupVisibleChange={() => {}}
-      popup={popupNode}
+      popup={<div ref={popupRef}>{popupNode}</div>}
       popupAlign={{}}
       popupVisible={visible}
       getPopupContainer={null}
@@ -81,4 +95,4 @@ const SelectTrigger: React.FC<SelectTriggerProps> = props => {
   );
 };
 
-export default SelectTrigger;
+export default React.forwardRef<RefTriggerProps, SelectTriggerProps>(SelectTrigger);

@@ -2,7 +2,7 @@ import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
 import Selector, { RefSelectorProps } from './Selector';
-import SelectTrigger from './SelectTrigger';
+import SelectTrigger, { RefTriggerProps } from './SelectTrigger';
 import { SelectContext } from './Context';
 import { RenderNode, OptionsType as SelectOptionsType } from './interface';
 import {
@@ -266,7 +266,9 @@ export function generateSelector<OptionsType, StaticProps>(
 
     const displayValues = React.useMemo<LabelValueType[]>(
       () =>
-        mergedRawValue.map((val: RawValueType) => getLabeledValue(val, mergedOptions, baseValue)),
+        mergedRawValue.map((val: RawValueType) =>
+          getLabeledValue(val, mergedOptions, baseValue, labelInValue),
+        ),
       [baseValue],
     );
 
@@ -312,7 +314,7 @@ export function generateSelector<OptionsType, StaticProps>(
 
       // Trigger `onSelect`
       const selectValue = labelInValue
-        ? getLabeledValue(newValue, mergedOptions, baseValue)
+        ? getLabeledValue(newValue, mergedOptions, baseValue, labelInValue)
         : newValue;
 
       // TODO: second param
@@ -395,8 +397,8 @@ export function generateSelector<OptionsType, StaticProps>(
     };
 
     // ========================== Focus / Blur ==========================
-    // const [focused, setFocused] = React.useState(false);
-    const [mockFocused, setMockFocused] = useDelayReset();
+    const triggerRef = React.useRef<RefTriggerProps>(null);
+    const [mockFocused, setMockFocused, cancelSetMockFocused] = useDelayReset();
 
     const onContainerFocus = () => {
       setMockFocused(true);
@@ -408,36 +410,23 @@ export function generateSelector<OptionsType, StaticProps>(
       });
     };
 
-    const onInternalFocus = React.useCallback<React.FocusEventHandler<HTMLInputElement>>(
-      (...args) => {
-        // setFocused(true);
-        if (onFocus) {
-          onFocus(...args);
-        }
-      },
-      [onFocus],
-    );
-    const onInternalBlur = React.useCallback<React.FocusEventHandler<HTMLInputElement>>(
-      (...args) => {
-        // setFocused(false);
+    const onInternalMouseDown: React.MouseEventHandler<HTMLDivElement> = (event, ...restArgs) => {
+      const { target } = event;
+      const popupElement: HTMLDivElement =
+        triggerRef.current && triggerRef.current.getPopupElement();
 
-        // TODO: cancel comment this
-        // onToggleOpen(false);
-        if (onBlur) {
-          onBlur(...args);
-        }
-      },
-      [onBlur],
-    );
-
-    const onInternalMouseDown: React.MouseEventHandler<HTMLDivElement> = (...args) => {
-      // Not lose focus if have
-      // if (focused && args[0].target !== selectorRef.current.getInputElement()) {
-      //   args[0].preventDefault();
-      // }
+      // We should give focus back to selector if clicked item is not focusable
+      if (popupElement && popupElement.contains(target as any)) {
+        setTimeout(() => {
+          cancelSetMockFocused();
+          if (!popupElement.contains(document.activeElement)) {
+            selectorRef.current.focus();
+          }
+        });
+      }
 
       if (onMouseDown) {
-        onMouseDown(...args);
+        onMouseDown(event, ...restArgs);
       }
     };
 
@@ -521,6 +510,7 @@ export function generateSelector<OptionsType, StaticProps>(
             </span>
           )}
           <SelectTrigger
+            ref={triggerRef}
             disabled={disabled}
             prefixCls={prefixCls}
             visible={mergeOpen}
@@ -540,8 +530,6 @@ export function generateSelector<OptionsType, StaticProps>(
               values={displayValues}
               open={mergeOpen}
               onToggleOpen={onToggleOpen}
-              onFocus={onInternalFocus}
-              onBlur={onInternalBlur}
               searchValue={mergedSearchValue}
               onSearch={triggerSearch}
             />

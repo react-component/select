@@ -12,6 +12,9 @@ export interface OptionData {
   className?: string;
   style?: React.CSSProperties;
   label?: React.ReactElement;
+
+  /** Save for customize data */
+  [prop: string]: any;
 }
 
 export interface OptionGroupData {
