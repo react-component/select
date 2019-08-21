@@ -5,7 +5,13 @@ import {
   OptionGroupData,
   FlattenOptionData,
 } from '../interface';
-import { LabelValueType, FilterFunc, RawValueType, DefaultValueType } from '../interface/generator';
+import {
+  LabelValueType,
+  FilterFunc,
+  RawValueType,
+  DefaultValueType,
+  GetLabeledValue,
+} from '../interface/generator';
 
 import { SelectProps } from '../Select';
 import { toArray } from './commonUtil';
@@ -62,7 +68,7 @@ export function flattenOptions(
   return flattenList;
 }
 
-function findValueItem(value: RawValueType, options: SelectOptionsType): OptionData {
+function findValueOption(value: RawValueType, options: SelectOptionsType): OptionData {
   let optionItem: OptionData;
 
   options.some(option => {
@@ -92,13 +98,11 @@ function findValueItem(value: RawValueType, options: SelectOptionsType): OptionD
   return optionItem;
 }
 
-export function getLabeledValue(
-  value: RawValueType,
-  options: SelectOptionsType,
-  prevValue: DefaultValueType,
-  labelInValue: boolean,
-) {
-  const item = findValueItem(value, options);
+export const getLabeledValue: GetLabeledValue<SelectOptionsType> = (
+  value,
+  { options, prevValue, labelInValue, optionLabelProp },
+) => {
+  const item = findValueOption(value, options);
   const result: LabelValueType = {
     value,
   };
@@ -117,13 +121,13 @@ export function getLabeledValue(
     if (
       item &&
       typeof prevValItem.label === 'string' &&
-      typeof item.label === 'string' &&
-      prevValItem.label.trim() !== item.label.trim()
+      typeof item[optionLabelProp] === 'string' &&
+      prevValItem.label.trim() !== item[optionLabelProp].trim()
     ) {
       warning(false, '`label` of `value` is not same as `label` in Select options.');
     }
-  } else if (item && 'label' in item) {
-    result.label = item.label;
+  } else if (item && optionLabelProp in item) {
+    result.label = item[optionLabelProp];
   } else {
     result.label = value;
   }
@@ -132,7 +136,7 @@ export function getLabeledValue(
   result.key = result.value;
 
   return result;
-}
+};
 
 /** Filter single option if match the search text */
 function getFilterFunction(optionFilterProp: string) {

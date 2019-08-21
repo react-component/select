@@ -13,9 +13,12 @@ export type DefaultValueType = RawValueType | RawValueType[] | LabelValueType | 
 // ==================================== Generator ====================================
 export type GetLabeledValue<OptionsType> = (
   value: RawValueType,
-  options: OptionsType,
-  prevValue: DefaultValueType,
-  labelInValue: boolean,
+  config: {
+    options: OptionsType;
+    prevValue: DefaultValueType;
+    labelInValue: boolean;
+    optionLabelProp: string;
+  },
 ) => LabelValueType;
 
 export type FilterOptions<OptionsType> = (

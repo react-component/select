@@ -213,6 +213,7 @@ export function generateSelector<
       disabled,
       defaultActiveFirstOption,
       notFoundContent = 'Not Found',
+      optionLabelProp,
 
       // Dropdown
       listHeight = 200,
@@ -312,7 +313,12 @@ export function generateSelector<
     const displayValues = React.useMemo<LabelValueType[]>(
       () =>
         mergedRawValue.map((val: RawValueType) =>
-          getLabeledValue(val, mergedOptions, baseValue, labelInValue),
+          getLabeledValue(val, {
+            options: mergedOptions,
+            prevValue: baseValue,
+            labelInValue,
+            optionLabelProp,
+          }),
         ),
       [baseValue],
     );
@@ -352,6 +358,7 @@ export function generateSelector<
           options: mergedOptions,
           getLabeledValue,
           prevValue: baseValue,
+          optionLabelProp,
         });
 
         triggerChange(outValue);
@@ -359,7 +366,12 @@ export function generateSelector<
 
       // Trigger `onSelect`
       const selectValue: any = labelInValue
-        ? getLabeledValue(newValue, mergedOptions, baseValue, labelInValue)
+        ? getLabeledValue(newValue, {
+            options: mergedOptions,
+            prevValue: baseValue,
+            labelInValue,
+            optionLabelProp,
+          })
         : newValue;
 
       // TODO: second param
@@ -401,6 +413,7 @@ export function generateSelector<
             getLabeledValue,
             options: mergedOptions,
             prevValue: baseValue,
+            optionLabelProp,
           }),
         );
       }
@@ -642,6 +655,7 @@ export function generateSelector<
 
   (Select as any).defaultProps = {
     optionFilterProp: 'value',
+    optionLabelProp: 'children',
   };
 
   // Inject static props

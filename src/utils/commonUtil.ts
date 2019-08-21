@@ -1,4 +1,9 @@
-import { RawValueType, GetLabeledValue, ValueType, LabelValueType } from '../interface/generator';
+import {
+  RawValueType,
+  GetLabeledValue,
+  LabelValueType,
+  DefaultValueType,
+} from '../interface/generator';
 
 export function toArray<T>(value: T | T[]): T[] {
   if (Array.isArray(value)) {
@@ -11,7 +16,7 @@ export function toArray<T>(value: T | T[]): T[] {
  * Convert outer props value into internal value
  */
 export function toInnerValue(
-  value: ValueType,
+  value: DefaultValueType,
   { labelInValue }: { labelInValue: boolean },
 ): RawValueType[] {
   if (value === undefined || value === null) {
@@ -33,21 +38,25 @@ export function toInnerValue(
 export function toOuterValues<OptionsType>(
   valueList: RawValueType[],
   {
+    optionLabelProp,
     labelInValue,
     prevValue,
     options,
     getLabeledValue,
   }: {
+    optionLabelProp: string;
     labelInValue: boolean;
     getLabeledValue: GetLabeledValue<OptionsType>;
     options: OptionsType;
-    prevValue: ValueType;
+    prevValue: DefaultValueType;
   },
 ): RawValueType[] | LabelValueType[] {
-  let values: ValueType = valueList;
+  let values: DefaultValueType = valueList;
 
   if (labelInValue) {
-    values = values.map(val => getLabeledValue(val, options, prevValue, labelInValue));
+    values = values.map(val =>
+      getLabeledValue(val, { options, prevValue, labelInValue, optionLabelProp }),
+    );
   }
 
   return values;
