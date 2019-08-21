@@ -1,4 +1,12 @@
-// https://www.w3.org/TR/wai-aria-practices/examples/combobox/aria1.1pattern/listbox-combo.html
+/**
+ * Cursor rule:
+ * 1. Only `showSearch` enabled
+ * 2. Only `open` is `true`
+ * 3. When typing, set `open` to `true` which hit rule of 2
+ *
+ * Accessibility:
+ * - https://www.w3.org/TR/wai-aria-practices/examples/combobox/aria1.1pattern/listbox-combo.html
+ */
 
 import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
@@ -57,24 +65,15 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   }));
 
   // ===================== Measure =====================
-  const [typing, setTyping] = React.useState<boolean>(false);
+  const onInputKeyDown = React.useCallback<React.KeyboardEventHandler<HTMLInputElement>>(event => {
+    const { which } = event;
 
-  const onInputKeyDown = React.useCallback<React.KeyboardEventHandler<HTMLInputElement>>(
-    event => {
-      const { which } = event;
+    if (which === KeyCode.UP || which === KeyCode.DOWN) {
+      event.preventDefault();
+    }
 
-      if (which === KeyCode.UP || which === KeyCode.DOWN) {
-        event.preventDefault();
-      }
-
-      if (!typing) {
-        setTyping(true);
-      } else if (which === KeyCode.ENTER) {
-        setTyping(false);
-      }
-    },
-    [typing],
-  );
+    onToggleOpen(true);
+  }, []);
 
   const onInputChange = ({ target: { value } }) => {
     onSearch(value);
@@ -101,13 +100,8 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
       event.preventDefault();
     }
 
-    setTyping(true);
     onToggleOpen();
   };
-
-  const onInputBlur: React.FocusEventHandler<HTMLInputElement> = React.useCallback(() => {
-    setTyping(false);
-  }, []);
 
   // ==================== Selection ====================
   let selectionNode: React.ReactNode;
@@ -119,10 +113,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     ));
   } else if (!searchValue) {
     selectionNode = (
-      <span
-        className={`${prefixCls}-selection-item`}
-        style={{ opacity: typing || open ? 0.4 : null }}
-      >
+      <span className={`${prefixCls}-selection-item`} style={{ opacity: open ? 0.4 : null }}>
         {values[0].label}
       </span>
     );
@@ -142,8 +133,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
           autoComplete="off"
           autoFocus={autoFocus}
           className={`${prefixCls}-selection-search-input`}
-          onBlur={onInputBlur}
-          readOnly={!typing}
+          readOnly={!showSearch || !open}
           role="combobox"
           aria-expanded={open}
           aria-haspopup="listbox"

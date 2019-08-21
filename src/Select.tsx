@@ -1,3 +1,18 @@
+/**
+ * To match accessibility requirement, we always provide an input in the component.
+ * Other element will not set `tabIndex` to avoid `onBlur` sequence problem.
+ * For focused select, we set `aria-live="polite"` to update the accessibility content.
+ *
+ * ref:
+ * - keyboard: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role#Keyboard_interactions
+ *
+ * Remove deprecated api:
+ * - multiple
+ * - tags
+ * - combobox
+ * - firstActiveValue
+ */
+
 import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
@@ -25,15 +40,6 @@ import { toInnerValue, toOuterValues } from './utils/commonUtil';
 import TransBtn from './TransBtn';
 import { useLock } from './hooks/useLock';
 import useDelayReset from './hooks/useDelayReset';
-
-/**
- * To match accessibility requirement, we always provide an input in the component.
- * Other element will not set `tabIndex` to avoid `onBlur` sequence problem.
- * For focused select, we set `aria-live="polite"` to update the accessibility content.
- *
- * ref:
- * - keyboard: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role#Keyboard_interactions
- */
 
 export interface SelectProps<OptionsType> {
   prefixCls?: string;
@@ -107,7 +113,6 @@ export interface SelectProps<OptionsType> {
   placeholder?: string;
   onDeselect?: (value: ValueType, option: JSX.Element | JSX.Element[]) => void;
   loading?: boolean;
-  firstActiveValue?: ValueType;
   maxTagTextLength?: number;
   maxTagCount?: number;
   maxTagPlaceholder?: RenderNode;
