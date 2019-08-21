@@ -81,9 +81,9 @@ export interface SelectProps<OptionsType, ValueType> {
   clearIcon?: React.ReactNode;
   showArrow?: boolean;
   inputIcon?: React.ReactNode;
+  removeIcon?: React.ReactNode;
 
   // Trigger
-  /** TODO: Confirm if this is a good name */
   listHeight?: number;
   listItemHeight?: number;
   dropdownStyle?: React.CSSProperties;
@@ -138,7 +138,6 @@ export interface SelectProps<OptionsType, ValueType> {
   tokenSeparators?: string[];
   getInputElement?: () => JSX.Element;
   showAction?: string[];
-  removeIcon?: React.ReactNode;
   menuItemSelectedIcon?: RenderNode;
   getPopupContainer?: RenderNode;
   backfill?: boolean;
@@ -210,6 +209,7 @@ export function generateSelector<
       clearIcon,
       showArrow,
       inputIcon,
+      removeIcon,
 
       // Others
       disabled,
@@ -660,6 +660,7 @@ export function generateSelector<
               onToggleOpen={onToggleOpen}
               searchValue={mergedSearchValue}
               onSearch={triggerSearch}
+              onSelect={onInternalSelect}
             />
           </SelectTrigger>
 

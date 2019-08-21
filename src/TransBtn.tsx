@@ -3,18 +3,26 @@ import * as React from 'react';
 export interface TransBtnProps {
   className: string;
   customizeIcon: React.ReactNode;
+  onMouseDown?: React.MouseEventHandler<HTMLSpanElement>;
   onClick?: React.MouseEventHandler<HTMLSpanElement>;
   children?: React.ReactNode;
 }
 
-function preventDefault(event: React.MouseEvent) {
-  event.preventDefault();
-}
-
-const TransBtn: React.FC<TransBtnProps> = ({ className, customizeIcon, onClick, children }) => (
+const TransBtn: React.FC<TransBtnProps> = ({
+  className,
+  customizeIcon,
+  onMouseDown,
+  onClick,
+  children,
+}) => (
   <span
     className={className}
-    onMouseDown={preventDefault}
+    onMouseDown={event => {
+      event.preventDefault();
+      if (onMouseDown) {
+        onMouseDown(event);
+      }
+    }}
     style={{
       userSelect: 'none',
       WebkitUserSelect: 'none',

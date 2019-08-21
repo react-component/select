@@ -10,9 +10,12 @@
 
 import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
+import TransBtn from './TransBtn';
 import { SelectContext } from './Context';
 import { LabelValueType, RawValueType } from './interface/generator';
 import { RenderNode, Mode } from './interface';
+
+const REST_TAG_KEY = '__RC_SELECT_MAX_REST_COUNT__';
 
 export interface RefSelectorProps {
   getInputElement: () => HTMLInputElement;
@@ -33,6 +36,7 @@ export interface SelectorProps {
   accessibilityIndex: number;
   disabled?: boolean;
   placeholder?: React.ReactNode;
+  removeIcon?: RenderNode;
 
   // Tags
   maxTagCount?: number;
@@ -42,6 +46,7 @@ export interface SelectorProps {
 
   onToggleOpen: (open?: boolean) => void;
   onSearch: (searchValue: string) => void;
+  onSelect: (value: RawValueType, option: { selected: boolean }) => void;
 }
 
 const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = (props, ref) => {
@@ -61,6 +66,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     accessibilityIndex,
     disabled,
     placeholder,
+    removeIcon,
 
     maxTagCount,
     maxTagTextLength,
@@ -69,6 +75,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
 
     onToggleOpen,
     onSearch,
+    onSelect,
   } = props;
 
   const [inputWidth, setInputWidth] = React.useState(0);
@@ -157,7 +164,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
 
       if (restCount) {
         displayValues.push({
-          key: '__RC_SELECT_MAX_REST_COUNT__',
+          key: REST_TAG_KEY,
           label:
             typeof maxTagPlaceholder === 'function'
               ? maxTagPlaceholder(values.slice(maxTagCount))
@@ -169,6 +176,22 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     selectionNode = displayValues.map(({ label, value, key }) => (
       <span key={key || value} className={`${prefixCls}-selection-item`}>
         {label}
+        {key !== REST_TAG_KEY && (
+          <TransBtn
+            className={`${prefixCls}-selection-item-remove`}
+            onMouseDown={event => {
+              event.preventDefault();
+              event.stopPropagation();
+            }}
+            onClick={event => {
+              event.stopPropagation();
+              onSelect(value, { selected: false });
+            }}
+            customizeIcon={removeIcon}
+          >
+            ×
+          </TransBtn>
+        )}
       </span>
     ));
   } else if (!searchValue) {
