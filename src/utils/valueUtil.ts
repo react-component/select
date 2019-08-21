@@ -1,3 +1,4 @@
+import warning from 'rc-util/lib/warning';
 import {
   OptionsType as SelectOptionsType,
   OptionData,
@@ -7,6 +8,7 @@ import {
 import { LabelValueType, ValueType, FilterFunc, RawValueType } from '../interface/generator';
 
 import { SelectProps } from '../Select';
+import { toArray } from './commonUtil';
 
 function getKey(data: OptionData | OptionGroupData, index: number) {
   const { key } = data;
@@ -101,19 +103,29 @@ export function getLabeledValue(
     value,
   };
 
-  if (item) {
-    result.label = 'label' in item ? item.label : item.value;
-  } else if (labelInValue) {
-    const prevValues = Array.isArray(prevValue) ? prevValue : [prevValue];
-
-    // Try to find item in the prev values
-    const prevValItem = prevValues.find(
+  let prevValItem: LabelValueType;
+  const prevValues = toArray<RawValueType | LabelValueType>(prevValue);
+  if (labelInValue) {
+    prevValItem = prevValues.find(
       (prevItem: LabelValueType) => 'value' in prevItem && prevItem.value === value,
     ) as LabelValueType;
+  }
 
-    if (prevValItem && prevValItem.label) {
-      result.label = prevValItem.label;
+  if (prevValItem && 'label' in prevValItem) {
+    result.label = prevValItem.label;
+
+    if (
+      item &&
+      typeof prevValItem.label === 'string' &&
+      typeof item.label === 'string' &&
+      prevValItem.label.trim() !== item.label.trim()
+    ) {
+      warning(false, '`label` of `value` is not same as `label` in Select options.');
     }
+  } else if (item && 'label' in item) {
+    result.label = item.label;
+  } else {
+    result.label = value;
   }
 
   // [Legacy] We need fill `key` as `value` to compatible old code usage

@@ -1,5 +1,12 @@
 import { RawValueType, GetLabeledValue, ValueType, LabelValueType } from '../interface/generator';
 
+export function toArray<T>(value: T | T[]): T[] {
+  if (Array.isArray(value)) {
+    return value;
+  }
+  return value !== undefined ? [value] : [];
+}
+
 /**
  * Convert outer props value into internal value
  */

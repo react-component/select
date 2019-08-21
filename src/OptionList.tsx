@@ -10,6 +10,8 @@ export interface OptionListProps {
   prefixCls: string;
   id: string;
   options: OptionsType;
+  height: number;
+  itemHeight: number;
   values: Set<RawValueType>;
   multiple: boolean;
   defaultActiveFirstOption?: boolean;
@@ -37,6 +39,8 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
     values,
     multiple,
     defaultActiveFirstOption,
+    height,
+    itemHeight,
     onSelect,
     onToggleOpen,
     onActiveTitle,
@@ -50,6 +54,10 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
     () => flattenOptions(options),
     [options],
   );
+
+  const onListMouseDown: React.MouseEventHandler<HTMLDivElement> = event => {
+    event.preventDefault();
+  };
 
   // ========================== Active ==========================
   const getEnabledActiveIndex = (index: number, offset: number = 1): number => {
@@ -136,7 +144,15 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
   }));
 
   return (
-    <List<FlattenOptionData> data={flattenList} itemKey="key" role="listbox" id={`${id}_list`}>
+    <List<FlattenOptionData>
+      data={flattenList}
+      itemKey="key"
+      role="listbox"
+      id={`${id}_list`}
+      height={height}
+      itemHeight={itemHeight}
+      onMouseDown={onListMouseDown}
+    >
       {({ key, group, groupOption, data }, itemIndex) => {
         const { label } = data;
 

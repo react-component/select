@@ -6,11 +6,16 @@
  * ref:
  * - keyboard: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role#Keyboard_interactions
  *
+ * New api:
+ * - listHeight
+ * - listItemHeight
+ *
  * Remove deprecated api:
  * - multiple
  * - tags
  * - combobox
  * - firstActiveValue
+ * - dropdownMenuStyle
  */
 
 import * as React from 'react';
@@ -72,6 +77,9 @@ export interface SelectProps<OptionsType> {
   clearIcon?: React.ReactNode;
 
   // Trigger
+  /** TODO: Confirm if this is a good name */
+  listHeight?: number;
+  listItemHeight?: number;
   dropdownStyle?: React.CSSProperties;
   dropdownClassName?: string;
   dropdownMatchSelectWidth?: boolean;
@@ -125,7 +133,6 @@ export interface SelectProps<OptionsType> {
   getPopupContainer?: RenderNode;
   backfill?: boolean;
   dropdownAlign?: any;
-  dropdownMenuStyle?: React.CSSProperties;
   notFoundContent?: string | false;
   tabIndex?: number;
 }
@@ -191,10 +198,18 @@ export function generateSelector<OptionsType, StaticProps>(
       defaultActiveFirstOption,
 
       // Dropdown
+      listHeight = 200,
+      listItemHeight = 20,
       dropdownStyle,
       dropdownClassName,
       dropdownMatchSelectWidth,
       dropdownRender,
+
+      // Tags
+      maxTagCount,
+      maxTagTextLength,
+      maxTagPlaceholder,
+      tokenSeparators,
 
       labelInValue,
       className,
@@ -390,8 +405,6 @@ export function generateSelector<OptionsType, StaticProps>(
 
     // KeyUp
     const onInternalKeyUp: React.KeyboardEventHandler<HTMLDivElement> = (event, ...rest) => {
-      const { which } = event;
-
       if (mergeOpen && listRef.current) {
         listRef.current.onKeyUp(event, ...rest);
       }
@@ -473,6 +486,8 @@ export function generateSelector<OptionsType, StaticProps>(
         options={mergedOptions}
         multiple={isMultiple}
         values={rawValues}
+        height={listHeight}
+        itemHeight={listItemHeight}
         onSelect={onInternalSelect}
         onToggleOpen={onToggleOpen}
         onActiveTitle={onActiveTitle}

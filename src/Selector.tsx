@@ -12,6 +12,7 @@ import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { SelectContext } from './Context';
 import { LabelValueType, RawValueType } from './interface/generator';
+import { RenderNode } from './interface';
 
 export interface RefSelectorProps {
   getInputElement: () => HTMLInputElement;
@@ -30,6 +31,12 @@ export interface SelectorProps {
   autoFocus?: boolean;
   accessibilityIndex: number;
   disabled?: boolean;
+
+  // Tags
+  maxTagCount?: number;
+  maxTagTextLength?: number;
+  maxTagPlaceholder?: RenderNode;
+  tokenSeparators?: string[];
 
   onToggleOpen: (open?: boolean) => void;
   onSearch: (searchValue: string) => void;
@@ -50,6 +57,12 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     searchValue,
     accessibilityIndex,
     disabled,
+
+    maxTagCount,
+    maxTagTextLength,
+    maxTagPlaceholder = (omittedValues: LabelValueType[]) => `+ ${omittedValues.length} ...`,
+    tokenSeparators,
+
     onToggleOpen,
     onSearch,
   } = props;
@@ -106,8 +119,45 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   // ==================== Selection ====================
   let selectionNode: React.ReactNode;
   if (multiple) {
-    selectionNode = values.map(({ label, value }) => (
-      <span key={value} className={`${prefixCls}-selection-item`}>
+    let displayValues: LabelValueType[] = values;
+
+    // Filter display selection
+    if (maxTagCount !== undefined) {
+      const restCount = values.length - maxTagCount;
+
+      displayValues = values.slice(0, maxTagCount);
+      if (maxTagTextLength !== undefined) {
+        displayValues = displayValues.map(({ label, ...rest }) => {
+          let displayLabel: React.ReactNode = label;
+
+          if (typeof label === 'string' || typeof label === 'number') {
+            const strLabel = String(displayLabel);
+
+            if (strLabel.length > maxTagTextLength) {
+              displayLabel = `${strLabel.slice(0, maxTagTextLength)}...`;
+            }
+          }
+
+          return {
+            ...rest,
+            label: displayLabel,
+          };
+        });
+      }
+
+      if (restCount) {
+        displayValues.push({
+          key: '__RC_SELECT_MAX_REST_COUNT__',
+          label:
+            typeof maxTagPlaceholder === 'function'
+              ? maxTagPlaceholder(values.slice(maxTagCount))
+              : maxTagPlaceholder,
+        });
+      }
+    }
+
+    selectionNode = displayValues.map(({ label, value, key }) => (
+      <span key={key || value} className={`${prefixCls}-selection-item`}>
         {label}
       </span>
     ));

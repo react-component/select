@@ -11,7 +11,7 @@ export interface OptionData {
   title?: string;
   className?: string;
   style?: React.CSSProperties;
-  label?: React.ReactElement;
+  label?: React.ReactNode;
 
   /** Save for customize data */
   [prop: string]: any;
@@ -19,7 +19,7 @@ export interface OptionData {
 
 export interface OptionGroupData {
   key?: Key;
-  label?: React.ReactElement;
+  label?: React.ReactNode;
   options: OptionData[];
   className?: string;
   style?: React.CSSProperties;
