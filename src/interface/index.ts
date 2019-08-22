@@ -14,6 +14,8 @@ export interface OptionData {
   className?: string;
   style?: React.CSSProperties;
   label?: React.ReactNode;
+  /** @deprecated Only works when use `children` as option data */
+  children?: React.ReactNode;
 
   /** Save for customize data */
   [prop: string]: any;

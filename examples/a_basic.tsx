@@ -2,6 +2,7 @@ import * as React from 'react';
 import Select, { Option, OptGroup } from '../src';
 import '../assets/index.less';
 import './common.less';
+import { RefSelectProps } from '../src/Select';
 
 const focusProps = {
   onFocus: ({ target }) => {
@@ -25,6 +26,7 @@ const Demo = () => {
   };
 
   // const [search, setSearch] = React.useState('');
+  const selectRef = React.useRef<RefSelectProps>(null);
 
   return (
     <div>
@@ -35,6 +37,7 @@ const Demo = () => {
         <Select
           {...focusProps}
           {...selectProps}
+          ref={selectRef}
           defaultActiveFirstOption={false}
           mode="multiple"
           showSearch
@@ -86,8 +89,14 @@ const Demo = () => {
           </Option>
         </Select>
         <input type="hidden" />
-        <button type="button" {...focusProps}>
-          tab button
+        <button
+          type="button"
+          {...focusProps}
+          onClick={() => {
+            selectRef.current.focus();
+          }}
+        >
+          Focus first
         </button>
         <input placeholder="tab usage" {...focusProps} />
         <select>

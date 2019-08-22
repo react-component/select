@@ -34,8 +34,9 @@ import {
   RawValueType,
   LabelValueType,
   Key,
+  RefSelectFunc,
 } from './interface/generator';
-import SelectOptionList, { OptionListProps, RefProps } from './OptionList';
+import SelectOptionList, { OptionListProps, RefOptionListProps } from './OptionList';
 import Option from './Option';
 import OptGroup from './OptGroup';
 import { convertChildrenToData as convertSelectChildrenToData } from './utils/legacyUtil';
@@ -48,6 +49,11 @@ import { toInnerValue, toOuterValues } from './utils/commonUtil';
 import TransBtn from './TransBtn';
 import { useLock } from './hooks/useLock';
 import useDelayReset from './hooks/useDelayReset';
+
+export interface RefSelectProps {
+  focus: () => void;
+  blur: () => void;
+}
 
 export interface SelectProps<OptionsType, ValueType> {
   prefixCls?: string;
@@ -149,7 +155,7 @@ export interface GenerateConfig<OptionsType, StaticProps> {
   components: {
     optionList: React.ForwardRefExoticComponent<
       React.PropsWithoutRef<Omit<OptionListProps, 'options'> & { options: OptionsType }> &
-        React.RefAttributes<RefProps>
+        React.RefAttributes<RefOptionListProps>
     >;
   };
   staticProps?: StaticProps;
@@ -187,6 +193,7 @@ export function generateSelector<
   // Use raw define since `React.FC` not support generic
   function Select<ValueType extends DefaultValueType>(
     props: SelectProps<OptionsType, ValueType>,
+    ref: React.Ref<RefSelectProps>,
   ): React.ReactElement {
     const {
       prefixCls = 'rc-select',
@@ -200,7 +207,7 @@ export function generateSelector<
       showSearch,
       searchValue,
       filterOption,
-      optionFilterProp,
+      optionFilterProp = 'value',
       autoClearSearchValue = true,
       onSearch,
 
@@ -259,7 +266,7 @@ export function generateSelector<
     } = props;
 
     const selectorRef = React.useRef<RefSelectorProps>(null);
-    const listRef = React.useRef<RefProps>(null);
+    const listRef = React.useRef<RefOptionListProps>(null);
 
     // Inner id for accessibility usage. Only work in client side
     const [innerId, setInnerId] = React.useState<string>();
@@ -272,6 +279,12 @@ export function generateSelector<
     if (mergedOptionLabelProp === undefined) {
       mergedOptionLabelProp = options ? 'label' : 'children';
     }
+
+    // ============================== Ref ===============================
+    React.useImperativeHandle(ref, () => ({
+      focus: selectorRef.current.focus,
+      blur: selectorRef.current.blur,
+    }));
 
     // ============================= Option =============================
     const [innerSearchValue, setInnerSearchValue] = React.useState('');
@@ -289,7 +302,10 @@ export function generateSelector<
       if (!mergedSearchValue) {
         return mergedOptions;
       }
-      const filteredOptions: OptionsType = filterOptions(mergedSearchValue, mergedOptions, props);
+      const filteredOptions: OptionsType = filterOptions(mergedSearchValue, mergedOptions, {
+        optionFilterProp,
+        filterOption,
+      });
       if (mode === 'tags' && filteredOptions.every(opt => opt.value !== mergedSearchValue)) {
         filteredOptions.unshift({
           value: mergedSearchValue,
@@ -687,12 +703,6 @@ export function generateSelector<
     );
   }
 
-  type SelectType = typeof Select & StaticProps;
-
-  (Select as any).defaultProps = {
-    optionFilterProp: 'value',
-  };
-
   // Inject static props
   if (staticProps) {
     Object.keys(staticProps).forEach(prop => {
@@ -700,7 +710,11 @@ export function generateSelector<
     });
   }
 
-  return Select as SelectType;
+  // Ref of Select
+  type RefSelectFuncType = typeof RefSelectFunc;
+  const RefSelect = ((React.forwardRef as unknown) as RefSelectFuncType)(Select);
+
+  return RefSelect;
 }
 
 interface SelectStaticProps {

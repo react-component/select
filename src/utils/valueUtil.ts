@@ -150,7 +150,10 @@ function getFilterFunction(optionFilterProp: string) {
 export function filterOptions(
   searchValue: string,
   options: SelectOptionsType,
-  { optionFilterProp, filterOption }: SelectProps<SelectOptionsType, DefaultValueType>,
+  {
+    optionFilterProp,
+    filterOption,
+  }: { optionFilterProp: string; filterOption: boolean | FilterFunc },
 ) {
   const filteredOptions: SelectOptionsType = [];
   let filterFunc: FilterFunc;

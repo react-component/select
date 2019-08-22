@@ -20,6 +20,7 @@ const REST_TAG_KEY = '__RC_SELECT_MAX_REST_COUNT__';
 export interface RefSelectorProps {
   getInputElement: () => HTMLInputElement;
   focus: () => void;
+  blur: () => void;
 }
 
 export interface SelectorProps {
@@ -85,6 +86,9 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     getInputElement: () => inputRef.current,
     focus: () => {
       inputRef.current.focus();
+    },
+    blur: () => {
+      inputRef.current.blur();
     },
   }));
 

@@ -28,7 +28,7 @@ export interface OptionListProps {
   onScroll: React.UIEventHandler<HTMLDivElement>;
 }
 
-export interface RefProps {
+export interface RefOptionListProps {
   onKeyDown: React.KeyboardEventHandler;
   onKeyUp: React.KeyboardEventHandler;
 }
@@ -37,7 +37,7 @@ export interface RefProps {
  * Using virtual list of option display.
  * Will fallback to dom if use customize render.
  */
-const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
+const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListProps> = (
   {
     prefixCls,
     id,
@@ -201,14 +201,14 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
       onScroll={onScroll}
     >
       {({ group, groupOption, data }, itemIndex) => {
-        const { label, children } = data;
+        const { label } = data;
 
         // Group
         if (group) {
           return <div className={classNames(itemPrefixCls, `${itemPrefixCls}-group`)}>{label}</div>;
         }
 
-        const { disabled, value } = data as OptionData;
+        const { disabled, value, children } = data as OptionData;
 
         // Option
         const selected = values.has(value);
@@ -257,4 +257,4 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
   );
 };
 
-export default React.forwardRef<RefProps, OptionListProps>(OptionList);
+export default React.forwardRef<RefOptionListProps, OptionListProps>(OptionList);
