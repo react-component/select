@@ -19,6 +19,7 @@ export interface OptionListProps {
   defaultActiveFirstOption?: boolean;
   notFoundContent?: React.ReactNode;
   menuItemSelectedIcon?: RenderNode;
+  childrenAsData: boolean;
 
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
   onToggleOpen: (open?: boolean) => void;
@@ -41,6 +42,7 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
     prefixCls,
     id,
     options,
+    childrenAsData,
     values,
     multiple,
     defaultActiveFirstOption,
@@ -199,7 +201,7 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
       onScroll={onScroll}
     >
       {({ group, groupOption, data }, itemIndex) => {
-        const { label } = data;
+        const { label, children } = data;
 
         // Group
         if (group) {
@@ -217,6 +219,8 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
           [`${itemPrefixCls}-option-disabled`]: disabled,
           [`${itemPrefixCls}-option-selected`]: selected,
         });
+
+        const mergedLabel = childrenAsData ? children : label;
 
         return (
           <div
@@ -237,13 +241,13 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
               }
             }}
           >
-            {label || value}
+            {mergedLabel || value}
             {selected && (
               <TransBtn
                 className={`${itemPrefixCls}-option-selected-icon`}
                 customizeIcon={menuItemSelectedIcon}
               >
-                √
+                ✓
               </TransBtn>
             )}
           </div>

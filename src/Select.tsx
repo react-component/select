@@ -216,7 +216,7 @@ export function generateSelector<
       loading,
       defaultActiveFirstOption,
       notFoundContent = 'Not Found',
-      optionLabelProp,
+      optionLabelProp: aaa,
       placeholder,
 
       // Dropdown
@@ -268,6 +268,10 @@ export function generateSelector<
       uuid += 1;
     }, []);
     const mergedId = id || innerId;
+    let mergedOptionLabelProp = aaa;
+    if (mergedOptionLabelProp === undefined) {
+      mergedOptionLabelProp = options ? 'label' : 'children';
+    }
 
     // ============================= Option =============================
     const [innerSearchValue, setInnerSearchValue] = React.useState('');
@@ -325,7 +329,7 @@ export function generateSelector<
             options: mergedOptions,
             prevValue: baseValue,
             labelInValue,
-            optionLabelProp,
+            optionLabelProp: mergedOptionLabelProp,
           }),
         ),
       [baseValue],
@@ -366,7 +370,7 @@ export function generateSelector<
           options: mergedOptions,
           getLabeledValue,
           prevValue: baseValue,
-          optionLabelProp,
+          optionLabelProp: mergedOptionLabelProp,
         });
 
         triggerChange(outValue);
@@ -378,7 +382,7 @@ export function generateSelector<
             options: mergedOptions,
             prevValue: baseValue,
             labelInValue,
-            optionLabelProp,
+            optionLabelProp: mergedOptionLabelProp,
           })
         : newValue;
 
@@ -421,7 +425,7 @@ export function generateSelector<
             getLabeledValue,
             options: mergedOptions,
             prevValue: baseValue,
-            optionLabelProp,
+            optionLabelProp: mergedOptionLabelProp,
           }),
         );
       }
@@ -569,6 +573,7 @@ export function generateSelector<
         prefixCls={prefixCls}
         id={mergedId}
         open={mergedOpen}
+        childrenAsData={!options}
         options={displayOptions}
         multiple={isMultiple}
         values={rawValues}
@@ -686,7 +691,6 @@ export function generateSelector<
 
   (Select as any).defaultProps = {
     optionFilterProp: 'value',
-    optionLabelProp: 'label',
   };
 
   // Inject static props
