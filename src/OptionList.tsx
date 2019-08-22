@@ -24,7 +24,7 @@ export interface OptionListProps {
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
   onToggleOpen: (open?: boolean) => void;
   /** Tell Select that some value is now active to make accessibility work */
-  onActiveTitle: (index: number) => void;
+  onActiveValue: (value: RawValueType, index: number) => void;
   onScroll: React.UIEventHandler<HTMLDivElement>;
 }
 
@@ -53,7 +53,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
     menuItemSelectedIcon,
     onSelect,
     onToggleOpen,
-    onActiveTitle,
+    onActiveValue,
     onScroll,
   },
   ref,
@@ -100,11 +100,11 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
     // Trigger active event
     const flattenItem = flattenList[index];
     if (!flattenItem) {
-      onActiveTitle(-1);
+      onActiveValue(null, -1);
       return;
     }
 
-    onActiveTitle(index);
+    onActiveValue((flattenItem.data as OptionData).value, index);
   };
 
   // Auto active first item when list length changed

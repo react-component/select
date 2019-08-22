@@ -43,7 +43,7 @@ const Demo = () => {
           showSearch
           labelInValue
           // allowClear
-          showArrow
+          // showArrow
           placeholder="ddd"
           style={{ width: 200 }}
           options={[
@@ -77,6 +77,7 @@ const Demo = () => {
           // searchValue={search}
           // onSearch={setSearch}
           defaultValue={2}
+          backfill
         >
           <Option value={1}>Value 1</Option>
           <OptGroup label={<span>Group Title</span>}>
@@ -87,6 +88,8 @@ const Demo = () => {
           <Option value={1128} disabled>
             Disabled Value
           </Option>
+          <Option value="111">111!</Option>
+          <Option value="122">122!</Option>
         </Select>
         <input type="hidden" />
         <button

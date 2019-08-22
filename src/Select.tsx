@@ -105,6 +105,7 @@ export interface SelectProps<OptionsType, ValueType> {
   defaultActiveFirstOption?: boolean;
   notFoundContent?: React.ReactNode;
   placeholder?: React.ReactNode;
+  backfill?: boolean;
 
   // Events
   onKeyUp?: React.KeyboardEventHandler<HTMLDivElement>;
@@ -146,7 +147,6 @@ export interface SelectProps<OptionsType, ValueType> {
   getInputElement?: () => JSX.Element;
   showAction?: string[];
   getPopupContainer?: RenderNode;
-  backfill?: boolean;
   dropdownAlign?: any;
   tabIndex?: number;
 }
@@ -225,6 +225,7 @@ export function generateSelector<
       notFoundContent = 'Not Found',
       optionLabelProp: aaa,
       placeholder,
+      backfill,
 
       // Dropdown
       listHeight = 200,
@@ -568,9 +569,17 @@ export function generateSelector<
     // ========================= Accessibility ==========================
     const [accessibilityIndex, setAccessibilityIndex] = React.useState<number>(0);
 
-    const onActiveTitle = (index: number) => {
+    const onActiveValue = (activeValue: RawValueType, index: number) => {
       setAccessibilityIndex(index);
+
+      if (backfill && activeValue !== null) {
+        triggerSearch(String(activeValue));
+      }
     };
+
+    if (process.env.NODE_ENV !== 'production' && mode !== 'combobox') {
+      warning(!backfill, '`backfill` only works with `combobox` mode.');
+    }
 
     // ============================= Popup ==============================
     const containerRef = React.useRef<HTMLDivElement>(null);
@@ -597,7 +606,7 @@ export function generateSelector<
         itemHeight={listItemHeight}
         onSelect={onInternalSelect}
         onToggleOpen={onToggleOpen}
-        onActiveTitle={onActiveTitle}
+        onActiveValue={onActiveValue}
         defaultActiveFirstOption={defaultActiveFirstOption}
         notFoundContent={notFoundContent}
         onScroll={onPopupScroll}
@@ -683,7 +692,7 @@ export function generateSelector<
               {...props}
               ref={selectorRef}
               id={mergedId}
-              showSearch={showSearch}
+              showSearch={showSearch || mode === 'combobox'}
               mode={mode}
               accessibilityIndex={accessibilityIndex}
               multiple={isMultiple}
