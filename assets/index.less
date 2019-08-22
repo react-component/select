@@ -171,11 +171,11 @@
 
       // ------ Selected ------
       &-selected {
-        &::after {
-          content: '✅';
+        .@{select-prefix}-item-option-selected-icon {
           position: absolute;
           right: 0;
-          top: 0;
+          top: 4px;
+          pointer-events: none;
         }
       }
     }

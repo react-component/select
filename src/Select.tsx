@@ -82,6 +82,7 @@ export interface SelectProps<OptionsType, ValueType> {
   showArrow?: boolean;
   inputIcon?: React.ReactNode;
   removeIcon?: React.ReactNode;
+  menuItemSelectedIcon?: RenderNode;
 
   // Trigger
   listHeight?: number;
@@ -93,6 +94,7 @@ export interface SelectProps<OptionsType, ValueType> {
 
   // Others
   disabled?: boolean;
+  loading?: boolean;
   autoFocus?: boolean;
   defaultActiveFirstOption?: boolean;
   notFoundContent?: React.ReactNode;
@@ -101,6 +103,8 @@ export interface SelectProps<OptionsType, ValueType> {
   // Events
   onKeyUp?: React.KeyboardEventHandler<HTMLDivElement>;
   onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
+  onPopupScroll?: React.UIEventHandler<HTMLDivElement>;
+  onDropdownVisibleChange?: (open: boolean) => void;
 
   // Legacy
   showSearch?: boolean;
@@ -125,20 +129,16 @@ export interface SelectProps<OptionsType, ValueType> {
     value: ValueType extends (infer SingleValueType)[] ? SingleValueType : ValueType,
     option: JSX.Element | JSX.Element[],
   ) => void;
-  onDropdownVisibleChange?: (open: boolean | undefined) => void;
-  onPopupScroll?: React.UIEventHandler<HTMLDivElement>;
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
-  loading?: boolean;
   maxTagTextLength?: number;
   maxTagCount?: number;
   maxTagPlaceholder?: RenderNode;
   tokenSeparators?: string[];
   getInputElement?: () => JSX.Element;
   showAction?: string[];
-  menuItemSelectedIcon?: RenderNode;
   getPopupContainer?: RenderNode;
   backfill?: boolean;
   dropdownAlign?: any;
@@ -213,6 +213,7 @@ export function generateSelector<
 
       // Others
       disabled,
+      loading,
       defaultActiveFirstOption,
       notFoundContent = 'Not Found',
       optionLabelProp,
@@ -231,6 +232,10 @@ export function generateSelector<
       maxTagTextLength,
       maxTagPlaceholder,
       tokenSeparators,
+
+      // Events
+      onPopupScroll,
+      onDropdownVisibleChange,
 
       labelInValue,
       className,
@@ -430,16 +435,19 @@ export function generateSelector<
 
     // ============================== Open ==============================
     const [innerOpen, setInnerOpen] = React.useState<boolean>(defaultOpen);
-    const mergeOpen: boolean = open !== undefined ? open : innerOpen;
+    const mergedOpen: boolean = open !== undefined ? open : innerOpen;
 
     const onToggleOpen = React.useCallback<(open?: boolean) => void>(
       (newOpen?: boolean) => {
-        const nextOpen = newOpen !== undefined ? newOpen : !mergeOpen;
-        if (innerOpen !== nextOpen && !disabled) {
+        const nextOpen = newOpen !== undefined ? newOpen : !mergedOpen;
+        if (mergedOpen !== nextOpen && !disabled) {
           setInnerOpen(nextOpen);
+          if (onDropdownVisibleChange) {
+            onDropdownVisibleChange(nextOpen);
+          }
         }
       },
-      [mergeOpen, disabled],
+      [mergedOpen, disabled],
     );
 
     // ============================ Keyboard ============================
@@ -456,7 +464,7 @@ export function generateSelector<
       const { which } = event;
 
       // We only manage open state here, close logic should handle by list component
-      if (!mergeOpen && which === KeyCode.ENTER) {
+      if (!mergedOpen && which === KeyCode.ENTER) {
         onToggleOpen(true);
       }
 
@@ -471,7 +479,7 @@ export function generateSelector<
         triggerChange((baseValue as LabelValueType[]).slice(0, -1));
       }
 
-      if (mergeOpen && listRef.current) {
+      if (mergedOpen && listRef.current) {
         listRef.current.onKeyDown(event, ...rest);
       }
 
@@ -482,7 +490,7 @@ export function generateSelector<
 
     // KeyUp
     const onInternalKeyUp: React.KeyboardEventHandler<HTMLDivElement> = (event, ...rest) => {
-      if (mergeOpen && listRef.current) {
+      if (mergedOpen && listRef.current) {
         listRef.current.onKeyUp(event, ...rest);
       }
 
@@ -560,7 +568,7 @@ export function generateSelector<
         ref={listRef}
         prefixCls={prefixCls}
         id={mergedId}
-        open={mergeOpen}
+        open={mergedOpen}
         options={displayOptions}
         multiple={isMultiple}
         values={rawValues}
@@ -571,6 +579,7 @@ export function generateSelector<
         onActiveTitle={onActiveTitle}
         defaultActiveFirstOption={defaultActiveFirstOption}
         notFoundContent={notFoundContent}
+        onScroll={onPopupScroll}
       />
     );
 
@@ -612,6 +621,8 @@ export function generateSelector<
       [`${prefixCls}-allow-clear`]: allowClear,
       [`${prefixCls}-show-arrow`]: mergedShowArrow,
       [`${prefixCls}-disabled`]: disabled,
+      [`${prefixCls}-loading`]: loading,
+      [`${prefixCls}-open`]: mergedOpen,
     });
 
     return (
@@ -626,7 +637,7 @@ export function generateSelector<
           onFocus={onContainerFocus}
           onBlur={onContainerBlur}
         >
-          {mockFocused && !mergeOpen && (
+          {mockFocused && !mergedOpen && (
             <span
               style={{ width: 0, height: 0, display: 'flex', overflow: 'hidden', opacity: 0 }}
               aria-live="polite"
@@ -639,7 +650,7 @@ export function generateSelector<
             ref={triggerRef}
             disabled={disabled}
             prefixCls={prefixCls}
-            visible={mergeOpen}
+            visible={mergedOpen}
             popupElement={popupNode}
             containerWidth={containerWidth}
             dropdownStyle={dropdownStyle}
@@ -656,7 +667,7 @@ export function generateSelector<
               accessibilityIndex={accessibilityIndex}
               multiple={isMultiple}
               values={displayValues}
-              open={mergeOpen}
+              open={mergedOpen}
               onToggleOpen={onToggleOpen}
               searchValue={mergedSearchValue}
               onSearch={triggerSearch}

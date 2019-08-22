@@ -2,7 +2,8 @@ import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
 import List from 'rc-virtual-list';
-import { OptionsType, FlattenOptionData, OptionData, Mode } from './interface';
+import TransBtn from './TransBtn';
+import { OptionsType, FlattenOptionData, OptionData, RenderNode } from './interface';
 import { RawValueType } from './interface/generator';
 import { flattenOptions } from './utils/valueUtil';
 
@@ -17,11 +18,13 @@ export interface OptionListProps {
   open: boolean;
   defaultActiveFirstOption?: boolean;
   notFoundContent?: React.ReactNode;
+  menuItemSelectedIcon?: RenderNode;
 
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
   onToggleOpen: (open?: boolean) => void;
   /** Tell Select that some value is now active to make accessibility work */
   onActiveTitle: (index: number) => void;
+  onScroll: React.UIEventHandler<HTMLDivElement>;
 }
 
 export interface RefProps {
@@ -45,9 +48,11 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
     itemHeight,
     notFoundContent,
     open,
+    menuItemSelectedIcon,
     onSelect,
     onToggleOpen,
     onActiveTitle,
+    onScroll,
   },
   ref,
 ) => {
@@ -191,6 +196,7 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
       height={height}
       itemHeight={itemHeight}
       onMouseDown={onListMouseDown}
+      onScroll={onScroll}
     >
       {({ group, groupOption, data }, itemIndex) => {
         const { label } = data;
@@ -232,6 +238,14 @@ const OptionList: React.RefForwardingComponent<RefProps, OptionListProps> = (
             }}
           >
             {label || value}
+            {selected && (
+              <TransBtn
+                className={`${itemPrefixCls}-option-selected-icon`}
+                customizeIcon={menuItemSelectedIcon}
+              >
+                √
+              </TransBtn>
+            )}
           </div>
         );
       }}

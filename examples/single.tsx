@@ -64,6 +64,9 @@ class Test extends React.Component {
             optionFilterProp="text"
             onChange={this.onChange}
             backfill
+            onPopupScroll={(...args) => {
+              console.log('Scroll:', args);
+            }}
           >
             <Option value="01" text="jack" title="jack">
               <b
