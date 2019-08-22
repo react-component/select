@@ -288,6 +288,8 @@ export function generateSelector<
     }));
 
     // ============================= Option =============================
+    // Set by option list active, it will merge into search input when mode is `combobox`
+    const [activeValue, setActiveValue] = React.useState<string>(null);
     const [innerSearchValue, setInnerSearchValue] = React.useState('');
     const mergedSearchValue = searchValue !== undefined ? searchValue : innerSearchValue;
 
@@ -305,7 +307,7 @@ export function generateSelector<
       }
       const filteredOptions: OptionsType = filterOptions(mergedSearchValue, mergedOptions, {
         optionFilterProp,
-        filterOption,
+        filterOption: mode === 'combobox' && filterOption === undefined ? () => true : filterOption,
       });
       if (mode === 'tags' && filteredOptions.every(opt => opt.value !== mergedSearchValue)) {
         filteredOptions.unshift({
@@ -414,12 +416,14 @@ export function generateSelector<
       // Clean search value if single or configured
       if (!isMultiple || autoClearSearchValue) {
         setInnerSearchValue('');
+        setActiveValue('');
       }
     };
 
     // ============================= Search =============================
     const triggerSearch = (searchText: string) => {
       let newSearchText = searchText;
+      setActiveValue(null);
 
       // Check if match the `tokenSeparators`
       let patchRawValues: RawValueType[] = getSeparatedContent(searchText, tokenSeparators);
@@ -568,12 +572,14 @@ export function generateSelector<
 
     // ========================= Accessibility ==========================
     const [accessibilityIndex, setAccessibilityIndex] = React.useState<number>(0);
+    const mergedDefaultActiveFirstOption =
+      defaultActiveFirstOption !== undefined ? defaultActiveFirstOption : mode !== 'combobox';
 
-    const onActiveValue = (activeValue: RawValueType, index: number) => {
+    const onActiveValue = (active: RawValueType, index: number) => {
       setAccessibilityIndex(index);
 
-      if (backfill && activeValue !== null) {
-        triggerSearch(String(activeValue));
+      if (backfill && mode === 'combobox' && active !== null) {
+        setActiveValue(String(active));
       }
     };
 
@@ -607,7 +613,7 @@ export function generateSelector<
         onSelect={onInternalSelect}
         onToggleOpen={onToggleOpen}
         onActiveValue={onActiveValue}
-        defaultActiveFirstOption={defaultActiveFirstOption}
+        defaultActiveFirstOption={mergedDefaultActiveFirstOption}
         notFoundContent={notFoundContent}
         onScroll={onPopupScroll}
       />
@@ -615,7 +621,7 @@ export function generateSelector<
 
     // ============================= Clear ==============================
     let clearNode: React.ReactNode;
-    const onClearClick: React.MouseEventHandler<HTMLSpanElement> = () => {
+    const onClearMouseDown: React.MouseEventHandler<HTMLSpanElement> = () => {
       triggerChange([]);
       triggerSearch('');
     };
@@ -624,7 +630,7 @@ export function generateSelector<
       clearNode = (
         <TransBtn
           className={`${prefixCls}-selection-clear`}
-          onClick={onClearClick}
+          onMouseDown={onClearMouseDown}
           customizeIcon={clearIcon}
         >
           ×
@@ -692,7 +698,7 @@ export function generateSelector<
               {...props}
               ref={selectorRef}
               id={mergedId}
-              showSearch={showSearch || mode === 'combobox'}
+              showSearch={showSearch}
               mode={mode}
               accessibilityIndex={accessibilityIndex}
               multiple={isMultiple}
@@ -700,6 +706,7 @@ export function generateSelector<
               open={mergedOpen}
               onToggleOpen={onToggleOpen}
               searchValue={mergedSearchValue}
+              activeValue={activeValue}
               onSearch={triggerSearch}
               onSelect={onInternalSelect}
             />

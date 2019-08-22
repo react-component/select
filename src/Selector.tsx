@@ -32,6 +32,7 @@ export interface SelectorProps {
   multiple: boolean;
   mode: Mode;
   searchValue: string;
+  activeValue: string;
 
   autoFocus?: boolean;
   accessibilityIndex: number;
@@ -64,6 +65,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     mode,
     multiple,
     searchValue,
+    activeValue,
     accessibilityIndex,
     disabled,
     placeholder,
@@ -96,6 +98,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   const inputEditable: boolean =
     open &&
     (showSearch ||
+      mode === 'combobox' ||
       mode === 'tags' ||
       (mode === 'multiple' && tokenSeparators && !!tokenSeparators.length));
 
@@ -228,7 +231,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
           aria-autocomplete="list"
           aria-controls={`${id}_list`}
           aria-activedescendant={`${id}_list_${accessibilityIndex}`}
-          value={searchValue}
+          value={activeValue || searchValue}
           onKeyDown={onInputKeyDown}
           onChange={onInputChange}
         />
