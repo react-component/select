@@ -29,7 +29,6 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
 import Selector, { RefSelectorProps } from './Selector';
 import SelectTrigger, { RefTriggerProps } from './SelectTrigger';
-import { SelectContext } from './Context';
 import { RenderNode, OptionsType as SelectOptionsType, Mode } from './interface';
 import {
   GetLabeledValue,
@@ -681,61 +680,60 @@ export function generateSelector<
     });
 
     return (
-      <SelectContext.Provider value={{ prefixCls }}>
-        <div
-          className={mergedClassName}
-          {...domProps}
-          ref={containerRef}
-          onMouseDown={onInternalMouseDown}
-          onKeyDown={onInternalKeyDown}
-          onKeyUp={onInternalKeyUp}
-          onFocus={onContainerFocus}
-          onBlur={onContainerBlur}
-        >
-          {mockFocused && !mergedOpen && (
-            <span
-              style={{ width: 0, height: 0, display: 'flex', overflow: 'hidden', opacity: 0 }}
-              aria-live="polite"
-            >
-              {/* Merge into one string to make screen reader work as expect */}
-              {`${mergedRawValue.join(', ')}`}
-            </span>
-          )}
-          <SelectTrigger
-            ref={triggerRef}
-            disabled={disabled}
-            prefixCls={prefixCls}
-            visible={mergedOpen}
-            popupElement={popupNode}
-            containerWidth={containerWidth}
-            dropdownStyle={dropdownStyle}
-            dropdownClassName={dropdownClassName}
-            dropdownMatchSelectWidth={dropdownMatchSelectWidth}
-            dropdownRender={dropdownRender}
+      <div
+        className={mergedClassName}
+        {...domProps}
+        ref={containerRef}
+        onMouseDown={onInternalMouseDown}
+        onKeyDown={onInternalKeyDown}
+        onKeyUp={onInternalKeyUp}
+        onFocus={onContainerFocus}
+        onBlur={onContainerBlur}
+      >
+        {mockFocused && !mergedOpen && (
+          <span
+            style={{ width: 0, height: 0, display: 'flex', overflow: 'hidden', opacity: 0 }}
+            aria-live="polite"
           >
-            <Selector
-              {...props}
-              inputElement={customizeInputElement}
-              ref={selectorRef}
-              id={mergedId}
-              showSearch={showSearch}
-              mode={mode}
-              accessibilityIndex={accessibilityIndex}
-              multiple={isMultiple}
-              values={displayValues}
-              open={mergedOpen}
-              onToggleOpen={onToggleOpen}
-              searchValue={mergedSearchValue}
-              activeValue={activeValue}
-              onSearch={triggerSearch}
-              onSelect={onInternalSelect}
-            />
-          </SelectTrigger>
+            {/* Merge into one string to make screen reader work as expect */}
+            {`${mergedRawValue.join(', ')}`}
+          </span>
+        )}
+        <SelectTrigger
+          ref={triggerRef}
+          disabled={disabled}
+          prefixCls={prefixCls}
+          visible={mergedOpen}
+          popupElement={popupNode}
+          containerWidth={containerWidth}
+          dropdownStyle={dropdownStyle}
+          dropdownClassName={dropdownClassName}
+          dropdownMatchSelectWidth={dropdownMatchSelectWidth}
+          dropdownRender={dropdownRender}
+        >
+          <Selector
+            {...props}
+            prefixCls={prefixCls}
+            inputElement={customizeInputElement}
+            ref={selectorRef}
+            id={mergedId}
+            showSearch={showSearch}
+            mode={mode}
+            accessibilityIndex={accessibilityIndex}
+            multiple={isMultiple}
+            values={displayValues}
+            open={mergedOpen}
+            onToggleOpen={onToggleOpen}
+            searchValue={mergedSearchValue}
+            activeValue={activeValue}
+            onSearch={triggerSearch}
+            onSelect={onInternalSelect}
+          />
+        </SelectTrigger>
 
-          {arrowNode}
-          {clearNode}
-        </div>
-      </SelectContext.Provider>
+        {arrowNode}
+        {clearNode}
+      </div>
     );
   }
 

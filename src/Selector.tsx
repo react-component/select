@@ -11,7 +11,6 @@
 import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import TransBtn from './TransBtn';
-import { SelectContext } from './Context';
 import { LabelValueType, RawValueType } from './interface/generator';
 import { RenderNode, Mode } from './interface';
 
@@ -24,6 +23,7 @@ export interface RefSelectorProps {
 
 export interface SelectorProps {
   id: string;
+  prefixCls: string;
   showSearch?: boolean;
   open: boolean;
   /** Display in the Selector value, it's not same as `value` prop */
@@ -53,12 +53,12 @@ export interface SelectorProps {
 }
 
 const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = (props, ref) => {
-  const { prefixCls } = React.useContext(SelectContext);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const measureRef = React.useRef<HTMLSpanElement>(null);
 
   const {
     id,
+    prefixCls,
     autoFocus,
     showSearch,
     open,
