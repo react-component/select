@@ -1205,7 +1205,6 @@ describe('Select', () => {
 
     expect(wrapper.find('SelectTrigger').prop('options')).toHaveLength(2);
 
-    // multiple=true showArrow=true  arrow do have
     wrapper.setProps({
       dropdownLimit: 1,
     });
