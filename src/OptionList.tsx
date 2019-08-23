@@ -188,72 +188,87 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
     );
   }
 
+  function renderItem(index: number) {
+    const item = flattenList[index];
+    const value = item && (item.data as OptionData).value;
+    return item ? (
+      <div key={index} role="option" id={`${id}_list_${index}`} aria-selected={values.has(value)}>
+        {value}
+      </div>
+    ) : null;
+  }
+
   return (
-    <List<FlattenOptionData>
-      ref={listRef}
-      data={flattenList}
-      itemKey="key"
-      role="listbox"
-      id={`${id}_list`}
-      height={height}
-      itemHeight={itemHeight}
-      onMouseDown={onListMouseDown}
-      onScroll={onScroll}
-    >
-      {({ group, groupOption, data }, itemIndex) => {
-        const { label } = data;
+    <>
+      <div role="listbox" id={`${id}_list`} style={{ height: 0, overflow: 'hidden' }}>
+        {renderItem(activeIndex - 1)}
+        {renderItem(activeIndex)}
+        {renderItem(activeIndex + 1)}
+      </div>
+      <List<FlattenOptionData>
+        itemKey="key"
+        ref={listRef}
+        data={flattenList}
+        height={height}
+        itemHeight={itemHeight}
+        onMouseDown={onListMouseDown}
+        onScroll={onScroll}
+      >
+        {({ group, groupOption, data }, itemIndex) => {
+          const { label } = data;
 
-        // Group
-        if (group) {
-          return <div className={classNames(itemPrefixCls, `${itemPrefixCls}-group`)}>{label}</div>;
-        }
+          // Group
+          if (group) {
+            return (
+              <div className={classNames(itemPrefixCls, `${itemPrefixCls}-group`)}>{label}</div>
+            );
+          }
 
-        const { disabled, value, children } = data as OptionData;
+          const { disabled, value, children } = data as OptionData;
 
-        // Option
-        const selected = values.has(value);
+          // Option
+          const selected = values.has(value);
 
-        const optionClassName = classNames(itemPrefixCls, `${itemPrefixCls}-option`, {
-          [`${itemPrefixCls}-option-grouped`]: groupOption,
-          [`${itemPrefixCls}-option-active`]: activeIndex === itemIndex && !disabled,
-          [`${itemPrefixCls}-option-disabled`]: disabled,
-          [`${itemPrefixCls}-option-selected`]: selected,
-        });
+          const optionClassName = classNames(itemPrefixCls, `${itemPrefixCls}-option`, {
+            [`${itemPrefixCls}-option-grouped`]: groupOption,
+            [`${itemPrefixCls}-option-active`]: activeIndex === itemIndex && !disabled,
+            [`${itemPrefixCls}-option-disabled`]: disabled,
+            [`${itemPrefixCls}-option-selected`]: selected,
+          });
 
-        const mergedLabel = childrenAsData ? children : label;
+          const mergedLabel = childrenAsData ? children : label;
 
-        return (
-          <div
-            role="option"
-            id={`${id}_list_${itemIndex}`}
-            aria-selected={selected}
-            className={optionClassName}
-            onMouseMove={() => {
-              if (activeIndex === itemIndex) {
-                return;
-              }
+          return (
+            <div
+              aria-selected={selected}
+              className={optionClassName}
+              onMouseMove={() => {
+                if (activeIndex === itemIndex || disabled) {
+                  return;
+                }
 
-              setActive(itemIndex);
-            }}
-            onClick={() => {
-              if (!disabled) {
-                onSelectValue(value);
-              }
-            }}
-          >
-            {mergedLabel || value}
-            {selected && (
-              <TransBtn
-                className={`${itemPrefixCls}-option-selected-icon`}
-                customizeIcon={menuItemSelectedIcon}
-              >
-                ✓
-              </TransBtn>
-            )}
-          </div>
-        );
-      }}
-    </List>
+                setActive(itemIndex);
+              }}
+              onClick={() => {
+                if (!disabled) {
+                  onSelectValue(value);
+                }
+              }}
+            >
+              {mergedLabel || value}
+              {selected && (
+                <TransBtn
+                  className={`${itemPrefixCls}-option-selected-icon`}
+                  customizeIcon={menuItemSelectedIcon}
+                >
+                  ✓
+                </TransBtn>
+              )}
+            </div>
+          );
+        }}
+      </List>
+    </>
   );
 };
 

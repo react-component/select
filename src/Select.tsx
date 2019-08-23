@@ -9,6 +9,7 @@
  * New api:
  * - listHeight
  * - listItemHeight
+ * - component
  *
  * Remove deprecated api:
  * - multiple
@@ -16,6 +17,9 @@
  * - combobox
  * - firstActiveValue
  * - dropdownMenuStyle
+ *
+ * Update:
+ * - `combobox` mode not support `labelInValue` since it's meaningless
  */
 
 import * as React from 'react';
@@ -106,12 +110,21 @@ export interface SelectProps<OptionsType, ValueType> {
   notFoundContent?: React.ReactNode;
   placeholder?: React.ReactNode;
   backfill?: boolean;
+  getInputElement?: () => JSX.Element;
 
   // Events
   onKeyUp?: React.KeyboardEventHandler<HTMLDivElement>;
   onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
   onPopupScroll?: React.UIEventHandler<HTMLDivElement>;
   onDropdownVisibleChange?: (open: boolean) => void;
+  onSelect?: (
+    value: ValueType extends (infer SingleValueType)[] ? SingleValueType : ValueType,
+    option: JSX.Element | JSX.Element[],
+  ) => void;
+  onDeselect?: (
+    value: ValueType extends (infer SingleValueType)[] ? SingleValueType : ValueType,
+    option: JSX.Element | JSX.Element[],
+  ) => void;
 
   // Legacy
   showSearch?: boolean;
@@ -128,14 +141,6 @@ export interface SelectProps<OptionsType, ValueType> {
   onChange?: (value: ValueType, option: JSX.Element | JSX.Element[]) => void;
   onBlur?: React.FocusEventHandler<HTMLElement>;
   onFocus?: React.FocusEventHandler<HTMLElement>;
-  onSelect?: (
-    value: ValueType extends (infer SingleValueType)[] ? SingleValueType : ValueType,
-    option: JSX.Element | JSX.Element[],
-  ) => void;
-  onDeselect?: (
-    value: ValueType extends (infer SingleValueType)[] ? SingleValueType : ValueType,
-    option: JSX.Element | JSX.Element[],
-  ) => void;
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
@@ -144,7 +149,6 @@ export interface SelectProps<OptionsType, ValueType> {
   maxTagCount?: number;
   maxTagPlaceholder?: RenderNode;
   tokenSeparators?: string[];
-  getInputElement?: () => JSX.Element;
   showAction?: string[];
   getPopupContainer?: RenderNode;
   dropdownAlign?: any;
@@ -202,6 +206,7 @@ export function generateSelector<
       mode,
       value,
       defaultValue,
+      labelInValue,
 
       // Search related
       showSearch,
@@ -223,7 +228,7 @@ export function generateSelector<
       loading,
       defaultActiveFirstOption,
       notFoundContent = 'Not Found',
-      optionLabelProp: aaa,
+      optionLabelProp,
       placeholder,
       backfill,
 
@@ -245,7 +250,6 @@ export function generateSelector<
       onPopupScroll,
       onDropdownVisibleChange,
 
-      labelInValue,
       className,
       open,
       defaultOpen,
@@ -276,10 +280,15 @@ export function generateSelector<
       uuid += 1;
     }, []);
     const mergedId = id || innerId;
-    let mergedOptionLabelProp = aaa;
+
+    // optionLabelProp
+    let mergedOptionLabelProp = optionLabelProp;
     if (mergedOptionLabelProp === undefined) {
       mergedOptionLabelProp = options ? 'label' : 'children';
     }
+
+    // labelInValue
+    const mergedLabelInValue = mode === 'combobox' ? false : labelInValue;
 
     // ============================== Ref ===============================
     React.useImperativeHandle(ref, () => ({
@@ -333,7 +342,7 @@ export function generateSelector<
 
     /** Unique raw values */
     const mergedRawValue = React.useMemo<RawValueType[]>(
-      () => toInnerValue(baseValue, { labelInValue }),
+      () => toInnerValue(baseValue, { labelInValue: mergedLabelInValue }),
       [baseValue],
     );
     /** We cache a set of raw values to speed up check */
@@ -347,7 +356,7 @@ export function generateSelector<
           getLabeledValue(val, {
             options: mergedOptions,
             prevValue: baseValue,
-            labelInValue,
+            labelInValue: mergedLabelInValue,
             optionLabelProp: mergedOptionLabelProp,
           }),
         ),
@@ -385,7 +394,7 @@ export function generateSelector<
       // Multiple always trigger change and single should change if value changed
       if (isMultiple || (!isMultiple && Array.from(mergedRawValue)[0] !== newValue)) {
         const outValue = toOuterValues<OptionsType>(Array.from(newRawValue), {
-          labelInValue,
+          labelInValue: mergedLabelInValue,
           options: mergedOptions,
           getLabeledValue,
           prevValue: baseValue,
@@ -396,11 +405,11 @@ export function generateSelector<
       }
 
       // Trigger `onSelect`
-      const selectValue: any = labelInValue
+      const selectValue: any = mergedLabelInValue
         ? getLabeledValue(newValue, {
             options: mergedOptions,
             prevValue: baseValue,
-            labelInValue,
+            labelInValue: mergedLabelInValue,
             optionLabelProp: mergedOptionLabelProp,
           })
         : newValue;
@@ -442,7 +451,7 @@ export function generateSelector<
         );
         triggerChange(
           toOuterValues<OptionsType>(newRawValues, {
-            labelInValue,
+            labelInValue: mergedLabelInValue,
             getLabeledValue,
             options: mergedOptions,
             prevValue: baseValue,

@@ -43,7 +43,7 @@ class Combobox extends React.Component {
             toggle disabled
           </button>
         </p>
-        <div style={{ width: 300 }}>
+        <div>
           <Select
             disabled={disabled}
             style={{ width: 500 }}
@@ -67,7 +67,10 @@ class Combobox extends React.Component {
               disabled
             </Option>
             <Option value="yiminghe">yiminghe</Option>
+            <Option value="竹林星光">竹林星光</Option>
           </Select>
+
+          <Select />
         </div>
       </div>
     );

@@ -18,7 +18,6 @@ import { RenderNode, Mode } from './interface';
 const REST_TAG_KEY = '__RC_SELECT_MAX_REST_COUNT__';
 
 export interface RefSelectorProps {
-  getInputElement: () => HTMLInputElement;
   focus: () => void;
   blur: () => void;
 }
@@ -33,6 +32,7 @@ export interface SelectorProps {
   mode: Mode;
   searchValue: string;
   activeValue: string;
+  getInputElement?: () => JSX.Element;
 
   autoFocus?: boolean;
   accessibilityIndex: number;
@@ -70,6 +70,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     disabled,
     placeholder,
     removeIcon,
+    getInputElement,
 
     maxTagCount,
     maxTagTextLength,
@@ -85,7 +86,6 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
 
   // ======================= Ref =======================
   React.useImperativeHandle(ref, () => ({
-    getInputElement: () => inputRef.current,
     focus: () => {
       inputRef.current.focus();
     },
@@ -94,7 +94,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     },
   }));
 
-  // ====================== Input ======================
+  // ===================== Search ======================
   const inputEditable: boolean =
     open &&
     (showSearch ||
@@ -139,6 +139,9 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
 
     onToggleOpen();
   };
+
+  // ====================== Input ======================
+  const inputNode = (getInputElement && getInputElement()) || <input />;
 
   // ==================== Selection ====================
   let selectionNode: React.ReactNode;
@@ -223,7 +226,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
           autoComplete="off"
           autoFocus={autoFocus}
           className={`${prefixCls}-selection-search-input`}
-          readOnly={!inputEditable}
+          style={{ opacity: inputEditable ? null : 0 }}
           role="combobox"
           aria-expanded={open}
           aria-haspopup="listbox"
@@ -231,14 +234,14 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
           aria-autocomplete="list"
           aria-controls={`${id}_list`}
           aria-activedescendant={`${id}_list_${accessibilityIndex}`}
-          value={activeValue || searchValue}
+          value={inputEditable ? activeValue || searchValue : ''}
           onKeyDown={onInputKeyDown}
           onChange={onInputChange}
         />
 
         {multiple && (
           <span ref={measureRef} className={`${prefixCls}-selection-search-mirror`} aria-hidden>
-            {searchValue}
+            {searchValue}&nbsp;
           </span>
         )}
       </span>
