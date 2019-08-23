@@ -21,25 +21,31 @@
     }
   }
 
+  // ================ Input ================
+  &-customize-input {
+  }
+
   // ============== Selector ===============
-  &-selector {
-    display: flex;
-    padding: 1px;
-    border: 1px solid #000;
+  &:not(&-customize-input) {
+    .@{select-prefix}-selector {
+      display: flex;
+      padding: 1px;
+      border: 1px solid #000;
 
-    .@{select-prefix}-selection-item {
-      flex: none;
-    }
+      .@{select-prefix}-selection-item {
+        flex: none;
+      }
 
-    .@{select-prefix}-selection-search-input {
-      border: none;
-      outline: none;
-      background: rgba(255, 0, 0, 0.2);
-      width: 100%;
-    }
+      .@{select-prefix}-selection-search-input {
+        border: none;
+        outline: none;
+        background: rgba(255, 0, 0, 0.2);
+        width: 100%;
+      }
 
-    .@{select-prefix}-selection-placeholder {
-      opacity: 0.4;
+      .@{select-prefix}-selection-placeholder {
+        opacity: 0.4;
+      }
     }
   }
 

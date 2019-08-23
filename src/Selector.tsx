@@ -98,11 +98,11 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
 
   // ===================== Search ======================
   const inputEditable: boolean =
-    open &&
-    (showSearch ||
-      mode === 'combobox' ||
-      mode === 'tags' ||
-      (mode === 'multiple' && tokenSeparators && !!tokenSeparators.length));
+    mode === 'combobox' ||
+    (open &&
+      (showSearch ||
+        mode === 'tags' ||
+        (mode === 'multiple' && tokenSeparators && !!tokenSeparators.length)));
 
   const onInternalInputKeyDown: React.KeyboardEventHandler<HTMLInputElement> = event => {
     const { which } = event;
@@ -111,10 +111,12 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
       event.preventDefault();
     }
 
-    onToggleOpen(true);
-
     if (onInputKeyDown) {
       onInputKeyDown(event);
+    }
+
+    if (![KeyCode.SHIFT, KeyCode.TAB].includes(which)) {
+      onToggleOpen(true);
     }
   };
 
@@ -229,7 +231,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
         )}
       </span>
     ));
-  } else if (!searchValue) {
+  } else if (!searchValue && !activeValue) {
     selectionNode = (
       <span className={`${prefixCls}-selection-item`} style={{ opacity: open ? 0.4 : null }}>
         {values.length ? values[0].label : null}

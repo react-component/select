@@ -473,18 +473,15 @@ export function generateSelector<
     const [innerOpen, setInnerOpen] = React.useState<boolean>(defaultOpen);
     const mergedOpen: boolean = open !== undefined ? open : innerOpen;
 
-    const onToggleOpen = React.useCallback<(open?: boolean) => void>(
-      (newOpen?: boolean) => {
-        const nextOpen = newOpen !== undefined ? newOpen : !mergedOpen;
-        if (mergedOpen !== nextOpen && !disabled) {
-          setInnerOpen(nextOpen);
-          if (onDropdownVisibleChange) {
-            onDropdownVisibleChange(nextOpen);
-          }
+    const onToggleOpen = (newOpen?: boolean) => {
+      const nextOpen = newOpen !== undefined ? newOpen : !mergedOpen;
+      if (mergedOpen !== nextOpen && !disabled) {
+        setInnerOpen(nextOpen);
+        if (onDropdownVisibleChange) {
+          onDropdownVisibleChange(nextOpen);
         }
-      },
-      [mergedOpen, disabled],
-    );
+      }
+    };
 
     // ============================ Keyboard ============================
     /**
@@ -646,7 +643,8 @@ export function generateSelector<
     }
 
     // ============================= Arrow ==============================
-    const mergedShowArrow = showArrow !== undefined ? showArrow : !isMultiple;
+    const mergedShowArrow =
+      showArrow !== undefined ? showArrow : !isMultiple && mode !== 'combobox';
     let arrowNode: React.ReactNode;
 
     if (mergedShowArrow) {
