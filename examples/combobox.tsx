@@ -26,6 +26,10 @@ class Combobox extends React.Component {
     console.log('onSelect', v, option);
   };
 
+  onSearch = (text: string) => {
+    console.log('onSearch:', text);
+  };
+
   toggleDisabled = () => {
     const { disabled } = this.state;
     this.setState({
@@ -49,6 +53,7 @@ class Combobox extends React.Component {
             style={{ width: 500 }}
             onChange={this.onChange}
             onSelect={this.onSelect}
+            onSearch={this.onSearch}
             onInputKeyDown={this.onKeyDown}
             notFoundContent=""
             allowClear
@@ -69,8 +74,6 @@ class Combobox extends React.Component {
             <Option value="yiminghe">yiminghe</Option>
             <Option value="竹林星光">竹林星光</Option>
           </Select>
-
-          <Select />
         </div>
       </div>
     );
