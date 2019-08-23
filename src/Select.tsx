@@ -19,13 +19,14 @@
  * - dropdownMenuStyle
  *
  * Update:
+ * - `backfill` only support `combobox` mode
  * - `combobox` mode not support `labelInValue` since it's meaningless
+ * - `getInputElement` only support `combobox` mode
  */
 
 import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
-import warning from 'rc-util/lib/warning';
 import Selector, { RefSelectorProps } from './Selector';
 import SelectTrigger, { RefTriggerProps } from './SelectTrigger';
 import { SelectContext } from './Context';
@@ -53,6 +54,7 @@ import { toInnerValue, toOuterValues } from './utils/commonUtil';
 import TransBtn from './TransBtn';
 import { useLock } from './hooks/useLock';
 import useDelayReset from './hooks/useDelayReset';
+import { usePropsWarning } from './hooks/usePropsWarning';
 
 export interface RefSelectProps {
   focus: () => void;
@@ -125,6 +127,7 @@ export interface SelectProps<OptionsType, ValueType> {
     value: ValueType extends (infer SingleValueType)[] ? SingleValueType : ValueType,
     option: JSX.Element | JSX.Element[],
   ) => void;
+  onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
 
   // Legacy
   showSearch?: boolean;
@@ -144,7 +147,6 @@ export interface SelectProps<OptionsType, ValueType> {
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
-  onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
   maxTagTextLength?: number;
   maxTagCount?: number;
   maxTagPlaceholder?: RenderNode;
@@ -201,8 +203,14 @@ export function generateSelector<
   ): React.ReactElement {
     const {
       prefixCls = 'rc-select',
-
+      className,
       id,
+
+      open,
+      defaultOpen,
+      options,
+      children,
+
       mode,
       value,
       defaultValue,
@@ -231,6 +239,7 @@ export function generateSelector<
       optionLabelProp,
       placeholder,
       backfill,
+      getInputElement,
 
       // Dropdown
       listHeight = 200,
@@ -249,14 +258,8 @@ export function generateSelector<
       // Events
       onPopupScroll,
       onDropdownVisibleChange,
-
-      className,
-      open,
-      defaultOpen,
-      options,
-      children,
+      onInputKeyDown,
       onClick,
-
       onFocus,
       onBlur,
       onKeyUp,
@@ -328,13 +331,6 @@ export function generateSelector<
 
       return filteredOptions;
     }, [mergedOptions, mergedSearchValue, mode]);
-
-    if (process.env.NODE_ENV !== 'production' && mode === 'tags') {
-      warning(
-        mergedOptions.every(opt => !opt.disabled),
-        'Please avoid setting option to disabled in tags mode since user can always type text as tag.',
-      );
-    }
 
     // ============================= Value ==============================
     const [innerValue, setInnerValue] = React.useState<ValueType>(value || defaultValue);
@@ -430,14 +426,16 @@ export function generateSelector<
     };
 
     // ============================= Search =============================
-    const triggerSearch = (searchText: string) => {
+    const triggerSearch = (searchText: string, fromTyping: boolean = true) => {
       let newSearchText = searchText;
       setActiveValue(null);
 
       // Check if match the `tokenSeparators`
       let patchRawValues: RawValueType[] = getSeparatedContent(searchText, tokenSeparators);
 
-      if (patchRawValues) {
+      if (mode === 'combobox') {
+        triggerChange([newSearchText]);
+      } else if (patchRawValues) {
         newSearchText = '';
 
         if (mode !== 'tags') {
@@ -592,10 +590,6 @@ export function generateSelector<
       }
     };
 
-    if (process.env.NODE_ENV !== 'production' && mode !== 'combobox') {
-      warning(!backfill, '`backfill` only works with `combobox` mode.');
-    }
-
     // ============================= Popup ==============================
     const containerRef = React.useRef<HTMLDivElement>(null);
     const [containerWidth, setContainerWidth] = React.useState(null);
@@ -632,7 +626,7 @@ export function generateSelector<
     let clearNode: React.ReactNode;
     const onClearMouseDown: React.MouseEventHandler<HTMLSpanElement> = () => {
       triggerChange([]);
-      triggerSearch('');
+      triggerSearch('', false);
     };
 
     if (allowClear && (mergedRawValue.length || mergedSearchValue)) {
@@ -658,6 +652,16 @@ export function generateSelector<
         </TransBtn>
       );
     }
+
+    // ============================ Warning =============================
+    usePropsWarning({
+      mode,
+      options: mergedOptions,
+      backfill,
+      allowClear,
+      placeholder,
+      getInputElement,
+    });
 
     // ============================= Render =============================
     const mergedClassName = classNames(prefixCls, className, {

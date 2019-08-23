@@ -49,6 +49,7 @@ export interface SelectorProps {
   onToggleOpen: (open?: boolean) => void;
   onSearch: (searchValue: string) => void;
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
+  onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }
 
 const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = (props, ref) => {
@@ -80,6 +81,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     onToggleOpen,
     onSearch,
     onSelect,
+    onInputKeyDown,
   } = props;
 
   const [inputWidth, setInputWidth] = React.useState(0);
@@ -102,7 +104,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
       mode === 'tags' ||
       (mode === 'multiple' && tokenSeparators && !!tokenSeparators.length));
 
-  const onInputKeyDown = React.useCallback<React.KeyboardEventHandler<HTMLInputElement>>(event => {
+  const onInternalInputKeyDown: React.KeyboardEventHandler<HTMLInputElement> = event => {
     const { which } = event;
 
     if (which === KeyCode.UP || which === KeyCode.DOWN) {
@@ -110,7 +112,11 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     }
 
     onToggleOpen(true);
-  }, []);
+
+    if (onInputKeyDown) {
+      onInputKeyDown(event);
+    }
+  };
 
   const onInputChange = ({ target: { value } }) => {
     onSearch(value);
@@ -235,7 +241,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
           aria-controls={`${id}_list`}
           aria-activedescendant={`${id}_list_${accessibilityIndex}`}
           value={inputEditable ? activeValue || searchValue : ''}
-          onKeyDown={onInputKeyDown}
+          onKeyDown={onInternalInputKeyDown}
           onChange={onInputChange}
         />
 
