@@ -32,7 +32,7 @@ export interface SelectorProps {
   mode: Mode;
   searchValue: string;
   activeValue: string;
-  getInputElement?: () => JSX.Element;
+  inputElement: JSX.Element;
 
   autoFocus?: boolean;
   accessibilityIndex: number;
@@ -71,7 +71,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     disabled,
     placeholder,
     removeIcon,
-    getInputElement,
+    inputElement,
 
     maxTagCount,
     maxTagTextLength,
@@ -147,7 +147,26 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   };
 
   // ====================== Input ======================
-  const inputNode = (getInputElement && getInputElement()) || <input />;
+  let inputNode: React.ReactElement = inputElement || <input />;
+
+  inputNode = React.cloneElement(inputNode, {
+    ref: inputRef,
+    disabled,
+    autoComplete: 'off',
+    autoFocus,
+    className: `${prefixCls}-selection-search-input`,
+    style: { opacity: inputEditable ? null : 0 },
+    role: 'combobox',
+    'aria-expanded': open,
+    'aria-haspopup': 'listbox',
+    'aria-owns': `${id}_list`,
+    'aria-autocomplete': 'list',
+    'aria-controls': `${id}_list`,
+    'aria-activedescendant': `${id}_list_${accessibilityIndex}`,
+    value: inputEditable ? activeValue || searchValue : '',
+    onKeyDown: onInternalInputKeyDown,
+    onChange: onInputChange,
+  });
 
   // ==================== Selection ====================
   let selectionNode: React.ReactNode;
@@ -226,24 +245,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
         className={`${prefixCls}-selection-search`}
         style={{ width: multiple ? inputWidth : null }}
       >
-        <input
-          ref={inputRef}
-          disabled={disabled}
-          autoComplete="off"
-          autoFocus={autoFocus}
-          className={`${prefixCls}-selection-search-input`}
-          style={{ opacity: inputEditable ? null : 0 }}
-          role="combobox"
-          aria-expanded={open}
-          aria-haspopup="listbox"
-          aria-owns={`${id}_list`}
-          aria-autocomplete="list"
-          aria-controls={`${id}_list`}
-          aria-activedescendant={`${id}_list_${accessibilityIndex}`}
-          value={inputEditable ? activeValue || searchValue : ''}
-          onKeyDown={onInternalInputKeyDown}
-          onChange={onInputChange}
-        />
+        {inputNode}
 
         {multiple && (
           <span ref={measureRef} className={`${prefixCls}-selection-search-mirror`} aria-hidden>

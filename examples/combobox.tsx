@@ -74,6 +74,14 @@ class Combobox extends React.Component {
             <Option value="yiminghe">yiminghe</Option>
             <Option value="竹林星光">竹林星光</Option>
           </Select>
+
+          <h3>Customize Input Element</h3>
+          <Select
+            mode="combobox"
+            style={{ width: 200 }}
+            getInputElement={() => <textarea rows={3} />}
+            options={[{ value: 'light' }, { value: 'bamboo' }]}
+          />
         </div>
       </div>
     );

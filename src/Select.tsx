@@ -425,6 +425,11 @@ export function generateSelector<
       }
     };
 
+    // ============================= Input ==============================
+    // Only works in `combobox`
+    const customizeInputElement: React.ReactElement =
+      (mode === 'combobox' && getInputElement && getInputElement()) || null;
+
     // ============================= Search =============================
     const triggerSearch = (searchText: string, fromTyping: boolean = true) => {
       let newSearchText = searchText;
@@ -672,6 +677,7 @@ export function generateSelector<
       [`${prefixCls}-disabled`]: disabled,
       [`${prefixCls}-loading`]: loading,
       [`${prefixCls}-open`]: mergedOpen,
+      [`${prefixCls}-customize-input`]: customizeInputElement,
     });
 
     return (
@@ -709,6 +715,7 @@ export function generateSelector<
           >
             <Selector
               {...props}
+              inputElement={customizeInputElement}
               ref={selectorRef}
               id={mergedId}
               showSearch={showSearch}
