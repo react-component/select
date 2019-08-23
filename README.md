@@ -118,6 +118,7 @@ React.render(c, container);
 | menuItemSelectedIcon | specify the remove icon | ReactNode \| (props: MenuItemProps) => ReactNode | - |
 | dropdownRender | render custom dropdown menu | (menu: React.Node, props: MenuProps) => ReactNode | - |
 | loading | show loading icon in arrow | Boolean | false |
+| dropdownLimit | limit the number of items in the dropdown | Number | - |
 
 ### Methods
 
