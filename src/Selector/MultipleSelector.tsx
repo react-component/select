@@ -9,8 +9,6 @@ const REST_TAG_KEY = '__RC_SELECT_MAX_REST_COUNT__';
 
 interface SelectorProps extends InnerSelectorProps {
   multiple: boolean;
-  values: LabelValueType[];
-  searchValue: string;
 
   // Icon
   removeIcon?: RenderNode;
@@ -30,6 +28,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
   prefixCls,
 
   values,
+  open,
   searchValue,
   inputRef,
   placeholder,
@@ -60,7 +59,6 @@ const SelectSelector: React.FC<SelectorProps> = ({
   }, [searchValue]);
 
   // ==================== Selection ====================
-  let selectionNode: React.ReactNode;
   let displayValues: LabelValueType[] = values;
 
   // Filter display selection
@@ -98,7 +96,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
     }
   }
 
-  selectionNode = displayValues.map(({ label, value, key }) => (
+  const selectionNode = displayValues.map(({ label, value, key }) => (
     <span key={key || value} className={`${prefixCls}-selection-item`}>
       {label}
       {key !== REST_TAG_KEY && (
@@ -119,12 +117,6 @@ const SelectSelector: React.FC<SelectorProps> = ({
       )}
     </span>
   ));
-  // } else if (!searchValue && !activeValue) {
-  //   selectionNode = (
-  //     <span className={`${prefixCls}-selection-item`} style={{ opacity: open ? 0.4 : null }}>
-  //       {values.length ? values[0].label : null}
-  //     </span>
-  //   );
 
   return (
     <>

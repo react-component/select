@@ -4,6 +4,15 @@
   box-sizing: border-box;
 }
 
+.search-input-without-border() {
+  .@{select-prefix}-selection-search-input {
+    border: none;
+    outline: none;
+    background: rgba(255, 0, 0, 0.2);
+    width: 100%;
+  }
+}
+
 .@{select-prefix} {
   display: inline-block;
   font-size: 12px;
@@ -21,56 +30,54 @@
     }
   }
 
-  // ================ Input ================
-  &-customize-input {
-  }
-
   // ============== Selector ===============
-  &:not(&-customize-input) {
-    .@{select-prefix}-selector {
-      display: flex;
-      padding: 1px;
-      border: 1px solid #000;
-
-      .@{select-prefix}-selection-item {
-        flex: none;
-      }
-
-      .@{select-prefix}-selection-search-input {
-        border: none;
-        outline: none;
-        background: rgba(255, 0, 0, 0.2);
-        width: 100%;
-      }
-
-      .@{select-prefix}-selection-placeholder {
-        opacity: 0.4;
-      }
-    }
+  .@{select-prefix}-selection-placeholder {
+    opacity: 0.4;
   }
 
   // --------------- Single ----------------
-  &:not(&-multiple) {
-    .@{select-prefix}-selection-item,
-    .@{select-prefix}-selection-placeholder {
-      position: absolute;
-      left: 1px;
-      top: 2px;
-      pointer-events: none;
+  &-single {
+    .@{select-prefix}-selector {
+      display: flex;
+      position: relative;
+
+      .@{select-prefix}-selection-search {
+        width: 100%;
+
+        &-input {
+          width: 100%;
+        }
+      }
+
+      .@{select-prefix}-selection-item,
+      .@{select-prefix}-selection-placeholder {
+        position: absolute;
+        top: 1px;
+        left: 3px;
+        pointer-events: none;
+      }
     }
 
-    .@{select-prefix}-selection-search {
-      width: 100%;
+    // Not customize
+    &:not(.@{select-prefix}-customize-input) {
+      .@{select-prefix}-selector {
+        padding: 1px;
+        border: 1px solid #000;
+
+        .search-input-without-border();
+      }
     }
   }
 
   // -------------- Multiple ---------------
-  &&-multiple {
-    .@{select-prefix}-selector {
-      flex-wrap: wrap;
-    }
+  &-multiple .@{select-prefix}-selector {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1px;
+    border: 1px solid #000;
 
     .@{select-prefix}-selection-item {
+      flex: none;
       background: #bbb;
       border-radius: 4px;
       margin-right: 2px;
@@ -96,16 +103,17 @@
         visibility: hidden;
       }
     }
+
+    .search-input-without-border();
   }
 
   // ================ Icons ================
   &-allow-clear {
-    .@{select-prefix}-selector {
+    &.@{select-prefix}-multiple .@{select-prefix}-selector {
       padding-right: 20px;
     }
 
     .@{select-prefix}-selection-clear {
-      pointer-events: none;
       position: absolute;
       right: 5px;
       top: 0;
@@ -128,7 +136,7 @@
   // =============== Focused ===============
   &-focused {
     .@{select-prefix}-selector {
-      border-color: blue;
+      border-color: blue !important;
     }
   }
 

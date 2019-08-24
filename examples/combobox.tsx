@@ -81,6 +81,8 @@ class Combobox extends React.Component {
             style={{ width: 200 }}
             getInputElement={() => <textarea rows={3} />}
             options={[{ value: 'light' }, { value: 'bamboo' }]}
+            allowClear
+            placeholder="2333"
           />
         </div>
       </div>

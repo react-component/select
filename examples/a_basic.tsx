@@ -73,10 +73,11 @@ const Demo = () => {
         <Select
           {...focusProps}
           {...selectProps}
-          showSearch
+          // showSearch
           // searchValue={search}
           // onSearch={setSearch}
           defaultValue={2}
+          placeholder={<span style={{ color: 'red' }}>Placeholder</span>}
           backfill
         >
           <Option value={1}>Value 1</Option>

@@ -338,7 +338,7 @@ export function generateSelector<
     /** Unique raw values */
     const mergedRawValue = React.useMemo<RawValueType[]>(
       () => toInnerValue(baseValue, { labelInValue: mergedLabelInValue }),
-      [baseValue],
+      [baseValue, mergedLabelInValue],
     );
     /** We cache a set of raw values to speed up check */
     const rawValues = React.useMemo<Set<RawValueType>>(() => new Set(mergedRawValue), [
@@ -418,7 +418,7 @@ export function generateSelector<
       }
 
       // Clean search value if single or configured
-      if (!isMultiple || autoClearSearchValue) {
+      if (mode !== 'combobox' && (!isMultiple || autoClearSearchValue)) {
         setInnerSearchValue('');
         setActiveValue('');
       }
@@ -438,7 +438,10 @@ export function generateSelector<
       let patchRawValues: RawValueType[] = getSeparatedContent(searchText, tokenSeparators);
 
       if (mode === 'combobox') {
-        triggerChange([newSearchText]);
+        // Only typing will trigger onChange
+        if (fromTyping) {
+          triggerChange([newSearchText]);
+        }
       } else if (patchRawValues) {
         newSearchText = '';
 
@@ -669,6 +672,7 @@ export function generateSelector<
     const mergedClassName = classNames(prefixCls, className, {
       [`${prefixCls}-focused`]: mockFocused,
       [`${prefixCls}-multiple`]: isMultiple,
+      [`${prefixCls}-single`]: !isMultiple,
       [`${prefixCls}-allow-clear`]: allowClear,
       [`${prefixCls}-show-arrow`]: mergedShowArrow,
       [`${prefixCls}-disabled`]: disabled,

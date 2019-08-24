@@ -23,8 +23,11 @@ export interface InnerSelectorProps {
   placeholder?: React.ReactNode;
   disabled?: boolean;
   autoFocus?: boolean;
+  values: LabelValueType[];
   showSearch?: boolean;
+  searchValue: string;
   accessibilityIndex: number;
+  open: boolean;
 
   onInputKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onInputChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
@@ -71,6 +74,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   const {
     prefixCls,
     multiple,
+    mode,
 
     onSearch,
     onToggleOpen,
@@ -135,7 +139,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   const selectNode = multiple ? (
     <MultipleSelector {...props} {...sharedProps} />
   ) : (
-    <SingleSelector {...props} {...sharedProps} />
+    <SingleSelector {...props} {...sharedProps} combobox={mode === 'combobox'} />
   );
 
   return (
