@@ -16,7 +16,7 @@ interface SelectorProps extends InnerSelectorProps {
   // Tags
   maxTagCount?: number;
   maxTagTextLength?: number;
-  maxTagPlaceholder?: (values: LabelValueType[]) => React.ReactNode;
+  maxTagPlaceholder?: (omittedValues: LabelValueType[]) => React.ReactNode;
   tokenSeparators?: string[];
 
   // Event

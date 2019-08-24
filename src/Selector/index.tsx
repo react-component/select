@@ -60,7 +60,7 @@ export interface SelectorProps {
   // Tags
   maxTagCount?: number;
   maxTagTextLength?: number;
-  maxTagPlaceholder?: (values: LabelValueType[]) => React.ReactNode;
+  maxTagPlaceholder?: (omittedValues: LabelValueType[]) => React.ReactNode;
 
   onToggleOpen: (open?: boolean) => void;
   onSearch: (searchValue: string) => void;

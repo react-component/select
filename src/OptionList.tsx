@@ -20,6 +20,7 @@ export interface OptionListProps {
   notFoundContent?: React.ReactNode;
   menuItemSelectedIcon?: RenderNode;
   childrenAsData: boolean;
+  searchValue: string;
 
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
   onToggleOpen: (open?: boolean) => void;
@@ -44,6 +45,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
     options,
     childrenAsData,
     values,
+    searchValue,
     multiple,
     defaultActiveFirstOption,
     height,
@@ -107,10 +109,10 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
     onActiveValue((flattenItem.data as OptionData).value, index);
   };
 
-  // Auto active first item when list length changed
+  // Auto active first item when list length or searchValue changed
   React.useEffect(() => {
     setActive(defaultActiveFirstOption !== false ? getEnabledActiveIndex(0) : -1);
-  }, [flattenList.length]);
+  }, [flattenList.length, searchValue]);
 
   // Auto scroll to item position in single mode
   React.useEffect(() => {

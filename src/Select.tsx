@@ -148,7 +148,7 @@ export interface SelectProps<OptionsType, ValueType> {
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
   maxTagTextLength?: number;
   maxTagCount?: number;
-  maxTagPlaceholder?: RenderNode;
+  maxTagPlaceholder?: (omittedValues: LabelValueType[]) => React.ReactNode;
   tokenSeparators?: string[];
   showAction?: string[];
   getPopupContainer?: RenderNode;
@@ -623,6 +623,7 @@ export function generateSelector<
         defaultActiveFirstOption={mergedDefaultActiveFirstOption}
         notFoundContent={notFoundContent}
         onScroll={onPopupScroll}
+        searchValue={mergedSearchValue}
       />
     );
 
