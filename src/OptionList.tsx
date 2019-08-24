@@ -240,8 +240,6 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
 
           const mergedLabel = childrenAsData ? children : label;
 
-          console.log('~~>', menuItemSelectedIcon);
-
           return (
             <div
               aria-selected={selected}

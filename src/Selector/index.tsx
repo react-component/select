@@ -62,6 +62,9 @@ export interface SelectorProps {
   maxTagTextLength?: number;
   maxTagPlaceholder?: (omittedValues: LabelValueType[]) => React.ReactNode;
 
+  // Motion
+  choiceTransitionName?: string;
+
   onToggleOpen: (open?: boolean) => void;
   onSearch: (searchValue: string) => void;
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;

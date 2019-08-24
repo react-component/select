@@ -173,6 +173,14 @@
         padding-left: 24px;
       }
 
+      .@{select-prefix}-item-option-selected-icon {
+        position: absolute;
+        right: 0;
+        top: 4px;
+        pointer-events: none;
+        display: none;
+      }
+
       // ------- Active -------
       &-active {
         background: green;
@@ -186,10 +194,7 @@
       // ------ Selected ------
       &-selected {
         .@{select-prefix}-item-option-selected-icon {
-          position: absolute;
-          right: 0;
-          top: 4px;
-          pointer-events: none;
+          display: block;
         }
       }
     }
@@ -199,5 +204,28 @@
       text-align: center;
       color: #999;
     }
+  }
+}
+
+.@{select-prefix}-selection__choice-zoom {
+  transition: all 0.3s;
+}
+
+.@{select-prefix}-selection__choice-zoom-appear {
+  opacity: 0;
+  transform: scale(0.5);
+
+  &&-active {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.@{select-prefix}-selection__choice-zoom-leave {
+  opacity: 1;
+  transform: scale(1);
+
+  &&-active {
+    opacity: 0;
+    transform: scale(0.5);
   }
 }

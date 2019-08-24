@@ -64,6 +64,7 @@ export interface SelectProps<OptionsType, ValueType> {
   prefixCls?: string;
   id?: string;
   className?: string;
+  style?: React.CSSProperties;
 
   // Options
   options?: OptionsType;
@@ -84,6 +85,7 @@ export interface SelectProps<OptionsType, ValueType> {
    * It's by design.
    */
   filterOption?: boolean | FilterFunc;
+  showSearch?: boolean;
   autoClearSearchValue?: boolean;
   onSearch?: (value: string) => void;
 
@@ -128,14 +130,14 @@ export interface SelectProps<OptionsType, ValueType> {
   ) => void;
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
 
+  // Motion
+  choiceTransitionName?: string;
+
   // Legacy
-  showSearch?: boolean;
-  style?: React.CSSProperties;
   openClassName?: string;
   transitionName?: string;
   optionLabelProp?: string;
   animation?: string;
-  choiceTransitionName?: string;
   open?: boolean;
   defaultOpen?: boolean;
   inputValue?: string;
@@ -254,6 +256,9 @@ export function generateSelector<
       maxTagTextLength,
       maxTagPlaceholder,
       tokenSeparators,
+
+      // Motion
+      choiceTransitionName,
 
       // Events
       onPopupScroll,

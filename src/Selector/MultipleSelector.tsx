@@ -1,4 +1,6 @@
 import React from 'react';
+import classNames from 'classnames';
+import CSSMotionList from 'rc-animate/lib/CSSMotionList';
 import TransBtn from '../TransBtn';
 import { LabelValueType, RawValueType } from '../interface/generator';
 import { RenderNode } from '../interface';
@@ -19,6 +21,9 @@ interface SelectorProps extends InnerSelectorProps {
   maxTagPlaceholder?: (omittedValues: LabelValueType[]) => React.ReactNode;
   tokenSeparators?: string[];
 
+  // Motion
+  choiceTransitionName?: string;
+
   // Event
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
 }
@@ -38,6 +43,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
   accessibilityIndex,
 
   removeIcon,
+  choiceTransitionName,
 
   maxTagCount,
   maxTagTextLength,
@@ -96,27 +102,50 @@ const SelectSelector: React.FC<SelectorProps> = ({
     }
   }
 
-  const selectionNode = displayValues.map(({ label, value, key }) => (
-    <span key={key || value} className={`${prefixCls}-selection-item`}>
-      {label}
-      {key !== REST_TAG_KEY && (
-        <TransBtn
-          className={`${prefixCls}-selection-item-remove`}
-          onMouseDown={event => {
-            event.preventDefault();
-            event.stopPropagation();
-          }}
-          onClick={event => {
-            event.stopPropagation();
-            onSelect(value, { selected: false });
-          }}
-          customizeIcon={removeIcon}
-        >
-          ×
-        </TransBtn>
-      )}
-    </span>
-  ));
+  console.log('~!!!!!', choiceTransitionName);
+
+  const selectionNode = (
+    <CSSMotionList
+      component={React.Fragment}
+      keys={displayValues}
+      motionName={choiceTransitionName}
+    >
+      {({ key, label, value, className, style }) => {
+        const mergedKey = key || value;
+        console.log('=>', mergedKey, className);
+
+        return (
+          <span
+            key={mergedKey}
+            className={classNames(`${prefixCls}-selection-item`, className)}
+            style={style}
+          >
+            {label}
+            {key !== REST_TAG_KEY && (
+              <TransBtn
+                className={`${prefixCls}-selection-item-remove`}
+                onMouseDown={event => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                }}
+                onClick={event => {
+                  event.stopPropagation();
+                  onSelect(value, { selected: false });
+                }}
+                customizeIcon={removeIcon}
+              >
+                ×
+              </TransBtn>
+            )}
+          </span>
+        );
+      }}
+      {/* {props => {
+        console.log('>>>', props);
+        return null;
+      }} */}
+    </CSSMotionList>
+  );
 
   return (
     <>
