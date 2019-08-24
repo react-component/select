@@ -240,6 +240,8 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
 
           const mergedLabel = childrenAsData ? children : label;
 
+          console.log('~~>', menuItemSelectedIcon);
+
           return (
             <div
               aria-selected={selected}
@@ -258,14 +260,13 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
               }}
             >
               {mergedLabel || value}
-              {selected && (
-                <TransBtn
-                  className={`${itemPrefixCls}-option-selected-icon`}
-                  customizeIcon={menuItemSelectedIcon}
-                >
-                  ✓
-                </TransBtn>
-              )}
+              <TransBtn
+                className={`${itemPrefixCls}-option-selected-icon`}
+                customizeIcon={menuItemSelectedIcon}
+                customizeIconProps={{ isSelected: selected }}
+              >
+                ✓
+              </TransBtn>
             </div>
           );
         }}

@@ -229,6 +229,7 @@ export function generateSelector<
       showArrow,
       inputIcon,
       removeIcon,
+      menuItemSelectedIcon,
 
       // Others
       disabled,
@@ -624,6 +625,7 @@ export function generateSelector<
         notFoundContent={notFoundContent}
         onScroll={onPopupScroll}
         searchValue={mergedSearchValue}
+        menuItemSelectedIcon={menuItemSelectedIcon}
       />
     );
 
