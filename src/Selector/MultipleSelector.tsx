@@ -53,8 +53,14 @@ const SelectSelector: React.FC<SelectorProps> = ({
   onInputChange,
   onInputKeyDown,
 }) => {
+  const [motionAppear, setMotionAppear] = React.useState(false);
   const measureRef = React.useRef<HTMLSpanElement>(null);
   const [inputWidth, setInputWidth] = React.useState(0);
+
+  // ===================== Motion ======================
+  React.useEffect(() => {
+    setMotionAppear(true);
+  }, []);
 
   // ===================== Search ======================
   const inputEditable: boolean = open && showSearch;
@@ -107,6 +113,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
       component={React.Fragment}
       keys={displayValues}
       motionName={choiceTransitionName}
+      motionAppear={motionAppear}
     >
       {({ key, label, value, className, style }) => {
         const mergedKey = key || value;
@@ -137,10 +144,6 @@ const SelectSelector: React.FC<SelectorProps> = ({
           </span>
         );
       }}
-      {/* {props => {
-        console.log('>>>', props);
-        return null;
-      }} */}
     </CSSMotionList>
   );
 

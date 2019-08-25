@@ -104,6 +104,7 @@ export interface SelectProps<OptionsType, ValueType> {
   dropdownClassName?: string;
   dropdownMatchSelectWidth?: boolean;
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
+  dropdownAlign?: any;
   animation?: string;
   transitionName?: string;
 
@@ -154,7 +155,6 @@ export interface SelectProps<OptionsType, ValueType> {
   tokenSeparators?: string[];
   showAction?: string[];
   getPopupContainer?: RenderNode;
-  dropdownAlign?: any;
   tabIndex?: number;
 }
 
@@ -252,6 +252,7 @@ export function generateSelector<
       dropdownClassName,
       dropdownMatchSelectWidth,
       dropdownRender,
+      dropdownAlign,
 
       // Tags
       maxTagCount,
@@ -724,6 +725,7 @@ export function generateSelector<
           dropdownClassName={dropdownClassName}
           dropdownMatchSelectWidth={dropdownMatchSelectWidth}
           dropdownRender={dropdownRender}
+          dropdownAlign={dropdownAlign}
         >
           <Selector
             {...props}

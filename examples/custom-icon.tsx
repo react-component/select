@@ -134,7 +134,7 @@ for (let i = 10; i < 36; i += 1) {
 
 class Test extends React.Component {
   state = {
-    useAnim: false,
+    useAnim: true,
     value: ['a10'],
   };
 
@@ -203,7 +203,7 @@ class Test extends React.Component {
 
 const CustomIcon = () => (
   <div>
-    <CustomIconComponent />
+    {/* <CustomIconComponent /> */}
     <br />
     <Test />
   </div>

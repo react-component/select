@@ -40,6 +40,7 @@ export interface SelectTriggerProps {
   dropdownMatchSelectWidth: boolean;
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
   getPopupContainer?: RenderNode;
+  dropdownAlign: object;
 }
 
 const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTriggerProps> = (
@@ -59,6 +60,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     dropdownClassName,
     dropdownMatchSelectWidth = true,
     dropdownRender,
+    dropdownAlign,
     getPopupContainer,
     ...restProps
   } = props;
@@ -72,7 +74,6 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
 
   // ===================== Motion ======================
   const mergedTransitionName = animation ? `${dropdownPrefixCls}-${animation}` : transitionName;
-  console.log('~~>', animation, transitionName, mergedTransitionName);
 
   // ======================= Ref =======================
   const popupRef = React.useRef<HTMLDivElement>(null);
@@ -90,9 +91,8 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
       builtinPlacements={BUILT_IN_PLACEMENTS}
       prefixCls={dropdownPrefixCls}
       popupTransitionName={mergedTransitionName}
-      onPopupVisibleChange={() => {}}
       popup={<div ref={popupRef}>{popupNode}</div>}
-      popupAlign={{}}
+      popupAlign={dropdownAlign}
       popupVisible={visible}
       getPopupContainer={getPopupContainer}
       popupClassName={dropdownClassName}
