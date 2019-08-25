@@ -5,7 +5,7 @@ import '../assets/index.less';
 class Test extends React.Component {
   state = {
     destroy: false,
-    value: 9,
+    value: '9',
   };
 
   onChange = e => {
@@ -88,7 +88,7 @@ class Test extends React.Component {
               yiminghe
             </Option>
             {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
-              <Option key={i} value={i} text={String(i)}>
+              <Option key={i} value={String(i)} text={String(i)}>
                 {i}-text
               </Option>
             ))}
