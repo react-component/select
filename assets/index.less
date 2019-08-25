@@ -30,6 +30,24 @@
     }
   }
 
+  &-show-arrow&-loading {
+    .@{select-prefix}-selection-arrow-icon {
+      &::after {
+        box-sizing: border-box;
+        width: 12px;
+        height: 12px;
+        border-radius: 100%;
+        border: 2px solid #999;
+        border-top-color: transparent;
+        border-bottom-color: transparent;
+        transform: none;
+        margin-top: 4px;
+
+        animation: rcSelectLoadingIcon 0.5s infinite;
+      }
+    }
+  }
+
   // ============== Selector ===============
   .@{select-prefix}-selection-placeholder {
     opacity: 0.4;
@@ -113,7 +131,7 @@
       padding-right: 20px;
     }
 
-    .@{select-prefix}-selection-clear {
+    .@{select-prefix}-selection-clear-icon {
       position: absolute;
       right: 20px;
       top: 0;
@@ -125,11 +143,21 @@
       padding-right: 20px;
     }
 
-    .@{select-prefix}-selection-arrow {
+    .@{select-prefix}-selection-arrow-icon {
       pointer-events: none;
       position: absolute;
       right: 5px;
       top: 0;
+
+      &::after {
+        content: '';
+        border: 5px solid transparent;
+        width: 0;
+        height: 0;
+        display: inline-block;
+        border-top-color: #999;
+        transform: translateY(5px);
+      }
     }
   }
 
@@ -297,5 +325,14 @@
     opacity: 0;
     transform-origin: 0% 0%;
     transform: scaleY(0);
+  }
+}
+
+@keyframes rcSelectLoadingIcon {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }

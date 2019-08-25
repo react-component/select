@@ -656,7 +656,7 @@ export function generateSelector<
     if (allowClear && (mergedRawValue.length || mergedSearchValue)) {
       clearNode = (
         <TransBtn
-          className={`${prefixCls}-selection-clear`}
+          className={`${prefixCls}-selection-clear-icon`}
           onMouseDown={onClearMouseDown}
           customizeIcon={clearIcon}
         >
@@ -667,14 +667,12 @@ export function generateSelector<
 
     // ============================= Arrow ==============================
     const mergedShowArrow =
-      showArrow !== undefined ? showArrow : !isMultiple && mode !== 'combobox';
+      showArrow !== undefined ? showArrow : loading || (!isMultiple && mode !== 'combobox');
     let arrowNode: React.ReactNode;
 
     if (mergedShowArrow) {
       arrowNode = (
-        <TransBtn className={`${prefixCls}-selection-arrow`} customizeIcon={inputIcon}>
-          ↓
-        </TransBtn>
+        <TransBtn className={`${prefixCls}-selection-arrow-icon`} customizeIcon={inputIcon} />
       );
     }
 
