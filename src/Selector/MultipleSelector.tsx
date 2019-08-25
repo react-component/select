@@ -10,7 +10,7 @@ import Input from './Input';
 const REST_TAG_KEY = '__RC_SELECT_MAX_REST_COUNT__';
 
 interface SelectorProps extends InnerSelectorProps {
-  multiple: boolean;
+  isValueDisabled: (value: RawValueType) => boolean;
 
   // Icon
   removeIcon?: RenderNode;
@@ -42,6 +42,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
   showSearch,
   autoFocus,
   accessibilityIndex,
+  isValueDisabled,
 
   removeIcon,
   choiceTransitionName,
@@ -116,17 +117,19 @@ const SelectSelector: React.FC<SelectorProps> = ({
       motionName={choiceTransitionName}
       motionAppear={motionAppear}
     >
-      {({ key, label, value, className, style }) => {
+      {({ key, label, value, disabled: itemDisabled, className, style }) => {
         const mergedKey = key || value;
 
         return (
           <span
             key={mergedKey}
-            className={classNames(`${prefixCls}-selection-item`, className)}
+            className={classNames(className, `${prefixCls}-selection-item`, {
+              [`${prefixCls}-selection-item-disabled`]: itemDisabled,
+            })}
             style={style}
           >
             {label}
-            {key !== REST_TAG_KEY && (
+            {key !== REST_TAG_KEY && !itemDisabled && (
               <TransBtn
                 className={`${prefixCls}-selection-item-remove`}
                 onMouseDown={event => {

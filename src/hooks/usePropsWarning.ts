@@ -49,9 +49,8 @@ export function usePropsWarning({
     );
 
     // `onSearch` should use in `combobox` or `showSearch`
-    warning(
-      onSearch && (mode === 'combobox' || showSearch),
-      '`onSearch` should work with `showSearch` instead of use alone.',
-    );
+    if (onSearch && (!showSearch && mode !== 'combobox' && mode !== 'tags')) {
+      warning(false, '`onSearch` should work with `showSearch` instead of use alone.');
+    }
   }
 }

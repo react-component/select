@@ -78,7 +78,6 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   const {
     prefixCls,
     multiple,
-    mode,
 
     onSearch,
     onToggleOpen,

@@ -4,6 +4,7 @@ import {
   OptionData,
   OptionGroupData,
   FlattenOptionData,
+  OptionsType,
 } from '../interface';
 import {
   LabelValueType,
@@ -13,7 +14,6 @@ import {
   GetLabeledValue,
 } from '../interface/generator';
 
-import { SelectProps } from '../Select';
 import { toArray } from './commonUtil';
 
 function getKey(data: OptionData | OptionGroupData, index: number) {
@@ -211,4 +211,13 @@ export function getSeparatedContent(text: string, tokens: string[]): string[] {
 
   const list = separate(text, tokens);
   return match ? list : null;
+}
+
+export function isValueDisabled(value: RawValueType, options: OptionsType): boolean {
+  const option = findValueOption(value, options);
+  if (option) {
+    return option.disabled;
+  }
+
+  return false;
 }

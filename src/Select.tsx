@@ -39,6 +39,7 @@ import {
   LabelValueType,
   Key,
   RefSelectFunc,
+  DisplayLabelValueType,
 } from './interface/generator';
 import SelectOptionList, { OptionListProps, RefOptionListProps } from './OptionList';
 import Option from './Option';
@@ -48,8 +49,9 @@ import {
   getLabeledValue as getSelectLabeledValue,
   filterOptions as selectDefaultFilterOptions,
   getSeparatedContent,
+  isValueDisabled as isSelectValueDisabled,
 } from './utils/valueUtil';
-import { toInnerValue, toOuterValues } from './utils/commonUtil';
+import { toInnerValue, toOuterValues, removeLastEnabledValue } from './utils/commonUtil';
 import TransBtn from './TransBtn';
 import { useLock } from './hooks/useLock';
 import useDelayReset from './hooks/useDelayReset';
@@ -171,6 +173,8 @@ export interface GenerateConfig<OptionsType, StaticProps> {
   /** Convert single raw value into { label, value } format. Will be called by each value */
   getLabeledValue: GetLabeledValue<OptionsType>;
   filterOptions: FilterOptions<OptionsType>;
+  /** Check if a value is disabled */
+  isValueDisabled: (value: RawValueType, options: OptionsType) => boolean;
 }
 
 /**
@@ -195,6 +199,7 @@ export function generateSelector<
     convertChildrenToData,
     getLabeledValue,
     filterOptions,
+    isValueDisabled,
   } = config;
 
   // Use raw define since `React.FC` not support generic
@@ -358,16 +363,21 @@ export function generateSelector<
       mergedRawValue,
     ]);
 
-    const displayValues = React.useMemo<LabelValueType[]>(
+    const displayValues = React.useMemo<DisplayLabelValueType[]>(
       () =>
-        mergedRawValue.map((val: RawValueType) =>
-          getLabeledValue(val, {
+        mergedRawValue.map((val: RawValueType) => {
+          const displayValue = getLabeledValue(val, {
             options: mergedOptions,
             prevValue: baseValue,
             labelInValue: mergedLabelInValue,
             optionLabelProp: mergedOptionLabelProp,
-          }),
-        ),
+          });
+
+          return {
+            ...displayValue,
+            disabled: isValueDisabled(val, mergedOptions),
+          };
+        }),
       [baseValue],
     );
 
@@ -526,6 +536,8 @@ export function generateSelector<
       }
 
       setClearLock(!!mergedSearchValue);
+
+      // Remove value by `backspace`
       if (
         which === KeyCode.BACKSPACE &&
         !clearLock &&
@@ -533,7 +545,7 @@ export function generateSelector<
         !mergedSearchValue &&
         mergedRawValue.length
       ) {
-        triggerChange((baseValue as LabelValueType[]).slice(0, -1));
+        triggerChange(removeLastEnabledValue(displayValues, baseValue as LabelValueType[]));
       }
 
       if (mergedOpen && listRef.current) {
@@ -796,4 +808,5 @@ export default generateSelector<SelectOptionsType, SelectStaticProps>({
   convertChildrenToData: convertSelectChildrenToData,
   getLabeledValue: getSelectLabeledValue,
   filterOptions: selectDefaultFilterOptions,
+  isValueDisabled: isSelectValueDisabled,
 });

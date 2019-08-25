@@ -61,3 +61,23 @@ export function toOuterValues<OptionsType>(
 
   return values;
 }
+
+export function removeLastEnabledValue<T extends { disabled?: boolean }, P extends object>(
+  measureValues: T[],
+  values: P[],
+): P[] {
+  const newValues = [...values];
+
+  let removeIndex: number;
+  for (removeIndex = measureValues.length - 1; removeIndex >= 0; removeIndex -= 1) {
+    if (!measureValues[removeIndex].disabled) {
+      break;
+    }
+  }
+
+  if (removeIndex !== -1) {
+    newValues.splice(removeIndex, 1);
+  }
+
+  return newValues;
+}

@@ -12,6 +12,10 @@ export interface LabelValueType {
 }
 export type DefaultValueType = RawValueType | RawValueType[] | LabelValueType | LabelValueType[];
 
+export interface DisplayLabelValueType extends LabelValueType {
+  disabled?: boolean;
+}
+
 // ==================================== Generator ====================================
 export type GetLabeledValue<OptionsType> = (
   value: RawValueType,
