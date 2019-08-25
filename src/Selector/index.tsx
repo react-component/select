@@ -106,7 +106,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
       onInputKeyDown(event);
     }
 
-    if (![KeyCode.SHIFT, KeyCode.TAB].includes(which)) {
+    if (![KeyCode.SHIFT, KeyCode.TAB, KeyCode.BACKSPACE].includes(which)) {
       onToggleOpen(true);
     }
   };

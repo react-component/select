@@ -10,8 +10,6 @@ import Input from './Input';
 const REST_TAG_KEY = '__RC_SELECT_MAX_REST_COUNT__';
 
 interface SelectorProps extends InnerSelectorProps {
-  isValueDisabled: (value: RawValueType) => boolean;
-
   // Icon
   removeIcon?: RenderNode;
 
@@ -42,7 +40,6 @@ const SelectSelector: React.FC<SelectorProps> = ({
   showSearch,
   autoFocus,
   accessibilityIndex,
-  isValueDisabled,
 
   removeIcon,
   choiceTransitionName,
