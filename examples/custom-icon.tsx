@@ -203,7 +203,7 @@ class Test extends React.Component {
 
 const CustomIcon = () => (
   <div>
-    {/* <CustomIconComponent /> */}
+    <CustomIconComponent />
     <br />
     <Test />
   </div>
