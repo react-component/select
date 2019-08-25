@@ -33,7 +33,7 @@ const Test: React.FC = () => {
           maxTagCount={maxTagCount}
           maxTagTextLength={10}
           value={value}
-          onChange={(val, option) => {
+          onChange={(val: string[], option) => {
             console.log('change:', val, option);
             setValue(val);
           }}

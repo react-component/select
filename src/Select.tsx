@@ -378,7 +378,7 @@ export function generateSelector<
             disabled: isValueDisabled(val, mergedOptions),
           };
         }),
-      [baseValue],
+      [baseValue, mergedOptions],
     );
 
     const isMultiple = mode === 'tags' || mode === 'multiple';
