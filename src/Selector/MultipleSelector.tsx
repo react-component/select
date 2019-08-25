@@ -102,8 +102,6 @@ const SelectSelector: React.FC<SelectorProps> = ({
     }
   }
 
-  console.log('~!!!!!', choiceTransitionName);
-
   const selectionNode = (
     <CSSMotionList
       component={React.Fragment}
@@ -112,7 +110,6 @@ const SelectSelector: React.FC<SelectorProps> = ({
     >
       {({ key, label, value, className, style }) => {
         const mergedKey = key || value;
-        console.log('=>', mergedKey, className);
 
         return (
           <span

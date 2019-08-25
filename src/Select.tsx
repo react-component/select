@@ -97,13 +97,15 @@ export interface SelectProps<OptionsType, ValueType> {
   removeIcon?: React.ReactNode;
   menuItemSelectedIcon?: RenderNode;
 
-  // Trigger
+  // Dropdown
   listHeight?: number;
   listItemHeight?: number;
   dropdownStyle?: React.CSSProperties;
   dropdownClassName?: string;
   dropdownMatchSelectWidth?: boolean;
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
+  animation?: string;
+  transitionName?: string;
 
   // Others
   disabled?: boolean;
@@ -135,9 +137,7 @@ export interface SelectProps<OptionsType, ValueType> {
 
   // Legacy
   openClassName?: string;
-  transitionName?: string;
   optionLabelProp?: string;
-  animation?: string;
   open?: boolean;
   defaultOpen?: boolean;
   inputValue?: string;
@@ -246,6 +246,8 @@ export function generateSelector<
       // Dropdown
       listHeight = 200,
       listItemHeight = 20,
+      animation,
+      transitionName,
       dropdownStyle,
       dropdownClassName,
       dropdownMatchSelectWidth,
@@ -716,6 +718,8 @@ export function generateSelector<
           visible={mergedOpen}
           popupElement={popupNode}
           containerWidth={containerWidth}
+          animation={animation}
+          transitionName={transitionName}
           dropdownStyle={dropdownStyle}
           dropdownClassName={dropdownClassName}
           dropdownMatchSelectWidth={dropdownMatchSelectWidth}

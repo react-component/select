@@ -229,3 +229,73 @@
     transform: scale(0.5);
   }
 }
+
+.effect() {
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+  transform-origin: 0 0;
+}
+
+.@{select-prefix}-dropdown {
+  &-slide-up-enter,
+  &-slide-up-appear {
+    .effect();
+    opacity: 0;
+    animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
+    animation-play-state: paused;
+  }
+
+  &-slide-up-leave {
+    .effect();
+    opacity: 1;
+    animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);
+    animation-play-state: paused;
+  }
+
+  &-slide-up-enter&-slide-up-enter-active&-placement-bottomLeft,
+  &-slide-up-appear&-slide-up-appear-active&-placement-bottomLeft {
+    animation-name: rcSelectDropdownSlideUpIn;
+    animation-play-state: running;
+  }
+
+  &-slide-up-leave&-slide-up-leave-active&-placement-bottomLeft {
+    animation-name: rcSelectDropdownSlideUpOut;
+    animation-play-state: running;
+  }
+
+  &-slide-up-enter&-slide-up-enter-active&-placement-topLeft,
+  &-slide-up-appear&-slide-up-appear-active&-placement-topLeft {
+    animation-name: rcSelectDropdownSlideDownIn;
+    animation-play-state: running;
+  }
+
+  &-slide-up-leave&-slide-up-leave-active&-placement-topLeft {
+    animation-name: rcSelectDropdownSlideDownOut;
+    animation-play-state: running;
+  }
+}
+
+@keyframes rcSelectDropdownSlideUpIn {
+  0% {
+    opacity: 0;
+    transform-origin: 0% 0%;
+    transform: scaleY(0);
+  }
+  100% {
+    opacity: 1;
+    transform-origin: 0% 0%;
+    transform: scaleY(1);
+  }
+}
+@keyframes rcSelectDropdownSlideUpOut {
+  0% {
+    opacity: 1;
+    transform-origin: 0% 0%;
+    transform: scaleY(1);
+  }
+  100% {
+    opacity: 0;
+    transform-origin: 0% 0%;
+    transform: scaleY(0);
+  }
+}
