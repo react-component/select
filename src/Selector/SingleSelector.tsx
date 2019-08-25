@@ -35,8 +35,6 @@ const SingleSelector: React.FC<SelectorProps> = ({
   const hasTextInput = !!(combobox ? searchValue || activeValue : searchValue);
   const inputValue = combobox ? activeValue || searchValue : searchValue;
 
-  console.log('==>', inputValue, searchValue, activeValue, item);
-
   return (
     <>
       <span className={`${prefixCls}-selection-search`}>

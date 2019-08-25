@@ -242,6 +242,7 @@ export function generateSelector<
       placeholder,
       backfill,
       getInputElement,
+      getPopupContainer,
 
       // Dropdown
       listHeight = 200,
@@ -427,7 +428,10 @@ export function generateSelector<
       }
 
       // Clean search value if single or configured
-      if (mode !== 'combobox' && (!isMultiple || autoClearSearchValue)) {
+      if (mode === 'combobox') {
+        setInnerSearchValue(String(newValue));
+        setActiveValue('');
+      } else if (!isMultiple || autoClearSearchValue) {
         setInnerSearchValue('');
         setActiveValue('');
       }
@@ -489,6 +493,11 @@ export function generateSelector<
       const nextOpen = newOpen !== undefined ? newOpen : !mergedOpen;
       if (mergedOpen !== nextOpen && !disabled) {
         setInnerOpen(nextOpen);
+
+        if (!isMultiple && mode !== 'combobox') {
+          triggerSearch('', false);
+        }
+
         if (onDropdownVisibleChange) {
           onDropdownVisibleChange(nextOpen);
         }
@@ -726,6 +735,7 @@ export function generateSelector<
           dropdownMatchSelectWidth={dropdownMatchSelectWidth}
           dropdownRender={dropdownRender}
           dropdownAlign={dropdownAlign}
+          getPopupContainer={getPopupContainer}
         >
           <Selector
             {...props}
