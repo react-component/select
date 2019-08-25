@@ -18,6 +18,7 @@ import { RenderNode, Mode } from '../interface';
 export interface InnerSelectorProps {
   prefixCls: string;
   id: string;
+  mode: Mode;
 
   inputRef: React.Ref<HTMLInputElement | HTMLTextAreaElement>;
   placeholder?: React.ReactNode;
@@ -142,7 +143,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   const selectNode = multiple ? (
     <MultipleSelector {...props} {...sharedProps} />
   ) : (
-    <SingleSelector {...props} {...sharedProps} combobox={mode === 'combobox'} />
+    <SingleSelector {...props} {...sharedProps} />
   );
 
   return (

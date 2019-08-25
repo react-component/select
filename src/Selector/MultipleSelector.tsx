@@ -38,6 +38,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
   inputRef,
   placeholder,
   disabled,
+  mode,
   showSearch,
   autoFocus,
   accessibilityIndex,
@@ -63,7 +64,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
   }, []);
 
   // ===================== Search ======================
-  const inputEditable: boolean = open && showSearch;
+  const inputEditable: boolean = mode === 'tags' || (open && showSearch);
 
   // We measure width and set to the input immediately
   React.useLayoutEffect(() => {

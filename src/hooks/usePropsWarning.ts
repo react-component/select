@@ -9,6 +9,8 @@ interface CheckProps {
   allowClear: boolean;
   placeholder: React.ReactNode;
   getInputElement: Function;
+  showSearch: boolean;
+  onSearch: Function;
 }
 
 /**
@@ -21,6 +23,8 @@ export function usePropsWarning({
   allowClear,
   placeholder,
   getInputElement,
+  showSearch,
+  onSearch,
 }: CheckProps) {
   if (process.env.NODE_ENV !== 'production') {
     // `tags` should not set option as disabled
@@ -42,6 +46,12 @@ export function usePropsWarning({
     noteOnce(
       mode !== 'combobox' || !getInputElement || !allowClear || !placeholder,
       'Customize `getInputElement` should customize clear and placeholder logic instead of configuring `allowClear` and `placeholder`.',
+    );
+
+    // `onSearch` should use in `combobox` or `showSearch`
+    warning(
+      onSearch && (mode === 'combobox' || showSearch),
+      '`onSearch` should work with `showSearch` instead of use alone.',
     );
   }
 }

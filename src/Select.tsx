@@ -302,6 +302,9 @@ export function generateSelector<
     // labelInValue
     const mergedLabelInValue = mode === 'combobox' ? false : labelInValue;
 
+    const mergedSearchSearch =
+      showSearch !== undefined ? showSearch : mode === 'tags' || mode === 'combobox';
+
     // ============================== Ref ===============================
     React.useImperativeHandle(ref, () => ({
       focus: selectorRef.current.focus,
@@ -684,6 +687,8 @@ export function generateSelector<
       allowClear,
       placeholder,
       getInputElement,
+      showSearch: mergedSearchSearch,
+      onSearch,
     });
 
     // ============================= Render =============================
@@ -741,7 +746,7 @@ export function generateSelector<
             inputElement={customizeInputElement}
             ref={selectorRef}
             id={mergedId}
-            showSearch={showSearch}
+            showSearch={mergedSearchSearch}
             mode={mode}
             accessibilityIndex={accessibilityIndex}
             multiple={isMultiple}

@@ -4,7 +4,6 @@ import { InnerSelectorProps } from '.';
 
 interface SelectorProps extends InnerSelectorProps {
   inputElement: React.ReactElement;
-  combobox: boolean;
   activeValue: string;
   backfill?: boolean;
 }
@@ -17,7 +16,7 @@ const SingleSelector: React.FC<SelectorProps> = ({
   disabled,
   autoFocus,
   accessibilityIndex,
-  combobox,
+  mode,
   open,
   values,
   placeholder,
@@ -29,6 +28,7 @@ const SingleSelector: React.FC<SelectorProps> = ({
   onInputKeyDown,
   onInputChange,
 }) => {
+  const combobox = mode === 'combobox';
   const inputEditable = combobox || (showSearch && open);
   const item = values[0];
 
