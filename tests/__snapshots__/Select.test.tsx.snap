@@ -297,11 +297,15 @@ exports[`Select render renders dropdown correctly 1`] = `
                 aria-selected="false"
                 class="antd-item antd-item-option antd-item-option-grouped antd-item-option-active"
               >
-                <b
-                  style="color:red"
+                <div
+                  class="antd-item-option-content"
                 >
-                  jack
-                </b>
+                  <b
+                    style="color:red"
+                  >
+                    jack
+                  </b>
+                </div>
                 <span
                   aria-hidden="true"
                   class="antd-item-option-selected-icon"
@@ -319,7 +323,11 @@ exports[`Select render renders dropdown correctly 1`] = `
                 aria-selected="false"
                 class="antd-item antd-item-option antd-item-option-grouped"
               >
-                lucy
+                <div
+                  class="antd-item-option-content"
+                >
+                  lucy
+                </div>
                 <span
                   aria-hidden="true"
                   class="antd-item-option-selected-icon"
@@ -342,7 +350,11 @@ exports[`Select render renders dropdown correctly 1`] = `
                 aria-selected="false"
                 class="antd-item antd-item-option antd-item-option-grouped"
               >
-                yiminghe
+                <div
+                  class="antd-item-option-content"
+                >
+                  yiminghe
+                </div>
                 <span
                   aria-hidden="true"
                   class="antd-item-option-selected-icon"

@@ -7,7 +7,7 @@ import blurTest from './shared/blurTest';
 import keyDownTest from './shared/keyDownTest';
 import inputFilterTest from './shared/inputFilterTest';
 import openControlledTest from './shared/openControlledTest';
-import { expectOpen } from './utils/common';
+import { expectOpen, toggleOpen } from './utils/common';
 
 describe('Select', () => {
   focusTest('single', {});
@@ -16,7 +16,7 @@ describe('Select', () => {
   inputFilterTest('single');
   openControlledTest('single');
 
-  describe.only('render', () => {
+  describe('render', () => {
     function genSelect(props?: Partial<SelectProps>) {
       return (
         <Select
@@ -88,7 +88,7 @@ describe('Select', () => {
     });
   });
 
-  it.only('convert value to array', () => {
+  it('convert value to array', () => {
     const wrapper = mount(
       <Select value="1" optionLabelProp="children">
         <OptGroup>
@@ -123,7 +123,7 @@ describe('Select', () => {
 
   it('not add open className when result is empty and no notFoundContent given', () => {
     const wrapper = mount(<Select mode="combobox" notFoundContent={false} />);
-    wrapper.find('.rc-select-selector').simulate('mousedown');
+    toggleOpen(wrapper);
     expectOpen(wrapper, false);
   });
 
@@ -149,16 +149,19 @@ describe('Select', () => {
     ).toBeTruthy();
   });
 
-  // it('should default select the right option', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select defaultValue="2">
-  //       <Option value="1">1</Option>
-  //       <Option value="2">2</Option>
-  //     </Select>,
-  //   );
-  //   wrapper.find('.rc-select').simulate('click');
-  //   expect((wrapper.find('Menu').props() as any).selectedKeys).toEqual(['2']);
-  // });
+  it('should default select the right option', () => {
+    const wrapper = mount(
+      <Select defaultValue="2">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+
+    toggleOpen(wrapper);
+    expect(
+      wrapper.find('.rc-select-item-option-selected div.rc-select-item-option-content').text(),
+    ).toBe('2');
+  });
 
   // it('should can select multiple items', () => {
   //   const wrapper = mount<Select>(

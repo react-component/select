@@ -231,11 +231,12 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
           // Option
           const selected = values.has(value);
 
-          const optionClassName = classNames(itemPrefixCls, `${itemPrefixCls}-option`, {
-            [`${itemPrefixCls}-option-grouped`]: groupOption,
-            [`${itemPrefixCls}-option-active`]: activeIndex === itemIndex && !disabled,
-            [`${itemPrefixCls}-option-disabled`]: disabled,
-            [`${itemPrefixCls}-option-selected`]: selected,
+          const optionPrefixCls = `${itemPrefixCls}-option`;
+          const optionClassName = classNames(itemPrefixCls, optionPrefixCls, {
+            [`${optionPrefixCls}-grouped`]: groupOption,
+            [`${optionPrefixCls}-active`]: activeIndex === itemIndex && !disabled,
+            [`${optionPrefixCls}-disabled`]: disabled,
+            [`${optionPrefixCls}-selected`]: selected,
           });
 
           const mergedLabel = childrenAsData ? children : label;
@@ -257,7 +258,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
                 }
               }}
             >
-              {mergedLabel || value}
+              <div className={`${optionPrefixCls}-content`}>{mergedLabel || value}</div>
               <TransBtn
                 className={`${itemPrefixCls}-option-selected-icon`}
                 customizeIcon={menuItemSelectedIcon}
@@ -273,4 +274,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   );
 };
 
-export default React.forwardRef<RefOptionListProps, OptionListProps>(OptionList);
+const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>(OptionList);
+RefOptionList.displayName = 'OptionList';
+
+export default RefOptionList;

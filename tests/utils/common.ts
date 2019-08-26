@@ -7,3 +7,7 @@ export function expectOpen(wrapper: any, open: boolean = true) {
     expectWrapper.toBeFalsy();
   }
 }
+
+export function toggleOpen(wrapper: any) {
+  wrapper.find('.rc-select-selector').simulate('mousedown');
+}
