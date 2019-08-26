@@ -260,11 +260,11 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
             >
               <div className={`${optionPrefixCls}-content`}>{mergedLabel || value}</div>
               <TransBtn
-                className={`${itemPrefixCls}-option-selected-icon`}
+                className={`${itemPrefixCls}-option-state`}
                 customizeIcon={menuItemSelectedIcon}
                 customizeIconProps={{ isSelected: selected }}
               >
-                ✓
+                {selected ? '✓' : null}
               </TransBtn>
             </div>
           );

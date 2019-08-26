@@ -37,7 +37,7 @@ export interface RefSelectProps {
   blur: () => void;
 }
 
-export interface SelectProps<OptionsType, ValueType> extends React.AriaAttributes {
+export interface SelectProps<OptionsType extends object[], ValueType> extends React.AriaAttributes {
   prefixCls?: string;
   id?: string;
   className?: string;
@@ -119,7 +119,7 @@ export interface SelectProps<OptionsType, ValueType> extends React.AriaAttribute
   defaultOpen?: boolean;
   inputValue?: string;
   onClick?: React.MouseEventHandler;
-  onChange?: (value: ValueType, option: JSX.Element | JSX.Element[]) => void;
+  onChange?: (value: ValueType, option: OptionsType[number] | OptionsType) => void;
   onBlur?: React.FocusEventHandler<HTMLElement>;
   onFocus?: React.FocusEventHandler<HTMLElement>;
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
@@ -134,7 +134,7 @@ export interface SelectProps<OptionsType, ValueType> extends React.AriaAttribute
   tabIndex?: number;
 }
 
-export interface GenerateConfig<OptionsType, StaticProps> {
+export interface GenerateConfig<OptionsType extends object[], StaticProps> {
   prefixCls: string;
   components: {
     optionList: React.ForwardRefExoticComponent<
@@ -148,6 +148,7 @@ export interface GenerateConfig<OptionsType, StaticProps> {
   /** Convert single raw value into { label, value } format. Will be called by each value */
   getLabeledValue: GetLabeledValue<OptionsType>;
   filterOptions: FilterOptions<OptionsType>;
+  findValueOption: (values: RawValueType[], options: OptionsType) => OptionsType[number];
   /** Check if a value is disabled */
   isValueDisabled: (value: RawValueType, options: OptionsType) => boolean;
 }
@@ -176,6 +177,7 @@ export default function generateSelector<
     getLabeledValue,
     filterOptions,
     isValueDisabled,
+    findValueOption,
   } = config;
 
   // Use raw define since `React.FC` not support generic
@@ -364,8 +366,14 @@ export default function generateSelector<
       const outValue: ValueType = (isMultiple ? values : values[0]) as ValueType;
       // Skip trigger if prev & current value is both empty
       if (onChange && (mergedRawValue.length !== 0 || values.length !== 0)) {
-        // TODO: handle this
-        onChange(outValue, null);
+        const outOptions = findValueOption(
+          labelInValue
+            ? (values as LabelValueType[]).map(item => item.value)
+            : (values as RawValueType[]),
+          mergedOptions,
+        );
+
+        onChange(outValue, isMultiple ? outOptions : outOptions[0]);
       }
 
       setInnerValue(outValue);
@@ -657,7 +665,7 @@ export default function generateSelector<
     if (allowClear && (mergedRawValue.length || mergedSearchValue)) {
       clearNode = (
         <TransBtn
-          className={`${prefixCls}-selection-clear-icon`}
+          className={`${prefixCls}-selection-clear`}
           onMouseDown={onClearMouseDown}
           customizeIcon={clearIcon}
         >
@@ -672,9 +680,7 @@ export default function generateSelector<
     let arrowNode: React.ReactNode;
 
     if (mergedShowArrow) {
-      arrowNode = (
-        <TransBtn className={`${prefixCls}-selection-arrow-icon`} customizeIcon={inputIcon} />
-      );
+      arrowNode = <TransBtn className={`${prefixCls}-selection-arrow`} customizeIcon={inputIcon} />;
     }
 
     // ============================ Warning =============================

@@ -31,7 +31,7 @@
   }
 
   &-show-arrow&-loading {
-    .@{select-prefix}-selection-arrow-icon {
+    .@{select-prefix}-selection-arrow {
       &::after {
         box-sizing: border-box;
         width: 12px;
@@ -136,7 +136,7 @@
       padding-right: 20px;
     }
 
-    .@{select-prefix}-selection-clear-icon {
+    .@{select-prefix}-selection-clear {
       position: absolute;
       right: 20px;
       top: 0;
@@ -148,7 +148,7 @@
       padding-right: 20px;
     }
 
-    .@{select-prefix}-selection-arrow-icon {
+    .@{select-prefix}-selection-arrow {
       pointer-events: none;
       position: absolute;
       right: 5px;
@@ -206,12 +206,11 @@
         padding-left: 24px;
       }
 
-      .@{select-prefix}-item-option-selected-icon {
+      .@{select-prefix}-item-option-state {
         position: absolute;
         right: 0;
         top: 4px;
         pointer-events: none;
-        display: none;
       }
 
       // ------- Active -------
@@ -222,13 +221,6 @@
       // ------ Disabled ------
       &-disabled {
         color: #999;
-      }
-
-      // ------ Selected ------
-      &-selected {
-        .@{select-prefix}-item-option-selected-icon {
-          display: block;
-        }
       }
     }
 

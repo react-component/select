@@ -23,6 +23,7 @@
  * - `backfill` only support `combobox` mode
  * - `combobox` mode not support `labelInValue` since it's meaningless
  * - `getInputElement` only support `combobox` mode
+ * - `onChange` return OptionData instead of ReactNode
  */
 
 import { OptionsType as SelectOptionsType, Mode } from './interface';
@@ -34,6 +35,7 @@ import {
   getLabeledValue as getSelectLabeledValue,
   filterOptions as selectDefaultFilterOptions,
   isValueDisabled as isSelectValueDisabled,
+  findValueOption as findSelectValueOption,
 } from './utils/valueUtil';
 import generateSelector, { SelectProps } from './generate';
 import { DefaultValueType } from './interface/generator';
@@ -56,6 +58,7 @@ export default generateSelector<SelectOptionsType, SelectStaticProps>({
   getLabeledValue: getSelectLabeledValue,
   filterOptions: selectDefaultFilterOptions,
   isValueDisabled: isSelectValueDisabled,
+  findValueOption: findSelectValueOption,
 });
 
 export type SelectProps<ValueType extends DefaultValueType = DefaultValueType> = SelectProps<

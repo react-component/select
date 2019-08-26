@@ -68,41 +68,32 @@ export function flattenOptions(
   return flattenList;
 }
 
-function findValueOption(value: RawValueType, options: SelectOptionsType): OptionData {
-  let optionItem: OptionData;
+export function findValueOption(values: RawValueType[], options: SelectOptionsType): OptionData[] {
+  const optionMap: Map<RawValueType, OptionData> = new Map();
 
-  options.some(option => {
+  options.forEach(option => {
     // Loop if is a group
     if (
       'options' in option &&
-      option.options.some(subOption => {
-        if (subOption.value === value) {
-          optionItem = subOption;
-          return true;
-        }
-        return false;
+      option.options.forEach((subOption: OptionData) => {
+        optionMap.set(subOption.value, subOption);
       })
     ) {
       return true;
     }
 
     // Check if match
-    if ((option as OptionData).value === value) {
-      optionItem = option as OptionData;
-      return true;
-    }
-
-    return false;
+    optionMap.set((option as OptionData).value, option as OptionData);
   });
 
-  return optionItem;
+  return values.map(val => optionMap.get(val));
 }
 
 export const getLabeledValue: GetLabeledValue<SelectOptionsType> = (
   value,
   { options, prevValue, labelInValue, optionLabelProp },
 ) => {
-  const item = findValueOption(value, options);
+  const item = findValueOption([value], options)[0];
   const result: LabelValueType = {
     value,
   };
@@ -141,7 +132,8 @@ export const getLabeledValue: GetLabeledValue<SelectOptionsType> = (
 /** Filter single option if match the search text */
 function getFilterFunction(optionFilterProp: string) {
   return (searchValue: string, option: OptionData) => {
-    const value = String(option[optionFilterProp]).toLowerCase();
+    const rawValue = option[optionFilterProp];
+    const value = String(Array.isArray(rawValue) ? rawValue.join('') : rawValue).toLowerCase();
     return value.includes(searchValue.toLowerCase());
   };
 }
@@ -214,7 +206,7 @@ export function getSeparatedContent(text: string, tokens: string[]): string[] {
 }
 
 export function isValueDisabled(value: RawValueType, options: OptionsType): boolean {
-  const option = findValueOption(value, options);
+  const option = findValueOption([value], options)[0];
   if (option) {
     return option.disabled;
   }

@@ -163,198 +163,211 @@ describe('Select', () => {
     ).toBe('2');
   });
 
-  // it('should can select multiple items', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select multiple={true} value={['1', '2']}>
-  //       <Option value="1">1</Option>
-  //       <Option value="2">2</Option>
-  //       <Option value="3">2</Option>
-  //     </Select>,
-  //   );
-  //   wrapper.find('.rc-select').simulate('click');
-  //   expect((wrapper.find('Menu').props() as any).selectedKeys).toEqual(['1', '2']);
-  // });
+  it('should can select multiple items', () => {
+    const wrapper = mount(
+      <Select mode="multiple" value={['1', '2']}>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+        <Option value="3">2</Option>
+      </Select>,
+    );
+    toggleOpen(wrapper);
+    expect(
+      wrapper
+        .find('.rc-select-item-option-selected div.rc-select-item-option-content')
+        .map(node => node.text()),
+    ).toEqual(['1', '2']);
+  });
 
-  // it('should hide clear button', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select allowClear={true}>
-  //       <Option value="1">1</Option>
-  //       <Option value="2">2</Option>
-  //     </Select>,
-  //   );
-  //   expect(wrapper.find('.rc-select-selection__clear').length).toBe(0);
-  // });
+  it('should hide clear button', () => {
+    const wrapper1 = mount(
+      <Select allowClear value="1">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    expect(wrapper1.find('.rc-select-selection-clear-icon').length).toBeTruthy();
 
-  // it('should not response click event when select is disabled', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select disabled={true} defaultValue="2">
-  //       <Option value="1">1</Option>
-  //       <Option value="2">2</Option>
-  //     </Select>,
-  //   );
-  //   wrapper.find('.rc-select').simulate('click');
-  //   expect(wrapper.state().open).toBe(false);
-  // });
+    const wrapper2 = mount(
+      <Select allowClear>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    expect(wrapper2.find('.rc-select-selection-clear-icon').length).toBeFalsy();
+  });
 
-  // it('should show selected value in singleMode when close', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select value="1">
-  //       <Option value="1">1</Option>
-  //       <Option value="2">2</Option>
-  //     </Select>,
-  //   );
+  it('should not response click event when select is disabled', () => {
+    const wrapper = mount(
+      <Select disabled={true} defaultValue="2">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    toggleOpen(wrapper);
+    expectOpen(wrapper, false);
+  });
 
-  //   expect(wrapper.find('.rc-select-selection-selected-value').props().children).toBe('1');
-  // });
+  it('should show selected value in singleMode when close', () => {
+    const wrapper = mount(
+      <Select value="1">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
 
-  // it('filter options by "value" prop by default', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select>
-  //       <Option value="1">One</Option>
-  //       <Option value="2">Two</Option>
-  //     </Select>,
-  //   );
+    expect(wrapper.find('.rc-select-selection-item').props().children).toBe('1');
+  });
 
-  //   wrapper.find('input').simulate('change', { target: { value: '1' } });
-  //   expect(wrapper.find('MenuItem').length).toBe(1);
-  //   expect(wrapper.find('MenuItem').props().value).toBe('1');
-  // });
+  it('filter options by "value" prop by default', () => {
+    const wrapper = mount(
+      <Select>
+        <Option value="1">One</Option>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
 
-  // it('should filter options when filterOption is true', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select filterOption={true}>
-  //       <Option value="1">One</Option>
-  //       <Option value="2">Two</Option>
-  //     </Select>,
-  //   );
+    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    expect(wrapper.find('List').props().data.length).toBe(1);
+    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('One');
+  });
 
-  //   wrapper.find('input').simulate('change', { target: { value: '2' } });
-  //   expect(wrapper.find('MenuItem').length).toBe(1);
-  //   expect(wrapper.find('MenuItem').props().value).toBe('2');
-  // });
+  it('should filter options when filterOption is true', () => {
+    const wrapper = mount(
+      <Select filterOption={true}>
+        <Option value="1">One</Option>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
 
-  // it('should not filter options when filterOption is false', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select filterOption={false}>
-  //       <Option value="1">One</Option>
-  //       <Option value="2">Two</Option>
-  //     </Select>,
-  //   );
+    wrapper.find('input').simulate('change', { target: { value: '2' } });
+    expect(wrapper.find('List').props().data.length).toBe(1);
+    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('Two');
+  });
 
-  //   wrapper.find('input').simulate('change', { target: { value: '1' } });
-  //   expect(wrapper.find('MenuItem').length).toBe(2);
-  // });
+  it('should not filter options when filterOption is false', () => {
+    const wrapper = mount(
+      <Select filterOption={false}>
+        <Option value="1">One</Option>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
 
-  // it('specify which prop to filter', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select optionFilterProp="label">
-  //       <Option value="1" label="One">
-  //         1
-  //       </Option>
-  //       <Option value="2" label="Two">
-  //         2
-  //       </Option>
-  //     </Select>,
-  //   );
+    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    expect(wrapper.find('List').props().data.length).toBe(2);
+  });
 
-  //   wrapper.find('input').simulate('change', { target: { value: 'Two' } });
+  it('specify which prop to filter', () => {
+    const wrapper = mount(
+      <Select optionFilterProp="label">
+        <Option value="1" label="One">
+          1
+        </Option>
+        <Option value="2" label="Two">
+          2
+        </Option>
+      </Select>,
+    );
 
-  //   expect(wrapper.find('MenuItem').length).toBe(1);
-  //   expect(wrapper.find('MenuItem').props().value).toBe('2');
-  // });
+    wrapper.find('input').simulate('change', { target: { value: 'Two' } });
 
-  // it('filter array children', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select optionFilterProp="children">
-  //       <Option value="1" label="One">
-  //         One{1}
-  //       </Option>
-  //       <Option value="2" label="Two">
-  //         Two{2}
-  //       </Option>
-  //     </Select>,
-  //   );
+    expect(wrapper.find('List').props().data.length).toBe(1);
+    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('2');
+  });
 
-  //   wrapper.find('input').simulate('change', { target: { value: 'Two2' } });
+  it('filter array children', () => {
+    const wrapper = mount(
+      <Select optionFilterProp="children">
+        <Option value="1" label="One">
+          One{1}
+        </Option>
+        <Option value="2" label="Two">
+          Two{2}
+        </Option>
+      </Select>,
+    );
 
-  //   expect(wrapper.find('MenuItem').length).toBe(1);
-  //   expect(wrapper.find('MenuItem').props().value).toBe('2');
-  // });
+    wrapper.find('input').simulate('change', { target: { value: 'Two2' } });
 
-  // it('no search', () => {
-  //   const wrapper = render(
-  //     <Select showSearch={false} value="1">
-  //       <Option value="1">1</Option>
-  //       <Option value="2">2</Option>
-  //     </Select>,
-  //   );
+    expect(wrapper.find('List').props().data.length).toBe(1);
+    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('Two2');
+  });
 
-  //   expect(wrapper).toMatchSnapshot();
-  // });
+  it('no search', () => {
+    const wrapper = render(
+      <Select showSearch={false} value="1">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
 
-  // it('should contian falsy children', () => {
-  //   const wrapper = render(
-  //     <Select value="1">
-  //       <Option value="1">1</Option>
-  //       {null}
-  //       <Option value="2">2</Option>
-  //       {false}
-  //     </Select>,
-  //   );
+    expect(wrapper).toMatchSnapshot();
+  });
 
-  //   expect(wrapper).toMatchSnapshot();
-  // });
+  it('should contain falsy children', () => {
+    const wrapper = render(
+      <Select value="1" open>
+        <Option value="1">1</Option>
+        {null}
+        <Option value="2">2</Option>
+        {false}
+      </Select>,
+    );
 
-  // it('open dropdown on down key press', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select value="1">
-  //       <Option value="1">1</Option>
-  //       <Option value="2">2</Option>
-  //     </Select>,
-  //   );
+    expect(wrapper).toMatchSnapshot();
+  });
 
-  //   wrapper.find('input').simulate('keyDown', { keyCode: 40 });
-  //   expect(wrapper.state().open).toBe(true);
-  // });
+  it('open dropdown on down key press', () => {
+    const wrapper = mount(
+      <Select value="1">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
 
-  // it('clears value', () => {
-  //   const handleChange = jest.fn();
-  //   const wrapper = mount<Select>(
-  //     <Select value="1" allowClear={true} onChange={handleChange}>
-  //       <Option value="1">1</Option>
-  //       <Option value="2">2</Option>
-  //     </Select>,
-  //   );
+    wrapper.find('input').simulate('keyDown', { keyCode: 40 });
+    expectOpen(wrapper);
+  });
 
-  //   wrapper.find('input').simulate('change', { target: { value: 'foo' } });
-  //   wrapper.find('.rc-select-selection__clear').simulate('click');
-  //   expect(handleChange).toBeCalledWith(undefined, undefined);
-  //   expect(wrapper.state().inputValue).toBe('');
-  // });
+  it('clears value', () => {
+    const handleChange = jest.fn();
+    const wrapper = mount(
+      <Select value="1" allowClear onChange={handleChange}>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
 
-  // it('adds label to value', () => {
-  //   const handleChange = jest.fn();
-  //   const wrapper = mount<Select>(
-  //     <Select onChange={handleChange} labelInValue={true} optionLabelProp="children">
-  //       <Option value="1" testprop="test">
-  //         One
-  //       </Option>
-  //       <Option value="2">Two</Option>
-  //     </Select>,
-  //   );
+    wrapper.find('input').simulate('change', { target: { value: 'foo' } });
+    wrapper
+      .find('.rc-select-selection-clear')
+      .last()
+      .simulate('mousedown');
+    expect(handleChange).toBeCalledWith(undefined, undefined);
+    expect(wrapper.find('input').props().value).toEqual('');
+  });
 
-  //   wrapper.find('.rc-select').simulate('click');
-  //   wrapper
-  //     .find('MenuItem')
-  //     .first()
-  //     .simulate('click');
-  //   expect(handleChange).toBeCalledWith(
-  //     { key: '1', label: 'One' },
-  //     <Option value="1" testprop="test">
-  //       One
-  //     </Option>,
-  //   );
-  // });
+  it('adds label to value', () => {
+    const handleChange = jest.fn();
+    const wrapper = mount(
+      <Select onChange={handleChange} labelInValue optionLabelProp="children">
+        <Option value="1" testprop="test">
+          One
+        </Option>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
+
+    toggleOpen(wrapper);
+    wrapper
+      .find('div.rc-select-item-option-content')
+      .first()
+      .simulate('click');
+    expect(handleChange).toBeCalledWith(
+      { key: '1', value: '1', label: 'One' },
+      { children: 'One', key: null, testprop: 'test', value: '1' },
+    );
+  });
 
   // it('give right option when use OptGroup', () => {
   //   const handleChange = jest.fn();
