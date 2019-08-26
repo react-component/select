@@ -11,6 +11,8 @@ interface CheckProps {
   getInputElement: Function;
   showSearch: boolean;
   onSearch: Function;
+  defaultOpen: boolean;
+  autoFocus: boolean;
 }
 
 /**
@@ -25,6 +27,8 @@ export function usePropsWarning({
   getInputElement,
   showSearch,
   onSearch,
+  defaultOpen,
+  autoFocus,
 }: CheckProps) {
   if (process.env.NODE_ENV !== 'production') {
     // `tags` should not set option as disabled
@@ -52,5 +56,10 @@ export function usePropsWarning({
     if (onSearch && (!showSearch && mode !== 'combobox' && mode !== 'tags')) {
       warning(false, '`onSearch` should work with `showSearch` instead of use alone.');
     }
+
+    noteOnce(
+      !defaultOpen || autoFocus,
+      '`defaultOpen` makes Select open without focus which means it will not close by click outside. You can set `autoFocus` if needed.',
+    );
   }
 }

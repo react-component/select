@@ -248,6 +248,7 @@ export function generateSelector<
       backfill,
       getInputElement,
       getPopupContainer,
+      autoFocus,
 
       // Dropdown
       listHeight = 200,
@@ -307,7 +308,7 @@ export function generateSelector<
     // labelInValue
     const mergedLabelInValue = mode === 'combobox' ? false : labelInValue;
 
-    const mergedSearchSearch =
+    const mergedShowSearch =
       showSearch !== undefined ? showSearch : mode === 'tags' || mode === 'combobox';
 
     // ============================== Ref ===============================
@@ -507,15 +508,18 @@ export function generateSelector<
       if (mergedOpen !== nextOpen && !disabled) {
         setInnerOpen(nextOpen);
 
-        if (!isMultiple && mode !== 'combobox') {
-          triggerSearch('', false);
-        }
-
         if (onDropdownVisibleChange) {
           onDropdownVisibleChange(nextOpen);
         }
       }
     };
+
+    // Close will clean up single mode search text
+    React.useEffect(() => {
+      if (!mergedOpen && !isMultiple && mode !== 'combobox') {
+        triggerSearch('', false);
+      }
+    }, [mergedOpen]);
 
     // ============================ Keyboard ============================
     /**
@@ -699,8 +703,10 @@ export function generateSelector<
       allowClear,
       placeholder,
       getInputElement,
-      showSearch: mergedSearchSearch,
+      showSearch: mergedShowSearch,
       onSearch,
+      autoFocus,
+      defaultOpen,
     });
 
     // ============================= Render =============================
@@ -758,7 +764,7 @@ export function generateSelector<
             inputElement={customizeInputElement}
             ref={selectorRef}
             id={mergedId}
-            showSearch={mergedSearchSearch}
+            showSearch={mergedShowSearch}
             mode={mode}
             accessibilityIndex={accessibilityIndex}
             multiple={isMultiple}

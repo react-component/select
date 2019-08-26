@@ -1,5 +1,6 @@
 import { mount } from 'enzyme';
 import React from 'react';
+import { resetWarned } from 'rc-util/lib/warning';
 import Option from '../../src/Option';
 import Select from '../../src/Select';
 
@@ -11,6 +12,7 @@ export default function focusTest(mode: any, props: any) {
       container = document.createElement('div');
       document.body.appendChild(container);
       jest.useFakeTimers();
+      resetWarned();
     });
 
     afterEach(() => {
@@ -50,9 +52,9 @@ export default function focusTest(mode: any, props: any) {
       expect(handleFocus).toHaveBeenCalled();
     });
 
-    // TODO: Cancel comment this test
     // https://github.com/ant-design/ant-design/issues/14254
-    it.skip('auto focus when defaultOpen is true', () => {
+    it('warning when `defaultOpen` is true but `autoFocus` not', () => {
+      const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
       const handleFocus = jest.fn();
 
       mount(
@@ -63,9 +65,11 @@ export default function focusTest(mode: any, props: any) {
         { attachTo: container },
       );
 
-      jest.runAllTimers();
+      expect(warnSpy).toHaveBeenCalledWith(
+        'Note: `defaultOpen` makes Select open without focus which means it will not close by click outside. You can set `autoFocus` if needed.',
+      );
 
-      expect(handleFocus).toHaveBeenCalled();
+      warnSpy.mockRestore();
     });
   });
 }
