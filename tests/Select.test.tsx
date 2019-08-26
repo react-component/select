@@ -7,6 +7,7 @@ import blurTest from './shared/blurTest';
 import keyDownTest from './shared/keyDownTest';
 import inputFilterTest from './shared/inputFilterTest';
 import openControlledTest from './shared/openControlledTest';
+import { SelectProps } from '../src';
 
 describe('Select', () => {
   focusTest('single', {});
@@ -15,54 +16,56 @@ describe('Select', () => {
   inputFilterTest('single');
   openControlledTest('single');
 
-  describe('render', () => {
-    const select = (
-      <Select
-        prefixCls="antd"
-        className="select-test"
-        openClassName="open-test"
-        value="2"
-        placeholder="Select a number"
-        showArrow={true}
-        allowClear={true}
-        showSearch={true}
-      >
-        <OptGroup label="manager">
-          <Option className="option-test" value="jack">
-            <b style={{ color: 'red' }}>jack</b>
-          </Option>
-          <Option value="lucy">lucy</Option>
-        </OptGroup>
-        <OptGroup label="engineer">
-          <Option value="yiminghe">yiminghe</Option>
-        </OptGroup>
-      </Select>
-    );
+  describe.only('render', () => {
+    function genSelect(props?: Partial<SelectProps>) {
+      return (
+        <Select
+          prefixCls="antd"
+          className="select-test"
+          value="2"
+          placeholder="Select a number"
+          showArrow
+          allowClear
+          showSearch
+          {...props}
+        >
+          <OptGroup label="manager">
+            <Option className="option-test" value="jack">
+              <b style={{ color: 'red' }}>jack</b>
+            </Option>
+            <Option value="lucy">lucy</Option>
+          </OptGroup>
+          <OptGroup label="engineer">
+            <Option value="yiminghe">yiminghe</Option>
+          </OptGroup>
+        </Select>
+      );
+    }
 
-      it('renders correctly', () => {
-        const wrapper = render(select);
-        expect(wrapper).toMatchSnapshot();
-      });
+    it('renders correctly', () => {
+      const wrapper = render(genSelect());
+      expect(wrapper).toMatchSnapshot();
+    });
 
-    //   it('renders dropdown correctly', () => {
-    //     const wrapper = render(React.cloneElement(select, { open: true }));
-    //     expect(wrapper).toMatchSnapshot();
-    //   });
+    it('renders dropdown correctly', () => {
+      const wrapper = render(genSelect({ open: true }));
+      expect(wrapper).toMatchSnapshot();
+    });
 
-    //   it('renders disabeld select correctly', () => {
-    //     const wrapper = render(React.cloneElement(select, { disabled: true }));
-    //     expect(wrapper).toMatchSnapshot();
-    //   });
+    it('renders disabled select correctly', () => {
+      const wrapper = render(genSelect({ disabled: true }));
+      expect(wrapper).toMatchSnapshot();
+    });
 
-    //   it('renders data-attributes correctly', () => {
-    //     const wrapper = render(
-    //       React.cloneElement(select, {
-    //         'data-test': 'test-id',
-    //         'data-id': '12345',
-    //       }),
-    //     );
-    //     expect(wrapper).toMatchSnapshot();
-    //   });
+    it('renders data-attributes correctly', () => {
+      const wrapper = render(
+        genSelect({
+          'data-test': 'test-id',
+          'data-id': '12345',
+        } as any),
+      );
+      expect(wrapper).toMatchSnapshot();
+    });
 
     //   it('renders aria-attributes correctly', () => {
     //     const wrapper = render(

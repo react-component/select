@@ -53,7 +53,7 @@
     "@types/warning": "^3.0.0",
     "cross-env": "^5.2.0",
     "enzyme": "^3.3.0",
-    "enzyme-to-json": "^3.0.0",
+    "enzyme-to-json": "^3.4.0",
     "father": "^2.13.2",
     "jsonp": "^0.2.1",
     "np": "^5.0.3",
