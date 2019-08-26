@@ -1,5 +1,61 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Select render renders aria-attributes correctly 1`] = `
+<div
+  aria-label="some-label"
+  aria-labelledby="test-id"
+  class="antd select-test antd-single antd-allow-clear antd-show-arrow"
+>
+  <div
+    class="antd-selector"
+  >
+    <span
+      class="antd-selection-search"
+    >
+      <input
+        aria-activedescendant="undefined_list_0"
+        aria-autocomplete="list"
+        aria-controls="undefined_list"
+        aria-haspopup="listbox"
+        aria-owns="undefined_list"
+        autocomplete="off"
+        class="antd-selection-search-input"
+        role="combobox"
+        style="opacity:0"
+        value=""
+      />
+    </span>
+    <span
+      class="antd-selection-item"
+    >
+      2
+    </span>
+  </div>
+  <span
+    aria-hidden="true"
+    class="antd-selection-arrow-icon"
+    style="user-select:none;-webkit-user-select:none"
+    unselectable="on"
+  >
+    <span
+      class="antd-selection-arrow-icon-icon"
+    />
+  </span>
+  <span
+    aria-hidden="true"
+    class="antd-selection-clear-icon"
+    style="user-select:none;-webkit-user-select:none"
+    unselectable="on"
+  >
+    <span
+      class="antd-selection-clear-icon-icon"
+    >
+      ×
+    </span>
+  </span>
+</div>
+`;
+
 exports[`Select render renders correctly 1`] = `
 <div
   class="antd select-test antd-single antd-allow-clear antd-show-arrow"
@@ -305,6 +361,61 @@ exports[`Select render renders dropdown correctly 1`] = `
         </div>
       </div>
     </div>
+  </div>
+  <span
+    aria-hidden="true"
+    class="antd-selection-arrow-icon"
+    style="user-select:none;-webkit-user-select:none"
+    unselectable="on"
+  >
+    <span
+      class="antd-selection-arrow-icon-icon"
+    />
+  </span>
+  <span
+    aria-hidden="true"
+    class="antd-selection-clear-icon"
+    style="user-select:none;-webkit-user-select:none"
+    unselectable="on"
+  >
+    <span
+      class="antd-selection-clear-icon-icon"
+    >
+      ×
+    </span>
+  </span>
+</div>
+`;
+
+exports[`Select render renders role prop correctly 1`] = `
+<div
+  class="antd select-test antd-single antd-allow-clear antd-show-arrow"
+  role="button"
+>
+  <div
+    class="antd-selector"
+  >
+    <span
+      class="antd-selection-search"
+    >
+      <input
+        aria-activedescendant="undefined_list_0"
+        aria-autocomplete="list"
+        aria-controls="undefined_list"
+        aria-haspopup="listbox"
+        aria-owns="undefined_list"
+        autocomplete="off"
+        class="antd-selection-search-input"
+        role="combobox"
+        style="opacity:0"
+        value=""
+      />
+    </span>
+    <span
+      class="antd-selection-item"
+    >
+      2
+    </span>
   </div>
   <span
     aria-hidden="true"

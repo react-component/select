@@ -1,8 +1,7 @@
 import * as React from 'react';
-import Select, { Option, OptGroup } from '../src';
+import Select, { Option, OptGroup, RefSelectProps } from '../src';
 import '../assets/index.less';
 import './common.less';
-import { RefSelectProps } from '../src/Select';
 
 const focusProps = {
   onFocus: ({ target }) => {
@@ -42,6 +41,7 @@ const Demo = () => {
           mode="multiple"
           showSearch
           labelInValue
+          aria-label="233333"
           // allowClear
           // showArrow
           placeholder="ddd"

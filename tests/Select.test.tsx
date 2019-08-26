@@ -1,13 +1,12 @@
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import React from 'react';
-import Select, { OptGroup, Option } from '../src';
+import Select, { OptGroup, Option, SelectProps } from '../src';
 import focusTest from './shared/focusTest';
 import blurTest from './shared/blurTest';
 import keyDownTest from './shared/keyDownTest';
 import inputFilterTest from './shared/inputFilterTest';
 import openControlledTest from './shared/openControlledTest';
-import { SelectProps } from '../src';
 
 describe('Select', () => {
   focusTest('single', {});
@@ -67,24 +66,25 @@ describe('Select', () => {
       expect(wrapper).toMatchSnapshot();
     });
 
-    //   it('renders aria-attributes correctly', () => {
-    //     const wrapper = render(
-    //       React.cloneElement(select, {
-    //         'aria-labelledby': 'test-id',
-    //         'aria-label': 'some-label',
-    //       }),
-    //     );
-    //     expect(wrapper).toMatchSnapshot();
-    //   });
+    it('renders aria-attributes correctly', () => {
+      const wrapper = render(
+        genSelect({
+          'aria-labelledby': 'test-id',
+          'aria-label': 'some-label',
+        }),
+      );
+      expect(wrapper).toMatchSnapshot();
+    });
 
-    //   it('renders role prop correctly', () => {
-    //     const wrapper = render(
-    //       React.cloneElement(select, {
-    //         role: 'button',
-    //       }),
-    //     );
-    //     expect(wrapper).toMatchSnapshot();
-    //   });
+    // [Legacy] Should not use `role` since it's meaningless
+    it('renders role prop correctly', () => {
+      const wrapper = render(
+        genSelect({
+          role: 'button',
+        } as any),
+      );
+      expect(wrapper).toMatchSnapshot();
+    });
   });
 
   // it('convert value to array', () => {

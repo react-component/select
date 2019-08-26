@@ -37,7 +37,7 @@ export interface RefSelectProps {
   blur: () => void;
 }
 
-export interface SelectProps<OptionsType, ValueType> {
+export interface SelectProps<OptionsType, ValueType> extends React.AriaAttributes {
   prefixCls?: string;
   id?: string;
   className?: string;
