@@ -778,16 +778,16 @@ export function generateSelector<
     );
   }
 
-  // Inject static props
-  if (staticProps) {
-    Object.keys(staticProps).forEach(prop => {
-      Select[prop] = staticProps[prop];
-    });
-  }
-
   // Ref of Select
   type RefSelectFuncType = typeof RefSelectFunc;
   const RefSelect = ((React.forwardRef as unknown) as RefSelectFuncType)(Select);
+
+  // Inject static props
+  if (staticProps) {
+    Object.keys(staticProps).forEach(prop => {
+      RefSelect[prop] = staticProps[prop];
+    });
+  }
 
   return RefSelect;
 }

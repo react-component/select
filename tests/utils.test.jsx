@@ -19,9 +19,13 @@ describe('Utils', () => {
       );
 
       expect(convertChildrenToData(node.props.children)).toEqual([
-        { key: 'light', value: 'light', label: 'Light' },
-        { key: null, label: 'Group', options: [{ key: null, label: 'Bamboo', value: 'bamboo' }] },
-        { key: null, label: 'Not Good', value: null },
+        { key: 'light', value: 'light', children: 'Light' },
+        {
+          key: null,
+          label: 'Group',
+          options: [{ key: null, children: 'Bamboo', value: 'bamboo' }],
+        },
+        { key: null, children: 'Not Good', value: null },
       ]);
     });
   });
