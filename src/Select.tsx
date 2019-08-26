@@ -44,6 +44,7 @@ interface SelectStaticProps {
 }
 
 export default generateSelector<SelectOptionsType, SelectStaticProps>({
+  prefixCls: 'rc-select',
   components: {
     optionList: SelectOptionList,
   },

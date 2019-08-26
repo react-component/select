@@ -135,6 +135,7 @@ export interface SelectProps<OptionsType, ValueType> extends React.AriaAttribute
 }
 
 export interface GenerateConfig<OptionsType, StaticProps> {
+  prefixCls: string;
   components: {
     optionList: React.ForwardRefExoticComponent<
       React.PropsWithoutRef<Omit<OptionListProps, 'options'> & { options: OptionsType }> &
@@ -168,6 +169,7 @@ export default function generateSelector<
   let uuid = 0;
 
   const {
+    prefixCls: defaultPrefixCls,
     components: { optionList: OptionList },
     staticProps,
     convertChildrenToData,
@@ -182,7 +184,7 @@ export default function generateSelector<
     ref: React.Ref<RefSelectProps>,
   ): React.ReactElement {
     const {
-      prefixCls = 'rc-select',
+      prefixCls = defaultPrefixCls,
       className,
       id,
 
@@ -479,6 +481,12 @@ export default function generateSelector<
 
     const onToggleOpen = (newOpen?: boolean) => {
       const nextOpen = newOpen !== undefined ? newOpen : !mergedOpen;
+
+      // Not trigger `open` in `combobox` when `notFoundContent` is empty
+      if (nextOpen && mode === 'combobox' && !notFoundContent && !mergedOptions.length) {
+        return;
+      }
+
       if (mergedOpen !== nextOpen && !disabled) {
         setInnerOpen(nextOpen);
 
@@ -731,6 +739,7 @@ export default function generateSelector<
           dropdownRender={dropdownRender}
           dropdownAlign={dropdownAlign}
           getPopupContainer={getPopupContainer}
+          empty={!mergedOptions.length}
         >
           <Selector
             {...props}
@@ -769,5 +778,5 @@ export default function generateSelector<
     });
   }
 
-  return RefSelect;
+  return RefSelect as (typeof RefSelect & StaticProps);
 }

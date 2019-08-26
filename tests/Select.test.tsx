@@ -7,6 +7,7 @@ import blurTest from './shared/blurTest';
 import keyDownTest from './shared/keyDownTest';
 import inputFilterTest from './shared/inputFilterTest';
 import openControlledTest from './shared/openControlledTest';
+import { expectOpen } from './utils/common';
 
 describe('Select', () => {
   focusTest('single', {});
@@ -87,52 +88,66 @@ describe('Select', () => {
     });
   });
 
-  // it('convert value to array', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select value="1" optionLabelProp="children">
-  //       <OptGroup>
-  //         <Option value="1" title="一">
-  //           1-label
-  //         </Option>
-  //       </OptGroup>
-  //     </Select>,
-  //   );
-  //   expect(wrapper.state().value).toEqual(['1']);
-  //   expect(wrapper.find('.rc-select-selection-selected-value').text()).toEqual('1-label');
-  //   expect(wrapper.find('.rc-select-selection-selected-value').prop('title')).toEqual('一');
-  // });
+  it.only('convert value to array', () => {
+    const wrapper = mount(
+      <Select value="1" optionLabelProp="children">
+        <OptGroup>
+          <Option value="1" title="一">
+            1-label
+          </Option>
+        </OptGroup>
+      </Select>,
+    );
 
-  // it('convert defaultValue to array', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select defaultValue="1">
-  //       <OptGroup>
-  //         <Option value="1" title="一">
-  //           1
-  //         </Option>
-  //       </OptGroup>
-  //     </Select>,
-  //   );
-  //   expect(wrapper.state().value).toEqual(['1']);
-  //   expect(wrapper.find('.rc-select-selection-selected-value').text()).toEqual('1');
-  //   expect(wrapper.find('.rc-select-selection-selected-value').prop('title')).toEqual('一');
-  // });
+    expect(wrapper.find('Selector').props().values).toEqual([
+      expect.objectContaining({ label: '1-label', value: '1' }),
+    ]);
+    expect(wrapper.find('.rc-select-selection-item').text()).toEqual('1-label');
+  });
 
-  // it('not add open className when result is empty and no notFoundContent given', () => {
-  //   const wrapper = mount<Select>(<Select combobox={true} notFoundContent={false} />);
-  //   const select = wrapper.find('.rc-select');
-  //   select.simulate('click');
-  //   expect(select.props().className).not.toContain('-open');
-  // });
+  it('convert defaultValue to array', () => {
+    const wrapper = mount(
+      <Select defaultValue="1">
+        <OptGroup>
+          <Option value="1" title="一">
+            1
+          </Option>
+        </OptGroup>
+      </Select>,
+    );
+    expect(wrapper.find('Selector').props().values).toEqual([
+      expect.objectContaining({ value: '1' }),
+    ]);
+    expect(wrapper.find('.rc-select-selection-item').text()).toEqual('1');
+  });
 
-  // it('should show empty class', () => {
-  //   const wrapper = mount<Select>(<Select open={true} />);
-  //   expect(
-  //     wrapper
-  //       .find('.rc-select-dropdown')
-  //       .first()
-  //       .hasClass('rc-select-dropdown--single'),
-  //   ).toBeTruthy();
-  // });
+  it('not add open className when result is empty and no notFoundContent given', () => {
+    const wrapper = mount(<Select mode="combobox" notFoundContent={false} />);
+    wrapper.find('.rc-select-selector').simulate('mousedown');
+    expectOpen(wrapper, false);
+  });
+
+  it('should show empty class', () => {
+    const wrapper1 = mount(
+      <Select open>
+        <Select.Option value="bamboo">Bamboo</Select.Option>
+      </Select>,
+    );
+    expect(
+      wrapper1
+        .find('.rc-select-dropdown')
+        .first()
+        .hasClass('rc-select-dropdown-empty'),
+    ).toBeFalsy();
+
+    const wrapper2 = mount(<Select open />);
+    expect(
+      wrapper2
+        .find('.rc-select-dropdown')
+        .first()
+        .hasClass('rc-select-dropdown-empty'),
+    ).toBeTruthy();
+  });
 
   // it('should default select the right option', () => {
   //   const wrapper = mount<Select>(

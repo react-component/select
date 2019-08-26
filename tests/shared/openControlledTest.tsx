@@ -2,6 +2,7 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import Option from '../../src/Option';
 import Select from '../../src/Select';
+import { expectOpen } from '../utils/common';
 
 export default function openControlledTest(mode: any) {
   it('selectTriggerRef.props.visible should be equal to props.open', () => {
@@ -12,9 +13,10 @@ export default function openControlledTest(mode: any) {
         <Option value="22">22</Option>
       </Select>,
     );
-    expect(wrapper.find('.rc-select').hasClass('rc-select-open')).toBeTruthy();
+
+    expectOpen(wrapper);
     wrapper.setProps({ open: false });
     wrapper.update();
-    expect(wrapper.find('.rc-select').hasClass('rc-select-open')).toBeFalsy();
+    expectOpen(wrapper, false);
   });
 }

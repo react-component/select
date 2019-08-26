@@ -1,4 +1,4 @@
-import { SelectProps, RefSelectProps } from '../Select';
+import { SelectProps, RefSelectProps } from '../generate';
 
 // =================================== Shared Type ===================================
 export type Key = string | number;

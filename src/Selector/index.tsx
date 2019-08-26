@@ -152,4 +152,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   );
 };
 
-export default React.forwardRef<RefSelectorProps, SelectorProps>(Selector);
+const ForwardSelector = React.forwardRef<RefSelectorProps, SelectorProps>(Selector);
+ForwardSelector.displayName = 'Selector';
+
+export default ForwardSelector;
