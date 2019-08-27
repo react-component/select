@@ -573,7 +573,7 @@ export default function generateSelector<
     const onContainerFocus: React.FocusEventHandler<HTMLElement> = (...args) => {
       setMockFocused(true);
 
-      if (onFocus && !focusRef.current) {
+      if (!disabled && onFocus && !focusRef.current) {
         onFocus(...args);
       }
       focusRef.current = true;
@@ -584,7 +584,7 @@ export default function generateSelector<
         focusRef.current = false;
         onToggleOpen(false);
       });
-      if (onBlur) {
+      if (!disabled && onBlur) {
         onBlur(...args);
       }
     };

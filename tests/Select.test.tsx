@@ -8,7 +8,13 @@ import blurTest from './shared/blurTest';
 import keyDownTest from './shared/keyDownTest';
 import inputFilterTest from './shared/inputFilterTest';
 import openControlledTest from './shared/openControlledTest';
-import { expectOpen, toggleOpen, selectItem } from './utils/common';
+import {
+  expectOpen,
+  toggleOpen,
+  selectItem,
+  findSelection,
+  injectRunAllTimers,
+} from './utils/common';
 
 describe('Select', () => {
   focusTest('single', {});
@@ -16,6 +22,8 @@ describe('Select', () => {
   keyDownTest('single');
   inputFilterTest('single');
   openControlledTest('single');
+
+  injectRunAllTimers(jest);
 
   describe('render', () => {
     function genSelect(props?: Partial<SelectProps>) {
@@ -103,7 +111,7 @@ describe('Select', () => {
     expect(wrapper.find('Selector').props().values).toEqual([
       expect.objectContaining({ label: '1-label', value: '1' }),
     ]);
-    expect(wrapper.find('.rc-select-selection-item').text()).toEqual('1-label');
+    expect(findSelection(wrapper).text()).toEqual('1-label');
   });
 
   it('convert defaultValue to array', () => {
@@ -119,7 +127,7 @@ describe('Select', () => {
     expect(wrapper.find('Selector').props().values).toEqual([
       expect.objectContaining({ value: '1' }),
     ]);
-    expect(wrapper.find('.rc-select-selection-item').text()).toEqual('1');
+    expect(findSelection(wrapper).text()).toEqual('1');
   });
 
   it('not add open className when result is empty and no notFoundContent given', () => {
@@ -217,7 +225,7 @@ describe('Select', () => {
       </Select>,
     );
 
-    expect(wrapper.find('.rc-select-selection-item').props().children).toBe('1');
+    expect(findSelection(wrapper).text()).toBe('1');
   });
 
   it('filter options by "value" prop by default', () => {
@@ -394,7 +402,7 @@ describe('Select', () => {
         <Option value="2">Two</Option>
       </Select>,
     );
-    expect(wrapper.find('.rc-select-selection-item').text()).toEqual('One');
+    expect(findSelection(wrapper).text()).toEqual('One');
   });
 
   it('use label in props.defaultValue', () => {
@@ -403,7 +411,7 @@ describe('Select', () => {
         <Option value="2">Two</Option>
       </Select>,
     );
-    expect(wrapper.find('.rc-select-selection-item').text()).toEqual('One');
+    expect(findSelection(wrapper).text()).toEqual('One');
   });
 
   it('fires search event when user input', () => {
@@ -456,10 +464,8 @@ describe('Select', () => {
     // Should trigger onBlur
     wrapper.find('input').simulate('change', { target: { value: '3' } });
     expect(handleSearch).toHaveBeenCalledTimes(2);
-    act(() => {
-      wrapper.find('input').simulate('blur');
-      jest.runAllTimers();
-    });
+    wrapper.find('input').simulate('blur');
+    jest.runAllTimers();
     expect(handleSearch).toHaveBeenCalledTimes(3);
 
     jest.useRealTimers();
@@ -478,10 +484,8 @@ describe('Select', () => {
         </Select>,
       );
 
-      act(() => {
-        wrapper.find('input').simulate('focus');
-        jest.runAllTimers();
-      });
+      wrapper.find('input').simulate('focus');
+      jest.runAllTimers();
     });
 
     afterEach(() => {
@@ -517,10 +521,8 @@ describe('Select', () => {
       expect(focusSpy).toHaveBeenCalled();
 
       // We should mock trigger focus event since it not work in jsdom
-      act(() => {
-        wrapper.find('input').simulate('focus');
-        jest.runAllTimers();
-      });
+      wrapper.find('input').simulate('focus');
+      jest.runAllTimers();
     });
 
     afterEach(() => {
@@ -551,93 +553,84 @@ describe('Select', () => {
     });
   });
 
-  // describe('blur', () => {
-  //   let handleChange;
-  //   let handleBlur;
-  //   let wrapper;
+  describe('blur', () => {
+    let handleChange;
+    let handleBlur;
+    let wrapper;
 
-  //   beforeEach(() => {
-  //     handleChange = jest.fn();
-  //     handleBlur = jest.fn();
-  //     wrapper = mount<Select>(
-  //       <Select
-  //         onChange={handleChange}
-  //         onBlur={handleBlur}
-  //         showSearch={true}
-  //         optionLabelProp="children"
-  //       >
-  //         <Option value={1} key={1}>
-  //           1-text
-  //         </Option>
-  //         <Option value={2} key={2}>
-  //           2-text
-  //         </Option>
-  //       </Select>,
-  //     );
-  //     jest.useFakeTimers();
-  //     wrapper.find('input').simulate('change', { target: { value: '1' } });
-  //     wrapper.find('.rc-select').simulate('blur');
-  //     jest.runAllTimers();
-  //   });
+    beforeEach(() => {
+      jest.useFakeTimers();
 
-  //   it('will be auto select', () => {
-  //     expect(
-  //       wrapper
-  //         .update()
-  //         .find('.rc-select-selection-selected-value')
-  //         .text(),
-  //     ).toBe('1-text');
-  //   });
+      handleChange = jest.fn();
+      handleBlur = jest.fn();
+      wrapper = mount(
+        <Select
+          onChange={handleChange}
+          onBlur={handleBlur}
+          showSearch={true}
+          optionLabelProp="children"
+        >
+          <Option value={1} key={1}>
+            1-text
+          </Option>
+          <Option value={2} key={2}>
+            2-text
+          </Option>
+        </Select>,
+      );
 
-  //   it('set _focused to false', () => {
-  //     expect(wrapper.instance()._focused).toBe(false);
-  //   });
+      wrapper.find('input').simulate('focus');
+      wrapper.find('input').simulate('change', { target: { value: '1' } });
+      wrapper.find('input').simulate('blur');
 
-  //   it('fires change event', () => {
-  //     expect(handleChange).toBeCalledWith(1, expect.anything());
-  //   });
+      jest.runAllTimers();
+    });
 
-  //   it('fires blur event', () => {
-  //     expect(handleBlur).toBeCalled();
-  //   });
+    afterEach(() => {
+      jest.useRealTimers();
+    });
 
-  //   it('set className', () => {
-  //     expect(wrapper.find('.rc-select').getDOMNode().className).not.toContain('-focus');
-  //   });
+    it('fires blur event', () => {
+      expect(handleBlur).toBeCalled();
+    });
 
-  //   // Fix https://github.com/ant-design/ant-design/issues/6342
-  //   it('should be close when blur Select[showSearch=false]', () => {
-  //     wrapper = mount<Select>(
-  //       <Select showSearch={false}>
-  //         <Option value="1">1</Option>
-  //         <Option value="2">2</Option>
-  //       </Select>,
-  //     );
-  //     wrapper.find('.rc-select').simulate('click');
-  //     expect(wrapper.state().open).toBe(true);
-  //     wrapper.find('.rc-select').simulate('blur');
-  //     jest.runAllTimers();
-  //     expect(wrapper.state().open).toBe(false);
-  //   });
+    it('set className', () => {
+      expect(wrapper.find('.rc-select').getDOMNode().className).not.toContain('-focus');
+    });
 
-  //   // Fix https://github.com/ant-design/ant-design/issues/7720
-  //   it('should not trigger onFocus/onBlur when select is disabled', () => {
-  //     const onFocus = jest.fn();
-  //     const onBlur = jest.fn();
-  //     wrapper = mount<Select>(
-  //       <Select onFocus={onFocus} onBlur={onBlur} disabled={true}>
-  //         <Option value="1">1</Option>
-  //         <Option value="2">2</Option>
-  //       </Select>,
-  //     );
-  //     jest.useFakeTimers();
-  //     wrapper.find('.rc-select').simulate('focus');
-  //     wrapper.find('.rc-select').simulate('blur');
-  //     jest.runAllTimers();
-  //     expect(onFocus).not.toBeCalled();
-  //     expect(onBlur).not.toBeCalled();
-  //   });
-  // });
+    // Fix https://github.com/ant-design/ant-design/issues/6342
+    it('should be close when blur Select[showSearch=false]', () => {
+      wrapper = mount(
+        <Select showSearch={false}>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
+      toggleOpen(wrapper);
+      wrapper.find('input').simulate('blur');
+      jest.runAllTimers();
+      wrapper.update();
+      expectOpen(wrapper, false);
+    });
+
+    // Fix https://github.com/ant-design/ant-design/issues/7720
+    it('should not trigger onFocus/onBlur when select is disabled', () => {
+      const onFocus = jest.fn();
+      const onBlur = jest.fn();
+      wrapper = mount(
+        <Select onFocus={onFocus} onBlur={onBlur} disabled={true}>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
+      jest.useFakeTimers();
+      wrapper.find('input').simulate('focus');
+      wrapper.find('input').simulate('blur');
+      jest.runAllTimers();
+      expect(onFocus).not.toBeCalled();
+      expect(onBlur).not.toBeCalled();
+    });
+  });
 
   // describe('unmount', () => {
   //   let wrapper;
