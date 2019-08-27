@@ -7,7 +7,7 @@ import blurTest from './shared/blurTest';
 import keyDownTest from './shared/keyDownTest';
 import inputFilterTest from './shared/inputFilterTest';
 import openControlledTest from './shared/openControlledTest';
-import { expectOpen, toggleOpen } from './utils/common';
+import { expectOpen, toggleOpen, selectItem } from './utils/common';
 
 describe('Select', () => {
   focusTest('single', {});
@@ -359,88 +359,77 @@ describe('Select', () => {
     );
 
     toggleOpen(wrapper);
-    wrapper
-      .find('div.rc-select-item-option-content')
-      .first()
-      .simulate('click');
+    selectItem(wrapper);
     expect(handleChange).toBeCalledWith(
       { key: '1', value: '1', label: 'One' },
       { children: 'One', key: null, testprop: 'test', value: '1' },
     );
   });
 
-  // it('give right option when use OptGroup', () => {
-  //   const handleChange = jest.fn();
-  //   const wrapper = mount<Select>(
-  //     <Select onChange={handleChange} labelInValue={true} optionLabelProp="children">
-  //       <OptGroup label="grouplabel">
-  //         <Option value="1" testprop="test">
-  //           One
-  //         </Option>
-  //       </OptGroup>
-  //       <Option value="2">Two</Option>
-  //     </Select>,
-  //   );
+  it('give right option when use OptGroup', () => {
+    const handleChange = jest.fn();
+    const wrapper = mount(
+      <Select onChange={handleChange} labelInValue optionLabelProp="children">
+        <OptGroup label="grouplabel">
+          <Option value="1" testprop="test">
+            One
+          </Option>
+        </OptGroup>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
 
-  //   wrapper.find('.rc-select').simulate('click');
-  //   wrapper
-  //     .find('MenuItem')
-  //     .first()
-  //     .simulate('click');
-  //   expect(handleChange).toBeCalledWith(
-  //     { key: '1', label: 'One' },
-  //     <Option value="1" testprop="test">
-  //       One
-  //     </Option>,
-  //   );
-  // });
+    toggleOpen(wrapper);
+    selectItem(wrapper);
+    expect(handleChange).toBeCalledWith(
+      { key: '1', label: 'One', value: '1' },
+      { children: 'One', key: null, testprop: 'test', value: '1' },
+    );
+  });
 
-  // it('use label in props.value', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select labelInValue={true} value={{ key: 1, label: 'One' }}>
-  //       <Option value="2">Two</Option>
-  //     </Select>,
-  //   );
-  //   expect(wrapper.find('.rc-select-selection-selected-value').text()).toEqual('One');
-  // });
+  it('use label in props.value', () => {
+    const wrapper = mount(
+      <Select labelInValue value={{ key: 1, label: 'One' }}>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
+    expect(wrapper.find('.rc-select-selection-item').text()).toEqual('One');
+  });
 
-  // it('use label in props.defaultValue', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select labelInValue={true} defaultValue={{ key: 1, label: 'One' }}>
-  //       <Option value="2">Two</Option>
-  //     </Select>,
-  //   );
-  //   expect(wrapper.find('.rc-select-selection-selected-value').text()).toEqual('One');
-  // });
+  it('use label in props.defaultValue', () => {
+    const wrapper = mount(
+      <Select labelInValue defaultValue={{ key: 1, label: 'One' }}>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
+    expect(wrapper.find('.rc-select-selection-item').text()).toEqual('One');
+  });
 
-  // it('fires search event when user input', () => {
-  //   const handleSearch = jest.fn();
-  //   const wrapper = mount<Select>(
-  //     <Select showSearch={true} onSearch={handleSearch}>
-  //       <Option value="1">1</Option>
-  //       <Option value="2">2</Option>
-  //     </Select>,
-  //   );
+  it('fires search event when user input', () => {
+    const handleSearch = jest.fn();
+    const wrapper = mount(
+      <Select showSearch onSearch={handleSearch}>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
 
-  //   wrapper.find('input').simulate('change', { target: { value: '1' } });
-  //   expect(handleSearch).toBeCalledWith('1');
-  // });
+    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    expect(handleSearch).toBeCalledWith('1');
+  });
 
-  // it('not fires search event when user select', () => {
-  //   const handleSearch = jest.fn();
-  //   const wrapper = mount<Select>(
-  //     <Select showSearch={true} onSearch={handleSearch}>
-  //       <Option value="1">1</Option>
-  //       <Option value="2">2</Option>
-  //     </Select>,
-  //   );
-  //   wrapper.find('.rc-select').simulate('click');
-  //   wrapper
-  //     .find('MenuItem')
-  //     .first()
-  //     .simulate('click');
-  //   expect(handleSearch).not.toBeCalled();
-  // });
+  it('not fires search event when user select', () => {
+    const handleSearch = jest.fn();
+    const wrapper = mount(
+      <Select showSearch onSearch={handleSearch}>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    toggleOpen(wrapper);
+    selectItem(wrapper);
+    expect(handleSearch).not.toBeCalled();
+  });
 
   // // Should always trigger search event:
   // // https://github.com/ant-design/ant-design/issues/16223

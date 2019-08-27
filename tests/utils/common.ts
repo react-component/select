@@ -11,3 +11,10 @@ export function expectOpen(wrapper: any, open: boolean = true) {
 export function toggleOpen(wrapper: any) {
   wrapper.find('.rc-select-selector').simulate('mousedown');
 }
+
+export function selectItem(wrapper: any, index: number = 0) {
+  wrapper
+    .find('div.rc-select-item-option-content')
+    .at(index)
+    .simulate('click');
+}

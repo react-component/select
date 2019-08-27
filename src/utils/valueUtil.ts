@@ -101,9 +101,13 @@ export const getLabeledValue: GetLabeledValue<SelectOptionsType> = (
   let prevValItem: LabelValueType;
   const prevValues = toArray<RawValueType | LabelValueType>(prevValue);
   if (labelInValue) {
-    prevValItem = prevValues.find(
-      (prevItem: LabelValueType) => 'value' in prevItem && prevItem.value === value,
-    ) as LabelValueType;
+    prevValItem = prevValues.find((prevItem: LabelValueType) => {
+      if ('value' in prevItem) {
+        return prevItem.value === value;
+      }
+      // [Legacy] Support `key` as `value`
+      return prevItem.key === value;
+    }) as LabelValueType;
   }
 
   if (prevValItem && 'label' in prevValItem) {

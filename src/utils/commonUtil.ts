@@ -26,7 +26,7 @@ export function toInnerValue(
   const values = Array.isArray(value) ? value : [value];
 
   if (labelInValue) {
-    return values.map(item => (item as LabelValueType).value);
+    return values.map(({ key, value }: LabelValueType) => (value !== undefined ? value : key));
   }
 
   return values as RawValueType[];

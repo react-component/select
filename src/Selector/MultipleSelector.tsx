@@ -109,7 +109,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
 
   const selectionNode = (
     <CSSMotionList
-      component={React.Fragment}
+      component={false}
       keys={displayValues}
       motionName={choiceTransitionName}
       motionAppear={motionAppear}
