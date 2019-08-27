@@ -1,6 +1,7 @@
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import React from 'react';
+import { act } from 'react-dom/test-utils';
 import Select, { OptGroup, Option, SelectProps } from '../src';
 import focusTest from './shared/focusTest';
 import blurTest from './shared/blurTest';
@@ -431,110 +432,123 @@ describe('Select', () => {
     expect(handleSearch).not.toBeCalled();
   });
 
-  // // Should always trigger search event:
-  // // https://github.com/ant-design/ant-design/issues/16223
-  // // https://github.com/ant-design/ant-design/issues/10817
-  // it('should also fires extra search event when user search and select', () => {
-  //   const handleSearch = jest.fn();
-  //   const wrapper = mount<Select>(
-  //     <Select showSearch={true} onSearch={handleSearch}>
-  //       <Option value="1">1</Option>
-  //       <Option value="2">2</Option>
-  //     </Select>,
-  //   );
-  //   wrapper.find('input').simulate('change', { target: { value: '1' } });
-  //   expect(handleSearch).toHaveBeenCalledTimes(1);
+  // Should always trigger search event:
+  // https://github.com/ant-design/ant-design/issues/16223
+  // https://github.com/ant-design/ant-design/issues/10817
+  it('should also fires extra search event when user search and select', () => {
+    jest.useFakeTimers();
 
-  //   // Not fire onSearch when value selected
-  //   // https://github.com/ant-design/ant-design/pull/16235#issuecomment-487506523
-  //   wrapper
-  //     .find('MenuItem')
-  //     .first()
-  //     .simulate('click');
-  //   expect(handleSearch).toHaveBeenCalledTimes(1);
+    const handleSearch = jest.fn();
+    const wrapper = mount(
+      <Select showSearch onSearch={handleSearch}>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    expect(handleSearch).toHaveBeenCalledTimes(1);
 
-  //   // Should trigger onBlur
-  //   wrapper.find('input').simulate('change', { target: { value: '3' } });
-  //   expect(handleSearch).toHaveBeenCalledTimes(2);
-  //   wrapper.find('.rc-select').simulate('blur');
-  //   jest.runAllTimers();
-  //   expect(handleSearch).toHaveBeenCalledTimes(3);
-  // });
+    // Not fire onSearch when value selected
+    // https://github.com/ant-design/ant-design/pull/16235#issuecomment-487506523
+    selectItem(wrapper);
+    expect(handleSearch).toHaveBeenCalledTimes(1);
 
-  // describe('focus', () => {
-  //   let handleFocus;
-  //   let wrapper;
-  //   beforeEach(() => {
-  //     handleFocus = jest.fn();
-  //     wrapper = mount<Select>(
-  //       <Select onFocus={handleFocus} showSearch={false}>
-  //         <Option value="1">1</Option>
-  //         <Option value="2">2</Option>
-  //       </Select>,
-  //     );
-  //     jest.useFakeTimers();
-  //     wrapper.find('.rc-select').simulate('focus');
-  //     jest.runAllTimers();
-  //   });
+    // Should trigger onBlur
+    wrapper.find('input').simulate('change', { target: { value: '3' } });
+    expect(handleSearch).toHaveBeenCalledTimes(2);
+    wrapper.find('input').simulate('blur');
+    jest.runAllTimers();
+    expect(handleSearch).toHaveBeenCalledTimes(3);
 
-  //   it('set _focused to true', () => {
-  //     expect(wrapper.instance()._focused).toBe(true);
-  //   });
+    jest.useRealTimers();
+  });
 
-  //   it('fires focus event', () => {
-  //     expect(handleFocus).toBeCalled();
-  //     expect(handleFocus.mock.calls.length).toBe(1);
-  //   });
+  describe('focus', () => {
+    let handleFocus;
+    let wrapper;
+    beforeEach(() => {
+      jest.useFakeTimers();
+      handleFocus = jest.fn();
+      wrapper = mount(
+        <Select onFocus={handleFocus} showSearch={false}>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
 
-  //   it('set className', () => {
-  //     expect(wrapper.find('.rc-select').getDOMNode().className).toContain('-focus');
-  //   });
-  // });
+      act(() => {
+        wrapper.find('input').simulate('focus');
+        jest.runAllTimers();
+      });
+    });
 
-  // describe('click input will trigger focus', () => {
-  //   let handleFocus;
-  //   let wrapper;
-  //   beforeEach(() => {
-  //     handleFocus = jest.fn();
-  //     wrapper = mount<Select>(
-  //       <Select onFocus={handleFocus}>
-  //         <Option value="1">1</Option>
-  //         <Option value="2">2</Option>
-  //       </Select>,
-  //     );
-  //     jest.useFakeTimers();
-  //     wrapper.find('.rc-select input').simulate('click');
-  //     jest.runAllTimers();
-  //   });
+    afterEach(() => {
+      jest.useRealTimers();
+    });
 
-  //   it('set _focused to true', () => {
-  //     expect(wrapper.instance()._focused).toBe(true);
-  //   });
+    it('fires focus event', () => {
+      expect(handleFocus).toBeCalled();
+      expect(handleFocus.mock.calls.length).toBe(1);
+    });
 
-  //   it('fires focus event', () => {
-  //     expect(handleFocus).toBeCalled();
-  //     expect(handleFocus.mock.calls.length).toBe(1);
-  //   });
+    it('set className', () => {
+      expect(wrapper.find('.rc-select').getDOMNode().className).toContain('-focus');
+    });
+  });
 
-  //   it('set className', () => {
-  //     expect(wrapper.find('.rc-select').getDOMNode().className).toContain('-focus');
-  //   });
+  describe('click input will trigger focus', () => {
+    let handleFocus;
+    let wrapper;
+    beforeEach(() => {
+      jest.useFakeTimers();
+      handleFocus = jest.fn();
+      wrapper = mount(
+        <Select onFocus={handleFocus}>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
 
-  //   it('click placeholder should trigger onFocus', () => {
-  //     const handleFocus2 = jest.fn();
-  //     const wrapper2 = mount<Select>(
-  //       <Select onFocus={handleFocus2} placeholder="xxxx">
-  //         <Option value="1">1</Option>
-  //         <Option value="2">2</Option>
-  //       </Select>,
-  //     );
-  //     jest.useFakeTimers();
-  //     wrapper2.find('.rc-select-selection__placeholder').simulate('click');
-  //     jest.runAllTimers();
-  //     expect(handleFocus2.mock.calls).toHaveLength(1);
-  //     expect(handleFocus2).toBeCalled();
-  //   });
-  // });
+      const focusSpy = jest.spyOn(wrapper.find('input').instance(), 'focus');
+
+      wrapper.find('.rc-select-selector').simulate('click');
+      expect(focusSpy).toHaveBeenCalled();
+
+      // We should mock trigger focus event since it not work in jsdom
+      act(() => {
+        wrapper.find('input').simulate('focus');
+        jest.runAllTimers();
+      });
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('fires focus event', () => {
+      expect(handleFocus).toBeCalled();
+      expect(handleFocus.mock.calls.length).toBe(1);
+    });
+
+    it('set className', () => {
+      expect(wrapper.find('.rc-select').getDOMNode().className).toContain('-focus');
+    });
+
+    //   it('click placeholder should trigger onFocus', () => {
+    //     const handleFocus2 = jest.fn();
+    //     const wrapper2 = mount<Select>(
+    //       <Select onFocus={handleFocus2} placeholder="xxxx">
+    //         <Option value="1">1</Option>
+    //         <Option value="2">2</Option>
+    //       </Select>,
+    //     );
+    //     jest.useFakeTimers();
+    //     wrapper2.find('.rc-select-selection__placeholder').simulate('click');
+    //     jest.runAllTimers();
+    //     expect(handleFocus2.mock.calls).toHaveLength(1);
+    //     expect(handleFocus2).toBeCalled();
+    //   });
+  });
 
   // describe('blur', () => {
   //   let handleChange;
