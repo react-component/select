@@ -39,6 +39,7 @@ import {
 } from './utils/valueUtil';
 import generateSelector, { SelectProps } from './generate';
 import { DefaultValueType } from './interface/generator';
+import warningProps from './utils/warningPropsUtil';
 
 interface SelectStaticProps {
   Option: typeof Option;
@@ -59,6 +60,7 @@ const Select = generateSelector<SelectOptionsType, SelectStaticProps>({
   filterOptions: selectDefaultFilterOptions,
   isValueDisabled: isSelectValueDisabled,
   findValueOption: findSelectValueOption,
+  warningProps,
 });
 
 export type SelectProps<ValueType extends DefaultValueType = DefaultValueType> = SelectProps<

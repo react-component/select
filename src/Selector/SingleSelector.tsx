@@ -47,6 +47,7 @@ const SingleSelector: React.FC<SelectorProps> = ({
           ref={inputRef}
           prefixCls={prefixCls}
           id={id}
+          open={open}
           inputElement={inputElement}
           disabled={disabled}
           autoFocus={autoFocus}

@@ -30,7 +30,6 @@ import TransBtn from './TransBtn';
 import { useLock } from './hooks/useLock';
 import useDelayReset from './hooks/useDelayReset';
 import useLayoutEffect from './hooks/useLayoutEffect';
-import { usePropsWarning } from './hooks/usePropsWarning';
 import { getSeparatedContent } from './utils/valueUtil';
 
 export interface RefSelectProps {
@@ -152,6 +151,7 @@ export interface GenerateConfig<OptionsType extends object[], StaticProps> {
   findValueOption: (values: RawValueType[], options: OptionsType) => OptionsType;
   /** Check if a value is disabled */
   isValueDisabled: (value: RawValueType, options: OptionsType) => boolean;
+  warningProps: (props: SelectProps<OptionsType, any>) => void;
 }
 
 /**
@@ -179,6 +179,7 @@ export default function generateSelector<
     filterOptions,
     isValueDisabled,
     findValueOption,
+    warningProps,
   } = config;
 
   // Use raw define since `React.FC` not support generic
@@ -685,18 +686,9 @@ export default function generateSelector<
     }
 
     // ============================ Warning =============================
-    usePropsWarning({
-      mode,
-      options: mergedOptions,
-      backfill,
-      allowClear,
-      placeholder,
-      getInputElement,
-      showSearch: mergedShowSearch,
-      onSearch,
-      autoFocus,
-      defaultOpen,
-    });
+    if (process.env.NODE_ENV !== 'production') {
+      warningProps(props);
+    }
 
     // ============================= Render =============================
     const mergedClassName = classNames(prefixCls, className, {

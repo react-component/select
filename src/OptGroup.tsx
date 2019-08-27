@@ -7,11 +7,11 @@ export interface OptGroupProps extends Omit<OptionGroupData, 'options'> {
 
 interface OptionGroupFC extends React.FC<OptGroupProps> {
   /** Legacy for check if is a Option Group */
-  isOptionGroup: boolean;
+  isSelectOptGroup: boolean;
 }
 
 /** This is a placeholder, not real render in dom */
 const OptGroup: OptionGroupFC = () => null;
-OptGroup.isOptionGroup = true;
+OptGroup.isSelectOptGroup = true;
 
 export default OptGroup;

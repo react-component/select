@@ -26,14 +26,14 @@ export function convertChildrenToData(
       }
 
       const {
-        type: { isOptionGroup },
+        type: { isSelectOptGroup },
         key,
         props: { children, ...restProps },
       } = node as React.ReactElement & {
-        type: { isOptionGroup?: boolean };
+        type: { isSelectOptGroup?: boolean };
       };
 
-      if (optionOnly || !isOptionGroup) {
+      if (optionOnly || !isSelectOptGroup) {
         return convertNodeToOption(node);
       }
 

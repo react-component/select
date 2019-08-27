@@ -11,6 +11,7 @@ interface InputProps {
   editable: boolean;
   accessibilityIndex: number;
   value: string;
+  open: boolean;
 
   onKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
@@ -28,10 +29,13 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     value,
     onKeyDown,
     onChange,
+    open,
   },
   ref,
 ) => {
   let inputNode: React.ReactElement = inputElement || <input />;
+
+  const { onKeyDown: onOriginKeyDown, onChange: onOriginChange } = inputNode.props;
 
   inputNode = React.cloneElement(inputNode, {
     ref,
@@ -48,8 +52,18 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     'aria-controls': `${id}_list`,
     'aria-activedescendant': `${id}_list_${accessibilityIndex}`,
     value: editable ? value : '',
-    onKeyDown,
-    onChange,
+    onKeyDown: (event: React.KeyboardEvent<any>) => {
+      onKeyDown(event);
+      if (onOriginKeyDown) {
+        onOriginKeyDown(event);
+      }
+    },
+    onChange: (event: React.ChangeEvent<any>) => {
+      onChange(event);
+      if (onOriginChange) {
+        onOriginChange(event);
+      }
+    },
   });
 
   return inputNode;

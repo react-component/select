@@ -156,6 +156,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
       <span className={`${prefixCls}-selection-search`} style={{ width: inputWidth }}>
         <Input
           ref={inputRef}
+          open={open}
           prefixCls={prefixCls}
           id={id}
           inputElement={null}

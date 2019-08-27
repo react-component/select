@@ -217,12 +217,14 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
         onScroll={onScroll}
       >
         {({ group, groupOption, data }, itemIndex) => {
-          const { label } = data;
+          const { label, key } = data;
 
           // Group
           if (group) {
             return (
-              <div className={classNames(itemPrefixCls, `${itemPrefixCls}-group`)}>{label}</div>
+              <div className={classNames(itemPrefixCls, `${itemPrefixCls}-group`)}>
+                {label !== undefined ? label : key}
+              </div>
             );
           }
 

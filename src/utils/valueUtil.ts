@@ -6,13 +6,7 @@ import {
   FlattenOptionData,
   OptionsType,
 } from '../interface';
-import {
-  LabelValueType,
-  FilterFunc,
-  RawValueType,
-  DefaultValueType,
-  GetLabeledValue,
-} from '../interface/generator';
+import { LabelValueType, FilterFunc, RawValueType, GetLabeledValue } from '../interface/generator';
 
 import { toArray } from './commonUtil';
 
@@ -79,7 +73,7 @@ export function findValueOption(values: RawValueType[], options: SelectOptionsTy
         optionMap.set(subOption.value, subOption);
       })
     ) {
-      return true;
+      return;
     }
 
     // Check if match
@@ -102,7 +96,7 @@ export const getLabeledValue: GetLabeledValue<SelectOptionsType> = (
   const prevValues = toArray<RawValueType | LabelValueType>(prevValue);
   if (labelInValue) {
     prevValItem = prevValues.find((prevItem: LabelValueType) => {
-      if ('value' in prevItem) {
+      if (typeof prevItem === 'object' && 'value' in prevItem) {
         return prevItem.value === value;
       }
       // [Legacy] Support `key` as `value`
@@ -110,7 +104,7 @@ export const getLabeledValue: GetLabeledValue<SelectOptionsType> = (
     }) as LabelValueType;
   }
 
-  if (prevValItem && 'label' in prevValItem) {
+  if (prevValItem && typeof prevValItem === 'object' && 'label' in prevValItem) {
     result.label = prevValItem.label;
 
     if (
@@ -138,7 +132,7 @@ function getFilterFunction(optionFilterProp: string) {
   return (searchValue: string, option: OptionData) => {
     const rawValue = option[optionFilterProp];
     const value = String(Array.isArray(rawValue) ? rawValue.join('') : rawValue).toLowerCase();
-    return value.includes(searchValue.toLowerCase());
+    return value.includes(searchValue.toLowerCase()) && !option.disabled;
   };
 }
 
