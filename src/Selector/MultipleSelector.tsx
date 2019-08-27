@@ -6,6 +6,7 @@ import { LabelValueType, RawValueType } from '../interface/generator';
 import { RenderNode } from '../interface';
 import { InnerSelectorProps } from '.';
 import Input from './Input';
+import useLayoutEffect from '../hooks/useLayoutEffect';
 
 const REST_TAG_KEY = '__RC_SELECT_MAX_REST_COUNT__';
 
@@ -65,7 +66,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
   const inputEditable: boolean = mode === 'tags' || (open && showSearch);
 
   // We measure width and set to the input immediately
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     setInputWidth(measureRef.current.scrollWidth);
   }, [searchValue]);
 

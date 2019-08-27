@@ -29,6 +29,7 @@ import { toInnerValue, toOuterValues, removeLastEnabledValue } from './utils/com
 import TransBtn from './TransBtn';
 import { useLock } from './hooks/useLock';
 import useDelayReset from './hooks/useDelayReset';
+import useLayoutEffect from './hooks/useLayoutEffect';
 import { usePropsWarning } from './hooks/usePropsWarning';
 import { getSeparatedContent } from './utils/valueUtil';
 
@@ -625,7 +626,7 @@ export default function generateSelector<
     const containerRef = React.useRef<HTMLDivElement>(null);
     const [containerWidth, setContainerWidth] = React.useState(null);
 
-    React.useLayoutEffect(() => {
+    useLayoutEffect(() => {
       const newWidth = Math.ceil(containerRef.current.offsetWidth);
       if (containerWidth !== newWidth) {
         setContainerWidth(newWidth);
