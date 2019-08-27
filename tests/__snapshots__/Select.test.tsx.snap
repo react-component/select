@@ -31,12 +31,12 @@ exports[`Select no search 1`] = `
   </div>
   <span
     aria-hidden="true"
-    class="rc-select-selection-arrow"
+    class="rc-select-arrow"
     style="user-select:none;-webkit-user-select:none"
     unselectable="on"
   >
     <span
-      class="rc-select-selection-arrow-icon"
+      class="rc-select-arrow-icon"
     />
   </span>
 </div>
@@ -75,22 +75,22 @@ exports[`Select render renders aria-attributes correctly 1`] = `
   </div>
   <span
     aria-hidden="true"
-    class="antd-selection-arrow"
+    class="antd-arrow"
     style="user-select:none;-webkit-user-select:none"
     unselectable="on"
   >
     <span
-      class="antd-selection-arrow-icon"
+      class="antd-arrow-icon"
     />
   </span>
   <span
     aria-hidden="true"
-    class="antd-selection-clear"
+    class="antd-clear"
     style="user-select:none;-webkit-user-select:none"
     unselectable="on"
   >
     <span
-      class="antd-selection-clear-icon"
+      class="antd-clear-icon"
     >
       ×
     </span>
@@ -129,22 +129,22 @@ exports[`Select render renders correctly 1`] = `
   </div>
   <span
     aria-hidden="true"
-    class="antd-selection-arrow"
+    class="antd-arrow"
     style="user-select:none;-webkit-user-select:none"
     unselectable="on"
   >
     <span
-      class="antd-selection-arrow-icon"
+      class="antd-arrow-icon"
     />
   </span>
   <span
     aria-hidden="true"
-    class="antd-selection-clear"
+    class="antd-clear"
     style="user-select:none;-webkit-user-select:none"
     unselectable="on"
   >
     <span
-      class="antd-selection-clear-icon"
+      class="antd-clear-icon"
     >
       ×
     </span>
@@ -185,22 +185,22 @@ exports[`Select render renders data-attributes correctly 1`] = `
   </div>
   <span
     aria-hidden="true"
-    class="antd-selection-arrow"
+    class="antd-arrow"
     style="user-select:none;-webkit-user-select:none"
     unselectable="on"
   >
     <span
-      class="antd-selection-arrow-icon"
+      class="antd-arrow-icon"
     />
   </span>
   <span
     aria-hidden="true"
-    class="antd-selection-clear"
+    class="antd-clear"
     style="user-select:none;-webkit-user-select:none"
     unselectable="on"
   >
     <span
-      class="antd-selection-clear-icon"
+      class="antd-clear-icon"
     >
       ×
     </span>
@@ -240,22 +240,22 @@ exports[`Select render renders disabled select correctly 1`] = `
   </div>
   <span
     aria-hidden="true"
-    class="antd-selection-arrow"
+    class="antd-arrow"
     style="user-select:none;-webkit-user-select:none"
     unselectable="on"
   >
     <span
-      class="antd-selection-arrow-icon"
+      class="antd-arrow-icon"
     />
   </span>
   <span
     aria-hidden="true"
-    class="antd-selection-clear"
+    class="antd-clear"
     style="user-select:none;-webkit-user-select:none"
     unselectable="on"
   >
     <span
-      class="antd-selection-clear-icon"
+      class="antd-clear-icon"
     >
       ×
     </span>
@@ -412,22 +412,22 @@ exports[`Select render renders dropdown correctly 1`] = `
   </div>
   <span
     aria-hidden="true"
-    class="antd-selection-arrow"
+    class="antd-arrow"
     style="user-select:none;-webkit-user-select:none"
     unselectable="on"
   >
     <span
-      class="antd-selection-arrow-icon"
+      class="antd-arrow-icon"
     />
   </span>
   <span
     aria-hidden="true"
-    class="antd-selection-clear"
+    class="antd-clear"
     style="user-select:none;-webkit-user-select:none"
     unselectable="on"
   >
     <span
-      class="antd-selection-clear-icon"
+      class="antd-clear-icon"
     >
       ×
     </span>
@@ -467,22 +467,22 @@ exports[`Select render renders role prop correctly 1`] = `
   </div>
   <span
     aria-hidden="true"
-    class="antd-selection-arrow"
+    class="antd-arrow"
     style="user-select:none;-webkit-user-select:none"
     unselectable="on"
   >
     <span
-      class="antd-selection-arrow-icon"
+      class="antd-arrow-icon"
     />
   </span>
   <span
     aria-hidden="true"
-    class="antd-selection-clear"
+    class="antd-clear"
     style="user-select:none;-webkit-user-select:none"
     unselectable="on"
   >
     <span
-      class="antd-selection-clear-icon"
+      class="antd-clear-icon"
     >
       ×
     </span>
@@ -603,12 +603,12 @@ exports[`Select should contain falsy children 1`] = `
   </div>
   <span
     aria-hidden="true"
-    class="rc-select-selection-arrow"
+    class="rc-select-arrow"
     style="user-select:none;-webkit-user-select:none"
     unselectable="on"
   >
     <span
-      class="rc-select-selection-arrow-icon"
+      class="rc-select-arrow-icon"
     />
   </span>
 </div>

@@ -149,7 +149,7 @@ export interface GenerateConfig<OptionsType extends object[], StaticProps> {
   /** Convert single raw value into { label, value } format. Will be called by each value */
   getLabeledValue: GetLabeledValue<OptionsType>;
   filterOptions: FilterOptions<OptionsType>;
-  findValueOption: (values: RawValueType[], options: OptionsType) => OptionsType[number];
+  findValueOption: (values: RawValueType[], options: OptionsType) => OptionsType;
   /** Check if a value is disabled */
   isValueDisabled: (value: RawValueType, options: OptionsType) => boolean;
 }
@@ -666,7 +666,7 @@ export default function generateSelector<
     if (allowClear && (mergedRawValue.length || mergedSearchValue)) {
       clearNode = (
         <TransBtn
-          className={`${prefixCls}-selection-clear`}
+          className={`${prefixCls}-clear`}
           onMouseDown={onClearMouseDown}
           customizeIcon={clearIcon}
         >
@@ -681,7 +681,7 @@ export default function generateSelector<
     let arrowNode: React.ReactNode;
 
     if (mergedShowArrow) {
-      arrowNode = <TransBtn className={`${prefixCls}-selection-arrow`} customizeIcon={inputIcon} />;
+      arrowNode = <TransBtn className={`${prefixCls}-arrow`} customizeIcon={inputIcon} />;
     }
 
     // ============================ Warning =============================

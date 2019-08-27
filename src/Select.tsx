@@ -45,7 +45,7 @@ interface SelectStaticProps {
   OptGroup: typeof OptGroup;
 }
 
-export default generateSelector<SelectOptionsType, SelectStaticProps>({
+const Select = generateSelector<SelectOptionsType, SelectStaticProps>({
   prefixCls: 'rc-select',
   components: {
     optionList: SelectOptionList,
@@ -65,3 +65,5 @@ export type SelectProps<ValueType extends DefaultValueType = DefaultValueType> =
   SelectOptionsType,
   ValueType
 >;
+
+export default Select;

@@ -195,7 +195,7 @@ describe('Select', () => {
         <Option value="2">2</Option>
       </Select>,
     );
-    expect(wrapper1.find('.rc-select-selection-clear-icon').length).toBeTruthy();
+    expect(wrapper1.find('.rc-select-clear-icon').length).toBeTruthy();
 
     const wrapper2 = mount(
       <Select allowClear>
@@ -203,7 +203,7 @@ describe('Select', () => {
         <Option value="2">2</Option>
       </Select>,
     );
-    expect(wrapper2.find('.rc-select-selection-clear-icon').length).toBeFalsy();
+    expect(wrapper2.find('.rc-select-clear-icon').length).toBeFalsy();
   });
 
   it('should not response click event when select is disabled', () => {
@@ -349,7 +349,7 @@ describe('Select', () => {
 
     wrapper.find('input').simulate('change', { target: { value: 'foo' } });
     wrapper
-      .find('.rc-select-selection-clear')
+      .find('.rc-select-clear')
       .last()
       .simulate('mousedown');
     expect(handleChange).toBeCalledWith(undefined, undefined);
@@ -632,106 +632,57 @@ describe('Select', () => {
     });
   });
 
-  // describe('unmount', () => {
-  //   let wrapper;
-  //   let instance;
+  [KeyCode.ENTER, KeyCode.DOWN].forEach(keyCode => {
+    it('open on key press', () => {
+      const wrapper = mount(<Select />);
+      wrapper.find('input').simulate('keyDown', { keyCode });
+      expectOpen(wrapper);
+    });
+  });
 
-  //   beforeEach(() => {
-  //     wrapper = mount<Select>(
-  //       <Select>
-  //         <Option value="1">1</Option>
-  //         <Option value="2">2</Option>
-  //       </Select>,
-  //     );
-  //     instance = wrapper.instance();
-  //   });
+  it('close on ESC', () => {
+    const wrapper = mount(<Select />);
+    toggleOpen(wrapper);
+    wrapper
+      .find('input')
+      .simulate('change', { target: { value: 'foo' } })
+      .simulate('keyDown', { which: KeyCode.ESC });
 
-  //   it('clear blur timer', () => {
-  //     wrapper.find('.rc-select').simulate('blur');
+    wrapper.update();
 
-  //     expect(instance.blurTimer).toBeTruthy();
-  //     instance.componentWillUnmount();
-  //     expect(instance.blurTimer).toBe(null);
-  //   });
+    expect(wrapper.find('input').props().value).toBe('');
+    expectOpen(wrapper, false);
+  });
 
-  //   it('clear dropdownContainer', () => {
-  //     instance.getDropdownContainer();
+  it('close after select', () => {
+    const wrapper = mount(
+      <Select>
+        <Option value="1">1</Option>
+      </Select>,
+    );
 
-  //     expect(instance.dropdownContainer).toBeTruthy();
-  //     instance.componentWillUnmount();
-  //     expect(instance.dropdownContainer).toBe(null);
-  //   });
-  // });
+    toggleOpen(wrapper);
+    expectOpen(wrapper);
 
-  // [KeyCode.ENTER, KeyCode.DOWN].forEach(keyCode => {
-  //   it('open on key press', () => {
-  //     const wrapper = mount<Select>(<Select />);
-  //     wrapper.find('.rc-select-selection').simulate('keyDown', { keyCode });
-  //     expect(wrapper.state().open).toBe(true);
-  //   });
-  // });
+    selectItem(wrapper);
+    expectOpen(wrapper, false);
+  });
 
-  // it('pass event to input', () => {
-  //   const wrapper = mount<Select>(<Select showSearch={false} />);
-  //   wrapper.instance().onInputKeyDown = jest.fn();
-  //   wrapper.find('.rc-select').simulate('click');
-  //   wrapper.find('.rc-select-selection').simulate('keyDown');
+  it('Controlled opening', () => {
+    const wrapper = mount(
+      <Select open>
+        <Option value="1">1</Option>
+      </Select>,
+    );
+    expectOpen(wrapper);
+    selectItem(wrapper);
+    expectOpen(wrapper);
 
-  //   expect(wrapper.instance().onInputKeyDown).toBeCalled();
-  // });
-
-  // it('close on ESC', () => {
-  //   const wrapper = mount<Select>(<Select />);
-  //   wrapper.find('.rc-select').simulate('click');
-  //   wrapper
-  //     .find('input')
-  //     .simulate('change', { target: { value: 'foo' } })
-  //     .simulate('keyDown', { keyCode: KeyCode.ESC });
-
-  //   expect(wrapper.state().inputValue).toBe('');
-  //   // 下面不知道为什么会失败
-  //   // expect(wrapper.state().open).toBe(false);
-  // });
-
-  // it('close after select', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select>
-  //       <Option value="1">1</Option>
-  //     </Select>,
-  //   );
-
-  //   wrapper.find('.rc-select').simulate('click');
-  //   expect(wrapper.state().open).toBe(true);
-
-  //   wrapper.find('MenuItem').simulate('click');
-  //   expect(wrapper.state().open).toBe(false);
-  // });
-
-  // it('open by arrow click', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select>
-  //       <Option value="1">1</Option>
-  //     </Select>,
-  //   );
-
-  //   wrapper.find('.rc-select-arrow').simulate('click');
-  //   expect(wrapper.state().open).toBe(true);
-  // });
-
-  // it('Controlled opening', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select open={true}>
-  //       <Option value="1">1</Option>
-  //     </Select>,
-  //   );
-  //   expect(wrapper.state().open).toBe(true);
-  //   wrapper.find('MenuItem').simulate('click');
-  //   expect(wrapper.state().open).toBe(true);
-
-  //   wrapper.setProps({ open: false });
-  //   wrapper.find('.rc-select').simulate('click');
-  //   expect(wrapper.state().open).toBe(false);
-  // });
+    wrapper.setProps({ open: false });
+    expectOpen(wrapper, false);
+    selectItem(wrapper);
+    expectOpen(wrapper, false);
+  });
 
   // it('Controlled onDropdownVisibleChange', () => {
   //   class Controlled extends React.Component {
