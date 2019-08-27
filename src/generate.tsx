@@ -54,6 +54,7 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   labelInValue?: boolean;
 
   // Search
+  inputValue?: string;
   searchValue?: string;
   optionFilterProp?: string;
   /**
@@ -102,11 +103,11 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   onDropdownVisibleChange?: (open: boolean) => void;
   onSelect?: (
     value: ValueType extends (infer SingleValueType)[] ? SingleValueType : ValueType,
-    option: JSX.Element | JSX.Element[],
+    option: OptionsType[number],
   ) => void;
   onDeselect?: (
     value: ValueType extends (infer SingleValueType)[] ? SingleValueType : ValueType,
-    option: JSX.Element | JSX.Element[],
+    option: OptionsType[number],
   ) => void;
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
 
@@ -117,7 +118,6 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   optionLabelProp?: string;
   open?: boolean;
   defaultOpen?: boolean;
-  inputValue?: string;
   onClick?: React.MouseEventHandler;
   onChange?: (value: ValueType, option: OptionsType[number] | OptionsType) => void;
   onBlur?: React.FocusEventHandler<HTMLElement>;
@@ -204,6 +204,7 @@ export default function generateSelector<
 
       // Search related
       showSearch,
+      inputValue,
       searchValue,
       filterOption,
       optionFilterProp = 'value',
@@ -301,7 +302,12 @@ export default function generateSelector<
     // Set by option list active, it will merge into search input when mode is `combobox`
     const [activeValue, setActiveValue] = React.useState<string>(null);
     const [innerSearchValue, setInnerSearchValue] = React.useState('');
-    const mergedSearchValue = searchValue !== undefined ? searchValue : innerSearchValue;
+    let mergedSearchValue = innerSearchValue;
+    if (searchValue !== undefined) {
+      mergedSearchValue = searchValue;
+    } else if (inputValue) {
+      mergedSearchValue = inputValue;
+    }
 
     const mergedOptions = React.useMemo<OptionsType>((): OptionsType => {
       if (options !== undefined) {
@@ -420,11 +426,12 @@ export default function generateSelector<
         : newValue;
 
       // TODO: second param
+      const outOption = findValueOption([newValue], mergedOptions)[0];
       // Single mode always trigger `onSelect`
       if ((!isMultiple || selected) && onSelect) {
-        onSelect(selectValue, null);
+        onSelect(selectValue, outOption);
       } else if (!selected && onDeselect) {
-        onDeselect(selectValue, null);
+        onDeselect(selectValue, outOption);
       }
 
       // Clean search value if single or configured

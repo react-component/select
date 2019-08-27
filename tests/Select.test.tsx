@@ -837,143 +837,138 @@ describe('Select', () => {
     errorSpy.mockRestore();
   });
 
-  // it('filterOption could be true as described in default value', () => {
-  //   const wrapper = render(
-  //     <Select inputValue="3" filterOption={true} open={true}>
-  //       <Option value="1">1</Option>
-  //       <Option value="2">2</Option>
-  //     </Select>,
-  //   );
+  it('filterOption could be true as described in default value', () => {
+    const wrapper = mount(
+      <Select searchValue="3" filterOption open>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
 
-  //   expect(wrapper).toMatchSnapshot();
-  // });
+    expect(wrapper.render()).toMatchSnapshot();
+  });
 
-  // it('does not filter when filterOption value is false', () => {
-  //   const wrapper = render(
-  //     <Select inputValue="1" filterOption={false} open={true}>
-  //       <Option value="1">1</Option>
-  //       <Option value="2">2</Option>
-  //     </Select>,
-  //   );
+  it('does not filter when filterOption value is false', () => {
+    const wrapper = render(
+      <Select searchValue="1" filterOption={false} open>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
 
-  //   expect(wrapper).toMatchSnapshot();
-  // });
+    expect(wrapper).toMatchSnapshot();
+  });
 
-  // it('backfill', () => {
-  //   const triggerQueue: string[] = [];
-  //   const handleChange = jest.fn(() => {
-  //     triggerQueue.push('change');
-  //   });
-  //   const handleSelect = jest.fn(() => {
-  //     triggerQueue.push('select');
-  //   });
-  //   const wrapper = mount<Select>(
-  //     <Select
-  //       backfill={true}
-  //       open={true}
-  //       onChange={handleChange}
-  //       onSelect={handleSelect}
-  //       optionLabelProp="children"
-  //     >
-  //       <Option value="1">One</Option>
-  //       <Option value="2">Two</Option>
-  //     </Select>,
-  //   );
+  it('backfill', () => {
+    const triggerQueue: string[] = [];
+    const handleChange = jest.fn(() => {
+      triggerQueue.push('change');
+    });
+    const handleSelect = jest.fn(() => {
+      triggerQueue.push('select');
+    });
+    const wrapper = mount(
+      <Select
+        backfill
+        open
+        mode="combobox"
+        onChange={handleChange}
+        onSelect={handleSelect}
+        optionLabelProp="children"
+      >
+        <Option value="1">One</Option>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
 
-  //   const input = wrapper.find('input');
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
 
-  //   input.simulate('keyDown', { keyCode: KeyCode.DOWN });
+    expect(wrapper.find('input').props().value).toEqual('2');
+    expect(handleChange).not.toBeCalled();
+    expect(handleSelect).not.toBeCalled();
 
-  //   expect(wrapper.state().value).toEqual(['2']);
-  //   expect(wrapper.state().backfillValue).toEqual('2');
-  //   expect(handleChange).not.toBeCalled();
-  //   expect(handleSelect).not.toBeCalled();
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
 
-  //   input.simulate('keyDown', { keyCode: KeyCode.ENTER });
+    expect(wrapper.find('input').props().value).toEqual('2');
+    expect(handleChange).toBeCalledWith('2', expect.anything());
+    expect(handleSelect).toBeCalledWith('2', expect.anything());
 
-  //   expect(wrapper.state().value).toEqual(['2']);
-  //   expect(handleChange).toBeCalledWith('2', expect.anything());
-  //   expect(handleSelect).toBeCalledWith('2', expect.anything());
-  //   expect(wrapper.find('.rc-select-selection-selected-value').text()).toEqual('Two');
+    expect(triggerQueue).toEqual(['change', 'select']);
+  });
 
-  //   expect(triggerQueue).toEqual(['change', 'select']);
-  // });
+  describe('number value', () => {
+    it('support number value', () => {
+      const handleChange = jest.fn();
 
-  // describe('number value', () => {
-  //   it('support number value', () => {
-  //     const handleChange = jest.fn();
+      const wrapper = mount(
+        <Select defaultValue={1} onChange={handleChange}>
+          <Option value={1}>1</Option>
+          <Option value={2}>2</Option>
+        </Select>,
+      );
 
-  //     const wrapper = mount<Select>(
-  //       <Select defaultValue={1} onChange={handleChange}>
-  //         <Option value={1}>1</Option>
-  //         <Option value={2}>2</Option>
-  //       </Select>,
-  //     );
+      expect(findSelection(wrapper).text()).toEqual('1');
 
-  //     expect(wrapper.find('.rc-select-selection-selected-value').text()).toBe('1');
+      toggleOpen(wrapper);
+      selectItem(wrapper, 1);
+      expect(handleChange).toBeCalledWith(2, expect.anything());
+      expect(findSelection(wrapper).text()).toEqual('2');
+    });
 
-  //     wrapper.find('.rc-select').simulate('click');
-  //     wrapper
-  //       .find('MenuItem')
-  //       .at(1)
-  //       .simulate('click');
-  //     expect(handleChange).toBeCalledWith(2, expect.anything());
-  //     expect(wrapper.find('.rc-select-selection-selected-value').text()).toBe('2');
-  //   });
+    it('search number value', () => {
+      const wrapper = mount(
+        <Select showSearch>
+          <Option value={1}>1</Option>
+          <Option value={2}>2</Option>
+        </Select>,
+      );
 
-  //   it('search number value', () => {
-  //     const wrapper = mount<Select>(
-  //       <Select showSearch={true}>
-  //         <Option value={1}>1</Option>
-  //         <Option value={2}>2</Option>
-  //       </Select>,
-  //     );
+      wrapper.find('input').simulate('change', { target: { value: '1' } });
+      expect(wrapper.find('List').props().data.length).toEqual(1);
+    });
+  });
 
-  //     wrapper.find('input').simulate('change', { target: { value: '1' } });
-  //     expect(wrapper.find('MenuItem').props().value).toBe(1);
-  //   });
-  // });
+  it('should render custom dropdown correctly', () => {
+    const wrapper = mount(
+      <Select
+        open
+        dropdownRender={menu => (
+          <div>
+            <div className="dropdown-custom-node">CUSTOM NODE</div>
+            {menu}
+          </div>
+        )}
+      >
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    expect(wrapper.render()).toMatchSnapshot();
+  });
 
-  // it('should render custom dropdown correctly', () => {
-  //   const wrapper = render(
-  //     <Select
-  //       open={true}
-  //       dropdownRender={menu => (
-  //         <div>
-  //           <div className="dropdown-custom-node">CUSTOM NODE</div>
-  //           {menu}
-  //         </div>
-  //       )}
-  //     >
-  //       <Option value="1">1</Option>
-  //       <Option value="2">2</Option>
-  //     </Select>,
-  //   );
-  //   expect(wrapper).toMatchSnapshot();
-  // });
+  it('should trigger click event in custom node', () => {
+    const handleClick = jest.fn();
+    const wrapper = mount(
+      <Select
+        dropdownRender={menu => (
+          <div>
+            <div id="dropdown-custom-node" onClick={handleClick}>
+              CUSTOM NODE
+            </div>
+            {menu}
+          </div>
+        )}
+      >
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
 
-  // it('should trigger click event in custom node', () => {
-  //   const handleClick = jest.fn();
-  //   const wrapper = mount<Select>(
-  //     <Select
-  //       dropdownRender={menu => (
-  //         <div>
-  //           <div id="dropdown-custom-node" onClick={handleClick}>
-  //             CUSTOM NODE
-  //           </div>
-  //           {menu}
-  //         </div>
-  //       )}
-  //     >
-  //       <Option value="1">1</Option>
-  //       <Option value="2">2</Option>
-  //     </Select>,
-  //   );
-
-  //   wrapper.find('.rc-select').simulate('click');
-  //   wrapper.find('div#dropdown-custom-node').simulate('click');
-  //   expect(handleClick).toBeCalled();
-  // });
+    toggleOpen(wrapper);
+    wrapper.find('div#dropdown-custom-node').simulate('click');
+      expect(handleClick).toBeCalled();
+  });
 
   // it('set showAction', () => {
   //   const wrapper = mount<Select>(

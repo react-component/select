@@ -19,6 +19,7 @@ function warningProps(props: SelectProps) {
     autoFocus,
     labelInValue,
     value,
+    inputValue,
   } = props;
 
   const mergedShowSearch =
@@ -83,7 +84,8 @@ function warningProps(props: SelectProps) {
 
       if (type.isSelectOption) {
         return false;
-      } if (type.isSelectOptGroup) {
+      }
+      if (type.isSelectOptGroup) {
         const allChildrenValid = toArray((node.props as any).children).every((subNode: any) => {
           if (!React.isValidElement(subNode) || (subNode.type as any).isSelectOption) {
             return true;
@@ -95,7 +97,7 @@ function warningProps(props: SelectProps) {
         if (allChildrenValid) {
           return false;
         }
-          return true;
+        return true;
       }
       invalidateChildType = type;
       return true;
@@ -109,6 +111,11 @@ function warningProps(props: SelectProps) {
           invalidateChildType}\``,
       );
     }
+
+    warning(
+      inputValue === undefined,
+      '`inputValue` is deprecated, please use `searchValue` instead.',
+    );
   }
 }
 
