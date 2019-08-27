@@ -12,5 +12,7 @@ const isClient =
 export default function useLayoutEffect(effect: React.EffectCallback, deps?: React.DependencyList) {
   if (isClient) {
     React.useLayoutEffect(effect, deps);
+  } else {
+    React.useEffect(effect, deps);
   }
 }

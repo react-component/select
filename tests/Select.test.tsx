@@ -456,8 +456,10 @@ describe('Select', () => {
     // Should trigger onBlur
     wrapper.find('input').simulate('change', { target: { value: '3' } });
     expect(handleSearch).toHaveBeenCalledTimes(2);
-    wrapper.find('input').simulate('blur');
-    jest.runAllTimers();
+    act(() => {
+      wrapper.find('input').simulate('blur');
+      jest.runAllTimers();
+    });
     expect(handleSearch).toHaveBeenCalledTimes(3);
 
     jest.useRealTimers();
@@ -534,20 +536,19 @@ describe('Select', () => {
       expect(wrapper.find('.rc-select').getDOMNode().className).toContain('-focus');
     });
 
-    //   it('click placeholder should trigger onFocus', () => {
-    //     const handleFocus2 = jest.fn();
-    //     const wrapper2 = mount<Select>(
-    //       <Select onFocus={handleFocus2} placeholder="xxxx">
-    //         <Option value="1">1</Option>
-    //         <Option value="2">2</Option>
-    //       </Select>,
-    //     );
-    //     jest.useFakeTimers();
-    //     wrapper2.find('.rc-select-selection__placeholder').simulate('click');
-    //     jest.runAllTimers();
-    //     expect(handleFocus2.mock.calls).toHaveLength(1);
-    //     expect(handleFocus2).toBeCalled();
-    //   });
+    it('click placeholder should trigger onFocus', () => {
+      const wrapper = mount(
+        <Select placeholder="xxxx">
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
+
+      const inputSpy = jest.spyOn(wrapper.find('input').instance(), 'focus');
+
+      wrapper.find('.rc-select-selection-placeholder').simulate('click');
+      expect(inputSpy).toHaveBeenCalled();
+    });
   });
 
   // describe('blur', () => {
