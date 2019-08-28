@@ -342,7 +342,11 @@ export default function generateSelector<
 
     /** Unique raw values */
     const mergedRawValue = React.useMemo<RawValueType[]>(
-      () => toInnerValue(baseValue, { labelInValue: mergedLabelInValue }),
+      () =>
+        toInnerValue(baseValue, {
+          labelInValue: mergedLabelInValue,
+          combobox: mode === 'combobox',
+        }),
       [baseValue, mergedLabelInValue],
     );
     /** We cache a set of raw values to speed up check */
@@ -512,6 +516,13 @@ export default function generateSelector<
         }
       }
     };
+
+    // Open when `combobox` with async options update on focused
+    React.useEffect(() => {
+      if (mergedOptions.length && mode === 'combobox' && mockFocused) {
+        onToggleOpen(true);
+      }
+    }, [mergedOptions]);
 
     // Close will clean up single mode search text
     React.useEffect(() => {

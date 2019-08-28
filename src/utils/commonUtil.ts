@@ -17,9 +17,9 @@ export function toArray<T>(value: T | T[]): T[] {
  */
 export function toInnerValue(
   value: DefaultValueType,
-  { labelInValue }: { labelInValue: boolean },
+  { labelInValue, combobox }: { labelInValue: boolean; combobox: boolean },
 ): RawValueType[] {
-  if (value === undefined || value === null) {
+  if (value === undefined || value === null || (value === '' && combobox)) {
     return [];
   }
 

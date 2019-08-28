@@ -128,8 +128,11 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
 
   // ========================== Values ==========================
   const onSelectValue = (value: RawValueType) => {
-    onSelect(value, { selected: !values.has(value) });
+    if (value !== null) {
+      onSelect(value, { selected: !values.has(value) });
+    }
 
+    // Single mode should always close by select
     if (!multiple) {
       onToggleOpen(false);
     }
@@ -164,6 +167,8 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
           const item = flattenList[activeIndex];
           if (item && !(item.data as OptionData).disabled) {
             onSelectValue((item.data as OptionData).value);
+          } else {
+            onSelectValue(null);
           }
 
           break;

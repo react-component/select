@@ -1,9 +1,21 @@
-import { mount, render } from 'enzyme';
+import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
+import { act } from 'react-dom/test-utils';
 import React from 'react';
 import OptionList, { OptionListProps, RefOptionListProps } from '../src/OptionList';
+import { injectRunAllTimers } from './utils/common';
 
 describe('OptionList', () => {
+  injectRunAllTimers(jest);
+
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   function generateList(props?: Partial<OptionListProps> & { ref?: any }) {
     return (
       <div>
@@ -62,11 +74,15 @@ describe('OptionList', () => {
     );
 
     onActiveValue.mockReset();
-    listRef.current.onKeyDown({ which: KeyCode.DOWN } as any);
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.DOWN } as any);
+    });
     expect(onActiveValue).toHaveBeenCalledWith('2', expect.anything());
 
     onActiveValue.mockReset();
-    listRef.current.onKeyDown({ which: KeyCode.UP } as any);
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.UP } as any);
+    });
     expect(onActiveValue).toHaveBeenCalledWith('1', expect.anything());
   });
 

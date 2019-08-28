@@ -32,17 +32,12 @@ const SingleSelector: React.FC<SelectorProps> = ({
   const inputEditable = combobox || (showSearch && open);
   let item = values[0];
 
-  // '' is item value in combobox, but we should trade it as empty in display
-  if (combobox && item && item.value === '') {
-    item = null;
-  }
-
-  const hasTextInput = !!(combobox ? searchValue || activeValue : searchValue);
-
   let inputValue: string = searchValue;
   if (combobox) {
     inputValue = item ? String(item.value) : activeValue || searchValue;
   }
+
+  const hasTextInput = !!inputValue;
 
   return (
     <>

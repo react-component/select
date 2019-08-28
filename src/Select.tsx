@@ -25,6 +25,8 @@
  * - `getInputElement` only support `combobox` mode
  * - `onChange` return OptionData instead of ReactNode
  * - `filterOption` `onChange` `onSelect` accept OptionData instead of ReactNode
+ * - `combobox` mode trigger `onChange` will get `undefined` if no `value` match in Option
+ * - `combobox` mode not support `optionLabelProp`
  */
 
 import { OptionsType as SelectOptionsType, Mode } from './interface';

@@ -21,6 +21,7 @@ function warningProps(props: SelectProps) {
     labelInValue,
     value,
     inputValue,
+    optionLabelProp,
   } = props;
 
   const mergedShowSearch =
@@ -50,6 +51,12 @@ function warningProps(props: SelectProps) {
       '`value` of Option should not use number type when `mode` is `tags` or `combobox`.',
     );
   }
+
+  // `combobox` should not use `optionLabelProp`
+  warning(
+    mode !== 'combobox' || !optionLabelProp,
+    '`combobox` mode not support `optionLabelProp`. Please set `value` on Option directly.',
+  );
 
   // Only `combobox` support `backfill`
   warning(mode === 'combobox' || !backfill, '`backfill` only works with `combobox` mode.');
