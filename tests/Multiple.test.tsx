@@ -12,7 +12,14 @@ import dynamicChildrenTest from './shared/dynamicChildrenTest';
 import inputFilterTest from './shared/inputFilterTest';
 import keyDownTest from './shared/keyDownTest';
 import openControlledTest from './shared/openControlledTest';
-import { expectOpen, toggleOpen, selectItem, injectRunAllTimers } from './utils/common';
+import {
+  expectOpen,
+  toggleOpen,
+  selectItem,
+  injectRunAllTimers,
+  findSelection,
+  removeSelection,
+} from './utils/common';
 import allowClearTest from './shared/allowClearTest';
 import throwOptionValue from './shared/throwOptionValue';
 
@@ -91,90 +98,61 @@ describe('Select.Multiple', () => {
     jest.useRealTimers();
   });
 
-  // it('OptGroup without key', () => {
-  //   expect(() => {
-  //     mount(
-  //       <Select mode="multiple" defaultValue={['1']}>
-  //         <OptGroup label="group1">
-  //           <Option value="1">One</Option>
-  //         </OptGroup>
-  //         <OptGroup label="group2">
-  //           <Option value="2">Two</Option>
-  //         </OptGroup>
-  //       </Select>,
-  //     );
-  //   }).not.toThrow();
-  // });
+  it('OptGroup without key', () => {
+    expect(() => {
+      mount(
+        <Select mode="multiple" defaultValue={['1']}>
+          <OptGroup label="group1">
+            <Option value="1">One</Option>
+          </OptGroup>
+          <OptGroup label="group2">
+            <Option value="2">Two</Option>
+          </OptGroup>
+        </Select>,
+      );
+    }).not.toThrow();
+  });
 
-  // it('allow number value', () => {
-  //   const handleChange = jest.fn();
+  it('allow number value', () => {
+    const handleChange = jest.fn();
 
-  //   const wrapper = mount(
-  //     <Select mode="multiple" defaultValue={1} onChange={handleChange}>
-  //       <Option value={1}>1</Option>
-  //       <Option value={2} testprop={2}>
-  //         2
-  //       </Option>
-  //     </Select>,
-  //   );
+    const wrapper = mount(
+      <Select mode="multiple" defaultValue={[1]} onChange={handleChange}>
+        <Option value={1}>1</Option>
+        <Option value={2} testprop={2}>
+          2
+        </Option>
+      </Select>,
+    );
 
-  //   expect(wrapper.find('.rc-select-selection__choice__content').text()).toBe('1');
+    expect(findSelection(wrapper).text()).toEqual('1');
 
-  //   wrapper.find('.rc-select').simulate('click');
-  //   wrapper
-  //     .find('MenuItem')
-  //     .at(1)
-  //     .simulate('click');
+    toggleOpen(wrapper);
+    selectItem(wrapper, 1);
 
-  //   const args = handleChange.mock.calls[0];
-  //   expect(args[0]).toEqual([1, 2]);
-  //   expect(args[1].length).toBe(2);
+    expect(handleChange).toHaveBeenCalledWith(
+      [1, 2],
+      [expect.objectContaining({ value: 1 }), expect.objectContaining({ value: 2, testprop: 2 })],
+    );
+  });
 
-  //   // magic code
-  //   // expect(handleChange).toBeCalledWith(
-  //   //   [1, 2],
-  //   //   [
-  //   //     <Option key="1" value={1}>
-  //   //       1
-  //   //     </Option>,
-  //   //     <Option value={2} key="2" testprop={2}>
-  //   //       2
-  //   //     </Option>,
-  //   //   ],
-  //   // );
+  it('do not open when close button click', () => {
+    const wrapper = mount(
+      <Select mode="multiple">
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>,
+    );
 
-  //   expect(
-  //     wrapper
-  //       .find('.rc-select-selection__choice__content')
-  //       .at(1)
-  //       .text(),
-  //   ).toBe('2');
-  // });
+    toggleOpen(wrapper);
+    selectItem(wrapper, 0);
+    selectItem(wrapper, 1);
 
-  // it('do not open when close button click', () => {
-  //   const wrapper = mount(
-  //     <Select mode="multiple">
-  //       <Option value={1}>1</Option>
-  //       <Option value={2}>2</Option>
-  //     </Select>,
-  //   );
-  //   wrapper.find('.rc-select-selection').simulate('click');
-  //   wrapper
-  //     .find('.rc-select-dropdown-menu-item')
-  //     .at(0)
-  //     .simulate('click');
-  //   wrapper
-  //     .find('.rc-select-dropdown-menu-item')
-  //     .at(1)
-  //     .simulate('click');
-  //   wrapper.setState({ open: false });
-  //   wrapper
-  //     .find('.rc-select-selection__choice__remove')
-  //     .at(0)
-  //     .simulate('click');
-  //   expect(wrapper.state('open')).toBe(false);
-  //   expect(wrapper.state('value')).toEqual([2]);
-  // });
+    toggleOpen(wrapper);
+    removeSelection(wrapper);
+    expectOpen(wrapper, false);
+    expect(wrapper.find('Selector').props().values).toEqual([expect.objectContaining({ value: 2 })]);
+  });
 
   // it('select when item enter', () => {
   //   const wrapper = mount(
