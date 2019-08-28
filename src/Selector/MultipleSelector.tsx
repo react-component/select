@@ -129,7 +129,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
             })}
             style={style}
           >
-            {label}
+            <span className={`${prefixCls}-selection-item-content`}>{label}</span>
             {key !== REST_TAG_KEY && !itemDisabled && (
               <TransBtn
                 className={`${prefixCls}-selection-item-remove`}

@@ -8,6 +8,7 @@ import blurTest from './shared/blurTest';
 import hoverTest from './shared/hoverTest';
 import renderTest from './shared/renderTest';
 import removeSelectedTest from './shared/removeSelectedTest';
+import dynamicChildrenTest from './shared/dynamicChildrenTest';
 import keyDownTest from './shared/keyDownTest';
 import openControlledTest from './shared/openControlledTest';
 import { expectOpen, toggleOpen, selectItem, injectRunAllTimers } from './utils/common';
@@ -23,7 +24,7 @@ describe('Select.Multiple', () => {
   hoverTest('multiple');
   renderTest('multiple');
   removeSelectedTest('multiple');
-  // dynamicChildrenTest('multiple', {});
+  dynamicChildrenTest('multiple');
 
 
 

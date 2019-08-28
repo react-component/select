@@ -22,7 +22,14 @@ export function selectItem(wrapper: any, index: number = 0) {
 }
 
 export function findSelection(wrapper: any, index: number = 0) {
-  return wrapper.find('.rc-select-selection-item').at(index);
+  const itemNode = wrapper.find('.rc-select-selection-item').at(index);
+  const contentNode = itemNode.find('.rc-select-selection-item-content');
+
+  if (contentNode.length) {
+    return contentNode;
+  }
+
+  return itemNode;
 }
 
 export function removeSelection(wrapper: any, index: number = 0) {
