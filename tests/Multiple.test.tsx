@@ -28,7 +28,7 @@ describe('Select.Multiple', () => {
   dynamicChildrenTest('multiple');
   inputFilterTest('multiple');
 
-  it.only('tokenize input', () => {
+  it('tokenize input', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
     const wrapper = mount(
@@ -63,46 +63,33 @@ describe('Select.Multiple', () => {
     });
     expect(handleChange).toHaveBeenCalledWith(['1', '2'], expect.anything());
 
-    // wrapper.find('input').simulate('change', {
-    //   target: {
-    //     value: 'One,Two',
-    //   },
-    // });
+    handleChange.mockReset();
+    wrapper.find('input').simulate('change', {
+      target: {
+        value: 'One,Two',
+      },
+    });
+    expect(handleChange).toHaveBeenCalledWith(['1', '2'], expect.anything());
 
-    //   expect(handleChange).toBeCalledWith(['1', '2'], expect.anything());
-    //   expect(handleChange).toHaveBeenCalledTimes(1);
-    //   expect(handleSelect).toHaveBeenCalledTimes(2);
-    //   expect(wrapper.state().value).toEqual(['1', '2']);
-    //   expect(
-    //     wrapper
-    //       .find('.rc-select-selection__choice__content')
-    //       .at(0)
-    //       .text(),
-    //   ).toEqual('One');
-    //   expect(
-    //     wrapper
-    //       .find('.rc-select-selection__choice__content')
-    //       .at(1)
-    //       .text(),
-    //   ).toEqual('Two');
-    //   expect(wrapper.state().inputValue).toBe('');
-    //   expect(wrapper.state().open).toBe(false);
-    //   expect((input.instance() as any).focus).toBeCalled();
+    expect(wrapper.find('input').props().value).toBe('');
+    wrapper.update();
+    expectOpen(wrapper, false);
   });
 
-  // it('focus', () => {
-  //   const handleFocus = jest.fn();
-  //   const wrapper = mount(
-  //     <Select mode="multiple" onFocus={handleFocus}>
-  //       <Option value="1">One</Option>
-  //       <Option value="2">Two</Option>
-  //     </Select>,
-  //   );
-  //   jest.useFakeTimers();
-  //   wrapper.find('input').simulate('focus');
-  //   jest.runAllTimers();
-  //   expect(handleFocus).toBeCalled();
-  // });
+  it('focus', () => {
+    jest.useFakeTimers();
+    const handleFocus = jest.fn();
+    const wrapper = mount(
+      <Select mode="multiple" onFocus={handleFocus}>
+        <Option value="1">One</Option>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
+    wrapper.find('input').simulate('focus');
+    jest.runAllTimers();
+    expect(handleFocus).toBeCalled();
+    jest.useRealTimers();
+  });
 
   // it('OptGroup without key', () => {
   //   expect(() => {

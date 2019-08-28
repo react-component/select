@@ -67,7 +67,8 @@ export interface SelectorProps {
   choiceTransitionName?: string;
 
   onToggleOpen: (open?: boolean) => void;
-  onSearch: (searchValue: string) => void;
+  /** `onSearch` returns go next step boolean to check if need do toggle open */
+  onSearch: (searchValue: string) => boolean;
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }
@@ -112,8 +113,9 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   };
 
   const onInputChange = ({ target: { value } }) => {
-    onSearch(value);
-    onToggleOpen(true);
+    if (onSearch(value) !== false) {
+      onToggleOpen(true);
+    }
   };
 
   // ====================== Focus ======================

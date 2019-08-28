@@ -478,6 +478,7 @@ export default function generateSelector<
 
     // ============================= Search =============================
     const triggerSearch = (searchText: string, fromTyping: boolean = true) => {
+      let ret = true;
       let newSearchText = searchText;
       setActiveValue(null);
 
@@ -516,6 +517,12 @@ export default function generateSelector<
             optionLabelProp: mergedOptionLabelProp,
           }),
         );
+
+        // Should close when paste finish
+        onToggleOpen(false);
+
+        // Tell Selector that break next actions
+        ret = false;
       }
 
       setInnerSearchValue(newSearchText);
@@ -523,6 +530,8 @@ export default function generateSelector<
       if (onSearch && mergedSearchValue !== newSearchText) {
         onSearch(newSearchText);
       }
+
+      return ret;
     };
 
     // ============================== Open ==============================

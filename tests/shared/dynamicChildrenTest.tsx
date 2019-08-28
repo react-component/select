@@ -78,7 +78,7 @@ export default function dynamicChildrenTest(mode: any, props?: Partial<SelectPro
   it('value label update with dynamic children', () => {
     class App extends React.Component {
       public state = {
-        value: 1,
+        value: mode === 'multiple' ? [1] : 1,
         options: [
           <Option key="0" value={0} testprop="test">
             0-label
@@ -98,7 +98,7 @@ export default function dynamicChildrenTest(mode: any, props?: Partial<SelectPro
 
       public updateChildren = () => {
         this.setState({
-          value: 0,
+          value: mode === 'multiple' ? [0] : 0,
           options: [
             <Option key="0" value={0}>
               0-label-new
