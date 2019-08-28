@@ -12,7 +12,7 @@ import openControlledTest from './shared/openControlledTest';
 import removeSelectedTest from './shared/removeSelectedTest';
 import renderTest from './shared/renderTest';
 import throwOptionValue from './shared/throwOptionValue';
-import { injectRunAllTimers, findSelection } from './utils/common';
+import { injectRunAllTimers, findSelection, expectOpen } from './utils/common';
 
 describe('Select.Tags', () => {
   injectRunAllTimers(jest);
@@ -78,46 +78,24 @@ describe('Select.Tags', () => {
 
     expect(handleChange).toBeCalledWith(['2', '3', '4'], expect.anything());
     expect(handleSelect).toHaveBeenCalledTimes(3);
-    //   expect(handleSelect).toHaveBeenLastCalledWith(
-    //     '4',
-    //     <Option key="4" value="4">
-    //       4
-    //     </Option>,
-    //   );
-    //   expect(wrapper.state().value).toEqual(['2', '3', '4']);
-    //   expect(
-    //     wrapper
-    //       .find('.rc-select-selection__choice__content')
-    //       .at(0)
-    //       .text(),
-    //   ).toBe('2');
-    //   expect(
-    //     wrapper
-    //       .find('.rc-select-selection__choice__content')
-    //       .at(1)
-    //       .text(),
-    //   ).toBe('3');
-    //   expect(
-    //     wrapper
-    //       .find('.rc-select-selection__choice__content')
-    //       .at(2)
-    //       .text(),
-    //   ).toBe('4');
-    //   expect(wrapper.state().inputValue).toBe('');
-    //   expect(wrapper.state().open).toBe(false);
-    // expect(input.instance().focus).toBeCalled();
+    expect(handleSelect).toHaveBeenLastCalledWith('4', undefined);
+    expect(findSelection(wrapper).text()).toEqual('2');
+    expect(findSelection(wrapper, 1).text()).toEqual('3');
+    expect(findSelection(wrapper, 2).text()).toEqual('4');
+    expect(wrapper.find('input').props().value).toBe('');
+    expectOpen(wrapper, false);
   });
 
-  // it('renders unlisted item in value', () => {
-  //   const wrapper = render(
-  //     <Select mode="tags" value="3" open={true}>
-  //       <Option value="1">1</Option>
-  //       <Option value="2">2</Option>
-  //     </Select>,
-  //   );
+  it('renders unlisted item in value', () => {
+    const wrapper = mount(
+      <Select mode="tags" value="3" open>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
 
-  //   expect(wrapper).toMatchSnapshot();
-  // });
+    expect(wrapper.find('List').props().data).toHaveLength(3);
+  });
 
   // it('dropdown keeps order', () => {
   //   const wrapper = mount<Select>(<Select mode="tags" open={true} value={['aaaaa', 'aaa']} />);

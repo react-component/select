@@ -228,3 +228,14 @@ export function isValueDisabled(value: RawValueType, options: FlattenOptionData[
 
   return false;
 }
+
+/**
+ * `tags` mode should fill un-list item into the option list
+ */
+export function fillOptionsWithMissingValue(
+  options: SelectOptionsType,
+  values: RawValueType[] | LabelValueType[],
+  labelInValue: boolean,
+) {
+  
+}

@@ -31,7 +31,7 @@ import TransBtn from './TransBtn';
 import { useLock } from './hooks/useLock';
 import useDelayReset from './hooks/useDelayReset';
 import useLayoutEffect from './hooks/useLayoutEffect';
-import { getSeparatedContent } from './utils/valueUtil';
+import { getSeparatedContent, fillOptionsWithMissingValue } from './utils/valueUtil';
 
 export interface RefSelectProps {
   focus: () => void;
@@ -307,6 +307,24 @@ export default function generateSelector<
       blur: selectorRef.current.blur,
     }));
 
+    // ============================= Value ==============================
+    const [innerValue, setInnerValue] = React.useState<ValueType>(value || defaultValue);
+    const baseValue = value !== undefined && value !== null ? value : innerValue;
+
+    /** Unique raw values */
+    const mergedRawValue = React.useMemo<RawValueType[]>(
+      () =>
+        toInnerValue(baseValue, {
+          labelInValue: mergedLabelInValue,
+          combobox: mode === 'combobox',
+        }),
+      [baseValue, mergedLabelInValue],
+    );
+    /** We cache a set of raw values to speed up check */
+    const rawValues = React.useMemo<Set<RawValueType>>(() => new Set(mergedRawValue), [
+      mergedRawValue,
+    ]);
+
     // ============================= Option =============================
     // Set by option list active, it will merge into search input when mode is `combobox`
     const [activeValue, setActiveValue] = React.useState<string>(null);
@@ -319,12 +337,18 @@ export default function generateSelector<
     }
 
     const mergedOptions = React.useMemo<OptionsType>((): OptionsType => {
-      if (options !== undefined) {
-        return options;
+      let newOptions = options;
+      if (newOptions === undefined) {
+        newOptions = convertChildrenToData(children);
       }
 
-      return convertChildrenToData(children);
-    }, [options, children]);
+      if (mode === 'tags') {
+        // TODO: handle this
+        newOptions = fillOptionsWithMissingValue(newOptions, baseValue);
+      }
+
+      return newOptions;
+    }, [options, children, mode]);
 
     const mergedFlattenOptions: FlattenOptionsType<OptionsType> = React.useMemo(
       () => flattenOptions(mergedOptions),
@@ -356,24 +380,7 @@ export default function generateSelector<
       [displayOptions],
     );
 
-    // ============================= Value ==============================
-    const [innerValue, setInnerValue] = React.useState<ValueType>(value || defaultValue);
-    const baseValue = value !== undefined && value !== null ? value : innerValue;
-
-    /** Unique raw values */
-    const mergedRawValue = React.useMemo<RawValueType[]>(
-      () =>
-        toInnerValue(baseValue, {
-          labelInValue: mergedLabelInValue,
-          combobox: mode === 'combobox',
-        }),
-      [baseValue, mergedLabelInValue],
-    );
-    /** We cache a set of raw values to speed up check */
-    const rawValues = React.useMemo<Set<RawValueType>>(() => new Set(mergedRawValue), [
-      mergedRawValue,
-    ]);
-
+    // ============================ Selector ============================
     const displayValues = React.useMemo<DisplayLabelValueType[]>(
       () =>
         mergedRawValue.map((val: RawValueType) => {
