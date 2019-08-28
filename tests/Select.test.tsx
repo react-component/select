@@ -16,7 +16,7 @@ import {
   injectRunAllTimers,
 } from './utils/common';
 
-describe('Select', () => {
+describe('Select.Basic', () => {
   injectRunAllTimers(jest);
 
   focusTest('single', {});

@@ -15,7 +15,7 @@ import {
 import allowClearTest from './shared/allowClearTest';
 import throwOptionValue from './shared/throwOptionValue';
 
-describe('Combobox', () => {
+describe('Select.Combobox', () => {
   injectRunAllTimers(jest);
 
   allowClearTest('combobox', '2333');

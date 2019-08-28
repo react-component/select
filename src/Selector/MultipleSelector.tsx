@@ -73,39 +73,42 @@ const SelectSelector: React.FC<SelectorProps> = ({
   // ==================== Selection ====================
   let displayValues: LabelValueType[] = values;
 
-  // Filter display selection
+  // Cut by `maxTagCount`
+  let restCount: number;
   if (typeof maxTagCount === 'number') {
-    const restCount = values.length - maxTagCount;
-
+    restCount = values.length - maxTagCount;
     displayValues = values.slice(0, maxTagCount);
-    if (typeof maxTagTextLength === 'number') {
-      displayValues = displayValues.map(({ label, ...rest }) => {
-        let displayLabel: React.ReactNode = label;
+  }
 
-        if (typeof label === 'string' || typeof label === 'number') {
-          const strLabel = String(displayLabel);
+  // Update by `maxTagTextLength`
+  if (typeof maxTagTextLength === 'number') {
+    displayValues = displayValues.map(({ label, ...rest }) => {
+      let displayLabel: React.ReactNode = label;
 
-          if (strLabel.length > maxTagTextLength) {
-            displayLabel = `${strLabel.slice(0, maxTagTextLength)}...`;
-          }
+      if (typeof label === 'string' || typeof label === 'number') {
+        const strLabel = String(displayLabel);
+
+        if (strLabel.length > maxTagTextLength) {
+          displayLabel = `${strLabel.slice(0, maxTagTextLength)}...`;
         }
+      }
 
-        return {
-          ...rest,
-          label: displayLabel,
-        };
-      });
-    }
+      return {
+        ...rest,
+        label: displayLabel,
+      };
+    });
+  }
 
-    if (restCount) {
-      displayValues.push({
-        key: REST_TAG_KEY,
-        label:
-          typeof maxTagPlaceholder === 'function'
-            ? maxTagPlaceholder(values.slice(maxTagCount))
-            : maxTagPlaceholder,
-      });
-    }
+  // Fill rest
+  if (restCount) {
+    displayValues.push({
+      key: REST_TAG_KEY,
+      label:
+        typeof maxTagPlaceholder === 'function'
+          ? maxTagPlaceholder(values.slice(maxTagCount))
+          : maxTagPlaceholder,
+    });
   }
 
   const selectionNode = (

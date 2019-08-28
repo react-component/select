@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Combobox renders correctly 1`] = `
+exports[`Select.Combobox renders correctly 1`] = `
 <div
   class="rc-select rc-select-single"
 >

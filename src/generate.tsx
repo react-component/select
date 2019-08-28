@@ -392,6 +392,10 @@ export default function generateSelector<
     };
 
     const onInternalSelect = (newValue: RawValueType, { selected }: { selected: boolean }) => {
+      if (disabled) {
+        return;
+      }
+
       let newRawValue: Set<RawValueType>;
 
       if (isMultiple) {
@@ -429,7 +433,6 @@ export default function generateSelector<
           })
         : newValue;
 
-      // TODO: second param
       const outOption = findValueOption([newValue], mergedOptions)[0];
       // Single mode always trigger `onSelect`
       if ((!isMultiple || selected) && onSelect) {

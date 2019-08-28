@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import React from 'react';
 import Option from '../../src/Option';
 import Select from '../../src/Select';
-import { injectRunAllTimers } from '../utils/common';
+import { injectRunAllTimers, toggleOpen } from '../utils/common';
 
 export default function blurTest(mode: any) {
   describe(`blur of ${mode}`, () => {
@@ -56,7 +56,7 @@ export default function blurTest(mode: any) {
           .find('input')
           .instance()
           .focus();
-        wrapper.find('.rc-select-selector').simulate('mousedown');
+        toggleOpen(wrapper);
         expect(handleBlur).not.toHaveBeenCalled();
 
         wrapper.find('input').simulate('blur');

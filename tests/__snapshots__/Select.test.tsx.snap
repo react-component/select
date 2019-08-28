@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Select does not filter when filterOption value is false 1`] = `
+exports[`Select.Basic does not filter when filterOption value is false 1`] = `
 <div
   class="rc-select rc-select-single rc-select-show-arrow rc-select-open"
 >
@@ -118,7 +118,7 @@ exports[`Select does not filter when filterOption value is false 1`] = `
 </div>
 `;
 
-exports[`Select filterOption could be true as described in default value 1`] = `
+exports[`Select.Basic filterOption could be true as described in default value 1`] = `
 <div
   class="rc-select rc-select-single rc-select-show-arrow rc-select-open"
 >
@@ -174,7 +174,7 @@ exports[`Select filterOption could be true as described in default value 1`] = `
 </div>
 `;
 
-exports[`Select no search 1`] = `
+exports[`Select.Basic no search 1`] = `
 <div
   class="rc-select rc-select-single rc-select-show-arrow"
 >
@@ -216,7 +216,7 @@ exports[`Select no search 1`] = `
 </div>
 `;
 
-exports[`Select render renders aria-attributes correctly 1`] = `
+exports[`Select.Basic render renders aria-attributes correctly 1`] = `
 <div
   aria-label="some-label"
   aria-labelledby="test-id"
@@ -272,7 +272,7 @@ exports[`Select render renders aria-attributes correctly 1`] = `
 </div>
 `;
 
-exports[`Select render renders correctly 1`] = `
+exports[`Select.Basic render renders correctly 1`] = `
 <div
   class="antd select-test antd-single antd-allow-clear antd-show-arrow"
 >
@@ -326,7 +326,7 @@ exports[`Select render renders correctly 1`] = `
 </div>
 `;
 
-exports[`Select render renders data-attributes correctly 1`] = `
+exports[`Select.Basic render renders data-attributes correctly 1`] = `
 <div
   class="antd select-test antd-single antd-allow-clear antd-show-arrow"
   data-id="12345"
@@ -382,7 +382,7 @@ exports[`Select render renders data-attributes correctly 1`] = `
 </div>
 `;
 
-exports[`Select render renders disabled select correctly 1`] = `
+exports[`Select.Basic render renders disabled select correctly 1`] = `
 <div
   class="antd select-test antd-single antd-allow-clear antd-show-arrow antd-disabled"
 >
@@ -437,7 +437,7 @@ exports[`Select render renders disabled select correctly 1`] = `
 </div>
 `;
 
-exports[`Select render renders dropdown correctly 1`] = `
+exports[`Select.Basic render renders dropdown correctly 1`] = `
 <div
   class="antd select-test antd-single antd-allow-clear antd-show-arrow antd-open"
 >
@@ -610,7 +610,7 @@ exports[`Select render renders dropdown correctly 1`] = `
 </div>
 `;
 
-exports[`Select render renders role prop correctly 1`] = `
+exports[`Select.Basic render renders role prop correctly 1`] = `
 <div
   class="antd select-test antd-single antd-allow-clear antd-show-arrow"
   role="button"
@@ -665,7 +665,7 @@ exports[`Select render renders role prop correctly 1`] = `
 </div>
 `;
 
-exports[`Select should contain falsy children 1`] = `
+exports[`Select.Basic should contain falsy children 1`] = `
 <div
   class="rc-select rc-select-single rc-select-show-arrow rc-select-open"
 >
@@ -790,7 +790,7 @@ exports[`Select should contain falsy children 1`] = `
 </div>
 `;
 
-exports[`Select should render custom dropdown correctly 1`] = `
+exports[`Select.Basic should render custom dropdown correctly 1`] = `
 <div
   class="rc-select rc-select-single rc-select-show-arrow rc-select-open"
 >

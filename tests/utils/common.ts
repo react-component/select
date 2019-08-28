@@ -25,6 +25,15 @@ export function findSelection(wrapper: any, index: number = 0) {
   return wrapper.find('.rc-select-selection-item').at(index);
 }
 
+export function removeSelection(wrapper: any, index: number = 0) {
+  wrapper
+    .find('.rc-select-selection-item')
+    .at(index)
+    .find('.rc-select-selection-item-remove')
+    .last()
+    .simulate('click');
+}
+
 type Jest = typeof jest;
 
 export function injectRunAllTimers(jest: Jest) {

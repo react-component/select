@@ -6,25 +6,27 @@ import Select, { Option, SelectProps } from '../src';
 import focusTest from './shared/focusTest';
 import blurTest from './shared/blurTest';
 import hoverTest from './shared/hoverTest';
+import renderTest from './shared/renderTest';
+import removeSelectedTest from './shared/removeSelectedTest';
 import keyDownTest from './shared/keyDownTest';
 import openControlledTest from './shared/openControlledTest';
 import { expectOpen, toggleOpen, selectItem, injectRunAllTimers } from './utils/common';
 import allowClearTest from './shared/allowClearTest';
 import throwOptionValue from './shared/throwOptionValue';
 
-describe('Multiple', () => {
+describe('Select.Multiple', () => {
   injectRunAllTimers(jest);
 
   allowClearTest('multiple', ['903']);
   focusTest('multiple');
   blurTest('multiple');
   hoverTest('multiple');
-
-
-
-  // renderTest('multiple');
-  // removeSelectedTest('multiple');
+  renderTest('multiple');
+  removeSelectedTest('multiple');
   // dynamicChildrenTest('multiple', {});
+
+
+
   // inputFilterTest('multiple');
 
   // it('tokenize input', () => {
