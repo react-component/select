@@ -123,12 +123,26 @@ export const getLabeledValue: GetLabeledValue<FlattenOptionData[]> = (
   return result;
 };
 
+function toRawString(content: any): string {
+  return String(Array.isArray(content) ? content.join('') : content);
+}
+
 /** Filter single option if match the search text */
 function getFilterFunction(optionFilterProp: string) {
-  return (searchValue: string, option: OptionData) => {
+  return (searchValue: string, option: OptionData | OptionGroupData) => {
+    const lowerSearchText = searchValue.toLowerCase();
+
+    // Group label search
+    if ('options' in option) {
+      return toRawString(option.label)
+        .toLowerCase()
+        .includes(lowerSearchText);
+    }
+
+    // Option value search
     const rawValue = option[optionFilterProp];
-    const value = String(Array.isArray(rawValue) ? rawValue.join('') : rawValue).toLowerCase();
-    return value.includes(searchValue.toLowerCase()) && !option.disabled;
+    const value = toRawString(rawValue).toLowerCase();
+    return value.includes(lowerSearchText) && !option.disabled;
   };
 }
 
@@ -156,12 +170,19 @@ export function filterOptions(
   options.forEach(item => {
     // Group should check child options
     if ('options' in item) {
-      const subOptions = item.options.filter(subItem => filterFunc(searchValue, subItem));
-      if (subOptions.length) {
-        filteredOptions.push({
-          ...item,
-          options: subOptions,
-        });
+      // Check group first
+      const matchGroup = filterFunc(searchValue, item);
+      if (matchGroup) {
+        filteredOptions.push(item);
+      } else {
+        // Check option
+        const subOptions = item.options.filter(subItem => filterFunc(searchValue, subItem));
+        if (subOptions.length) {
+          filteredOptions.push({
+            ...item,
+            options: subOptions,
+          });
+        }
       }
 
       return;

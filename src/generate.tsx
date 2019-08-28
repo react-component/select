@@ -394,16 +394,19 @@ export default function generateSelector<
 
     const isMultiple = mode === 'tags' || mode === 'multiple';
 
-    const triggerChange = (values: RawValueType[] | LabelValueType[]) => {
-      const outValue: ValueType = (isMultiple ? values : values[0]) as ValueType;
+    const triggerChange = (rawValues: RawValueType[]) => {
+      const outValues = toOuterValues<FlattenOptionsType<OptionsType>>(Array.from(rawValues), {
+        labelInValue: mergedLabelInValue,
+        options: mergedFlattenOptions,
+        getLabeledValue,
+        prevValue: baseValue,
+        optionLabelProp: mergedOptionLabelProp,
+      });
+
+      const outValue: ValueType = (isMultiple ? outValues : outValues[0]) as ValueType;
       // Skip trigger if prev & current value is both empty
-      if (onChange && (mergedRawValue.length !== 0 || values.length !== 0)) {
-        const outOptions = findValueOption(
-          labelInValue
-            ? (values as LabelValueType[]).map(item => item.value)
-            : (values as RawValueType[]),
-          mergedFlattenOptions,
-        );
+      if (onChange && (mergedRawValue.length !== 0 || outValues.length !== 0)) {
+        const outOptions = findValueOption(rawValues, mergedFlattenOptions);
 
         onChange(outValue, isMultiple ? outOptions : outOptions[0]);
       }
@@ -432,15 +435,7 @@ export default function generateSelector<
 
       // Multiple always trigger change and single should change if value changed
       if (isMultiple || (!isMultiple && Array.from(mergedRawValue)[0] !== newValue)) {
-        const outValue = toOuterValues<FlattenOptionsType<OptionsType>>(Array.from(newRawValue), {
-          labelInValue: mergedLabelInValue,
-          options: mergedFlattenOptions,
-          getLabeledValue,
-          prevValue: baseValue,
-          optionLabelProp: mergedOptionLabelProp,
-        });
-
-        triggerChange(outValue);
+        triggerChange(Array.from(newRawValue));
       }
 
       // Trigger `onSelect`
@@ -508,15 +503,7 @@ export default function generateSelector<
         const newRawValues = Array.from(
           new Set<RawValueType>([...mergedRawValue, ...patchRawValues]),
         );
-        triggerChange(
-          toOuterValues<FlattenOptionsType<OptionsType>>(newRawValues, {
-            labelInValue: mergedLabelInValue,
-            getLabeledValue,
-            options: mergedFlattenOptions,
-            prevValue: baseValue,
-            optionLabelProp: mergedOptionLabelProp,
-          }),
-        );
+        triggerChange(newRawValues);
 
         // Should close when paste finish
         onToggleOpen(false);
@@ -597,7 +584,7 @@ export default function generateSelector<
         !mergedSearchValue &&
         mergedRawValue.length
       ) {
-        triggerChange(removeLastEnabledValue(displayValues, baseValue as LabelValueType[]));
+        triggerChange(removeLastEnabledValue(displayValues, mergedRawValue));
       }
 
       if (mergedOpen && listRef.current) {
@@ -641,7 +628,18 @@ export default function generateSelector<
         focusRef.current = false;
         onToggleOpen(false);
       });
-      if (!disabled && onBlur) {
+
+      if (disabled) {
+        return;
+      }
+
+      // `tags` mode should move `searchValue` into values
+      if (mode === 'tags') {
+        triggerSearch('', false);
+        triggerChange(Array.from(new Set([...mergedRawValue, mergedSearchValue])));
+      }
+
+      if (onBlur) {
         onBlur(...args);
       }
     };

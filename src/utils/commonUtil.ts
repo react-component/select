@@ -63,7 +63,7 @@ export function toOuterValues<FOT extends FlattenOptionsType<any>>(
   return values;
 }
 
-export function removeLastEnabledValue<T extends { disabled?: boolean }, P extends object>(
+export function removeLastEnabledValue<T extends { disabled?: boolean }, P extends any>(
   measureValues: T[],
   values: P[],
 ): P[] {
