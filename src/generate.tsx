@@ -689,7 +689,14 @@ export default function generateSelector<
     let arrowNode: React.ReactNode;
 
     if (mergedShowArrow) {
-      arrowNode = <TransBtn className={`${prefixCls}-arrow`} customizeIcon={inputIcon} />;
+      arrowNode = (
+        <TransBtn
+          className={classNames(`${prefixCls}-arrow`, {
+            [`${prefixCls}-arrow-loading`]: loading,
+          })}
+          customizeIcon={inputIcon}
+        />
+      );
     }
 
     // ============================ Warning =============================

@@ -4,7 +4,7 @@ import { resetWarned } from 'rc-util/lib/warning';
 import Option from '../../src/Option';
 import Select from '../../src/Select';
 
-export default function focusTest(mode: any, props: any) {
+export default function focusTest(mode: any, props?: any) {
   describe(`focus of ${mode}`, () => {
     let container;
 

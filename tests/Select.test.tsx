@@ -1,7 +1,6 @@
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import React from 'react';
-import { act } from 'react-dom/test-utils';
 import { resetWarned } from 'rc-util/lib/warning';
 import Select, { OptGroup, Option, SelectProps } from '../src';
 import focusTest from './shared/focusTest';
@@ -18,13 +17,13 @@ import {
 } from './utils/common';
 
 describe('Select', () => {
+  injectRunAllTimers(jest);
+
   focusTest('single', {});
   blurTest('single');
   keyDownTest('single');
   inputFilterTest('single');
   openControlledTest('single');
-
-  injectRunAllTimers(jest);
 
   describe('render', () => {
     function genSelect(props?: Partial<SelectProps>) {
@@ -967,192 +966,150 @@ describe('Select', () => {
 
     toggleOpen(wrapper);
     wrapper.find('div#dropdown-custom-node').simulate('click');
-      expect(handleClick).toBeCalled();
+    expect(handleClick).toBeCalled();
   });
 
-  // it('set showAction', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select showAction={['mouseEnter']}>
-  //       <Option value="1">1</Option>
-  //     </Select>,
-  //   );
+  // TODO: handle this
+  it.skip('set showAction', () => {
+    const wrapper = mount(
+      <Select showAction={['mouseEnter']}>
+        <Option value="1">1</Option>
+      </Select>,
+    );
 
-  //   wrapper.find('.rc-select').simulate('click');
-  //   expect(wrapper.hasClass('rc-select-open')).toBe(false);
+    wrapper.find('.rc-select').simulate('click');
+    expect(wrapper.hasClass('rc-select-open')).toBe(false);
 
-  //   wrapper.find('.rc-select').simulate('mouseEnter');
+    wrapper.find('.rc-select').simulate('mouseEnter');
 
-  //   expect(wrapper.find('.rc-select').hasClass('rc-select-open')).toBe(true);
-  // });
+    expect(wrapper.find('.rc-select').hasClass('rc-select-open')).toBe(true);
+  });
 
-  // it('default filterOption is case insensitive', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select>
-  //       <Option value="ABC">ABC</Option>
-  //       <Option value="DEF">DEF</Option>
-  //     </Select>,
-  //   );
+  it('default filterOption is case insensitive', () => {
+    const wrapper = mount(
+      <Select>
+        <Option value="ABC">ABC</Option>
+        <Option value="DEF">DEF</Option>
+      </Select>,
+    );
 
-  //   wrapper.find('input').simulate('change', { target: { value: 'B' } });
-  //   expect(wrapper.find('MenuItem').length).toBe(1);
-  //   expect(wrapper.find('MenuItem').props().value).toBe('ABC');
-  // });
+    wrapper.find('input').simulate('change', { target: { value: 'b' } });
+    expect(wrapper.find('List').props().data).toHaveLength(1);
+    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('ABC');
+  });
 
-  // it('check title when label is a object', () => {
-  //   const wrapper = render(
-  //     <Select defaultValue="0">
-  //       <Option value="0">
-  //         <span>Not Show Title</span>
-  //       </Option>
-  //     </Select>,
-  //   );
-  //   expect(wrapper).toMatchSnapshot();
-  // });
+  it('accepts prop id', () => {
+    const wrapper = mount(
+      <Select id="my-select">
+        <Option value="1">One</Option>
+      </Select>,
+    );
 
-  // it('accepts prop id', () => {
-  //   const wrapper = render(
-  //     <Select id="my-select">
-  //       <Option value="1">One</Option>
-  //     </Select>,
-  //   );
+    expect(wrapper.find('input#my-select').length).toBeTruthy();
+  });
 
-  //   expect(wrapper.find('#my-select').length).toBe(1);
-  // });
+  it('not select first option when no result', () => {
+    const handleSelect = jest.fn();
+    const wrapper = mount(
+      <Select
+        defaultActiveFirstOption
+        filterOption={(inputValue, option) => {
+          return (option.children as string).toUpperCase().indexOf(inputValue.toUpperCase()) !== -1;
+        }}
+        onSelect={handleSelect}
+        showSearch
+      >
+        <Option value="Burns Bay Road">Burns Bay Road</Option>
+        <Option value="Downing Street">Downing Street</Option>
+        <Option value="Wall Street">Wall Street</Option>
+      </Select>,
+    );
 
-  // it('not select first option when no result', () => {
-  //   const handleSelect = jest.fn();
-  //   const wrapper = mount<Select>(
-  //     <Select
-  //       defaultActiveFirstOption={true}
-  //       filterOption={(inputValue, option) => {
-  //         return (
-  //           (option.props.children as string).toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
-  //         );
-  //       }}
-  //       onSelect={handleSelect}
-  //     >
-  //       <Option value="Burns Bay Road">Burns Bay Road</Option>
-  //       <Option value="Downing Street">Downing Street</Option>
-  //       <Option value="Wall Street">Wall Street</Option>
-  //     </Select>,
-  //   );
+    wrapper.find('input').simulate('change', { target: { value: 'b' } });
+    expect(wrapper.find('input').props().value).toBe('b');
+    expect(wrapper.find('List').props().data).toHaveLength(1);
+    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('Burns Bay Road');
 
-  //   wrapper.find('input').simulate('change', { target: { value: 'b' } });
-  //   expect(wrapper.state().inputValue).toBe('b');
-  //   expect(wrapper.find('MenuItem').length).toBe(1);
-  //   expect(wrapper.find('MenuItem').props().value).toBe('Burns Bay Road');
-  //   expect(wrapper.find('MenuItem').props().disabled).toBeFalsy();
+    wrapper.find('input').simulate('change', { target: { value: 'c' } });
+    expect(wrapper.find('input').props().value).toBe('c');
+    expect(wrapper.find('OptionList').props().options).toHaveLength(0);
+    expect(wrapper.find('.rc-select-item-empty').text()).toEqual('Not Found');
 
-  //   wrapper.find('input').simulate('change', { target: { value: 'c' } });
-  //   expect(wrapper.state().inputValue).toBe('c');
-  //   expect(wrapper.find('MenuItem').length).toBe(1);
-  //   expect(wrapper.find('MenuItem').props().value).toBe('NOT_FOUND');
-  //   expect(wrapper.find('MenuItem').props().disabled).toBeTruthy();
+    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ENTER });
+    expect(wrapper.find('input').props().value).toBe('c');
+    expect(handleSelect).not.toBeCalled();
+  });
 
-  //   wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ENTER });
-  //   expect(wrapper.state().inputValue).toBe('c');
-  //   expect(handleSelect).not.toBeCalled();
-  // });
+  // https://github.com/ant-design/ant-design/issues/12172
+  it('onChange trigger only once when value is 0', () => {
+    const onChange = jest.fn();
+    const wrapper = mount(
+      <Select onChange={onChange}>
+        <Option value={0}>0</Option>
+      </Select>,
+    );
 
-  // // https://github.com/ant-design/ant-design/issues/14352
-  // it('dont change activeKey if value provided', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select value="light" open={true}>
-  //       <Option value="bamboo">bamboo</Option>
-  //       <Option value="light">light</Option>
-  //     </Select>,
-  //   );
+    toggleOpen(wrapper);
+    selectItem(wrapper);
+    expect(onChange).toBeCalled();
 
-  //   wrapper.setProps({ open: false });
-  //   expect(
-  //     (wrapper
-  //       .find('MenuItem')
-  //       .first()
-  //       .props() as any).active,
-  //   ).toBe(false);
-  // });
+    onChange.mockReset();
 
-  // // https://github.com/ant-design/ant-design/issues/12172
-  // it('onChange trigger only once when value is 0', () => {
-  //   const onChange = jest.fn();
-  //   const wrapper = mount<Select>(
-  //     <Select onChange={onChange}>
-  //       <Option value={0}>0</Option>
-  //     </Select>,
-  //   );
+    toggleOpen(wrapper);
+    selectItem(wrapper);
+    expect(onChange).not.toBeCalled();
+  });
 
-  //   wrapper.find('.rc-select').simulate('click');
-  //   wrapper
-  //     .find('li[role="option"]')
-  //     .at(0)
-  //     .simulate('click');
+  // TODO: `dropdownMatchSelectWidth` is useless anymore
+  // https://github.com/ant-design/ant-design/issues/12260
+  it.skip('dropdown menu width should not be smaller than trigger even dropdownMatchSelectWidth is false', () => {
+    const wrapper = mount(
+      <Select style={{ width: 1000 }} dropdownMatchSelectWidth={false}>
+        <Option value={0}>0</Option>
+        <Option value={1}>1</Option>
+      </Select>,
+    );
+    toggleOpen(wrapper);
+    //   expect(typeof wrapper.find('SelectTrigger').state().dropdownWidth).toBe('number');
+  });
 
-  //   expect(onChange).toBeCalled();
-  //   onChange.mockReset();
+  it('if loading, arrow should show loading icon', () => {
+    const wrapper = mount(
+      <Select style={{ width: 1000 }} loading>
+        <Option value={0}>0</Option>
+        <Option value={1}>1</Option>
+      </Select>,
+    );
+    expect(wrapper.find('.rc-select-arrow-loading').length).toBeTruthy();
+  });
+  it('if loading and multiple which has not arrow, but have loading icon', () => {
+    const wrapper = mount(
+      <Select style={{ width: 1000 }} mode="multiple">
+        <Option value={0}>0</Option>
+        <Option value={1}>1</Option>
+      </Select>,
+    );
+    expect(wrapper.find('.rc-select-arrow-icon').length).toBeFalsy();
+    expect(wrapper.find('.rc-select-arrow-loading').length).toBeFalsy();
 
-  //   wrapper.find('.rc-select').simulate('click');
-  //   wrapper
-  //     .find('li[role="option"]')
-  //     .at(0)
-  //     .simulate('click');
+    wrapper.setProps({
+      loading: true,
+    });
+    expect(wrapper.find('.rc-select-arrow-loading').length).toBeTruthy();
+  });
 
-  //   expect(onChange).not.toBeCalled();
-  // });
+  it('should keep trigger onSelect by select', () => {
+    const onSelect = jest.fn();
+    const wrapper = mount(
+      <Select open onSelect={onSelect} optionLabelProp="children">
+        <Option value="1">One</Option>
+      </Select>,
+    );
 
-  // // https://github.com/ant-design/ant-design/issues/12260
-  // it('dropdown menu width should not be smaller than trigger even dropdownMatchSelectWidth is false', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select style={{ width: 1000 }} dropdownMatchSelectWidth={false}>
-  //       <Option value={0}>0</Option>
-  //       <Option value={1}>1</Option>
-  //     </Select>,
-  //   );
-  //   wrapper.find('.rc-select').simulate('click');
-  //   expect(typeof wrapper.find('SelectTrigger').state().dropdownWidth).toBe('number');
-  // });
-
-  // it('if loading=true, arrow should show loading icon', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select style={{ width: 1000 }} loading={true} dropdownMatchSelectWidth={false}>
-  //       <Option value={0}>0</Option>
-  //       <Option value={1}>1</Option>
-  //     </Select>,
-  //   );
-  //   expect(wrapper.find('.rc-select-arrow-loading').length).toBe(1);
-  // });
-  // it('if loading=true and multiple=true, has not arrow, but have loading icon', () => {
-  //   // multiple=true loading and arrow don't have
-  //   const wrapper = mount<Select>(
-  //     <Select style={{ width: 1000 }} multiple={true} dropdownMatchSelectWidth={false}>
-  //       <Option value={0}>0</Option>
-  //       <Option value={1}>1</Option>
-  //     </Select>,
-  //   );
-  //   expect(wrapper.find('.rc-select-arrow-icon').length).toBe(0);
-  //   expect(wrapper.find('.rc-select-arrow-loading').length).toBe(0);
-
-  //   // multiple=true loading=true  loading do have
-  //   wrapper.setProps({
-  //     loading: true,
-  //   });
-  //   expect(wrapper.find('.rc-select-arrow-loading').length).toBe(1);
-  // });
-
-  // it('should keep trigger onSelect by select', () => {
-  //   const onSelect = jest.fn();
-
-  //   const wrapper = mount<Select>(
-  //     <Select backfill={true} open={true} onSelect={onSelect} optionLabelProp="children">
-  //       <Option value="1">One</Option>
-  //     </Select>,
-  //   );
-
-  //   const input = wrapper.find('input');
-
-  //   for (let i = 0; i < 10; i += 1) {
-  //     onSelect.mockReset();
-  //     input.simulate('keyDown', { keyCode: KeyCode.ENTER });
-  //     expect(onSelect).toBeCalledWith('1', expect.anything());
-  //   }
-  // });
+    for (let i = 0; i < 10; i += 1) {
+      onSelect.mockReset();
+      wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+      expect(onSelect).toBeCalledWith('1', expect.anything());
+    }
+  });
 });

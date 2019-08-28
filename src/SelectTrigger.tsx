@@ -111,4 +111,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
   );
 };
 
-export default React.forwardRef<RefTriggerProps, SelectTriggerProps>(SelectTrigger);
+const RefSelectTrigger = React.forwardRef<RefTriggerProps, SelectTriggerProps>(SelectTrigger);
+RefSelectTrigger.displayName = 'SelectTrigger';
+
+export default RefSelectTrigger;

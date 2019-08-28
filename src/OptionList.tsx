@@ -7,6 +7,8 @@ import { OptionsType, FlattenOptionData, OptionData, RenderNode } from './interf
 import { RawValueType } from './interface/generator';
 import { flattenOptions } from './utils/valueUtil';
 
+// TODO: Not use virtual list if options count is less than a certain number
+
 export interface OptionListProps {
   prefixCls: string;
   id: string;

@@ -38,6 +38,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
   const { onKeyDown: onOriginKeyDown, onChange: onOriginChange } = inputNode.props;
 
   inputNode = React.cloneElement(inputNode, {
+    id,
     ref,
     disabled,
     autoComplete: 'off',
@@ -69,4 +70,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
   return inputNode;
 };
 
-export default React.forwardRef<InputRef, InputProps>(Input);
+const RefInput = React.forwardRef<InputRef, InputProps>(Input);
+RefInput.displayName = 'Input';
+
+export default RefInput;

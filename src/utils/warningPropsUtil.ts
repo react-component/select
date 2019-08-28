@@ -3,6 +3,7 @@ import warning, { noteOnce } from 'rc-util/lib/warning';
 import toArray from 'rc-util/lib/Children/toArray';
 import { SelectProps } from '..';
 import { convertChildrenToData } from './legacyUtil';
+import { OptionData } from '../interface';
 
 function warningProps(props: SelectProps) {
   const {
@@ -32,6 +33,23 @@ function warningProps(props: SelectProps) {
     mode !== 'tags' || mergedOptions.every((opt: any) => !opt.disabled),
     'Please avoid setting option to disabled in tags mode since user can always type text as tag.',
   );
+
+  // `combobox` & `tags` should option be `string` type
+  if (mode === 'tags' || mode === 'combobox') {
+    const hasNumberValue = mergedOptions.some(item => {
+      if (item.options) {
+        return item.options.some((opt: OptionData) => {
+          return typeof ('value' in opt ? opt.value : opt.key) === 'number';
+        });
+      }
+      return typeof ('value' in item ? item.value : item.key) === 'number';
+    });
+
+    warning(
+      !hasNumberValue,
+      '`value` of Option should not use number type when `mode` is `tags` or `combobox`.',
+    );
+  }
 
   // Only `combobox` support `backfill`
   warning(mode === 'combobox' || !backfill, '`backfill` only works with `combobox` mode.');

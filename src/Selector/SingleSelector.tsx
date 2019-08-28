@@ -38,7 +38,11 @@ const SingleSelector: React.FC<SelectorProps> = ({
   }
 
   const hasTextInput = !!(combobox ? searchValue || activeValue : searchValue);
-  const inputValue = combobox ? activeValue || searchValue : searchValue;
+
+  let inputValue: string = searchValue;
+  if (combobox) {
+    inputValue = item ? String(item.value) : activeValue || searchValue;
+  }
 
   return (
     <>

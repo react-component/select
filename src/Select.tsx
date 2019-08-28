@@ -24,6 +24,7 @@
  * - `combobox` mode not support `labelInValue` since it's meaningless
  * - `getInputElement` only support `combobox` mode
  * - `onChange` return OptionData instead of ReactNode
+ * - `filterOption` `onChange` `onSelect` accept OptionData instead of ReactNode
  */
 
 import { OptionsType as SelectOptionsType, Mode } from './interface';
@@ -67,5 +68,7 @@ export type SelectProps<ValueType extends DefaultValueType = DefaultValueType> =
   SelectOptionsType,
   ValueType
 >;
+
+Select.displayName = 'Select';
 
 export default Select;
