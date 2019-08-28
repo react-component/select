@@ -39,6 +39,7 @@ import {
   filterOptions as selectDefaultFilterOptions,
   isValueDisabled as isSelectValueDisabled,
   findValueOption as findSelectValueOption,
+  flattenOptions,
 } from './utils/valueUtil';
 import generateSelector, { SelectProps } from './generate';
 import { DefaultValueType } from './interface/generator';
@@ -59,6 +60,7 @@ const Select = generateSelector<SelectOptionsType, SelectStaticProps>({
     OptGroup,
   },
   convertChildrenToData: convertSelectChildrenToData,
+  flattenOptions,
   getLabeledValue: getSelectLabeledValue,
   filterOptions: selectDefaultFilterOptions,
   isValueDisabled: isSelectValueDisabled,

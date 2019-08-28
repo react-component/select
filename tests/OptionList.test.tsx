@@ -4,6 +4,8 @@ import { act } from 'react-dom/test-utils';
 import React from 'react';
 import OptionList, { OptionListProps, RefOptionListProps } from '../src/OptionList';
 import { injectRunAllTimers } from './utils/common';
+import { OptionsType } from '../src/interface';
+import { flattenOptions } from '../src/utils/valueUtil';
 
 describe('OptionList', () => {
   injectRunAllTimers(jest);
@@ -16,13 +18,20 @@ describe('OptionList', () => {
     jest.useRealTimers();
   });
 
-  function generateList(props?: Partial<OptionListProps> & { ref?: any }) {
+  function generateList({
+    options,
+    ...props
+  }: { options: OptionsType } & Partial<OptionListProps<OptionsType>> & { ref?: any }) {
+    const flatten = flattenOptions(options);
+
     return (
       <div>
         <OptionList
           prefixCls="rc-select"
           onActiveValue={() => {}}
           values={new Set()}
+          options={options}
+          flattenOptions={flatten}
           {...(props as any)}
         />
       </div>

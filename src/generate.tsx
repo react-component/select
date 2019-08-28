@@ -23,6 +23,7 @@ import {
   Key,
   RefSelectFunc,
   DisplayLabelValueType,
+  FlattenOptionsType,
 } from './interface/generator';
 import { OptionListProps, RefOptionListProps } from './OptionList';
 import { toInnerValue, toOuterValues, removeLastEnabledValue } from './utils/commonUtil';
@@ -138,19 +139,26 @@ export interface GenerateConfig<OptionsType extends object[], StaticProps> {
   prefixCls: string;
   components: {
     optionList: React.ForwardRefExoticComponent<
-      React.PropsWithoutRef<Omit<OptionListProps, 'options'> & { options: OptionsType }> &
+      React.PropsWithoutRef<
+        Omit<OptionListProps<OptionsType>, 'options'> & { options: OptionsType }
+      > &
         React.RefAttributes<RefOptionListProps>
     >;
   };
   staticProps?: StaticProps;
   /** Convert jsx tree into `OptionsType` */
   convertChildrenToData: (children: React.ReactNode) => OptionsType;
+  /** Flatten nest options into raw option list */
+  flattenOptions: (options: OptionsType) => FlattenOptionsType<OptionsType>;
   /** Convert single raw value into { label, value } format. Will be called by each value */
-  getLabeledValue: GetLabeledValue<OptionsType>;
+  getLabeledValue: GetLabeledValue<FlattenOptionsType<OptionsType>>;
   filterOptions: FilterOptions<OptionsType>;
-  findValueOption: (values: RawValueType[], options: OptionsType) => OptionsType;
+  findValueOption: (
+    values: RawValueType[],
+    options: FlattenOptionsType<OptionsType>,
+  ) => OptionsType;
   /** Check if a value is disabled */
-  isValueDisabled: (value: RawValueType, options: OptionsType) => boolean;
+  isValueDisabled: (value: RawValueType, options: FlattenOptionsType<OptionsType>) => boolean;
   warningProps: (props: SelectProps<OptionsType, any>) => void;
 }
 
@@ -175,6 +183,7 @@ export default function generateSelector<
     components: { optionList: OptionList },
     staticProps,
     convertChildrenToData,
+    flattenOptions,
     getLabeledValue,
     filterOptions,
     isValueDisabled,
@@ -317,6 +326,12 @@ export default function generateSelector<
       return convertChildrenToData(children);
     }, [options, children]);
 
+    const mergedFlattenOptions: FlattenOptionsType<OptionsType> = React.useMemo(
+      () => flattenOptions(mergedOptions),
+      [mergedOptions],
+    );
+
+    // Display options for OptionList
     const displayOptions = React.useMemo<OptionsType>(() => {
       if (!mergedSearchValue) {
         return mergedOptions;
@@ -335,6 +350,11 @@ export default function generateSelector<
 
       return filteredOptions;
     }, [mergedOptions, mergedSearchValue, mode]);
+
+    const displayFlattenOptions: FlattenOptionsType<OptionsType> = React.useMemo(
+      () => flattenOptions(displayOptions),
+      [displayOptions],
+    );
 
     // ============================= Value ==============================
     const [innerValue, setInnerValue] = React.useState<ValueType>(value || defaultValue);
@@ -358,7 +378,7 @@ export default function generateSelector<
       () =>
         mergedRawValue.map((val: RawValueType) => {
           const displayValue = getLabeledValue(val, {
-            options: mergedOptions,
+            options: mergedFlattenOptions,
             prevValue: baseValue,
             labelInValue: mergedLabelInValue,
             optionLabelProp: mergedOptionLabelProp,
@@ -366,7 +386,7 @@ export default function generateSelector<
 
           return {
             ...displayValue,
-            disabled: isValueDisabled(val, mergedOptions),
+            disabled: isValueDisabled(val, mergedFlattenOptions),
           };
         }),
       [baseValue, mergedOptions],
@@ -382,7 +402,7 @@ export default function generateSelector<
           labelInValue
             ? (values as LabelValueType[]).map(item => item.value)
             : (values as RawValueType[]),
-          mergedOptions,
+          mergedFlattenOptions,
         );
 
         onChange(outValue, isMultiple ? outOptions : outOptions[0]);
@@ -412,9 +432,9 @@ export default function generateSelector<
 
       // Multiple always trigger change and single should change if value changed
       if (isMultiple || (!isMultiple && Array.from(mergedRawValue)[0] !== newValue)) {
-        const outValue = toOuterValues<OptionsType>(Array.from(newRawValue), {
+        const outValue = toOuterValues<FlattenOptionsType<OptionsType>>(Array.from(newRawValue), {
           labelInValue: mergedLabelInValue,
-          options: mergedOptions,
+          options: mergedFlattenOptions,
           getLabeledValue,
           prevValue: baseValue,
           optionLabelProp: mergedOptionLabelProp,
@@ -426,14 +446,14 @@ export default function generateSelector<
       // Trigger `onSelect`
       const selectValue: any = mergedLabelInValue
         ? getLabeledValue(newValue, {
-            options: mergedOptions,
+            options: mergedFlattenOptions,
             prevValue: baseValue,
             labelInValue: mergedLabelInValue,
             optionLabelProp: mergedOptionLabelProp,
           })
         : newValue;
 
-      const outOption = findValueOption([newValue], mergedOptions)[0];
+      const outOption = findValueOption([newValue], mergedFlattenOptions)[0];
       // Single mode always trigger `onSelect`
       if ((!isMultiple || selected) && onSelect) {
         onSelect(selectValue, outOption);
@@ -462,30 +482,36 @@ export default function generateSelector<
       setActiveValue(null);
 
       // Check if match the `tokenSeparators`
-      let patchRawValues: RawValueType[] = getSeparatedContent(searchText, tokenSeparators);
+      let patchLabels: string[] = getSeparatedContent(searchText, tokenSeparators);
+      let patchRawValues: RawValueType[] = patchLabels;
 
       if (mode === 'combobox') {
         // Only typing will trigger onChange
         if (fromTyping) {
           triggerChange([newSearchText]);
         }
-      } else if (patchRawValues) {
+      } else if (patchLabels) {
         newSearchText = '';
 
         if (mode !== 'tags') {
-          patchRawValues = patchRawValues.filter(rawValue =>
-            mergedOptions.some(opt => opt.value === rawValue),
-          );
+          patchRawValues = patchLabels
+            .map(label => {
+              const item = mergedFlattenOptions.find(
+                ({ data }) => data[mergedOptionLabelProp] === label,
+              );
+              return item ? item.data.value : null;
+            })
+            .filter((val: RawValueType) => val !== null);
         }
 
         const newRawValues = Array.from(
           new Set<RawValueType>([...mergedRawValue, ...patchRawValues]),
         );
         triggerChange(
-          toOuterValues<OptionsType>(newRawValues, {
+          toOuterValues<FlattenOptionsType<OptionsType>>(newRawValues, {
             labelInValue: mergedLabelInValue,
             getLabeledValue,
-            options: mergedOptions,
+            options: mergedFlattenOptions,
             prevValue: baseValue,
             optionLabelProp: mergedOptionLabelProp,
           }),
@@ -663,6 +689,7 @@ export default function generateSelector<
         open={mergedOpen}
         childrenAsData={!options}
         options={displayOptions}
+        flattenOptions={displayFlattenOptions}
         multiple={isMultiple}
         values={rawValues}
         height={listHeight}

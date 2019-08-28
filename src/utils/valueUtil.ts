@@ -62,28 +62,24 @@ export function flattenOptions(
   return flattenList;
 }
 
-export function findValueOption(values: RawValueType[], options: SelectOptionsType): OptionData[] {
+export function findValueOption(
+  values: RawValueType[],
+  options: FlattenOptionData[],
+): OptionData[] {
   const optionMap: Map<RawValueType, OptionData> = new Map();
 
-  options.forEach(option => {
-    // Loop if is a group
-    if (
-      'options' in option &&
-      option.options.forEach((subOption: OptionData) => {
-        optionMap.set(subOption.value, subOption);
-      })
-    ) {
-      return;
+  options.forEach(flattenItem => {
+    if (!flattenItem.group) {
+      const data = flattenItem.data as OptionData;
+      // Check if match
+      optionMap.set(data.value, data);
     }
-
-    // Check if match
-    optionMap.set((option as OptionData).value, option as OptionData);
   });
 
   return values.map(val => optionMap.get(val));
 }
 
-export const getLabeledValue: GetLabeledValue<SelectOptionsType> = (
+export const getLabeledValue: GetLabeledValue<FlattenOptionData[]> = (
   value,
   { options, prevValue, labelInValue, optionLabelProp },
 ) => {
@@ -203,7 +199,7 @@ export function getSeparatedContent(text: string, tokens: string[]): string[] {
   return match ? list : null;
 }
 
-export function isValueDisabled(value: RawValueType, options: OptionsType): boolean {
+export function isValueDisabled(value: RawValueType, options: FlattenOptionData[]): boolean {
   const option = findValueOption([value], options)[0];
   if (option) {
     return option.disabled;

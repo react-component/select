@@ -3,6 +3,7 @@ import {
   GetLabeledValue,
   LabelValueType,
   DefaultValueType,
+  FlattenOptionsType,
 } from '../interface/generator';
 
 export function toArray<T>(value: T | T[]): T[] {
@@ -35,7 +36,7 @@ export function toInnerValue(
 /**
  * Convert internal value into out event value
  */
-export function toOuterValues<OptionsType>(
+export function toOuterValues<FOT extends FlattenOptionsType<any>>(
   valueList: RawValueType[],
   {
     optionLabelProp,
@@ -46,8 +47,8 @@ export function toOuterValues<OptionsType>(
   }: {
     optionLabelProp: string;
     labelInValue: boolean;
-    getLabeledValue: GetLabeledValue<OptionsType>;
-    options: OptionsType;
+    getLabeledValue: GetLabeledValue<FOT>;
+    options: FOT;
     prevValue: DefaultValueType;
   },
 ): RawValueType[] | LabelValueType[] {

@@ -2,13 +2,14 @@ import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import React from 'react';
 import { resetWarned } from 'rc-util/lib/warning';
-import Select, { Option, SelectProps } from '../src';
+import Select, { Option, OptGroup } from '../src';
 import focusTest from './shared/focusTest';
 import blurTest from './shared/blurTest';
 import hoverTest from './shared/hoverTest';
 import renderTest from './shared/renderTest';
 import removeSelectedTest from './shared/removeSelectedTest';
 import dynamicChildrenTest from './shared/dynamicChildrenTest';
+import inputFilterTest from './shared/inputFilterTest';
 import keyDownTest from './shared/keyDownTest';
 import openControlledTest from './shared/openControlledTest';
 import { expectOpen, toggleOpen, selectItem, injectRunAllTimers } from './utils/common';
@@ -25,77 +26,74 @@ describe('Select.Multiple', () => {
   renderTest('multiple');
   removeSelectedTest('multiple');
   dynamicChildrenTest('multiple');
+  inputFilterTest('multiple');
 
+  it.only('tokenize input', () => {
+    const handleChange = jest.fn();
+    const handleSelect = jest.fn();
+    const wrapper = mount(
+      <Select
+        mode="multiple"
+        optionLabelProp="children"
+        tokenSeparators={[',']}
+        onChange={handleChange}
+        onSelect={handleSelect}
+      >
+        <OptGroup key="group1">
+          <Option value="1">One</Option>
+        </OptGroup>
+        <OptGroup key="group2">
+          <Option value="2">Two</Option>
+        </OptGroup>
+      </Select>,
+    );
 
+    wrapper.find('input').simulate('change', {
+      target: {
+        value: 'One',
+      },
+    });
+    expect(handleChange).not.toHaveBeenCalled();
 
-  // inputFilterTest('multiple');
+    handleChange.mockReset();
+    wrapper.find('input').simulate('change', {
+      target: {
+        value: 'One,Two,Three',
+      },
+    });
+    expect(handleChange).toHaveBeenCalledWith(['1', '2'], expect.anything());
 
-  // it('tokenize input', () => {
-  //   const handleChange = jest.fn();
-  //   const handleSelect = jest.fn();
-  //   const wrapper = mount<Select>(
-  //     <Select
-  //       multiple={true}
-  //       optionLabelProp="children"
-  //       tokenSeparators={[',']}
-  //       onChange={handleChange}
-  //       onSelect={handleSelect}
-  //     >
-  //       <OptGroup key="group1">
-  //         <Option value="1">One</Option>
-  //       </OptGroup>
-  //       <OptGroup key="group2">
-  //         <Option value="2">Two</Option>
-  //       </OptGroup>
-  //     </Select>,
-  //   );
+    // wrapper.find('input').simulate('change', {
+    //   target: {
+    //     value: 'One,Two',
+    //   },
+    // });
 
-  //   const input = wrapper.find('input');
-  //   (input.instance() as any).focus = jest.fn();
-
-  //   input.simulate('change', {
-  //     target: {
-  //       value: 'One',
-  //     },
-  //   });
-
-  //   input.simulate('change', {
-  //     target: {
-  //       value: 'One,Two,Three',
-  //     },
-  //   });
-
-  //   input.simulate('change', {
-  //     target: {
-  //       value: 'One,Two',
-  //     },
-  //   });
-
-  //   expect(handleChange).toBeCalledWith(['1', '2'], expect.anything());
-  //   expect(handleChange).toHaveBeenCalledTimes(1);
-  //   expect(handleSelect).toHaveBeenCalledTimes(2);
-  //   expect(wrapper.state().value).toEqual(['1', '2']);
-  //   expect(
-  //     wrapper
-  //       .find('.rc-select-selection__choice__content')
-  //       .at(0)
-  //       .text(),
-  //   ).toEqual('One');
-  //   expect(
-  //     wrapper
-  //       .find('.rc-select-selection__choice__content')
-  //       .at(1)
-  //       .text(),
-  //   ).toEqual('Two');
-  //   expect(wrapper.state().inputValue).toBe('');
-  //   expect(wrapper.state().open).toBe(false);
-  //   expect((input.instance() as any).focus).toBeCalled();
-  // });
+    //   expect(handleChange).toBeCalledWith(['1', '2'], expect.anything());
+    //   expect(handleChange).toHaveBeenCalledTimes(1);
+    //   expect(handleSelect).toHaveBeenCalledTimes(2);
+    //   expect(wrapper.state().value).toEqual(['1', '2']);
+    //   expect(
+    //     wrapper
+    //       .find('.rc-select-selection__choice__content')
+    //       .at(0)
+    //       .text(),
+    //   ).toEqual('One');
+    //   expect(
+    //     wrapper
+    //       .find('.rc-select-selection__choice__content')
+    //       .at(1)
+    //       .text(),
+    //   ).toEqual('Two');
+    //   expect(wrapper.state().inputValue).toBe('');
+    //   expect(wrapper.state().open).toBe(false);
+    //   expect((input.instance() as any).focus).toBeCalled();
+  });
 
   // it('focus', () => {
   //   const handleFocus = jest.fn();
   //   const wrapper = mount(
-  //     <Select multiple={true} onFocus={handleFocus}>
+  //     <Select mode="multiple" onFocus={handleFocus}>
   //       <Option value="1">One</Option>
   //       <Option value="2">Two</Option>
   //     </Select>,
@@ -109,7 +107,7 @@ describe('Select.Multiple', () => {
   // it('OptGroup without key', () => {
   //   expect(() => {
   //     mount(
-  //       <Select multiple={true} defaultValue={['1']}>
+  //       <Select mode="multiple" defaultValue={['1']}>
   //         <OptGroup label="group1">
   //           <Option value="1">One</Option>
   //         </OptGroup>
@@ -125,7 +123,7 @@ describe('Select.Multiple', () => {
   //   const handleChange = jest.fn();
 
   //   const wrapper = mount(
-  //     <Select multiple={true} defaultValue={1} onChange={handleChange}>
+  //     <Select mode="multiple" defaultValue={1} onChange={handleChange}>
   //       <Option value={1}>1</Option>
   //       <Option value={2} testprop={2}>
   //         2
@@ -168,7 +166,7 @@ describe('Select.Multiple', () => {
 
   // it('do not open when close button click', () => {
   //   const wrapper = mount(
-  //     <Select multiple={true}>
+  //     <Select mode="multiple">
   //       <Option value={1}>1</Option>
   //       <Option value={2}>2</Option>
   //     </Select>,
@@ -193,7 +191,7 @@ describe('Select.Multiple', () => {
 
   // it('select when item enter', () => {
   //   const wrapper = mount(
-  //     <Select multiple={true}>
+  //     <Select mode="multiple">
   //       <Option value={1}>1</Option>
   //       <Option value={2}>2</Option>
   //     </Select>,
@@ -212,7 +210,7 @@ describe('Select.Multiple', () => {
 
   // it('enter twice to cancel the selection', () => {
   //   const wrapper = mount(
-  //     <Select multiple={true}>
+  //     <Select mode="multiple">
   //       <Option value={1}>1</Option>
   //       <Option value={2}>2</Option>
   //     </Select>,
@@ -234,7 +232,7 @@ describe('Select.Multiple', () => {
 
   // it('do not crash when children has empty', () => {
   //   const wrapper = mount(
-  //     <Select multiple={true}>
+  //     <Select mode="multiple">
   //       {null}
   //       <Option value={1}>1</Option>
   //       <Option value={2}>2</Option>
@@ -252,7 +250,7 @@ describe('Select.Multiple', () => {
 
   // it('do not crash when value has empty string', () => {
   //   const wrapper = mount(
-  //     <Select multiple={true} value={['']}>
+  //     <Select mode="multiple" value={['']}>
   //       <Option value={1}>1</Option>
   //       <Option value={2}>2</Option>
   //     </Select>,
@@ -264,7 +262,7 @@ describe('Select.Multiple', () => {
   // it('show arrow on multiple mode when explicitly set', () => {
   //   // multiple=true arrow don't have
   //   const wrapper = mount(
-  //     <Select multiple={true} value={['']}>
+  //     <Select mode="multiple" value={['']}>
   //       <Option value={1}>1</Option>
   //       <Option value={2}>2</Option>
   //     </Select>,

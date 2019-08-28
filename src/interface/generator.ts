@@ -17,10 +17,10 @@ export interface DisplayLabelValueType extends LabelValueType {
 }
 
 // ==================================== Generator ====================================
-export type GetLabeledValue<OptionsType> = (
+export type GetLabeledValue<FOT extends FlattenOptionsType<any>> = (
   value: RawValueType,
   config: {
-    options: OptionsType;
+    options: FOT;
     prevValue: DefaultValueType;
     labelInValue: boolean;
     optionLabelProp: string;
@@ -36,8 +36,14 @@ export type FilterOptions<OptionsType> = (
 
 export type FilterFunc = (inputValue: string, option?: any) => boolean;
 
-export declare function RefSelectFunc<OptionsType, ValueType>(
+export declare function RefSelectFunc<OptionsType extends object[], ValueType>(
   Component: React.RefForwardingComponent<RefSelectProps, SelectProps<OptionsType, ValueType>>,
 ): React.ForwardRefExoticComponent<
   React.PropsWithoutRef<SelectProps<OptionsType, ValueType>> & React.RefAttributes<RefSelectProps>
 >;
+
+export type FlattenOptionsType<OptionsType extends object[]> = {
+  key: Key;
+  data: OptionsType[number];
+  [name: string]: any;
+}[];

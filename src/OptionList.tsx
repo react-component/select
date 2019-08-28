@@ -3,16 +3,16 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
 import List from 'rc-virtual-list';
 import TransBtn from './TransBtn';
-import { OptionsType, FlattenOptionData, OptionData, RenderNode } from './interface';
-import { RawValueType } from './interface/generator';
-import { flattenOptions } from './utils/valueUtil';
+import { OptionsType as SelectOptionsType, FlattenOptionData as SelectFlattenOptionData, OptionData, RenderNode } from './interface';
+import { RawValueType, FlattenOptionsType } from './interface/generator';
 
 // TODO: Not use virtual list if options count is less than a certain number
 
-export interface OptionListProps {
+export interface OptionListProps<OptionsType extends object[]> {
   prefixCls: string;
   id: string;
   options: OptionsType;
+  flattenOptions: FlattenOptionsType<OptionsType>;
   height: number;
   itemHeight: number;
   values: Set<RawValueType>;
@@ -40,11 +40,11 @@ export interface RefOptionListProps {
  * Using virtual list of option display.
  * Will fallback to dom if use customize render.
  */
-const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListProps> = (
+const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListProps<SelectOptionsType>> = (
   {
     prefixCls,
     id,
-    options,
+    flattenOptions,
     childrenAsData,
     values,
     searchValue,
@@ -66,10 +66,6 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
 
   // =========================== List ===========================
   const listRef = React.useRef<List>(null);
-  const flattenList: FlattenOptionData[] = React.useMemo<FlattenOptionData[]>(
-    () => flattenOptions(options),
-    [options],
-  );
 
   const onListMouseDown: React.MouseEventHandler<HTMLDivElement> = event => {
     event.preventDefault();
@@ -83,12 +79,12 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
 
   // ========================== Active ==========================
   const getEnabledActiveIndex = (index: number, offset: number = 1): number => {
-    const len = flattenList.length;
+    const len = flattenOptions.length;
 
     for (let i = 0; i < len; i += 1) {
       const current = (index + i * offset + len) % len;
 
-      const { group, data } = flattenList[current];
+      const { group, data } = flattenOptions[current];
       if (!group && !(data as OptionData).disabled) {
         return current;
       }
@@ -102,7 +98,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
     setActiveIndex(index);
 
     // Trigger active event
-    const flattenItem = flattenList[index];
+    const flattenItem = flattenOptions[index];
     if (!flattenItem) {
       onActiveValue(null, -1);
       return;
@@ -114,13 +110,13 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   // Auto active first item when list length or searchValue changed
   React.useEffect(() => {
     setActive(defaultActiveFirstOption !== false ? getEnabledActiveIndex(0) : -1);
-  }, [flattenList.length, searchValue]);
+  }, [flattenOptions.length, searchValue]);
 
   // Auto scroll to item position in single mode
   React.useEffect(() => {
     if (!multiple && open && values.size === 1) {
       const value: RawValueType = Array.from(values)[0];
-      const index = flattenList.findIndex(({ data }) => (data as OptionData).value === value);
+      const index = flattenOptions.findIndex(({ data }) => (data as OptionData).value === value);
       setActive(index);
       scrollIntoView(index);
     }
@@ -164,7 +160,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
         // >>> Select
         case KeyCode.ENTER: {
           // value
-          const item = flattenList[activeIndex];
+          const item = flattenOptions[activeIndex];
           if (item && !(item.data as OptionData).disabled) {
             onSelectValue((item.data as OptionData).value);
           } else {
@@ -184,7 +180,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   }));
 
   // ========================== Render ==========================
-  if (flattenList.length === 0) {
+  if (flattenOptions.length === 0) {
     return (
       <div
         role="listbox"
@@ -198,7 +194,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   }
 
   function renderItem(index: number) {
-    const item = flattenList[index];
+    const item = flattenOptions[index];
     const value = item && (item.data as OptionData).value;
     return item ? (
       <div key={index} role="option" id={`${id}_list_${index}`} aria-selected={values.has(value)}>
@@ -214,10 +210,10 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
         {renderItem(activeIndex)}
         {renderItem(activeIndex + 1)}
       </div>
-      <List<FlattenOptionData>
+      <List<SelectFlattenOptionData>
         itemKey="key"
         ref={listRef}
-        data={flattenList}
+        data={flattenOptions}
         height={height}
         itemHeight={itemHeight}
         onMouseDown={onListMouseDown}
@@ -283,7 +279,7 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   );
 };
 
-const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>(OptionList);
+const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<SelectOptionsType>>(OptionList);
 RefOptionList.displayName = 'OptionList';
 
 export default RefOptionList;
