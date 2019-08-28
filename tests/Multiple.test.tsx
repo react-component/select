@@ -151,94 +151,95 @@ describe('Select.Multiple', () => {
     toggleOpen(wrapper);
     removeSelection(wrapper);
     expectOpen(wrapper, false);
-    expect(wrapper.find('Selector').props().values).toEqual([expect.objectContaining({ value: 2 })]);
+    expect(wrapper.find('Selector').props().values).toEqual([
+      expect.objectContaining({ value: 2 }),
+    ]);
   });
 
-  // it('select when item enter', () => {
-  //   const wrapper = mount(
-  //     <Select mode="multiple">
-  //       <Option value={1}>1</Option>
-  //       <Option value={2}>2</Option>
-  //     </Select>,
-  //   );
-  //   wrapper.find('.rc-select-selection').simulate('click');
-  //   const meunItem = wrapper.find('.rc-select-dropdown-menu-item').at(1);
-  //   // add active to meunItem
-  //   meunItem
-  //     .simulate('mouseenter')
-  //     .simulate('mouseover')
-  //     .simulate('keyDown', { keyCode: 13 });
-  //   expect(wrapper.state('open')).toBe(true);
-  //   expect(wrapper.state('value')).toEqual([2]);
-  //   wrapper.unmount();
-  // });
+  it('select when item enter', () => {
+    const wrapper = mount(
+      <Select mode="multiple">
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>,
+    );
 
-  // it('enter twice to cancel the selection', () => {
-  //   const wrapper = mount(
-  //     <Select mode="multiple">
-  //       <Option value={1}>1</Option>
-  //       <Option value={2}>2</Option>
-  //     </Select>,
-  //   );
-  //   wrapper.find('.rc-select-selection').simulate('click');
-  //   const meunItem = wrapper.find('.rc-select-dropdown-menu-item').at(1);
-  //   // add active to meunItem
-  //   meunItem
-  //     .simulate('mouseenter')
-  //     .simulate('mouseover')
-  //     .simulate('keyDown', { keyCode: 13 });
-  //   meunItem
-  //     .simulate('mouseenter')
-  //     .simulate('mouseover')
-  //     .simulate('keyDown', { keyCode: 13 });
-  //   expect(wrapper.state('open')).toBe(true);
-  //   expect(wrapper.state('value')).toEqual([]);
-  // });
+    toggleOpen(wrapper);
+    wrapper
+      .find('div.rc-select-item-option')
+      .at(1)
+      .simulate('mouseMove');
 
-  // it('do not crash when children has empty', () => {
-  //   const wrapper = mount(
-  //     <Select mode="multiple">
-  //       {null}
-  //       <Option value={1}>1</Option>
-  //       <Option value={2}>2</Option>
-  //     </Select>,
-  //   );
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+    expectOpen(wrapper);
+    expect(wrapper.find('Selector').props().values).toEqual([
+      expect.objectContaining({ value: 2 }),
+    ]);
+  });
 
-  //   wrapper.find('.rc-select-selection').simulate('click');
-  //   wrapper
-  //     .find('.rc-select-dropdown-menu-item')
-  //     .at(0)
-  //     .simulate('click');
+  it('enter twice to cancel the selection', () => {
+    const wrapper = mount(
+      <Select mode="multiple">
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>,
+    );
 
-  //   // Do not crash
-  // });
+    toggleOpen(wrapper);
+    wrapper
+      .find('div.rc-select-item-option')
+      .first()
+      .simulate('mousemove');
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
 
-  // it('do not crash when value has empty string', () => {
-  //   const wrapper = mount(
-  //     <Select mode="multiple" value={['']}>
-  //       <Option value={1}>1</Option>
-  //       <Option value={2}>2</Option>
-  //     </Select>,
-  //   );
+    wrapper
+      .find('div.rc-select-item-option')
+      .first()
+      .simulate('mousemove');
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
 
-  //   expect(wrapper.find('.rc-select-selection__choice__content').length).toBe(1);
-  // });
+    expect(wrapper.find('Selector').props().values).toEqual([]);
+  });
 
-  // it('show arrow on multiple mode when explicitly set', () => {
-  //   // multiple=true arrow don't have
-  //   const wrapper = mount(
-  //     <Select mode="multiple" value={['']}>
-  //       <Option value={1}>1</Option>
-  //       <Option value={2}>2</Option>
-  //     </Select>,
-  //   );
+  it('do not crash when children has empty', () => {
+    const wrapper = mount(
+      <Select mode="multiple">
+        {null}
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>,
+    );
 
-  //   expect(wrapper.find('.rc-select-arrow-icon').length).toBe(0);
+    toggleOpen(wrapper);
+    selectItem(wrapper);
 
-  //   // multiple=true showArrow=true  arrow do have
-  //   wrapper.setProps({
-  //     showArrow: true,
-  //   });
-  //   expect(wrapper.find('.rc-select-arrow-icon').length).toBe(1);
-  // });
+    // Do not crash
+  });
+
+  it('do not crash when value has empty string', () => {
+    const wrapper = mount(
+      <Select mode="multiple" value={['']}>
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>,
+    );
+
+    expect(findSelection(wrapper).text()).toEqual('');
+  });
+
+  it('show arrow on multiple mode when explicitly set', () => {
+    const wrapper = mount(
+      <Select mode="multiple" value={['']}>
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>,
+    );
+
+    expect(wrapper.find('.rc-select-arrow-icon').length).toBeFalsy();
+
+    wrapper.setProps({
+      showArrow: true,
+    });
+    expect(wrapper.find('.rc-select-arrow-icon').length).toBeTruthy();
+  });
 });
