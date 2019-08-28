@@ -12,7 +12,7 @@ import openControlledTest from './shared/openControlledTest';
 import removeSelectedTest from './shared/removeSelectedTest';
 import renderTest from './shared/renderTest';
 import throwOptionValue from './shared/throwOptionValue';
-import { injectRunAllTimers } from './utils/common';
+import { injectRunAllTimers, findSelection } from './utils/common';
 
 describe('Select.Tags', () => {
   injectRunAllTimers(jest);
@@ -28,93 +28,89 @@ describe('Select.Tags', () => {
   inputFilterTest('tags');
   openControlledTest('tags');
 
-  // it('allow user input tags', () => {
-  //   const wrapper = mount<Select>(<Select tags={true} />);
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
 
-  //   wrapper
-  //     .find('input')
-  //     .simulate('change', { target: { value: 'foo' } })
-  //     .simulate('keyDown', { keyCode: KeyCode.ENTER });
+  afterEach(() => {
+    jest.useRealTimers();
+  });
 
-  //   expect(wrapper.state().value).toEqual(['foo']);
-  //   expect(
-  //     wrapper
-  //       .update()
-  //       .find('.rc-select-selection__choice__content')
-  //       .text(),
-  //   ).toBe('foo');
-  // });
+  it('allow user input tags', () => {
+    const wrapper = mount(<Select mode="tags" />);
 
-  // it('should call onChange on blur', () => {
-  //   const wrapper = mount<Select>(<Select tags={true} />);
+    wrapper
+      .find('input')
+      .simulate('change', { target: { value: 'foo' } })
+      .simulate('keyDown', { which: KeyCode.ENTER });
 
-  //   jest.useFakeTimers();
-  //   wrapper
-  //     .find('input')
-  //     .simulate('change', { target: { value: 'foo' } })
-  //     .simulate('blur');
+    expect(findSelection(wrapper).text()).toBe('foo');
+  });
 
-  //   jest.runAllTimers();
-  //   expect(wrapper.state().value).toEqual(['foo']);
-  //   expect(
-  //     wrapper
-  //       .update()
-  //       .find('.rc-select-selection__choice__content')
-  //       .text(),
-  //   ).toBe('foo');
-  // });
+  it('should call onChange on blur', () => {
+    const onChange = jest.fn();
+    const wrapper = mount(<Select mode="tags" onChange={onChange} />);
 
-  // it('tokenize input', () => {
-  //   const handleChange = jest.fn();
-  //   const handleSelect = jest.fn();
-  //   const option2 = <Option value="2">2</Option>;
-  //   const wrapper = mount<Select>(
-  //     <Select tags={true} tokenSeparators={[',']} onChange={handleChange} onSelect={handleSelect}>
-  //       <Option value="1">1</Option>
-  //       {option2}
-  //     </Select>,
-  //   );
-  //   // @HACK
-  //   const input = wrapper.find('input') as any;
-  //   input.instance().focus = jest.fn();
+    wrapper
+      .find('input')
+      .simulate('change', { target: { value: 'foo' } })
+      .simulate('blur');
 
-  //   input.simulate('change', { target: { value: '2,3,4' } });
+    jest.runAllTimers();
+    expect(findSelection(wrapper).text()).toBe('foo');
+    expect(onChange).toHaveBeenCalledWith(['foo'], [undefined]);
+  });
 
-  //   expect(handleChange).toBeCalledWith(['2', '3', '4'], expect.anything());
-  //   expect(handleSelect).toHaveBeenCalledTimes(3);
-  //   expect(handleSelect).toHaveBeenLastCalledWith(
-  //     '4',
-  //     <Option key="4" value="4">
-  //       4
-  //     </Option>,
-  //   );
-  //   expect(wrapper.state().value).toEqual(['2', '3', '4']);
-  //   expect(
-  //     wrapper
-  //       .find('.rc-select-selection__choice__content')
-  //       .at(0)
-  //       .text(),
-  //   ).toBe('2');
-  //   expect(
-  //     wrapper
-  //       .find('.rc-select-selection__choice__content')
-  //       .at(1)
-  //       .text(),
-  //   ).toBe('3');
-  //   expect(
-  //     wrapper
-  //       .find('.rc-select-selection__choice__content')
-  //       .at(2)
-  //       .text(),
-  //   ).toBe('4');
-  //   expect(wrapper.state().inputValue).toBe('');
-  //   expect(wrapper.state().open).toBe(false);
-  //   expect(input.instance().focus).toBeCalled();
-  // });
+  it('tokenize input', () => {
+    const handleChange = jest.fn();
+    const handleSelect = jest.fn();
+    const option2 = <Option value="2">2</Option>;
+    const wrapper = mount(
+      <Select mode="tags" tokenSeparators={[',']} onChange={handleChange} onSelect={handleSelect}>
+        <Option value="1">1</Option>
+        {option2}
+      </Select>,
+    );
+
+    wrapper.find('input').instance().focus = jest.fn();
+
+    wrapper.find('input').simulate('change', { target: { value: '2,3,4' } });
+
+    expect(handleChange).toBeCalledWith(['2', '3', '4'], expect.anything());
+    expect(handleSelect).toHaveBeenCalledTimes(3);
+    //   expect(handleSelect).toHaveBeenLastCalledWith(
+    //     '4',
+    //     <Option key="4" value="4">
+    //       4
+    //     </Option>,
+    //   );
+    //   expect(wrapper.state().value).toEqual(['2', '3', '4']);
+    //   expect(
+    //     wrapper
+    //       .find('.rc-select-selection__choice__content')
+    //       .at(0)
+    //       .text(),
+    //   ).toBe('2');
+    //   expect(
+    //     wrapper
+    //       .find('.rc-select-selection__choice__content')
+    //       .at(1)
+    //       .text(),
+    //   ).toBe('3');
+    //   expect(
+    //     wrapper
+    //       .find('.rc-select-selection__choice__content')
+    //       .at(2)
+    //       .text(),
+    //   ).toBe('4');
+    //   expect(wrapper.state().inputValue).toBe('');
+    //   expect(wrapper.state().open).toBe(false);
+    // expect(input.instance().focus).toBeCalled();
+  });
 
   // it('renders unlisted item in value', () => {
   //   const wrapper = render(
-  //     <Select tags={true} value="3" open={true}>
+  //     <Select mode="tags" value="3" open={true}>
   //       <Option value="1">1</Option>
   //       <Option value="2">2</Option>
   //     </Select>,
@@ -124,7 +120,7 @@ describe('Select.Tags', () => {
   // });
 
   // it('dropdown keeps order', () => {
-  //   const wrapper = mount<Select>(<Select tags={true} open={true} value={['aaaaa', 'aaa']} />);
+  //   const wrapper = mount<Select>(<Select mode="tags" open={true} value={['aaaaa', 'aaa']} />);
 
   //   wrapper.find('input').simulate('change', { target: { value: 'aaa' } });
   //   wrapper.update();
@@ -139,7 +135,7 @@ describe('Select.Tags', () => {
 
   // it('renders search value when not found', () => {
   //   const wrapper = render(
-  //     <Select tags={true} value="22" inputValue="2" open={true}>
+  //     <Select mode="tags" value="22" inputValue="2" open={true}>
   //       <Option value="1">1</Option>
   //     </Select>,
   //   );
@@ -152,7 +148,7 @@ describe('Select.Tags', () => {
   //     option.props.value.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1;
 
   //   const wrapper = render(
-  //     <Select tags={true} inputValue="red" filterOption={filterOption} open={true}>
+  //     <Select mode="tags" inputValue="red" filterOption={filterOption} open={true}>
   //       <Option value="Red">Red</Option>
   //     </Select>,
   //   );
@@ -162,7 +158,7 @@ describe('Select.Tags', () => {
 
   // it('filterOption is false', () => {
   //   const wrapper = mount<Select>(
-  //     <Select tags={true} filterOption={false}>
+  //     <Select mode="tags" filterOption={false}>
   //       <Option value="1">1</Option>
   //       <Option value="2">2</Option>
   //     </Select>,
@@ -181,7 +177,7 @@ describe('Select.Tags', () => {
   // describe('OptGroup', () => {
   //   const createSelect = props => (
   //     <div>
-  //       <Select tags={true} {...props}>
+  //       <Select mode="tags" {...props}>
   //         <OptGroup key="Manager" label="Manager">
   //           <Option key="jack" value="jack">
   //             Jack
@@ -224,7 +220,7 @@ describe('Select.Tags', () => {
   //     }
   //     const wrapper = mount<Select>(
   //       <Select
-  //         tags={true}
+  //         mode="tags"
   //         style={{ width: '100%' }}
   //         placeholder="Tags Mode"
   //         filterOption={(input, { key }) => key.indexOf(input) >= 0}

@@ -394,6 +394,25 @@ export default function generateSelector<
 
     const isMultiple = mode === 'tags' || mode === 'multiple';
 
+    const triggerSelect = (newValue: RawValueType, isSelect: boolean) => {
+      const selectValue: any = mergedLabelInValue
+        ? getLabeledValue(newValue, {
+            options: mergedFlattenOptions,
+            prevValue: baseValue,
+            labelInValue: mergedLabelInValue,
+            optionLabelProp: mergedOptionLabelProp,
+          })
+        : newValue;
+
+      const outOption = findValueOption([newValue], mergedFlattenOptions)[0];
+
+      if (isSelect && onSelect) {
+        onSelect(selectValue, outOption);
+      } else if (!isSelect && onDeselect) {
+        onDeselect(selectValue, outOption);
+      }
+    };
+
     const triggerChange = (rawValues: RawValueType[]) => {
       const outValues = toOuterValues<FlattenOptionsType<OptionsType>>(Array.from(rawValues), {
         labelInValue: mergedLabelInValue,
@@ -438,23 +457,8 @@ export default function generateSelector<
         triggerChange(Array.from(newRawValue));
       }
 
-      // Trigger `onSelect`
-      const selectValue: any = mergedLabelInValue
-        ? getLabeledValue(newValue, {
-            options: mergedFlattenOptions,
-            prevValue: baseValue,
-            labelInValue: mergedLabelInValue,
-            optionLabelProp: mergedOptionLabelProp,
-          })
-        : newValue;
-
-      const outOption = findValueOption([newValue], mergedFlattenOptions)[0];
-      // Single mode always trigger `onSelect`
-      if ((!isMultiple || selected) && onSelect) {
-        onSelect(selectValue, outOption);
-      } else if (!selected && onDeselect) {
-        onDeselect(selectValue, outOption);
-      }
+      // Trigger `onSelect`. Single mode always trigger select
+      triggerSelect(newValue, !isMultiple || selected);
 
       // Clean search value if single or configured
       if (mode === 'combobox') {
@@ -504,6 +508,9 @@ export default function generateSelector<
           new Set<RawValueType>([...mergedRawValue, ...patchRawValues]),
         );
         triggerChange(newRawValues);
+        newRawValues.forEach(newRawValue => {
+          triggerSelect(newRawValue, true);
+        });
 
         // Should close when paste finish
         onToggleOpen(false);
