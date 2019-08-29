@@ -88,8 +88,8 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
   return (
     <Trigger
       {...restProps}
-      showAction={['click']}
-      hideAction={['click']}
+      showAction={[]}
+      hideAction={[]}
       popupPlacement="bottomLeft"
       builtinPlacements={BUILT_IN_PLACEMENTS}
       prefixCls={dropdownPrefixCls}
