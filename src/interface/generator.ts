@@ -42,7 +42,7 @@ export declare function RefSelectFunc<OptionsType extends object[], ValueType>(
   React.PropsWithoutRef<SelectProps<OptionsType, ValueType>> & React.RefAttributes<RefSelectProps>
 >;
 
-export type FlattenOptionsType<OptionsType extends object[]> = {
+export type FlattenOptionsType<OptionsType extends object[] = object[]> = {
   key: Key;
   data: OptionsType[number];
   [name: string]: any;

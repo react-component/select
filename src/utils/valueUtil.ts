@@ -128,8 +128,8 @@ export const getLabeledValue: GetLabeledValue<FlattenOptionData[]> = (
   return result;
 };
 
-function toRawString(content: any): string {
-  return String(Array.isArray(content) ? content.join('') : content);
+function toRawString(content: React.ReactNode): string {
+  return toArray(content).join('');
 }
 
 /** Filter single option if match the search text */

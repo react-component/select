@@ -36,7 +36,7 @@ export function toInnerValue(
 /**
  * Convert internal value into out event value
  */
-export function toOuterValues<FOT extends FlattenOptionsType<any>>(
+export function toOuterValues<FOT extends FlattenOptionsType>(
   valueList: RawValueType[],
   {
     optionLabelProp,
@@ -63,10 +63,10 @@ export function toOuterValues<FOT extends FlattenOptionsType<any>>(
   return values;
 }
 
-export function removeLastEnabledValue<T extends { disabled?: boolean }, P extends any>(
-  measureValues: T[],
-  values: P[],
-): P[] {
+export function removeLastEnabledValue<
+  T extends { disabled?: boolean },
+  P extends RawValueType | object
+>(measureValues: T[], values: P[]): P[] {
   const newValues = [...values];
 
   let removeIndex: number;

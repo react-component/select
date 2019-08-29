@@ -1,9 +1,11 @@
 import React from 'react';
 import warning, { noteOnce } from 'rc-util/lib/warning';
-import toArray from 'rc-util/lib/Children/toArray';
+import toNodeArray from 'rc-util/lib/Children/toArray';
 import { SelectProps } from '..';
 import { convertChildrenToData } from './legacyUtil';
-import { OptionData } from '../interface';
+import { OptionData, OptionGroupData } from '../interface';
+import { toArray } from './commonUtil';
+import { RawValueType, LabelValueType } from '../interface/generator';
 
 function warningProps(props: SelectProps) {
   const {
@@ -31,7 +33,8 @@ function warningProps(props: SelectProps) {
 
   // `tags` should not set option as disabled
   warning(
-    mode !== 'tags' || mergedOptions.every((opt: any) => !opt.disabled),
+    mode !== 'tags' ||
+      mergedOptions.every((opt: { disabled?: boolean } & OptionGroupData) => !opt.disabled),
     'Please avoid setting option to disabled in tags mode since user can always type text as tag.',
   );
 
@@ -39,7 +42,9 @@ function warningProps(props: SelectProps) {
   if (mode === 'tags' || mode === 'combobox') {
     const hasNumberValue = mergedOptions.some(item => {
       if (item.options) {
-        return item.options.some((opt: OptionData) => typeof ('value' in opt ? opt.value : opt.key) === 'number');
+        return item.options.some(
+          (opt: OptionData) => typeof ('value' in opt ? opt.value : opt.key) === 'number',
+        );
       }
       return typeof ('value' in item ? item.value : item.key) === 'number';
     });
@@ -82,7 +87,7 @@ function warningProps(props: SelectProps) {
   );
 
   if (value !== undefined && value !== null) {
-    const values: any[] = Array.isArray(value) ? value : [value];
+    const values = toArray<RawValueType | LabelValueType>(value);
     warning(
       !labelInValue ||
         values.every(val => typeof val === 'object' && ('key' in val || 'value' in val)),
@@ -98,24 +103,29 @@ function warningProps(props: SelectProps) {
   // Syntactic sugar should use correct children type
   if (children) {
     let invalidateChildType = null;
-    toArray(children).some((node: any) => {
+    toNodeArray(children).some((node: React.ReactNode) => {
       if (!React.isValidElement(node)) {
         return false;
       }
 
-      const { type }: any = node;
+      const { type } = node as { type: { isSelectOption?: boolean; isSelectOptGroup?: boolean } };
 
       if (type.isSelectOption) {
         return false;
       }
       if (type.isSelectOptGroup) {
-        const allChildrenValid = toArray((node.props as any).children).every((subNode: any) => {
-          if (!React.isValidElement(subNode) || (subNode.type as any).isSelectOption) {
-            return true;
-          }
-          invalidateChildType = subNode.type;
-          return false;
-        });
+        const allChildrenValid = toNodeArray(node.props.children).every(
+          (subNode: React.ReactElement) => {
+            if (
+              !React.isValidElement(subNode) ||
+              (subNode.type as { isSelectOption?: boolean }).isSelectOption
+            ) {
+              return true;
+            }
+            invalidateChildType = subNode.type;
+            return false;
+          },
+        );
 
         if (allChildrenValid) {
           return false;
