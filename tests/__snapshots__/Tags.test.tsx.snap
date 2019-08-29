@@ -15,7 +15,7 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
         <span
           class="rc-select-selection-item-content"
         >
-          foo
+          Jack
         </span>
         <span
           aria-hidden="true"
@@ -36,7 +36,7 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
         <span
           class="rc-select-selection-item-content"
         >
-          Jack
+          foo
         </span>
         <span
           aria-hidden="true"
