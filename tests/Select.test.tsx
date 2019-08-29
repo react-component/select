@@ -829,10 +829,24 @@ describe('Select.Basic', () => {
         <Foo value="1" />
       </Select>,
     );
-    // Because it will start setState, so it is twice
     expect(errorSpy).toHaveBeenCalledWith(
-      'Warning: `children` should be `Select.Option` or `Select.OptGroup` instead of `Foo`',
+      'Warning: `children` should be `Select.Option` or `Select.OptGroup` instead of `Foo`.',
     );
+
+    // Children in option group
+    resetWarned();
+    errorSpy.mockReset();
+    mount(
+      <Select>
+        <OptGroup label="bamboo">
+          <span key="light" />
+        </OptGroup>
+      </Select>,
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Warning: `children` should be `Select.Option` or `Select.OptGroup` instead of `span`.',
+    );
+
     errorSpy.mockRestore();
   });
 
@@ -1112,5 +1126,17 @@ describe('Select.Basic', () => {
       wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
       expect(onSelect).toHaveBeenCalledWith('1', expect.anything());
     }
+  });
+
+  it('should warning using `onSearch` if not set `showSearch`', () => {
+    resetWarned();
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
+
+    mount(<Select onSearch={jest.fn()} />);
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Warning: `onSearch` should work with `showSearch` instead of use alone.',
+    );
+
+    errorSpy.mockRestore();
   });
 });

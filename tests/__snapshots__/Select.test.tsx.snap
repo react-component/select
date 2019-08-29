@@ -130,15 +130,15 @@ exports[`Select.Basic filterOption could be true as described in default value 1
       class="rc-select-selection-search"
     >
       <input
-        aria-activedescendant="rc_select_61_list_-1"
+        aria-activedescendant="rc_select_TEST_OR_SSR_list_-1"
         aria-autocomplete="list"
-        aria-controls="rc_select_61_list"
+        aria-controls="rc_select_TEST_OR_SSR_list"
         aria-expanded="true"
         aria-haspopup="listbox"
-        aria-owns="rc_select_61_list"
+        aria-owns="rc_select_TEST_OR_SSR_list"
         autocomplete="off"
         class="rc-select-selection-search-input"
-        id="rc_select_61"
+        id="rc_select_TEST_OR_SSR"
         role="combobox"
         style="opacity: 0;"
         value=""
@@ -153,7 +153,7 @@ exports[`Select.Basic filterOption could be true as described in default value 1
       <div>
         <div
           class="rc-select-item-empty"
-          id="rc_select_61_list"
+          id="rc_select_TEST_OR_SSR_list"
           role="listbox"
         >
           Not Found
@@ -802,15 +802,15 @@ exports[`Select.Basic should render custom dropdown correctly 1`] = `
       class="rc-select-selection-search"
     >
       <input
-        aria-activedescendant="rc_select_65_list_0"
+        aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
         aria-autocomplete="list"
-        aria-controls="rc_select_65_list"
+        aria-controls="rc_select_TEST_OR_SSR_list"
         aria-expanded="true"
         aria-haspopup="listbox"
-        aria-owns="rc_select_65_list"
+        aria-owns="rc_select_TEST_OR_SSR_list"
         autocomplete="off"
         class="rc-select-selection-search-input"
-        id="rc_select_65"
+        id="rc_select_TEST_OR_SSR"
         role="combobox"
         style="opacity: 0;"
         value=""
@@ -833,20 +833,20 @@ exports[`Select.Basic should render custom dropdown correctly 1`] = `
             CUSTOM NODE
           </div>
           <div
-            id="rc_select_65_list"
+            id="rc_select_TEST_OR_SSR_list"
             role="listbox"
             style="height: 0px; overflow: hidden;"
           >
             <div
               aria-selected="false"
-              id="rc_select_65_list_0"
+              id="rc_select_TEST_OR_SSR_list_0"
               role="option"
             >
               1
             </div>
             <div
               aria-selected="false"
-              id="rc_select_65_list_1"
+              id="rc_select_TEST_OR_SSR_list_1"
               role="option"
             >
               2

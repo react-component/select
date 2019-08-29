@@ -27,7 +27,7 @@ import {
   SingleType,
 } from './interface/generator';
 import { OptionListProps, RefOptionListProps } from './OptionList';
-import { toInnerValue, toOuterValues, removeLastEnabledValue } from './utils/commonUtil';
+import { toInnerValue, toOuterValues, removeLastEnabledValue, getUUID } from './utils/commonUtil';
 import TransBtn from './TransBtn';
 import { useLock } from './hooks/useLock';
 import useDelayReset from './hooks/useDelayReset';
@@ -174,9 +174,6 @@ export default function generateSelector<
   }[],
   StaticProps
 >(config: GenerateConfig<OptionsType, StaticProps>) {
-  /** Used for accessibility id generate */
-  let uuid = 0;
-
   const {
     prefixCls: defaultPrefixCls,
     components: { optionList: OptionList },
@@ -287,8 +284,7 @@ export default function generateSelector<
     // Inner id for accessibility usage. Only work in client side
     const [innerId, setInnerId] = React.useState<string>();
     React.useEffect(() => {
-      setInnerId(`rc_select_${uuid}`);
-      uuid += 1;
+      setInnerId(`rc_select_${getUUID()}`);
     }, []);
     const mergedId = id || innerId;
 

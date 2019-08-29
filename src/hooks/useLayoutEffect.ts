@@ -1,18 +1,12 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-
 import * as React from 'react';
-
-const isClient =
-  process.env.NODE_ENV !== 'test' &&
-  typeof window !== 'undefined' &&
-  window.document &&
-  window.document.documentElement;
+import { isBrowserClient } from '../utils/commonUtil';
 
 /**
  * Wrap `React.useLayoutEffect` which will not throw warning message in test env
  */
 export default function useLayoutEffect(effect: React.EffectCallback, deps?: React.DependencyList) {
-  if (isClient) {
+  if (isBrowserClient) {
     React.useLayoutEffect(effect, deps);
   } else {
     React.useEffect(effect, deps);

@@ -82,3 +82,23 @@ export function removeLastEnabledValue<
 
   return newValues;
 }
+
+export const isClient =
+  typeof window !== 'undefined' && window.document && window.document.documentElement;
+
+/** Is client side and not jsdom */
+export const isBrowserClient = process.env.NODE_ENV !== 'test' && isClient;
+
+let uuid = 0;
+/** Get unique id for accessibility usage */
+export function getUUID(): number | string {
+  let retId: string | number;
+  if (isBrowserClient) {
+    retId = uuid;
+    uuid += 1;
+  } else {
+    retId = 'TEST_OR_SSR';
+  }
+
+  return retId;
+}

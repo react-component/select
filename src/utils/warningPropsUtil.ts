@@ -141,7 +141,7 @@ function warningProps(props: SelectProps) {
         false,
         `\`children\` should be \`Select.Option\` or \`Select.OptGroup\` instead of \`${invalidateChildType.displayName ||
           invalidateChildType.name ||
-          invalidateChildType}\``,
+          invalidateChildType}\`.`,
       );
     }
 
