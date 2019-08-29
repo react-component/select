@@ -884,14 +884,14 @@ describe('Select.Basic', () => {
     wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
 
     expect(wrapper.find('input').props().value).toEqual('2');
-    expect(handleChange).not.toBeCalled();
-    expect(handleSelect).not.toBeCalled();
+    expect(handleChange).not.toHaveBeenCalled();
+    expect(handleSelect).not.toHaveBeenCalled();
 
     wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
 
     expect(wrapper.find('input').props().value).toEqual('2');
-    expect(handleChange).toBeCalledWith('2', expect.anything());
-    expect(handleSelect).toBeCalledWith('2', expect.anything());
+    expect(handleChange).toHaveBeenCalledWith('2', expect.anything());
+    expect(handleSelect).toHaveBeenCalledWith('2', expect.anything());
 
     expect(triggerQueue).toEqual(['change', 'select']);
   });
@@ -911,7 +911,7 @@ describe('Select.Basic', () => {
 
       toggleOpen(wrapper);
       selectItem(wrapper, 1);
-      expect(handleChange).toBeCalledWith(2, expect.anything());
+      expect(handleChange).toHaveBeenCalledWith(2, expect.anything());
       expect(findSelection(wrapper).text()).toEqual('2');
     });
 
@@ -966,23 +966,20 @@ describe('Select.Basic', () => {
 
     toggleOpen(wrapper);
     wrapper.find('div#dropdown-custom-node').simulate('click');
-    expect(handleClick).toBeCalled();
+    expect(handleClick).toHaveBeenCalled();
   });
 
-  // TODO: handle this
-  it.skip('set showAction', () => {
+  it('set showAction', () => {
     const wrapper = mount(
-      <Select showAction={['mouseEnter']}>
+      <Select showAction={['focus']}>
         <Option value="1">1</Option>
       </Select>,
     );
 
-    wrapper.find('.rc-select').simulate('click');
-    expect(wrapper.hasClass('rc-select-open')).toBe(false);
+    expectOpen(wrapper, false);
+    wrapper.find('.rc-select').simulate('focus');
 
-    wrapper.find('.rc-select').simulate('mouseEnter');
-
-    expect(wrapper.find('.rc-select').hasClass('rc-select-open')).toBe(true);
+    expectOpen(wrapper);
   });
 
   it('default filterOption is case insensitive', () => {
@@ -1013,9 +1010,9 @@ describe('Select.Basic', () => {
     const wrapper = mount(
       <Select
         defaultActiveFirstOption
-        filterOption={(inputValue, option) => {
-          return (option.children as string).toUpperCase().indexOf(inputValue.toUpperCase()) !== -1;
-        }}
+        filterOption={(inputValue, option) =>
+          (option.children as string).toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+        }
         onSelect={handleSelect}
         showSearch
       >
@@ -1037,7 +1034,7 @@ describe('Select.Basic', () => {
 
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ENTER });
     expect(wrapper.find('input').props().value).toBe('c');
-    expect(handleSelect).not.toBeCalled();
+    expect(handleSelect).not.toHaveBeenCalled();
   });
 
   // https://github.com/ant-design/ant-design/issues/12172
@@ -1051,26 +1048,30 @@ describe('Select.Basic', () => {
 
     toggleOpen(wrapper);
     selectItem(wrapper);
-    expect(onChange).toBeCalled();
+    expect(onChange).toHaveBeenCalled();
 
     onChange.mockReset();
 
     toggleOpen(wrapper);
     selectItem(wrapper);
-    expect(onChange).not.toBeCalled();
+    expect(onChange).not.toHaveBeenCalled();
   });
 
-  // TODO: `dropdownMatchSelectWidth` is useless anymore
   // https://github.com/ant-design/ant-design/issues/12260
-  it.skip('dropdown menu width should not be smaller than trigger even dropdownMatchSelectWidth is false', () => {
+  it('dropdown menu width should not be smaller than trigger even dropdownMatchSelectWidth is false', () => {
     const wrapper = mount(
-      <Select style={{ width: 1000 }} dropdownMatchSelectWidth={false}>
+      <Select style={{ width: 1000 }} dropdownMatchSelectWidth={233}>
         <Option value={0}>0</Option>
         <Option value={1}>1</Option>
       </Select>,
     );
     toggleOpen(wrapper);
-    //   expect(typeof wrapper.find('SelectTrigger').state().dropdownWidth).toBe('number');
+    expect(
+      wrapper
+        .find('.rc-select-dropdown')
+        .last()
+        .props().style.width,
+    ).toBe(233);
   });
 
   it('if loading, arrow should show loading icon', () => {
@@ -1109,7 +1110,7 @@ describe('Select.Basic', () => {
     for (let i = 0; i < 10; i += 1) {
       onSelect.mockReset();
       wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
-      expect(onSelect).toBeCalledWith('1', expect.anything());
+      expect(onSelect).toHaveBeenCalledWith('1', expect.anything());
     }
   });
 });

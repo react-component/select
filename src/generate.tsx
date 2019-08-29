@@ -78,15 +78,18 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   menuItemSelectedIcon?: RenderNode;
 
   // Dropdown
+  open?: boolean;
+  defaultOpen?: boolean;
   listHeight?: number;
   listItemHeight?: number;
   dropdownStyle?: React.CSSProperties;
   dropdownClassName?: string;
-  dropdownMatchSelectWidth?: boolean;
+  dropdownMatchSelectWidth?: true | number;
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
   dropdownAlign?: any;
   animation?: string;
   transitionName?: string;
+  getPopupContainer?: RenderNode;
 
   // Others
   disabled?: boolean;
@@ -97,6 +100,13 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   placeholder?: React.ReactNode;
   backfill?: boolean;
   getInputElement?: () => JSX.Element;
+  optionLabelProp?: string;
+  maxTagTextLength?: number;
+  maxTagCount?: number;
+  maxTagPlaceholder?: (omittedValues: LabelValueType[]) => React.ReactNode;
+  tokenSeparators?: string[];
+  showAction?: ('focus' | 'click')[];
+  tabIndex?: number;
 
   // Events
   onKeyUp?: React.KeyboardEventHandler<HTMLDivElement>;
@@ -106,14 +116,6 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   onSelect?: (value: SingleType<ValueType>, option: OptionsType[number]) => void;
   onDeselect?: (value: SingleType<ValueType>, option: OptionsType[number]) => void;
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
-
-  // Motion
-  choiceTransitionName?: string;
-
-  // Legacy
-  optionLabelProp?: string;
-  open?: boolean;
-  defaultOpen?: boolean;
   onClick?: React.MouseEventHandler;
   onChange?: (value: ValueType, option: OptionsType[number] | OptionsType) => void;
   onBlur?: React.FocusEventHandler<HTMLElement>;
@@ -121,13 +123,9 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
-  maxTagTextLength?: number;
-  maxTagCount?: number;
-  maxTagPlaceholder?: (omittedValues: LabelValueType[]) => React.ReactNode;
-  tokenSeparators?: string[];
-  showAction?: string[];
-  getPopupContainer?: RenderNode;
-  tabIndex?: number;
+
+  // Motion
+  choiceTransitionName?: string;
 }
 
 export interface GenerateConfig<OptionsType extends object[], StaticProps> {
@@ -252,6 +250,7 @@ export default function generateSelector<
       dropdownMatchSelectWidth,
       dropdownRender,
       dropdownAlign,
+      showAction = [],
 
       // Tags
       maxTagCount,
@@ -266,7 +265,6 @@ export default function generateSelector<
       onPopupScroll,
       onDropdownVisibleChange,
       onInputKeyDown,
-      onClick,
       onFocus,
       onBlur,
       onKeyUp,
@@ -642,9 +640,17 @@ export default function generateSelector<
     const onContainerFocus: React.FocusEventHandler<HTMLElement> = (...args) => {
       setMockFocused(true);
 
-      if (!disabled && onFocus && !focusRef.current) {
-        onFocus(...args);
+      if (!disabled) {
+        if (onFocus && !focusRef.current) {
+          onFocus(...args);
+        }
+
+        // `showAction` should handle `focus` if set
+        if (showAction.includes('focus')) {
+          onToggleOpen(true);
+        }
       }
+
       focusRef.current = true;
     };
 
@@ -659,7 +665,7 @@ export default function generateSelector<
       }
 
       // `tags` mode should move `searchValue` into values
-      if (mode === 'tags') {
+      if (mode === 'tags' && mergedSearchValue) {
         triggerSearch('', false);
         triggerChange(Array.from(new Set([...mergedRawValue, mergedSearchValue])));
       }

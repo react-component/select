@@ -63,6 +63,9 @@ class Test extends React.Component {
                   }}
                 >
                   BEFORE
+                  <a href="http://taobao.com" target="_blank" rel="noopener noreferrer">
+                    TaoBao
+                  </a>
                 </div>
 
                 {menu}
@@ -73,6 +76,7 @@ class Test extends React.Component {
                   }}
                 >
                   AFTER
+                  <button type="button">Button</button>
                 </div>
               </React.Fragment>
             )}

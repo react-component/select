@@ -12,6 +12,7 @@ interface InputProps {
   accessibilityIndex: number;
   value: string;
   open: boolean;
+  tabIndex: number;
 
   onKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
@@ -23,6 +24,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     id,
     inputElement,
     disabled,
+    tabIndex,
     autoFocus,
     editable,
     accessibilityIndex,
@@ -41,6 +43,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     id,
     ref,
     disabled,
+    tabIndex,
     autoComplete: 'off',
     autoFocus,
     className: `${prefixCls}-selection-search-input`,

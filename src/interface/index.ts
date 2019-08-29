@@ -27,6 +27,9 @@ export interface OptionGroupData {
   options: OptionData[];
   className?: string;
   style?: React.CSSProperties;
+
+  /** Save for customize data */
+  [prop: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 export type OptionsType = (OptionData | OptionGroupData)[];

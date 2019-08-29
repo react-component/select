@@ -38,7 +38,7 @@ export interface SelectTriggerProps {
   containerWidth: number;
   dropdownStyle: React.CSSProperties;
   dropdownClassName: string;
-  dropdownMatchSelectWidth: boolean;
+  dropdownMatchSelectWidth?: true | number;
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
   getPopupContainer?: RenderNode;
   dropdownAlign: object;
@@ -103,7 +103,8 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
       })}
       popupStyle={{
         ...dropdownStyle,
-        [dropdownMatchSelectWidth ? 'width' : 'minWidth']: containerWidth,
+        width:
+          typeof dropdownMatchSelectWidth === 'number' ? dropdownMatchSelectWidth : containerWidth,
       }}
     >
       {children}
