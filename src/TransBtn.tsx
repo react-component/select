@@ -1,4 +1,5 @@
 import * as React from 'react';
+import classNames from 'classnames';
 
 export interface TransBtnProps {
   className: string;
@@ -42,7 +43,11 @@ const TransBtn: React.FC<TransBtnProps> = ({
       onClick={onClick}
       aria-hidden
     >
-      {icon || <span className={`${className}-icon`}>{children}</span>}
+      {icon || (
+        <span className={classNames(className.split(/\s+/).map(cls => `${cls}-icon`))}>
+          {children}
+        </span>
+      )}
     </span>
   );
 };
