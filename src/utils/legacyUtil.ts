@@ -3,10 +3,6 @@ import toArray from 'rc-util/lib/Children/toArray';
 import { OptionData, OptionGroupData, OptionsType } from '../interface';
 
 function convertNodeToOption(node: React.ReactElement): OptionData {
-  if (!React.isValidElement(node) || !node.type) {
-    return null;
-  }
-
   const {
     key,
     props: { children, value, ...restProps },

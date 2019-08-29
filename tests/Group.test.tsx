@@ -20,4 +20,18 @@ describe('Select.Group', () => {
       expect.objectContaining({ data: expect.objectContaining({ value: '2' }) }),
     ]);
   });
+
+  it('group child option support search', () => {
+    const wrapper = mount(
+      <Select showSearch>
+        <OptGroup label="zombiej">
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </OptGroup>
+      </Select>,
+    );
+
+    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    expect(wrapper.find('List').props().data).toHaveLength(2);
+  });
 });

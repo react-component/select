@@ -10,8 +10,6 @@ import renderTest from './shared/renderTest';
 import removeSelectedTest from './shared/removeSelectedTest';
 import dynamicChildrenTest from './shared/dynamicChildrenTest';
 import inputFilterTest from './shared/inputFilterTest';
-import keyDownTest from './shared/keyDownTest';
-import openControlledTest from './shared/openControlledTest';
 import {
   expectOpen,
   toggleOpen,
@@ -21,7 +19,6 @@ import {
   removeSelection,
 } from './utils/common';
 import allowClearTest from './shared/allowClearTest';
-import throwOptionValue from './shared/throwOptionValue';
 
 describe('Select.Multiple', () => {
   injectRunAllTimers(jest);
@@ -94,7 +91,7 @@ describe('Select.Multiple', () => {
     );
     wrapper.find('input').simulate('focus');
     jest.runAllTimers();
-    expect(handleFocus).toBeCalled();
+    expect(handleFocus).toHaveBeenCalled();
     jest.useRealTimers();
   });
 

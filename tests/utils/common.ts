@@ -33,12 +33,17 @@ export function findSelection(wrapper: any, index: number = 0) {
 }
 
 export function removeSelection(wrapper: any, index: number = 0) {
+  const preventDefault = jest.fn();
+
   wrapper
     .find('.rc-select-selection-item')
     .at(index)
     .find('.rc-select-selection-item-remove')
     .last()
+    .simulate('mousedown', { preventDefault })
     .simulate('click');
+
+  expect(preventDefault).toHaveBeenCalled();
 }
 
 type Jest = typeof jest;

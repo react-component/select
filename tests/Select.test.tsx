@@ -720,9 +720,13 @@ describe('Select.Basic', () => {
   });
 
   it('combobox could customize input element', () => {
-    const handleKeyDown = jest.fn();
+    const onKeyDown = jest.fn();
+    const onChange = jest.fn();
     const wrapper = mount(
-      <Select mode="combobox" getInputElement={() => <textarea onKeyDown={handleKeyDown} />}>
+      <Select
+        mode="combobox"
+        getInputElement={() => <textarea onKeyDown={onKeyDown} onChange={onChange} />}
+      >
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -733,15 +737,21 @@ describe('Select.Basic', () => {
     wrapper
       .find('.rc-select')
       .find('textarea')
-      .simulate('keyDown', { keyCode: KeyCode.NUM_ONE });
+      .simulate('keyDown', { which: KeyCode.NUM_ONE })
+      .simulate('change', { value: '1' });
 
     selectItem(wrapper);
     expect(wrapper.find('textarea').props().value).toEqual('1');
-    expect(handleKeyDown).toHaveBeenCalled();
+    expect(onKeyDown).toHaveBeenCalled();
+    expect(onChange).toHaveBeenCalled();
   });
 
   describe('propTypes', () => {
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
+    let errorSpy;
+
+    beforeAll(() => {
+      errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
+    });
 
     beforeEach(() => {
       errorSpy.mockReset();
@@ -863,7 +873,7 @@ describe('Select.Basic', () => {
 
   it('does not filter when filterOption value is false', () => {
     const wrapper = render(
-      <Select searchValue="1" filterOption={false} open>
+      <Select inputValue="1" filterOption={false} open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -961,12 +971,16 @@ describe('Select.Basic', () => {
   });
 
   it('should trigger click event in custom node', () => {
-    const handleClick = jest.fn();
+    jest.useFakeTimers();
+
+    const onChildClick = jest.fn();
+    const onMouseDown = jest.fn();
     const wrapper = mount(
       <Select
+        onMouseDown={onMouseDown}
         dropdownRender={menu => (
           <div>
-            <div id="dropdown-custom-node" onClick={handleClick}>
+            <div id="dropdown-custom-node" onClick={onChildClick}>
               CUSTOM NODE
             </div>
             {menu}
@@ -979,8 +993,18 @@ describe('Select.Basic', () => {
     );
 
     toggleOpen(wrapper);
+    wrapper.find('div#dropdown-custom-node').simulate('mousedown');
     wrapper.find('div#dropdown-custom-node').simulate('click');
-    expect(handleClick).toHaveBeenCalled();
+    expect(onMouseDown).toHaveBeenCalled();
+    expect(onChildClick).toHaveBeenCalled();
+
+    document.body.focus();
+
+    jest.runAllTimers();
+
+    expect(wrapper.find('input').instance()).toBe(document.activeElement);
+
+    jest.useRealTimers();
   });
 
   it('set showAction', () => {
@@ -1137,6 +1161,46 @@ describe('Select.Basic', () => {
       'Warning: `onSearch` should work with `showSearch` instead of use alone.',
     );
 
+    errorSpy.mockRestore();
+  });
+
+  it('dropdown selection item customize icon', () => {
+    const menuItemSelectedIcon = jest.fn();
+    mount(
+      <Select
+        value="1"
+        options={[{ value: '1' }]}
+        open
+        menuItemSelectedIcon={menuItemSelectedIcon}
+      />,
+    );
+
+    expect(menuItemSelectedIcon).toHaveBeenCalledWith({ isSelected: true });
+  });
+
+  it('keyDown & KeyUp event', () => {
+    const onKeyDown = jest.fn();
+    const onKeyUp = jest.fn();
+    const wrapper = mount(<Select onKeyDown={onKeyDown} onKeyUp={onKeyUp} />);
+
+    wrapper.find('input').simulate('keydown', { which: KeyCode.ENTER });
+    expectOpen(wrapper);
+    expect(onKeyDown).toHaveBeenCalled();
+
+    wrapper.find('input').simulate('keyup', { which: KeyCode.ENTER });
+    expect(onKeyUp).toHaveBeenCalled();
+  });
+
+  it('warning if label not same as option', () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    mount(
+      <Select value={{ value: '2', label: 'One' }} labelInValue>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Warning: `label` of `value` is not same as `label` in Select options.',
+    );
     errorSpy.mockRestore();
   });
 });

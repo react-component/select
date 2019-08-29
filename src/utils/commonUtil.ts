@@ -93,6 +93,9 @@ let uuid = 0;
 /** Get unique id for accessibility usage */
 export function getUUID(): number | string {
   let retId: string | number;
+
+  // Test never reach
+  /* istanbul ignore if */
   if (isBrowserClient) {
     retId = uuid;
     uuid += 1;
