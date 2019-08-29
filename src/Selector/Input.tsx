@@ -13,8 +13,8 @@ interface InputProps {
   value: string;
   open: boolean;
 
-  onKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
+  onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
 }
 
 const Input: React.RefForwardingComponent<InputRef, InputProps> = (
@@ -53,13 +53,13 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     'aria-controls': `${id}_list`,
     'aria-activedescendant': `${id}_list_${accessibilityIndex}`,
     value: editable ? value : '',
-    onKeyDown: (event: React.KeyboardEvent<any>) => {
+    onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
       onKeyDown(event);
       if (onOriginKeyDown) {
         onOriginKeyDown(event);
       }
     },
-    onChange: (event: React.ChangeEvent<any>) => {
+    onChange: (event: React.ChangeEvent<HTMLElement>) => {
       onChange(event);
       if (onOriginChange) {
         onOriginChange(event);

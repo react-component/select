@@ -63,7 +63,7 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
    * In TreeSelect, `false` will highlight match item.
    * It's by design.
    */
-  filterOption?: boolean | FilterFunc;
+  filterOption?: boolean | FilterFunc<OptionsType[number]>;
   showSearch?: boolean;
   autoClearSearchValue?: boolean;
   onSearch?: (value: string) => void;

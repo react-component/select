@@ -18,7 +18,7 @@ export interface OptionData {
   children?: React.ReactNode;
 
   /** Save for customize data */
-  [prop: string]: any;
+  [prop: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 export interface OptionGroupData {

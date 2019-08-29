@@ -158,10 +158,10 @@ export function filterOptions(
   {
     optionFilterProp,
     filterOption,
-  }: { optionFilterProp: string; filterOption: boolean | FilterFunc },
+  }: { optionFilterProp: string; filterOption: boolean | FilterFunc<SelectOptionsType[number]> },
 ) {
   const filteredOptions: SelectOptionsType = [];
-  let filterFunc: FilterFunc;
+  let filterFunc: FilterFunc<SelectOptionsType[number]>;
 
   if (filterOption === false) {
     return options;

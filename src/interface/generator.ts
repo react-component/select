@@ -17,7 +17,7 @@ export interface DisplayLabelValueType extends LabelValueType {
 }
 
 // ==================================== Generator ====================================
-export type GetLabeledValue<FOT extends FlattenOptionsType<any>> = (
+export type GetLabeledValue<FOT extends FlattenOptionsType> = (
   value: RawValueType,
   config: {
     options: FOT;
@@ -27,14 +27,14 @@ export type GetLabeledValue<FOT extends FlattenOptionsType<any>> = (
   },
 ) => LabelValueType;
 
-export type FilterOptions<OptionsType> = (
+export type FilterOptions<OptionsType extends object[]> = (
   searchValue: string,
   options: OptionsType,
   /** Component props, since Select & TreeSelect use different prop name, use any here */
-  config: { optionFilterProp: string; filterOption: boolean | FilterFunc },
+  config: { optionFilterProp: string; filterOption: boolean | FilterFunc<OptionsType[number]> },
 ) => OptionsType;
 
-export type FilterFunc = (inputValue: string, option?: any) => boolean;
+export type FilterFunc<OptionType> = (inputValue: string, option?: OptionType) => boolean;
 
 export declare function RefSelectFunc<OptionsType extends object[], ValueType>(
   Component: React.RefForwardingComponent<RefSelectProps, SelectProps<OptionsType, ValueType>>,
@@ -45,5 +45,6 @@ export declare function RefSelectFunc<OptionsType extends object[], ValueType>(
 export type FlattenOptionsType<OptionsType extends object[] = object[]> = {
   key: Key;
   data: OptionsType[number];
-  [name: string]: any;
+  /** Used for customize data */
+  [name: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }[];
