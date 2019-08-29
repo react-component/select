@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+
 import * as React from 'react';
 
 const isClient =
@@ -16,3 +18,4 @@ export default function useLayoutEffect(effect: React.EffectCallback, deps?: Rea
     React.useEffect(effect, deps);
   }
 }
+/* eslint-enable */

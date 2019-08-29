@@ -3,7 +3,12 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
 import List from 'rc-virtual-list';
 import TransBtn from './TransBtn';
-import { OptionsType as SelectOptionsType, FlattenOptionData as SelectFlattenOptionData, OptionData, RenderNode } from './interface';
+import {
+  OptionsType as SelectOptionsType,
+  FlattenOptionData as SelectFlattenOptionData,
+  OptionData,
+  RenderNode,
+} from './interface';
 import { RawValueType, FlattenOptionsType } from './interface/generator';
 
 // TODO: Not use virtual list if options count is less than a certain number
@@ -40,7 +45,10 @@ export interface RefOptionListProps {
  * Using virtual list of option display.
  * Will fallback to dom if use customize render.
  */
-const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListProps<SelectOptionsType>> = (
+const OptionList: React.RefForwardingComponent<
+  RefOptionListProps,
+  OptionListProps<SelectOptionsType>
+> = (
   {
     prefixCls,
     id,
@@ -279,7 +287,9 @@ const OptionList: React.RefForwardingComponent<RefOptionListProps, OptionListPro
   );
 };
 
-const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<SelectOptionsType>>(OptionList);
+const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<SelectOptionsType>>(
+  OptionList,
+);
 RefOptionList.displayName = 'OptionList';
 
 export default RefOptionList;
