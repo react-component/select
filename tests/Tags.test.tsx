@@ -174,43 +174,41 @@ describe('Select.Tags', () => {
       expect(wrapper.render()).toMatchSnapshot();
     });
 
-    //   it('renders inputValue correctly', () => {
-    //     const wrapper = mount<Select>(createSelect({}));
-    //     wrapper.find('.rc-select').simulate('click');
+    it('renders inputValue correctly', () => {
+      const wrapper = mount(createSelect({}));
+      toggleOpen(wrapper);
 
-    //     wrapper.find('input').simulate('change', { target: { value: 'foo' } });
-    //     expect(wrapper.render()).toMatchSnapshot();
+      wrapper.find('input').simulate('change', { target: { value: 'foo' } });
+      expect(wrapper.find('List').props().data).toHaveLength(1);
 
-    //     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ENTER });
-    //     expect(wrapper.render()).toMatchSnapshot();
-    //   });
+      wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+      expect(wrapper.find('List').props().data).toHaveLength(5);
+    });
 
-    //   it('should work fine when filterOption function exists', () => {
-    //     const children = [];
-    //     for (let i = 10; i < 36; i++) {
-    //       children.push(
-    //         <Option key={i.toString(36) + i} disabled={!(i % 3)}>
-    //           {i.toString(36) + i}
-    //         </Option>,
-    //       );
-    //     }
-    //     const wrapper = mount<Select>(
-    //       <Select
-    //         mode="tags"
-    //         style={{ width: '100%' }}
-    //         placeholder="Tags Mode"
-    //         filterOption={(input, { key }) => key.indexOf(input) >= 0}
-    //       >
-    //         {children}
-    //       </Select>,
-    //     );
-    //     wrapper.find('.rc-select').simulate('click');
-
-    //     wrapper.find('input').simulate('change', { target: { value: 'f' } });
-    //     expect(wrapper.find('.rc-select-dropdown-menu-item').length).toBe(2);
-
-    //     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ENTER });
-    //     expect(wrapper.find('.rc-select-selection__choice__content').text()).toEqual('f');
-    //   });
+    it('should work fine when filterOption function exists', () => {
+      const children = [];
+      for (let i = 10; i < 36; i++) {
+        children.push(
+          <Option key={i.toString(36) + i} disabled={!(i % 3)}>
+            {i.toString(36) + i}
+          </Option>,
+        );
+      }
+      const wrapper = mount(
+        <Select
+          mode="tags"
+          style={{ width: '100%' }}
+          placeholder="Tags Mode"
+          filterOption={(input, { key }) => key.indexOf(input) >= 0}
+        >
+          {children}
+        </Select>,
+      );
+      toggleOpen(wrapper);
+      wrapper.find('input').simulate('change', { target: { value: 'f' } });
+      expect(wrapper.find('List').props().data).toHaveLength(2);
+      wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+      expect(findSelection(wrapper).text()).toEqual('f');
+    });
   });
 });

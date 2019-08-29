@@ -363,7 +363,7 @@ export default function generateSelector<
       }
 
       return newOptions;
-    }, [options, children, mode]);
+    }, [options, children, mode, baseValue]);
 
     const mergedFlattenOptions: FlattenOptionsType<OptionsType> = React.useMemo(
       () => flattenOptions(mergedOptions),
