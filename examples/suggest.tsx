@@ -1,10 +1,11 @@
+/* eslint-disable no-console */
 import React from 'react';
 import Select, { Option } from '../src';
 import '../assets/index.less';
 
 import { fetch } from './common/tbFetchSuggest';
 
-const Input = React.forwardRef<any>((props, ref) => <input ref={ref} {...props} />);
+const Input = React.forwardRef<HTMLInputElement>((props, ref) => <input ref={ref} {...props} />);
 
 class Test extends React.Component {
   state = {
@@ -73,3 +74,4 @@ class Test extends React.Component {
 }
 
 export default Test;
+/* eslint-enable */

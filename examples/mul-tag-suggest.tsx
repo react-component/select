@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 import Select, { Option } from '../src';
 import '../assets/index.less';
@@ -32,10 +33,10 @@ class Test extends React.Component {
   render() {
     const { value, data } = this.state;
     const options = data.map(d => (
-        <Option key={d.value}>
-          <i>{d.text}</i>
-        </Option>
-      ));
+      <Option key={d.value}>
+        <i>{d.text}</i>
+      </Option>
+    ));
     return (
       <div>
         <h2>multiple suggest</h2>
@@ -63,3 +64,4 @@ class Test extends React.Component {
 }
 
 export default Test;
+/* eslint-enable */

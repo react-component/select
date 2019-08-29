@@ -1,5 +1,5 @@
+/* eslint-disable no-console */
 import React from 'react';
-
 import Select, { Option } from '../src';
 import '../assets/index.less';
 
@@ -209,3 +209,4 @@ const CustomIcon = () => (
   </div>
 );
 export default CustomIcon;
+/* eslint-enable */

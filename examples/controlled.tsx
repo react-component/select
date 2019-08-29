@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 import Select, { Option } from '../src';
 import '../assets/index.less';
@@ -100,3 +101,4 @@ class Controlled extends React.Component<{}, ControlledState> {
 }
 
 export default Controlled;
+/* eslint-enable */

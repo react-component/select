@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 import Select, { Option } from '../src';
 import '../assets/index.less';
@@ -41,3 +42,4 @@ const Test = () => (
 );
 
 export default Test;
+/* eslint-enable */

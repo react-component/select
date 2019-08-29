@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 import Select, { Option } from '../src';
 import '../assets/index.less';
@@ -91,3 +92,4 @@ class Combobox extends React.Component {
 }
 
 export default Combobox;
+/* eslint-enable */
