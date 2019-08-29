@@ -288,6 +288,9 @@ export default function generateSelector<
     const selectorRef = React.useRef<RefSelectorProps>(null);
     const listRef = React.useRef<RefOptionListProps>(null);
 
+    /** Used for component focused management */
+    const [mockFocused, setMockFocused, cancelSetMockFocused] = useDelayReset();
+
     // Inner id for accessibility usage. Only work in client side
     const [innerId, setInnerId] = React.useState<string>();
     React.useEffect(() => {
@@ -438,8 +441,8 @@ export default function generateSelector<
       }
     };
 
-    const triggerChange = (rawValues: RawValueType[]) => {
-      const outValues = toOuterValues<FlattenOptionsType<OptionsType>>(Array.from(rawValues), {
+    const triggerChange = (newRawValues: RawValueType[]) => {
+      const outValues = toOuterValues<FlattenOptionsType<OptionsType>>(Array.from(newRawValues), {
         labelInValue: mergedLabelInValue,
         options: mergedFlattenOptions,
         getLabeledValue,
@@ -450,7 +453,7 @@ export default function generateSelector<
       const outValue: ValueType = (isMultiple ? outValues : outValues[0]) as ValueType;
       // Skip trigger if prev & current value is both empty
       if (onChange && (mergedRawValue.length !== 0 || outValues.length !== 0)) {
-        const outOptions = findValueOption(rawValues, mergedFlattenOptions);
+        const outOptions = findValueOption(newRawValues, mergedFlattenOptions);
 
         onChange(outValue, isMultiple ? outOptions : outOptions[0]);
       }
@@ -500,6 +503,34 @@ export default function generateSelector<
     const customizeInputElement: React.ReactElement =
       (mode === 'combobox' && getInputElement && getInputElement()) || null;
 
+    // ============================== Open ==============================
+    const [innerOpen, setInnerOpen] = React.useState<boolean>(defaultOpen);
+    const mergedOpen: boolean = open !== undefined ? open : innerOpen;
+
+    const onToggleOpen = (newOpen?: boolean) => {
+      const nextOpen = newOpen !== undefined ? newOpen : !mergedOpen;
+
+      // Not trigger `open` in `combobox` when `notFoundContent` is empty
+      if (nextOpen && mode === 'combobox' && !notFoundContent && !mergedOptions.length) {
+        return;
+      }
+
+      if (mergedOpen !== nextOpen && !disabled) {
+        setInnerOpen(nextOpen);
+
+        if (onDropdownVisibleChange) {
+          onDropdownVisibleChange(nextOpen);
+        }
+      }
+    };
+
+    // Open when `combobox` with async options update on focused
+    React.useEffect(() => {
+      if (mergedOptions.length && mode === 'combobox' && mockFocused) {
+        onToggleOpen(true);
+      }
+    }, [mergedOptions]);
+
     // ============================= Search =============================
     const triggerSearch = (searchText: string, fromTyping: boolean = true) => {
       let ret = true;
@@ -507,7 +538,7 @@ export default function generateSelector<
       setActiveValue(null);
 
       // Check if match the `tokenSeparators`
-      let patchLabels: string[] = getSeparatedContent(searchText, tokenSeparators);
+      const patchLabels: string[] = getSeparatedContent(searchText, tokenSeparators);
       let patchRawValues: RawValueType[] = patchLabels;
 
       if (mode === 'combobox') {
@@ -552,34 +583,6 @@ export default function generateSelector<
 
       return ret;
     };
-
-    // ============================== Open ==============================
-    const [innerOpen, setInnerOpen] = React.useState<boolean>(defaultOpen);
-    const mergedOpen: boolean = open !== undefined ? open : innerOpen;
-
-    const onToggleOpen = (newOpen?: boolean) => {
-      const nextOpen = newOpen !== undefined ? newOpen : !mergedOpen;
-
-      // Not trigger `open` in `combobox` when `notFoundContent` is empty
-      if (nextOpen && mode === 'combobox' && !notFoundContent && !mergedOptions.length) {
-        return;
-      }
-
-      if (mergedOpen !== nextOpen && !disabled) {
-        setInnerOpen(nextOpen);
-
-        if (onDropdownVisibleChange) {
-          onDropdownVisibleChange(nextOpen);
-        }
-      }
-    };
-
-    // Open when `combobox` with async options update on focused
-    React.useEffect(() => {
-      if (mergedOptions.length && mode === 'combobox' && mockFocused) {
-        onToggleOpen(true);
-      }
-    }, [mergedOptions]);
 
     // Close will clean up single mode search text
     React.useEffect(() => {
@@ -641,8 +644,6 @@ export default function generateSelector<
 
     // ========================== Focus / Blur ==========================
     const triggerRef = React.useRef<RefTriggerProps>(null);
-    /** Used for component focused management */
-    const [mockFocused, setMockFocused, cancelSetMockFocused] = useDelayReset();
     /** Record real focus status */
     const focusRef = React.useRef<boolean>(false);
 

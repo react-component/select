@@ -30,7 +30,7 @@ const SingleSelector: React.FC<SelectorProps> = ({
 }) => {
   const combobox = mode === 'combobox';
   const inputEditable = combobox || (showSearch && open);
-  let item = values[0];
+  const item = values[0];
 
   let inputValue: string = searchValue;
   if (combobox) {

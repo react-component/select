@@ -39,9 +39,7 @@ function warningProps(props: SelectProps) {
   if (mode === 'tags' || mode === 'combobox') {
     const hasNumberValue = mergedOptions.some(item => {
       if (item.options) {
-        return item.options.some((opt: OptionData) => {
-          return typeof ('value' in opt ? opt.value : opt.key) === 'number';
-        });
+        return item.options.some((opt: OptionData) => typeof ('value' in opt ? opt.value : opt.key) === 'number');
       }
       return typeof ('value' in item ? item.value : item.key) === 'number';
     });
