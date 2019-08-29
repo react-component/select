@@ -254,6 +254,9 @@ const OptionList: React.RefForwardingComponent<
 
           const mergedLabel = childrenAsData ? children : label;
 
+          const iconVisible =
+            !menuItemSelectedIcon || typeof menuItemSelectedIcon === 'function' || selected;
+
           return (
             <div
               aria-selected={selected}
@@ -272,13 +275,16 @@ const OptionList: React.RefForwardingComponent<
               }}
             >
               <div className={`${optionPrefixCls}-content`}>{mergedLabel || value}</div>
-              <TransBtn
-                className={`${itemPrefixCls}-option-state`}
-                customizeIcon={menuItemSelectedIcon}
-                customizeIconProps={{ isSelected: selected }}
-              >
-                {selected ? '✓' : null}
-              </TransBtn>
+              {React.isValidElement(menuItemSelectedIcon) || selected}
+              {iconVisible && (
+                <TransBtn
+                  className={`${itemPrefixCls}-option-state`}
+                  customizeIcon={menuItemSelectedIcon}
+                  customizeIconProps={{ isSelected: selected }}
+                >
+                  {selected ? '✓' : null}
+                </TransBtn>
+              )}
             </div>
           );
         }}
