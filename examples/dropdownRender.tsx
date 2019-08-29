@@ -76,6 +76,7 @@ class Test extends React.Component {
                   }}
                 >
                   AFTER
+                  <input type="text" placeholder="test" />
                   <button type="button">Button</button>
                 </div>
               </React.Fragment>
