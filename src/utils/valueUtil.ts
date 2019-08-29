@@ -243,7 +243,7 @@ export function fillOptionsWithMissingValue(
   optionLabelProp: string,
   labelInValue: boolean,
 ): SelectOptionsType {
-  const values = toArray<RawValueType | LabelValueType>(value);
+  const values = toArray<RawValueType | LabelValueType>(value).sort();
   const cloneOptions = [...options];
 
   // Convert options value to set

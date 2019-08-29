@@ -97,19 +97,16 @@ describe('Select.Tags', () => {
     expect(wrapper.find('List').props().data).toHaveLength(3);
   });
 
-  // it('dropdown keeps order', () => {
-  //   const wrapper = mount<Select>(<Select mode="tags" open={true} value={['aaaaa', 'aaa']} />);
+  it('dropdown keeps order', () => {
+    const wrapper = mount(<Select mode="tags" open value={['aaaaa', 'aaa']} />);
 
-  //   wrapper.find('input').simulate('change', { target: { value: 'aaa' } });
-  //   wrapper.update();
-  //   expect(wrapper.state().open).toBe(true);
-  //   expect(
-  //     wrapper
-  //       .find('.rc-select-dropdown-menu')
-  //       .at(0)
-  //       .render(),
-  //   ).toMatchSnapshot();
-  // });
+    wrapper.find('input').simulate('change', { target: { value: 'aaa' } });
+    expectOpen(wrapper);
+    expect(wrapper.find('List').props().data).toEqual([
+      expect.objectContaining({ key: 'aaa' }),
+      expect.objectContaining({ key: 'aaaaa' }),
+    ]);
+  });
 
   // it('renders search value when not found', () => {
   //   const wrapper = render(
