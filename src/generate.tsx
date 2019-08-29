@@ -354,7 +354,12 @@ export default function generateSelector<
        * This is not cool here since TreeSelect do not need this
        */
       if (mode === 'tags' && fillOptionsWithMissingValue) {
-        newOptions = fillOptionsWithMissingValue(newOptions, baseValue, mergedOptionLabelProp, labelInValue);
+        newOptions = fillOptionsWithMissingValue(
+          newOptions,
+          baseValue,
+          mergedOptionLabelProp,
+          labelInValue,
+        );
       }
 
       return newOptions;
@@ -368,7 +373,7 @@ export default function generateSelector<
     // Display options for OptionList
     const displayOptions = React.useMemo<OptionsType>(() => {
       if (!mergedSearchValue) {
-        return mergedOptions;
+        return [...mergedOptions] as OptionsType;
       }
       const filteredOptions: OptionsType = filterOptions(mergedSearchValue, mergedOptions, {
         optionFilterProp,
@@ -384,6 +389,9 @@ export default function generateSelector<
 
       return filteredOptions;
     }, [mergedOptions, mergedSearchValue, mode]);
+
+    const cacheRef = React.useRef<any>();
+    cacheRef.current = displayOptions;
 
     const displayFlattenOptions: FlattenOptionsType<OptionsType> = React.useMemo(
       () => flattenOptions(displayOptions),

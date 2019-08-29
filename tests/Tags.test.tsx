@@ -12,7 +12,7 @@ import openControlledTest from './shared/openControlledTest';
 import removeSelectedTest from './shared/removeSelectedTest';
 import renderTest from './shared/renderTest';
 import throwOptionValue from './shared/throwOptionValue';
-import { injectRunAllTimers, findSelection, expectOpen } from './utils/common';
+import { injectRunAllTimers, findSelection, expectOpen, toggleOpen } from './utils/common';
 
 describe('Select.Tags', () => {
   injectRunAllTimers(jest);
@@ -108,108 +108,109 @@ describe('Select.Tags', () => {
     ]);
   });
 
-  // it('renders search value when not found', () => {
-  //   const wrapper = render(
-  //     <Select mode="tags" value="22" inputValue="2" open={true}>
-  //       <Option value="1">1</Option>
-  //     </Select>,
-  //   );
+  it('renders search value when not found', () => {
+    const wrapper = mount(
+      <Select mode="tags" value="22" searchValue="2" open>
+        <Option value="1">1</Option>
+      </Select>,
+    );
 
-  //   expect(wrapper).toMatchSnapshot();
-  // });
+    expect(wrapper.find('List').props().data).toEqual([
+      expect.objectContaining({ data: expect.objectContaining({ value: '2' }) }),
+      expect.objectContaining({ data: expect.objectContaining({ value: '22' }) }),
+    ]);
+  });
 
-  // it('use filterOption', () => {
-  //   const filterOption = (inputValue, option) =>
-  //     option.props.value.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1;
+  it('use filterOption', () => {
+    const filterOption = (inputValue, option) =>
+      option.value.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1;
 
-  //   const wrapper = render(
-  //     <Select mode="tags" inputValue="red" filterOption={filterOption} open={true}>
-  //       <Option value="Red">Red</Option>
-  //     </Select>,
-  //   );
+    const wrapper = mount(
+      <Select mode="tags" searchValue="red" filterOption={filterOption} open>
+        <Option value="Red">Red</Option>
+      </Select>,
+    );
 
-  //   expect(wrapper).toMatchSnapshot();
-  // });
+    expect(wrapper.find('List').props().data).toHaveLength(2);
+  });
 
-  // it('filterOption is false', () => {
-  //   const wrapper = mount<Select>(
-  //     <Select mode="tags" filterOption={false}>
-  //       <Option value="1">1</Option>
-  //       <Option value="2">2</Option>
-  //     </Select>,
-  //   );
-  //   // @HACK
-  //   const input = wrapper.find('input') as any;
-  //   input.instance().focus = jest.fn();
-  //   input
-  //     .simulate('change', { target: { value: 'a' } })
-  //     .simulate('keyDown', { keyCode: KeyCode.ENTER });
+  it('filterOption is false', () => {
+    const onChange = jest.fn();
+    const wrapper = mount(
+      <Select mode="tags" filterOption={false} onChange={onChange}>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
 
-  //   expect(wrapper.state().value).toEqual(['a']);
-  //   expect(wrapper.find('.rc-select-selection__choice__content').text()).toBe('a');
-  // });
+    wrapper.find('input').simulate('change', { target: { value: 'a' } });
+    expect(wrapper.find('List').props().data).toHaveLength(3);
 
-  // describe('OptGroup', () => {
-  //   const createSelect = props => (
-  //     <div>
-  //       <Select mode="tags" {...props}>
-  //         <OptGroup key="Manager" label="Manager">
-  //           <Option key="jack" value="jack">
-  //             Jack
-  //           </Option>
-  //         </OptGroup>
-  //         <OptGroup key="Engineer" label="Engineer">
-  //           <Option key="Yiminghe" value="Yiminghe">
-  //             yiminghe
-  //           </Option>
-  //         </OptGroup>
-  //       </Select>
-  //     </div>
-  //   );
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+    expect(onChange).toHaveBeenCalledWith(['a'], expect.anything());
+  });
 
-  //   it('renders correctly', () => {
-  //     const wrapper = mount<Select>(createSelect({ value: ['jack', 'foo'] }));
-  //     wrapper.find('.rc-select').simulate('click');
-  //     expect(wrapper.render()).toMatchSnapshot();
-  //   });
+  describe('OptGroup', () => {
+    const createSelect = props => (
+      <div>
+        <Select mode="tags" {...props}>
+          <OptGroup key="Manager" label="Manager">
+            <Option key="jack" value="jack">
+              Jack
+            </Option>
+          </OptGroup>
+          <OptGroup key="Engineer" label="Engineer">
+            <Option key="Yiminghe" value="Yiminghe">
+              yiminghe
+            </Option>
+          </OptGroup>
+        </Select>
+      </div>
+    );
 
-  //   it('renders inputValue correctly', () => {
-  //     const wrapper = mount<Select>(createSelect({}));
-  //     wrapper.find('.rc-select').simulate('click');
+    it('renders correctly', () => {
+      const wrapper = mount(createSelect({ value: ['jack', 'foo'] }));
+      toggleOpen(wrapper);
+      expect(wrapper.render()).toMatchSnapshot();
+    });
 
-  //     wrapper.find('input').simulate('change', { target: { value: 'foo' } });
-  //     expect(wrapper.render()).toMatchSnapshot();
+    //   it('renders inputValue correctly', () => {
+    //     const wrapper = mount<Select>(createSelect({}));
+    //     wrapper.find('.rc-select').simulate('click');
 
-  //     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ENTER });
-  //     expect(wrapper.render()).toMatchSnapshot();
-  //   });
+    //     wrapper.find('input').simulate('change', { target: { value: 'foo' } });
+    //     expect(wrapper.render()).toMatchSnapshot();
 
-  //   it('should work fine when filterOption function exists', () => {
-  //     const children = [];
-  //     for (let i = 10; i < 36; i++) {
-  //       children.push(
-  //         <Option key={i.toString(36) + i} disabled={!(i % 3)}>
-  //           {i.toString(36) + i}
-  //         </Option>,
-  //       );
-  //     }
-  //     const wrapper = mount<Select>(
-  //       <Select
-  //         mode="tags"
-  //         style={{ width: '100%' }}
-  //         placeholder="Tags Mode"
-  //         filterOption={(input, { key }) => key.indexOf(input) >= 0}
-  //       >
-  //         {children}
-  //       </Select>,
-  //     );
-  //     wrapper.find('.rc-select').simulate('click');
+    //     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ENTER });
+    //     expect(wrapper.render()).toMatchSnapshot();
+    //   });
 
-  //     wrapper.find('input').simulate('change', { target: { value: 'f' } });
-  //     expect(wrapper.find('.rc-select-dropdown-menu-item').length).toBe(2);
+    //   it('should work fine when filterOption function exists', () => {
+    //     const children = [];
+    //     for (let i = 10; i < 36; i++) {
+    //       children.push(
+    //         <Option key={i.toString(36) + i} disabled={!(i % 3)}>
+    //           {i.toString(36) + i}
+    //         </Option>,
+    //       );
+    //     }
+    //     const wrapper = mount<Select>(
+    //       <Select
+    //         mode="tags"
+    //         style={{ width: '100%' }}
+    //         placeholder="Tags Mode"
+    //         filterOption={(input, { key }) => key.indexOf(input) >= 0}
+    //       >
+    //         {children}
+    //       </Select>,
+    //     );
+    //     wrapper.find('.rc-select').simulate('click');
 
-  //     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ENTER });
-  //     expect(wrapper.find('.rc-select-selection__choice__content').text()).toEqual('f');
-  //   });
-  // });
+    //     wrapper.find('input').simulate('change', { target: { value: 'f' } });
+    //     expect(wrapper.find('.rc-select-dropdown-menu-item').length).toBe(2);
+
+    //     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ENTER });
+    //     expect(wrapper.find('.rc-select-selection__choice__content').text()).toEqual('f');
+    //   });
+  });
 });
