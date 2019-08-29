@@ -32,7 +32,6 @@ package-lock.json
 src/*.js
 src/*.map
 .prettierrc
-jest.config.js
 tslint.json
 tsconfig.test.json
 .prettierignore
