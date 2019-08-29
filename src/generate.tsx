@@ -495,15 +495,15 @@ export default function generateSelector<
 
     // ============================== Open ==============================
     const [innerOpen, setInnerOpen] = React.useState<boolean>(defaultOpen);
-    const mergedOpen: boolean = open !== undefined ? open : innerOpen;
+    let mergedOpen: boolean = open !== undefined ? open : innerOpen;
+
+    // Not trigger `open` in `combobox` when `notFoundContent` is empty
+    if (mergedOpen && mode === 'combobox' && !notFoundContent && !displayOptions.length) {
+      mergedOpen = false;
+    }
 
     const onToggleOpen = (newOpen?: boolean) => {
       const nextOpen = newOpen !== undefined ? newOpen : !mergedOpen;
-
-      // Not trigger `open` in `combobox` when `notFoundContent` is empty
-      if (nextOpen && mode === 'combobox' && !notFoundContent && !mergedOptions.length) {
-        return;
-      }
 
       if (mergedOpen !== nextOpen && !disabled) {
         setInnerOpen(nextOpen);
@@ -513,13 +513,6 @@ export default function generateSelector<
         }
       }
     };
-
-    // Open when `combobox` with async options update on focused
-    React.useEffect(() => {
-      if (mergedOptions.length && mode === 'combobox' && mockFocused) {
-        onToggleOpen(true);
-      }
-    }, [mergedOptions]);
 
     // ============================= Search =============================
     const triggerSearch = (searchText: string, fromTyping: boolean = true) => {

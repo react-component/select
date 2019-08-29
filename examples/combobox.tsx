@@ -7,7 +7,10 @@ class Combobox extends React.Component {
   state = {
     disabled: false,
     value: '',
+    options: [],
   };
+
+  timeoutId: number;
 
   onChange = (value, option) => {
     console.log('onChange', value, option);
@@ -29,6 +32,20 @@ class Combobox extends React.Component {
 
   onSearch = (text: string) => {
     console.log('onSearch:', text);
+  };
+
+  onAsyncChange = value => {
+    window.clearTimeout(this.timeoutId);
+
+    this.setState({
+      options: [],
+    });
+
+    this.timeoutId = window.setTimeout(() => {
+      this.setState({
+        options: [{ value }, { value: `${value}-${value}` }],
+      });
+    }, 1000);
   };
 
   toggleDisabled = () => {
@@ -84,6 +101,15 @@ class Combobox extends React.Component {
             options={[{ value: 'light' }, { value: 'bamboo' }]}
             allowClear
             placeholder="2333"
+          />
+
+          <h3>Async Input Element</h3>
+          <Select
+            mode="combobox"
+            notFoundContent={null}
+            style={{ width: 200 }}
+            options={this.state.options}
+            onChange={this.onAsyncChange}
           />
         </div>
       </div>
