@@ -16,6 +16,8 @@ export interface DisplayLabelValueType extends LabelValueType {
   disabled?: boolean;
 }
 
+export type SingleType<MixType> = MixType extends (infer Single)[] ? Single : MixType;
+
 // ==================================== Generator ====================================
 export type GetLabeledValue<FOT extends FlattenOptionsType> = (
   value: RawValueType,

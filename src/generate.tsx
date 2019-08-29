@@ -24,6 +24,7 @@ import {
   RefSelectFunc,
   DisplayLabelValueType,
   FlattenOptionsType,
+  SingleType,
 } from './interface/generator';
 import { OptionListProps, RefOptionListProps } from './OptionList';
 import { toInnerValue, toOuterValues, removeLastEnabledValue } from './utils/commonUtil';
@@ -102,14 +103,8 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
   onPopupScroll?: React.UIEventHandler<HTMLDivElement>;
   onDropdownVisibleChange?: (open: boolean) => void;
-  onSelect?: (
-    value: ValueType extends (infer SingleValueType)[] ? SingleValueType : ValueType,
-    option: OptionsType[number],
-  ) => void;
-  onDeselect?: (
-    value: ValueType extends (infer SingleValueType)[] ? SingleValueType : ValueType,
-    option: OptionsType[number],
-  ) => void;
+  onSelect?: (value: SingleType<ValueType>, option: OptionsType[number]) => void;
+  onDeselect?: (value: SingleType<ValueType>, option: OptionsType[number]) => void;
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
 
   // Motion
@@ -159,10 +154,10 @@ export interface GenerateConfig<OptionsType extends object[], StaticProps> {
   ) => OptionsType;
   /** Check if a value is disabled */
   isValueDisabled: (value: RawValueType, options: FlattenOptionsType<OptionsType>) => boolean;
-  warningProps: (props: SelectProps<OptionsType, any>) => void;
+  warningProps: (props: SelectProps<OptionsType, DefaultValueType>) => void;
   fillOptionsWithMissingValue?: (
     options: OptionsType,
-    value: any,
+    value: DefaultValueType,
     optionLabelProp: string,
     labelInValue: boolean,
   ) => OptionsType;
@@ -393,9 +388,6 @@ export default function generateSelector<
       return filteredOptions;
     }, [mergedOptions, mergedSearchValue, mode]);
 
-    const cacheRef = React.useRef<any>();
-    cacheRef.current = displayOptions;
-
     const displayFlattenOptions: FlattenOptionsType<OptionsType> = React.useMemo(
       () => flattenOptions(displayOptions),
       [displayOptions],
@@ -423,14 +415,14 @@ export default function generateSelector<
     const isMultiple = mode === 'tags' || mode === 'multiple';
 
     const triggerSelect = (newValue: RawValueType, isSelect: boolean) => {
-      const selectValue: any = mergedLabelInValue
+      const selectValue = (mergedLabelInValue
         ? getLabeledValue(newValue, {
             options: mergedFlattenOptions,
             prevValue: baseValue,
             labelInValue: mergedLabelInValue,
             optionLabelProp: mergedOptionLabelProp,
           })
-        : newValue;
+        : newValue) as SingleType<ValueType>;
 
       const outOption = findValueOption([newValue], mergedFlattenOptions)[0];
 
@@ -683,7 +675,7 @@ export default function generateSelector<
         triggerRef.current && triggerRef.current.getPopupElement();
 
       // We should give focus back to selector if clicked item is not focusable
-      if (popupElement && popupElement.contains(target as any)) {
+      if (popupElement && popupElement.contains(target as HTMLElement)) {
         setTimeout(() => {
           cancelSetMockFocused();
           if (!popupElement.contains(document.activeElement)) {
