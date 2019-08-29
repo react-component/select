@@ -31,7 +31,7 @@ import TransBtn from './TransBtn';
 import { useLock } from './hooks/useLock';
 import useDelayReset from './hooks/useDelayReset';
 import useLayoutEffect from './hooks/useLayoutEffect';
-import { getSeparatedContent, fillOptionsWithMissingValue } from './utils/valueUtil';
+import { getSeparatedContent } from './utils/valueUtil';
 
 export interface RefSelectProps {
   focus: () => void;
@@ -160,6 +160,12 @@ export interface GenerateConfig<OptionsType extends object[], StaticProps> {
   /** Check if a value is disabled */
   isValueDisabled: (value: RawValueType, options: FlattenOptionsType<OptionsType>) => boolean;
   warningProps: (props: SelectProps<OptionsType, any>) => void;
+  fillOptionsWithMissingValue?: (
+    options: OptionsType,
+    value: any,
+    optionLabelProp: string,
+    labelInValue: boolean,
+  ) => OptionsType;
 }
 
 /**
@@ -189,6 +195,7 @@ export default function generateSelector<
     isValueDisabled,
     findValueOption,
     warningProps,
+    fillOptionsWithMissingValue,
   } = config;
 
   // Use raw define since `React.FC` not support generic
@@ -342,9 +349,12 @@ export default function generateSelector<
         newOptions = convertChildrenToData(children);
       }
 
-      if (mode === 'tags') {
-        // TODO: handle this
-        newOptions = fillOptionsWithMissingValue(newOptions, baseValue);
+      /**
+       * `tags` should fill un-list item.
+       * This is not cool here since TreeSelect do not need this
+       */
+      if (mode === 'tags' && fillOptionsWithMissingValue) {
+        newOptions = fillOptionsWithMissingValue(newOptions, baseValue, mergedOptionLabelProp, labelInValue);
       }
 
       return newOptions;

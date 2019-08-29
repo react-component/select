@@ -4,9 +4,14 @@ import {
   OptionData,
   OptionGroupData,
   FlattenOptionData,
-  OptionsType,
 } from '../interface';
-import { LabelValueType, FilterFunc, RawValueType, GetLabeledValue } from '../interface/generator';
+import {
+  LabelValueType,
+  FilterFunc,
+  RawValueType,
+  GetLabeledValue,
+  DefaultValueType,
+} from '../interface/generator';
 
 import { toArray } from './commonUtil';
 
@@ -234,8 +239,42 @@ export function isValueDisabled(value: RawValueType, options: FlattenOptionData[
  */
 export function fillOptionsWithMissingValue(
   options: SelectOptionsType,
-  values: RawValueType[] | LabelValueType[],
+  value: DefaultValueType,
+  optionLabelProp: string,
   labelInValue: boolean,
-) {
-  
+): SelectOptionsType {
+  const values = toArray<RawValueType | LabelValueType>(value);
+  const cloneOptions = [...options];
+
+  // Convert options value to set
+  const optionValues = new Set<RawValueType>();
+  options.forEach(opt => {
+    if (opt.options) {
+      opt.options.forEach((subOpt: OptionData) => {
+        optionValues.add(subOpt.value);
+      });
+    } else {
+      optionValues.add((opt as OptionData).value);
+    }
+  });
+
+  // Fill missing value
+  values.forEach(item => {
+    const val: RawValueType = labelInValue
+      ? (item as LabelValueType).value
+      : (item as RawValueType);
+
+    if (!optionValues.has(val)) {
+      cloneOptions.push(
+        labelInValue
+          ? {
+              [optionLabelProp]: (item as LabelValueType).label,
+              value: val,
+            }
+          : { value: val },
+      );
+    }
+  });
+
+  return cloneOptions;
 }

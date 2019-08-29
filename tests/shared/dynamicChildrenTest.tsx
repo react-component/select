@@ -67,7 +67,10 @@ export default function dynamicChildrenTest(mode: any, props?: Partial<SelectPro
     selectItem(wrapper, 1);
     expect(onChange).toBeCalledWith(
       ['1', '3'],
-      [undefined, expect.objectContaining({ value: '3', children: '3-label' })],
+      [
+        mode === 'tags' ? expect.anything() : undefined,
+        expect.objectContaining({ value: '3', children: '3-label' }),
+      ],
     );
     expect(onSelect).toBeCalledWith(
       '3',
