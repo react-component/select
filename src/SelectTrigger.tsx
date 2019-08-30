@@ -51,6 +51,7 @@ export interface ISelectTriggerProps extends IDropdownMenuProps {
   popupClassName: string;
   children: any;
   showAction: string[];
+  hideAction: string[];
   menuItemSelectedIcon: renderSelect;
   dropdownRender: (menu: React.ReactNode, props: Partial<ISelectTriggerProps>) => React.ReactNode;
   onDropdownVisibleChange: (value: boolean) => void;
@@ -90,6 +91,7 @@ export default class SelectTrigger extends React.Component<
     popupClassName: PropTypes.string,
     children: PropTypes.any,
     showAction: PropTypes.arrayOf(PropTypes.string),
+    hideAction: PropTypes.arrayOf(PropTypes.string),
     menuItemSelectedIcon: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     dropdownRender: PropTypes.func,
     ariaId: PropTypes.string,
@@ -233,7 +235,7 @@ export default class SelectTrigger extends React.Component<
       <Trigger
         {...props}
         showAction={disabled ? [] : this.props.showAction}
-        hideAction={hideAction}
+        hideAction={this.props.hideAction || hideAction}
         ref={this.saveTriggerRef}
         popupPlacement="bottomLeft"
         builtinPlacements={BUILT_IN_PLACEMENTS}

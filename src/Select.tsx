@@ -1588,6 +1588,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
         onMenuDeselect={this.onMenuDeselect}
         onPopupScroll={props.onPopupScroll}
         showAction={props.showAction}
+        hideAction={props.hideAction}
         ref={this.saveSelectTriggerRef}
         menuItemSelectedIcon={props.menuItemSelectedIcon}
         dropdownRender={props.dropdownRender}
