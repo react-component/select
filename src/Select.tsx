@@ -85,6 +85,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     dropdownMatchSelectWidth: true,
     dropdownStyle: {},
     dropdownMenuStyle: {},
+    dropdownLimit: 0,
     optionFilterProp: 'value',
     optionLabelProp: 'value',
     notFoundContent: 'Not Found',
@@ -1196,6 +1197,8 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     const props = this.props;
     const { inputValue } = this.state;
     const tags = props.tags;
+    const limit = props.dropdownLimit;
+    let currentMenuCount = 0;
     React.Children.forEach(children, child => {
       if (!child) {
         return;
@@ -1259,7 +1262,11 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
 
       validateOptionValue(childValue, this.props);
 
-      if (this.filterOption(inputValue as string, child as React.ReactElement<any>)) {
+      if (
+        (!limit || currentMenuCount < limit) &&
+        this.filterOption(inputValue as string, child as React.ReactElement<any>)
+      ) {
+        currentMenuCount = currentMenuCount + 1;
         const menuItem = (
           <MenuItem
             style={UNSELECTABLE_STYLE}

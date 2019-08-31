@@ -18,6 +18,7 @@ class Test extends React.Component {
     useAnim: 0,
     showArrow: 0,
     loading: 0,
+    dropdownLimit: 0,
     value: ['a10'],
   };
 
@@ -54,8 +55,14 @@ class Test extends React.Component {
     });
   };
 
+  dropdownLimit = e => {
+    this.setState({
+      dropdownLimit: e.target.checked * 5,
+    });
+  };
+
   render() {
-    const { useAnim, showArrow, loading, value } = this.state;
+    const { useAnim, showArrow, loading, value, dropdownLimit } = this.state;
     const dropdownMenuStyle = {
       maxHeight: 200,
     };
@@ -80,6 +87,17 @@ class Test extends React.Component {
             <input id="loading" checked={loading} type="checkbox" onChange={this.loading} />
           </label>
         </p>
+        <p>
+          <label htmlFor="dropdownLimit">
+            dropdownLimit
+            <input
+              id="dropdownLimit"
+              checked={dropdownLimit}
+              type="checkbox"
+              onChange={this.dropdownLimit}
+            />
+          </label>
+        </p>
 
         <div style={{ width: 300 }}>
           <Select
@@ -101,6 +119,7 @@ class Test extends React.Component {
             onFocus={() => console.log('focus')}
             onBlur={v => console.log('blur', v)}
             tokenSeparators={[' ', ',']}
+            dropdownLimit={dropdownLimit}
           >
             {children}
           </Select>

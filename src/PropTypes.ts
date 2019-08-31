@@ -87,6 +87,7 @@ export interface ISelectProps {
   dropdownClassName: string;
   dropdownMatchSelectWidth: boolean;
   dropdownMenuStyle: React.CSSProperties;
+  dropdownLimit: number;
   notFoundContent: string | false;
   tabIndex: string | number;
 }

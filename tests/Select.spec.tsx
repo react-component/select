@@ -1194,4 +1194,20 @@ describe('Select', () => {
       expect(onSelect).toBeCalledWith('1', expect.anything());
     }
   });
+
+  it('limits dropdown item count when explicitly set', () => {
+    const wrapper = mount(
+      <Select multiple={true} value={['']} open={true}>
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>,
+    );
+
+    expect(wrapper.find('SelectTrigger').prop('options')).toHaveLength(2);
+
+    wrapper.setProps({
+      dropdownLimit: 1,
+    });
+    expect(wrapper.find('SelectTrigger').prop('options')).toHaveLength(1);
+  });
 });
