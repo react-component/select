@@ -1,0 +1,922 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Select.Basic does not filter when filterOption value is false 1`] = `
+<div
+  class="rc-select rc-select-single rc-select-show-arrow rc-select-open"
+>
+  <div
+    class="rc-select-selector"
+  >
+    <span
+      class="rc-select-selection-search"
+    >
+      <input
+        aria-activedescendant="undefined_list_0"
+        aria-autocomplete="list"
+        aria-controls="undefined_list"
+        aria-expanded="true"
+        aria-haspopup="listbox"
+        aria-owns="undefined_list"
+        autocomplete="off"
+        class="rc-select-selection-search-input"
+        role="combobox"
+        style="opacity:0"
+        value=""
+      />
+    </span>
+  </div>
+  <div>
+    <div
+      class="rc-select-dropdown  rc-select-dropdown-placement-bottomLeft "
+    >
+      <div>
+        <div
+          id="undefined_list"
+          role="listbox"
+          style="height:0;overflow:hidden"
+        >
+          <div
+            aria-selected="false"
+            id="undefined_list_0"
+            role="option"
+          >
+            1
+          </div>
+          <div
+            aria-selected="false"
+            id="undefined_list_1"
+            role="option"
+          >
+            2
+          </div>
+        </div>
+        <div
+          class=""
+          style="height:200px"
+        >
+          <div>
+            <div
+              class=""
+              style="display:flex;flex-direction:column"
+            >
+              <div
+                aria-selected="false"
+                class="rc-select-item rc-select-item-option rc-select-item-option-active"
+              >
+                <div
+                  class="rc-select-item-option-content"
+                >
+                  1
+                </div>
+                <span
+                  aria-hidden="true"
+                  class="rc-select-item-option-state"
+                  style="user-select:none;-webkit-user-select:none"
+                  unselectable="on"
+                >
+                  <span
+                    class="rc-select-item-option-state-icon"
+                  />
+                </span>
+              </div>
+              <div
+                aria-selected="false"
+                class="rc-select-item rc-select-item-option"
+              >
+                <div
+                  class="rc-select-item-option-content"
+                >
+                  2
+                </div>
+                <span
+                  aria-hidden="true"
+                  class="rc-select-item-option-state"
+                  style="user-select:none;-webkit-user-select:none"
+                  unselectable="on"
+                >
+                  <span
+                    class="rc-select-item-option-state-icon"
+                  />
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span
+    aria-hidden="true"
+    class="rc-select-arrow"
+    style="user-select:none;-webkit-user-select:none"
+    unselectable="on"
+  >
+    <span
+      class="rc-select-arrow-icon"
+    />
+  </span>
+</div>
+`;
+
+exports[`Select.Basic filterOption could be true as described in default value 1`] = `
+<div
+  class="rc-select rc-select-single rc-select-show-arrow rc-select-open"
+>
+  <div
+    class="rc-select-selector"
+    style=""
+  >
+    <span
+      class="rc-select-selection-search"
+    >
+      <input
+        aria-activedescendant="rc_select_TEST_OR_SSR_list_-1"
+        aria-autocomplete="list"
+        aria-controls="rc_select_TEST_OR_SSR_list"
+        aria-expanded="true"
+        aria-haspopup="listbox"
+        aria-owns="rc_select_TEST_OR_SSR_list"
+        autocomplete="off"
+        class="rc-select-selection-search-input"
+        id="rc_select_TEST_OR_SSR"
+        role="combobox"
+        style="opacity: 0;"
+        value=""
+      />
+    </span>
+  </div>
+  <div>
+    <div
+      class="rc-select-dropdown  rc-select-dropdown-placement-bottomLeft "
+      style="left: -999px; top: -995px; width: 0px;"
+    >
+      <div>
+        <div
+          class="rc-select-item-empty"
+          id="rc_select_TEST_OR_SSR_list"
+          role="listbox"
+        >
+          Not Found
+        </div>
+      </div>
+    </div>
+  </div>
+  <span
+    aria-hidden="true"
+    class="rc-select-arrow"
+    style="user-select: none;"
+    unselectable="on"
+  >
+    <span
+      class="rc-select-arrow-icon"
+    />
+  </span>
+</div>
+`;
+
+exports[`Select.Basic no search 1`] = `
+<div
+  class="rc-select rc-select-single rc-select-show-arrow"
+>
+  <div
+    class="rc-select-selector"
+  >
+    <span
+      class="rc-select-selection-search"
+    >
+      <input
+        aria-activedescendant="undefined_list_0"
+        aria-autocomplete="list"
+        aria-controls="undefined_list"
+        aria-haspopup="listbox"
+        aria-owns="undefined_list"
+        autocomplete="off"
+        class="rc-select-selection-search-input"
+        role="combobox"
+        style="opacity:0"
+        value=""
+      />
+    </span>
+    <span
+      class="rc-select-selection-item"
+    >
+      1
+    </span>
+  </div>
+  <span
+    aria-hidden="true"
+    class="rc-select-arrow"
+    style="user-select:none;-webkit-user-select:none"
+    unselectable="on"
+  >
+    <span
+      class="rc-select-arrow-icon"
+    />
+  </span>
+</div>
+`;
+
+exports[`Select.Basic render renders aria-attributes correctly 1`] = `
+<div
+  aria-label="some-label"
+  aria-labelledby="test-id"
+  class="antd select-test antd-single antd-allow-clear antd-show-arrow"
+>
+  <div
+    class="antd-selector"
+  >
+    <span
+      class="antd-selection-search"
+    >
+      <input
+        aria-activedescendant="undefined_list_0"
+        aria-autocomplete="list"
+        aria-controls="undefined_list"
+        aria-haspopup="listbox"
+        aria-owns="undefined_list"
+        autocomplete="off"
+        class="antd-selection-search-input"
+        role="combobox"
+        style="opacity:0"
+        value=""
+      />
+    </span>
+    <span
+      class="antd-selection-item"
+    >
+      2
+    </span>
+  </div>
+  <span
+    aria-hidden="true"
+    class="antd-arrow"
+    style="user-select:none;-webkit-user-select:none"
+    unselectable="on"
+  >
+    <span
+      class="antd-arrow-icon"
+    />
+  </span>
+  <span
+    aria-hidden="true"
+    class="antd-clear"
+    style="user-select:none;-webkit-user-select:none"
+    unselectable="on"
+  >
+    <span
+      class="antd-clear-icon"
+    >
+      ×
+    </span>
+  </span>
+</div>
+`;
+
+exports[`Select.Basic render renders correctly 1`] = `
+<div
+  class="antd select-test antd-single antd-allow-clear antd-show-arrow"
+>
+  <div
+    class="antd-selector"
+  >
+    <span
+      class="antd-selection-search"
+    >
+      <input
+        aria-activedescendant="undefined_list_0"
+        aria-autocomplete="list"
+        aria-controls="undefined_list"
+        aria-haspopup="listbox"
+        aria-owns="undefined_list"
+        autocomplete="off"
+        class="antd-selection-search-input"
+        role="combobox"
+        style="opacity:0"
+        value=""
+      />
+    </span>
+    <span
+      class="antd-selection-item"
+    >
+      2
+    </span>
+  </div>
+  <span
+    aria-hidden="true"
+    class="antd-arrow"
+    style="user-select:none;-webkit-user-select:none"
+    unselectable="on"
+  >
+    <span
+      class="antd-arrow-icon"
+    />
+  </span>
+  <span
+    aria-hidden="true"
+    class="antd-clear"
+    style="user-select:none;-webkit-user-select:none"
+    unselectable="on"
+  >
+    <span
+      class="antd-clear-icon"
+    >
+      ×
+    </span>
+  </span>
+</div>
+`;
+
+exports[`Select.Basic render renders data-attributes correctly 1`] = `
+<div
+  class="antd select-test antd-single antd-allow-clear antd-show-arrow"
+  data-id="12345"
+  data-test="test-id"
+>
+  <div
+    class="antd-selector"
+  >
+    <span
+      class="antd-selection-search"
+    >
+      <input
+        aria-activedescendant="undefined_list_0"
+        aria-autocomplete="list"
+        aria-controls="undefined_list"
+        aria-haspopup="listbox"
+        aria-owns="undefined_list"
+        autocomplete="off"
+        class="antd-selection-search-input"
+        role="combobox"
+        style="opacity:0"
+        value=""
+      />
+    </span>
+    <span
+      class="antd-selection-item"
+    >
+      2
+    </span>
+  </div>
+  <span
+    aria-hidden="true"
+    class="antd-arrow"
+    style="user-select:none;-webkit-user-select:none"
+    unselectable="on"
+  >
+    <span
+      class="antd-arrow-icon"
+    />
+  </span>
+  <span
+    aria-hidden="true"
+    class="antd-clear"
+    style="user-select:none;-webkit-user-select:none"
+    unselectable="on"
+  >
+    <span
+      class="antd-clear-icon"
+    >
+      ×
+    </span>
+  </span>
+</div>
+`;
+
+exports[`Select.Basic render renders disabled select correctly 1`] = `
+<div
+  class="antd select-test antd-single antd-allow-clear antd-show-arrow antd-disabled"
+>
+  <div
+    class="antd-selector"
+  >
+    <span
+      class="antd-selection-search"
+    >
+      <input
+        aria-activedescendant="undefined_list_0"
+        aria-autocomplete="list"
+        aria-controls="undefined_list"
+        aria-haspopup="listbox"
+        aria-owns="undefined_list"
+        autocomplete="off"
+        class="antd-selection-search-input"
+        disabled=""
+        role="combobox"
+        style="opacity:0"
+        value=""
+      />
+    </span>
+    <span
+      class="antd-selection-item"
+    >
+      2
+    </span>
+  </div>
+  <span
+    aria-hidden="true"
+    class="antd-arrow"
+    style="user-select:none;-webkit-user-select:none"
+    unselectable="on"
+  >
+    <span
+      class="antd-arrow-icon"
+    />
+  </span>
+  <span
+    aria-hidden="true"
+    class="antd-clear"
+    style="user-select:none;-webkit-user-select:none"
+    unselectable="on"
+  >
+    <span
+      class="antd-clear-icon"
+    >
+      ×
+    </span>
+  </span>
+</div>
+`;
+
+exports[`Select.Basic render renders dropdown correctly 1`] = `
+<div
+  class="antd select-test antd-single antd-allow-clear antd-show-arrow antd-open"
+>
+  <div
+    class="antd-selector"
+  >
+    <span
+      class="antd-selection-search"
+    >
+      <input
+        aria-activedescendant="undefined_list_0"
+        aria-autocomplete="list"
+        aria-controls="undefined_list"
+        aria-expanded="true"
+        aria-haspopup="listbox"
+        aria-owns="undefined_list"
+        autocomplete="off"
+        class="antd-selection-search-input"
+        role="combobox"
+        value=""
+      />
+    </span>
+    <span
+      class="antd-selection-item"
+    >
+      2
+    </span>
+  </div>
+  <div>
+    <div
+      class="antd-dropdown  antd-dropdown-placement-bottomLeft "
+    >
+      <div>
+        <div
+          id="undefined_list"
+          role="listbox"
+          style="height:0;overflow:hidden"
+        >
+          <div
+            aria-selected="false"
+            id="undefined_list_0"
+            role="option"
+          />
+          <div
+            aria-selected="false"
+            id="undefined_list_1"
+            role="option"
+          >
+            jack
+          </div>
+          <div
+            aria-selected="false"
+            id="undefined_list_2"
+            role="option"
+          >
+            lucy
+          </div>
+        </div>
+        <div
+          class=""
+          style="height:200px"
+        >
+          <div>
+            <div
+              class=""
+              style="display:flex;flex-direction:column"
+            >
+              <div
+                class="antd-item antd-item-group"
+              >
+                manager
+              </div>
+              <div
+                aria-selected="false"
+                class="antd-item antd-item-option antd-item-option-grouped antd-item-option-active"
+              >
+                <div
+                  class="antd-item-option-content"
+                >
+                  <b
+                    style="color:red"
+                  >
+                    jack
+                  </b>
+                </div>
+                <span
+                  aria-hidden="true"
+                  class="antd-item-option-state"
+                  style="user-select:none;-webkit-user-select:none"
+                  unselectable="on"
+                >
+                  <span
+                    class="antd-item-option-state-icon"
+                  />
+                </span>
+              </div>
+              <div
+                aria-selected="false"
+                class="antd-item antd-item-option antd-item-option-grouped"
+              >
+                <div
+                  class="antd-item-option-content"
+                >
+                  lucy
+                </div>
+                <span
+                  aria-hidden="true"
+                  class="antd-item-option-state"
+                  style="user-select:none;-webkit-user-select:none"
+                  unselectable="on"
+                >
+                  <span
+                    class="antd-item-option-state-icon"
+                  />
+                </span>
+              </div>
+              <div
+                class="antd-item antd-item-group"
+              >
+                engineer
+              </div>
+              <div
+                aria-selected="false"
+                class="antd-item antd-item-option antd-item-option-grouped"
+              >
+                <div
+                  class="antd-item-option-content"
+                >
+                  yiminghe
+                </div>
+                <span
+                  aria-hidden="true"
+                  class="antd-item-option-state"
+                  style="user-select:none;-webkit-user-select:none"
+                  unselectable="on"
+                >
+                  <span
+                    class="antd-item-option-state-icon"
+                  />
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span
+    aria-hidden="true"
+    class="antd-arrow"
+    style="user-select:none;-webkit-user-select:none"
+    unselectable="on"
+  >
+    <span
+      class="antd-arrow-icon"
+    />
+  </span>
+  <span
+    aria-hidden="true"
+    class="antd-clear"
+    style="user-select:none;-webkit-user-select:none"
+    unselectable="on"
+  >
+    <span
+      class="antd-clear-icon"
+    >
+      ×
+    </span>
+  </span>
+</div>
+`;
+
+exports[`Select.Basic render renders role prop correctly 1`] = `
+<div
+  class="antd select-test antd-single antd-allow-clear antd-show-arrow"
+  role="button"
+>
+  <div
+    class="antd-selector"
+  >
+    <span
+      class="antd-selection-search"
+    >
+      <input
+        aria-activedescendant="undefined_list_0"
+        aria-autocomplete="list"
+        aria-controls="undefined_list"
+        aria-haspopup="listbox"
+        aria-owns="undefined_list"
+        autocomplete="off"
+        class="antd-selection-search-input"
+        role="combobox"
+        style="opacity:0"
+        value=""
+      />
+    </span>
+    <span
+      class="antd-selection-item"
+    >
+      2
+    </span>
+  </div>
+  <span
+    aria-hidden="true"
+    class="antd-arrow"
+    style="user-select:none;-webkit-user-select:none"
+    unselectable="on"
+  >
+    <span
+      class="antd-arrow-icon"
+    />
+  </span>
+  <span
+    aria-hidden="true"
+    class="antd-clear"
+    style="user-select:none;-webkit-user-select:none"
+    unselectable="on"
+  >
+    <span
+      class="antd-clear-icon"
+    >
+      ×
+    </span>
+  </span>
+</div>
+`;
+
+exports[`Select.Basic should contain falsy children 1`] = `
+<div
+  class="rc-select rc-select-single rc-select-show-arrow rc-select-open"
+>
+  <div
+    class="rc-select-selector"
+  >
+    <span
+      class="rc-select-selection-search"
+    >
+      <input
+        aria-activedescendant="undefined_list_0"
+        aria-autocomplete="list"
+        aria-controls="undefined_list"
+        aria-expanded="true"
+        aria-haspopup="listbox"
+        aria-owns="undefined_list"
+        autocomplete="off"
+        class="rc-select-selection-search-input"
+        role="combobox"
+        style="opacity:0"
+        value=""
+      />
+    </span>
+    <span
+      class="rc-select-selection-item"
+    >
+      1
+    </span>
+  </div>
+  <div>
+    <div
+      class="rc-select-dropdown  rc-select-dropdown-placement-bottomLeft "
+    >
+      <div>
+        <div
+          id="undefined_list"
+          role="listbox"
+          style="height:0;overflow:hidden"
+        >
+          <div
+            aria-selected="true"
+            id="undefined_list_0"
+            role="option"
+          >
+            1
+          </div>
+          <div
+            aria-selected="false"
+            id="undefined_list_1"
+            role="option"
+          >
+            2
+          </div>
+        </div>
+        <div
+          class=""
+          style="height:200px"
+        >
+          <div>
+            <div
+              class=""
+              style="display:flex;flex-direction:column"
+            >
+              <div
+                aria-selected="true"
+                class="rc-select-item rc-select-item-option rc-select-item-option-active rc-select-item-option-selected"
+              >
+                <div
+                  class="rc-select-item-option-content"
+                >
+                  1
+                </div>
+                <span
+                  aria-hidden="true"
+                  class="rc-select-item-option-state"
+                  style="user-select:none;-webkit-user-select:none"
+                  unselectable="on"
+                >
+                  <span
+                    class="rc-select-item-option-state-icon"
+                  >
+                    ✓
+                  </span>
+                </span>
+              </div>
+              <div
+                aria-selected="false"
+                class="rc-select-item rc-select-item-option"
+              >
+                <div
+                  class="rc-select-item-option-content"
+                >
+                  2
+                </div>
+                <span
+                  aria-hidden="true"
+                  class="rc-select-item-option-state"
+                  style="user-select:none;-webkit-user-select:none"
+                  unselectable="on"
+                >
+                  <span
+                    class="rc-select-item-option-state-icon"
+                  />
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span
+    aria-hidden="true"
+    class="rc-select-arrow"
+    style="user-select:none;-webkit-user-select:none"
+    unselectable="on"
+  >
+    <span
+      class="rc-select-arrow-icon"
+    />
+  </span>
+</div>
+`;
+
+exports[`Select.Basic should render custom dropdown correctly 1`] = `
+<div
+  class="rc-select rc-select-single rc-select-show-arrow rc-select-open"
+>
+  <div
+    class="rc-select-selector"
+    style=""
+  >
+    <span
+      class="rc-select-selection-search"
+    >
+      <input
+        aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
+        aria-autocomplete="list"
+        aria-controls="rc_select_TEST_OR_SSR_list"
+        aria-expanded="true"
+        aria-haspopup="listbox"
+        aria-owns="rc_select_TEST_OR_SSR_list"
+        autocomplete="off"
+        class="rc-select-selection-search-input"
+        id="rc_select_TEST_OR_SSR"
+        role="combobox"
+        style="opacity: 0;"
+        value=""
+      />
+    </span>
+    <span
+      class="rc-select-selection-placeholder"
+    />
+  </div>
+  <div>
+    <div
+      class="rc-select-dropdown  rc-select-dropdown-placement-bottomLeft "
+      style="left: -999px; top: -995px; width: 0px;"
+    >
+      <div>
+        <div>
+          <div
+            class="dropdown-custom-node"
+          >
+            CUSTOM NODE
+          </div>
+          <div
+            id="rc_select_TEST_OR_SSR_list"
+            role="listbox"
+            style="height: 0px; overflow: hidden;"
+          >
+            <div
+              aria-selected="false"
+              id="rc_select_TEST_OR_SSR_list_0"
+              role="option"
+            >
+              1
+            </div>
+            <div
+              aria-selected="false"
+              id="rc_select_TEST_OR_SSR_list_1"
+              role="option"
+            >
+              2
+            </div>
+          </div>
+          <div
+            class=""
+            style="height: 200px;"
+          >
+            <div>
+              <div
+                class=""
+                style="display: flex; flex-direction: column;"
+              >
+                <div
+                  aria-selected="false"
+                  class="rc-select-item rc-select-item-option rc-select-item-option-active"
+                >
+                  <div
+                    class="rc-select-item-option-content"
+                  >
+                    1
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    class="rc-select-item-option-state"
+                    style="user-select: none;"
+                    unselectable="on"
+                  >
+                    <span
+                      class="rc-select-item-option-state-icon"
+                    />
+                  </span>
+                </div>
+                <div
+                  aria-selected="false"
+                  class="rc-select-item rc-select-item-option"
+                >
+                  <div
+                    class="rc-select-item-option-content"
+                  >
+                    2
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    class="rc-select-item-option-state"
+                    style="user-select: none;"
+                    unselectable="on"
+                  >
+                    <span
+                      class="rc-select-item-option-state-icon"
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span
+    aria-hidden="true"
+    class="rc-select-arrow"
+    style="user-select: none;"
+    unselectable="on"
+  >
+    <span
+      class="rc-select-arrow-icon"
+    />
+  </span>
+</div>
+`;

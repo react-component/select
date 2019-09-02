@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OptionList renders correctly 1`] = `
+<div>
+  <div
+    id="undefined_list"
+    role="listbox"
+    style="height: 0px; overflow: hidden;"
+  >
+    <div
+      aria-selected="false"
+      id="undefined_list_0"
+      role="option"
+    />
+    <div
+      aria-selected="true"
+      id="undefined_list_1"
+      role="option"
+    >
+      1
+    </div>
+    <div
+      aria-selected="false"
+      id="undefined_list_2"
+      role="option"
+    />
+  </div>
+  <div
+    class=""
+  >
+    <div>
+      <div
+        class=""
+        style="display: flex; flex-direction: column;"
+      >
+        <div
+          class="rc-select-item rc-select-item-group"
+        >
+          group1
+        </div>
+        <div
+          aria-selected="true"
+          class="rc-select-item rc-select-item-option rc-select-item-option-grouped rc-select-item-option-active rc-select-item-option-selected"
+        >
+          <div
+            class="rc-select-item-option-content"
+          >
+            1
+          </div>
+          <span
+            aria-hidden="true"
+            class="rc-select-item-option-state"
+            style="user-select: none;"
+            unselectable="on"
+          >
+            <span
+              class="rc-select-item-option-state-icon"
+            >
+              ✓
+            </span>
+          </span>
+        </div>
+        <div
+          class="rc-select-item rc-select-item-group"
+        >
+          group2
+        </div>
+        <div
+          aria-selected="false"
+          class="rc-select-item rc-select-item-option rc-select-item-option-grouped"
+        >
+          <div
+            class="rc-select-item-option-content"
+          >
+            2
+          </div>
+          <span
+            aria-hidden="true"
+            class="rc-select-item-option-state"
+            style="user-select: none;"
+            unselectable="on"
+          >
+            <span
+              class="rc-select-item-option-state-icon"
+            />
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1,61 +1,84 @@
 import { mount } from 'enzyme';
-import * as React from 'react';
+import React from 'react';
 import Option from '../../src/Option';
 import Select from '../../src/Select';
+import { injectRunAllTimers, toggleOpen } from '../utils/common';
 
-declare const global: any;
+export default function blurTest(mode: any) {
+  describe(`blur of ${mode}`, () => {
+    injectRunAllTimers(jest);
 
-export default function blurTest(mode) {
-  let wrapper;
-  let container;
+    let wrapper;
+    let container;
+    const selectRef = React.createRef<any>();
 
-  beforeEach(() => {
-    container = global.document.createElement('div');
-    global.document.body.appendChild(container);
+    beforeEach(() => {
+      container = document.createElement('div');
+      document.body.appendChild(container);
 
-    wrapper = mount(
-      <Select {...{ [mode]: true }}>
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
-      </Select>,
-      { attachTo: container },
-    );
-    jest.useFakeTimers();
-  });
+      wrapper = mount(
+        <div>
+          <Select ref={selectRef} mode={mode}>
+            <Option value="1">1</Option>
+            <Option value="2">2</Option>
+          </Select>
+        </div>,
+        { attachTo: container },
+      );
+      jest.useFakeTimers();
+    });
 
-  afterEach(() => {
-    jest.useRealTimers();
-  });
+    afterEach(() => {
+      jest.useRealTimers();
+    });
 
-  it('clears inputValue', () => {
-    wrapper.find('input').simulate('change', { target: { value: '1' } });
-    wrapper.find('.rc-select').simulate('blur');
-    jest.runAllTimers();
+    it('clears inputValue', () => {
+      wrapper.find('input').simulate('change', { target: { value: '1' } });
+      wrapper.find('input').simulate('blur');
 
-    expect(wrapper.find('input').getDOMNode().value).toBe('');
-    expect(wrapper.state().inputValue).toBe('');
-  });
+      expect(wrapper.find('input').getDOMNode().value).toBe('');
+    });
 
-  it('blur()', () => {
-    const handleBlur = jest.fn();
-    wrapper.setProps({ onBlur: handleBlur });
-    wrapper.instance().focus();
-    wrapper.instance().blur();
-    jest.runAllTimers();
-    expect(handleBlur).toBeCalled();
-  });
-
-  if (mode === 'multiple' || mode === 'tags') {
-    it('wont blur when click input box', () => {
+    it('blur()', () => {
       const handleBlur = jest.fn();
       wrapper.setProps({ onBlur: handleBlur });
-      wrapper.instance().focus();
-      wrapper.find('.rc-select').simulate('mousedown');
-      wrapper.find('.rc-select-search__field').simulate('blur');
-      jest.runAllTimers();
-      wrapper.find('.rc-select').simulate('mouseup');
-      wrapper.find('.rc-select').simulate('click');
-      expect(handleBlur).not.toBeCalled();
+      selectRef.current.focus();
+      selectRef.current.blur();
+      expect(handleBlur).toHaveBeenCalled();
     });
-  }
+
+    if (mode === 'multiple' || mode === 'tags') {
+      it('wont blur when click input box', () => {
+        jest.useFakeTimers();
+        const handleBlur = jest.fn();
+        wrapper.setProps({ onBlur: handleBlur });
+        wrapper
+          .find('input')
+          .instance()
+          .focus();
+        toggleOpen(wrapper);
+        expect(handleBlur).not.toHaveBeenCalled();
+
+        wrapper.find('input').simulate('blur');
+        expect(handleBlur).toHaveBeenCalled();
+
+        wrapper.update();
+        wrapper
+          .find('input')
+          .instance()
+          .focus();
+        jest.runAllTimers();
+        handleBlur.mockReset();
+
+        const preventDefault = jest.fn();
+        wrapper.find('.rc-select-selector').simulate('mousedown', {
+          preventDefault,
+        });
+        expect(preventDefault).toHaveBeenCalled();
+        expect(handleBlur).not.toHaveBeenCalled();
+
+        jest.useRealTimers();
+      });
+    }
+  });
 }

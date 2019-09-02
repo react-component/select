@@ -1,27 +1,17 @@
-import { mount, render } from 'enzyme';
-import * as React from 'react';
+import { mount } from 'enzyme';
+import React from 'react';
 import SelectTrigger from '../src/SelectTrigger';
 
-describe('SelectTrigger', () => {
-  it('renders correctly', () => {
-    const wrapper = render(
-      <SelectTrigger prefixCls="rc-select" transitionName="slide">
-        <div>foo</div>
-      </SelectTrigger>,
-    );
-
-    expect(wrapper).toMatchSnapshot();
-  });
-
+describe('Select.Trigger', () => {
   it('set popupTransitionName if animation given', () => {
+    const SimpleSelectTrigger = SelectTrigger as any;
+
     const wrapper = mount(
-      <SelectTrigger prefixCls="rc-select" animation="slide-up">
+      <SimpleSelectTrigger prefixCls="rc-select" animation="slide-up">
         <div>foo</div>
-      </SelectTrigger>,
+      </SimpleSelectTrigger>,
     );
-    // HACK
-    expect((wrapper.find('Trigger').props() as any).popupTransitionName).toBe(
-      'rc-select-dropdown-slide-up',
-    );
+
+    expect(wrapper.find('Trigger').props().popupTransitionName).toBe('rc-select-dropdown-slide-up');
   });
 });

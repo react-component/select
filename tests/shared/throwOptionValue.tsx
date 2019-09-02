@@ -1,25 +1,24 @@
 import { mount } from 'enzyme';
-import * as React from 'react';
-import Option from '../../src/Option';
-import Select from '../../src/Select';
+import React from 'react';
+import Select, { Option } from '../../src';
+import { resetWarned } from 'rc-util/lib/warning';
 
-export default function throwOptionValue(mode) {
+export default function throwOptionValue(mode: any) {
   it('warn option value type', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation(() => null);
+    resetWarned();
 
-    const render = () =>
-      mount(
-        <Select {...{ [mode]: true }} open={true}>
-          <Option value={1}>1</Option>
-        </Select>,
-      );
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
 
-    expect(render).toThrow(
-      'Invalid `value` of type `number` supplied to Option, ' +
-        'expected `string` when `tags/combobox` is `true`.',
+    mount(
+      <Select mode={mode} open>
+        <Option value={1}>1</Option>
+      </Select>,
     );
 
-    spy.mockReset();
-    spy.mockRestore();
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Warning: `value` of Option should not use number type when `mode` is `tags` or `combobox`.',
+    );
+
+    errorSpy.mockRestore();
   });
 }

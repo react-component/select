@@ -1,9 +1,8 @@
-import OptGroup from './OptGroup';
+import Select, { SelectProps } from './Select';
+import { RefSelectProps } from './generate';
 import Option from './Option';
-import SelectPropTypes from './PropTypes';
-import Select from './Select';
+import OptGroup from './OptGroup';
 
-Select.Option = Option;
-Select.OptGroup = OptGroup;
-export { Option, OptGroup, SelectPropTypes };
+export { Option, OptGroup, SelectProps, RefSelectProps };
+
 export default Select;

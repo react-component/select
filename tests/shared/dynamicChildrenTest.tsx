@@ -1,11 +1,17 @@
 import { mount } from 'enzyme';
-import * as React from 'react';
-import Option from '../../src/Option';
-import Select from '../../src/Select';
+import React from 'react';
+import Select, { Option, SelectProps } from '../../src';
+import { injectRunAllTimers, toggleOpen, selectItem, findSelection } from '../utils/common';
 
-export default function dynamicChildrenTest(mode, props?) {
+export default function dynamicChildrenTest(mode: any, props?: Partial<SelectProps>) {
+  injectRunAllTimers(jest);
+
   beforeEach(() => {
     jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   it('dynamic children', () => {
@@ -22,7 +28,7 @@ export default function dynamicChildrenTest(mode, props?) {
           <Option key="2">2-label</Option>,
         ],
       };
-      public select: Select;
+      public select: any;
 
       public componentDidMount() {
         setTimeout(() => {
@@ -43,7 +49,7 @@ export default function dynamicChildrenTest(mode, props?) {
             ref={node => {
               this.select = node;
             }}
-            {...{ [mode]: true }}
+            mode={mode}
             {...props}
             onChange={onChange}
             onSelect={onSelect}
@@ -57,28 +63,25 @@ export default function dynamicChildrenTest(mode, props?) {
     const wrapper = mount(<App />);
     jest.runAllTimers();
     wrapper.update();
-    wrapper.find('.rc-select').simulate('click');
-    wrapper
-      .find('MenuItem')
-      .at(1)
-      .simulate('click');
+    toggleOpen(wrapper);
+    selectItem(wrapper, 1);
     expect(onChange).toBeCalledWith(
       ['1', '3'],
       [
-        <Option key="1" testprop="test">
-          1-label
-        </Option>,
-        <Option key="3">3-label</Option>,
+        mode === 'tags' ? expect.anything() : undefined,
+        expect.objectContaining({ value: '3', children: '3-label' }),
       ],
     );
-    expect(onSelect).toBeCalledWith('3', <Option key="3">3-label</Option>);
+    expect(onSelect).toBeCalledWith(
+      '3',
+      expect.objectContaining({ value: '3', children: '3-label' }),
+    );
   });
 
   it('value label update with dynamic children', () => {
-    // tslint:disable-next-line:max-classes-per-file
     class App extends React.Component {
       public state = {
-        value: 1,
+        value: mode === 'multiple' ? [1] : 1,
         options: [
           <Option key="0" value={0} testprop="test">
             0-label
@@ -88,7 +91,7 @@ export default function dynamicChildrenTest(mode, props?) {
           </Option>,
         ],
       };
-      public select: Select;
+      public select: any;
 
       public componentDidMount() {
         setTimeout(() => {
@@ -98,7 +101,7 @@ export default function dynamicChildrenTest(mode, props?) {
 
       public updateChildren = () => {
         this.setState({
-          value: 0,
+          value: mode === 'multiple' ? [0] : 0,
           options: [
             <Option key="0" value={0}>
               0-label-new
@@ -118,7 +121,7 @@ export default function dynamicChildrenTest(mode, props?) {
             ref={node => {
               this.select = node;
             }}
-            {...{ [mode]: true }}
+            mode={mode}
             {...props}
           >
             {this.state.options}
@@ -129,16 +132,11 @@ export default function dynamicChildrenTest(mode, props?) {
 
     const wrapper = mount(<App />);
     jest.runAllTimers();
-    expect(
-      wrapper
-        .update()
-        .find('.rc-select-selection__choice__content')
-        .text(),
-    ).toEqual('0-label-new');
+    wrapper.update();
+    expect(findSelection(wrapper).text()).toEqual('0-label-new');
   });
 
   it('defaultValue label update with dynamic children', () => {
-    // tslint:disable-next-line:max-classes-per-file
     class App extends React.Component {
       public state = {
         value: ['1'],
@@ -149,7 +147,7 @@ export default function dynamicChildrenTest(mode, props?) {
           <Option key="2">2-label</Option>,
         ],
       };
-      public select: Select;
+      public select: any;
 
       public componentDidMount() {
         setTimeout(() => {
@@ -171,7 +169,7 @@ export default function dynamicChildrenTest(mode, props?) {
             ref={node => {
               this.select = node;
             }}
-            {...{ [mode]: true }}
+            mode={mode}
             {...props}
           >
             {this.state.options}
@@ -182,11 +180,6 @@ export default function dynamicChildrenTest(mode, props?) {
 
     const wrapper = mount(<App />);
     jest.runAllTimers();
-    expect(
-      wrapper
-        .update()
-        .find('.rc-select-selection__choice__content')
-        .text(),
-    ).toEqual('1-label-new');
+    expect(findSelection(wrapper).text()).toEqual('1-label-new');
   });
 }

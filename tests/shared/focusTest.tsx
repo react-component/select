@@ -1,86 +1,75 @@
 import { mount } from 'enzyme';
-import * as React from 'react';
+import React from 'react';
+import { resetWarned } from 'rc-util/lib/warning';
 import Option from '../../src/Option';
 import Select from '../../src/Select';
 
-declare const global: any;
+export default function focusTest(mode: any, props?: any) {
+  describe(`focus of ${mode}`, () => {
+    let container;
 
-export default function focusTest(mode, props) {
-  let container;
+    beforeEach(() => {
+      container = document.createElement('div');
+      document.body.appendChild(container);
+      jest.useFakeTimers();
+      resetWarned();
+    });
 
-  beforeEach(() => {
-    container = global.document.createElement('div');
-    global.document.body.appendChild(container);
-    jest.useFakeTimers();
-  });
+    afterEach(() => {
+      jest.useRealTimers();
+    });
 
-  afterEach(() => {
-    jest.useRealTimers();
-  });
+    it('focus()', () => {
+      const handleFocus = jest.fn();
+      const selectRef = React.createRef<any>();
 
-  it('focus()', () => {
-    const handleFocus = jest.fn();
-
-    class App extends React.Component {
-      public select: any;
-      public componentDidMount() {
-        this.select.focus();
-      }
-
-      public render() {
-        return (
-          <Select
-            ref={node => {
-              this.select = node;
-            }}
-            {...{ [mode]: true }}
-            {...props}
-            onFocus={handleFocus}
-          >
+      mount(
+        <div>
+          <Select ref={selectRef} mode={mode} {...props} onFocus={handleFocus}>
             <Option value="1">1</Option>
             <Option value="2">2</Option>
           </Select>
-        );
-      }
-    }
+        </div>,
+        { attachTo: container },
+      );
 
-    mount(<App />, { attachTo: container });
+      selectRef.current.focus();
 
-    jest.runAllTimers();
+      expect(handleFocus).toHaveBeenCalled();
+    });
 
-    expect(handleFocus).toBeCalled();
-  });
+    it('autoFocus', () => {
+      const handleFocus = jest.fn();
 
-  it('autoFocus', () => {
-    const handleFocus = jest.fn();
+      mount(
+        <Select mode={mode} {...props} autoFocus onFocus={handleFocus}>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+        { attachTo: container },
+      );
 
-    mount(
-      <Select {...{ [mode]: true }} {...props} autoFocus={true} onFocus={handleFocus}>
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
-      </Select>,
-      { attachTo: container },
-    );
+      expect(handleFocus).toHaveBeenCalled();
+    });
 
-    jest.runAllTimers();
+    // https://github.com/ant-design/ant-design/issues/14254
+    it('warning when `defaultOpen` is true but `autoFocus` not', () => {
+      const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+      const handleFocus = jest.fn();
 
-    expect(handleFocus).toBeCalled();
-  });
+      mount(
+        <Select mode={mode} {...props} defaultOpen onFocus={handleFocus}>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+        { attachTo: container },
+      );
 
-  // https://github.com/ant-design/ant-design/issues/14254
-  it('auto focus when defaultOpen is ture', () => {
-    const handleFocus = jest.fn();
+      expect(warnSpy).toHaveBeenCalledWith(
+        'Note: `defaultOpen` makes Select open without focus which means it will not close by click outside. You can set `autoFocus` if needed.',
+      );
 
-    mount(
-      <Select {...{ [mode]: true }} {...props} defaultOpen={true} onFocus={handleFocus}>
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
-      </Select>,
-      { attachTo: container },
-    );
-
-    jest.runAllTimers();
-
-    expect(handleFocus).toBeCalled();
+      warnSpy.mockRestore();
+    });
   });
 }

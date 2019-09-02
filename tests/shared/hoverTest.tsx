@@ -1,14 +1,13 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import Option from '../../src/Option';
-import Select from '../../src/Select';
+import Select, { Option } from '../../src';
 
-export default function hoverTest(mode) {
+export default function hoverTest(mode: any) {
   it('triggers mouseEnter and mouseLeave', () => {
     const onMouseEnter = jest.fn();
     const onMouseLeave = jest.fn();
     const wrapper = mount(
-      <Select {...{ [mode]: true }} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <Select mode={mode} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,

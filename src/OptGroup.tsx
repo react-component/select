@@ -1,12 +1,18 @@
-import { Component } from 'react';
+/* istanbul ignore file */
+import * as React from 'react';
+import { OptionGroupData } from './interface';
 
-export interface IOptGroupProps {
-  label: string;
-  value: string | number;
-  key: string | number;
-  // Everything for testing
-  testprop?: any;
+export interface OptGroupProps extends Omit<OptionGroupData, 'options'> {
+  children?: React.ReactNode;
 }
-export default class OptGroup extends Component<Partial<IOptGroupProps>> {
-  public static isSelectOptGroup = true;
+
+interface OptionGroupFC extends React.FC<OptGroupProps> {
+  /** Legacy for check if is a Option Group */
+  isSelectOptGroup: boolean;
 }
+
+/** This is a placeholder, not real render in dom */
+const OptGroup: OptionGroupFC = () => null;
+OptGroup.isSelectOptGroup = true;
+
+export default OptGroup;

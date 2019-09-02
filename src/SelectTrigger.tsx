@@ -1,14 +1,7 @@
-import classnames from 'classnames';
-import * as PropTypes from 'prop-types';
-import raf from 'raf';
-import Trigger from 'rc-trigger';
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import DropdownMenu, { IDropdownMenuProps } from './DropdownMenu';
-import { renderSelect, valueType } from './PropTypes';
-import { isSingleMode, saveRef } from './util';
-
-Trigger.displayName = 'Trigger';
+import Trigger from 'rc-trigger';
+import classNames from 'classnames';
+import { RenderNode } from './interface';
 
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
@@ -29,228 +22,97 @@ const BUILT_IN_PLACEMENTS = {
   },
 };
 
-export interface ISelectTriggerProps extends IDropdownMenuProps {
-  onPopupFocus: () => void;
-  onPopupScroll: React.UIEventHandler<HTMLDivElement>;
-  onMouseEnter: React.MouseEventHandler<HTMLDivElement>;
-  onMouseLeave: React.MouseEventHandler<HTMLDivElement>;
-  dropdownMatchSelectWidth: boolean;
-  dropdownStyle: React.CSSProperties;
-  dropdownAlign: object;
-  visible: boolean;
-  combobox: boolean;
-  disabled: boolean;
-  showSearch: boolean;
-  dropdownClassName: string;
-  multiple: boolean;
-  inputValue: string | string[];
-  filterOption: any;
-  empty: boolean;
-  options: any;
+export interface RefTriggerProps {
+  getPopupElement: () => HTMLDivElement;
+}
+
+export interface SelectTriggerProps {
   prefixCls: string;
-  popupClassName: string;
-  children: any;
-  showAction: string[];
-  menuItemSelectedIcon: renderSelect;
-  dropdownRender: (menu: React.ReactNode, props: Partial<ISelectTriggerProps>) => React.ReactNode;
-  onDropdownVisibleChange: (value: boolean) => void;
-  getPopupContainer: renderSelect;
-  ariaId: string;
-  value: valueType;
-  transitionName: string;
-  animation: string;
-}
-export interface ISelectTriggerState {
-  dropdownWidth: number;
-}
-export default class SelectTrigger extends React.Component<
-  Partial<ISelectTriggerProps>,
-  ISelectTriggerState
-> {
-  public static displayName: string;
+  children: React.ReactElement;
+  disabled: boolean;
+  visible: boolean;
+  popupElement: React.ReactElement;
 
-  public static defaultProps = {
-    dropdownRender: (menu: any) => menu,
-  };
-
-  public static propTypes = {
-    onPopupFocus: PropTypes.func,
-    onPopupScroll: PropTypes.func,
-    dropdownMatchSelectWidth: PropTypes.bool,
-    dropdownAlign: PropTypes.object,
-    visible: PropTypes.bool,
-    disabled: PropTypes.bool,
-    showSearch: PropTypes.bool,
-    dropdownClassName: PropTypes.string,
-    multiple: PropTypes.bool,
-    inputValue: PropTypes.string,
-    filterOption: PropTypes.any,
-    options: PropTypes.any,
-    prefixCls: PropTypes.string,
-    popupClassName: PropTypes.string,
-    children: PropTypes.any,
-    showAction: PropTypes.arrayOf(PropTypes.string),
-    menuItemSelectedIcon: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-    dropdownRender: PropTypes.func,
-    ariaId: PropTypes.string,
-  };
-
-  public saveDropdownMenuRef: (ref: any) => void;
-  public saveTriggerRef: (ref: any) => void;
-  public dropdownMenuRef: DropdownMenu | null = null;
-  public triggerRef: any;
-  public rafInstance: number | null = null;
-
-  constructor(props: Partial<ISelectTriggerProps>) {
-    super(props);
-
-    this.saveDropdownMenuRef = saveRef(this, 'dropdownMenuRef');
-    this.saveTriggerRef = saveRef(this, 'triggerRef');
-
-    this.state = {
-      dropdownWidth: 0,
-    };
-  }
-
-  public componentDidMount() {
-    this.setDropdownWidth();
-  }
-
-  public componentDidUpdate() {
-    this.setDropdownWidth();
-  }
-
-  public componentWillUnmount() {
-    this.cancelRafInstance();
-  }
-
-  public setDropdownWidth = () => {
-    this.cancelRafInstance();
-    this.rafInstance = raf(() => {
-      const dom = ReactDOM.findDOMNode(this) as HTMLDivElement;
-      const width = dom.offsetWidth;
-      if (width !== this.state.dropdownWidth) {
-        this.setState({ dropdownWidth: width });
-      }
-    });
-  };
-
-  public cancelRafInstance = () => {
-    if (this.rafInstance) {
-      raf.cancel(this.rafInstance);
-    }
-  };
-
-  public getInnerMenu = () => {
-    return this.dropdownMenuRef && this.dropdownMenuRef.menuRef;
-  };
-
-  public getPopupDOMNode = () => {
-    return this.triggerRef.getPopupDomNode();
-  };
-
-  public getDropdownElement = (newProps: Partial<ISelectTriggerProps>) => {
-    const props = this.props;
-
-    const { dropdownRender, ariaId } = props;
-
-    const menuNode = (
-      <DropdownMenu
-        ref={this.saveDropdownMenuRef}
-        {...newProps}
-        ariaId={ariaId}
-        prefixCls={this.getDropdownPrefixCls()}
-        onMenuSelect={props.onMenuSelect}
-        onMenuDeselect={props.onMenuDeselect}
-        onPopupScroll={props.onPopupScroll}
-        value={props.value}
-        backfillValue={props.backfillValue}
-        firstActiveValue={props.firstActiveValue}
-        defaultActiveFirstOption={props.defaultActiveFirstOption}
-        dropdownMenuStyle={props.dropdownMenuStyle}
-        menuItemSelectedIcon={props.menuItemSelectedIcon}
-      />
-    );
-    if (dropdownRender) {
-      return dropdownRender(menuNode, props);
-    }
-    return null;
-  };
-
-  public getDropdownTransitionName = () => {
-    const props = this.props;
-    let transitionName = props.transitionName;
-    if (!transitionName && props.animation) {
-      transitionName = `${this.getDropdownPrefixCls()}-${props.animation}`;
-    }
-    return transitionName;
-  };
-
-  public getDropdownPrefixCls = () => {
-    return `${this.props.prefixCls}-dropdown`;
-  };
-
-  public render() {
-    const { onPopupFocus, empty, ...props } = this.props;
-    const {
-      multiple,
-      visible,
-      inputValue,
-      dropdownAlign,
-      disabled,
-      showSearch,
-      dropdownClassName,
-      dropdownStyle,
-      dropdownMatchSelectWidth,
-    } = props;
-    const dropdownPrefixCls = this.getDropdownPrefixCls();
-    const popupClassName = {
-      [dropdownClassName as string]: !!dropdownClassName,
-      [`${dropdownPrefixCls}--${multiple ? 'multiple' : 'single'}`]: 1,
-      [`${dropdownPrefixCls}--empty`]: empty,
-    };
-    const popupElement = this.getDropdownElement({
-      menuItems: props.options,
-      onPopupFocus,
-      multiple,
-      inputValue,
-      visible,
-    });
-    let hideAction: string[];
-    if (disabled) {
-      hideAction = [];
-    } else if (isSingleMode(props) && !showSearch) {
-      hideAction = ['click'];
-    } else {
-      hideAction = ['blur'];
-    }
-    const popupStyle = { ...dropdownStyle };
-    const widthProp = dropdownMatchSelectWidth ? 'width' : 'minWidth';
-    if (this.state.dropdownWidth) {
-      popupStyle[widthProp] = `${this.state.dropdownWidth}px`;
-    }
-    return (
-      <Trigger
-        {...props}
-        showAction={disabled ? [] : this.props.showAction}
-        hideAction={hideAction}
-        ref={this.saveTriggerRef}
-        popupPlacement="bottomLeft"
-        builtinPlacements={BUILT_IN_PLACEMENTS}
-        prefixCls={dropdownPrefixCls}
-        popupTransitionName={this.getDropdownTransitionName()}
-        onPopupVisibleChange={props.onDropdownVisibleChange}
-        popup={popupElement}
-        popupAlign={dropdownAlign}
-        popupVisible={visible}
-        getPopupContainer={props.getPopupContainer}
-        popupClassName={classnames(popupClassName)}
-        popupStyle={popupStyle}
-      >
-        {props.children}
-      </Trigger>
-    );
-  }
+  animation?: string;
+  transitionName?: string;
+  containerWidth: number;
+  dropdownStyle: React.CSSProperties;
+  dropdownClassName: string;
+  dropdownMatchSelectWidth?: true | number;
+  dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
+  getPopupContainer?: RenderNode;
+  dropdownAlign: object;
+  empty: boolean;
 }
 
-SelectTrigger.displayName = 'SelectTrigger';
+const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTriggerProps> = (
+  props,
+  ref,
+) => {
+  const {
+    prefixCls,
+    disabled,
+    visible,
+    children,
+    popupElement,
+    containerWidth,
+    animation,
+    transitionName,
+    dropdownStyle,
+    dropdownClassName,
+    dropdownMatchSelectWidth = true,
+    dropdownRender,
+    dropdownAlign,
+    getPopupContainer,
+    empty,
+    ...restProps
+  } = props;
+
+  const dropdownPrefixCls = `${prefixCls}-dropdown`;
+
+  let popupNode = popupElement;
+  if (dropdownRender) {
+    popupNode = dropdownRender(popupElement);
+  }
+
+  // ===================== Motion ======================
+  const mergedTransitionName = animation ? `${dropdownPrefixCls}-${animation}` : transitionName;
+
+  // ======================= Ref =======================
+  const popupRef = React.useRef<HTMLDivElement>(null);
+
+  React.useImperativeHandle(ref, () => ({
+    getPopupElement: () => popupRef.current,
+  }));
+
+  return (
+    <Trigger
+      {...restProps}
+      showAction={[]}
+      hideAction={[]}
+      popupPlacement="bottomLeft"
+      builtinPlacements={BUILT_IN_PLACEMENTS}
+      prefixCls={dropdownPrefixCls}
+      popupTransitionName={mergedTransitionName}
+      popup={<div ref={popupRef}>{popupNode}</div>}
+      popupAlign={dropdownAlign}
+      popupVisible={visible}
+      getPopupContainer={getPopupContainer}
+      popupClassName={classNames(dropdownClassName, {
+        [`${dropdownPrefixCls}-empty`]: empty,
+      })}
+      popupStyle={{
+        ...dropdownStyle,
+        width:
+          typeof dropdownMatchSelectWidth === 'number' ? dropdownMatchSelectWidth : containerWidth,
+      }}
+    >
+      {children}
+    </Trigger>
+  );
+};
+
+const RefSelectTrigger = React.forwardRef<RefTriggerProps, SelectTriggerProps>(SelectTrigger);
+RefSelectTrigger.displayName = 'SelectTrigger';
+
+export default RefSelectTrigger;
