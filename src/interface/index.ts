@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Key } from './generator';
 
-export type RenderNode = React.ReactNode | (() => React.ReactNode);
+export type RenderNode = React.ReactNode | ((props: any) => React.ReactNode);
 
 export type Mode = 'multiple' | 'tags' | 'combobox';
 

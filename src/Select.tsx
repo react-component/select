@@ -72,9 +72,9 @@ export type SelectProps<ValueType extends DefaultValueType = DefaultValueType> =
  * we have to wrap an class component to handle this.
  */
 class Select<VT> extends React.Component<SelectProps<SelectOptionsType, VT>> {
-  static Option: typeof Option;
+  static Option = Option;
 
-  static OptGroup: typeof OptGroup;
+  static OptGroup = OptGroup;
 
   selectRef = React.createRef<RefSelectProps>();
 
