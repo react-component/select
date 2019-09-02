@@ -852,12 +852,32 @@ export default function generateSelector<
   type RefSelectFuncType = typeof RefSelectFunc;
   const RefSelect = ((React.forwardRef as unknown) as RefSelectFuncType)(Select);
 
+  /**
+   * Typescript not support generic with function component,
+   * we have to wrap an class component to handle this.
+   */
+  class ClassSelect<VT> extends React.Component<SelectProps<OptionsType, VT>> {
+    selectRef = React.createRef<RefSelectProps>();
+
+    focus = () => {
+      this.selectRef.current.focus();
+    };
+
+    blur = () => {
+      this.selectRef.current.blur();
+    };
+
+    render() {
+      return <RefSelect ref={this.selectRef} {...this.props} />;
+    }
+  }
+
   // Inject static props
   if (staticProps) {
     Object.keys(staticProps).forEach(prop => {
-      RefSelect[prop] = staticProps[prop];
+      ClassSelect[prop] = staticProps[prop];
     });
   }
 
-  return RefSelect as (typeof RefSelect & StaticProps);
+  return ClassSelect as (typeof ClassSelect & StaticProps);
 }

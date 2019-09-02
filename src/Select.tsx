@@ -75,6 +75,6 @@ export type SelectProps<ValueType extends DefaultValueType = DefaultValueType> =
   ValueType
 >;
 
-Select.displayName = 'Select';
+(Select as any).displayName = 'Select';
 
 export default Select;
