@@ -1,9 +1,10 @@
 import * as React from 'react';
 import classNames from 'classnames';
+import { RenderNode } from './interface';
 
 export interface TransBtnProps {
   className: string;
-  customizeIcon: React.ReactNode;
+  customizeIcon: RenderNode;
   customizeIconProps?: { isSelected: boolean };
   onMouseDown?: React.MouseEventHandler<HTMLSpanElement>;
   onClick?: React.MouseEventHandler<HTMLSpanElement>;
@@ -43,7 +44,9 @@ const TransBtn: React.FC<TransBtnProps> = ({
       onClick={onClick}
       aria-hidden
     >
-      {icon || (
+      {icon !== undefined ? (
+        icon
+      ) : (
         <span className={classNames(className.split(/\s+/).map(cls => `${cls}-icon`))}>
           {children}
         </span>
