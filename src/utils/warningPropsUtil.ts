@@ -104,7 +104,7 @@ function warningProps(props: SelectProps) {
   if (children) {
     let invalidateChildType = null;
     toNodeArray(children).some((node: React.ReactNode) => {
-      if (!React.isValidElement(node)) {
+      if (!React.isValidElement(node) || !node.type) {
         return false;
       }
 
@@ -118,6 +118,7 @@ function warningProps(props: SelectProps) {
           (subNode: React.ReactElement) => {
             if (
               !React.isValidElement(subNode) ||
+              !node.type ||
               (subNode.type as { isSelectOption?: boolean }).isSelectOption
             ) {
               return true;
