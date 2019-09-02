@@ -128,7 +128,7 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   choiceTransitionName?: string;
 }
 
-export interface GenerateConfig<OptionsType extends object[], StaticProps> {
+export interface GenerateConfig<OptionsType extends object[]> {
   prefixCls: string;
   components: {
     optionList: React.ForwardRefExoticComponent<
@@ -138,7 +138,6 @@ export interface GenerateConfig<OptionsType extends object[], StaticProps> {
         React.RefAttributes<RefOptionListProps>
     >;
   };
-  staticProps?: StaticProps;
   /** Convert jsx tree into `OptionsType` */
   convertChildrenToData: (children: React.ReactNode) => OptionsType;
   /** Flatten nest options into raw option list */
@@ -171,13 +170,11 @@ export default function generateSelector<
     label?: React.ReactNode;
     key?: Key;
     disabled?: boolean;
-  }[],
-  StaticProps
->(config: GenerateConfig<OptionsType, StaticProps>) {
+  }[]
+>(config: GenerateConfig<OptionsType>) {
   const {
     prefixCls: defaultPrefixCls,
     components: { optionList: OptionList },
-    staticProps,
     convertChildrenToData,
     flattenOptions,
     getLabeledValue,
@@ -852,32 +849,5 @@ export default function generateSelector<
   type RefSelectFuncType = typeof RefSelectFunc;
   const RefSelect = ((React.forwardRef as unknown) as RefSelectFuncType)(Select);
 
-  /**
-   * Typescript not support generic with function component,
-   * we have to wrap an class component to handle this.
-   */
-  class ClassSelect<VT> extends React.Component<SelectProps<OptionsType, VT>> {
-    selectRef = React.createRef<RefSelectProps>();
-
-    focus = () => {
-      this.selectRef.current.focus();
-    };
-
-    blur = () => {
-      this.selectRef.current.blur();
-    };
-
-    render() {
-      return <RefSelect ref={this.selectRef} {...this.props} />;
-    }
-  }
-
-  // Inject static props
-  if (staticProps) {
-    Object.keys(staticProps).forEach(prop => {
-      ClassSelect[prop] = staticProps[prop];
-    });
-  }
-
-  return ClassSelect as (typeof ClassSelect & StaticProps);
+  return RefSelect;
 }

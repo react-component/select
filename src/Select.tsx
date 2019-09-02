@@ -29,6 +29,7 @@
  * - `combobox` mode not support `optionLabelProp`
  */
 
+import React from 'react';
 import { OptionsType as SelectOptionsType } from './interface';
 import SelectOptionList from './OptionList';
 import Option from './Option';
@@ -42,23 +43,14 @@ import {
   flattenOptions,
   fillOptionsWithMissingValue,
 } from './utils/valueUtil';
-import generateSelector, { SelectProps } from './generate';
+import generateSelector, { SelectProps, RefSelectProps } from './generate';
 import { DefaultValueType } from './interface/generator';
 import warningProps from './utils/warningPropsUtil';
 
-interface SelectStaticProps {
-  Option: typeof Option;
-  OptGroup: typeof OptGroup;
-}
-
-const Select = generateSelector<SelectOptionsType, SelectStaticProps>({
+const RefSelect = generateSelector<SelectOptionsType>({
   prefixCls: 'rc-select',
   components: {
     optionList: SelectOptionList,
-  },
-  staticProps: {
-    Option,
-    OptGroup,
   },
   convertChildrenToData: convertSelectChildrenToData,
   flattenOptions,
@@ -75,6 +67,28 @@ export type SelectProps<ValueType extends DefaultValueType = DefaultValueType> =
   ValueType
 >;
 
-(Select as any).displayName = 'Select';
+/**
+ * Typescript not support generic with function component,
+ * we have to wrap an class component to handle this.
+ */
+class Select<VT> extends React.Component<SelectProps<SelectOptionsType, VT>> {
+  static Option: typeof Option;
+
+  static OptGroup: typeof OptGroup;
+
+  selectRef = React.createRef<RefSelectProps>();
+
+  focus = () => {
+    this.selectRef.current.focus();
+  };
+
+  blur = () => {
+    this.selectRef.current.blur();
+  };
+
+  render() {
+    return <RefSelect ref={this.selectRef} {...this.props} />;
+  }
+}
 
 export default Select;
