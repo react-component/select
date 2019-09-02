@@ -41,6 +41,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
   showSearch,
   autoFocus,
   accessibilityIndex,
+  tabIndex,
 
   removeIcon,
   choiceTransitionName,
@@ -170,6 +171,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
           value={searchValue}
           onKeyDown={onInputKeyDown}
           onChange={onInputChange}
+          tabIndex={tabIndex}
         />
 
         {/* Measure Node */}

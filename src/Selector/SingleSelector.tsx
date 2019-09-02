@@ -20,6 +20,7 @@ const SingleSelector: React.FC<SelectorProps> = ({
   open,
   values,
   placeholder,
+  tabIndex,
 
   showSearch,
   searchValue,
@@ -55,6 +56,7 @@ const SingleSelector: React.FC<SelectorProps> = ({
           value={inputValue}
           onKeyDown={onInputKeyDown}
           onChange={onInputChange}
+          tabIndex={tabIndex}
         />
       </span>
 

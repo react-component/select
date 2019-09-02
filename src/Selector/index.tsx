@@ -29,6 +29,7 @@ export interface InnerSelectorProps {
   searchValue: string;
   accessibilityIndex: number;
   open: boolean;
+  tabIndex?: number;
 
   onInputKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onInputChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
@@ -54,6 +55,7 @@ export interface SelectorProps {
 
   autoFocus?: boolean;
   accessibilityIndex: number;
+  tabIndex?: number;
   disabled?: boolean;
   placeholder?: React.ReactNode;
   removeIcon?: RenderNode;
