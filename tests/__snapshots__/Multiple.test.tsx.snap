@@ -2,7 +2,7 @@
 
 exports[`Select.Multiple render truncates values by maxTagTextLength 1`] = `
 <div
-  class="rc-select rc-select-multiple"
+  class="rc-select rc-select-multiple rc-select-show-search"
 >
   <div
     class="rc-select-selector"

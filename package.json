@@ -43,7 +43,7 @@
     "rc-animate": "^2.10.0",
     "rc-trigger": "^2.6.5",
     "rc-util": "^4.11.0",
-    "rc-virtual-list": "^0.0.0-alpha.24",
+    "rc-virtual-list": "^0.0.0-alpha.25",
     "warning": "^4.0.3"
   },
   "devDependencies": {

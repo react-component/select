@@ -294,8 +294,10 @@ export default function generateSelector<
     // labelInValue
     const mergedLabelInValue = mode === 'combobox' ? false : labelInValue;
 
+    const isMultiple = mode === 'tags' || mode === 'multiple';
+
     const mergedShowSearch =
-      showSearch !== undefined ? showSearch : mode === 'tags' || mode === 'combobox';
+      showSearch !== undefined ? showSearch : isMultiple || mode === 'combobox';
 
     // ============================== Ref ===============================
     React.useImperativeHandle(ref, () => ({
@@ -402,8 +404,6 @@ export default function generateSelector<
         }),
       [baseValue, mergedOptions],
     );
-
-    const isMultiple = mode === 'tags' || mode === 'multiple';
 
     const triggerSelect = (newValue: RawValueType, isSelect: boolean) => {
       const selectValue = (mergedLabelInValue
@@ -650,10 +650,15 @@ export default function generateSelector<
         return;
       }
 
-      // `tags` mode should move `searchValue` into values
-      if (mode === 'tags' && mergedSearchValue) {
-        triggerSearch('', false);
-        triggerChange(Array.from(new Set([...mergedRawValue, mergedSearchValue])));
+      if (mergedSearchValue) {
+        // `tags` mode should move `searchValue` into values
+        if (mode === 'tags') {
+          triggerSearch('', false);
+          triggerChange(Array.from(new Set([...mergedRawValue, mergedSearchValue])));
+        } else if (mode === 'multiple') {
+          // `multiple` mode only clean the search value but not trigger event
+          setInnerSearchValue('');
+        }
       }
 
       if (onBlur) {
