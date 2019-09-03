@@ -11,8 +11,6 @@ import {
 } from './interface';
 import { RawValueType, FlattenOptionsType } from './interface/generator';
 
-// TODO: Not use virtual list if options count is less than a certain number
-
 export interface OptionListProps<OptionsType extends object[]> {
   prefixCls: string;
   id: string;
@@ -224,6 +222,7 @@ const OptionList: React.RefForwardingComponent<
         data={flattenOptions}
         height={height}
         itemHeight={itemHeight}
+        fullHeight={false}
         onMouseDown={onListMouseDown}
         onScroll={onScroll}
       >
