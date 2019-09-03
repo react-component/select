@@ -3,7 +3,7 @@
 exports[`Select.Tags OptGroup renders correctly 1`] = `
 <div>
   <div
-    class="rc-select rc-select-multiple rc-select-open"
+    class="rc-select rc-select-multiple rc-select-open rc-select-show-search"
   >
     <div
       class="rc-select-selector"
@@ -200,7 +200,7 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
 
 exports[`Select.Tags render truncates values by maxTagTextLength 1`] = `
 <div
-  class="rc-select rc-select-multiple"
+  class="rc-select rc-select-multiple rc-select-show-search"
 >
   <div
     class="rc-select-selector"

@@ -220,7 +220,7 @@ exports[`Select.Basic render renders aria-attributes correctly 1`] = `
 <div
   aria-label="some-label"
   aria-labelledby="test-id"
-  class="antd select-test antd-single antd-allow-clear antd-show-arrow"
+  class="antd select-test antd-single antd-allow-clear antd-show-arrow antd-show-search"
 >
   <div
     class="antd-selector"
@@ -274,7 +274,7 @@ exports[`Select.Basic render renders aria-attributes correctly 1`] = `
 
 exports[`Select.Basic render renders correctly 1`] = `
 <div
-  class="antd select-test antd-single antd-allow-clear antd-show-arrow"
+  class="antd select-test antd-single antd-allow-clear antd-show-arrow antd-show-search"
 >
   <div
     class="antd-selector"
@@ -328,7 +328,7 @@ exports[`Select.Basic render renders correctly 1`] = `
 
 exports[`Select.Basic render renders data-attributes correctly 1`] = `
 <div
-  class="antd select-test antd-single antd-allow-clear antd-show-arrow"
+  class="antd select-test antd-single antd-allow-clear antd-show-arrow antd-show-search"
   data-id="12345"
   data-test="test-id"
 >
@@ -384,7 +384,7 @@ exports[`Select.Basic render renders data-attributes correctly 1`] = `
 
 exports[`Select.Basic render renders disabled select correctly 1`] = `
 <div
-  class="antd select-test antd-single antd-allow-clear antd-show-arrow antd-disabled"
+  class="antd select-test antd-single antd-allow-clear antd-show-arrow antd-disabled antd-show-search"
 >
   <div
     class="antd-selector"
@@ -439,7 +439,7 @@ exports[`Select.Basic render renders disabled select correctly 1`] = `
 
 exports[`Select.Basic render renders dropdown correctly 1`] = `
 <div
-  class="antd select-test antd-single antd-allow-clear antd-show-arrow antd-open"
+  class="antd select-test antd-single antd-allow-clear antd-show-arrow antd-open antd-show-search"
 >
   <div
     class="antd-selector"
@@ -612,7 +612,7 @@ exports[`Select.Basic render renders dropdown correctly 1`] = `
 
 exports[`Select.Basic render renders role prop correctly 1`] = `
 <div
-  class="antd select-test antd-single antd-allow-clear antd-show-arrow"
+  class="antd select-test antd-single antd-allow-clear antd-show-arrow antd-show-search"
   role="button"
 >
   <div

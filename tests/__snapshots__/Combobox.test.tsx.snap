@@ -2,7 +2,7 @@
 
 exports[`Select.Combobox renders correctly 1`] = `
 <div
-  class="rc-select rc-select-single"
+  class="rc-select rc-select-single rc-select-show-search"
 >
   <div
     class="rc-select-selector"

@@ -780,6 +780,7 @@ export default function generateSelector<
       [`${prefixCls}-loading`]: loading,
       [`${prefixCls}-open`]: mergedOpen,
       [`${prefixCls}-customize-input`]: customizeInputElement,
+      [`${prefixCls}-show-search`]: mergedShowSearch,
     });
 
     return (
