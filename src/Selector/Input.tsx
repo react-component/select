@@ -21,7 +21,7 @@ interface InputProps {
 function fillRef(node: InputRef, ref: React.LegacyRef<InputRef> | React.Ref<InputRef>) {
   if (typeof ref === 'function') {
     ref(node);
-  } else if (typeof ref === 'object') {
+  } else if (ref && typeof ref === 'object') {
     (ref as any).current = node;
   }
 }
