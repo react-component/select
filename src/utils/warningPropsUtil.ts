@@ -26,9 +26,8 @@ function warningProps(props: SelectProps) {
     optionLabelProp,
   } = props;
 
-  const mergedShowSearch =
-    showSearch !== undefined ? showSearch : mode === 'tags' || mode === 'combobox';
   const multiple = mode === 'multiple' || mode === 'tags';
+  const mergedShowSearch = showSearch !== undefined ? showSearch : multiple || mode === 'combobox';
   const mergedOptions = options || convertChildrenToData(children);
 
   // `tags` should not set option as disabled
