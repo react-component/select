@@ -10,7 +10,13 @@ class Combobox extends React.Component {
     options: [],
   };
 
+  textareaRef = React.createRef<HTMLTextAreaElement>();
+
   timeoutId: number;
+
+  componentDidMount() {
+    console.log('Ref:', this.textareaRef);
+  }
 
   onChange = (value, option) => {
     console.log('onChange', value, option);
@@ -97,7 +103,9 @@ class Combobox extends React.Component {
           <Select
             mode="combobox"
             style={{ width: 200 }}
-            getInputElement={() => <textarea rows={3} />}
+            getInputElement={() => (
+              <textarea style={{ background: 'red' }} rows={3} ref={this.textareaRef} />
+            )}
             options={[{ value: 'light' }, { value: 'bamboo' }]}
             allowClear
             placeholder="2333"

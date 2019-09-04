@@ -18,6 +18,14 @@ interface InputProps {
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
 }
 
+function fillRef(node: InputRef, ref: React.LegacyRef<InputRef> | React.Ref<InputRef>) {
+  if (typeof ref === 'function') {
+    ref(node);
+  } else if (typeof ref === 'object') {
+    (ref as any).current = node;
+  }
+}
+
 const Input: React.RefForwardingComponent<InputRef, InputProps> = (
   {
     prefixCls,
@@ -35,19 +43,27 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
   },
   ref,
 ) => {
-  let inputNode: React.ReactElement = inputElement || <input />;
+  let inputNode: React.ComponentElement<any, any> = inputElement || <input />;
 
-  const { onKeyDown: onOriginKeyDown, onChange: onOriginChange } = inputNode.props;
+  const {
+    ref: originRef,
+    props: { onKeyDown: onOriginKeyDown, onChange: onOriginChange, style },
+  } = inputNode;
+
+  function inputRef(node: InputRef) {
+    fillRef(node, ref);
+    fillRef(node, originRef);
+  }
 
   inputNode = React.cloneElement(inputNode, {
     id,
-    ref,
+    ref: inputRef,
     disabled,
     tabIndex,
     autoComplete: 'off',
     autoFocus,
     className: `${prefixCls}-selection-search-input`,
-    style: { opacity: editable ? null : 0 },
+    style: { ...style, opacity: editable ? null : 0 },
     role: 'combobox',
     'aria-expanded': open,
     'aria-haspopup': 'listbox',
