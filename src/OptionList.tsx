@@ -142,7 +142,8 @@ const OptionList: React.RefForwardingComponent<
 
   // ========================= Keyboard =========================
   React.useImperativeHandle(ref, () => ({
-    onKeyDown: ({ which }) => {
+    onKeyDown: event => {
+      const { which } = event;
       switch (which) {
         // >>> Arrow keys
         case KeyCode.UP:
@@ -171,6 +172,10 @@ const OptionList: React.RefForwardingComponent<
             onSelectValue((item.data as OptionData).value);
           } else {
             onSelectValue(null);
+          }
+
+          if (open) {
+            event.preventDefault();
           }
 
           break;
