@@ -122,7 +122,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
    * We can not use `findDOMNode` sine it will get warning,
    * have to use timer to check if is input element.
    */
-  const onInternalInputMouseDown: React.MouseEventHandler<HTMLInputElement> = event => {
+  const onInternalInputMouseDown: React.MouseEventHandler<HTMLInputElement> = () => {
     setInputMouseDown(true);
   };
 
