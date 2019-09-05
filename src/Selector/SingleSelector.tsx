@@ -27,6 +27,7 @@ const SingleSelector: React.FC<SelectorProps> = ({
   activeValue,
 
   onInputKeyDown,
+  onInputMouseDown,
   onInputChange,
 }) => {
   const combobox = mode === 'combobox';
@@ -55,6 +56,7 @@ const SingleSelector: React.FC<SelectorProps> = ({
           accessibilityIndex={accessibilityIndex}
           value={inputValue}
           onKeyDown={onInputKeyDown}
+          onMouseDown={onInputMouseDown}
           onChange={onInputChange}
           tabIndex={tabIndex}
         />

@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { useLock } from '../src/hooks/useLock';
+import useLock from '../src/hooks/useLock';
 import { injectRunAllTimers } from './utils/common';
 
 describe('Hooks', () => {

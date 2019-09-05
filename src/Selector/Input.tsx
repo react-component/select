@@ -15,6 +15,7 @@ interface InputProps {
   tabIndex: number;
 
   onKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
+  onMouseDown: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
 }
 
@@ -38,6 +39,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     accessibilityIndex,
     value,
     onKeyDown,
+    onMouseDown,
     onChange,
     open,
   },
@@ -47,7 +49,12 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
 
   const {
     ref: originRef,
-    props: { onKeyDown: onOriginKeyDown, onChange: onOriginChange, style },
+    props: {
+      onKeyDown: onOriginKeyDown,
+      onChange: onOriginChange,
+      onMouseDown: onOriginMouseDown,
+      style,
+    },
   } = inputNode;
 
   function inputRef(node: InputRef) {
@@ -76,6 +83,12 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
       onKeyDown(event);
       if (onOriginKeyDown) {
         onOriginKeyDown(event);
+      }
+    },
+    onMouseDown: (event: React.MouseEvent<HTMLElement>) => {
+      onMouseDown(event);
+      if (onOriginMouseDown) {
+        onOriginMouseDown(event);
       }
     },
     onChange: (event: React.ChangeEvent<HTMLElement>) => {

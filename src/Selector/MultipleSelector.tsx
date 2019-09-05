@@ -53,6 +53,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
   onSelect,
   onInputChange,
   onInputKeyDown,
+  onInputMouseDown,
 }) => {
   const [motionAppear, setMotionAppear] = React.useState(false);
   const measureRef = React.useRef<HTMLSpanElement>(null);
@@ -170,6 +171,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
           accessibilityIndex={accessibilityIndex}
           value={searchValue}
           onKeyDown={onInputKeyDown}
+          onMouseDown={onInputMouseDown}
           onChange={onInputChange}
           tabIndex={tabIndex}
         />

@@ -29,7 +29,7 @@ import {
 import { OptionListProps, RefOptionListProps } from './OptionList';
 import { toInnerValue, toOuterValues, removeLastEnabledValue, getUUID } from './utils/commonUtil';
 import TransBtn from './TransBtn';
-import { useLock } from './hooks/useLock';
+import useLock from './hooks/useLock';
 import useDelayReset from './hooks/useDelayReset';
 import useLayoutEffect from './hooks/useLayoutEffect';
 import { getSeparatedContent } from './utils/valueUtil';
@@ -574,7 +574,8 @@ export default function generateSelector<
      * - true: Search text is empty when first time backspace down
      * - false: Search text is not empty when first time backspace down
      */
-    const [clearLock, setClearLock] = useLock();
+    const [getClearLock, setClearLock] = useLock();
+    const clearLock = getClearLock();
 
     // KeyDown
     const onInternalKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event, ...rest) => {

@@ -6,28 +6,28 @@ import * as React from 'react';
  * If set to `false` and then set to `true`, will change to `true`.
  * And after time duration, it will back to `null` automatically.
  */
-export function useLock(duration: number = 250): [boolean, (lock: boolean) => void] {
-  const [lock, setLock] = React.useState<boolean>(null);
-  const lockRef = React.useRef<number>(null);
+export default function useLock(duration: number = 250): [() => boolean, (lock: boolean) => void] {
+  const lockRef = React.useRef<boolean>(null);
+  const timeoutRef = React.useRef<number>(null);
 
   // Clean up
   React.useEffect(
     () => () => {
-      window.clearTimeout(lockRef.current);
+      window.clearTimeout(timeoutRef.current);
     },
     [],
   );
 
   function doLock(locked: boolean) {
-    if (locked || lock === null) {
-      setLock(locked);
+    if (locked || lockRef.current === null) {
+      lockRef.current = locked;
     }
 
-    window.clearTimeout(lockRef.current);
-    lockRef.current = window.setTimeout(() => {
-      setLock(null);
+    window.clearTimeout(timeoutRef.current);
+    timeoutRef.current = window.setTimeout(() => {
+      lockRef.current = null;
     }, duration);
   }
 
-  return [lock, doLock];
+  return [() => lockRef.current, doLock];
 }

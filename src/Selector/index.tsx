@@ -14,6 +14,7 @@ import MultipleSelector from './MultipleSelector';
 import SingleSelector from './SingleSelector';
 import { LabelValueType, RawValueType } from '../interface/generator';
 import { RenderNode, Mode } from '../interface';
+import useLock from '../hooks/useLock';
 
 export interface InnerSelectorProps {
   prefixCls: string;
@@ -32,6 +33,7 @@ export interface InnerSelectorProps {
   tabIndex?: number;
 
   onInputKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onInputMouseDown: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onInputChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }
 
@@ -98,6 +100,8 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   }));
 
   // ====================== Input ======================
+  const [getInputMouseDown, setInputMouseDown] = useLock(0);
+
   const onInternalInputKeyDown: React.KeyboardEventHandler<HTMLInputElement> = event => {
     const { which } = event;
 
@@ -112,6 +116,14 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     if (![KeyCode.SHIFT, KeyCode.TAB, KeyCode.BACKSPACE, KeyCode.ESC].includes(which)) {
       onToggleOpen(true);
     }
+  };
+
+  /**
+   * We can not use `findDOMNode` sine it will get warning,
+   * have to use timer to check if is input element.
+   */
+  const onInternalInputMouseDown: React.MouseEventHandler<HTMLInputElement> = event => {
+    setInputMouseDown(true);
   };
 
   const onInputChange = ({ target: { value } }) => {
@@ -129,7 +141,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   };
 
   const onMouseDown: React.MouseEventHandler<HTMLElement> = event => {
-    if (event.target !== inputRef.current) {
+    if (event.target !== inputRef.current && !getInputMouseDown()) {
       event.preventDefault();
     }
 
@@ -140,6 +152,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   const sharedProps = {
     inputRef,
     onInputKeyDown: onInternalInputKeyDown,
+    onInputMouseDown: onInternalInputMouseDown,
     onInputChange,
   };
 
