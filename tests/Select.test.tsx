@@ -722,10 +722,13 @@ describe('Select.Basic', () => {
   it('combobox could customize input element', () => {
     const onKeyDown = jest.fn();
     const onChange = jest.fn();
+    const textareaRef = jest.fn();
     const wrapper = mount(
       <Select
         mode="combobox"
-        getInputElement={() => <textarea onKeyDown={onKeyDown} onChange={onChange} />}
+        getInputElement={() => (
+          <textarea onKeyDown={onKeyDown} onChange={onChange} ref={textareaRef} />
+        )}
       >
         <Option value="1">1</Option>
         <Option value="2">2</Option>
@@ -744,6 +747,7 @@ describe('Select.Basic', () => {
     expect(wrapper.find('textarea').props().value).toEqual('1');
     expect(onKeyDown).toHaveBeenCalled();
     expect(onChange).toHaveBeenCalled();
+    expect(textareaRef).toHaveBeenCalled();
   });
 
   describe('propTypes', () => {
