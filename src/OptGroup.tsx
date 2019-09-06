@@ -6,7 +6,7 @@ export interface OptGroupProps extends Omit<OptionGroupData, 'options'> {
   children?: React.ReactNode;
 }
 
-interface OptionGroupFC extends React.FC<OptGroupProps> {
+export interface OptionGroupFC extends React.FC<OptGroupProps> {
   /** Legacy for check if is a Option Group */
   isSelectOptGroup: boolean;
 }
