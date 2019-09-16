@@ -158,6 +158,7 @@ export interface GenerateConfig<OptionsType extends object[]> {
     optionLabelProp: string,
     labelInValue: boolean,
   ) => OptionsType;
+  omitDOMProps: (props: object) => object;
 }
 
 /**
@@ -183,6 +184,7 @@ export default function generateSelector<
     findValueOption,
     warningProps,
     fillOptionsWithMissingValue,
+    omitDOMProps,
   } = config;
 
   // Use raw define since `React.FC` not support generic
@@ -219,7 +221,6 @@ export default function generateSelector<
       clearIcon,
       showArrow,
       inputIcon,
-      removeIcon,
       menuItemSelectedIcon,
 
       // Others
@@ -228,11 +229,9 @@ export default function generateSelector<
       defaultActiveFirstOption,
       notFoundContent = 'Not Found',
       optionLabelProp,
-      placeholder,
       backfill,
       getInputElement,
       getPopupContainer,
-      autoFocus,
 
       // Dropdown
       listHeight = 200,
@@ -247,18 +246,11 @@ export default function generateSelector<
       showAction = [],
 
       // Tags
-      maxTagCount,
-      maxTagTextLength,
-      maxTagPlaceholder,
       tokenSeparators,
-
-      // Motion
-      choiceTransitionName,
 
       // Events
       onPopupScroll,
       onDropdownVisibleChange,
-      onInputKeyDown,
       onFocus,
       onBlur,
       onKeyUp,
@@ -269,8 +261,10 @@ export default function generateSelector<
       onSelect,
       onDeselect,
 
-      ...domProps
+      ...restProps
     } = props;
+
+    const domProps = omitDOMProps(restProps);
 
     const selectorRef = React.useRef<RefSelectorProps>(null);
     const listRef = React.useRef<RefOptionListProps>(null);
