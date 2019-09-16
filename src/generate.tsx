@@ -151,7 +151,7 @@ export interface GenerateConfig<OptionsType extends object[]> {
   ) => OptionsType;
   /** Check if a value is disabled */
   isValueDisabled: (value: RawValueType, options: FlattenOptionsType<OptionsType>) => boolean;
-  warningProps: (props: SelectProps<OptionsType, DefaultValueType>) => void;
+  warningProps: (props: any) => void;
   fillOptionsWithMissingValue?: (
     options: OptionsType,
     value: DefaultValueType,
