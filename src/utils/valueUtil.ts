@@ -37,32 +37,32 @@ function getKey(data: OptionData | OptionGroupData, index: number) {
  * We use `optionOnly` here is aim to avoid user use nested option group.
  * Here is simply set `key` to the index if not provided.
  */
-export function flattenOptions(
-  options: SelectOptionsType,
-  rootFlattenList?: FlattenOptionData[],
-): FlattenOptionData[] {
-  const flattenList: FlattenOptionData[] = rootFlattenList || [];
-  const isGroupOption = !!rootFlattenList;
+export function flattenOptions(options: SelectOptionsType): FlattenOptionData[] {
+  const flattenList: FlattenOptionData[] = [];
 
-  options.forEach(data => {
-    if (isGroupOption || !('options' in data)) {
-      // Option
-      flattenList.push({
-        key: getKey(data, flattenList.length),
-        groupOption: isGroupOption,
-        data,
-      });
-    } else {
-      // Option Group
-      flattenList.push({
-        key: getKey(data, flattenList.length),
-        group: true,
-        data,
-      });
+  function dig(list: SelectOptionsType, isGroupOption: boolean) {
+    list.forEach(data => {
+      if (isGroupOption || !('options' in data)) {
+        // Option
+        flattenList.push({
+          key: getKey(data, flattenList.length),
+          groupOption: isGroupOption,
+          data,
+        });
+      } else {
+        // Option Group
+        flattenList.push({
+          key: getKey(data, flattenList.length),
+          group: true,
+          data,
+        });
 
-      flattenOptions(data.options, flattenList);
-    }
-  });
+        dig(data.options, true);
+      }
+    });
+  }
+
+  dig(options, false);
 
   return flattenList;
 }

@@ -141,7 +141,7 @@ export interface GenerateConfig<OptionsType extends object[]> {
   /** Convert jsx tree into `OptionsType` */
   convertChildrenToData: (children: React.ReactNode) => OptionsType;
   /** Flatten nest options into raw option list */
-  flattenOptions: (options: OptionsType) => FlattenOptionsType<OptionsType>;
+  flattenOptions: (options: OptionsType, props: any) => FlattenOptionsType<OptionsType>;
   /** Convert single raw value into { label, value } format. Will be called by each value */
   getLabeledValue: GetLabeledValue<FlattenOptionsType<OptionsType>>;
   filterOptions: FilterOptions<OptionsType>;
@@ -357,7 +357,7 @@ export default function generateSelector<
     }, [options, children, mode, baseValue]);
 
     const mergedFlattenOptions: FlattenOptionsType<OptionsType> = React.useMemo(
-      () => flattenOptions(mergedOptions),
+      () => flattenOptions(mergedOptions, props),
       [mergedOptions],
     );
 
@@ -382,7 +382,7 @@ export default function generateSelector<
     }, [mergedOptions, mergedSearchValue, mode]);
 
     const displayFlattenOptions: FlattenOptionsType<OptionsType> = React.useMemo(
-      () => flattenOptions(displayOptions),
+      () => flattenOptions(displayOptions, props),
       [displayOptions],
     );
 
