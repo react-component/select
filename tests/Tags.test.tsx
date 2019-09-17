@@ -58,7 +58,7 @@ describe('Select.Tags', () => {
 
     jest.runAllTimers();
     expect(findSelection(wrapper).text()).toBe('foo');
-    expect(onChange).toHaveBeenCalledWith(['foo'], [undefined]);
+    expect(onChange).toHaveBeenCalledWith(['foo'], [{}]);
   });
 
   it('tokenize input', () => {
@@ -76,9 +76,9 @@ describe('Select.Tags', () => {
 
     wrapper.find('input').simulate('change', { target: { value: '2,3,4' } });
 
-    expect(handleChange).toBeCalledWith(['2', '3', '4'], expect.anything());
+    expect(handleChange).toHaveBeenCalledWith(['2', '3', '4'], expect.anything());
     expect(handleSelect).toHaveBeenCalledTimes(3);
-    expect(handleSelect).toHaveBeenLastCalledWith('4', undefined);
+    expect(handleSelect).toHaveBeenLastCalledWith('4', expect.anything());
     expect(findSelection(wrapper).text()).toEqual('2');
     expect(findSelection(wrapper, 1).text()).toEqual('3');
     expect(findSelection(wrapper, 2).text()).toEqual('4');
@@ -187,7 +187,7 @@ describe('Select.Tags', () => {
 
     it('should work fine when filterOption function exists', () => {
       const children = [];
-      for (let i = 10; i < 36; i++) {
+      for (let i = 10; i < 36; i += 1) {
         children.push(
           <Option key={i.toString(36) + i} disabled={!(i % 3)}>
             {i.toString(36) + i}
@@ -199,7 +199,7 @@ describe('Select.Tags', () => {
           mode="tags"
           style={{ width: '100%' }}
           placeholder="Tags Mode"
-          filterOption={(input, { key }) => key.indexOf(input) >= 0}
+          filterOption={(input, { key }) => String(key).indexOf(input) >= 0}
         >
           {children}
         </Select>,
