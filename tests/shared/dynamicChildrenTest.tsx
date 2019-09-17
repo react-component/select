@@ -28,6 +28,7 @@ export default function dynamicChildrenTest(mode: any, props?: Partial<SelectPro
           <Option key="2">2-label</Option>,
         ],
       };
+
       public select: any;
 
       public componentDidMount() {
@@ -65,14 +66,11 @@ export default function dynamicChildrenTest(mode: any, props?: Partial<SelectPro
     wrapper.update();
     toggleOpen(wrapper);
     selectItem(wrapper, 1);
-    expect(onChange).toBeCalledWith(
+    expect(onChange).toHaveBeenCalledWith(
       ['1', '3'],
-      [
-        mode === 'tags' ? expect.anything() : undefined,
-        expect.objectContaining({ value: '3', children: '3-label' }),
-      ],
+      [expect.anything(), expect.objectContaining({ value: '3', children: '3-label' })],
     );
-    expect(onSelect).toBeCalledWith(
+    expect(onSelect).toHaveBeenCalledWith(
       '3',
       expect.objectContaining({ value: '3', children: '3-label' }),
     );
@@ -91,6 +89,7 @@ export default function dynamicChildrenTest(mode: any, props?: Partial<SelectPro
           </Option>,
         ],
       };
+
       public select: any;
 
       public componentDidMount() {
@@ -147,6 +146,7 @@ export default function dynamicChildrenTest(mode: any, props?: Partial<SelectPro
           <Option key="2">2-label</Option>,
         ],
       };
+
       public select: any;
 
       public componentDidMount() {

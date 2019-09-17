@@ -6,12 +6,7 @@ import Select, { Option, SelectProps } from '../src';
 import focusTest from './shared/focusTest';
 import keyDownTest from './shared/keyDownTest';
 import openControlledTest from './shared/openControlledTest';
-import {
-  expectOpen,
-  toggleOpen,
-  selectItem,
-  injectRunAllTimers,
-} from './utils/common';
+import { expectOpen, toggleOpen, selectItem, injectRunAllTimers } from './utils/common';
 import allowClearTest from './shared/allowClearTest';
 import throwOptionValue from './shared/throwOptionValue';
 
@@ -71,10 +66,10 @@ describe('Select.Combobox', () => {
     );
 
     wrapper.find('input').simulate('change', { target: { value: '1' } });
-    expect(handleChange).toBeCalledWith('1', undefined);
+    expect(handleChange).toHaveBeenCalledWith('1', {});
 
     wrapper.find('input').simulate('change', { target: { value: '22' } });
-    expect(handleChange).toBeCalledWith(
+    expect(handleChange).toHaveBeenCalledWith(
       '22',
       expect.objectContaining({
         children: '22',
@@ -134,6 +129,7 @@ describe('Select.Combobox', () => {
         public state = {
           data: [],
         };
+
         public handleChange = () => {
           setTimeout(() => {
             this.setState({
@@ -141,6 +137,7 @@ describe('Select.Combobox', () => {
             });
           }, 500);
         };
+
         public render() {
           const options = this.state.data.map(item => <Option key={item.key}>{item.label}</Option>);
           return (
@@ -171,6 +168,7 @@ describe('Select.Combobox', () => {
         public state = {
           data: [{ key: '1', label: '1' }, { key: '2', label: '2' }],
         };
+
         public onSelect = () => {
           setTimeout(() => {
             this.setState({
@@ -178,6 +176,7 @@ describe('Select.Combobox', () => {
             });
           }, 500);
         };
+
         public render() {
           const options = this.state.data.map(item => <Option key={item.key}>{item.label}</Option>);
           return (
@@ -208,13 +207,7 @@ describe('Select.Combobox', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
     const wrapper = mount(
-      <Select
-        mode="combobox"
-        backfill={true}
-        open={true}
-        onChange={handleChange}
-        onSelect={handleSelect}
-      >
+      <Select mode="combobox" backfill open onChange={handleChange} onSelect={handleSelect}>
         <Option value="One">One</Option>
         <Option value="Two">Two</Option>
       </Select>,
@@ -222,13 +215,13 @@ describe('Select.Combobox', () => {
     const input = wrapper.find('input');
     input.simulate('keyDown', { which: KeyCode.DOWN });
     expect(wrapper.find('input').props().value).toEqual('One');
-    expect(handleChange).not.toBeCalled();
-    expect(handleSelect).not.toBeCalled();
+    expect(handleChange).not.toHaveBeenCalled();
+    expect(handleSelect).not.toHaveBeenCalled();
 
     input.simulate('keyDown', { which: KeyCode.ENTER });
     expect(wrapper.find('input').props().value).toEqual('One');
-    expect(handleChange).toBeCalledWith('One', expect.objectContaining({ value: 'One' }));
-    expect(handleSelect).toBeCalledWith('One', expect.objectContaining({ value: 'One' }));
+    expect(handleChange).toHaveBeenCalledWith('One', expect.objectContaining({ value: 'One' }));
+    expect(handleSelect).toHaveBeenCalledWith('One', expect.objectContaining({ value: 'One' }));
   });
 
   it("should hide clear icon when value is ''", () => {
@@ -283,9 +276,9 @@ describe('Select.Combobox', () => {
       public render() {
         return (
           <Select mode="combobox" onChange={this.updateOptions}>
-            {this.state.options.map(opt => {
-              return <Option key={opt}>{opt}</Option>;
-            })}
+            {this.state.options.map(opt => (
+              <Option key={opt}>{opt}</Option>
+            ))}
           </Select>
         );
       }
@@ -328,7 +321,7 @@ describe('Select.Combobox', () => {
     });
     jest.runAllTimers();
     wrapper.update();
-    expect(onDropdownVisibleChange).toBeCalledWith(false);
+    expect(onDropdownVisibleChange).toHaveBeenCalledWith(false);
     jest.useRealTimers();
   });
 });

@@ -67,6 +67,26 @@ export function flattenOptions(options: SelectOptionsType): FlattenOptionData[] 
   return flattenList;
 }
 
+/**
+ * Inject `props` into `option` for legacy usage
+ */
+function injectPropsWithOption<T>(option: T): T {
+  const newOption = { ...option };
+  if (!('props' in newOption)) {
+    Object.defineProperty(newOption, 'props', {
+      get() {
+        warning(
+          false,
+          'Return type is option instead of Option instance. Please read value directly instead of reading from `props`.',
+        );
+        return newOption;
+      },
+    });
+  }
+
+  return newOption;
+}
+
 export function findValueOption(
   values: RawValueType[],
   options: FlattenOptionData[],
@@ -81,7 +101,7 @@ export function findValueOption(
     }
   });
 
-  return values.map(val => optionMap.get(val));
+  return values.map(val => injectPropsWithOption(optionMap.get(val)));
 }
 
 export const getLabeledValue: GetLabeledValue<FlattenOptionData[]> = (
@@ -193,7 +213,7 @@ export function filterOptions(
       return;
     }
 
-    if (filterFunc(searchValue, item)) {
+    if (filterFunc(searchValue, injectPropsWithOption(item))) {
       filteredOptions.push(item);
     }
   });
@@ -227,11 +247,7 @@ export function getSeparatedContent(text: string, tokens: string[]): string[] {
 
 export function isValueDisabled(value: RawValueType, options: FlattenOptionData[]): boolean {
   const option = findValueOption([value], options)[0];
-  if (option) {
-    return option.disabled;
-  }
-
-  return false;
+  return option.disabled;
 }
 
 /**

@@ -1217,4 +1217,87 @@ describe('Select.Basic', () => {
     );
     errorSpy.mockRestore();
   });
+
+  describe('warning if use `props` to read data', () => {
+    it('filterOption', () => {
+      resetWarned();
+      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      const wrapper = mount(
+        <Select
+          filterOption={(input, option) =>
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          showSearch
+        >
+          <Option value="light">Light</Option>
+          <Option value="bamboo">Bamboo</Option>
+        </Select>,
+      );
+
+      wrapper.find('input').simulate('change', { target: { value: 'l' } });
+      expect(wrapper.find('List').props().data).toHaveLength(1);
+      expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('Light');
+
+      expect(errorSpy).toHaveBeenCalledWith(
+        'Warning: Return type is option instead of Option instance. Please read value directly instead of reading from `props`.',
+      );
+      errorSpy.mockRestore();
+    });
+
+    it('Select & Deselect', () => {
+      resetWarned();
+      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      const readPropsFunc = (_, opt) => {
+        expect(opt.props).toBeTruthy();
+      };
+
+      const wrapper = mount(
+        <Select mode="multiple" onSelect={readPropsFunc} onDeselect={readPropsFunc}>
+          <Option value="light">Light</Option>
+          <Option value="bamboo">Bamboo</Option>
+        </Select>,
+      );
+
+      toggleOpen(wrapper);
+      selectItem(wrapper);
+      expect(errorSpy).toHaveBeenCalledWith(
+        'Warning: Return type is option instead of Option instance. Please read value directly instead of reading from `props`.',
+      );
+
+      errorSpy.mockReset();
+      resetWarned();
+      selectItem(wrapper);
+      expect(errorSpy).toHaveBeenCalledWith(
+        'Warning: Return type is option instead of Option instance. Please read value directly instead of reading from `props`.',
+      );
+
+      errorSpy.mockRestore();
+    });
+
+    it('onChange', () => {
+      resetWarned();
+      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      const readPropsFunc = (_, opt) => {
+        expect(opt.props).toBeTruthy();
+      };
+
+      const wrapper = mount(
+        <Select onChange={readPropsFunc}>
+          <Option value="light">Light</Option>
+          <Option value="bamboo">Bamboo</Option>
+        </Select>,
+      );
+
+      toggleOpen(wrapper);
+      selectItem(wrapper);
+      expect(errorSpy).toHaveBeenCalledWith(
+        'Warning: Return type is option instead of Option instance. Please read value directly instead of reading from `props`.',
+      );
+
+      errorSpy.mockRestore();
+    });
+  });
 });
