@@ -247,11 +247,7 @@ export function getSeparatedContent(text: string, tokens: string[]): string[] {
 
 export function isValueDisabled(value: RawValueType, options: FlattenOptionData[]): boolean {
   const option = findValueOption([value], options)[0];
-  if (option) {
-    return option.disabled;
-  }
-
-  return false;
+  return option.disabled;
 }
 
 /**
