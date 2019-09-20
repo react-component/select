@@ -14,7 +14,7 @@ export default function useDelayReset(
     window.clearTimeout(delayRef.current);
   };
 
-  React.useEffect(cancelLatest, []);
+  React.useEffect(() => cancelLatest, []);
 
   const delaySetBool = (value: boolean, callback: () => void) => {
     cancelLatest();

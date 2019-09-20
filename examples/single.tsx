@@ -54,6 +54,7 @@ class Test extends React.Component {
 
         <div style={{ width: 300 }}>
           <Select
+            autoFocus
             id="my-select"
             value={value}
             placeholder="placeholder"
