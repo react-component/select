@@ -65,7 +65,7 @@ export interface SelectorProps {
   // Tags
   maxTagCount?: number;
   maxTagTextLength?: number;
-  maxTagPlaceholder?: (omittedValues: LabelValueType[]) => React.ReactNode;
+  maxTagPlaceholder?: React.ReactNode | ((omittedValues: LabelValueType[]) => React.ReactNode);
 
   // Motion
   choiceTransitionName?: string;

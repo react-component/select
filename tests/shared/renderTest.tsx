@@ -42,52 +42,51 @@ export default function maxTagTextLengthTest(mode: any) {
       expect(findSelection(wrapper).text()).toEqual('+ 3 ...');
     });
 
-    // it('truncates tags by maxTagCount and show maxTagPlaceholder', () => {
-    //   const wrapper = render(
-    //     <Select
-    //       mode={mode}
-    //       value={['one', 'two', 'three']}
-    //       maxTagCount={2}
-    //       maxTagPlaceholder={<span>Omitted</span>}
-    //     >
-    //       <Option value="one">One</Option>
-    //       <Option value="two">Two</Option>
-    //       <Option value="three">Three</Option>
-    //     </Select>,
-    //   );
+    it('not display maxTagPlaceholder if maxTagCount not reach', () => {
+      const wrapper = mount(
+        <Select mode={mode} maxTagCount={2}>
+          <Option value="one">One</Option>
+          <Option value="two">Two</Option>
+          <Option value="three">Three</Option>
+        </Select>,
+      );
 
-    //   expect(wrapper).toMatchSnapshot();
-    // });
+      expect(wrapper.render()).toMatchSnapshot();
+    });
 
-    // it('truncates tags by maxTagCount and show maxTagPlaceholder function', () => {
-    //   const maxTagPlaceholder = omittedValues => {
-    //     return <span>{omittedValues.length} values omitted</span>;
-    //   };
-    //   const wrapper = render(
-    //     <Select
-    //       mode={mode}
-    //       value={['one', 'two', 'three']}
-    //       maxTagCount={2}
-    //       maxTagPlaceholder={maxTagPlaceholder}
-    //     >
-    //       <Option value="one">One</Option>
-    //       <Option value="two">Two</Option>
-    //       <Option value="three">Three</Option>
-    //     </Select>,
-    //   );
+    it('truncates tags by maxTagCount and show maxTagPlaceholder', () => {
+      const wrapper = mount(
+        <Select
+          mode={mode}
+          value={['one', 'two', 'three']}
+          maxTagCount={2}
+          maxTagPlaceholder={<span>Omitted</span>}
+        >
+          <Option value="one">One</Option>
+          <Option value="two">Two</Option>
+          <Option value="three">Three</Option>
+        </Select>,
+      );
 
-    //   expect(wrapper).toMatchSnapshot();
-    // });
+      expect(wrapper.render()).toMatchSnapshot();
+    });
 
-    // it('render animation', () => {
-    //   const wrapper = shallow(
-    //     <Select mode={mode} choiceTransitionName="slide-up">
-    //       <Option value="1">1</Option>
-    //       <Option value="2">2</Option>
-    //     </Select>,
-    //   );
+    it('truncates tags by maxTagCount and show maxTagPlaceholder function', () => {
+      const maxTagPlaceholder = omittedValues => <span>{omittedValues.length} values omitted</span>;
+      const wrapper = mount(
+        <Select
+          mode={mode}
+          value={['one', 'two', 'three']}
+          maxTagCount={2}
+          maxTagPlaceholder={maxTagPlaceholder}
+        >
+          <Option value="one">One</Option>
+          <Option value="two">Two</Option>
+          <Option value="three">Three</Option>
+        </Select>,
+      );
 
-    //   expect(wrapper).toMatchSnapshot();
-    // });
+      expect(wrapper.render()).toMatchSnapshot();
+    });
   });
 }

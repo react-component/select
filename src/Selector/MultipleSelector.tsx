@@ -17,7 +17,7 @@ interface SelectorProps extends InnerSelectorProps {
   // Tags
   maxTagCount?: number;
   maxTagTextLength?: number;
-  maxTagPlaceholder?: (omittedValues: LabelValueType[]) => React.ReactNode;
+  maxTagPlaceholder?: React.ReactNode | ((omittedValues: LabelValueType[]) => React.ReactNode);
   tokenSeparators?: string[];
 
   // Motion
@@ -103,7 +103,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
   }
 
   // Fill rest
-  if (restCount) {
+  if (restCount > 0) {
     displayValues.push({
       key: REST_TAG_KEY,
       label:

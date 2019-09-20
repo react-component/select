@@ -103,7 +103,7 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   optionLabelProp?: string;
   maxTagTextLength?: number;
   maxTagCount?: number;
-  maxTagPlaceholder?: (omittedValues: LabelValueType[]) => React.ReactNode;
+  maxTagPlaceholder?: React.ReactNode | ((omittedValues: LabelValueType[]) => React.ReactNode);
   tokenSeparators?: string[];
   showAction?: ('focus' | 'click')[];
   tabIndex?: number;
