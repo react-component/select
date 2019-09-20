@@ -416,7 +416,7 @@ export default function generateSelector<
           onSelect(selectValue, outOption);
         }
         // Trigger 'onDeselect' when 'baseValue' not empty
-        if (onDeselect && undefined !== baseValue && null !== baseValue) {
+        if (onDeselect && baseValue !== undefined && baseValue !== null) {
           const prevSelectValue = (mergedLabelInValue
             ? getLabeledValue(baseValue as RawValueType, {
                 options: mergedFlattenOptions,
@@ -430,9 +430,9 @@ export default function generateSelector<
             prevSelectValue,
             findValueOption(
               [
-                mergedLabelInValue 
+                mergedLabelInValue
                 ? (baseValue as LabelValueType).value
-                : baseValue as RawValueType
+                : baseValue as RawValueType,
               ],
               mergedFlattenOptions,
             )[0],
