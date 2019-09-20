@@ -409,7 +409,7 @@ export default function generateSelector<
           })
         : newValue) as SingleType<ValueType>;
 
-      const outOption = findValueOption([newValue], mergedFlattenOptions)[0];
+      const outOption = { findValueOption([newValue], mergedFlattenOptions)[0], prevValue: baseValue };
 
       if (isSelect && onSelect) {
         onSelect(selectValue, outOption);
