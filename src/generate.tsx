@@ -412,9 +412,11 @@ export default function generateSelector<
       const outOption = findValueOption([newValue], mergedFlattenOptions)[0];
 
       if (isSelect) {
-        onSelect && onSelect(selectValue, outOption);
+        if (onSelect) {
+          onSelect(selectValue, outOption);
+        }
         // Trigger 'onDeselect' when 'baseValue' not empty
-        if (onDeselect && undefined !== baseValue && null !== baseValue ) {
+        if (onDeselect && undefined !== baseValue && null !== baseValue) {
           const prevSelectValue = (mergedLabelInValue
             ? getLabeledValue(baseValue as RawValueType, {
                 options: mergedFlattenOptions,
@@ -427,13 +429,17 @@ export default function generateSelector<
           onDeselect(
             prevSelectValue,
             findValueOption(
-              [mergedLabelInValue ? (baseValue as LabelValueType).value : baseValue as RawValueType],
-              mergedFlattenOptions
-            )[0]
+              [
+                mergedLabelInValue 
+                ? (baseValue as LabelValueType).value
+                : baseValue as RawValueType
+              ],
+              mergedFlattenOptions,
+            )[0],
           )
         }
-      } else {
-        onDeselect && onDeselect(selectValue, outOption);
+      } else if (onDeselect) {
+        onDeselect(selectValue, outOption);
       }
     };
 
