@@ -422,8 +422,14 @@ export default function generateSelector<
                 optionLabelProp: mergedOptionLabelProp,
               })
             : newValue) as SingleType<ValueType>;
-            
-          onDeselect(prevSelectValue, findValueOption([mergedLabelInValue? (baseValue as LabelValueType).value : baseValue as RawValueType], mergedFlattenOptions)[0])
+
+          onDeselect(
+            prevSelectValue,
+            findValueOption(
+              [mergedLabelInValue ? (baseValue as LabelValueType).value : baseValue as RawValueType],
+              mergedFlattenOptions
+            )[0]
+          )
         }
       } else if (!isSelect && onDeselect) {
         onDeselect(selectValue, outOption);
