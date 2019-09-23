@@ -1,5 +1,7 @@
 import { SelectProps, RefSelectProps } from '../generate';
 
+export const INTERNAL_PROPS_MARK = 'RC_SELECT_INTERNAL_PROPS_MARK';
+
 // =================================== Shared Type ===================================
 export type Key = string | number;
 
@@ -17,6 +19,8 @@ export interface DisplayLabelValueType extends LabelValueType {
 }
 
 export type SingleType<MixType> = MixType extends (infer Single)[] ? Single : MixType;
+
+export type OnClear = () => void;
 
 // ==================================== Generator ====================================
 export type GetLabeledValue<FOT extends FlattenOptionsType> = (

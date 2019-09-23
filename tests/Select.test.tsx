@@ -15,6 +15,7 @@ import {
   findSelection,
   injectRunAllTimers,
 } from './utils/common';
+import { INTERNAL_PROPS_MARK } from '../src/interface/generator';
 
 describe('Select.Basic', () => {
   injectRunAllTimers(jest);
@@ -340,8 +341,18 @@ describe('Select.Basic', () => {
 
   it('clears value', () => {
     const handleChange = jest.fn();
+    const onClear = jest.fn();
+
     const wrapper = mount(
-      <Select value="1" allowClear onChange={handleChange}>
+      <Select
+        value="1"
+        allowClear
+        onChange={handleChange}
+        internalProps={{
+          mark: INTERNAL_PROPS_MARK,
+          onClear,
+        }}
+      >
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -354,6 +365,7 @@ describe('Select.Basic', () => {
       .simulate('mousedown');
     expect(handleChange).toHaveBeenCalledWith(undefined, undefined);
     expect(wrapper.find('input').props().value).toEqual('');
+    expect(onClear).toHaveBeenCalled();
   });
 
   it('adds label to value', () => {

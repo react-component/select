@@ -66,7 +66,7 @@ export function toOuterValues<FOT extends FlattenOptionsType>(
 export function removeLastEnabledValue<
   T extends { disabled?: boolean },
   P extends RawValueType | object
->(measureValues: T[], values: P[]): P[] {
+>(measureValues: T[], values: P[]): { values: P[]; removedValue: P } {
   const newValues = [...values];
 
   let removeIndex: number;
@@ -76,11 +76,17 @@ export function removeLastEnabledValue<
     }
   }
 
+  let removedValue = null;
+
   if (removeIndex !== -1) {
+    removedValue = newValues[removeIndex];
     newValues.splice(removeIndex, 1);
   }
 
-  return newValues;
+  return {
+    values: newValues,
+    removedValue,
+  };
 }
 
 export const isClient =

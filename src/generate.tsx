@@ -25,6 +25,8 @@ import {
   DisplayLabelValueType,
   FlattenOptionsType,
   SingleType,
+  OnClear,
+  INTERNAL_PROPS_MARK,
 } from './interface/generator';
 import { OptionListProps, RefOptionListProps } from './OptionList';
 import { toInnerValue, toOuterValues, removeLastEnabledValue, getUUID } from './utils/commonUtil';
@@ -137,6 +139,16 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
 
   // Motion
   choiceTransitionName?: string;
+
+  // Internal props
+  /**
+   * Only used in current version for internal event process.
+   * Do not use in production environment.
+   */
+  internalProps?: {
+    mark?: string;
+    onClear?: OnClear;
+  };
 }
 
 export interface GenerateConfig<OptionsType extends object[]> {
@@ -271,6 +283,8 @@ export default function generateSelector<
       onChange,
       onSelect,
       onDeselect,
+
+      internalProps = {},
 
       ...restProps
     } = props;
@@ -604,7 +618,12 @@ export default function generateSelector<
         !mergedSearchValue &&
         mergedRawValue.length
       ) {
-        triggerChange(removeLastEnabledValue(displayValues, mergedRawValue));
+        const removeInfo = removeLastEnabledValue(displayValues, mergedRawValue);
+
+        if (removeInfo.removedValue !== null) {
+          triggerChange(removeInfo.values);
+          triggerSelect(removeInfo.removedValue, false);
+        }
       }
 
       if (mergedOpen && listRef.current) {
@@ -746,6 +765,11 @@ export default function generateSelector<
     // ============================= Clear ==============================
     let clearNode: React.ReactNode;
     const onClearMouseDown: React.MouseEventHandler<HTMLSpanElement> = () => {
+      // Trigger internal `onClear` event
+      if (internalProps.mark === INTERNAL_PROPS_MARK && internalProps.onClear) {
+        internalProps.onClear();
+      }
+
       triggerChange([]);
       triggerSearch('', false);
     };
