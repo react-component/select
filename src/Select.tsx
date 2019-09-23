@@ -47,17 +47,6 @@ import generateSelector, { SelectProps, RefSelectProps } from './generate';
 import { DefaultValueType } from './interface/generator';
 import warningProps from './utils/warningPropsUtil';
 
-const OMIT_PROPS = [
-  'removeIcon',
-  'placeholder',
-  'autoFocus',
-  'maxTagCount',
-  'maxTagTextLength',
-  'maxTagPlaceholder',
-  'choiceTransitionName',
-  'onInputKeyDown',
-];
-
 const RefSelect = generateSelector<SelectOptionsType>({
   prefixCls: 'rc-select',
   components: {
@@ -71,13 +60,6 @@ const RefSelect = generateSelector<SelectOptionsType>({
   findValueOption: findSelectValueOption,
   warningProps,
   fillOptionsWithMissingValue,
-  omitDOMProps: (props: object) => {
-    const cloneProps = { ...props };
-    OMIT_PROPS.forEach(prop => {
-      delete cloneProps[prop];
-    });
-    return cloneProps;
-  },
 });
 
 export type SelectProps<ValueType extends DefaultValueType = DefaultValueType> = SelectProps<

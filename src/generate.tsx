@@ -34,6 +34,17 @@ import useDelayReset from './hooks/useDelayReset';
 import useLayoutEffect from './hooks/useLayoutEffect';
 import { getSeparatedContent } from './utils/valueUtil';
 
+const DEFAULT_OMIT_PROPS = [
+  'removeIcon',
+  'placeholder',
+  'autoFocus',
+  'maxTagCount',
+  'maxTagTextLength',
+  'maxTagPlaceholder',
+  'choiceTransitionName',
+  'onInputKeyDown',
+];
+
 export interface RefSelectProps {
   focus: () => void;
   blur: () => void;
@@ -158,7 +169,7 @@ export interface GenerateConfig<OptionsType extends object[]> {
     optionLabelProp: string,
     labelInValue: boolean,
   ) => OptionsType;
-  omitDOMProps: (props: object) => object;
+  omitDOMProps?: (props: object) => object;
 }
 
 /**
@@ -264,7 +275,10 @@ export default function generateSelector<
       ...restProps
     } = props;
 
-    const domProps = omitDOMProps(restProps);
+    const domProps = omitDOMProps ? omitDOMProps(restProps) : restProps;
+    DEFAULT_OMIT_PROPS.forEach(prop => {
+      delete domProps[prop];
+    });
 
     const selectorRef = React.useRef<RefSelectorProps>(null);
     const listRef = React.useRef<RefOptionListProps>(null);
