@@ -796,7 +796,7 @@ export default function generateSelector<
       triggerSearch('', false);
     };
 
-    if (allowClear && (mergedRawValue.length || mergedSearchValue)) {
+    if (!disabled && allowClear && (mergedRawValue.length || mergedSearchValue)) {
       clearNode = (
         <TransBtn
           className={`${prefixCls}-clear`}

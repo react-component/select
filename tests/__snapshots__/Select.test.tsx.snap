@@ -422,18 +422,6 @@ exports[`Select.Basic render renders disabled select correctly 1`] = `
       class="antd-arrow-icon"
     />
   </span>
-  <span
-    aria-hidden="true"
-    class="antd-clear"
-    style="user-select:none;-webkit-user-select:none"
-    unselectable="on"
-  >
-    <span
-      class="antd-clear-icon"
-    >
-      ×
-    </span>
-  </span>
 </div>
 `;
 

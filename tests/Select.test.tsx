@@ -359,6 +359,13 @@ describe('Select.Basic', () => {
     );
 
     wrapper.find('input').simulate('change', { target: { value: 'foo' } });
+
+    // disabled
+    wrapper.setProps({ disabled: true });
+    expect(wrapper.find('.rc-select-clear')).toHaveLength(0);
+
+    // enabled
+    wrapper.setProps({ disabled: false });
     wrapper
       .find('.rc-select-clear')
       .last()
