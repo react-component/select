@@ -1312,4 +1312,8 @@ describe('Select.Basic', () => {
       errorSpy.mockRestore();
     });
   });
+
+  it('not crash when options is null', () => {
+    mount(<Select options={null} />);
+  });
 });
