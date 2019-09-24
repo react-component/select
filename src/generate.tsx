@@ -148,6 +148,10 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   internalProps?: {
     mark?: string;
     onClear?: OnClear;
+    skipTriggerChange?: boolean;
+    skipTriggerSelect?: boolean;
+    onRawSelect?: (value: RawValueType, option: OptionsType[number]) => void;
+    onRawDeselect?: (value: RawValueType, option: OptionsType[number]) => void;
   };
 }
 
@@ -289,6 +293,8 @@ export default function generateSelector<
       ...restProps
     } = props;
 
+    const useInternalProps = internalProps.mark === INTERNAL_PROPS_MARK;
+
     const domProps = omitDOMProps ? omitDOMProps(restProps) : restProps;
     DEFAULT_OMIT_PROPS.forEach(prop => {
       delete domProps[prop];
@@ -428,25 +434,41 @@ export default function generateSelector<
     );
 
     const triggerSelect = (newValue: RawValueType, isSelect: boolean) => {
-      const selectValue = (mergedLabelInValue
-        ? getLabeledValue(newValue, {
-            options: mergedFlattenOptions,
-            prevValue: baseValue,
-            labelInValue: mergedLabelInValue,
-            optionLabelProp: mergedOptionLabelProp,
-          })
-        : newValue) as SingleType<ValueType>;
-
       const outOption = findValueOption([newValue], mergedFlattenOptions)[0];
 
-      if (isSelect && onSelect) {
-        onSelect(selectValue, outOption);
-      } else if (!isSelect && onDeselect) {
-        onDeselect(selectValue, outOption);
+      if (!internalProps.skipTriggerSelect) {
+        // Skip trigger `onSelect` or `onDeselect` if configured
+        const selectValue = (mergedLabelInValue
+          ? getLabeledValue(newValue, {
+              options: mergedFlattenOptions,
+              prevValue: baseValue,
+              labelInValue: mergedLabelInValue,
+              optionLabelProp: mergedOptionLabelProp,
+            })
+          : newValue) as SingleType<ValueType>;
+
+        if (isSelect && onSelect) {
+          onSelect(selectValue, outOption);
+        } else if (!isSelect && onDeselect) {
+          onDeselect(selectValue, outOption);
+        }
+      }
+
+      // Trigger internal event
+      if (useInternalProps) {
+        if (isSelect && internalProps.onRawSelect) {
+          internalProps.onRawSelect(newValue, outOption);
+        } else if (!isSelect && internalProps.onRawDeselect) {
+          internalProps.onRawDeselect(newValue, outOption);
+        }
       }
     };
 
     const triggerChange = (newRawValues: RawValueType[]) => {
+      if (useInternalProps && internalProps.skipTriggerChange) {
+        return;
+      }
+
       const outValues = toOuterValues<FlattenOptionsType<OptionsType>>(Array.from(newRawValues), {
         labelInValue: mergedLabelInValue,
         options: mergedFlattenOptions,
@@ -766,7 +788,7 @@ export default function generateSelector<
     let clearNode: React.ReactNode;
     const onClearMouseDown: React.MouseEventHandler<HTMLSpanElement> = () => {
       // Trigger internal `onClear` event
-      if (internalProps.mark === INTERNAL_PROPS_MARK && internalProps.onClear) {
+      if (useInternalProps && internalProps.onClear) {
         internalProps.onClear();
       }
 

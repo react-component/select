@@ -131,6 +131,7 @@ const OptionList: React.RefForwardingComponent<
   // ========================== Values ==========================
   const onSelectValue = (value: RawValueType) => {
     if (value !== null) {
+      console.log('-->', value, Array.from(values));
       onSelect(value, { selected: !values.has(value) });
     }
 
