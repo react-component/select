@@ -27,6 +27,7 @@ import {
   SingleType,
   OnClear,
   INTERNAL_PROPS_MARK,
+  SelectSource,
 } from './interface/generator';
 import { OptionListProps, RefOptionListProps } from './OptionList';
 import { toInnerValue, toOuterValues, removeLastEnabledValue, getUUID } from './utils/commonUtil';
@@ -150,8 +151,12 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
     onClear?: OnClear;
     skipTriggerChange?: boolean;
     skipTriggerSelect?: boolean;
-    onRawSelect?: (value: RawValueType, option: OptionsType[number]) => void;
-    onRawDeselect?: (value: RawValueType, option: OptionsType[number]) => void;
+    onRawSelect?: (value: RawValueType, option: OptionsType[number], source: SelectSource) => void;
+    onRawDeselect?: (
+      value: RawValueType,
+      option: OptionsType[number],
+      source: SelectSource,
+    ) => void;
   };
 }
 
@@ -433,7 +438,7 @@ export default function generateSelector<
       [baseValue, mergedOptions],
     );
 
-    const triggerSelect = (newValue: RawValueType, isSelect: boolean) => {
+    const triggerSelect = (newValue: RawValueType, isSelect: boolean, source: SelectSource) => {
       const outOption = findValueOption([newValue], mergedFlattenOptions)[0];
 
       if (!internalProps.skipTriggerSelect) {
@@ -457,9 +462,9 @@ export default function generateSelector<
       // Trigger internal event
       if (useInternalProps) {
         if (isSelect && internalProps.onRawSelect) {
-          internalProps.onRawSelect(newValue, outOption);
+          internalProps.onRawSelect(newValue, outOption, source);
         } else if (!isSelect && internalProps.onRawDeselect) {
-          internalProps.onRawDeselect(newValue, outOption);
+          internalProps.onRawDeselect(newValue, outOption, source);
         }
       }
     };
@@ -488,7 +493,10 @@ export default function generateSelector<
       setInnerValue(outValue);
     };
 
-    const onInternalSelect = (newValue: RawValueType, { selected }: { selected: boolean }) => {
+    const onInternalSelect = (
+      newValue: RawValueType,
+      { selected, source }: { selected: boolean; source: 'option' | 'selection' },
+    ) => {
       if (disabled) {
         return;
       }
@@ -513,7 +521,7 @@ export default function generateSelector<
       }
 
       // Trigger `onSelect`. Single mode always trigger select
-      triggerSelect(newValue, !isMultiple || selected);
+      triggerSelect(newValue, !isMultiple || selected, source);
 
       // Clean search value if single or configured
       if (mode === 'combobox') {
@@ -523,6 +531,14 @@ export default function generateSelector<
         setInnerSearchValue('');
         setActiveValue('');
       }
+    };
+
+    const onInternalOptionSelect = (newValue: RawValueType, info: { selected: boolean }) => {
+      onInternalSelect(newValue, { ...info, source: 'option' });
+    };
+
+    const onInternalSelectionSelect = (newValue: RawValueType, info: { selected: boolean }) => {
+      onInternalSelect(newValue, { ...info, source: 'selection' });
     };
 
     // ============================= Input ==============================
@@ -585,7 +601,7 @@ export default function generateSelector<
         );
         triggerChange(newRawValues);
         newRawValues.forEach(newRawValue => {
-          triggerSelect(newRawValue, true);
+          triggerSelect(newRawValue, true, 'input');
         });
 
         // Should close when paste finish
@@ -644,7 +660,7 @@ export default function generateSelector<
 
         if (removeInfo.removedValue !== null) {
           triggerChange(removeInfo.values);
-          triggerSelect(removeInfo.removedValue, false);
+          triggerSelect(removeInfo.removedValue, false, 'input');
         }
       }
 
@@ -773,7 +789,7 @@ export default function generateSelector<
         values={rawValues}
         height={listHeight}
         itemHeight={listItemHeight}
-        onSelect={onInternalSelect}
+        onSelect={onInternalOptionSelect}
         onToggleOpen={onToggleOpen}
         onActiveValue={onActiveValue}
         defaultActiveFirstOption={mergedDefaultActiveFirstOption}
@@ -896,7 +912,7 @@ export default function generateSelector<
             searchValue={mergedSearchValue}
             activeValue={activeValue}
             onSearch={triggerSearch}
-            onSelect={onInternalSelect}
+            onSelect={onInternalSelectionSelect}
           />
         </SelectTrigger>
 

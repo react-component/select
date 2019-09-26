@@ -1,5 +1,7 @@
 import { SelectProps, RefSelectProps } from '../generate';
 
+export type SelectSource = 'option' | 'selection' | 'input';
+
 export const INTERNAL_PROPS_MARK = 'RC_SELECT_INTERNAL_PROPS_MARK';
 
 // =================================== Shared Type ===================================
