@@ -183,7 +183,7 @@ export interface GenerateConfig<OptionsType extends object[]> {
   ) => OptionsType;
   /** Check if a value is disabled */
   isValueDisabled: (value: RawValueType, options: FlattenOptionsType<OptionsType>) => boolean;
-  warningProps: (props: any) => void;
+  warningProps?: (props: any) => void;
   fillOptionsWithMissingValue?: (
     options: OptionsType,
     value: DefaultValueType,
@@ -841,7 +841,7 @@ export default function generateSelector<
     }
 
     // ============================ Warning =============================
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV !== 'production' && warningProps) {
       warningProps(props);
     }
 
