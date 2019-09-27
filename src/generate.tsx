@@ -841,6 +841,7 @@ export default function generateSelector<
             searchValue: mergedSearchValue,
             open: mergedOpen,
             focused: mockFocused,
+            showSearch: mergedShowSearch,
           }}
         />
       );
