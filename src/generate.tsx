@@ -836,7 +836,12 @@ export default function generateSelector<
             [`${prefixCls}-arrow-loading`]: loading,
           })}
           customizeIcon={inputIcon}
-          customizeIconProps={{ loading, searchValue: mergedSearchValue }}
+          customizeIconProps={{
+            loading,
+            searchValue: mergedSearchValue,
+            open: mergedOpen,
+            focused: mockFocused,
+          }}
         />
       );
     }
