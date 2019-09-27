@@ -5,7 +5,7 @@ import { RenderNode } from './interface';
 export interface TransBtnProps {
   className: string;
   customizeIcon: RenderNode;
-  customizeIconProps?: { isSelected: boolean };
+  customizeIconProps?: any;
   onMouseDown?: React.MouseEventHandler<HTMLSpanElement>;
   onClick?: React.MouseEventHandler<HTMLSpanElement>;
   children?: React.ReactNode;

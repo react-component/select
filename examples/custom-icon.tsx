@@ -103,7 +103,12 @@ class CustomIconComponent extends React.Component {
             value={value}
             mode="combobox"
             backfill
-            inputIcon={getSvg(arrowPath)}
+            inputIcon={({ searchValue }) => {
+              if (searchValue) {
+                return '😺';
+              }
+              return getSvg(arrowPath);
+            }}
             clearIcon={getSvg(clearPath)}
             removeIcon={getSvg(clearPath)}
             menuItemSelectedIcon={singleItemIcon}

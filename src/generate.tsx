@@ -87,7 +87,7 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   allowClear?: boolean;
   clearIcon?: React.ReactNode;
   showArrow?: boolean;
-  inputIcon?: React.ReactNode;
+  inputIcon?: RenderNode;
   removeIcon?: React.ReactNode;
   menuItemSelectedIcon?: RenderNode;
 
@@ -836,6 +836,7 @@ export default function generateSelector<
             [`${prefixCls}-arrow-loading`]: loading,
           })}
           customizeIcon={inputIcon}
+          customizeIconProps={{ loading, searchValue: mergedSearchValue }}
         />
       );
     }
