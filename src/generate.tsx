@@ -12,7 +12,7 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
 import Selector, { RefSelectorProps } from './Selector';
 import SelectTrigger, { RefTriggerProps } from './SelectTrigger';
-import { RenderNode, Mode } from './interface';
+import { RenderNode, Mode, RenderDOMFunc } from './interface';
 import {
   GetLabeledValue,
   FilterOptions,
@@ -103,7 +103,7 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   dropdownAlign?: any;
   animation?: string;
   transitionName?: string;
-  getPopupContainer?: RenderNode;
+  getPopupContainer?: RenderDOMFunc;
 
   // Others
   disabled?: boolean;
@@ -333,6 +333,8 @@ export default function generateSelector<
       showSearch !== undefined ? showSearch : isMultiple || mode === 'combobox';
 
     // ============================== Ref ===============================
+    const selectorDomRef = React.useRef<HTMLDivElement>(null);
+
     React.useImperativeHandle(ref, () => ({
       focus: selectorRef.current.focus,
       blur: selectorRef.current.blur,
@@ -902,9 +904,11 @@ export default function generateSelector<
           dropdownAlign={dropdownAlign}
           getPopupContainer={getPopupContainer}
           empty={!mergedOptions.length}
+          getTriggerDOMNode={() => selectorDomRef.current}
         >
           <Selector
             {...props}
+            domRef={selectorDomRef}
             prefixCls={prefixCls}
             inputElement={customizeInputElement}
             ref={selectorRef}

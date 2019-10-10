@@ -75,6 +75,12 @@ export interface SelectorProps {
   onSearch: (searchValue: string) => boolean;
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+
+  /**
+   * @private get real dom for trigger align.
+   * This may be removed after React provides replacement of `findDOMNode`
+   */
+  domRef: React.Ref<HTMLDivElement>;
 }
 
 const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = (props, ref) => {
@@ -87,6 +93,8 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     onSearch,
     onToggleOpen,
     onInputKeyDown,
+
+    domRef,
   } = props;
 
   // ======================= Ref =======================
@@ -163,7 +171,12 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   );
 
   return (
-    <div className={`${prefixCls}-selector`} onClick={onClick} onMouseDown={onMouseDown}>
+    <div
+      ref={domRef}
+      className={`${prefixCls}-selector`}
+      onClick={onClick}
+      onMouseDown={onMouseDown}
+    >
       {selectNode}
     </div>
   );
