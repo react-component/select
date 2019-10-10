@@ -27,7 +27,8 @@ exports[`Select.Basic does not filter when filterOption value is false 1`] = `
   </div>
   <div>
     <div
-      class="rc-select-dropdown  rc-select-dropdown-placement-bottomLeft "
+      class="rc-select-dropdown"
+      style="opacity:0"
     >
       <div>
         <div
@@ -124,7 +125,6 @@ exports[`Select.Basic filterOption could be true as described in default value 1
 >
   <div
     class="rc-select-selector"
-    style=""
   >
     <span
       class="rc-select-selection-search"
@@ -147,8 +147,8 @@ exports[`Select.Basic filterOption could be true as described in default value 1
   </div>
   <div>
     <div
-      class="rc-select-dropdown  rc-select-dropdown-placement-bottomLeft "
-      style="left: -999px; top: -995px; width: 0px;"
+      class="rc-select-dropdown"
+      style="opacity: 0; width: 0px;"
     >
       <div>
         <div
@@ -456,7 +456,8 @@ exports[`Select.Basic render renders dropdown correctly 1`] = `
   </div>
   <div>
     <div
-      class="antd-dropdown  antd-dropdown-placement-bottomLeft "
+      class="antd-dropdown"
+      style="opacity:0"
     >
       <div>
         <div
@@ -685,7 +686,8 @@ exports[`Select.Basic should contain falsy children 1`] = `
   </div>
   <div>
     <div
-      class="rc-select-dropdown  rc-select-dropdown-placement-bottomLeft "
+      class="rc-select-dropdown"
+      style="opacity:0"
     >
       <div>
         <div
@@ -784,7 +786,6 @@ exports[`Select.Basic should render custom dropdown correctly 1`] = `
 >
   <div
     class="rc-select-selector"
-    style=""
   >
     <span
       class="rc-select-selection-search"
@@ -810,8 +811,8 @@ exports[`Select.Basic should render custom dropdown correctly 1`] = `
   </div>
   <div>
     <div
-      class="rc-select-dropdown  rc-select-dropdown-placement-bottomLeft "
-      style="left: -999px; top: -995px; width: 0px;"
+      class="rc-select-dropdown"
+      style="opacity: 0; width: 0px;"
     >
       <div>
         <div>
