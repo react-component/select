@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Key } from './generator';
 
+export type RenderDOMFunc = (props: any) => HTMLElement;
+
 export type RenderNode = React.ReactNode | ((props: any) => React.ReactNode);
 
 export type Mode = 'multiple' | 'tags' | 'combobox';

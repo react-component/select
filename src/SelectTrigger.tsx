@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Trigger from 'rc-trigger';
 import classNames from 'classnames';
-import { RenderNode } from './interface';
+import { RenderDOMFunc } from './interface';
 
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
@@ -40,9 +40,11 @@ export interface SelectTriggerProps {
   dropdownClassName: string;
   dropdownMatchSelectWidth?: true | number;
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
-  getPopupContainer?: RenderNode;
+  getPopupContainer?: RenderDOMFunc;
   dropdownAlign: object;
   empty: boolean;
+
+  getTriggerDOMNode: () => HTMLElement;
 }
 
 const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTriggerProps> = (
@@ -65,6 +67,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     dropdownAlign,
     getPopupContainer,
     empty,
+    getTriggerDOMNode,
     ...restProps
   } = props;
 
@@ -106,6 +109,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
         width:
           typeof dropdownMatchSelectWidth === 'number' ? dropdownMatchSelectWidth : containerWidth,
       }}
+      getTriggerDOMNode={getTriggerDOMNode}
     >
       {children}
     </Trigger>

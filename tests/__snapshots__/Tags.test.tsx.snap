@@ -7,7 +7,6 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
   >
     <div
       class="rc-select-selector"
-      style=""
     >
       <span
         class="rc-select-selection-item"
@@ -78,8 +77,8 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
     </div>
     <div>
       <div
-        class="rc-select-dropdown  rc-select-dropdown-placement-bottomLeft "
-        style="width: 0px; left: -999px; top: -995px;"
+        class="rc-select-dropdown"
+        style="width: 0px; opacity: 0;"
       >
         <div>
           <div
