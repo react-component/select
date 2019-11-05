@@ -1,9 +1,12 @@
 /* istanbul ignore file */
 import * as React from 'react';
-import { OptionData } from './interface';
+import { OptionCoreData } from './interface';
 
-export interface OptionProps extends Omit<OptionData, 'label'> {
+export interface OptionProps extends Omit<OptionCoreData, 'label'> {
   children: React.ReactNode;
+
+  /** Save for customize data */
+  [prop: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 export interface OptionFC extends React.FC<OptionProps> {
