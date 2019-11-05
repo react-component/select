@@ -8,7 +8,7 @@ export type RenderNode = React.ReactNode | ((props: any) => React.ReactNode);
 export type Mode = 'multiple' | 'tags' | 'combobox';
 
 // ======================== Option ========================
-export interface OptionData {
+export interface OptionCoreData {
   key?: Key;
   disabled?: boolean;
   value: Key;
@@ -18,7 +18,9 @@ export interface OptionData {
   label?: React.ReactNode;
   /** @deprecated Only works when use `children` as option data */
   children?: React.ReactNode;
+}
 
+export interface OptionData extends OptionCoreData {
   /** Save for customize data */
   [prop: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
