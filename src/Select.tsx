@@ -62,10 +62,9 @@ const RefSelect = generateSelector<SelectOptionsType>({
   fillOptionsWithMissingValue,
 });
 
-export type SelectProps<ValueType extends DefaultValueType = DefaultValueType> = SelectProps<
-  SelectOptionsType,
-  ValueType
->;
+export type ExportedSelectProps<
+  ValueType extends DefaultValueType = DefaultValueType
+> = SelectProps<SelectOptionsType, ValueType>;
 
 /**
  * Typescript not support generic with function component,
