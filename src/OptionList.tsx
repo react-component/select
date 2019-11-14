@@ -243,7 +243,7 @@ const OptionList: React.RefForwardingComponent<
             );
           }
 
-          const { disabled, value, children } = data as OptionData;
+          const { disabled, value, title, children } = data as OptionData;
 
           // Option
           const selected = values.has(value);
@@ -265,6 +265,7 @@ const OptionList: React.RefForwardingComponent<
             <div
               aria-selected={selected}
               className={optionClassName}
+              title={title}
               onMouseMove={() => {
                 if (activeIndex === itemIndex || disabled) {
                   return;
