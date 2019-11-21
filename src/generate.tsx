@@ -369,6 +369,16 @@ export default function generateSelector<
       mergedSearchValue = inputValue;
     }
 
+    /** Set value to innerValue if value change to undefined or null */
+    React.useEffect(() => {
+      if (baseValue !== value) {
+          setInnerValue(value);
+          if (!value) {
+            setInnerSearchValue('');
+          }
+      }
+    }, [value]);
+
     const mergedOptions = React.useMemo<OptionsType>((): OptionsType => {
       let newOptions = options;
       if (newOptions === undefined) {
