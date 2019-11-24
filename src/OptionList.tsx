@@ -199,7 +199,7 @@ const OptionList: React.RefForwardingComponent<
         className={`${itemPrefixCls}-empty`}
         onMouseDown={onListMouseDown}
       >
-        {notFoundContent}
+        {!!notFoundContent && <div className={itemPrefixCls}>{notFoundContent}</div>}
       </div>
     );
   }

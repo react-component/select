@@ -156,7 +156,11 @@ exports[`Select.Basic filterOption could be true as described in default value 1
           id="rc_select_TEST_OR_SSR_list"
           role="listbox"
         >
-          Not Found
+          <div
+            class="rc-select-item"
+          >
+            Not Found
+          </div>
         </div>
       </div>
     </div>
