@@ -615,10 +615,12 @@ export default function generateSelector<
     const [innerOpen, setInnerOpen] = React.useState<boolean>(defaultOpen);
     let mergedOpen: boolean = open !== undefined ? open : innerOpen;
 
-    // Not trigger `open` when `notFoundContent` is empty
-    if (mergedOpen && !notFoundContent && !displayOptions.length) {
+    // Not trigger `open` in `combobox` when `notFoundContent` is empty
+    const emptyListContent = !notFoundContent && !displayOptions.length;
+    if (emptyListContent && mergedOpen && mode === 'combobox') {
       mergedOpen = false;
     }
+    const triggerOpen = emptyListContent ? false : mergedOpen;
 
     const onToggleOpen = (newOpen?: boolean) => {
       const nextOpen = newOpen !== undefined ? newOpen : !mergedOpen;
@@ -990,7 +992,7 @@ export default function generateSelector<
           ref={triggerRef}
           disabled={disabled}
           prefixCls={prefixCls}
-          visible={mergedOpen}
+          visible={triggerOpen}
           popupElement={popupNode}
           containerWidth={containerWidth}
           animation={animation}

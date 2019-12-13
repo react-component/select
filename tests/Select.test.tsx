@@ -1406,8 +1406,9 @@ describe('Select.Basic', () => {
 
   it('not open when `notFoundCount` is empty & no data', () => {
     const wrapper = mount(
-      <Select options={null} open notFoundContent={null} />,
+      <Select options={null} notFoundContent={null} open showSearch />,
     );
     expect(wrapper.find('SelectTrigger').props().visible).toBeFalsy();
+    expect(wrapper.find('Input').props().editable).toBeTruthy();
   });
 });
