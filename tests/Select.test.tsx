@@ -169,7 +169,11 @@ describe('Select.Basic', () => {
 
     toggleOpen(wrapper);
     expect(
-      wrapper.find('.rc-select-item-option-selected div.rc-select-item-option-content').text(),
+      wrapper
+        .find(
+          '.rc-select-item-option-selected div.rc-select-item-option-content',
+        )
+        .text(),
     ).toBe('2');
   });
 
@@ -184,7 +188,9 @@ describe('Select.Basic', () => {
     toggleOpen(wrapper);
     expect(
       wrapper
-        .find('.rc-select-item-option-selected div.rc-select-item-option-content')
+        .find(
+          '.rc-select-item-option-selected div.rc-select-item-option-content',
+        )
         .map(node => node.text()),
     ).toEqual(['1', '2']);
   });
@@ -239,7 +245,9 @@ describe('Select.Basic', () => {
 
     wrapper.find('input').simulate('change', { target: { value: '1' } });
     expect(wrapper.find('List').props().data.length).toBe(1);
-    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('One');
+    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe(
+      'One',
+    );
   });
 
   it('should filter options when filterOption is true', () => {
@@ -252,7 +260,9 @@ describe('Select.Basic', () => {
 
     wrapper.find('input').simulate('change', { target: { value: '2' } });
     expect(wrapper.find('List').props().data.length).toBe(1);
-    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('Two');
+    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe(
+      'Two',
+    );
   });
 
   it('should not filter options when filterOption is false', () => {
@@ -300,7 +310,9 @@ describe('Select.Basic', () => {
     wrapper.find('input').simulate('change', { target: { value: 'Two2' } });
 
     expect(wrapper.find('List').props().data.length).toBe(1);
-    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('Two2');
+    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe(
+      'Two2',
+    );
   });
 
   it('no search', () => {
@@ -517,7 +529,9 @@ describe('Select.Basic', () => {
     });
 
     it('set className', () => {
-      expect(wrapper.find('.rc-select').getDOMNode().className).toContain('-focus');
+      expect(wrapper.find('.rc-select').getDOMNode().className).toContain(
+        '-focus',
+      );
     });
   });
 
@@ -554,7 +568,9 @@ describe('Select.Basic', () => {
     });
 
     it('set className', () => {
-      expect(wrapper.find('.rc-select').getDOMNode().className).toContain('-focus');
+      expect(wrapper.find('.rc-select').getDOMNode().className).toContain(
+        '-focus',
+      );
     });
 
     it('click placeholder should trigger onFocus', () => {
@@ -583,7 +599,12 @@ describe('Select.Basic', () => {
       handleChange = jest.fn();
       handleBlur = jest.fn();
       wrapper = mount(
-        <Select onChange={handleChange} onBlur={handleBlur} showSearch optionLabelProp="children">
+        <Select
+          onChange={handleChange}
+          onBlur={handleBlur}
+          showSearch
+          optionLabelProp="children"
+        >
           <Option value={1} key={1}>
             1-text
           </Option>
@@ -609,7 +630,9 @@ describe('Select.Basic', () => {
     });
 
     it('set className', () => {
-      expect(wrapper.find('.rc-select').getDOMNode().className).not.toContain('-focus');
+      expect(wrapper.find('.rc-select').getDOMNode().className).not.toContain(
+        '-focus',
+      );
     });
 
     // Fix https://github.com/ant-design/ant-design/issues/6342
@@ -710,7 +733,10 @@ describe('Select.Basic', () => {
 
       public render() {
         return (
-          <Select open={this.state.open} onDropdownVisibleChange={this.onDropdownVisibleChange}>
+          <Select
+            open={this.state.open}
+            onDropdownVisibleChange={this.onDropdownVisibleChange}
+          >
             <Option value="1">1</Option>
           </Select>
         );
@@ -866,7 +892,9 @@ describe('Select.Basic', () => {
 
   it('warns on invalid children', () => {
     const Foo = value => <div>foo{value}</div>;
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
+    const errorSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => null);
     mount(
       <Select open>
         <Foo value="1" />
@@ -1063,7 +1091,9 @@ describe('Select.Basic', () => {
 
     wrapper.find('input').simulate('change', { target: { value: 'b' } });
     expect(wrapper.find('List').props().data).toHaveLength(1);
-    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('ABC');
+    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe(
+      'ABC',
+    );
   });
 
   it('accepts prop id', () => {
@@ -1082,7 +1112,9 @@ describe('Select.Basic', () => {
       <Select
         defaultActiveFirstOption
         filterOption={(inputValue, option) =>
-          (option.children as string).toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+          (option.children as string)
+            .toUpperCase()
+            .indexOf(inputValue.toUpperCase()) !== -1
         }
         onSelect={handleSelect}
         showSearch
@@ -1096,7 +1128,9 @@ describe('Select.Basic', () => {
     wrapper.find('input').simulate('change', { target: { value: 'b' } });
     expect(wrapper.find('input').props().value).toBe('b');
     expect(wrapper.find('List').props().data).toHaveLength(1);
-    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('Burns Bay Road');
+    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe(
+      'Burns Bay Road',
+    );
 
     wrapper.find('input').simulate('change', { target: { value: 'c' } });
     expect(wrapper.find('input').props().value).toBe('c');
@@ -1187,7 +1221,9 @@ describe('Select.Basic', () => {
 
   it('should warning using `onSearch` if not set `showSearch`', () => {
     resetWarned();
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
+    const errorSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => null);
 
     mount(<Select onSearch={jest.fn()} />);
     expect(errorSpy).toHaveBeenCalledWith(
@@ -1240,12 +1276,15 @@ describe('Select.Basic', () => {
   describe('warning if use `props` to read data', () => {
     it('filterOption', () => {
       resetWarned();
-      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      const errorSpy = jest
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
 
       const wrapper = mount(
         <Select
           filterOption={(input, option) =>
-            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
+            0
           }
           showSearch
         >
@@ -1256,7 +1295,9 @@ describe('Select.Basic', () => {
 
       wrapper.find('input').simulate('change', { target: { value: 'l' } });
       expect(wrapper.find('List').props().data).toHaveLength(1);
-      expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('Light');
+      expect(wrapper.find('div.rc-select-item-option-content').text()).toBe(
+        'Light',
+      );
 
       expect(errorSpy).toHaveBeenCalledWith(
         'Warning: Return type is option instead of Option instance. Please read value directly instead of reading from `props`.',
@@ -1266,7 +1307,9 @@ describe('Select.Basic', () => {
 
     it('Select & Deselect', () => {
       resetWarned();
-      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      const errorSpy = jest
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
 
       const readPropsFunc = (_, opt) => {
         expect(opt.props).toBeTruthy();
@@ -1313,7 +1356,9 @@ describe('Select.Basic', () => {
 
     it('onChange', () => {
       resetWarned();
-      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      const errorSpy = jest
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
 
       const readPropsFunc = (_, opt) => {
         expect(opt.props).toBeTruthy();
@@ -1357,5 +1402,12 @@ describe('Select.Basic', () => {
 
   it('not crash when options is null', () => {
     mount(<Select options={null} />);
+  });
+
+  it('not open when `notFoundCount` is empty & no data', () => {
+    const wrapper = mount(
+      <Select options={null} open notFoundContent={null} />,
+    );
+    expect(wrapper.find('SelectTrigger').props().visible).toBeFalsy();
   });
 });
