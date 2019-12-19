@@ -48,7 +48,14 @@ class Test extends React.Component {
 
     return (
       <div style={{ margin: 20 }}>
-        <div style={{ height: 150 }} />
+        <div
+          style={{ height: 150, background: 'rgba(0, 255, 0, 0.1)' }}
+          onMouseDown={e => {
+            e.preventDefault();
+          }}
+        >
+          Prevent Default
+        </div>
 
         <h2>Single Select</h2>
 

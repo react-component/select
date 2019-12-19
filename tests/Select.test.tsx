@@ -1,6 +1,7 @@
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import React from 'react';
+import { act } from 'react-dom/test-utils';
 import { resetWarned } from 'rc-util/lib/warning';
 import Select, { OptGroup, Option, SelectProps } from '../src';
 import focusTest from './shared/focusTest';
@@ -1410,5 +1411,28 @@ describe('Select.Basic', () => {
     );
     expect(wrapper.find('SelectTrigger').props().visible).toBeFalsy();
     expect(wrapper.find('Input').props().editable).toBeTruthy();
+  });
+
+  it('click outside to close select', () => {
+    const wrapper = mount(
+      <Select>
+        <Option value="1">One</Option>
+      </Select>,
+    );
+
+    toggleOpen(wrapper);
+
+    const clickEvent = new Event('mousedown');
+    Object.defineProperty(clickEvent, 'target', {
+      get: () => document.body,
+    });
+    act(() => {
+      window.dispatchEvent(clickEvent);
+    });
+    wrapper.update();
+
+    expectOpen(wrapper, false);
+
+    wrapper.unmount();
   });
 });

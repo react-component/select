@@ -41,6 +41,7 @@ import useLock from './hooks/useLock';
 import useDelayReset from './hooks/useDelayReset';
 import useLayoutEffect from './hooks/useLayoutEffect';
 import { getSeparatedContent } from './utils/valueUtil';
+import useSelectTriggerControl from './hooks/useSelectTriggerControl';
 
 const DEFAULT_OMIT_PROPS = [
   'removeIcon',
@@ -332,6 +333,8 @@ export default function generateSelector<
       delete domProps[prop];
     });
 
+    const containerRef = React.useRef<HTMLDivElement>(null);
+    const triggerRef = React.useRef<RefTriggerProps>(null);
     const selectorRef = React.useRef<RefSelectorProps>(null);
     const listRef = React.useRef<RefOptionListProps>(null);
 
@@ -634,6 +637,15 @@ export default function generateSelector<
       }
     };
 
+    useSelectTriggerControl(
+      [
+        containerRef.current,
+        triggerRef.current && triggerRef.current.getPopupElement(),
+      ],
+      triggerOpen,
+      onToggleOpen,
+    );
+
     // ============================= Search =============================
     const triggerSearch = (searchText: string, fromTyping: boolean = true) => {
       let ret = true;
@@ -764,7 +776,6 @@ export default function generateSelector<
     };
 
     // ========================== Focus / Blur ==========================
-    const triggerRef = React.useRef<RefTriggerProps>(null);
     /** Record real focus status */
     const focusRef = React.useRef<boolean>(false);
 
@@ -856,7 +867,6 @@ export default function generateSelector<
     };
 
     // ============================= Popup ==============================
-    const containerRef = React.useRef<HTMLDivElement>(null);
     const [containerWidth, setContainerWidth] = React.useState(null);
 
     useLayoutEffect(() => {
