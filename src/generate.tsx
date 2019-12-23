@@ -432,7 +432,7 @@ export default function generateSelector<
 
     // Display options for OptionList
     const displayOptions = React.useMemo<OptionsType>(() => {
-      if (!mergedSearchValue) {
+      if (!mergedSearchValue || !mergedShowSearch) {
         return [...mergedOptions] as OptionsType;
       }
       const filteredOptions: OptionsType = filterOptions(
@@ -458,7 +458,7 @@ export default function generateSelector<
       }
 
       return filteredOptions;
-    }, [mergedOptions, mergedSearchValue, mode]);
+    }, [mergedOptions, mergedSearchValue, mode, mergedShowSearch]);
 
     const displayFlattenOptions: FlattenOptionsType<
       OptionsType

@@ -238,7 +238,7 @@ describe('Select.Basic', () => {
 
   it('filter options by "value" prop by default', () => {
     const wrapper = mount(
-      <Select>
+      <Select showSearch>
         <Option value="1">One</Option>
         <Option value="2">Two</Option>
       </Select>,
@@ -253,7 +253,7 @@ describe('Select.Basic', () => {
 
   it('should filter options when filterOption is true', () => {
     const wrapper = mount(
-      <Select filterOption>
+      <Select showSearch filterOption>
         <Option value="1">One</Option>
         <Option value="2">Two</Option>
       </Select>,
@@ -280,7 +280,7 @@ describe('Select.Basic', () => {
 
   it('specify which prop to filter', () => {
     const wrapper = mount(
-      <Select optionFilterProp="label">
+      <Select optionFilterProp="label" showSearch>
         <Option value="1" label="One">
           1
         </Option>
@@ -298,7 +298,7 @@ describe('Select.Basic', () => {
 
   it('filter array children', () => {
     const wrapper = mount(
-      <Select optionFilterProp="children">
+      <Select optionFilterProp="children" showSearch>
         <Option value="1" label="One">
           One{1}
         </Option>
@@ -852,7 +852,7 @@ describe('Select.Basic', () => {
 
   it('filters options by inputValue', () => {
     const wrapper = mount(
-      <Select open>
+      <Select showSearch open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
         <Option value="11" disabled>
@@ -869,10 +869,12 @@ describe('Select.Basic', () => {
   it('should include disabled item in options', () => {
     const wrapper = mount(
       <Select mode="tags" open value={['name1']}>
-        <Option key="name1" disabled>
+        <Option key="name1" value="name1" disabled>
           name1
         </Option>
-        <Option key="name2">name2</Option>
+        <Option key="name2" value="name2">
+          name2
+        </Option>
       </Select>,
     );
     expect(wrapper.find('List').props().data).toHaveLength(2);
@@ -880,7 +882,7 @@ describe('Select.Basic', () => {
 
   it('renders not found when search result is empty', () => {
     const wrapper = mount(
-      <Select open>
+      <Select showSearch open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -924,7 +926,7 @@ describe('Select.Basic', () => {
 
   it('filterOption could be true as described in default value', () => {
     const wrapper = mount(
-      <Select searchValue="3" filterOption open>
+      <Select searchValue="3" showSearch filterOption open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -1084,7 +1086,7 @@ describe('Select.Basic', () => {
 
   it('default filterOption is case insensitive', () => {
     const wrapper = mount(
-      <Select>
+      <Select showSearch>
         <Option value="ABC">ABC</Option>
         <Option value="DEF">DEF</Option>
       </Select>,
@@ -1434,5 +1436,16 @@ describe('Select.Basic', () => {
     expectOpen(wrapper, false);
 
     wrapper.unmount();
+  });
+
+  it('search should not work when `showSearch` is false', () => {
+    const wrapper = mount(
+      <Select open>
+        <Option value="1">One</Option>
+      </Select>,
+    );
+
+    wrapper.find('input').simulate('change', 'Z');
+    expect(wrapper.find('List').props().data).toHaveLength(1);
   });
 });
