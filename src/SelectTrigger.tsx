@@ -2,6 +2,7 @@ import * as React from 'react';
 import Trigger from 'rc-trigger';
 import classNames from 'classnames';
 import { RenderDOMFunc } from './interface';
+import PopupContainer from './PopupContainer';
 
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
@@ -47,10 +48,10 @@ export interface SelectTriggerProps {
   getTriggerDOMNode: () => HTMLElement;
 }
 
-const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTriggerProps> = (
-  props,
-  ref,
-) => {
+const SelectTrigger: React.RefForwardingComponent<
+  RefTriggerProps,
+  SelectTriggerProps
+> = (props, ref) => {
   const {
     prefixCls,
     disabled,
@@ -79,7 +80,9 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
   }
 
   // ===================== Motion ======================
-  const mergedTransitionName = animation ? `${dropdownPrefixCls}-${animation}` : transitionName;
+  const mergedTransitionName = animation
+    ? `${dropdownPrefixCls}-${animation}`
+    : transitionName;
 
   // ======================= Ref =======================
   const popupRef = React.useRef<HTMLDivElement>(null);
@@ -97,7 +100,13 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
       builtinPlacements={BUILT_IN_PLACEMENTS}
       prefixCls={dropdownPrefixCls}
       popupTransitionName={mergedTransitionName}
-      popup={<div ref={popupRef}>{popupNode}</div>}
+      popup={
+        <div ref={popupRef}>
+          <PopupContainer visible={visible} dropdownRender={dropdownRender}>
+            {popupNode}
+          </PopupContainer>
+        </div>
+      }
       popupAlign={dropdownAlign}
       popupVisible={visible}
       getPopupContainer={getPopupContainer}
@@ -107,7 +116,9 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
       popupStyle={{
         ...dropdownStyle,
         width:
-          typeof dropdownMatchSelectWidth === 'number' ? dropdownMatchSelectWidth : containerWidth,
+          typeof dropdownMatchSelectWidth === 'number'
+            ? dropdownMatchSelectWidth
+            : containerWidth,
       }}
       getTriggerDOMNode={getTriggerDOMNode}
     >
@@ -116,7 +127,9 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
   );
 };
 
-const RefSelectTrigger = React.forwardRef<RefTriggerProps, SelectTriggerProps>(SelectTrigger);
+const RefSelectTrigger = React.forwardRef<RefTriggerProps, SelectTriggerProps>(
+  SelectTrigger,
+);
 RefSelectTrigger.displayName = 'SelectTrigger';
 
 export default RefSelectTrigger;
