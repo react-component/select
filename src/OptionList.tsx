@@ -1,5 +1,6 @@
 import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
+import useMemo from 'rc-util/lib/hooks/useMemo';
 import classNames from 'classnames';
 import List from 'rc-virtual-list';
 import TransBtn from './TransBtn';
@@ -70,6 +71,12 @@ const OptionList: React.RefForwardingComponent<
 ) => {
   const itemPrefixCls = `${prefixCls}-item`;
 
+  const memoFlattenOptions = useMemo(
+    () => flattenOptions,
+    [open, flattenOptions],
+    (prev, next) => next[0] && prev[1] !== next[1],
+  );
+
   // =========================== List ===========================
   const listRef = React.useRef<List>(null);
 
@@ -85,12 +92,12 @@ const OptionList: React.RefForwardingComponent<
 
   // ========================== Active ==========================
   const getEnabledActiveIndex = (index: number, offset: number = 1): number => {
-    const len = flattenOptions.length;
+    const len = memoFlattenOptions.length;
 
     for (let i = 0; i < len; i += 1) {
       const current = (index + i * offset + len) % len;
 
-      const { group, data } = flattenOptions[current];
+      const { group, data } = memoFlattenOptions[current];
       if (!group && !(data as OptionData).disabled) {
         return current;
       }
@@ -99,12 +106,14 @@ const OptionList: React.RefForwardingComponent<
     return -1;
   };
 
-  const [activeIndex, setActiveIndex] = React.useState(() => getEnabledActiveIndex(0));
+  const [activeIndex, setActiveIndex] = React.useState(() =>
+    getEnabledActiveIndex(0),
+  );
   const setActive = (index: number) => {
     setActiveIndex(index);
 
     // Trigger active event
-    const flattenItem = flattenOptions[index];
+    const flattenItem = memoFlattenOptions[index];
     if (!flattenItem) {
       onActiveValue(null, -1);
       return;
@@ -115,14 +124,18 @@ const OptionList: React.RefForwardingComponent<
 
   // Auto active first item when list length or searchValue changed
   React.useEffect(() => {
-    setActive(defaultActiveFirstOption !== false ? getEnabledActiveIndex(0) : -1);
-  }, [flattenOptions.length, searchValue]);
+    setActive(
+      defaultActiveFirstOption !== false ? getEnabledActiveIndex(0) : -1,
+    );
+  }, [memoFlattenOptions.length, searchValue]);
 
   // Auto scroll to item position in single mode
   React.useEffect(() => {
     if (!multiple && open && values.size === 1) {
       const value: RawValueType = Array.from(values)[0];
-      const index = flattenOptions.findIndex(({ data }) => (data as OptionData).value === value);
+      const index = memoFlattenOptions.findIndex(
+        ({ data }) => (data as OptionData).value === value,
+      );
       setActive(index);
       scrollIntoView(index);
     }
@@ -156,7 +169,10 @@ const OptionList: React.RefForwardingComponent<
           }
 
           if (offset !== 0) {
-            const nextActiveIndex = getEnabledActiveIndex(activeIndex + offset, offset);
+            const nextActiveIndex = getEnabledActiveIndex(
+              activeIndex + offset,
+              offset,
+            );
             scrollIntoView(nextActiveIndex);
             setActive(nextActiveIndex);
           }
@@ -167,7 +183,7 @@ const OptionList: React.RefForwardingComponent<
         // >>> Select
         case KeyCode.ENTER: {
           // value
-          const item = flattenOptions[activeIndex];
+          const item = memoFlattenOptions[activeIndex];
           if (item && !(item.data as OptionData).disabled) {
             onSelectValue((item.data as OptionData).value);
           } else {
@@ -191,7 +207,7 @@ const OptionList: React.RefForwardingComponent<
   }));
 
   // ========================== Render ==========================
-  if (flattenOptions.length === 0) {
+  if (memoFlattenOptions.length === 0) {
     return (
       <div
         role="listbox"
@@ -205,10 +221,15 @@ const OptionList: React.RefForwardingComponent<
   }
 
   function renderItem(index: number) {
-    const item = flattenOptions[index];
+    const item = memoFlattenOptions[index];
     const value = item && (item.data as OptionData).value;
     return item ? (
-      <div key={index} role="option" id={`${id}_list_${index}`} aria-selected={values.has(value)}>
+      <div
+        key={index}
+        role="option"
+        id={`${id}_list_${index}`}
+        aria-selected={values.has(value)}
+      >
         {value}
       </div>
     ) : null;
@@ -216,7 +237,11 @@ const OptionList: React.RefForwardingComponent<
 
   return (
     <>
-      <div role="listbox" id={`${id}_list`} style={{ height: 0, overflow: 'hidden' }}>
+      <div
+        role="listbox"
+        id={`${id}_list`}
+        style={{ height: 0, overflow: 'hidden' }}
+      >
         {renderItem(activeIndex - 1)}
         {renderItem(activeIndex)}
         {renderItem(activeIndex + 1)}
@@ -224,7 +249,7 @@ const OptionList: React.RefForwardingComponent<
       <List<SelectFlattenOptionData>
         itemKey="key"
         ref={listRef}
-        data={flattenOptions}
+        data={memoFlattenOptions}
         height={height}
         itemHeight={itemHeight}
         fullHeight={false}
@@ -237,7 +262,9 @@ const OptionList: React.RefForwardingComponent<
           // Group
           if (group) {
             return (
-              <div className={classNames(itemPrefixCls, `${itemPrefixCls}-group`)}>
+              <div
+                className={classNames(itemPrefixCls, `${itemPrefixCls}-group`)}
+              >
                 {label !== undefined ? label : key}
               </div>
             );
@@ -251,7 +278,8 @@ const OptionList: React.RefForwardingComponent<
           const optionPrefixCls = `${itemPrefixCls}-option`;
           const optionClassName = classNames(itemPrefixCls, optionPrefixCls, {
             [`${optionPrefixCls}-grouped`]: groupOption,
-            [`${optionPrefixCls}-active`]: activeIndex === itemIndex && !disabled,
+            [`${optionPrefixCls}-active`]:
+              activeIndex === itemIndex && !disabled,
             [`${optionPrefixCls}-disabled`]: disabled,
             [`${optionPrefixCls}-selected`]: selected,
           });
@@ -259,7 +287,9 @@ const OptionList: React.RefForwardingComponent<
           const mergedLabel = childrenAsData ? children : label;
 
           const iconVisible =
-            !menuItemSelectedIcon || typeof menuItemSelectedIcon === 'function' || selected;
+            !menuItemSelectedIcon ||
+            typeof menuItemSelectedIcon === 'function' ||
+            selected;
 
           return (
             <div
@@ -279,7 +309,9 @@ const OptionList: React.RefForwardingComponent<
                 }
               }}
             >
-              <div className={`${optionPrefixCls}-content`}>{mergedLabel || value}</div>
+              <div className={`${optionPrefixCls}-content`}>
+                {mergedLabel || value}
+              </div>
               {React.isValidElement(menuItemSelectedIcon) || selected}
               {iconVisible && (
                 <TransBtn
@@ -298,9 +330,10 @@ const OptionList: React.RefForwardingComponent<
   );
 };
 
-const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<SelectOptionsType>>(
-  OptionList,
-);
+const RefOptionList = React.forwardRef<
+  RefOptionListProps,
+  OptionListProps<SelectOptionsType>
+>(OptionList);
 RefOptionList.displayName = 'OptionList';
 
 export default RefOptionList;

@@ -19,7 +19,7 @@ const Test = () => (
         defaultValue="lucy"
         style={{ width: 500 }}
         animation="slide-up"
-        showSearch={false}
+        showSearch
         onChange={onChange}
       >
         <Option value="jack">
