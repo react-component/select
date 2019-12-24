@@ -2,7 +2,6 @@ import * as React from 'react';
 import Trigger from 'rc-trigger';
 import classNames from 'classnames';
 import { RenderDOMFunc } from './interface';
-import PopupContainer from './PopupContainer';
 
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
@@ -100,13 +99,7 @@ const SelectTrigger: React.RefForwardingComponent<
       builtinPlacements={BUILT_IN_PLACEMENTS}
       prefixCls={dropdownPrefixCls}
       popupTransitionName={mergedTransitionName}
-      popup={
-        <div ref={popupRef}>
-          <PopupContainer visible={visible} dropdownRender={dropdownRender}>
-            {popupNode}
-          </PopupContainer>
-        </div>
-      }
+      popup={<div ref={popupRef}>{popupNode}</div>}
       popupAlign={dropdownAlign}
       popupVisible={visible}
       getPopupContainer={getPopupContainer}
