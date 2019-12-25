@@ -14,12 +14,21 @@ interface InputProps {
   open: boolean;
   tabIndex: number;
 
-  onKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
-  onMouseDown: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
-  onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
+  onKeyDown: React.KeyboardEventHandler<
+    HTMLInputElement | HTMLTextAreaElement | HTMLElement
+  >;
+  onMouseDown: React.MouseEventHandler<
+    HTMLInputElement | HTMLTextAreaElement | HTMLElement
+  >;
+  onChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement | HTMLElement
+  >;
 }
 
-function fillRef(node: InputRef, ref: React.LegacyRef<InputRef> | React.Ref<InputRef>) {
+function fillRef(
+  node: InputRef,
+  ref: React.LegacyRef<InputRef> | React.Ref<InputRef>,
+) {
   if (typeof ref === 'function') {
     ref(node);
   } else if (ref && typeof ref === 'object') {
@@ -79,6 +88,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     'aria-controls': `${id}_list`,
     'aria-activedescendant': `${id}_list_${accessibilityIndex}`,
     value: editable ? value : '',
+    readOnly: !editable,
     onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
       onKeyDown(event);
       if (onOriginKeyDown) {

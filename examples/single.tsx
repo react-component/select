@@ -65,7 +65,7 @@ class Test extends React.Component {
             id="my-select"
             value={value}
             placeholder="placeholder"
-            showSearch
+            showSearch={false}
             style={{ width: 500 }}
             onBlur={this.onBlur}
             onFocus={this.onFocus}
