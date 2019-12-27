@@ -11,6 +11,11 @@ import warning from 'warning';
 import OptGroup from './OptGroup';
 import Option from './Option';
 
+// Where el is the DOM element you'd like to test for visibility
+function isHidden(node: HTMLElement) {
+  return !node || node.offsetParent === null;
+}
+
 import SelectPropTypes, { IILableValueType, ISelectProps, valueType } from './PropTypes';
 import SelectTrigger from './SelectTrigger';
 import {
@@ -482,7 +487,11 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
 
   public onMenuDeselect = ({ item, domEvent }: { item: any; domEvent: KeyboardEvent }) => {
     if (domEvent.type === 'keydown' && domEvent.keyCode === KeyCode.ENTER) {
-      this.removeSelected(getValuePropValue(item));
+      const menuItemDomNode = ReactDOM.findDOMNode(item) as HTMLElement;
+      // https://github.com/ant-design/ant-design/issues/20465#issuecomment-569033796
+      if (!isHidden(menuItemDomNode)) {
+        this.removeSelected(getValuePropValue(item));
+      }
       return;
     }
     if (domEvent.type === 'click') {
