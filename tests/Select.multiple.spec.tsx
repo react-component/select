@@ -219,7 +219,9 @@ describe('Select.multiple', () => {
       .simulate('mouseover')
       .simulate('keyDown', { keyCode: 13 });
     expect(wrapper.state('open')).toBe(true);
-    expect(wrapper.state('value')).toEqual([]);
+    // in jsdom, element is alway hidden
+    // https://github.com/react-component/select/commit/3c8c8c414bf134c614b50736091f93378a90d69c
+    expect(wrapper.state('value')).toEqual([2]);
   });
 
   it('do not crash when children has empty', () => {

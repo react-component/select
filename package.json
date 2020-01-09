@@ -37,6 +37,7 @@
     "lint:fix": "rc-tools run lint --fix",
     "prettier": "rc-tools run prettier",
     "test": "rc-tools run test",
+    "tsc": "tsc",
     "prepublish": "rc-tools run guard",
     "init-tslint": "rc-tools run gen-lint-config",
     "coverage": "rc-tools run test --coverage",
