@@ -717,13 +717,13 @@ export default function generateSelector<
      * - false: Search text is not empty when first time backspace down
      */
     const [getClearLock, setClearLock] = useLock();
-    const clearLock = getClearLock();
 
     // KeyDown
     const onInternalKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (
       event,
       ...rest
     ) => {
+      const clearLock = getClearLock();
       const { which } = event;
 
       // We only manage open state here, close logic should handle by list component

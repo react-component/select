@@ -1,7 +1,6 @@
 import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import React from 'react';
-import { resetWarned } from 'rc-util/lib/warning';
 import Select, { Option, OptGroup } from '../src';
 import focusTest from './shared/focusTest';
 import blurTest from './shared/blurTest';
@@ -129,7 +128,10 @@ describe('Select.Multiple', () => {
 
     expect(handleChange).toHaveBeenCalledWith(
       [1, 2],
-      [expect.objectContaining({ value: 1 }), expect.objectContaining({ value: 2, testprop: 2 })],
+      [
+        expect.objectContaining({ value: 1 }),
+        expect.objectContaining({ value: 2, testprop: 2 }),
+      ],
     );
   });
 
@@ -238,5 +240,38 @@ describe('Select.Multiple', () => {
       showArrow: true,
     });
     expect(wrapper.find('.rc-select-arrow-icon').length).toBeTruthy();
+  });
+
+  it('block input when fast backspace', () => {
+    jest.useFakeTimers();
+    const onChange = jest.fn();
+
+    const wrapper = mount(
+      <Select
+        mode="multiple"
+        value={['bamboo']}
+        options={[{ value: 'bamboo' }, { value: 'light' }]}
+        onChange={onChange}
+      />,
+    );
+
+    // First type
+    wrapper.find('input').simulate('keydown', { which: KeyCode.L });
+    wrapper.find('input').simulate('change', { target: { value: 'l' } });
+
+    // Backspace
+    wrapper.find('input').simulate('keydown', { which: KeyCode.BACKSPACE });
+    wrapper.find('input').simulate('change', { target: { value: '' } });
+
+    onChange.mockReset();
+
+    wrapper.find('input').simulate('keydown', { which: KeyCode.BACKSPACE });
+    expect(onChange).not.toHaveBeenCalled();
+
+    jest.runAllTimers();
+    wrapper.find('input').simulate('keydown', { which: KeyCode.BACKSPACE });
+    expect(onChange).toHaveBeenCalledWith([], expect.anything());
+
+    jest.useRealTimers();
   });
 });
