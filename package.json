@@ -2,6 +2,9 @@
   "name": "rc-select",
   "version": "10.0.0-alpha.36",
   "description": "React Select",
+  "engines": {
+    "node": ">=8.x"
+  },
   "keywords": [
     "react",
     "react-component",
