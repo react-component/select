@@ -378,10 +378,12 @@ export default function generateSelector<
       value !== undefined && value !== null ? value : innerValue;
 
     // Should reset when controlled to be uncontrolled
+    const prevValueRef = React.useRef(value);
     React.useEffect(() => {
-      if (value === undefined) {
+      if (prevValueRef.current !== value && value === undefined) {
         setInnerValue(undefined);
       }
+      prevValueRef.current = value;
     }, [value]);
 
     /** Unique raw values */
