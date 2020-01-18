@@ -377,6 +377,13 @@ export default function generateSelector<
     const baseValue =
       value !== undefined && value !== null ? value : innerValue;
 
+    // Should reset when controlled to be uncontrolled
+    React.useEffect(() => {
+      if (value === undefined) {
+        setInnerValue(undefined);
+      }
+    }, [value]);
+
     /** Unique raw values */
     const mergedRawValue = React.useMemo<RawValueType[]>(
       () =>
