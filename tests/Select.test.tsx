@@ -1454,6 +1454,7 @@ describe('Select.Basic', () => {
     expect(wrapper.find('.rc-select-selection-item').text()).toEqual('light');
 
     wrapper.setProps({ value: undefined });
+    wrapper.update();
     expect(wrapper.find('.rc-select-selection-item')).toHaveLength(0);
   });
 });
