@@ -70,6 +70,14 @@ class Combobox extends React.Component {
           <button type="button" onClick={this.toggleDisabled}>
             toggle disabled
           </button>
+          <button
+            type="button"
+            onClick={() => {
+              this.setState({ value: '' });
+            }}
+          >
+            reset
+          </button>
         </p>
         <div>
           <Select
@@ -104,7 +112,11 @@ class Combobox extends React.Component {
             mode="combobox"
             style={{ width: 200 }}
             getInputElement={() => (
-              <textarea style={{ background: 'red' }} rows={3} ref={this.textareaRef} />
+              <textarea
+                style={{ background: 'red' }}
+                rows={3}
+                ref={this.textareaRef}
+              />
             )}
             options={[{ value: 'light' }, { value: 'bamboo' }]}
             allowClear

@@ -6,7 +6,12 @@ import Select, { Option, SelectProps } from '../src';
 import focusTest from './shared/focusTest';
 import keyDownTest from './shared/keyDownTest';
 import openControlledTest from './shared/openControlledTest';
-import { expectOpen, toggleOpen, selectItem, injectRunAllTimers } from './utils/common';
+import {
+  expectOpen,
+  toggleOpen,
+  selectItem,
+  injectRunAllTimers,
+} from './utils/common';
 import allowClearTest from './shared/allowClearTest';
 import throwOptionValue from './shared/throwOptionValue';
 
@@ -50,7 +55,9 @@ describe('Select.Combobox', () => {
     );
 
     expect(wrapper.find('input').props().value).toBe('');
-    expect(wrapper.find('.rc-select-selection-placeholder').text()).toEqual('placeholder');
+    expect(wrapper.find('.rc-select-selection-placeholder').text()).toEqual(
+      'placeholder',
+    );
     wrapper.find('input').simulate('change', { target: { value: '1' } });
     expect(wrapper.find('.rc-select-selection-placeholder').length).toBeFalsy();
     expect(wrapper.find('input').props().value).toBe('1');
@@ -139,7 +146,9 @@ describe('Select.Combobox', () => {
         };
 
         public render() {
-          const options = this.state.data.map(item => <Option key={item.key}>{item.label}</Option>);
+          const options = this.state.data.map(item => (
+            <Option key={item.key}>{item.label}</Option>
+          ));
           return (
             <Select
               mode="combobox"
@@ -178,7 +187,9 @@ describe('Select.Combobox', () => {
         };
 
         public render() {
-          const options = this.state.data.map(item => <Option key={item.key}>{item.label}</Option>);
+          const options = this.state.data.map(item => (
+            <Option key={item.key}>{item.label}</Option>
+          ));
           return (
             <Select
               mode="combobox"
@@ -207,7 +218,13 @@ describe('Select.Combobox', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
     const wrapper = mount(
-      <Select mode="combobox" backfill open onChange={handleChange} onSelect={handleSelect}>
+      <Select
+        mode="combobox"
+        backfill
+        open
+        onChange={handleChange}
+        onSelect={handleSelect}
+      >
         <Option value="One">One</Option>
         <Option value="Two">Two</Option>
       </Select>,
@@ -220,8 +237,14 @@ describe('Select.Combobox', () => {
 
     input.simulate('keyDown', { which: KeyCode.ENTER });
     expect(wrapper.find('input').props().value).toEqual('One');
-    expect(handleChange).toHaveBeenCalledWith('One', expect.objectContaining({ value: 'One' }));
-    expect(handleSelect).toHaveBeenCalledWith('One', expect.objectContaining({ value: 'One' }));
+    expect(handleChange).toHaveBeenCalledWith(
+      'One',
+      expect.objectContaining({ value: 'One' }),
+    );
+    expect(handleSelect).toHaveBeenCalledWith(
+      'One',
+      expect.objectContaining({ value: 'One' }),
+    );
   });
 
   it("should hide clear icon when value is ''", () => {
@@ -311,7 +334,11 @@ describe('Select.Combobox', () => {
     jest.useFakeTimers();
     const onDropdownVisibleChange = jest.fn();
     const wrapper = mount(
-      <Select mode="combobox" open onDropdownVisibleChange={onDropdownVisibleChange}>
+      <Select
+        mode="combobox"
+        open
+        onDropdownVisibleChange={onDropdownVisibleChange}
+      >
         <Option value="One">One</Option>
         <Option value="Two">Two</Option>
       </Select>,
@@ -323,5 +350,23 @@ describe('Select.Combobox', () => {
     wrapper.update();
     expect(onDropdownVisibleChange).toHaveBeenCalledWith(false);
     jest.useRealTimers();
+  });
+
+  it('should reset value by control', () => {
+    const onChange = jest.fn();
+    const wrapper = mount(
+      <Select mode="combobox" value="" onChange={onChange}>
+        <Option value="One">One</Option>
+        <Option value="Two">Two</Option>
+      </Select>,
+    );
+
+    toggleOpen(wrapper);
+    selectItem(wrapper);
+    expect(onChange).toHaveBeenCalled();
+    wrapper.update();
+    expectOpen(wrapper, false);
+
+    expect(wrapper.find('input').props().value).toEqual('');
   });
 });
