@@ -406,7 +406,9 @@ export default function generateSelector<
     const [activeValue, setActiveValue] = React.useState<string>(null);
     const [innerSearchValue, setInnerSearchValue] = React.useState('');
     let mergedSearchValue = innerSearchValue;
-    if (searchValue !== undefined) {
+    if (mode === 'combobox' && value !== undefined) {
+      mergedSearchValue = value as string;
+    } else if (searchValue !== undefined) {
       mergedSearchValue = searchValue;
     } else if (inputValue) {
       mergedSearchValue = inputValue;
