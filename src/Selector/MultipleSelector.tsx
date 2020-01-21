@@ -135,22 +135,28 @@ const SelectSelector: React.FC<SelectorProps> = ({
         const getTagCloseProps: GetTagCloseProps = () =>
           (key !== REST_TAG_KEY && !itemDisabled
             ? {
-                onMouseDown: event => {
-                  event.preventDefault();
-                  event.stopPropagation();
-                },
                 onClick: event => {
                   event.stopPropagation();
                   onSelect(value, { selected: false });
                 },
-                isClosable: true,
+                closable: true,
               }
             : {
-                isClosable: false,
+                closable: false,
               });
 
         return typeof tagRender === 'function' ? (
-          tagRender({ label, getTagCloseProps })
+          <span
+            key={mergedKey}
+            onMouseDown={event => {
+              event.preventDefault();
+              event.stopPropagation();
+            }}
+            className={className}
+            style={style}
+          >
+            {tagRender({ label, disabled: itemDisabled, getTagCloseProps })}
+          </span>
         ) : (
           <span
             key={mergedKey}
@@ -165,6 +171,10 @@ const SelectSelector: React.FC<SelectorProps> = ({
             {key !== REST_TAG_KEY && !itemDisabled && (
               <TransBtn
                 className={`${prefixCls}-selection-item-remove`}
+                onMouseDown={event => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                }}
                 {...getTagCloseProps()}
                 customizeIcon={removeIcon}
               >

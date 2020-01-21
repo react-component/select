@@ -28,7 +28,7 @@ const Test: React.FC = () => {
     let style: React.CSSProperties;
     if (parseInt(label as string, 10)) {
       style = { backgroundColor: 'blue' };
-    } else if (!closeProps.isClosable) {
+    } else if (!closeProps.closable) {
       style = { backgroundColor: 'white' };
     } else {
       style = { backgroundColor: 'red' };
@@ -36,7 +36,7 @@ const Test: React.FC = () => {
     return (
       <span style={style}>
         {label}
-        {closeProps.isClosable ? (
+        {closeProps.closable ? (
           <button type="button" {...closeProps}>
             x
           </button>

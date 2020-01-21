@@ -33,15 +33,13 @@ export type OnClear = () => void;
 export interface GetTagCloseProps {
   (): {
     onClick?: (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void;
-    onMouseDown?: (
-      event: React.MouseEvent<HTMLSpanElement, MouseEvent>,
-    ) => void;
-    isClosable: boolean;
+    closable: boolean;
   };
 }
 
 export type CustomTagProps = {
   label: DefaultValueType;
+  disabled: boolean;
   getTagCloseProps: GetTagCloseProps;
 };
 
