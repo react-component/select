@@ -2,7 +2,12 @@ import React from 'react';
 import classNames from 'classnames';
 import CSSMotionList from 'rc-animate/lib/CSSMotionList';
 import TransBtn from '../TransBtn';
-import { LabelValueType, RawValueType } from '../interface/generator';
+import {
+  LabelValueType,
+  RawValueType,
+  CustomTagProps,
+  GetTagCloseProps,
+} from '../interface/generator';
 import { RenderNode } from '../interface';
 import { InnerSelectorProps } from '.';
 import Input from './Input';
@@ -17,8 +22,11 @@ interface SelectorProps extends InnerSelectorProps {
   // Tags
   maxTagCount?: number;
   maxTagTextLength?: number;
-  maxTagPlaceholder?: React.ReactNode | ((omittedValues: LabelValueType[]) => React.ReactNode);
+  maxTagPlaceholder?:
+    | React.ReactNode
+    | ((omittedValues: LabelValueType[]) => React.ReactNode);
   tokenSeparators?: string[];
+  tagRender?: (props: CustomTagProps) => React.ReactElement;
 
   // Motion
   choiceTransitionName?: string;
@@ -48,7 +56,9 @@ const SelectSelector: React.FC<SelectorProps> = ({
 
   maxTagCount,
   maxTagTextLength,
-  maxTagPlaceholder = (omittedValues: LabelValueType[]) => `+ ${omittedValues.length} ...`,
+  maxTagPlaceholder = (omittedValues: LabelValueType[]) =>
+    `+ ${omittedValues.length} ...`,
+  tagRender,
 
   onSelect,
   onInputChange,
@@ -122,8 +132,26 @@ const SelectSelector: React.FC<SelectorProps> = ({
     >
       {({ key, label, value, disabled: itemDisabled, className, style }) => {
         const mergedKey = key || value;
+        const getTagCloseProps: GetTagCloseProps = () =>
+          (key !== REST_TAG_KEY && !itemDisabled
+            ? {
+                onMouseDown: event => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                },
+                onClick: event => {
+                  event.stopPropagation();
+                  onSelect(value, { selected: false });
+                },
+                isClosable: true,
+              }
+            : {
+                isClosable: false,
+              });
 
-        return (
+        return typeof tagRender === 'function' ? (
+          tagRender({ label, getTagCloseProps })
+        ) : (
           <span
             key={mergedKey}
             className={classNames(className, `${prefixCls}-selection-item`, {
@@ -131,18 +159,13 @@ const SelectSelector: React.FC<SelectorProps> = ({
             })}
             style={style}
           >
-            <span className={`${prefixCls}-selection-item-content`}>{label}</span>
+            <span className={`${prefixCls}-selection-item-content`}>
+              {label}
+            </span>
             {key !== REST_TAG_KEY && !itemDisabled && (
               <TransBtn
                 className={`${prefixCls}-selection-item-remove`}
-                onMouseDown={event => {
-                  event.preventDefault();
-                  event.stopPropagation();
-                }}
-                onClick={event => {
-                  event.stopPropagation();
-                  onSelect(value, { selected: false });
-                }}
+                {...getTagCloseProps()}
                 customizeIcon={removeIcon}
               >
                 ×
@@ -158,7 +181,10 @@ const SelectSelector: React.FC<SelectorProps> = ({
     <>
       {selectionNode}
 
-      <span className={`${prefixCls}-selection-search`} style={{ width: inputWidth }}>
+      <span
+        className={`${prefixCls}-selection-search`}
+        style={{ width: inputWidth }}
+      >
         <Input
           ref={inputRef}
           open={open}
@@ -177,13 +203,19 @@ const SelectSelector: React.FC<SelectorProps> = ({
         />
 
         {/* Measure Node */}
-        <span ref={measureRef} className={`${prefixCls}-selection-search-mirror`} aria-hidden>
+        <span
+          ref={measureRef}
+          className={`${prefixCls}-selection-search-mirror`}
+          aria-hidden
+        >
           {searchValue}&nbsp;
         </span>
       </span>
 
       {!values.length && !searchValue && (
-        <span className={`${prefixCls}-selection-placeholder`}>{placeholder}</span>
+        <span className={`${prefixCls}-selection-placeholder`}>
+          {placeholder}
+        </span>
       )}
     </>
   );
