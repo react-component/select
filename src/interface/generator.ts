@@ -30,17 +30,11 @@ export type SingleType<MixType> = MixType extends (infer Single)[]
 
 export type OnClear = () => void;
 
-export interface GetTagCloseProps {
-  (): {
-    onClick?: (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void;
-    closable: boolean;
-  };
-}
-
 export type CustomTagProps = {
   label: DefaultValueType;
   disabled: boolean;
-  getTagCloseProps: GetTagCloseProps;
+  closeTag: (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void;
+  closable: boolean;
 };
 
 // ==================================== Generator ====================================

@@ -23,12 +23,11 @@ const Test: React.FC = () => {
   };
 
   const tagRender = (props: CustomTagProps) => {
-    const { label, getTagCloseProps } = props;
-    const closeProps = getTagCloseProps();
+    const { label, closable, closeTag } = props;
     let style: React.CSSProperties;
     if (parseInt(label as string, 10)) {
       style = { backgroundColor: 'blue' };
-    } else if (!closeProps.closable) {
+    } else if (!closable) {
       style = { backgroundColor: 'white' };
     } else {
       style = { backgroundColor: 'red' };
@@ -36,8 +35,8 @@ const Test: React.FC = () => {
     return (
       <span style={style}>
         {label}
-        {closeProps.closable ? (
-          <button type="button" {...closeProps}>
+        {closable ? (
+          <button type="button" onClick={closeTag}>
             x
           </button>
         ) : null}

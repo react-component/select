@@ -6,7 +6,6 @@ import {
   LabelValueType,
   RawValueType,
   CustomTagProps,
-  GetTagCloseProps,
 } from '../interface/generator';
 import { RenderNode } from '../interface';
 import { InnerSelectorProps } from '.';
@@ -132,30 +131,24 @@ const SelectSelector: React.FC<SelectorProps> = ({
     >
       {({ key, label, value, disabled: itemDisabled, className, style }) => {
         const mergedKey = key || value;
-        const getTagCloseProps: GetTagCloseProps = () =>
-          (key !== REST_TAG_KEY && !itemDisabled
-            ? {
-                onClick: event => {
-                  event.stopPropagation();
-                  onSelect(value, { selected: false });
-                },
-                closable: true,
-              }
-            : {
-                closable: false,
-              });
+        const closable = key !== REST_TAG_KEY && !itemDisabled;
+        const onMouseDown = (event: React.MouseEvent) => {
+          event.preventDefault();
+          event.stopPropagation();
+        };
+        const closeTag = (event: React.MouseEvent) => {
+          if (event) event.stopPropagation();
+          onSelect(value, { selected: false });
+        };
 
         return typeof tagRender === 'function' ? (
           <span
             key={mergedKey}
-            onMouseDown={event => {
-              event.preventDefault();
-              event.stopPropagation();
-            }}
+            onMouseDown={onMouseDown}
             className={className}
             style={style}
           >
-            {tagRender({ label, disabled: itemDisabled, getTagCloseProps })}
+            {tagRender({ label, disabled: itemDisabled, closable, closeTag })}
           </span>
         ) : (
           <span
@@ -168,14 +161,11 @@ const SelectSelector: React.FC<SelectorProps> = ({
             <span className={`${prefixCls}-selection-item-content`}>
               {label}
             </span>
-            {key !== REST_TAG_KEY && !itemDisabled && (
+            {closable && (
               <TransBtn
                 className={`${prefixCls}-selection-item-remove`}
-                onMouseDown={event => {
-                  event.preventDefault();
-                  event.stopPropagation();
-                }}
-                {...getTagCloseProps()}
+                onMouseDown={onMouseDown}
+                onClick={closeTag}
                 customizeIcon={removeIcon}
               >
                 ×
