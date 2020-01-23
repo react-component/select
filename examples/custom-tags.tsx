@@ -23,7 +23,7 @@ const Test: React.FC = () => {
   };
 
   const tagRender = (props: CustomTagProps) => {
-    const { label, closable, closeTag } = props;
+    const { label, closable, onClose } = props;
     let style: React.CSSProperties;
     if (parseInt(label as string, 10)) {
       style = { backgroundColor: 'blue' };
@@ -36,7 +36,7 @@ const Test: React.FC = () => {
       <span style={style}>
         {label}
         {closable ? (
-          <button type="button" onClick={closeTag}>
+          <button type="button" onClick={onClose}>
             x
           </button>
         ) : null}

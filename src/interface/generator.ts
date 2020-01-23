@@ -32,8 +32,9 @@ export type OnClear = () => void;
 
 export type CustomTagProps = {
   label: DefaultValueType;
+  value: DefaultValueType;
   disabled: boolean;
-  closeTag: (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void;
+  onClose: (event?: React.MouseEvent<HTMLElement, MouseEvent>) => void;
   closable: boolean;
 };
 

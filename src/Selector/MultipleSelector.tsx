@@ -136,7 +136,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
           event.preventDefault();
           event.stopPropagation();
         };
-        const closeTag = (event: React.MouseEvent) => {
+        const onClose = (event?: React.MouseEvent) => {
           if (event) event.stopPropagation();
           onSelect(value, { selected: false });
         };
@@ -148,7 +148,13 @@ const SelectSelector: React.FC<SelectorProps> = ({
             className={className}
             style={style}
           >
-            {tagRender({ label, disabled: itemDisabled, closable, closeTag })}
+            {tagRender({
+              label,
+              value,
+              disabled: itemDisabled,
+              closable,
+              onClose,
+            })}
           </span>
         ) : (
           <span
@@ -165,7 +171,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
               <TransBtn
                 className={`${prefixCls}-selection-item-remove`}
                 onMouseDown={onMouseDown}
-                onClick={closeTag}
+                onClick={onClose}
                 customizeIcon={removeIcon}
               >
                 ×
