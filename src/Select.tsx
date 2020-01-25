@@ -114,6 +114,10 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
       newState.open = nextProps.open;
     }
 
+    if ('disabled' in nextProps && nextProps.disabled && prevState.open) {
+      newState.open = false;
+    }
+
     if ('value' in nextProps) {
       const value = Select.getValueFromProps(nextProps);
       newState.value = value;
@@ -743,7 +747,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     if (value.length) {
       hidden = true;
     }
-    if (isCombobox(props) && value.length === 1 && (state.value && !state.value[0])) {
+    if (isCombobox(props) && value.length === 1 && state.value && !state.value[0]) {
       hidden = false;
     }
     const placeholder = props.placeholder;
