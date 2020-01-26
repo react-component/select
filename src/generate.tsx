@@ -983,6 +983,7 @@ export default function generateSelector<
       [`${prefixCls}-show-search`]: mergedShowSearch,
     });
 
+    mergedOpen = disabled ? false : mergedOpen;
     return (
       <div
         className={mergedClassName}
