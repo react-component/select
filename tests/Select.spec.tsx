@@ -49,7 +49,7 @@ describe('Select', () => {
       expect(wrapper).toMatchSnapshot();
     });
 
-    it('renders disabeld select correctly', () => {
+    it('renders disabled select correctly', () => {
       const wrapper = render(React.cloneElement(select, { disabled: true }));
       expect(wrapper).toMatchSnapshot();
     });
@@ -1193,5 +1193,43 @@ describe('Select', () => {
       input.simulate('keyDown', { keyCode: KeyCode.ENTER });
       expect(onSelect).toBeCalledWith('1', expect.anything());
     }
+  });
+
+  describe('disabled on open', () => {
+    it('should not show dropdown when oepn and disabled', () => {
+      const wrapper = mount<Select>(
+        <Select open={true} disabled={true}>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
+      expect(wrapper.state().open).toBe(false);
+    });
+
+    it('should close dropdown when disabled after open', () => {
+      const wrapper = mount<Select>(
+        <Select>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
+      wrapper.find('.rc-select').simulate('click');
+      expect(wrapper.state().open).toBe(true);
+      wrapper.setProps({ disabled: true });
+      expect(wrapper.state().open).toBe(false);
+    });
+
+    it('should not open dropdown after remove disabled', () => {
+      const wrapper = mount<Select>(
+        <Select>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
+      wrapper.find('.rc-select').simulate('click');
+      wrapper.setProps({ disabled: true });
+      wrapper.setProps({ disabled: false });
+      expect(wrapper.state().open).toBe(false);
+    });
   });
 });
