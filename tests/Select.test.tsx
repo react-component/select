@@ -1457,4 +1457,42 @@ describe('Select.Basic', () => {
     wrapper.update();
     expect(wrapper.find('.rc-select-selection-item')).toHaveLength(0);
   });
+
+  describe('disabled on open', () => {
+    it('should not show dropdown when oepn and disabled', () => {
+      const wrapper = mount(
+        <Select open disabled>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
+      expectOpen(wrapper, false);
+    });
+
+    it('should close dropdown when disabled after open', () => {
+      const wrapper = mount(
+        <Select>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
+      toggleOpen(wrapper);
+      expectOpen(wrapper, true);
+      wrapper.setProps({ disabled: true });
+      expectOpen(wrapper, false);
+    });
+
+    it('should not open dropdown after remove disabled', () => {
+      const wrapper = mount(
+        <Select>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
+      toggleOpen(wrapper);
+      wrapper.setProps({ disabled: true });
+      wrapper.setProps({ disabled: false });
+      expectOpen(wrapper, false);
+    });
+  });
 });
