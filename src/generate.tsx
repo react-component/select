@@ -627,7 +627,8 @@ export default function generateSelector<
 
     // ============================== Open ==============================
     const [innerOpen, setInnerOpen] = React.useState<boolean>(defaultOpen);
-    let mergedOpen: boolean = open !== undefined ? open : innerOpen;
+    let mergedOpen: boolean =
+      !disabled && (open !== undefined ? open : innerOpen);
 
     // Not trigger `open` in `combobox` when `notFoundContent` is empty
     const emptyListContent = !notFoundContent && !displayOptions.length;
@@ -712,6 +713,13 @@ export default function generateSelector<
 
       return ret;
     };
+
+    // Close dropdown when disabled change
+    React.useEffect(() => {
+      if (innerOpen && !!disabled) {
+        setInnerOpen(false);
+      }
+    }, [disabled]);
 
     // Close will clean up single mode search text
     React.useEffect(() => {
