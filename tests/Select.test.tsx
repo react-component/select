@@ -1458,6 +1458,15 @@ describe('Select.Basic', () => {
     expect(wrapper.find('.rc-select-selection-item')).toHaveLength(0);
   });
 
+  it('reset value to null should reset display value', () => {
+    const wrapper = mount(<Select value="light" />);
+    expect(wrapper.find('.rc-select-selection-item').text()).toEqual('light');
+
+    wrapper.setProps({ value: null });
+    wrapper.update();
+    expect(wrapper.find('.rc-select-selection-item')).toHaveLength(0);
+  });
+
   describe('disabled on open', () => {
     it('should not show dropdown when oepn and disabled', () => {
       const wrapper = mount(
