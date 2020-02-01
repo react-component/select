@@ -1449,13 +1449,19 @@ describe('Select.Basic', () => {
     expect(wrapper.find('List').props().data).toHaveLength(1);
   });
 
-  it('reset value to undefined should reset display value', () => {
-    const wrapper = mount(<Select value="light" />);
-    expect(wrapper.find('.rc-select-selection-item').text()).toEqual('light');
+  describe('reset value to undefined should reset display value', () => {
+    [undefined, null].forEach(value => {
+      it(`to ${value}`, () => {
+        const wrapper = mount(<Select value="light" />);
+        expect(wrapper.find('.rc-select-selection-item').text()).toEqual(
+          'light',
+        );
 
-    wrapper.setProps({ value: undefined });
-    wrapper.update();
-    expect(wrapper.find('.rc-select-selection-item')).toHaveLength(0);
+        wrapper.setProps({ value });
+        wrapper.update();
+        expect(wrapper.find('.rc-select-selection-item')).toHaveLength(0);
+      });
+    });
   });
 
   describe('disabled on open', () => {
