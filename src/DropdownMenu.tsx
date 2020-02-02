@@ -23,8 +23,8 @@ export interface IDropdownMenuProps {
   multiple: boolean;
   onPopupFocus: React.FocusEventHandler<HTMLDivElement>;
   onPopupScroll: React.UIEventHandler<HTMLDivElement>;
-  onMenuDeselect: (e: { item: any; domEvent: KeyboardEvent }) => void;
-  onMenuSelect: (e: { item: any; domEvent: KeyboardEvent }) => void;
+  onMenuDeselect: (e: { item: any; domEvent: React.MouseEvent<HTMLElement> }) => void;
+  onMenuSelect: (e: { item: any; domEvent: React.MouseEvent<HTMLElement> }) => void;
   prefixCls: string;
   menuItems: JSX.Element[];
   inputValue: string | string[];
@@ -139,9 +139,9 @@ export default class DropdownMenu extends React.Component<Partial<IDropdownMenuP
 
     if (menuItems && menuItems.length) {
       const menuProps: Partial<{
-        onDeselect: (e: { item: any; domEvent: KeyboardEvent }) => void;
-        onSelect: (e: { item: any; domEvent: KeyboardEvent }) => void;
-        onClick: (e: { item: any; domEvent: KeyboardEvent }) => void;
+        onDeselect: (e: { item: any; domEvent: React.MouseEvent<HTMLElement> }) => void;
+        onSelect: (e: { item: any; domEvent: React.MouseEvent<HTMLElement> }) => void;
+        onClick: (e: { item: any; domEvent: React.MouseEvent<HTMLElement> }) => void;
       }> = {};
       if (multiple) {
         menuProps.onDeselect = onMenuDeselect;

@@ -489,8 +489,17 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
     }
   };
 
-  public onMenuDeselect = ({ item, domEvent }: { item: any; domEvent: KeyboardEvent }) => {
-    if (domEvent.type === 'keydown' && domEvent.keyCode === KeyCode.ENTER) {
+  public onMenuDeselect = ({
+    item,
+    domEvent,
+  }: {
+    item: any;
+    domEvent: React.SyntheticEvent<HTMLElement>;
+  }) => {
+    if (
+      domEvent.type === 'keydown' &&
+      (domEvent as React.KeyboardEvent<HTMLElement>).keyCode === KeyCode.ENTER
+    ) {
       const menuItemDomNode = ReactDOM.findDOMNode(item) as HTMLElement;
       // https://github.com/ant-design/ant-design/issues/20465#issuecomment-569033796
       if (!isHidden(menuItemDomNode)) {
