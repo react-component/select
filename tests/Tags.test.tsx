@@ -1,5 +1,6 @@
 import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
+import classNames from 'classnames';
 import * as React from 'react';
 import Select, { OptGroup, Option } from '../src';
 import allowClearTest from './shared/allowClearTest';
@@ -173,7 +174,7 @@ describe('Select.Tags', () => {
       const { label } = props;
       onTagRender(label);
       return (
-        <span className={label}>
+        <span className={classNames(label, 'customize-tag')}>
           {label}
           {label}
         </span>
@@ -190,6 +191,7 @@ describe('Select.Tags', () => {
     expect(wrapper.find('span.A').length).toBe(1);
     expect(wrapper.find('span.A').text()).toBe('AA');
     expect(onTagRender).toHaveBeenCalledTimes(3);
+    expect(wrapper.find('.customize-tag')).toHaveLength(3);
   });
 
   describe('OptGroup', () => {
