@@ -12,7 +12,11 @@ import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import MultipleSelector from './MultipleSelector';
 import SingleSelector from './SingleSelector';
-import { LabelValueType, RawValueType } from '../interface/generator';
+import {
+  LabelValueType,
+  RawValueType,
+  CustomTagProps,
+} from '../interface/generator';
 import { RenderNode, Mode } from '../interface';
 import useLock from '../hooks/useLock';
 
@@ -74,6 +78,7 @@ export interface SelectorProps {
   maxTagPlaceholder?:
     | React.ReactNode
     | ((omittedValues: LabelValueType[]) => React.ReactNode);
+  tagRender?: (props: CustomTagProps) => React.ReactElement;
 
   // Motion
   choiceTransitionName?: string;

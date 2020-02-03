@@ -28,6 +28,7 @@ import {
   OnClear,
   INTERNAL_PROPS_MARK,
   SelectSource,
+  CustomTagProps,
 } from './interface/generator';
 import { OptionListProps, RefOptionListProps } from './OptionList';
 import {
@@ -128,6 +129,7 @@ export interface SelectProps<OptionsType extends object[], ValueType>
     | React.ReactNode
     | ((omittedValues: LabelValueType[]) => React.ReactNode);
   tokenSeparators?: string[];
+  tagRender?: (props: CustomTagProps) => React.ReactElement;
   showAction?: ('focus' | 'click')[];
   tabIndex?: number;
 
@@ -307,6 +309,7 @@ export default function generateSelector<
 
       // Tags
       tokenSeparators,
+      tagRender,
 
       // Events
       onPopupScroll,
@@ -1049,6 +1052,7 @@ export default function generateSelector<
             mode={mode}
             accessibilityIndex={accessibilityIndex}
             multiple={isMultiple}
+            tagRender={tagRender}
             values={displayValues}
             open={mergedOpen}
             onToggleOpen={onToggleOpen}

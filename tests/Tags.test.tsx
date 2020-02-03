@@ -1,5 +1,6 @@
 import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
+import classNames from 'classnames';
 import * as React from 'react';
 import Select, { OptGroup, Option } from '../src';
 import allowClearTest from './shared/allowClearTest';
@@ -12,7 +13,12 @@ import openControlledTest from './shared/openControlledTest';
 import removeSelectedTest from './shared/removeSelectedTest';
 import renderTest from './shared/renderTest';
 import throwOptionValue from './shared/throwOptionValue';
-import { injectRunAllTimers, findSelection, expectOpen, toggleOpen } from './utils/common';
+import {
+  injectRunAllTimers,
+  findSelection,
+  expectOpen,
+  toggleOpen,
+} from './utils/common';
 
 describe('Select.Tags', () => {
   injectRunAllTimers(jest);
@@ -66,7 +72,12 @@ describe('Select.Tags', () => {
     const handleSelect = jest.fn();
     const option2 = <Option value="2">2</Option>;
     const wrapper = mount(
-      <Select mode="tags" tokenSeparators={[',']} onChange={handleChange} onSelect={handleSelect}>
+      <Select
+        mode="tags"
+        tokenSeparators={[',']}
+        onChange={handleChange}
+        onSelect={handleSelect}
+      >
         <Option value="1">1</Option>
         {option2}
       </Select>,
@@ -76,7 +87,10 @@ describe('Select.Tags', () => {
 
     wrapper.find('input').simulate('change', { target: { value: '2,3,4' } });
 
-    expect(handleChange).toHaveBeenCalledWith(['2', '3', '4'], expect.anything());
+    expect(handleChange).toHaveBeenCalledWith(
+      ['2', '3', '4'],
+      expect.anything(),
+    );
     expect(handleSelect).toHaveBeenCalledTimes(3);
     expect(handleSelect).toHaveBeenLastCalledWith('4', expect.anything());
     expect(findSelection(wrapper).text()).toEqual('2');
@@ -116,8 +130,12 @@ describe('Select.Tags', () => {
     );
 
     expect(wrapper.find('List').props().data).toEqual([
-      expect.objectContaining({ data: expect.objectContaining({ value: '2' }) }),
-      expect.objectContaining({ data: expect.objectContaining({ value: '22' }) }),
+      expect.objectContaining({
+        data: expect.objectContaining({ value: '2' }),
+      }),
+      expect.objectContaining({
+        data: expect.objectContaining({ value: '22' }),
+      }),
     ]);
   });
 
@@ -148,6 +166,32 @@ describe('Select.Tags', () => {
 
     wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
     expect(onChange).toHaveBeenCalledWith(['a'], expect.anything());
+  });
+
+  it('can render custom tags', () => {
+    const onTagRender = jest.fn();
+    const tagRender = (props: any) => {
+      const { label } = props;
+      onTagRender(label);
+      return (
+        <span className={classNames(label, 'customize-tag')}>
+          {label}
+          {label}
+        </span>
+      );
+    };
+    const wrapper = mount(
+      <Select mode="tags" tokenSeparators={[',']} tagRender={tagRender} />,
+    );
+
+    wrapper.find('input').instance().focus = jest.fn();
+
+    wrapper.find('input').simulate('change', { target: { value: '1,A,42' } });
+
+    expect(wrapper.find('span.A').length).toBe(1);
+    expect(wrapper.find('span.A').text()).toBe('AA');
+    expect(onTagRender).toHaveBeenCalledTimes(3);
+    expect(wrapper.find('.customize-tag')).toHaveLength(3);
   });
 
   describe('OptGroup', () => {
