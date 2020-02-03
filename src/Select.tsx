@@ -114,7 +114,7 @@ class Select extends React.Component<Partial<ISelectProps>, ISelectState> {
       newState.open = nextProps.open;
     }
 
-    if ('disabled' in nextProps && nextProps.disabled && prevState.open) {
+    if (nextProps.disabled && prevState.open) {
       newState.open = false;
     }
 
