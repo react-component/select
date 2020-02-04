@@ -895,11 +895,13 @@ export default function generateSelector<
     const [containerWidth, setContainerWidth] = React.useState(null);
 
     useLayoutEffect(() => {
-      const newWidth = Math.ceil(containerRef.current.offsetWidth);
-      if (containerWidth !== newWidth) {
-        setContainerWidth(newWidth);
+      if (triggerOpen) {
+        const newWidth = Math.ceil(containerRef.current.offsetWidth);
+        if (containerWidth !== newWidth) {
+          setContainerWidth(newWidth);
+        }
       }
-    });
+    }, [triggerOpen]);
 
     const popupNode = (
       <OptionList
