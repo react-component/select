@@ -1501,4 +1501,25 @@ describe('Select.Basic', () => {
       expectOpen(wrapper, false);
     });
   });
+
+  it('should pass className & style to option', () => {
+    const wrapper = mount(
+      <Select
+        options={[
+          {
+            value: 'test',
+            className: 'test-class',
+            style: { background: 'yellow' },
+          },
+        ]}
+      />,
+    );
+    toggleOpen(wrapper);
+    expect(
+      wrapper.find('.rc-select-item-option').hasClass('test-class'),
+    ).toBeTruthy();
+    expect(wrapper.find('.rc-select-item-option').props().style).toEqual({
+      background: 'yellow',
+    });
+  });
 });
