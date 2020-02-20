@@ -2,6 +2,7 @@
 import React from 'react';
 import Select, { Option } from '../src';
 import '../assets/index.less';
+import './single.less';
 
 class Test extends React.Component {
   state = {
@@ -93,7 +94,12 @@ class Test extends React.Component {
             <Option value="21" disabled text="disabled">
               disabled
             </Option>
-            <Option value="31" text="yiminghe">
+            <Option
+              value="31"
+              text="yiminghe"
+              className="test-option"
+              style={{ background: 'yellow' }}
+            >
               yiminghe
             </Option>
             {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
