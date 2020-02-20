@@ -270,19 +270,31 @@ const OptionList: React.RefForwardingComponent<
             );
           }
 
-          const { disabled, value, title, children } = data as OptionData;
+          const {
+            disabled,
+            value,
+            title,
+            children,
+            style,
+            className,
+          } = data as OptionData;
 
           // Option
           const selected = values.has(value);
 
           const optionPrefixCls = `${itemPrefixCls}-option`;
-          const optionClassName = classNames(itemPrefixCls, optionPrefixCls, {
-            [`${optionPrefixCls}-grouped`]: groupOption,
-            [`${optionPrefixCls}-active`]:
-              activeIndex === itemIndex && !disabled,
-            [`${optionPrefixCls}-disabled`]: disabled,
-            [`${optionPrefixCls}-selected`]: selected,
-          });
+          const optionClassName = classNames(
+            itemPrefixCls,
+            optionPrefixCls,
+            className,
+            {
+              [`${optionPrefixCls}-grouped`]: groupOption,
+              [`${optionPrefixCls}-active`]:
+                activeIndex === itemIndex && !disabled,
+              [`${optionPrefixCls}-disabled`]: disabled,
+              [`${optionPrefixCls}-selected`]: selected,
+            },
+          );
 
           const mergedLabel = childrenAsData ? children : label;
 
@@ -308,6 +320,7 @@ const OptionList: React.RefForwardingComponent<
                   onSelectValue(value);
                 }
               }}
+              style={style}
             >
               <div className={`${optionPrefixCls}-content`}>
                 {mergedLabel || value}

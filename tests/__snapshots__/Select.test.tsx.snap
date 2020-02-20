@@ -507,7 +507,7 @@ exports[`Select.Basic render renders dropdown correctly 1`] = `
               </div>
               <div
                 aria-selected="false"
-                class="antd-item antd-item-option antd-item-option-grouped antd-item-option-active"
+                class="antd-item antd-item-option option-test antd-item-option-grouped antd-item-option-active"
               >
                 <div
                   class="antd-item-option-content"
