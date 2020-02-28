@@ -386,6 +386,13 @@ describe('Select.Combobox', () => {
     toggleOpen(wrapper);
     expectOpen(wrapper);
 
+    // Click again should not close popup
+    for (let i = 0; i < 10; i += 1) {
+      wrapper.find('input').simulate('mouseDown');
+      wrapper.update();
+      expectOpen(wrapper);
+    }
+
     wrapper.find('input').simulate('blur');
     await delay(100);
 
