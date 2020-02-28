@@ -15,6 +15,12 @@ import {
 import allowClearTest from './shared/allowClearTest';
 import throwOptionValue from './shared/throwOptionValue';
 
+async function delay(timeout = 0) {
+  return new Promise(resolve => {
+    setTimeout(resolve, timeout);
+  });
+}
+
 describe('Select.Combobox', () => {
   injectRunAllTimers(jest);
 
@@ -147,7 +153,7 @@ describe('Select.Combobox', () => {
 
         public render() {
           const options = this.state.data.map(item => (
-            <Option key={item.key}>{item.label}</Option>
+            <Option value={item.key}>{item.label}</Option>
           ));
           return (
             <Select
@@ -188,7 +194,7 @@ describe('Select.Combobox', () => {
 
         public render() {
           const options = this.state.data.map(item => (
-            <Option key={item.key}>{item.label}</Option>
+            <Option value={item.key}>{item.label}</Option>
           ));
           return (
             <Select
@@ -300,7 +306,7 @@ describe('Select.Combobox', () => {
         return (
           <Select mode="combobox" onChange={this.updateOptions}>
             {this.state.options.map(opt => (
-              <Option key={opt}>{opt}</Option>
+              <Option value={opt}>{opt}</Option>
             ))}
           </Select>
         );
@@ -368,5 +374,29 @@ describe('Select.Combobox', () => {
     expectOpen(wrapper, false);
 
     expect(wrapper.find('input').props().value).toEqual('');
+  });
+
+  it('should keep close after blur', async () => {
+    const wrapper = mount(
+      <Select mode="combobox" notFoundContent={null}>
+        <Option value="One">One</Option>
+      </Select>,
+    );
+
+    toggleOpen(wrapper);
+    expectOpen(wrapper);
+
+    // Click again should not close popup
+    for (let i = 0; i < 10; i += 1) {
+      wrapper.find('input').simulate('mouseDown');
+      wrapper.update();
+      expectOpen(wrapper);
+    }
+
+    wrapper.find('input').simulate('blur');
+    await delay(100);
+
+    wrapper.update();
+    expectOpen(wrapper, false);
   });
 });

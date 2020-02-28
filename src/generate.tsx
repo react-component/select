@@ -10,6 +10,7 @@
 import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
+import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import Selector, { RefSelectorProps } from './Selector';
 import SelectTrigger, { RefTriggerProps } from './SelectTrigger';
 import { RenderNode, Mode, RenderDOMFunc } from './interface';
@@ -632,13 +633,16 @@ export default function generateSelector<
       (mode === 'combobox' && getInputElement && getInputElement()) || null;
 
     // ============================== Open ==============================
-    const [innerOpen, setInnerOpen] = React.useState<boolean>(defaultOpen);
-    let mergedOpen: boolean =
-      !disabled && (open !== undefined ? open : innerOpen);
+    const [innerOpen, setInnerOpen] = useMergedState<boolean>(undefined, {
+      defaultValue: defaultOpen,
+      value: open,
+    });
+
+    let mergedOpen = innerOpen;
 
     // Not trigger `open` in `combobox` when `notFoundContent` is empty
     const emptyListContent = !notFoundContent && !displayOptions.length;
-    if (emptyListContent && mergedOpen && mode === 'combobox') {
+    if (disabled || (emptyListContent && mergedOpen && mode === 'combobox')) {
       mergedOpen = false;
     }
     const triggerOpen = emptyListContent ? false : mergedOpen;
@@ -646,7 +650,7 @@ export default function generateSelector<
     const onToggleOpen = (newOpen?: boolean) => {
       const nextOpen = newOpen !== undefined ? newOpen : !mergedOpen;
 
-      if (mergedOpen !== nextOpen && !disabled) {
+      if (innerOpen !== nextOpen && !disabled) {
         setInnerOpen(nextOpen);
 
         if (onDropdownVisibleChange) {
