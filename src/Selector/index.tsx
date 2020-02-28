@@ -107,6 +107,8 @@ const Selector: React.RefForwardingComponent<
   const {
     prefixCls,
     multiple,
+    open,
+    mode,
 
     onSearch,
     onToggleOpen,
@@ -179,7 +181,9 @@ const Selector: React.RefForwardingComponent<
       event.preventDefault();
     }
 
-    onToggleOpen();
+    if (mode !== 'combobox' || !open) {
+      onToggleOpen();
+    }
   };
 
   // ================= Inner Selector ==================
