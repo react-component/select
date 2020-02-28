@@ -1465,7 +1465,7 @@ describe('Select.Basic', () => {
   });
 
   describe('disabled on open', () => {
-    it('should not show dropdown when oepn and disabled', () => {
+    it('should not show dropdown when open and disabled', () => {
       const wrapper = mount(
         <Select open disabled>
           <Option value="1">1</Option>
@@ -1485,6 +1485,7 @@ describe('Select.Basic', () => {
       toggleOpen(wrapper);
       expectOpen(wrapper, true);
       wrapper.setProps({ disabled: true });
+      wrapper.update();
       expectOpen(wrapper, false);
     });
 
@@ -1497,7 +1498,9 @@ describe('Select.Basic', () => {
       );
       toggleOpen(wrapper);
       wrapper.setProps({ disabled: true });
+      wrapper.update();
       wrapper.setProps({ disabled: false });
+      wrapper.update();
       expectOpen(wrapper, false);
     });
   });

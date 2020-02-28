@@ -642,7 +642,7 @@ export default function generateSelector<
 
     // Not trigger `open` in `combobox` when `notFoundContent` is empty
     const emptyListContent = !notFoundContent && !displayOptions.length;
-    if (emptyListContent && mergedOpen && mode === 'combobox') {
+    if (disabled || (emptyListContent && mergedOpen && mode === 'combobox')) {
       mergedOpen = false;
     }
     const triggerOpen = emptyListContent ? false : mergedOpen;
