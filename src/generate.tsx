@@ -633,7 +633,7 @@ export default function generateSelector<
       (mode === 'combobox' && getInputElement && getInputElement()) || null;
 
     // ============================== Open ==============================
-    const [innerOpen, setInnerOpen] = useMergedState(false, {
+    const [innerOpen, setInnerOpen] = useMergedState<boolean>(undefined, {
       defaultValue: defaultOpen,
       value: open,
     });
