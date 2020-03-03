@@ -1533,17 +1533,20 @@ describe('Select.Basic', () => {
       <Select onChange={onChange}>
         <Option value={1}>1</Option>
         <Option value={null}>No</Option>
+        <Option value={0}>0</Option>
+        <Option value="">Empty</Option>
       </Select>,
     );
 
-    toggleOpen(wrapper);
-    selectItem(wrapper, 0);
-    expect(onChange).toHaveBeenCalledWith(1, expect.anything());
-    expect(wrapper.find('.rc-select-selection-item').text()).toEqual('1');
-
-    toggleOpen(wrapper);
-    selectItem(wrapper, 1);
-    expect(onChange).toHaveBeenCalledWith(null, expect.anything());
-    expect(wrapper.find('.rc-select-selection-item').text()).toEqual('No');
+    [[1, '1'], [null, 'No'], [0, '0'], ['', 'Empty']].forEach(
+      ([value, showValue], index) => {
+        toggleOpen(wrapper);
+        selectItem(wrapper, index);
+        expect(onChange).toHaveBeenCalledWith(value, expect.anything());
+        expect(wrapper.find('.rc-select-selection-item').text()).toEqual(
+          showValue,
+        );
+      },
+    );
   });
 });
