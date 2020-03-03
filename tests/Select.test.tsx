@@ -1525,4 +1525,25 @@ describe('Select.Basic', () => {
       background: 'yellow',
     });
   });
+
+  it('`null` is a value', () => {
+    const onChange = jest.fn();
+
+    const wrapper = mount(
+      <Select onChange={onChange}>
+        <Option value={1}>1</Option>
+        <Option value={null}>No</Option>
+      </Select>,
+    );
+
+    toggleOpen(wrapper);
+    selectItem(wrapper, 0);
+    expect(onChange).toHaveBeenCalledWith(1, expect.anything());
+    expect(wrapper.find('.rc-select-selection-item').text()).toEqual('1');
+
+    toggleOpen(wrapper);
+    selectItem(wrapper, 1);
+    expect(onChange).toHaveBeenCalledWith(null, expect.anything());
+    expect(wrapper.find('.rc-select-selection-item').text()).toEqual('No');
+  });
 });
