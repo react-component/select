@@ -1450,7 +1450,7 @@ describe('Select.Basic', () => {
   });
 
   describe('reset value to undefined should reset display value', () => {
-    [undefined, null].forEach(value => {
+    [undefined].forEach(value => {
       it(`to ${value}`, () => {
         const wrapper = mount(<Select value="light" />);
         expect(wrapper.find('.rc-select-selection-item').text()).toEqual(

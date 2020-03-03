@@ -79,6 +79,7 @@ class Test extends React.Component {
               console.log('Scroll:', args);
             }}
           >
+            <Option value={null}>不选择</Option>
             <Option value="01" text="jack" title="jack">
               <b
                 style={{

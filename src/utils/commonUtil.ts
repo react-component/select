@@ -20,14 +20,16 @@ export function toInnerValue(
   value: DefaultValueType,
   { labelInValue, combobox }: { labelInValue: boolean; combobox: boolean },
 ): RawValueType[] {
-  if (value === undefined || value === null || (value === '' && combobox)) {
+  if (value === undefined || (value === '' && combobox)) {
     return [];
   }
 
   const values = Array.isArray(value) ? value : [value];
 
   if (labelInValue) {
-    return values.map(({ key, value: val }: LabelValueType) => (val !== undefined ? val : key));
+    return (values as LabelValueType[]).map(
+      ({ key, value: val }: LabelValueType) => (val !== undefined ? val : key),
+    );
   }
 
   return values as RawValueType[];
@@ -56,7 +58,12 @@ export function toOuterValues<FOT extends FlattenOptionsType>(
 
   if (labelInValue) {
     values = values.map(val =>
-      getLabeledValue(val, { options, prevValue, labelInValue, optionLabelProp }),
+      getLabeledValue(val, {
+        options,
+        prevValue,
+        labelInValue,
+        optionLabelProp,
+      }),
     );
   }
 
@@ -70,7 +77,11 @@ export function removeLastEnabledValue<
   const newValues = [...values];
 
   let removeIndex: number;
-  for (removeIndex = measureValues.length - 1; removeIndex >= 0; removeIndex -= 1) {
+  for (
+    removeIndex = measureValues.length - 1;
+    removeIndex >= 0;
+    removeIndex -= 1
+  ) {
     if (!measureValues[removeIndex].disabled) {
       break;
     }
@@ -90,7 +101,9 @@ export function removeLastEnabledValue<
 }
 
 export const isClient =
-  typeof window !== 'undefined' && window.document && window.document.documentElement;
+  typeof window !== 'undefined' &&
+  window.document &&
+  window.document.documentElement;
 
 /** Is client side and not jsdom */
 export const isBrowserClient = process.env.NODE_ENV !== 'test' && isClient;
