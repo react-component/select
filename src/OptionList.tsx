@@ -143,7 +143,7 @@ const OptionList: React.RefForwardingComponent<
 
   // ========================== Values ==========================
   const onSelectValue = (value: RawValueType) => {
-    if (value !== null) {
+    if (value !== undefined) {
       onSelect(value, { selected: !values.has(value) });
     }
 
@@ -187,7 +187,7 @@ const OptionList: React.RefForwardingComponent<
           if (item && !(item.data as OptionData).disabled) {
             onSelectValue((item.data as OptionData).value);
           } else {
-            onSelectValue(null);
+            onSelectValue(undefined);
           }
 
           if (open) {

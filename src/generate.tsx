@@ -378,8 +378,7 @@ export default function generateSelector<
     const [innerValue, setInnerValue] = React.useState<ValueType>(
       value || defaultValue,
     );
-    const baseValue =
-      value !== undefined && value !== null ? value : innerValue;
+    const baseValue = value !== undefined ? value : innerValue;
 
     // Should reset when controlled to be uncontrolled
     const prevValueRef = React.useRef(value);

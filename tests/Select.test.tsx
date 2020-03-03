@@ -1450,7 +1450,7 @@ describe('Select.Basic', () => {
   });
 
   describe('reset value to undefined should reset display value', () => {
-    [undefined, null].forEach(value => {
+    [undefined].forEach(value => {
       it(`to ${value}`, () => {
         const wrapper = mount(<Select value="light" />);
         expect(wrapper.find('.rc-select-selection-item').text()).toEqual(
@@ -1524,5 +1524,26 @@ describe('Select.Basic', () => {
     expect(wrapper.find('.rc-select-item-option').props().style).toEqual({
       background: 'yellow',
     });
+  });
+
+  it('`null` is a value', () => {
+    const onChange = jest.fn();
+
+    const wrapper = mount(
+      <Select onChange={onChange}>
+        <Option value={1}>1</Option>
+        <Option value={null}>No</Option>
+      </Select>,
+    );
+
+    toggleOpen(wrapper);
+    selectItem(wrapper, 0);
+    expect(onChange).toHaveBeenCalledWith(1, expect.anything());
+    expect(wrapper.find('.rc-select-selection-item').text()).toEqual('1');
+
+    toggleOpen(wrapper);
+    selectItem(wrapper, 1);
+    expect(onChange).toHaveBeenCalledWith(null, expect.anything());
+    expect(wrapper.find('.rc-select-selection-item').text()).toEqual('No');
   });
 });
