@@ -3,6 +3,7 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { resetWarned } from 'rc-util/lib/warning';
+import { spyElementPrototype } from 'rc-util/lib/test/domHook';
 import Select, { OptGroup, Option, SelectProps } from '../src';
 import focusTest from './shared/focusTest';
 import blurTest from './shared/blurTest';
@@ -1166,20 +1167,67 @@ describe('Select.Basic', () => {
   });
 
   // https://github.com/ant-design/ant-design/issues/12260
-  it('dropdown menu width should not be smaller than trigger even dropdownMatchSelectWidth is false', () => {
-    const wrapper = mount(
-      <Select style={{ width: 1000 }} dropdownMatchSelectWidth={233}>
-        <Option value={0}>0</Option>
-        <Option value={1}>1</Option>
-      </Select>,
-    );
-    toggleOpen(wrapper);
-    expect(
-      wrapper
-        .find('.rc-select-dropdown')
-        .last()
-        .props().style.width,
-    ).toBe(233);
+  describe('dropdownMatchSelectWidth', () => {
+    let domHook;
+
+    beforeAll(() => {
+      domHook = spyElementPrototype(HTMLElement, 'offsetWidth', {
+        get: () => 1000,
+      });
+    });
+
+    afterAll(() => {
+      domHook.mockRestore();
+    });
+
+    it('dropdown menu width should not be smaller than trigger even dropdownMatchSelectWidth is false', () => {
+      const options = [];
+      for (let i = 0; i < 99; i += 1) {
+        options.push({
+          value: i,
+        });
+      }
+
+      const wrapper = mount(
+        <Select
+          listItemHeight={10}
+          listHeight={100}
+          style={{ width: 1000 }}
+          dropdownMatchSelectWidth={false}
+          options={options}
+        />,
+      );
+      toggleOpen(wrapper);
+      expect(
+        wrapper
+          .find('.rc-select-dropdown')
+          .last()
+          .props().style.minWidth,
+      ).toBe(1000);
+
+      // dropdownMatchSelectWidth is false means close virtual scroll
+      expect(wrapper.find('.rc-select-item')).toHaveLength(options.length);
+    });
+
+    it('virtual false also no render virtual list', () => {
+      const options = [];
+      for (let i = 0; i < 99; i += 1) {
+        options.push({
+          value: i,
+        });
+      }
+
+      const wrapper = mount(
+        <Select
+          listItemHeight={10}
+          listHeight={100}
+          virtual={false}
+          options={options}
+        />,
+      );
+      toggleOpen(wrapper);
+      expect(wrapper.find('.rc-select-item')).toHaveLength(options.length);
+    });
   });
 
   it('if loading, arrow should show loading icon', () => {
@@ -1538,15 +1586,18 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    [[1, '1'], [null, 'No'], [0, '0'], ['', 'Empty']].forEach(
-      ([value, showValue], index) => {
-        toggleOpen(wrapper);
-        selectItem(wrapper, index);
-        expect(onChange).toHaveBeenCalledWith(value, expect.anything());
-        expect(wrapper.find('.rc-select-selection-item').text()).toEqual(
-          showValue,
-        );
-      },
-    );
+    [
+      [1, '1'],
+      [null, 'No'],
+      [0, '0'],
+      ['', 'Empty'],
+    ].forEach(([value, showValue], index) => {
+      toggleOpen(wrapper);
+      selectItem(wrapper, index);
+      expect(onChange).toHaveBeenCalledWith(value, expect.anything());
+      expect(wrapper.find('.rc-select-selection-item').text()).toEqual(
+        showValue,
+      );
+    });
   });
 });

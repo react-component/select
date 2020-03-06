@@ -27,6 +27,7 @@ export interface OptionListProps<OptionsType extends object[]> {
   menuItemSelectedIcon?: RenderNode;
   childrenAsData: boolean;
   searchValue: string;
+  virtual: boolean;
 
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
   onToggleOpen: (open?: boolean) => void;
@@ -62,6 +63,7 @@ const OptionList: React.RefForwardingComponent<
     notFoundContent,
     open,
     menuItemSelectedIcon,
+    virtual,
     onSelect,
     onToggleOpen,
     onActiveValue,
@@ -255,6 +257,7 @@ const OptionList: React.RefForwardingComponent<
         fullHeight={false}
         onMouseDown={onListMouseDown}
         onScroll={onScroll}
+        virtual={virtual}
       >
         {({ group, groupOption, data }, itemIndex) => {
           const { label, key } = data;

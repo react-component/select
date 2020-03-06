@@ -38,7 +38,7 @@ export interface SelectTriggerProps {
   containerWidth: number;
   dropdownStyle: React.CSSProperties;
   dropdownClassName: string;
-  dropdownMatchSelectWidth?: true | number;
+  dropdownMatchSelectWidth?: boolean | number;
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
   getPopupContainer?: RenderDOMFunc;
   dropdownAlign: object;
@@ -90,6 +90,17 @@ const SelectTrigger: React.RefForwardingComponent<
     getPopupElement: () => popupRef.current,
   }));
 
+  const popupStyle: React.CSSProperties = {
+    minWidth: containerWidth,
+    ...dropdownStyle,
+  };
+
+  if (typeof dropdownMatchSelectWidth === 'number') {
+    popupStyle.width = dropdownMatchSelectWidth;
+  } else if (dropdownMatchSelectWidth) {
+    popupStyle.width = containerWidth;
+  }
+
   return (
     <Trigger
       {...restProps}
@@ -106,13 +117,7 @@ const SelectTrigger: React.RefForwardingComponent<
       popupClassName={classNames(dropdownClassName, {
         [`${dropdownPrefixCls}-empty`]: empty,
       })}
-      popupStyle={{
-        ...dropdownStyle,
-        width:
-          typeof dropdownMatchSelectWidth === 'number'
-            ? dropdownMatchSelectWidth
-            : containerWidth,
-      }}
+      popupStyle={popupStyle}
       getTriggerDOMNode={getTriggerDOMNode}
     >
       {children}

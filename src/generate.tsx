@@ -107,7 +107,8 @@ export interface SelectProps<OptionsType extends object[], ValueType>
   listItemHeight?: number;
   dropdownStyle?: React.CSSProperties;
   dropdownClassName?: string;
-  dropdownMatchSelectWidth?: true | number;
+  dropdownMatchSelectWidth?: boolean | number;
+  virtual?: boolean;
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
   dropdownAlign?: any;
   animation?: string;
@@ -301,6 +302,7 @@ export default function generateSelector<
       listItemHeight = 20,
       animation,
       transitionName,
+      virtual,
       dropdownStyle,
       dropdownClassName,
       dropdownMatchSelectWidth,
@@ -927,6 +929,7 @@ export default function generateSelector<
         onScroll={onPopupScroll}
         searchValue={mergedSearchValue}
         menuItemSelectedIcon={menuItemSelectedIcon}
+        virtual={virtual !== false && dropdownMatchSelectWidth !== false}
       />
     );
 
