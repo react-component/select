@@ -107,7 +107,7 @@ export interface SelectProps<OptionsType extends object[], ValueType>
   listItemHeight?: number;
   dropdownStyle?: React.CSSProperties;
   dropdownClassName?: string;
-  dropdownMatchSelectWidth?: true | number;
+  dropdownMatchSelectWidth?: boolean | number;
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
   dropdownAlign?: any;
   animation?: string;
@@ -927,6 +927,7 @@ export default function generateSelector<
         onScroll={onPopupScroll}
         searchValue={mergedSearchValue}
         menuItemSelectedIcon={menuItemSelectedIcon}
+        dropdownMatchSelectWidth={dropdownMatchSelectWidth}
       />
     );
 
