@@ -1208,6 +1208,26 @@ describe('Select.Basic', () => {
       // dropdownMatchSelectWidth is false means close virtual scroll
       expect(wrapper.find('.rc-select-item')).toHaveLength(options.length);
     });
+
+    it('virtual false also no render virtual list', () => {
+      const options = [];
+      for (let i = 0; i < 99; i += 1) {
+        options.push({
+          value: i,
+        });
+      }
+
+      const wrapper = mount(
+        <Select
+          listItemHeight={10}
+          listHeight={100}
+          virtual={false}
+          options={options}
+        />,
+      );
+      toggleOpen(wrapper);
+      expect(wrapper.find('.rc-select-item')).toHaveLength(options.length);
+    });
   });
 
   it('if loading, arrow should show loading icon', () => {
@@ -1566,15 +1586,18 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    [[1, '1'], [null, 'No'], [0, '0'], ['', 'Empty']].forEach(
-      ([value, showValue], index) => {
-        toggleOpen(wrapper);
-        selectItem(wrapper, index);
-        expect(onChange).toHaveBeenCalledWith(value, expect.anything());
-        expect(wrapper.find('.rc-select-selection-item').text()).toEqual(
-          showValue,
-        );
-      },
-    );
+    [
+      [1, '1'],
+      [null, 'No'],
+      [0, '0'],
+      ['', 'Empty'],
+    ].forEach(([value, showValue], index) => {
+      toggleOpen(wrapper);
+      selectItem(wrapper, index);
+      expect(onChange).toHaveBeenCalledWith(value, expect.anything());
+      expect(wrapper.find('.rc-select-selection-item').text()).toEqual(
+        showValue,
+      );
+    });
   });
 });
