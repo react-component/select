@@ -119,6 +119,7 @@ React.render(c, container);
 | menuItemSelectedIcon | specify the remove icon | ReactNode \| (props: MenuItemProps) => ReactNode | - |
 | dropdownRender | render custom dropdown menu | (menu: React.Node, props: MenuProps) => ReactNode | - |
 | loading | show loading icon in arrow | Boolean | false |
+| virtual | Disable virtual scroll | Boolean | true |
 
 ### Methods
 
