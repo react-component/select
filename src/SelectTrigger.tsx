@@ -91,6 +91,7 @@ const SelectTrigger: React.RefForwardingComponent<
   }));
 
   const popupStyle: React.CSSProperties = {
+    minWidth: containerWidth,
     ...dropdownStyle,
   };
 
