@@ -16,7 +16,7 @@ export function convertChildrenToData(
   optionOnly: boolean = false,
 ): OptionsType {
   return toArray(nodes)
-    .map((node: React.ReactElement): OptionData | OptionGroupData | null => {
+    .map((node: React.ReactElement, index: number): OptionData | OptionGroupData | null => {
       if (!React.isValidElement(node) || !node.type) {
         return null;
       }
@@ -34,7 +34,8 @@ export function convertChildrenToData(
       }
 
       return {
-        key,
+        key: `__RC_SELECT_GRP__${key === null ? index : key}__`,
+        label: key,
         ...restProps,
         options: convertChildrenToData(children),
       };
