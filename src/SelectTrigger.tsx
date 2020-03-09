@@ -3,23 +3,28 @@ import Trigger from 'rc-trigger';
 import classNames from 'classnames';
 import { RenderDOMFunc } from './interface';
 
-const BUILT_IN_PLACEMENTS = {
-  bottomLeft: {
-    points: ['tl', 'bl'],
-    offset: [0, 4],
-    overflow: {
-      adjustX: 0,
-      adjustY: 1,
+const getBuiltInPlacements = (dropdownMatchSelectWidth: number | true) => {
+  // Enable horizontal overflow auto-adjustment when a custom dropdown width is provided
+  const adjustX = typeof dropdownMatchSelectWidth !== 'number' ? 0 : 1;
+
+  return {
+    bottomLeft: {
+      points: ['tl', 'bl'],
+      offset: [0, 4],
+      overflow: {
+        adjustX,
+        adjustY: 1,
+      },
     },
-  },
-  topLeft: {
-    points: ['bl', 'tl'],
-    offset: [0, -4],
-    overflow: {
-      adjustX: 0,
-      adjustY: 1,
+    topLeft: {
+      points: ['bl', 'tl'],
+      offset: [0, -4],
+      overflow: {
+        adjustX,
+        adjustY: 1,
+      },
     },
-  },
+  };
 };
 
 export interface RefTriggerProps {
@@ -96,7 +101,7 @@ const SelectTrigger: React.RefForwardingComponent<
       showAction={[]}
       hideAction={[]}
       popupPlacement="bottomLeft"
-      builtinPlacements={BUILT_IN_PLACEMENTS}
+      builtinPlacements={getBuiltInPlacements(dropdownMatchSelectWidth)}
       prefixCls={dropdownPrefixCls}
       popupTransitionName={mergedTransitionName}
       popup={<div ref={popupRef}>{popupNode}</div>}
