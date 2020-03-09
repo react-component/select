@@ -21,7 +21,7 @@ describe('Utils', () => {
       expect(convertChildrenToData(node.props.children)).toEqual([
         { key: 'light', value: 'light', children: 'Light' },
         {
-          key: null,
+          key: '__RC_SELECT_GRP__1__',
           label: 'Group',
           options: [{ key: null, children: 'Bamboo', value: 'bamboo' }],
         },
