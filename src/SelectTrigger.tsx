@@ -83,6 +83,11 @@ const SelectTrigger: React.RefForwardingComponent<
     popupNode = dropdownRender(popupElement);
   }
 
+  const builtInPlacements = React.useMemo(
+    () => getBuiltInPlacements(dropdownMatchSelectWidth),
+    [dropdownMatchSelectWidth],
+  );
+
   // ===================== Motion ======================
   const mergedTransitionName = animation
     ? `${dropdownPrefixCls}-${animation}`
@@ -101,7 +106,7 @@ const SelectTrigger: React.RefForwardingComponent<
       showAction={[]}
       hideAction={[]}
       popupPlacement="bottomLeft"
-      builtinPlacements={getBuiltInPlacements(dropdownMatchSelectWidth)}
+      builtinPlacements={builtInPlacements}
       prefixCls={dropdownPrefixCls}
       popupTransitionName={mergedTransitionName}
       popup={<div ref={popupRef}>{popupNode}</div>}
