@@ -1230,6 +1230,32 @@ describe('Select.Basic', () => {
     });
   });
 
+  it('dropdown should auto-adjust horizontally when dropdownMatchSelectWidth is false', () => {
+    const wrapper = mount(
+      <Select dropdownMatchSelectWidth={233}>
+        <Option value={0}>0</Option>
+        <Option value={1}>1</Option>
+      </Select>,
+    );
+    expect(
+      wrapper.find('Trigger').props().builtinPlacements.bottomLeft.overflow
+        .adjustX,
+    ).toBe(1);
+  });
+
+  it('dropdown should not auto-adjust horizontally when dropdownMatchSelectWidth is true', () => {
+    const wrapper = mount(
+      <Select>
+        <Option value={0}>0</Option>
+        <Option value={1}>1</Option>
+      </Select>,
+    );
+    expect(
+      wrapper.find('Trigger').props().builtinPlacements.bottomLeft.overflow
+        .adjustX,
+    ).toBe(0);
+  });
+
   it('if loading, arrow should show loading icon', () => {
     const wrapper = mount(
       <Select style={{ width: 1000 }} loading>
