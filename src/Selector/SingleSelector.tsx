@@ -34,9 +34,10 @@ const SingleSelector: React.FC<SelectorProps> = ({
   const inputEditable = combobox || (showSearch && open);
   const item = values[0];
 
+  const getDisplayValue = (value: React.ReactText): string => (value === null ? '' : String(value));
   let inputValue: string = searchValue;
   if (combobox) {
-    inputValue = item ? String(item.value) : activeValue || searchValue;
+    inputValue = item ? getDisplayValue(item.value) : activeValue || searchValue;
   }
 
   const hasTextInput = !!inputValue;
