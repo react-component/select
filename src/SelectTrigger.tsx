@@ -3,7 +3,7 @@ import Trigger from 'rc-trigger';
 import classNames from 'classnames';
 import { RenderDOMFunc } from './interface';
 
-const getBuiltInPlacements = (dropdownMatchSelectWidth: number | true) => {
+const getBuiltInPlacements = (dropdownMatchSelectWidth: number | boolean) => {
   // Enable horizontal overflow auto-adjustment when a custom dropdown width is provided
   const adjustX = typeof dropdownMatchSelectWidth !== 'number' ? 0 : 1;
 
@@ -52,10 +52,10 @@ export interface SelectTriggerProps {
   getTriggerDOMNode: () => HTMLElement;
 }
 
-const SelectTrigger: React.RefForwardingComponent<
-  RefTriggerProps,
-  SelectTriggerProps
-> = (props, ref) => {
+const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTriggerProps> = (
+  props,
+  ref,
+) => {
   const {
     prefixCls,
     disabled,
@@ -83,15 +83,12 @@ const SelectTrigger: React.RefForwardingComponent<
     popupNode = dropdownRender(popupElement);
   }
 
-  const builtInPlacements = React.useMemo(
-    () => getBuiltInPlacements(dropdownMatchSelectWidth),
-    [dropdownMatchSelectWidth],
-  );
+  const builtInPlacements = React.useMemo(() => getBuiltInPlacements(dropdownMatchSelectWidth), [
+    dropdownMatchSelectWidth,
+  ]);
 
   // ===================== Motion ======================
-  const mergedTransitionName = animation
-    ? `${dropdownPrefixCls}-${animation}`
-    : transitionName;
+  const mergedTransitionName = animation ? `${dropdownPrefixCls}-${animation}` : transitionName;
 
   // ======================= Ref =======================
   const popupRef = React.useRef<HTMLDivElement>(null);
@@ -135,9 +132,7 @@ const SelectTrigger: React.RefForwardingComponent<
   );
 };
 
-const RefSelectTrigger = React.forwardRef<RefTriggerProps, SelectTriggerProps>(
-  SelectTrigger,
-);
+const RefSelectTrigger = React.forwardRef<RefTriggerProps, SelectTriggerProps>(SelectTrigger);
 RefSelectTrigger.displayName = 'SelectTrigger';
 
 export default RefSelectTrigger;
