@@ -6,12 +6,7 @@ import Select, { Option, SelectProps } from '../src';
 import focusTest from './shared/focusTest';
 import keyDownTest from './shared/keyDownTest';
 import openControlledTest from './shared/openControlledTest';
-import {
-  expectOpen,
-  toggleOpen,
-  selectItem,
-  injectRunAllTimers,
-} from './utils/common';
+import { expectOpen, toggleOpen, selectItem, injectRunAllTimers } from './utils/common';
 import allowClearTest from './shared/allowClearTest';
 import throwOptionValue from './shared/throwOptionValue';
 
@@ -61,9 +56,7 @@ describe('Select.Combobox', () => {
     );
 
     expect(wrapper.find('input').props().value).toBe('');
-    expect(wrapper.find('.rc-select-selection-placeholder').text()).toEqual(
-      'placeholder',
-    );
+    expect(wrapper.find('.rc-select-selection-placeholder').text()).toEqual('placeholder');
     wrapper.find('input').simulate('change', { target: { value: '1' } });
     expect(wrapper.find('.rc-select-selection-placeholder').length).toBeFalsy();
     expect(wrapper.find('input').props().value).toBe('1');
@@ -224,13 +217,7 @@ describe('Select.Combobox', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
     const wrapper = mount(
-      <Select
-        mode="combobox"
-        backfill
-        open
-        onChange={handleChange}
-        onSelect={handleSelect}
-      >
+      <Select mode="combobox" backfill open onChange={handleChange} onSelect={handleSelect}>
         <Option value="One">One</Option>
         <Option value="Two">Two</Option>
       </Select>,
@@ -243,14 +230,8 @@ describe('Select.Combobox', () => {
 
     input.simulate('keyDown', { which: KeyCode.ENTER });
     expect(wrapper.find('input').props().value).toEqual('One');
-    expect(handleChange).toHaveBeenCalledWith(
-      'One',
-      expect.objectContaining({ value: 'One' }),
-    );
-    expect(handleSelect).toHaveBeenCalledWith(
-      'One',
-      expect.objectContaining({ value: 'One' }),
-    );
+    expect(handleChange).toHaveBeenCalledWith('One', expect.objectContaining({ value: 'One' }));
+    expect(handleSelect).toHaveBeenCalledWith('One', expect.objectContaining({ value: 'One' }));
   });
 
   it("should hide clear icon when value is ''", () => {
@@ -340,11 +321,7 @@ describe('Select.Combobox', () => {
     jest.useFakeTimers();
     const onDropdownVisibleChange = jest.fn();
     const wrapper = mount(
-      <Select
-        mode="combobox"
-        open
-        onDropdownVisibleChange={onDropdownVisibleChange}
-      >
+      <Select mode="combobox" open onDropdownVisibleChange={onDropdownVisibleChange}>
         <Option value="One">One</Option>
         <Option value="Two">Two</Option>
       </Select>,
@@ -398,5 +375,11 @@ describe('Select.Combobox', () => {
 
     wrapper.update();
     expectOpen(wrapper, false);
+  });
+
+  it('expect null value display empty string', () => {
+    const wrapper = mount(<Select mode="combobox" value={null} />);
+
+    expect(wrapper.find('input').props().value).toBe('');
   });
 });
