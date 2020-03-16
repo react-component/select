@@ -40,7 +40,8 @@ const SingleSelector: React.FC<SelectorProps> = ({
     inputValue = item ? getDisplayValue(item.value) : activeValue || searchValue;
   }
 
-  const hasTextInput = !!inputValue;
+  // Not show text when closed expect combobox mode
+  const hasTextInput = mode !== 'combobox' && !open ? false : !!inputValue;
 
   return (
     <>
