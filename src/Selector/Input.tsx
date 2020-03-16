@@ -1,4 +1,5 @@
 import React from 'react';
+import { composeRef } from 'rc-util/lib/ref';
 
 type InputRef = HTMLInputElement | HTMLTextAreaElement;
 
@@ -14,26 +15,9 @@ interface InputProps {
   open: boolean;
   tabIndex: number;
 
-  onKeyDown: React.KeyboardEventHandler<
-    HTMLInputElement | HTMLTextAreaElement | HTMLElement
-  >;
-  onMouseDown: React.MouseEventHandler<
-    HTMLInputElement | HTMLTextAreaElement | HTMLElement
-  >;
-  onChange: React.ChangeEventHandler<
-    HTMLInputElement | HTMLTextAreaElement | HTMLElement
-  >;
-}
-
-function fillRef(
-  node: InputRef,
-  ref: React.LegacyRef<InputRef> | React.Ref<InputRef>,
-) {
-  if (typeof ref === 'function') {
-    ref(node);
-  } else if (ref && typeof ref === 'object') {
-    (ref as any).current = node;
-  }
+  onKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
+  onMouseDown: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
+  onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
 }
 
 const Input: React.RefForwardingComponent<InputRef, InputProps> = (
@@ -66,14 +50,9 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     },
   } = inputNode;
 
-  function inputRef(node: InputRef) {
-    fillRef(node, ref);
-    fillRef(node, originRef);
-  }
-
   inputNode = React.cloneElement(inputNode, {
     id,
-    ref: inputRef,
+    ref: composeRef(ref, originRef as any),
     disabled,
     tabIndex,
     autoComplete: 'off',
