@@ -20,78 +20,80 @@ interface InputProps {
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
 }
 
-const Input: React.RefForwardingComponent<InputRef, InputProps> = (
-  {
-    prefixCls,
-    id,
-    inputElement,
-    disabled,
-    tabIndex,
-    autoFocus,
-    editable,
-    accessibilityIndex,
-    value,
-    onKeyDown,
-    onMouseDown,
-    onChange,
-    open,
-  },
-  ref,
-) => {
-  let inputNode: React.ComponentElement<any, any> = inputElement || <input />;
+class Input extends React.Component<InputProps> {
+  inputRef = React.createRef<HTMLInputElement | HTMLTextAreaElement>();
 
-  const {
-    ref: originRef,
-    props: {
-      onKeyDown: onOriginKeyDown,
-      onChange: onOriginChange,
-      onMouseDown: onOriginMouseDown,
-      style,
-    },
-  } = inputNode;
+  getInput = () => this.inputRef.current;
 
-  inputNode = React.cloneElement(inputNode, {
-    id,
-    ref: composeRef(ref, originRef as any),
-    disabled,
-    tabIndex,
-    autoComplete: 'off',
-    autoFocus,
-    className: `${prefixCls}-selection-search-input`,
-    style: { ...style, opacity: editable ? null : 0 },
-    role: 'combobox',
-    'aria-expanded': open,
-    'aria-haspopup': 'listbox',
-    'aria-owns': `${id}_list`,
-    'aria-autocomplete': 'list',
-    'aria-controls': `${id}_list`,
-    'aria-activedescendant': `${id}_list_${accessibilityIndex}`,
-    value: editable ? value : '',
-    readOnly: !editable,
-    onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
-      onKeyDown(event);
-      if (onOriginKeyDown) {
-        onOriginKeyDown(event);
-      }
-    },
-    onMouseDown: (event: React.MouseEvent<HTMLElement>) => {
-      onMouseDown(event);
-      if (onOriginMouseDown) {
-        onOriginMouseDown(event);
-      }
-    },
-    onChange: (event: React.ChangeEvent<HTMLElement>) => {
-      onChange(event);
-      if (onOriginChange) {
-        onOriginChange(event);
-      }
-    },
-  });
+  render() {
+    const {
+      prefixCls,
+      id,
+      inputElement,
+      disabled,
+      tabIndex,
+      autoFocus,
+      editable,
+      accessibilityIndex,
+      value,
+      onKeyDown,
+      onMouseDown,
+      onChange,
+      open,
+    } = this.props;
 
-  return inputNode;
-};
+    let inputNode: React.ReactElement<any, any> = inputElement || <input />;
 
-const RefInput = React.forwardRef<InputRef, InputProps>(Input);
-RefInput.displayName = 'Input';
+    const {
+      ref: originRef,
+      props: {
+        onKeyDown: onOriginKeyDown,
+        onChange: onOriginChange,
+        onMouseDown: onOriginMouseDown,
+        style,
+      },
+    } = inputNode as any;
 
-export default RefInput;
+    inputNode = React.cloneElement(inputNode, {
+      id,
+      ref: composeRef(this.inputRef, originRef as any),
+      disabled,
+      tabIndex,
+      autoComplete: 'off',
+      autoFocus,
+      className: `${prefixCls}-selection-search-input`,
+      style: { ...style, opacity: editable ? null : 0 },
+      role: 'combobox',
+      'aria-expanded': open,
+      'aria-haspopup': 'listbox',
+      'aria-owns': `${id}_list`,
+      'aria-autocomplete': 'list',
+      'aria-controls': `${id}_list`,
+      'aria-activedescendant': `${id}_list_${accessibilityIndex}`,
+      value: editable ? value : '',
+      readOnly: !editable,
+      onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
+        onKeyDown(event);
+        if (onOriginKeyDown) {
+          onOriginKeyDown(event);
+        }
+      },
+      onMouseDown: (event: React.MouseEvent<HTMLElement>) => {
+        onMouseDown(event);
+        if (onOriginMouseDown) {
+          onOriginMouseDown(event);
+        }
+      },
+      onChange: (event: React.ChangeEvent<HTMLElement>) => {
+        onChange(event);
+        if (onOriginChange) {
+          onOriginChange(event);
+        }
+      },
+    });
+
+    return inputNode;
+  }
+}
+
+export default Input;
