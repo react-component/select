@@ -12,17 +12,20 @@ import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import MultipleSelector from './MultipleSelector';
 import SingleSelector from './SingleSelector';
-import { LabelValueType, RawValueType, CustomTagProps } from '../interface/generator';
+import {
+  LabelValueType,
+  RawValueType,
+  CustomTagProps,
+} from '../interface/generator';
 import { RenderNode, Mode } from '../interface';
 import useLock from '../hooks/useLock';
-import Input from './Input';
 
 export interface InnerSelectorProps {
   prefixCls: string;
   id: string;
   mode: Mode;
 
-  inputRef: React.Ref<Input>;
+  inputRef: React.Ref<HTMLInputElement | HTMLTextAreaElement>;
   placeholder?: React.ReactNode;
   disabled?: boolean;
   autoFocus?: boolean;
@@ -33,9 +36,15 @@ export interface InnerSelectorProps {
   open: boolean;
   tabIndex?: number;
 
-  onInputKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onInputMouseDown: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onInputChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onInputKeyDown: React.KeyboardEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  >;
+  onInputMouseDown: React.MouseEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  >;
+  onInputChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  >;
 }
 
 export interface RefSelectorProps {
@@ -66,7 +75,9 @@ export interface SelectorProps {
   // Tags
   maxTagCount?: number;
   maxTagTextLength?: number;
-  maxTagPlaceholder?: React.ReactNode | ((omittedValues: LabelValueType[]) => React.ReactNode);
+  maxTagPlaceholder?:
+    | React.ReactNode
+    | ((omittedValues: LabelValueType[]) => React.ReactNode);
   tagRender?: (props: CustomTagProps) => React.ReactElement;
 
   // Motion
@@ -76,7 +87,9 @@ export interface SelectorProps {
   /** `onSearch` returns go next step boolean to check if need do toggle open */
   onSearch: (searchValue: string) => boolean;
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
-  onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onInputKeyDown?: React.KeyboardEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  >;
 
   /**
    * @private get real dom for trigger align.
@@ -85,8 +98,11 @@ export interface SelectorProps {
   domRef: React.Ref<HTMLDivElement>;
 }
 
-const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = (props, ref) => {
-  const inputRef = React.useRef<Input>(null);
+const Selector: React.RefForwardingComponent<
+  RefSelectorProps,
+  SelectorProps
+> = (props, ref) => {
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   const {
     prefixCls,
@@ -104,17 +120,19 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   // ======================= Ref =======================
   React.useImperativeHandle(ref, () => ({
     focus: () => {
-      inputRef.current.getInput().focus();
+      inputRef.current.focus();
     },
     blur: () => {
-      inputRef.current.getInput().blur();
+      inputRef.current.blur();
     },
   }));
 
   // ====================== Input ======================
   const [getInputMouseDown, setInputMouseDown] = useLock(0);
 
-  const onInternalInputKeyDown: React.KeyboardEventHandler<HTMLInputElement> = event => {
+  const onInternalInputKeyDown: React.KeyboardEventHandler<
+    HTMLInputElement
+  > = event => {
     const { which } = event;
 
     if (which === KeyCode.UP || which === KeyCode.DOWN) {
@@ -125,7 +143,11 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
       onInputKeyDown(event);
     }
 
-    if (![KeyCode.SHIFT, KeyCode.TAB, KeyCode.BACKSPACE, KeyCode.ESC].includes(which)) {
+    if (
+      ![KeyCode.SHIFT, KeyCode.TAB, KeyCode.BACKSPACE, KeyCode.ESC].includes(
+        which,
+      )
+    ) {
       onToggleOpen(true);
     }
   };
@@ -134,7 +156,9 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
    * We can not use `findDOMNode` sine it will get warning,
    * have to use timer to check if is input element.
    */
-  const onInternalInputMouseDown: React.MouseEventHandler<HTMLInputElement> = () => {
+  const onInternalInputMouseDown: React.MouseEventHandler<
+    HTMLInputElement
+  > = () => {
     setInputMouseDown(true);
   };
 
@@ -148,12 +172,12 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   // Should focus input if click the selector
   const onClick = ({ target }) => {
     if (target !== inputRef.current) {
-      inputRef.current.getInput().focus();
+      inputRef.current.focus();
     }
   };
 
   const onMouseDown: React.MouseEventHandler<HTMLElement> = event => {
-    if (event.target !== inputRef.current.getInput() && !getInputMouseDown()) {
+    if (event.target !== inputRef.current && !getInputMouseDown()) {
       event.preventDefault();
     }
 
@@ -188,7 +212,9 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   );
 };
 
-const ForwardSelector = React.forwardRef<RefSelectorProps, SelectorProps>(Selector);
+const ForwardSelector = React.forwardRef<RefSelectorProps, SelectorProps>(
+  Selector,
+);
 ForwardSelector.displayName = 'Selector';
 
 export default ForwardSelector;
