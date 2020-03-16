@@ -137,4 +137,19 @@ describe('OptionList', () => {
 
     expect(preventDefault).toHaveBeenCalled();
   });
+
+  it('Data attributes should be set correct', () => {
+    const wrapper = mount(
+      generateList({
+        options: [{ value: '1' }, { value: '2', 'data-num': '123' }],
+      }),
+    );
+
+    expect(
+      wrapper
+        .find('.rc-select-item-option')
+        .last()
+        .prop('data-num'),
+    ).toBe('123');
+  });
 });

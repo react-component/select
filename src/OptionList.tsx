@@ -108,9 +108,7 @@ const OptionList: React.RefForwardingComponent<
     return -1;
   };
 
-  const [activeIndex, setActiveIndex] = React.useState(() =>
-    getEnabledActiveIndex(0),
-  );
+  const [activeIndex, setActiveIndex] = React.useState(() => getEnabledActiveIndex(0));
   const setActive = (index: number) => {
     setActiveIndex(index);
 
@@ -126,9 +124,7 @@ const OptionList: React.RefForwardingComponent<
 
   // Auto active first item when list length or searchValue changed
   React.useEffect(() => {
-    setActive(
-      defaultActiveFirstOption !== false ? getEnabledActiveIndex(0) : -1,
-    );
+    setActive(defaultActiveFirstOption !== false ? getEnabledActiveIndex(0) : -1);
   }, [memoFlattenOptions.length, searchValue]);
 
   // Auto scroll to item position in single mode
@@ -171,10 +167,7 @@ const OptionList: React.RefForwardingComponent<
           }
 
           if (offset !== 0) {
-            const nextActiveIndex = getEnabledActiveIndex(
-              activeIndex + offset,
-              offset,
-            );
+            const nextActiveIndex = getEnabledActiveIndex(activeIndex + offset, offset);
             scrollIntoView(nextActiveIndex);
             setActive(nextActiveIndex);
           }
@@ -226,12 +219,7 @@ const OptionList: React.RefForwardingComponent<
     const item = memoFlattenOptions[index];
     const value = item && (item.data as OptionData).value;
     return item ? (
-      <div
-        key={index}
-        role="option"
-        id={`${id}_list_${index}`}
-        aria-selected={values.has(value)}
-      >
+      <div key={index} role="option" id={`${id}_list_${index}`} aria-selected={values.has(value)}>
         {value}
       </div>
     ) : null;
@@ -239,11 +227,7 @@ const OptionList: React.RefForwardingComponent<
 
   return (
     <>
-      <div
-        role="listbox"
-        id={`${id}_list`}
-        style={{ height: 0, overflow: 'hidden' }}
-      >
+      <div role="listbox" id={`${id}_list`} style={{ height: 0, overflow: 'hidden' }}>
         {renderItem(activeIndex - 1)}
         {renderItem(activeIndex)}
         {renderItem(activeIndex + 1)}
@@ -265,9 +249,7 @@ const OptionList: React.RefForwardingComponent<
           // Group
           if (group) {
             return (
-              <div
-                className={classNames(itemPrefixCls, `${itemPrefixCls}-group`)}
-              >
+              <div className={classNames(itemPrefixCls, `${itemPrefixCls}-group`)}>
                 {label !== undefined ? label : key}
               </div>
             );
@@ -280,34 +262,28 @@ const OptionList: React.RefForwardingComponent<
             children,
             style,
             className,
+            ...otherProps
           } = data as OptionData;
 
           // Option
           const selected = values.has(value);
 
           const optionPrefixCls = `${itemPrefixCls}-option`;
-          const optionClassName = classNames(
-            itemPrefixCls,
-            optionPrefixCls,
-            className,
-            {
-              [`${optionPrefixCls}-grouped`]: groupOption,
-              [`${optionPrefixCls}-active`]:
-                activeIndex === itemIndex && !disabled,
-              [`${optionPrefixCls}-disabled`]: disabled,
-              [`${optionPrefixCls}-selected`]: selected,
-            },
-          );
+          const optionClassName = classNames(itemPrefixCls, optionPrefixCls, className, {
+            [`${optionPrefixCls}-grouped`]: groupOption,
+            [`${optionPrefixCls}-active`]: activeIndex === itemIndex && !disabled,
+            [`${optionPrefixCls}-disabled`]: disabled,
+            [`${optionPrefixCls}-selected`]: selected,
+          });
 
           const mergedLabel = childrenAsData ? children : label;
 
           const iconVisible =
-            !menuItemSelectedIcon ||
-            typeof menuItemSelectedIcon === 'function' ||
-            selected;
+            !menuItemSelectedIcon || typeof menuItemSelectedIcon === 'function' || selected;
 
           return (
             <div
+              {...otherProps}
               aria-selected={selected}
               className={optionClassName}
               title={title}
@@ -325,9 +301,7 @@ const OptionList: React.RefForwardingComponent<
               }}
               style={style}
             >
-              <div className={`${optionPrefixCls}-content`}>
-                {mergedLabel || value}
-              </div>
+              <div className={`${optionPrefixCls}-content`}>{mergedLabel || value}</div>
               {React.isValidElement(menuItemSelectedIcon) || selected}
               {iconVisible && (
                 <TransBtn
@@ -346,10 +320,9 @@ const OptionList: React.RefForwardingComponent<
   );
 };
 
-const RefOptionList = React.forwardRef<
-  RefOptionListProps,
-  OptionListProps<SelectOptionsType>
->(OptionList);
+const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<SelectOptionsType>>(
+  OptionList,
+);
 RefOptionList.displayName = 'OptionList';
 
 export default RefOptionList;
