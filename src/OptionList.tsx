@@ -129,14 +129,21 @@ const OptionList: React.RefForwardingComponent<
 
   // Auto scroll to item position in single mode
   React.useEffect(() => {
-    if (!multiple && open && values.size === 1) {
-      const value: RawValueType = Array.from(values)[0];
-      const index = memoFlattenOptions.findIndex(
-        ({ data }) => (data as OptionData).value === value,
-      );
-      setActive(index);
-      scrollIntoView(index);
-    }
+    /**
+     * React will skip `onChange` when component update.
+     * `setActive` function will call root accessibility state update which makes re-render.
+     * So we need to delay to let Input component trigger onChange first.
+     */
+    setTimeout(() => {
+      if (!multiple && open && values.size === 1) {
+        const value: RawValueType = Array.from(values)[0];
+        const index = memoFlattenOptions.findIndex(
+          ({ data }) => (data as OptionData).value === value,
+        );
+        setActive(index);
+        scrollIntoView(index);
+      }
+    });
   }, [open]);
 
   // ========================== Values ==========================
