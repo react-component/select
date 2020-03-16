@@ -128,10 +128,7 @@ describe('Select.Multiple', () => {
 
     expect(handleChange).toHaveBeenCalledWith(
       [1, 2],
-      [
-        expect.objectContaining({ value: 1 }),
-        expect.objectContaining({ value: 2, testprop: 2 }),
-      ],
+      [expect.objectContaining({ value: 1 }), expect.objectContaining({ value: 2, testprop: 2 })],
     );
   });
 
@@ -273,5 +270,12 @@ describe('Select.Multiple', () => {
     expect(onChange).toHaveBeenCalledWith([], expect.anything());
 
     jest.useRealTimers();
+  });
+
+  it('show placeholder when searchValue is controlled', () => {
+    const wrapper = mount(<Select mode="multiple" searchValue="light" placeholder="bamboo" />);
+    expect(wrapper.find('.rc-select-selection-placeholder').length).toBeTruthy();
+    toggleOpen(wrapper);
+    expect(wrapper.find('.rc-select-selection-placeholder').length).toBeFalsy();
   });
 });
