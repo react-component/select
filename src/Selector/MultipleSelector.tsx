@@ -2,11 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import CSSMotionList from 'rc-animate/lib/CSSMotionList';
 import TransBtn from '../TransBtn';
-import {
-  LabelValueType,
-  RawValueType,
-  CustomTagProps,
-} from '../interface/generator';
+import { LabelValueType, RawValueType, CustomTagProps } from '../interface/generator';
 import { RenderNode } from '../interface';
 import { InnerSelectorProps } from '.';
 import Input from './Input';
@@ -21,9 +17,7 @@ interface SelectorProps extends InnerSelectorProps {
   // Tags
   maxTagCount?: number;
   maxTagTextLength?: number;
-  maxTagPlaceholder?:
-    | React.ReactNode
-    | ((omittedValues: LabelValueType[]) => React.ReactNode);
+  maxTagPlaceholder?: React.ReactNode | ((omittedValues: LabelValueType[]) => React.ReactNode);
   tokenSeparators?: string[];
   tagRender?: (props: CustomTagProps) => React.ReactElement;
 
@@ -55,8 +49,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
 
   maxTagCount,
   maxTagTextLength,
-  maxTagPlaceholder = (omittedValues: LabelValueType[]) =>
-    `+ ${omittedValues.length} ...`,
+  maxTagPlaceholder = (omittedValues: LabelValueType[]) => `+ ${omittedValues.length} ...`,
   tagRender,
 
   onSelect,
@@ -74,12 +67,13 @@ const SelectSelector: React.FC<SelectorProps> = ({
   }, []);
 
   // ===================== Search ======================
+  const inputValue = open ? searchValue : '';
   const inputEditable: boolean = mode === 'tags' || (open && showSearch);
 
   // We measure width and set to the input immediately
   useLayoutEffect(() => {
     setInputWidth(measureRef.current.scrollWidth);
-  }, [searchValue]);
+  }, [inputValue]);
 
   // ==================== Selection ====================
   let displayValues: LabelValueType[] = values;
@@ -142,12 +136,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
         };
 
         return typeof tagRender === 'function' ? (
-          <span
-            key={mergedKey}
-            onMouseDown={onMouseDown}
-            className={className}
-            style={style}
-          >
+          <span key={mergedKey} onMouseDown={onMouseDown} className={className} style={style}>
             {tagRender({
               label,
               value,
@@ -164,9 +153,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
             })}
             style={style}
           >
-            <span className={`${prefixCls}-selection-item-content`}>
-              {label}
-            </span>
+            <span className={`${prefixCls}-selection-item-content`}>{label}</span>
             {closable && (
               <TransBtn
                 className={`${prefixCls}-selection-item-remove`}
@@ -187,10 +174,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
     <>
       {selectionNode}
 
-      <span
-        className={`${prefixCls}-selection-search`}
-        style={{ width: inputWidth }}
-      >
+      <span className={`${prefixCls}-selection-search`} style={{ width: inputWidth }}>
         <Input
           ref={inputRef}
           open={open}
@@ -201,7 +185,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
           autoFocus={autoFocus}
           editable={inputEditable}
           accessibilityIndex={accessibilityIndex}
-          value={searchValue}
+          value={inputValue}
           onKeyDown={onInputKeyDown}
           onMouseDown={onInputMouseDown}
           onChange={onInputChange}
@@ -209,19 +193,13 @@ const SelectSelector: React.FC<SelectorProps> = ({
         />
 
         {/* Measure Node */}
-        <span
-          ref={measureRef}
-          className={`${prefixCls}-selection-search-mirror`}
-          aria-hidden
-        >
-          {searchValue}&nbsp;
+        <span ref={measureRef} className={`${prefixCls}-selection-search-mirror`} aria-hidden>
+          {inputValue}&nbsp;
         </span>
       </span>
 
-      {!values.length && !searchValue && (
-        <span className={`${prefixCls}-selection-placeholder`}>
-          {placeholder}
-        </span>
+      {!values.length && !inputValue && (
+        <span className={`${prefixCls}-selection-placeholder`}>{placeholder}</span>
       )}
     </>
   );
