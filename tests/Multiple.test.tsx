@@ -145,6 +145,7 @@ describe('Select.Multiple', () => {
     selectItem(wrapper, 1);
 
     toggleOpen(wrapper);
+    expectOpen(wrapper, false);
     removeSelection(wrapper);
     expectOpen(wrapper, false);
     expect(wrapper.find('Selector').props().values).toEqual([
