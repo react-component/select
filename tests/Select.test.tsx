@@ -461,6 +461,20 @@ describe('Select.Basic', () => {
     expect(handleSearch).not.toHaveBeenCalled();
   });
 
+  it('not close when click on the input', () => {
+    const wrapper = mount(
+      <Select showSearch>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+
+    for (let i = 0; i < 10; i += 1) {
+      wrapper.find('input').simulate('mousedown');
+      expectOpen(wrapper);
+    }
+  });
+
   // Should always trigger search event:
   // https://github.com/ant-design/ant-design/issues/16223
   // https://github.com/ant-design/ant-design/issues/10817
