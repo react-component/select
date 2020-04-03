@@ -39,6 +39,7 @@ export interface OptionListProps<OptionsType extends object[]> {
 export interface RefOptionListProps {
   onKeyDown: React.KeyboardEventHandler;
   onKeyUp: React.KeyboardEventHandler;
+  scrollTo?: (index: number) => void;
 }
 
 /**
@@ -206,6 +207,10 @@ const OptionList: React.RefForwardingComponent<
       }
     },
     onKeyUp: () => {},
+
+    scrollTo: index => {
+      scrollIntoView(index);
+    },
   }));
 
   // ========================== Render ==========================
