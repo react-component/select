@@ -442,7 +442,9 @@ export default function generateSelector<
     );
 
     React.useEffect(() => {
-      listRef.current?.scrollTo?.(0);
+      if (listRef.current && listRef.current.scrollTo) {
+        listRef.current.scrollTo(0);
+      }
     }, [mergedSearchValue]);
 
     // ============================ Selector ============================
