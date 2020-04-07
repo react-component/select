@@ -101,6 +101,7 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   listItemHeight?: number;
   dropdownStyle?: React.CSSProperties;
   dropdownClassName?: string;
+  dropdownPlacement?: string;
   dropdownMatchSelectWidth?: boolean | number;
   virtual?: boolean;
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
@@ -278,6 +279,7 @@ export default function generateSelector<
       virtual,
       dropdownStyle,
       dropdownClassName,
+      dropdownPlacement,
       dropdownMatchSelectWidth,
       dropdownRender,
       dropdownAlign,
@@ -951,6 +953,7 @@ export default function generateSelector<
           transitionName={transitionName}
           dropdownStyle={dropdownStyle}
           dropdownClassName={dropdownClassName}
+          dropdownPlacement={dropdownPlacement}
           dropdownMatchSelectWidth={dropdownMatchSelectWidth}
           dropdownRender={dropdownRender}
           dropdownAlign={dropdownAlign}
