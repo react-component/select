@@ -115,6 +115,7 @@ React.render(c, container);
 | dropdownRender | render custom dropdown menu | (menu: React.Node, props: MenuProps) => ReactNode | - |
 | loading | show loading icon in arrow | Boolean | false |
 | virtual | Disable virtual scroll | Boolean | true |
+| direction | direction of dropdown | 'ltr' \| 'rtl' | 'ltr' |
 
 ### Methods
 

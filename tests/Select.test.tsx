@@ -209,6 +209,16 @@ describe('Select.Basic', () => {
     expect(wrapper2.find('.rc-select-clear-icon').length).toBeFalsy();
   });
 
+  it('should direction rtl', () => {
+    const wrapper = mount(
+      <Select direction="rtl">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    expect(wrapper.find('Trigger').props().popupPlacement).toBe('bottomRight');
+  });
+
   it('should not response click event when select is disabled', () => {
     const wrapper = mount(
       <Select disabled defaultValue="2">

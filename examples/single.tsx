@@ -125,6 +125,22 @@ class Test extends React.Component {
           ))}
         </select>
 
+        <h2>RTL Select</h2>
+
+        <div style={{ width: 300 }}>
+          <Select
+            id="my-select-rtl"
+            placeholder="rtl"
+            direction="rtl"
+            dropdownMatchSelectWidth={300}
+            dropdownStyle={{ minWidth: 300 }}
+            style={{ width: 500 }}
+          >
+            <Option value="1">1</Option>
+            <Option value="2">2</Option>
+          </Select>
+        </div>
+
         <p>
           <button type="button" onClick={this.onDestroy}>
             destroy

@@ -108,6 +108,7 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   animation?: string;
   transitionName?: string;
   getPopupContainer?: RenderDOMFunc;
+  direction?: string;
 
   // Others
   disabled?: boolean;
@@ -282,6 +283,7 @@ export default function generateSelector<
       dropdownRender,
       dropdownAlign,
       showAction = [],
+      direction,
 
       // Tags
       tokenSeparators,
@@ -951,6 +953,7 @@ export default function generateSelector<
           transitionName={transitionName}
           dropdownStyle={dropdownStyle}
           dropdownClassName={dropdownClassName}
+          direction={direction}
           dropdownMatchSelectWidth={dropdownMatchSelectWidth}
           dropdownRender={dropdownRender}
           dropdownAlign={dropdownAlign}

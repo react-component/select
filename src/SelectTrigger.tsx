@@ -16,8 +16,24 @@ const getBuiltInPlacements = (dropdownMatchSelectWidth: number | boolean) => {
         adjustY: 1,
       },
     },
+    bottomRight: {
+      points: ['tr', 'br'],
+      offset: [0, 4],
+      overflow: {
+        adjustX,
+        adjustY: 1,
+      },
+    },
     topLeft: {
       points: ['bl', 'tl'],
+      offset: [0, -4],
+      overflow: {
+        adjustX,
+        adjustY: 1,
+      },
+    },
+    topRight: {
+      points: ['br', 'tr'],
       offset: [0, -4],
       overflow: {
         adjustX,
@@ -43,6 +59,7 @@ export interface SelectTriggerProps {
   containerWidth: number;
   dropdownStyle: React.CSSProperties;
   dropdownClassName: string;
+  direction: string;
   dropdownMatchSelectWidth?: boolean | number;
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
   getPopupContainer?: RenderDOMFunc;
@@ -67,6 +84,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     transitionName,
     dropdownStyle,
     dropdownClassName,
+    direction = 'ltr',
     dropdownMatchSelectWidth = true,
     dropdownRender,
     dropdownAlign,
@@ -113,7 +131,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
       {...restProps}
       showAction={[]}
       hideAction={[]}
-      popupPlacement="bottomLeft"
+      popupPlacement={direction === 'rtl' ? 'bottomRight' : 'bottomLeft'}
       builtinPlacements={builtInPlacements}
       prefixCls={dropdownPrefixCls}
       popupTransitionName={mergedTransitionName}
