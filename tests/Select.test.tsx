@@ -216,9 +216,7 @@ describe('Select.Basic', () => {
         <Option value="2">2</Option>
       </Select>,
     );
-    toggleOpen(wrapper);
-    expect(wrapper.find('.rc-select-dropdown-placement-bottomRight').length).toBe(1);
-    expect(wrapper.find('.rc-select-dropdown-placement-bottomLeft').length).toBe(0);
+    expect(wrapper.find('Trigger').props().popupPlacement).toBe('bottomRight');
   });
 
   it('should not response click event when select is disabled', () => {
