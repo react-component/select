@@ -125,6 +125,38 @@ class Test extends React.Component {
           ))}
         </select>
 
+        <h2>RTL Select</h2>
+
+        <div style={{ width: 300 }}>
+          <Select
+            autoFocus
+            id="my-select"
+            value={value}
+            placeholder="placeholder"
+            direction="rtl"
+            dropdownMatchSelectWidth={300}
+            dropdownStyle={{ minWidth: 300 }}
+            showSearch={false}
+            style={{ width: 500 }}
+            onBlur={this.onBlur}
+            onFocus={this.onFocus}
+            onSearch={this.onSearch}
+            allowClear
+            optionFilterProp="text"
+            onChange={this.onChange}
+            backfill
+            onPopupScroll={(...args) => {
+              console.log('Scroll:', args);
+            }}
+          >
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
+              <Option key={i} value={String(i)} text={String(i)}>
+                {i}-text
+              </Option>
+            ))}
+          </Select>
+        </div>
+
         <p>
           <button type="button" onClick={this.onDestroy}>
             destroy
