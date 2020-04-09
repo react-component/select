@@ -59,7 +59,7 @@ export interface SelectTriggerProps {
   containerWidth: number;
   dropdownStyle: React.CSSProperties;
   dropdownClassName: string;
-  dropdownPlacement: string;
+  direction: string;
   dropdownMatchSelectWidth?: boolean | number;
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
   getPopupContainer?: RenderDOMFunc;
@@ -84,7 +84,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     transitionName,
     dropdownStyle,
     dropdownClassName,
-    dropdownPlacement = 'bottomLeft',
+    direction = 'ltr',
     dropdownMatchSelectWidth = true,
     dropdownRender,
     dropdownAlign,
@@ -131,7 +131,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
       {...restProps}
       showAction={[]}
       hideAction={[]}
-      popupPlacement={dropdownPlacement}
+      popupPlacement={direction === 'rtl' ? 'bottomRight' : 'bottomLeft'}
       builtinPlacements={builtInPlacements}
       prefixCls={dropdownPrefixCls}
       popupTransitionName={mergedTransitionName}

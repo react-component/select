@@ -67,7 +67,6 @@ React.render(c, container);
 | choiceTransitionName | css animation name for selected items at multiple mode | String | '' |
 | dropdownMatchSelectWidth | whether dropdown's with is same with select | bool | true |
 | dropdownClassName | additional className applied to dropdown | String | - |
-| dropdownPlacement | placement applied to dropdown | String | `bottomLeft` |
 | dropdownStyle | additional style applied to dropdown | Object | {} |
 | dropdownAlign | additional align applied to dropdown | Object | {} |
 | dropdownMenuStyle | additional style applied to dropdown menu | Object | {} |
@@ -116,6 +115,7 @@ React.render(c, container);
 | dropdownRender | render custom dropdown menu | (menu: React.Node, props: MenuProps) => ReactNode | - |
 | loading | show loading icon in arrow | Boolean | false |
 | virtual | Disable virtual scroll | Boolean | true |
+| direction | direction of dropdown | 'ltr' \| 'rtl' | 'ltr' |
 
 ### Methods
 
