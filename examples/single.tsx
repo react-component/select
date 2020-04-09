@@ -129,31 +129,15 @@ class Test extends React.Component {
 
         <div style={{ width: 300 }}>
           <Select
-            autoFocus
             id="my-select-rtl"
-            value={value}
-            placeholder="placeholder"
+            placeholder="rtl"
             direction="rtl"
             dropdownMatchSelectWidth={300}
             dropdownStyle={{ minWidth: 300 }}
-            showSearch={false}
             style={{ width: 500 }}
-            onBlur={this.onBlur}
-            onFocus={this.onFocus}
-            onSearch={this.onSearch}
-            allowClear
-            optionFilterProp="text"
-            onChange={this.onChange}
-            backfill
-            onPopupScroll={(...args) => {
-              console.log('Scroll:', args);
-            }}
           >
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
-              <Option key={i} value={String(i)} text={String(i)}>
-                {i}-text
-              </Option>
-            ))}
+            <Option value="1">1</Option>
+            <Option value="2">2</Option>
           </Select>
         </div>
 
