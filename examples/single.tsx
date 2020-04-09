@@ -130,7 +130,7 @@ class Test extends React.Component {
         <div style={{ width: 300 }}>
           <Select
             autoFocus
-            id="my-select"
+            id="my-select-rtl"
             value={value}
             placeholder="placeholder"
             direction="rtl"
