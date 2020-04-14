@@ -15,6 +15,7 @@ const SingleSelector: React.FC<SelectorProps> = ({
   inputRef,
   disabled,
   autoFocus,
+  autoComplete,
   accessibilityIndex,
   mode,
   open,
@@ -54,6 +55,7 @@ const SingleSelector: React.FC<SelectorProps> = ({
           inputElement={inputElement}
           disabled={disabled}
           autoFocus={autoFocus}
+          autoComplete={autoComplete}
           editable={inputEditable}
           accessibilityIndex={accessibilityIndex}
           value={inputValue}

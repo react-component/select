@@ -25,6 +25,7 @@ export interface InnerSelectorProps {
   placeholder?: React.ReactNode;
   disabled?: boolean;
   autoFocus?: boolean;
+  autoComplete?: string;
   values: LabelValueType[];
   showSearch?: boolean;
   searchValue: string;

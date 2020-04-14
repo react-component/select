@@ -41,6 +41,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
   mode,
   showSearch,
   autoFocus,
+  autoComplete,
   accessibilityIndex,
   tabIndex,
 
@@ -183,6 +184,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
           inputElement={null}
           disabled={disabled}
           autoFocus={autoFocus}
+          autoComplete={autoComplete}
           editable={inputEditable}
           accessibilityIndex={accessibilityIndex}
           value={inputValue}
