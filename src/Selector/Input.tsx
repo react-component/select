@@ -9,6 +9,7 @@ interface InputProps {
   inputElement: React.ReactElement;
   disabled: boolean;
   autoFocus: boolean;
+  autoComplete: string;
   editable: boolean;
   accessibilityIndex: number;
   value: string;
@@ -28,6 +29,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     disabled,
     tabIndex,
     autoFocus,
+    autoComplete,
     editable,
     accessibilityIndex,
     value,
@@ -55,7 +57,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     ref: composeRef(ref, originRef as any),
     disabled,
     tabIndex,
-    autoComplete: 'off',
+    autoComplete: autoComplete || 'off',
     autoFocus,
     className: `${prefixCls}-selection-search-input`,
     style: { ...style, opacity: editable ? null : 0 },
