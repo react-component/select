@@ -9,6 +9,7 @@ interface InputProps {
   inputElement: React.ReactElement;
   disabled: boolean;
   autoFocus: boolean;
+  autoComplete: string;
   editable: boolean;
   accessibilityIndex: number;
   value: string;
