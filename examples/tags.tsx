@@ -21,9 +21,29 @@ const Test: React.FC = () => {
     setMaxTagCount(count);
   };
 
+  const [test, setTest] = React.useState('');
+
   return (
     <div>
       <h2>tags select（scroll the menu）</h2>
+
+      <pre>
+        {`
+example:light,bamboo
+good
+      `.trim()}
+      </pre>
+
+      <input
+        value={test}
+        onPaste={() => {
+          console.log('paste');
+        }}
+        onChange={e => {
+          console.log('change');
+          setTest(e.target.value);
+        }}
+      />
 
       <div>
         <Select
@@ -44,7 +64,8 @@ const Test: React.FC = () => {
           onDeselect={(val, option) => {
             console.log('deselected', val, option);
           }}
-          tokenSeparators={[' ', ',']}
+          // tokenSeparators={[' ', ',', '\n']}
+          tokenSeparators={['\n']}
           onFocus={() => console.log('focus')}
           onBlur={() => console.log('blur')}
         >

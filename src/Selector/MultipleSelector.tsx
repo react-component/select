@@ -55,6 +55,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
 
   onSelect,
   onInputChange,
+  onInputPaste,
   onInputKeyDown,
   onInputMouseDown,
 }) => {
@@ -191,6 +192,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
           onKeyDown={onInputKeyDown}
           onMouseDown={onInputMouseDown}
           onChange={onInputChange}
+          onPaste={onInputPaste}
           tabIndex={tabIndex}
         />
 
