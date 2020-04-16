@@ -13,12 +13,7 @@ import openControlledTest from './shared/openControlledTest';
 import removeSelectedTest from './shared/removeSelectedTest';
 import renderTest from './shared/renderTest';
 import throwOptionValue from './shared/throwOptionValue';
-import {
-  injectRunAllTimers,
-  findSelection,
-  expectOpen,
-  toggleOpen,
-} from './utils/common';
+import { injectRunAllTimers, findSelection, expectOpen, toggleOpen } from './utils/common';
 
 describe('Select.Tags', () => {
   injectRunAllTimers(jest);
@@ -72,12 +67,7 @@ describe('Select.Tags', () => {
     const handleSelect = jest.fn();
     const option2 = <Option value="2">2</Option>;
     const wrapper = mount(
-      <Select
-        mode="tags"
-        tokenSeparators={[',']}
-        onChange={handleChange}
-        onSelect={handleSelect}
-      >
+      <Select mode="tags" tokenSeparators={[',']} onChange={handleChange} onSelect={handleSelect}>
         <Option value="1">1</Option>
         {option2}
       </Select>,
@@ -87,10 +77,7 @@ describe('Select.Tags', () => {
 
     wrapper.find('input').simulate('change', { target: { value: '2,3,4' } });
 
-    expect(handleChange).toHaveBeenCalledWith(
-      ['2', '3', '4'],
-      expect.anything(),
-    );
+    expect(handleChange).toHaveBeenCalledWith(['2', '3', '4'], expect.anything());
     expect(handleSelect).toHaveBeenCalledTimes(3);
     expect(handleSelect).toHaveBeenLastCalledWith('4', expect.anything());
     expect(findSelection(wrapper).text()).toEqual('2');
@@ -98,6 +85,30 @@ describe('Select.Tags', () => {
     expect(findSelection(wrapper, 2).text()).toEqual('4');
     expect(wrapper.find('input').props().value).toBe('');
     expectOpen(wrapper, false);
+  });
+
+  it('paste content to split', () => {
+    const onChange = jest.fn();
+    const wrapper = mount(
+      <Select mode="tags" tokenSeparators={[' ', '\n']} onChange={onChange}>
+        <Option value="1">1</Option>
+      </Select>,
+    );
+
+    wrapper.find('input').simulate('paste', {
+      clipboardData: {
+        getData: () => `
+        light
+        bamboo
+        `,
+      },
+    });
+    wrapper.find('input').simulate('change', {
+      target: { value: '         light         bamboo         ' },
+    });
+
+    expect(onChange).toHaveBeenCalledWith(['light', 'bamboo'], expect.anything());
+    expect(onChange).toHaveBeenCalledTimes(1);
   });
 
   it('renders unlisted item in value', () => {
@@ -180,9 +191,7 @@ describe('Select.Tags', () => {
         </span>
       );
     };
-    const wrapper = mount(
-      <Select mode="tags" tokenSeparators={[',']} tagRender={tagRender} />,
-    );
+    const wrapper = mount(<Select mode="tags" tokenSeparators={[',']} tagRender={tagRender} />);
 
     wrapper.find('input').instance().focus = jest.fn();
 
