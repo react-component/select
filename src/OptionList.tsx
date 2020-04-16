@@ -233,7 +233,6 @@ const OptionList: React.RefForwardingComponent<
     const mergedLabel = childrenAsData ? item && item.data.children : item && item.data.label;
     return item ? (
       <div key={index} role="option" id={`${id}_list_${index}`} aria-selected={values.has(value)}>
-        {value}
         {mergedLabel || value}
       </div>
     ) : null;
