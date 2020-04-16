@@ -19,6 +19,7 @@ interface InputProps {
   onKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
   onMouseDown: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
+  onPaste: React.ClipboardEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
 }
 
 const Input: React.RefForwardingComponent<InputRef, InputProps> = (
@@ -36,6 +37,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     onKeyDown,
     onMouseDown,
     onChange,
+    onPaste,
     open,
   },
   ref,
@@ -88,6 +90,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
         onOriginChange(event);
       }
     },
+    onPaste,
   });
 
   return inputNode;

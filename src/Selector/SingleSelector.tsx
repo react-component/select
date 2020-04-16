@@ -30,6 +30,7 @@ const SingleSelector: React.FC<SelectorProps> = ({
   onInputKeyDown,
   onInputMouseDown,
   onInputChange,
+  onInputPaste,
 }) => {
   const combobox = mode === 'combobox';
   const inputEditable = combobox || (showSearch && open);
@@ -62,6 +63,7 @@ const SingleSelector: React.FC<SelectorProps> = ({
           onKeyDown={onInputKeyDown}
           onMouseDown={onInputMouseDown}
           onChange={onInputChange}
+          onPaste={onInputPaste}
           tabIndex={tabIndex}
         />
       </span>

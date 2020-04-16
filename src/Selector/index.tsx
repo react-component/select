@@ -36,6 +36,7 @@ export interface InnerSelectorProps {
   onInputKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onInputMouseDown: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onInputChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onInputPaste: React.ClipboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }
 
 export interface RefSelectorProps {
@@ -139,10 +140,35 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     setInputMouseDown(true);
   };
 
-  const onInputChange = ({ target: { value } }) => {
+  // When paste come, ignore next onChange
+  const pasteClearRef = React.useRef(false);
+
+  const triggerOnSearch = (value: string) => {
     if (onSearch(value) !== false) {
       onToggleOpen(true);
     }
+  };
+
+  const onInputChange = ({ target: { value } }) => {
+    if (pasteClearRef.current) {
+      pasteClearRef.current = false;
+      return;
+    }
+
+    triggerOnSearch(value);
+  };
+
+  const onInputPaste: React.ClipboardEventHandler = e => {
+    const { clipboardData } = e;
+    const value = clipboardData.getData('text');
+
+    // Block next onChange
+    pasteClearRef.current = true;
+    setTimeout(() => {
+      pasteClearRef.current = false;
+    });
+
+    triggerOnSearch(value);
   };
 
   // ====================== Focus ======================
@@ -170,6 +196,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     onInputKeyDown: onInternalInputKeyDown,
     onInputMouseDown: onInternalInputMouseDown,
     onInputChange,
+    onInputPaste,
   };
 
   const selectNode = multiple ? (
