@@ -91,7 +91,6 @@ React.render(c, container);
 | optionLabelProp | render option value or option children as content of select | String: 'value'/'children' | 'value' |
 | defaultValue | initial selected option(s) | String/Array<String> | - |
 | value | current selected option(s) | String/Array<String>/{key:String, label:React.Node}/Array<{key, label}> | - |
-| firstActiveValue | first active value when there is no value | String/Array<String> | - |
 | labelInValue | whether to embed label in value, see above value type. Not support `combobox` mode | Bool | false |
 | backfill | whether backfill select option to search input (Only works in single and combobox mode) | Bool | false |
 | onChange | called when select an option or input value change(combobox) | function(value, option:Option/Array<Option>) | - |
