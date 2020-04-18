@@ -4,19 +4,24 @@
 
 React Select
 
-[![NPM version][npm-image]][npm-url] [![build status][travis-image]][travis-url] [![Test coverage][coveralls-image]][coveralls-url] [![Dependencies](https://img.shields.io/david/react-component/select.svg?style=flat-square)](https://david-dm.org/react-component/select) [![DevDependencies](https://img.shields.io/david/dev/react-component/select.svg?style=flat-square)](https://david-dm.org/react-component/select?type=dev) [![npm download][download-image]][download-url] [![Storybook](https://gw.alipayobjects.com/mdn/ob_info/afts/img/A*CQXNTZfK1vwAAAAAAAAAAABjAQAAAQ/original)](https://github.com/react-component/select)
+[![NPM version][npm-image]][npm-url] [![npm download][download-image]][download-url] [![build status][circleci-image]][circleci-url] [![Test coverage][coveralls-image]][coveralls-url] [![Dependencies][david-image]](david-url) [![DevDependencies][david-dev-image]][david-dev-url] [![Storybook][storybook-image]](https://github.com/react-component/select)
 
 [storybook]: https://github.com/storybooks/press/blob/master/badges/storybook.svg
 [npm-image]: http://img.shields.io/npm/v/rc-select.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/rc-select
-[travis-image]: https://img.shields.io/travis/react-component/select.svg?style=flat-square
-[travis-url]: https://travis-ci.org/react-component/select
+[circleci-image]: https://img.shields.io/circleci/build/github/react-component/select.svg?style=flat-square
+[circleci-url]: https://circleci.com/gh/react-component/select
+[david-url]: https://david-dm.org/react-component/select
+[david-image]: https://img.shields.io/david/react-component/select.svg?style=flat-square
+[david-dev-url]: https://david-dm.org/react-component/select?type=dev
+[david-dev-image]: https://img.shields.io/david/react-component/select.svg?style=flat-square?type=dev
 [coveralls-image]: https://img.shields.io/coveralls/react-component/select.svg?style=flat-square
 [coveralls-url]: https://coveralls.io/r/react-component/select?branch=maste
 [node-image]: https://img.shields.io/badge/node.js-%3E=_0.10-green.svg?style=flat-square
 [node-url]: http://nodejs.org/download/
 [download-image]: https://img.shields.io/npm/dm/rc-select.svg?style=flat-square
 [download-url]: https://npmjs.org/package/rc-select
+[storybook-image]: https://gw.alipayobjects.com/mdn/ob_info/afts/img/A*CQXNTZfK1vwAAAAAAAAAAABjAQAAAQ/original
 
 ## Screenshots
 
