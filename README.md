@@ -24,7 +24,7 @@ React Select
 
 ## Feature
 
-- support ie9,ie9+,chrome,firefox,safari
+- support IE11+,Chrome,Firefox,Safari
 
 ### Keyboard
 
@@ -40,7 +40,7 @@ React Select
 ### basic use
 
 ```js
-import Select, { Option, OptGroup } from 'rc-select';
+import Select, { Option } from 'rc-select';
 
 export default () => (
   <Select>
