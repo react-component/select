@@ -780,6 +780,12 @@ export default function generateSelector<
       }
     };
 
+    const activeTimeoutIds: number[] = [];
+    React.useEffect(() => () => {
+        activeTimeoutIds.forEach(timeoutId => clearTimeout(timeoutId));
+        activeTimeoutIds.splice(0, activeTimeoutIds.length);
+      }, []);
+
     const onInternalMouseDown: React.MouseEventHandler<HTMLDivElement> = (event, ...restArgs) => {
       const { target } = event;
       const popupElement: HTMLDivElement =
@@ -787,12 +793,20 @@ export default function generateSelector<
 
       // We should give focus back to selector if clicked item is not focusable
       if (popupElement && popupElement.contains(target as HTMLElement)) {
-        setTimeout(() => {
+        const timeoutId = setTimeout(() => {
+          const index = activeTimeoutIds.indexOf(timeoutId);
+          if (index !== -1) {
+            activeTimeoutIds.splice(index, 1);
+          }
+
           cancelSetMockFocused();
+
           if (!popupElement.contains(document.activeElement)) {
             selectorRef.current.focus();
           }
         });
+
+        activeTimeoutIds.push(timeoutId);
       }
 
       if (onMouseDown) {

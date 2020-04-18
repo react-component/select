@@ -135,7 +135,7 @@ const OptionList: React.RefForwardingComponent<
      * `setActive` function will call root accessibility state update which makes re-render.
      * So we need to delay to let Input component trigger onChange first.
      */
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       if (!multiple && open && values.size === 1) {
         const value: RawValueType = Array.from(values)[0];
         const index = memoFlattenOptions.findIndex(
@@ -145,6 +145,8 @@ const OptionList: React.RefForwardingComponent<
         scrollIntoView(index);
       }
     });
+
+    return () => clearTimeout(timeoutId);
   }, [open]);
 
   // ========================== Values ==========================
