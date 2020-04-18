@@ -14,7 +14,7 @@ React Select
 [david-url]: https://david-dm.org/react-component/select
 [david-image]: https://img.shields.io/david/react-component/select.svg?style=flat-square
 [david-dev-url]: https://david-dm.org/react-component/select?type=dev
-[david-dev-image]: https://img.shields.io/david/react-component/select.svg?style=flat-square?type=dev
+[david-dev-image]: https://img.shields.io/david/react-component/select.svg?style=flat-square&type=dev
 [coveralls-image]: https://img.shields.io/coveralls/react-component/select.svg?style=flat-square
 [coveralls-url]: https://coveralls.io/r/react-component/select?branch=maste
 [node-image]: https://img.shields.io/badge/node.js-%3E=_0.10-green.svg?style=flat-square
