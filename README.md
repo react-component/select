@@ -42,14 +42,13 @@ React Select
 ```js
 import Select, { Option, OptGroup } from 'rc-select';
 
-var c = (
+export default () => (
   <Select>
     <Option value="jack">jack</Option>
     <Option value="lucy">lucy</Option>
     <Option value="yiminghe">yiminghe</Option>
   </Select>
 );
-React.render(c, container);
 ```
 
 ## API
