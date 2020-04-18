@@ -186,6 +186,9 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     }
 
     if ((mode !== 'combobox' && (!showSearch || !inputMouseDown)) || !open) {
+      if (open) {
+        onSearch('');
+      }
       onToggleOpen();
     }
   };
