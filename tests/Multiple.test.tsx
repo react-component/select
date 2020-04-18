@@ -279,4 +279,16 @@ describe('Select.Multiple', () => {
     toggleOpen(wrapper);
     expect(wrapper.find('.rc-select-selection-placeholder').length).toBeFalsy();
   });
+
+  it('clear input when popup closed', () => {
+    const wrapper = mount(<Select mode="multiple" options={[{ value: 'light' }]} showSearch />);
+    toggleOpen(wrapper);
+    wrapper.find('input').simulate('change', { target: { value: 'bamboo' } });
+    expect(wrapper.find('input').props().value).toEqual('bamboo');
+
+    // Close and open again
+    toggleOpen(wrapper);
+    toggleOpen(wrapper);
+    expect(wrapper.find('input').props().value).toEqual('');
+  });
 });
