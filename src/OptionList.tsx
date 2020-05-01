@@ -241,7 +241,7 @@ const OptionList: React.RefForwardingComponent<
 
   return (
     <>
-      <div role="listbox" id={`${id}_list`} style={{ height: 0, overflow: 'hidden' }}>
+      <div role="listbox" id={`${id}_list`} style={{ height: 0, width: 0, overflow: 'hidden' }}>
         {renderItem(activeIndex - 1)}
         {renderItem(activeIndex)}
         {renderItem(activeIndex + 1)}

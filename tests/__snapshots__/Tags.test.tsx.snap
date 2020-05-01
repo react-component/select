@@ -84,7 +84,7 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
           <div
             id="rc_select_TEST_OR_SSR_list"
             role="listbox"
-            style="height: 0px; overflow: hidden;"
+            style="height: 0px; width: 0px; overflow: hidden;"
           >
             <div
               aria-selected="false"

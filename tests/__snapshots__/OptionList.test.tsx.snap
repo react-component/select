@@ -5,7 +5,7 @@ exports[`OptionList renders correctly 1`] = `
   <div
     id="undefined_list"
     role="listbox"
-    style="height: 0px; overflow: hidden;"
+    style="height: 0px; width: 0px; overflow: hidden;"
   >
     <div
       aria-selected="false"
