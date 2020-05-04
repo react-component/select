@@ -4,7 +4,13 @@
 
 React Select
 
-[![NPM version][npm-image]][npm-url] [![npm download][download-image]][download-url] [![build status][circleci-image]][circleci-url] [![Test coverage][coveralls-image]][coveralls-url] [![Dependencies][david-image]](david-url) [![DevDependencies][david-dev-image]][david-dev-url] [![Storybook][storybook-image]](https://github.com/react-component/select)
+[![NPM version][npm-image]][npm-url]
+[![npm download][download-image]][download-url]
+[![build status][circleci-image]][circleci-url]
+[![Test coverage][coveralls-image]][coveralls-url]
+[![Dependencies][david-image]](david-url)
+[![DevDependencies][david-dev-image]][david-dev-url]
+[![Storybook][storybook-image]](https://github.com/react-component/select)
 
 [storybook]: https://github.com/storybooks/press/blob/master/badges/storybook.svg
 [npm-image]: http://img.shields.io/npm/v/rc-select.svg?style=flat-square
