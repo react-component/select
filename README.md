@@ -6,8 +6,8 @@ React Select
 
 [![NPM version][npm-image]][npm-url]
 [![npm download][download-image]][download-url]
-[![build status][travis-image]][travis-url]
-[![Codecov][codecov-image]][codecov-url]
+[![build status][circleci-image]][circleci-url]
+[![Test coverage][coveralls-image]][coveralls-url]
 [![Dependencies][david-image]](david-url)
 [![DevDependencies][david-dev-image]][david-dev-url]
 [![bundle size][bundlephobia-image]][bundlephobia-url]
@@ -16,6 +16,10 @@ React Select
 [npm-url]: http://npmjs.org/package/rc-select
 [travis-image]: https://img.shields.io/travis/com/react-component/select.svg?style=flat-square
 [travis-url]: https://travis-ci.com/react-component/select
+[circleci-image]: https://img.shields.io/circleci/build/github/react-component/select.svg?style=flat-square
+[circleci-url]: https://circleci.com/gh/react-component/select
+[coveralls-image]: https://img.shields.io/coveralls/react-component/select.svg?style=flat-square
+[coveralls-url]: https://coveralls.io/r/react-component/select?branch=master
 [codecov-image]: https://img.shields.io/codecov/c/github/react-component/select/master.svg?style=flat-square
 [codecov-url]: https://codecov.io/gh/react-component/select/branch/master
 [david-url]: https://david-dm.org/react-component/select
