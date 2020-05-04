@@ -10,7 +10,7 @@ React Select
 [![Test coverage][coveralls-image]][coveralls-url]
 [![Dependencies][david-image]](david-url)
 [![DevDependencies][david-dev-image]][david-dev-url]
-[![Storybook][storybook-image]](https://github.com/react-component/select)
+[![bundle size][bundlephobia-image]][bundlephobia-url]
 
 [storybook]: https://github.com/storybooks/press/blob/master/badges/storybook.svg
 [npm-image]: http://img.shields.io/npm/v/rc-select.svg?style=flat-square
@@ -27,7 +27,8 @@ React Select
 [node-url]: http://nodejs.org/download/
 [download-image]: https://img.shields.io/npm/dm/rc-select.svg?style=flat-square
 [download-url]: https://npmjs.org/package/rc-select
-[storybook-image]: https://gw.alipayobjects.com/mdn/ob_info/afts/img/A*CQXNTZfK1vwAAAAAAAAAAABjAQAAAQ/original
+[bundlephobia-url]: https://bundlephobia.com/result?p=rc-select
+[bundlephobia-image]: https://badgen.net/bundlephobia/minzip/rc-select
 
 ## Screenshots
 
