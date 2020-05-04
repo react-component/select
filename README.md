@@ -6,22 +6,22 @@ React Select
 
 [![NPM version][npm-image]][npm-url]
 [![npm download][download-image]][download-url]
-[![build status][circleci-image]][circleci-url]
-[![Test coverage][coveralls-image]][coveralls-url]
+[![build status][travis-image]][travis-url]
+[![Codecov][codecov-image]][codecov-url]
 [![Dependencies][david-image]](david-url)
 [![DevDependencies][david-dev-image]][david-dev-url]
 [![bundle size][bundlephobia-image]][bundlephobia-url]
 
 [npm-image]: http://img.shields.io/npm/v/rc-select.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/rc-select
-[circleci-image]: https://img.shields.io/circleci/build/github/react-component/select.svg?style=flat-square
-[circleci-url]: https://circleci.com/gh/react-component/select
+[travis-image]: https://img.shields.io/travis/com/react-component/select.svg?style=flat-square
+[travis-url]: https://travis-ci.com/react-component/select
+[codecov-image]: https://img.shields.io/codecov/c/github/react-component/select/master.svg?style=flat-square
+[codecov-url]: https://codecov.io/gh/react-component/select/branch/master
 [david-url]: https://david-dm.org/react-component/select
-[david-image]: https://img.shields.io/david/react-component/select.svg?style=flat-square
+[david-image]: https://david-dm.org/react-component/select/status.svg?style=flat-square
 [david-dev-url]: https://david-dm.org/react-component/select?type=dev
-[david-dev-image]: https://img.shields.io/david/react-component/select.svg?style=flat-square&type=dev
-[coveralls-image]: https://img.shields.io/coveralls/react-component/select.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/react-component/select?branch=maste
+[david-dev-image]: https://david-dm.org/react-component/select/dev-status.svg?style=flat-square
 [download-image]: https://img.shields.io/npm/dm/rc-select.svg?style=flat-square
 [download-url]: https://npmjs.org/package/rc-select
 [bundlephobia-url]: https://bundlephobia.com/result?p=rc-select
