@@ -1,6 +1,10 @@
 # History
 ----
 
+## 10.3.0 / 2020-05-08
+
+- Adjust trigger order of `onChange` & `onSelect`
+
 ## 9.2.0 / 2019-07-16
 
 - Adjust trigger order of `onChange` & `onSelect`
