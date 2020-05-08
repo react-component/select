@@ -57,6 +57,7 @@
     "cross-env": "^7.0.0",
     "enzyme": "^3.3.0",
     "enzyme-to-json": "^3.4.0",
+    "eslint": "^6.8.0",
     "father": "^2.13.2",
     "jsonp": "^0.2.1",
     "np": "^6.0.0",
