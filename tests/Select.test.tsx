@@ -1599,4 +1599,12 @@ describe('Select.Basic', () => {
     toggleOpen(wrapper);
     expect(wrapper.find('.rc-select-selection-placeholder').length).toBeFalsy();
   });
+
+  it('Remove options can keep the cache', () => {
+    const wrapper = mount(<Select value={903} options={[{ value: 903, label: 'Bamboo' }]} />);
+    expect(findSelection(wrapper).text()).toEqual('Bamboo');
+
+    wrapper.setProps({ options: [] });
+    expect(findSelection(wrapper).text()).toEqual('Bamboo');
+  });
 });
