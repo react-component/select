@@ -39,6 +39,7 @@ import useDelayReset from './hooks/useDelayReset';
 import useLayoutEffect from './hooks/useLayoutEffect';
 import { getSeparatedContent } from './utils/valueUtil';
 import useSelectTriggerControl from './hooks/useSelectTriggerControl';
+import useCacheDisplayValue from './hooks/useCacheDisplayValue';
 
 const DEFAULT_OMIT_PROPS = [
   'removeIcon',
@@ -450,7 +451,7 @@ export default function generateSelector<
     }, [mergedSearchValue]);
 
     // ============================ Selector ============================
-    const displayValues = React.useMemo<DisplayLabelValueType[]>(
+    let displayValues = React.useMemo<DisplayLabelValueType[]>(
       () =>
         mergedRawValue.map((val: RawValueType) => {
           const displayValue = getLabeledValue(val, {
@@ -467,6 +468,9 @@ export default function generateSelector<
         }),
       [baseValue, mergedOptions],
     );
+
+    // Polyfill with cache label
+    displayValues = useCacheDisplayValue(displayValues);
 
     const triggerSelect = (newValue: RawValueType, isSelect: boolean, source: SelectSource) => {
       const outOption = findValueOption([newValue], mergedFlattenOptions)[0];
@@ -781,10 +785,13 @@ export default function generateSelector<
     };
 
     const activeTimeoutIds: number[] = [];
-    React.useEffect(() => () => {
+    React.useEffect(
+      () => () => {
         activeTimeoutIds.forEach(timeoutId => clearTimeout(timeoutId));
         activeTimeoutIds.splice(0, activeTimeoutIds.length);
-      }, []);
+      },
+      [],
+    );
 
     const onInternalMouseDown: React.MouseEventHandler<HTMLDivElement> = (event, ...restArgs) => {
       const { target } = event;
