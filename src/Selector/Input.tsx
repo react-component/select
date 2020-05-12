@@ -72,6 +72,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     'aria-activedescendant': `${id}_list_${accessibilityIndex}`,
     value: editable ? value : '',
     readOnly: !editable,
+    unselectable: !editable ? 'on' : null,
     onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
       onKeyDown(event);
       if (onOriginKeyDown) {

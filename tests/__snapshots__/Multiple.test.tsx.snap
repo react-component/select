@@ -23,6 +23,7 @@ exports[`Select.Multiple render not display maxTagPlaceholder if maxTagCount not
         readonly=""
         role="combobox"
         style="opacity: 0;"
+        unselectable="on"
         value=""
       />
       <span
@@ -115,6 +116,7 @@ exports[`Select.Multiple render truncates tags by maxTagCount and show maxTagPla
         readonly=""
         role="combobox"
         style="opacity: 0;"
+        unselectable="on"
         value=""
       />
       <span
@@ -204,6 +206,7 @@ exports[`Select.Multiple render truncates tags by maxTagCount and show maxTagPla
         readonly=""
         role="combobox"
         style="opacity: 0;"
+        unselectable="on"
         value=""
       />
       <span
@@ -282,6 +285,7 @@ exports[`Select.Multiple render truncates values by maxTagTextLength 1`] = `
         readonly=""
         role="combobox"
         style="opacity: 0;"
+        unselectable="on"
         value=""
       />
       <span
