@@ -101,11 +101,11 @@ export default () => (
 | filterOption | whether filter options by input value. default filter by option's optionFilterProp prop's value | bool | true/Function(inputValue:string, option:Option) |
 | optionFilterProp | which prop value of option will be used for filter if filterOption is true | String | 'value' |
 | optionLabelProp | render option value or option children as content of select | String: 'value'/'children' | 'value' |
-| defaultValue | initial selected option(s) | String/Array<String> | - |
-| value | current selected option(s) | String/Array<String>/{key:String, label:React.Node}/Array<{key, label}> | - |
+| defaultValue | initial selected option(s) | String/Array&lt;String&gt; | - |
+| value | current selected option(s) | String/Array&lt;String&gt;/{key:String, label:React.Node}/Array&lt;{key, label}&gt; | - |
 | labelInValue | whether to embed label in value, see above value type. Not support `combobox` mode | Bool | false |
 | backfill | whether backfill select option to search input (Only works in single and combobox mode) | Bool | false |
-| onChange | called when select an option or input value change(combobox) | function(value, option:Option/Array<Option>) | - |
+| onChange | called when select an option or input value change(combobox) | function(value, option:Option/Array&lt;Option&gt;) | - |
 | onSearch | called when input changed | function | - |
 | onBlur | called when blur | function | - |
 | onFocus | called when focus | function | - |
