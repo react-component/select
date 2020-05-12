@@ -36,3 +36,4 @@ tsconfig.test.json
 .prettierignore
 .storybook
 storybook/index.js
+.umi

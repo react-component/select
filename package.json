@@ -30,12 +30,12 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "cross-env NODE_ENV=development father doc dev --storybook",
-    "build": "father doc build --storybook",
-    "compile": "father build",
+    "start": "dumi dev",
+    "build": "dumi build",
+    "compile": "father-build",
     "prepublishOnly": "npm run compile && np --no-cleanup --yolo --no-publish",
     "lint": "eslint src/ examples/ --ext .tsx,.ts,.jsx,.js",
-    "test": "father test",
+    "test": "umi-test",
     "now-build": "npm run build"
   },
   "peerDependencies": {
@@ -56,14 +56,17 @@
     "@types/react": "^16.8.19",
     "@types/react-dom": "^16.8.4",
     "@types/warning": "^3.0.0",
+    "@umijs/test": "^3.1.4",
     "cross-env": "^7.0.0",
+    "dumi": "^1.0.24",
     "enzyme": "^3.3.0",
     "enzyme-to-json": "^3.4.0",
     "eslint": "^6.8.0",
-    "father": "^2.13.2",
+    "father-build": "^1.18.0",
     "jsonp": "^0.2.1",
     "np": "^6.0.0",
     "rc-dialog": "^7.5.5",
-    "typescript": "^3.5.2"
+    "typescript": "^3.5.2",
+    "umi-test": "^1.9.6"
   }
 }
