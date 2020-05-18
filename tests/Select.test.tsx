@@ -681,6 +681,52 @@ describe('Select.Basic', () => {
       expect(onFocus).not.toHaveBeenCalled();
       expect(onBlur).not.toHaveBeenCalled();
     });
+
+    it('should not trigger onBlur when onBeforeBlur returned false', () => {
+      const onFocus = jest.fn();
+      const onBlur = jest.fn();
+      wrapper = mount(
+        <Select
+          onFocus={onFocus}
+          onBlur={onBlur}
+          onBeforeBlur={() => {
+            return false;
+          }}
+        >
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
+      jest.useFakeTimers();
+      wrapper.find('input').simulate('focus');
+      wrapper.find('input').simulate('blur');
+      jest.runAllTimers();
+      expect(onFocus).toHaveBeenCalled();
+      expect(onBlur).not.toHaveBeenCalled();
+    });
+
+    it('should trigger onBlur when onBeforeBlur returned true', () => {
+      const onFocus = jest.fn();
+      const onBlur = jest.fn();
+      wrapper = mount(
+        <Select
+          onFocus={onFocus}
+          onBlur={onBlur}
+          onBeforeBlur={() => {
+            return true;
+          }}
+        >
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
+      jest.useFakeTimers();
+      wrapper.find('input').simulate('focus');
+      wrapper.find('input').simulate('blur');
+      jest.runAllTimers();
+      expect(onFocus).toHaveBeenCalled();
+      expect(onBlur).toHaveBeenCalled();
+    });
   });
 
   [KeyCode.ENTER, KeyCode.DOWN].forEach(keyCode => {
