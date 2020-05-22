@@ -1,5 +1,6 @@
 import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
+import pickAttrs from 'rc-util/lib/pickAttrs';
 import useMemo from 'rc-util/lib/hooks/useMemo';
 import classNames from 'classnames';
 import List from 'rc-virtual-list';
@@ -231,9 +232,19 @@ const OptionList: React.RefForwardingComponent<
 
   function renderItem(index: number) {
     const item = memoFlattenOptions[index];
-    const value = item && (item.data as OptionData).value;
+    if (!item) return null;
+
+    const itemData = (item.data || {}) as OptionData;
+    const { value } = itemData;
+    const attrs = pickAttrs(itemData, true);
     return item ? (
-      <div key={index} role="option" id={`${id}_list_${index}`} aria-selected={values.has(value)}>
+      <div
+        {...attrs}
+        key={index}
+        role="option"
+        id={`${id}_list_${index}`}
+        aria-selected={values.has(value)}
+      >
         {value}
       </div>
     ) : null;

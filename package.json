@@ -46,7 +46,7 @@
     "classnames": "2.x",
     "rc-animate": "^3.0.0",
     "rc-trigger": "^4.0.0",
-    "rc-util": "^4.20.0",
+    "rc-util": "^4.20.6",
     "rc-virtual-list": "^1.1.2",
     "warning": "^4.0.3"
   },
@@ -64,6 +64,6 @@
     "jsonp": "^0.2.1",
     "np": "^6.0.0",
     "rc-dialog": "^7.5.5",
-    "typescript": "^3.5.2"
+    "typescript": "^3.9.3"
   }
 }

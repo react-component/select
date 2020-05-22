@@ -44,7 +44,7 @@ describe('OptionList', () => {
         options: [
           {
             key: 'group1',
-            options: [{ value: '1' }],
+            options: [{ value: '1', 'aria-label': 'value-1' }],
           },
           {
             key: 'group2',

@@ -13,6 +13,7 @@ exports[`OptionList renders correctly 1`] = `
       role="option"
     />
     <div
+      aria-label="value-1"
       aria-selected="true"
       id="undefined_list_1"
       role="option"
@@ -39,6 +40,7 @@ exports[`OptionList renders correctly 1`] = `
           group1
         </div>
         <div
+          aria-label="value-1"
           aria-selected="true"
           class="rc-select-item rc-select-item-option rc-select-item-option-grouped rc-select-item-option-active rc-select-item-option-selected"
         >
