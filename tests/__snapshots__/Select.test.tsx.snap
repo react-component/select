@@ -39,6 +39,7 @@ exports[`Select.Basic does not filter when filterOption value is false 1`] = `
           style="height:0;width:0;overflow:hidden"
         >
           <div
+            aria-label="1"
             aria-selected="false"
             id="undefined_list_0"
             role="option"
@@ -46,6 +47,7 @@ exports[`Select.Basic does not filter when filterOption value is false 1`] = `
             1
           </div>
           <div
+            aria-label="2"
             aria-selected="false"
             id="undefined_list_1"
             role="option"
@@ -490,6 +492,7 @@ exports[`Select.Basic render renders dropdown correctly 1`] = `
             jack
           </div>
           <div
+            aria-label="lucy"
             aria-selected="false"
             id="undefined_list_2"
             role="option"
@@ -712,6 +715,7 @@ exports[`Select.Basic should contain falsy children 1`] = `
           style="height:0;width:0;overflow:hidden"
         >
           <div
+            aria-label="1"
             aria-selected="true"
             id="undefined_list_0"
             role="option"
@@ -719,6 +723,7 @@ exports[`Select.Basic should contain falsy children 1`] = `
             1
           </div>
           <div
+            aria-label="2"
             aria-selected="false"
             id="undefined_list_1"
             role="option"
@@ -845,6 +850,7 @@ exports[`Select.Basic should render custom dropdown correctly 1`] = `
             style="height: 0px; width: 0px; overflow: hidden;"
           >
             <div
+              aria-label="1"
               aria-selected="false"
               id="rc_select_TEST_OR_SSR_list_0"
               role="option"
@@ -852,6 +858,7 @@ exports[`Select.Basic should render custom dropdown correctly 1`] = `
               1
             </div>
             <div
+              aria-label="2"
               aria-selected="false"
               id="rc_select_TEST_OR_SSR_list_1"
               role="option"

@@ -235,10 +235,12 @@ const OptionList: React.RefForwardingComponent<
     if (!item) return null;
 
     const itemData = (item.data || {}) as OptionData;
-    const { value } = itemData;
+    const { value, label, children } = itemData;
     const attrs = pickAttrs(itemData, true);
+    const mergedLabel = childrenAsData ? children : label;
     return item ? (
       <div
+        aria-label={typeof mergedLabel === 'string' ? mergedLabel : null}
         {...attrs}
         key={index}
         role="option"
