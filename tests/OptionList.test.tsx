@@ -141,7 +141,7 @@ describe('OptionList', () => {
   it('Data attributes should be set correct', () => {
     const wrapper = mount(
       generateList({
-        options: [{ value: '1' }, { value: '2', 'data-num': '123' }],
+        options: [{ value: '1', label: 'my-label' }, { value: '2', 'data-num': '123' }],
       }),
     );
 
