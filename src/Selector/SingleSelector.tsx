@@ -1,4 +1,5 @@
 import React from 'react';
+import pickAttrs from 'rc-util/lib/pickAttrs';
 import Input from './Input';
 import { InnerSelectorProps } from '.';
 
@@ -8,30 +9,32 @@ interface SelectorProps extends InnerSelectorProps {
   backfill?: boolean;
 }
 
-const SingleSelector: React.FC<SelectorProps> = ({
-  inputElement,
-  prefixCls,
-  id,
-  inputRef,
-  disabled,
-  autoFocus,
-  autoComplete,
-  accessibilityIndex,
-  mode,
-  open,
-  values,
-  placeholder,
-  tabIndex,
+const SingleSelector: React.FC<SelectorProps> = props => {
+  const {
+    inputElement,
+    prefixCls,
+    id,
+    inputRef,
+    disabled,
+    autoFocus,
+    autoComplete,
+    accessibilityIndex,
+    mode,
+    open,
+    values,
+    placeholder,
+    tabIndex,
 
-  showSearch,
-  searchValue,
-  activeValue,
+    showSearch,
+    searchValue,
+    activeValue,
 
-  onInputKeyDown,
-  onInputMouseDown,
-  onInputChange,
-  onInputPaste,
-}) => {
+    onInputKeyDown,
+    onInputMouseDown,
+    onInputChange,
+    onInputPaste,
+  } = props;
+
   const combobox = mode === 'combobox';
   const inputEditable = combobox || (showSearch && open);
   const item = values[0];
@@ -65,6 +68,7 @@ const SingleSelector: React.FC<SelectorProps> = ({
           onChange={onInputChange}
           onPaste={onInputPaste}
           tabIndex={tabIndex}
+          attrs={pickAttrs(props, true)}
         />
       </span>
 
