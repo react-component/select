@@ -15,6 +15,8 @@ interface InputProps {
   value: string;
   open: boolean;
   tabIndex: number;
+  /** Pass accessibility props to input */
+  attrs: object;
 
   onKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
   onMouseDown: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
@@ -39,6 +41,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     onChange,
     onPaste,
     open,
+    attrs,
   },
   ref,
 ) => {
@@ -70,6 +73,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     'aria-autocomplete': 'list',
     'aria-controls': `${id}_list`,
     'aria-activedescendant': `${id}_list_${accessibilityIndex}`,
+    ...attrs,
     value: editable ? value : '',
     readOnly: !editable,
     unselectable: !editable ? 'on' : null,

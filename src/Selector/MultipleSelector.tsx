@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import pickAttrs from 'rc-util/lib/pickAttrs';
 import CSSMotionList from 'rc-animate/lib/CSSMotionList';
 import TransBtn from '../TransBtn';
 import { LabelValueType, RawValueType, CustomTagProps } from '../interface/generator';
@@ -28,37 +29,39 @@ interface SelectorProps extends InnerSelectorProps {
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
 }
 
-const SelectSelector: React.FC<SelectorProps> = ({
-  id,
-  prefixCls,
+const SelectSelector: React.FC<SelectorProps> = props => {
+  const {
+    id,
+    prefixCls,
 
-  values,
-  open,
-  searchValue,
-  inputRef,
-  placeholder,
-  disabled,
-  mode,
-  showSearch,
-  autoFocus,
-  autoComplete,
-  accessibilityIndex,
-  tabIndex,
+    values,
+    open,
+    searchValue,
+    inputRef,
+    placeholder,
+    disabled,
+    mode,
+    showSearch,
+    autoFocus,
+    autoComplete,
+    accessibilityIndex,
+    tabIndex,
 
-  removeIcon,
-  choiceTransitionName,
+    removeIcon,
+    choiceTransitionName,
 
-  maxTagCount,
-  maxTagTextLength,
-  maxTagPlaceholder = (omittedValues: LabelValueType[]) => `+ ${omittedValues.length} ...`,
-  tagRender,
+    maxTagCount,
+    maxTagTextLength,
+    maxTagPlaceholder = (omittedValues: LabelValueType[]) => `+ ${omittedValues.length} ...`,
+    tagRender,
 
-  onSelect,
-  onInputChange,
-  onInputPaste,
-  onInputKeyDown,
-  onInputMouseDown,
-}) => {
+    onSelect,
+    onInputChange,
+    onInputPaste,
+    onInputKeyDown,
+    onInputMouseDown,
+  } = props;
+
   const [motionAppear, setMotionAppear] = React.useState(false);
   const measureRef = React.useRef<HTMLSpanElement>(null);
   const [inputWidth, setInputWidth] = React.useState(0);
@@ -194,6 +197,7 @@ const SelectSelector: React.FC<SelectorProps> = ({
           onChange={onInputChange}
           onPaste={onInputPaste}
           tabIndex={tabIndex}
+          attrs={pickAttrs(props, true)}
         />
 
         {/* Measure Node */}
