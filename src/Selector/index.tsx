@@ -159,6 +159,10 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   };
 
   const onInputPaste: React.ClipboardEventHandler = e => {
+    // github.com/ant-design/ant-design/issues/24461
+    if ((e.target as HTMLInputElement).value) {
+      return;
+    }
     const { clipboardData } = e;
     const value = clipboardData.getData('text');
 
