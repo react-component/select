@@ -35,6 +35,7 @@ exports[`Select.Multiple render not display maxTagPlaceholder if maxTagCount not
     </span>
     <span
       class="rc-select-selection-placeholder"
+      style="display: block;"
     />
   </div>
 </div>
@@ -126,6 +127,10 @@ exports[`Select.Multiple render truncates tags by maxTagCount and show maxTagPla
          
       </span>
     </span>
+    <span
+      class="rc-select-selection-placeholder"
+      style="display: none;"
+    />
   </div>
 </div>
 `;
@@ -216,6 +221,10 @@ exports[`Select.Multiple render truncates tags by maxTagCount and show maxTagPla
          
       </span>
     </span>
+    <span
+      class="rc-select-selection-placeholder"
+      style="display: none;"
+    />
   </div>
 </div>
 `;
@@ -295,6 +304,10 @@ exports[`Select.Multiple render truncates values by maxTagTextLength 1`] = `
          
       </span>
     </span>
+    <span
+      class="rc-select-selection-placeholder"
+      style="display: none;"
+    />
   </div>
 </div>
 `;

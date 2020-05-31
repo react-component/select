@@ -202,9 +202,12 @@ const SelectSelector: React.FC<SelectorProps> = ({
         </span>
       </span>
 
-      {!values.length && !inputValue && (
-        <span className={`${prefixCls}-selection-placeholder`}>{placeholder}</span>
-      )}
+      <span
+        className={`${prefixCls}-selection-placeholder`}
+        style={{ display: !values.length && !inputValue ? 'block' : 'none' }}
+      >
+        {placeholder}
+      </span>
     </>
   );
 };
