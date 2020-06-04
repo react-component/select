@@ -20,7 +20,6 @@ describe('Select.Accessibility', () => {
     expect(wrapper.find('input').props()).toEqual(
       expect.objectContaining({
         'aria-label': 'light',
-        'data-attr': 'bamboo',
       }),
     );
   });
