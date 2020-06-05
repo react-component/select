@@ -3,7 +3,7 @@ import {
   GetLabeledValue,
   LabelValueType,
   DefaultValueType,
-  FlattenOptionsType,
+  FlattenOptionMapType,
 } from '../interface/generator';
 
 export function toArray<T>(value: T | T[]): T[] {
@@ -27,8 +27,8 @@ export function toInnerValue(
   const values = Array.isArray(value) ? value : [value];
 
   if (labelInValue) {
-    return (values as LabelValueType[]).map(
-      ({ key, value: val }: LabelValueType) => (val !== undefined ? val : key),
+    return (values as LabelValueType[]).map(({ key, value: val }: LabelValueType) =>
+      (val !== undefined ? val : key),
     );
   }
 
@@ -38,19 +38,19 @@ export function toInnerValue(
 /**
  * Convert internal value into out event value
  */
-export function toOuterValues<FOT extends FlattenOptionsType>(
+export function toOuterValues<FOT extends FlattenOptionMapType>(
   valueList: RawValueType[],
   {
     optionLabelProp,
     labelInValue,
     prevValue,
-    options,
+    optionMap,
     getLabeledValue,
   }: {
     optionLabelProp: string;
     labelInValue: boolean;
     getLabeledValue: GetLabeledValue<FOT>;
-    options: FOT;
+    optionMap: FOT;
     prevValue: DefaultValueType;
   },
 ): RawValueType[] | LabelValueType[] {
@@ -59,7 +59,7 @@ export function toOuterValues<FOT extends FlattenOptionsType>(
   if (labelInValue) {
     values = values.map(val =>
       getLabeledValue(val, {
-        options,
+        optionMap,
         prevValue,
         labelInValue,
         optionLabelProp,
@@ -77,11 +77,7 @@ export function removeLastEnabledValue<
   const newValues = [...values];
 
   let removeIndex: number;
-  for (
-    removeIndex = measureValues.length - 1;
-    removeIndex >= 0;
-    removeIndex -= 1
-  ) {
+  for (removeIndex = measureValues.length - 1; removeIndex >= 0; removeIndex -= 1) {
     if (!measureValues[removeIndex].disabled) {
       break;
     }
@@ -101,9 +97,7 @@ export function removeLastEnabledValue<
 }
 
 export const isClient =
-  typeof window !== 'undefined' &&
-  window.document &&
-  window.document.documentElement;
+  typeof window !== 'undefined' && window.document && window.document.documentElement;
 
 /** Is client side and not jsdom */
 export const isBrowserClient = process.env.NODE_ENV !== 'test' && isClient;

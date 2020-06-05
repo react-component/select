@@ -89,26 +89,16 @@ function injectPropsWithOption<T>(option: T): T {
 
 export function findValueOption(
   values: RawValueType[],
-  options: FlattenOptionData[],
+  optionMap: Map<RawValueType, OptionData>,
 ): OptionData[] {
-  const optionMap: Map<RawValueType, OptionData> = new Map();
-
-  options.forEach(flattenItem => {
-    if (!flattenItem.group) {
-      const data = flattenItem.data as OptionData;
-      // Check if match
-      optionMap.set(data.value, data);
-    }
-  });
-
   return values.map(val => injectPropsWithOption(optionMap.get(val)));
 }
 
-export const getLabeledValue: GetLabeledValue<FlattenOptionData[]> = (
+export const getLabeledValue: GetLabeledValue<Map<RawValueType, OptionData>> = (
   value,
-  { options, prevValue, labelInValue, optionLabelProp },
+  { optionMap, prevValue, labelInValue, optionLabelProp },
 ) => {
-  const item = findValueOption([value], options)[0];
+  const item = findValueOption([value], optionMap)[0];
   const result: LabelValueType = {
     value,
   };
@@ -245,8 +235,11 @@ export function getSeparatedContent(text: string, tokens: string[]): string[] {
   return match ? list : null;
 }
 
-export function isValueDisabled(value: RawValueType, options: FlattenOptionData[]): boolean {
-  const option = findValueOption([value], options)[0];
+export function isValueDisabled(
+  value: RawValueType,
+  optionMap: Map<RawValueType, OptionData>,
+): boolean {
+  const option = findValueOption([value], optionMap)[0];
   return option.disabled;
 }
 
