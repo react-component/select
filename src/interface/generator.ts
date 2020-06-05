@@ -14,13 +14,19 @@ export interface LabelValueType {
   value?: RawValueType;
   label?: React.ReactNode;
 }
-export type DefaultValueType = RawValueType | RawValueType[] | LabelValueType | LabelValueType[];
+export type DefaultValueType =
+  | RawValueType
+  | RawValueType[]
+  | LabelValueType
+  | LabelValueType[];
 
 export interface DisplayLabelValueType extends LabelValueType {
   disabled?: boolean;
 }
 
-export type SingleType<MixType> = MixType extends (infer Single)[] ? Single : MixType;
+export type SingleType<MixType> = MixType extends (infer Single)[]
+  ? Single
+  : MixType;
 
 export type OnClear = () => void;
 
@@ -33,10 +39,10 @@ export type CustomTagProps = {
 };
 
 // ==================================== Generator ====================================
-export type GetLabeledValue<FOT extends FlattenOptionMapType> = (
+export type GetLabeledValue<FOT extends FlattenOptionsType> = (
   value: RawValueType,
   config: {
-    optionMap: FOT;
+    options: FOT;
     prevValue: DefaultValueType;
     labelInValue: boolean;
     optionLabelProp: string;
@@ -53,12 +59,19 @@ export type FilterOptions<OptionsType extends object[]> = (
   },
 ) => OptionsType;
 
-export type FilterFunc<OptionType> = (inputValue: string, option?: OptionType) => boolean;
+export type FilterFunc<OptionType> = (
+  inputValue: string,
+  option?: OptionType,
+) => boolean;
 
 export declare function RefSelectFunc<OptionsType extends object[], ValueType>(
-  Component: React.RefForwardingComponent<RefSelectProps, SelectProps<OptionsType, ValueType>>,
+  Component: React.RefForwardingComponent<
+    RefSelectProps,
+    SelectProps<OptionsType, ValueType>
+  >,
 ): React.ForwardRefExoticComponent<
-  React.PropsWithoutRef<SelectProps<OptionsType, ValueType>> & React.RefAttributes<RefSelectProps>
+  React.PropsWithoutRef<SelectProps<OptionsType, ValueType>> &
+    React.RefAttributes<RefSelectProps>
 >;
 
 export type FlattenOptionsType<OptionsType extends object[] = object[]> = {
@@ -67,8 +80,3 @@ export type FlattenOptionsType<OptionsType extends object[] = object[]> = {
   /** Used for customize data */
   [name: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }[];
-
-export type FlattenOptionMapType<OptionType extends object = object> = Map<
-  DefaultValueType,
-  OptionType
->;

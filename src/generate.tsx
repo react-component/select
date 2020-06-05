@@ -30,7 +30,6 @@ import {
   INTERNAL_PROPS_MARK,
   SelectSource,
   CustomTagProps,
-  FlattenOptionMapType,
 } from './interface/generator';
 import { OptionListProps, RefOptionListProps } from './OptionList';
 import { toInnerValue, toOuterValues, removeLastEnabledValue, getUUID } from './utils/commonUtil';
@@ -41,7 +40,6 @@ import useLayoutEffect from './hooks/useLayoutEffect';
 import { getSeparatedContent } from './utils/valueUtil';
 import useSelectTriggerControl from './hooks/useSelectTriggerControl';
 import useCacheDisplayValue from './hooks/useCacheDisplayValue';
-import useCacheOptions from './hooks/useCacheOptions';
 
 const DEFAULT_OMIT_PROPS = [
   'removeIcon',
@@ -184,17 +182,14 @@ export interface GenerateConfig<OptionsType extends object[]> {
   /** Flatten nest options into raw option list */
   flattenOptions: (options: OptionsType, props: any) => FlattenOptionsType<OptionsType>;
   /** Convert single raw value into { label, value } format. Will be called by each value */
-  getLabeledValue: GetLabeledValue<FlattenOptionMapType<OptionsType[number]>>;
+  getLabeledValue: GetLabeledValue<FlattenOptionsType<OptionsType>>;
   filterOptions: FilterOptions<OptionsType>;
   findValueOption: (
     values: RawValueType[],
-    optionMap: FlattenOptionMapType<OptionsType[number]>,
+    options: FlattenOptionsType<OptionsType>,
   ) => OptionsType;
   /** Check if a value is disabled */
-  isValueDisabled: (
-    value: RawValueType,
-    optionMap: FlattenOptionMapType<OptionsType[number]>,
-  ) => boolean;
+  isValueDisabled: (value: RawValueType, options: FlattenOptionsType<OptionsType>) => boolean;
   warningProps?: (props: any) => void;
   fillOptionsWithMissingValue?: (
     options: OptionsType,
@@ -424,8 +419,6 @@ export default function generateSelector<
       [mergedOptions],
     );
 
-    const optionMap = useCacheOptions(mergedRawValue, mergedFlattenOptions);
-
     // Display options for OptionList
     const displayOptions = React.useMemo<OptionsType>(() => {
       if (!mergedSearchValue || !mergedShowSearch) {
@@ -462,7 +455,7 @@ export default function generateSelector<
       () =>
         mergedRawValue.map((val: RawValueType) => {
           const displayValue = getLabeledValue(val, {
-            optionMap,
+            options: mergedFlattenOptions,
             prevValue: baseValue,
             labelInValue: mergedLabelInValue,
             optionLabelProp: mergedOptionLabelProp,
@@ -470,7 +463,7 @@ export default function generateSelector<
 
           return {
             ...displayValue,
-            disabled: isValueDisabled(val, optionMap),
+            disabled: isValueDisabled(val, mergedFlattenOptions),
           };
         }),
       [baseValue, mergedOptions],
@@ -480,13 +473,13 @@ export default function generateSelector<
     displayValues = useCacheDisplayValue(displayValues);
 
     const triggerSelect = (newValue: RawValueType, isSelect: boolean, source: SelectSource) => {
-      const outOption = findValueOption([newValue], optionMap)[0];
+      const outOption = findValueOption([newValue], mergedFlattenOptions)[0];
 
       if (!internalProps.skipTriggerSelect) {
         // Skip trigger `onSelect` or `onDeselect` if configured
         const selectValue = (mergedLabelInValue
           ? getLabeledValue(newValue, {
-              optionMap,
+              options: mergedFlattenOptions,
               prevValue: baseValue,
               labelInValue: mergedLabelInValue,
               optionLabelProp: mergedOptionLabelProp,
@@ -515,21 +508,18 @@ export default function generateSelector<
         return;
       }
 
-      const outValues = toOuterValues<FlattenOptionMapType<OptionsType[number]>>(
-        Array.from(newRawValues),
-        {
-          labelInValue: mergedLabelInValue,
-          optionMap,
-          getLabeledValue,
-          prevValue: baseValue,
-          optionLabelProp: mergedOptionLabelProp,
-        },
-      );
+      const outValues = toOuterValues<FlattenOptionsType<OptionsType>>(Array.from(newRawValues), {
+        labelInValue: mergedLabelInValue,
+        options: mergedFlattenOptions,
+        getLabeledValue,
+        prevValue: baseValue,
+        optionLabelProp: mergedOptionLabelProp,
+      });
 
       const outValue: ValueType = (isMultiple ? outValues : outValues[0]) as ValueType;
       // Skip trigger if prev & current value is both empty
       if (onChange && (mergedRawValue.length !== 0 || outValues.length !== 0)) {
-        const outOptions = findValueOption(newRawValues, optionMap);
+        const outOptions = findValueOption(newRawValues, mergedFlattenOptions);
 
         onChange(outValue, isMultiple ? outOptions : outOptions[0]);
       }
