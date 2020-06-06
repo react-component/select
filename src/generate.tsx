@@ -40,6 +40,7 @@ import useLayoutEffect from './hooks/useLayoutEffect';
 import { getSeparatedContent } from './utils/valueUtil';
 import useSelectTriggerControl from './hooks/useSelectTriggerControl';
 import useCacheDisplayValue from './hooks/useCacheDisplayValue';
+import useCacheOptions from './hooks/useCacheOptions';
 
 const DEFAULT_OMIT_PROPS = [
   'removeIcon',
@@ -419,6 +420,8 @@ export default function generateSelector<
       [mergedOptions],
     );
 
+    const getValueOption = useCacheOptions(mergedRawValue, mergedFlattenOptions);
+
     // Display options for OptionList
     const displayOptions = React.useMemo<OptionsType>(() => {
       if (!mergedSearchValue || !mergedShowSearch) {
@@ -454,8 +457,9 @@ export default function generateSelector<
     let displayValues = React.useMemo<DisplayLabelValueType[]>(
       () =>
         mergedRawValue.map((val: RawValueType) => {
+          const valueOptions = getValueOption([val]);
           const displayValue = getLabeledValue(val, {
-            options: mergedFlattenOptions,
+            options: valueOptions,
             prevValue: baseValue,
             labelInValue: mergedLabelInValue,
             optionLabelProp: mergedOptionLabelProp,
@@ -463,7 +467,7 @@ export default function generateSelector<
 
           return {
             ...displayValue,
-            disabled: isValueDisabled(val, mergedFlattenOptions),
+            disabled: isValueDisabled(val, valueOptions),
           };
         }),
       [baseValue, mergedOptions],
@@ -473,13 +477,14 @@ export default function generateSelector<
     displayValues = useCacheDisplayValue(displayValues);
 
     const triggerSelect = (newValue: RawValueType, isSelect: boolean, source: SelectSource) => {
-      const outOption = findValueOption([newValue], mergedFlattenOptions)[0];
+      const newValueOption = getValueOption([newValue]);
+      const outOption = findValueOption([newValue], newValueOption)[0];
 
       if (!internalProps.skipTriggerSelect) {
         // Skip trigger `onSelect` or `onDeselect` if configured
         const selectValue = (mergedLabelInValue
           ? getLabeledValue(newValue, {
-              options: mergedFlattenOptions,
+              options: newValueOption,
               prevValue: baseValue,
               labelInValue: mergedLabelInValue,
               optionLabelProp: mergedOptionLabelProp,
@@ -507,10 +512,10 @@ export default function generateSelector<
       if (useInternalProps && internalProps.skipTriggerChange) {
         return;
       }
-
+      const newRawValuesOptions = getValueOption(newRawValues);
       const outValues = toOuterValues<FlattenOptionsType<OptionsType>>(Array.from(newRawValues), {
         labelInValue: mergedLabelInValue,
-        options: mergedFlattenOptions,
+        options: newRawValuesOptions,
         getLabeledValue,
         prevValue: baseValue,
         optionLabelProp: mergedOptionLabelProp,
@@ -519,7 +524,7 @@ export default function generateSelector<
       const outValue: ValueType = (isMultiple ? outValues : outValues[0]) as ValueType;
       // Skip trigger if prev & current value is both empty
       if (onChange && (mergedRawValue.length !== 0 || outValues.length !== 0)) {
-        const outOptions = findValueOption(newRawValues, mergedFlattenOptions);
+        const outOptions = findValueOption(newRawValues, newRawValuesOptions);
 
         onChange(outValue, isMultiple ? outOptions : outOptions[0]);
       }
