@@ -619,13 +619,15 @@ export default function generateSelector<
     );
 
     // ============================= Search =============================
-    const triggerSearch = (searchText: string, fromTyping: boolean = true) => {
+    const triggerSearch = (searchText: string, fromTyping: boolean, isCompositing: boolean) => {
       let ret = true;
       let newSearchText = searchText;
       setActiveValue(null);
 
       // Check if match the `tokenSeparators`
-      const patchLabels: string[] = getSeparatedContent(searchText, tokenSeparators);
+      const patchLabels: string[] = isCompositing
+        ? null
+        : getSeparatedContent(searchText, tokenSeparators);
       let patchRawValues: RawValueType[] = patchLabels;
 
       if (mode === 'combobox') {
@@ -681,7 +683,7 @@ export default function generateSelector<
     // Close will clean up single mode search text
     React.useEffect(() => {
       if (!mergedOpen && !isMultiple && mode !== 'combobox') {
-        triggerSearch('', false);
+        triggerSearch('', false, false);
       }
     }, [mergedOpen]);
 
@@ -776,7 +778,7 @@ export default function generateSelector<
       if (mergedSearchValue) {
         // `tags` mode should move `searchValue` into values
         if (mode === 'tags') {
-          triggerSearch('', false);
+          triggerSearch('', false, false);
           triggerChange(Array.from(new Set([...mergedRawValue, mergedSearchValue])));
         } else if (mode === 'multiple') {
           // `multiple` mode only clean the search value but not trigger event
@@ -885,7 +887,7 @@ export default function generateSelector<
       }
 
       triggerChange([]);
-      triggerSearch('', false);
+      triggerSearch('', false, false);
     };
 
     if (!disabled && allowClear && (mergedRawValue.length || mergedSearchValue)) {

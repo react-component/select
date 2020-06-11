@@ -37,6 +37,8 @@ export interface InnerSelectorProps {
   onInputMouseDown: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onInputChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onInputPaste: React.ClipboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onCompositionStart: React.CompositionEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onCompositionEnd: React.CompositionEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }
 
 export interface RefSelectorProps {
@@ -75,7 +77,7 @@ export interface SelectorProps {
 
   onToggleOpen: (open?: boolean) => void;
   /** `onSearch` returns go next step boolean to check if need do toggle open */
-  onSearch: (searchValue: string) => boolean;
+  onSearch: (searchText: string, fromTyping: boolean, isCompositing: boolean) => boolean;
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 
@@ -88,6 +90,7 @@ export interface SelectorProps {
 
 const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = (props, ref) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const compositionStatusRef = React.useRef<boolean>(false);
 
   const {
     prefixCls,
@@ -144,9 +147,17 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   const pasteClearRef = React.useRef(false);
 
   const triggerOnSearch = (value: string) => {
-    if (onSearch(value) !== false) {
+    if (onSearch(value, true, compositionStatusRef.current) !== false) {
       onToggleOpen(true);
     }
+  };
+
+  const onCompositionStart = () => {
+    compositionStatusRef.current = true;
+  };
+
+  const onCompositionEnd = () => {
+    compositionStatusRef.current = false;
   };
 
   const onInputChange = ({ target: { value } }) => {
@@ -191,7 +202,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
 
     if ((mode !== 'combobox' && (!showSearch || !inputMouseDown)) || !open) {
       if (open) {
-        onSearch('');
+        onSearch('', true, false);
       }
       onToggleOpen();
     }
@@ -204,6 +215,8 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     onInputMouseDown: onInternalInputMouseDown,
     onInputChange,
     onInputPaste,
+    onCompositionStart,
+    onCompositionEnd,
   };
 
   const selectNode = multiple ? (
