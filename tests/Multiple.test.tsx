@@ -79,7 +79,7 @@ describe('Select.Multiple', () => {
     expectOpen(wrapper, false);
   });
 
-  it('shouldn\'t separate words when compositing', () => {
+  it(`shouldn't separate words when compositing`, () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
     const wrapper = mount(
