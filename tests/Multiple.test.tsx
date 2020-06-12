@@ -79,6 +79,64 @@ describe('Select.Multiple', () => {
     expectOpen(wrapper, false);
   });
 
+  it(`shouldn't separate words when compositing`, () => {
+    const handleChange = jest.fn();
+    const handleSelect = jest.fn();
+    const wrapper = mount(
+      <Select
+        mode="multiple"
+        optionLabelProp="children"
+        tokenSeparators={[',']}
+        onChange={handleChange}
+        onSelect={handleSelect}
+      >
+        <OptGroup key="group1">
+          <Option value="1">One</Option>
+        </OptGroup>
+        <OptGroup key="group2">
+          <Option value="2">Two</Option>
+        </OptGroup>
+      </Select>,
+    );
+
+    wrapper.find('input').simulate('change', {
+      target: {
+        value: 'One',
+      },
+    });
+    expect(handleChange).not.toHaveBeenCalled();
+
+    handleChange.mockReset();
+    wrapper.find('input').simulate('compositionstart');
+    wrapper.find('input').simulate('change', {
+      target: {
+        value: 'One,Two,Three',
+      },
+    });
+    expect(handleChange).not.toHaveBeenCalled();
+
+    handleChange.mockReset();
+    wrapper.find('input').simulate('compositionend');
+    wrapper.find('input').simulate('change', {
+      target: {
+        value: 'One,Two,Three',
+      },
+    });
+    expect(handleChange).toHaveBeenCalledWith(['1', '2'], expect.anything());
+
+    handleChange.mockReset();
+    wrapper.find('input').simulate('change', {
+      target: {
+        value: 'One,Two',
+      },
+    });
+    expect(handleChange).toHaveBeenCalledWith(['1', '2'], expect.anything());
+
+    expect(wrapper.find('input').props().value).toBe('');
+    wrapper.update();
+    expectOpen(wrapper, false);
+  });
+
   it('focus', () => {
     jest.useFakeTimers();
     const handleFocus = jest.fn();

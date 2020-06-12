@@ -22,6 +22,12 @@ interface InputProps {
   onMouseDown: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
   onPaste: React.ClipboardEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
+  onCompositionStart: React.CompositionEventHandler<
+    HTMLInputElement | HTMLTextAreaElement | HTMLElement
+  >;
+  onCompositionEnd: React.CompositionEventHandler<
+    HTMLInputElement | HTMLTextAreaElement | HTMLElement
+  >;
 }
 
 const Input: React.RefForwardingComponent<InputRef, InputProps> = (
@@ -40,6 +46,8 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     onMouseDown,
     onChange,
     onPaste,
+    onCompositionStart,
+    onCompositionEnd,
     open,
     attrs,
   },
@@ -53,6 +61,8 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
       onKeyDown: onOriginKeyDown,
       onChange: onOriginChange,
       onMouseDown: onOriginMouseDown,
+      onCompositionStart: onOriginCompositionStart,
+      onCompositionEnd: onOriginCompositionEnd,
       style,
     },
   } = inputNode;
@@ -93,6 +103,18 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
       onChange(event);
       if (onOriginChange) {
         onOriginChange(event);
+      }
+    },
+    onCompositionStart(event: React.CompositionEvent<HTMLElement>) {
+      onCompositionStart(event);
+      if (onOriginCompositionStart) {
+        onOriginCompositionStart(event);
+      }
+    },
+    onCompositionEnd(event: React.CompositionEvent<HTMLElement>) {
+      onCompositionEnd(event);
+      if (onOriginCompositionEnd) {
+        onOriginCompositionEnd(event);
       }
     },
     onPaste,
