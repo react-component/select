@@ -87,7 +87,7 @@ describe('Select.Tags', () => {
     expectOpen(wrapper, false);
   });
 
-  it('shounld\'t separate words when compositing', () => {
+  it("shounld't separate words when compositing", () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
     const option2 = <Option value="2">2</Option>;
@@ -270,7 +270,7 @@ describe('Select.Tags', () => {
       const children = [];
       for (let i = 10; i < 36; i += 1) {
         children.push(
-          <Option key={i.toString(36) + i} disabled={!(i % 3)} value={i.toString(36) + i}>
+          <Option key={i.toString(36) + i} disabled={!(i % 3)}>
             {i.toString(36) + i}
           </Option>,
         );
