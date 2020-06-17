@@ -454,24 +454,33 @@ export default function generateSelector<
     }, [mergedSearchValue]);
 
     // ============================ Selector ============================
-    let displayValues = React.useMemo<DisplayLabelValueType[]>(
-      () =>
-        mergedRawValue.map((val: RawValueType) => {
-          const valueOptions = getValueOption([val]);
-          const displayValue = getLabeledValue(val, {
-            options: valueOptions,
-            prevValue: baseValue,
-            labelInValue: mergedLabelInValue,
-            optionLabelProp: mergedOptionLabelProp,
-          });
+    let displayValues = React.useMemo<DisplayLabelValueType[]>(() => {
+      const tmpValues = mergedRawValue.map((val: RawValueType) => {
+        const valueOptions = getValueOption([val]);
+        const displayValue = getLabeledValue(val, {
+          options: valueOptions,
+          prevValue: baseValue,
+          labelInValue: mergedLabelInValue,
+          optionLabelProp: mergedOptionLabelProp,
+        });
 
-          return {
-            ...displayValue,
-            disabled: isValueDisabled(val, valueOptions),
-          };
-        }),
-      [baseValue, mergedOptions],
-    );
+        return {
+          ...displayValue,
+          disabled: isValueDisabled(val, valueOptions),
+        };
+      });
+
+      if (
+        !mode &&
+        tmpValues.length === 1 &&
+        tmpValues[0].value === null &&
+        tmpValues[0].label === null
+      ) {
+        return [];
+      }
+
+      return tmpValues;
+    }, [baseValue, mergedOptions, mode]);
 
     // Polyfill with cache label
     displayValues = useCacheDisplayValue(displayValues);

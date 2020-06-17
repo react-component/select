@@ -1593,11 +1593,25 @@ describe('Select.Basic', () => {
     });
   });
 
-  it('show placeholder when searchValue is controlled', () => {
-    const wrapper = mount(<Select searchValue="light" placeholder="bamboo" />);
-    expect(wrapper.find('.rc-select-selection-placeholder').length).toBeTruthy();
-    toggleOpen(wrapper);
-    expect(wrapper.find('.rc-select-selection-placeholder').length).toBeFalsy();
+  describe('show placeholder', () => {
+    it('when searchValue is controlled', () => {
+      const wrapper = mount(<Select searchValue="light" placeholder="bamboo" />);
+      expect(wrapper.find('.rc-select-selection-placeholder').length).toBeTruthy();
+      toggleOpen(wrapper);
+      expect(wrapper.find('.rc-select-selection-placeholder').length).toBeFalsy();
+    });
+
+    it('when value is null', () => {
+      const wrapper = mount(<Select value={null} placeholder="bamboo" />);
+      expect(wrapper.find('.rc-select-selection-placeholder').length).toBeTruthy();
+    });
+
+    it('not when value is null but it is an Option', () => {
+      const wrapper = mount(
+        <Select value={null} placeholder="bamboo" options={[{ value: null, label: 'light' }]} />,
+      );
+      expect(wrapper.find('.rc-select-selection-placeholder').length).toBeFalsy();
+    });
   });
 
   it('Remove options can keep the cache', () => {
