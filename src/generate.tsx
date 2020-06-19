@@ -354,26 +354,18 @@ export default function generateSelector<
     }));
 
     // ============================= Value ==============================
-    const [innerValue, setInnerValue] = React.useState<ValueType>(value || defaultValue);
-    const baseValue = value !== undefined ? value : innerValue;
-
-    // Should reset when controlled to be uncontrolled
-    const prevValueRef = React.useRef(value);
-    React.useEffect(() => {
-      if (prevValueRef.current !== value && (value === undefined || value === null)) {
-        setInnerValue(undefined);
-      }
-      prevValueRef.current = value;
-    }, [value]);
+    const [mergedValue, setMergedValue] = useMergedState(defaultValue, {
+      value,
+    });
 
     /** Unique raw values */
     const mergedRawValue = React.useMemo<RawValueType[]>(
       () =>
-        toInnerValue(baseValue, {
+        toInnerValue(mergedValue, {
           labelInValue: mergedLabelInValue,
           combobox: mode === 'combobox',
         }),
-      [baseValue, mergedLabelInValue],
+      [mergedValue, mergedLabelInValue],
     );
     /** We cache a set of raw values to speed up check */
     const rawValues = React.useMemo<Set<RawValueType>>(() => new Set(mergedRawValue), [
@@ -385,8 +377,8 @@ export default function generateSelector<
     const [activeValue, setActiveValue] = React.useState<string>(null);
     const [innerSearchValue, setInnerSearchValue] = React.useState('');
     let mergedSearchValue = innerSearchValue;
-    if (mode === 'combobox' && value !== undefined) {
-      mergedSearchValue = value as string;
+    if (mode === 'combobox' && mergedValue !== undefined) {
+      mergedSearchValue = mergedValue as string;
     } else if (searchValue !== undefined) {
       mergedSearchValue = searchValue;
     } else if (inputValue) {
@@ -406,14 +398,14 @@ export default function generateSelector<
       if (mode === 'tags' && fillOptionsWithMissingValue) {
         newOptions = fillOptionsWithMissingValue(
           newOptions,
-          baseValue,
+          mergedValue,
           mergedOptionLabelProp,
           labelInValue,
         );
       }
 
       return newOptions || ([] as OptionsType);
-    }, [options, children, mode, baseValue]);
+    }, [options, children, mode, mergedValue]);
 
     const mergedFlattenOptions: FlattenOptionsType<OptionsType> = React.useMemo(
       () => flattenOptions(mergedOptions, props),
@@ -459,7 +451,7 @@ export default function generateSelector<
         const valueOptions = getValueOption([val]);
         const displayValue = getLabeledValue(val, {
           options: valueOptions,
-          prevValue: baseValue,
+          prevValue: mergedValue,
           labelInValue: mergedLabelInValue,
           optionLabelProp: mergedOptionLabelProp,
         });
@@ -480,7 +472,7 @@ export default function generateSelector<
       }
 
       return tmpValues;
-    }, [baseValue, mergedOptions, mode]);
+    }, [mergedValue, mergedOptions, mode]);
 
     // Polyfill with cache label
     displayValues = useCacheDisplayValue(displayValues);
@@ -494,7 +486,7 @@ export default function generateSelector<
         const selectValue = (mergedLabelInValue
           ? getLabeledValue(newValue, {
               options: newValueOption,
-              prevValue: baseValue,
+              prevValue: mergedValue,
               labelInValue: mergedLabelInValue,
               optionLabelProp: mergedOptionLabelProp,
             })
@@ -526,7 +518,7 @@ export default function generateSelector<
         labelInValue: mergedLabelInValue,
         options: newRawValuesOptions,
         getLabeledValue,
-        prevValue: baseValue,
+        prevValue: mergedValue,
         optionLabelProp: mergedOptionLabelProp,
       });
 
@@ -538,7 +530,7 @@ export default function generateSelector<
         onChange(outValue, isMultiple ? outOptions : outOptions[0]);
       }
 
-      setInnerValue(outValue);
+      setMergedValue(outValue);
     };
 
     const onInternalSelect = (
