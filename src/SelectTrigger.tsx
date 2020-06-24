@@ -121,7 +121,8 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
 
   if (typeof dropdownMatchSelectWidth === 'number') {
     popupStyle.width = dropdownMatchSelectWidth;
-  } else if (dropdownMatchSelectWidth) {
+  } else {
+    popupStyle.minWidth = containerWidth;
     popupStyle.width = containerWidth;
   }
 
