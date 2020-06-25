@@ -129,6 +129,7 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   tagRender?: (props: CustomTagProps) => React.ReactElement;
   showAction?: ('focus' | 'click')[];
   tabIndex?: number;
+  removeOnBackspace?: boolean;
 
   // Events
   onKeyUp?: React.KeyboardEventHandler<HTMLDivElement>;
@@ -272,6 +273,7 @@ export default function generateSelector<
       backfill,
       getInputElement,
       getPopupContainer,
+      removeOnBackspace = true,
 
       // Dropdown
       listHeight = 200,
@@ -711,6 +713,7 @@ export default function generateSelector<
 
       // Remove value by `backspace`
       if (
+        removeOnBackspace &&
         which === KeyCode.BACKSPACE &&
         !clearLock &&
         isMultiple &&

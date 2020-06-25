@@ -92,6 +92,7 @@ export default () => (
 | allowClear | whether allowClear | bool | false |
 | tags | when tagging is enabled the user can select from pre-existing options or create a new tag by picking the first choice, which is what the user has typed into the search box so far. | bool | false |
 | tagRender | render custom tags. | (props: CustomTagProps) => ReactNode | - |
+| removeOnBackspace | whether or not pressing backspace will deselect the option | boolean | true |
 | maxTagTextLength | max tag text length to show | number | - |
 | maxTagCount | max tag count to show | number | - |
 | maxTagPlaceholder | placeholder for omitted values | ReactNode/function(omittedValues) | - |

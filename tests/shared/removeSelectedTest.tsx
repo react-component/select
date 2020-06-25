@@ -88,6 +88,19 @@ export default function removeSelectedTest(mode: any) {
       expect(onChange).toHaveBeenCalledWith(['1'], [expect.objectContaining({ value: '1' })]);
     });
 
+    it('does not remove by backspace key if removeOnBackspace is disabled', () => {
+      const onChange = jest.fn();
+      const wrapper = mount(
+        <Select defaultValue={['1', '2']} mode={mode} onChange={onChange} removeOnBackspace={false}>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
+
+      wrapper.find('input').simulate('keyDown', { which: KeyCode.BACKSPACE });
+      expect(onChange).not.toHaveBeenCalled();
+    });
+
     it('remove by menu deselect', () => {
       const onChange = jest.fn();
       const wrapper = mount(
