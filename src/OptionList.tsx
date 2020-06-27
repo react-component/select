@@ -35,6 +35,9 @@ export interface OptionListProps<OptionsType extends object[]> {
   /** Tell Select that some value is now active to make accessibility work */
   onActiveValue: (value: RawValueType, index: number) => void;
   onScroll: React.UIEventHandler<HTMLDivElement>;
+
+  /** Tell Select that mouse enter the popup to force re-render */
+  onMouseEnter?: React.MouseEventHandler;
 }
 
 export interface RefOptionListProps {
@@ -70,6 +73,7 @@ const OptionList: React.RefForwardingComponent<
     onToggleOpen,
     onActiveValue,
     onScroll,
+    onMouseEnter,
   },
   ref,
 ) => {
@@ -269,6 +273,7 @@ const OptionList: React.RefForwardingComponent<
         onMouseDown={onListMouseDown}
         onScroll={onScroll}
         virtual={virtual}
+        onMouseEnter={onMouseEnter}
       >
         {({ group, groupOption, data }, itemIndex) => {
           const { label, key } = data;

@@ -1621,4 +1621,15 @@ describe('Select.Basic', () => {
     wrapper.setProps({ options: [] });
     expect(findSelection(wrapper).text()).toEqual('Bamboo');
   });
+
+  // https://github.com/ant-design/ant-design/issues/24747
+  // This can not test function called with jest spy, coverage only
+  it('mouse enter to refresh', () => {
+    const wrapper = mount(<Select options={[{ value: 903, label: 'Bamboo' }]} open />);
+    wrapper
+      .find('List')
+      .find('div')
+      .first()
+      .simulate('mouseenter');
+  });
 });

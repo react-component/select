@@ -8,6 +8,7 @@
  */
 
 import * as React from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
@@ -316,17 +317,17 @@ export default function generateSelector<
       delete domProps[prop];
     });
 
-    const containerRef = React.useRef<HTMLDivElement>(null);
-    const triggerRef = React.useRef<RefTriggerProps>(null);
-    const selectorRef = React.useRef<RefSelectorProps>(null);
-    const listRef = React.useRef<RefOptionListProps>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const triggerRef = useRef<RefTriggerProps>(null);
+    const selectorRef = useRef<RefSelectorProps>(null);
+    const listRef = useRef<RefOptionListProps>(null);
 
     /** Used for component focused management */
     const [mockFocused, setMockFocused, cancelSetMockFocused] = useDelayReset();
 
     // Inner id for accessibility usage. Only work in client side
-    const [innerId, setInnerId] = React.useState<string>();
-    React.useEffect(() => {
+    const [innerId, setInnerId] = useState<string>();
+    useEffect(() => {
       setInnerId(`rc_select_${getUUID()}`);
     }, []);
     const mergedId = id || innerId;
@@ -346,7 +347,7 @@ export default function generateSelector<
       showSearch !== undefined ? showSearch : isMultiple || mode === 'combobox';
 
     // ============================== Ref ===============================
-    const selectorDomRef = React.useRef<HTMLDivElement>(null);
+    const selectorDomRef = useRef<HTMLDivElement>(null);
 
     React.useImperativeHandle(ref, () => ({
       focus: selectorRef.current.focus,
@@ -359,7 +360,7 @@ export default function generateSelector<
     });
 
     /** Unique raw values */
-    const mergedRawValue = React.useMemo<RawValueType[]>(
+    const mergedRawValue = useMemo<RawValueType[]>(
       () =>
         toInnerValue(mergedValue, {
           labelInValue: mergedLabelInValue,
@@ -368,14 +369,12 @@ export default function generateSelector<
       [mergedValue, mergedLabelInValue],
     );
     /** We cache a set of raw values to speed up check */
-    const rawValues = React.useMemo<Set<RawValueType>>(() => new Set(mergedRawValue), [
-      mergedRawValue,
-    ]);
+    const rawValues = useMemo<Set<RawValueType>>(() => new Set(mergedRawValue), [mergedRawValue]);
 
     // ============================= Option =============================
     // Set by option list active, it will merge into search input when mode is `combobox`
-    const [activeValue, setActiveValue] = React.useState<string>(null);
-    const [innerSearchValue, setInnerSearchValue] = React.useState('');
+    const [activeValue, setActiveValue] = useState<string>(null);
+    const [innerSearchValue, setInnerSearchValue] = useState('');
     let mergedSearchValue = innerSearchValue;
     if (mode === 'combobox' && mergedValue !== undefined) {
       mergedSearchValue = mergedValue as string;
@@ -385,7 +384,7 @@ export default function generateSelector<
       mergedSearchValue = inputValue;
     }
 
-    const mergedOptions = React.useMemo<OptionsType>((): OptionsType => {
+    const mergedOptions = useMemo<OptionsType>((): OptionsType => {
       let newOptions = options;
       if (newOptions === undefined) {
         newOptions = convertChildrenToData(children);
@@ -407,7 +406,7 @@ export default function generateSelector<
       return newOptions || ([] as OptionsType);
     }, [options, children, mode, mergedValue]);
 
-    const mergedFlattenOptions: FlattenOptionsType<OptionsType> = React.useMemo(
+    const mergedFlattenOptions: FlattenOptionsType<OptionsType> = useMemo(
       () => flattenOptions(mergedOptions, props),
       [mergedOptions],
     );
@@ -415,7 +414,7 @@ export default function generateSelector<
     const getValueOption = useCacheOptions(mergedRawValue, mergedFlattenOptions);
 
     // Display options for OptionList
-    const displayOptions = React.useMemo<OptionsType>(() => {
+    const displayOptions = useMemo<OptionsType>(() => {
       if (!mergedSearchValue || !mergedShowSearch) {
         return [...mergedOptions] as OptionsType;
       }
@@ -434,19 +433,19 @@ export default function generateSelector<
       return filteredOptions;
     }, [mergedOptions, mergedSearchValue, mode, mergedShowSearch]);
 
-    const displayFlattenOptions: FlattenOptionsType<OptionsType> = React.useMemo(
+    const displayFlattenOptions: FlattenOptionsType<OptionsType> = useMemo(
       () => flattenOptions(displayOptions, props),
       [displayOptions],
     );
 
-    React.useEffect(() => {
+    useEffect(() => {
       if (listRef.current && listRef.current.scrollTo) {
         listRef.current.scrollTo(0);
       }
     }, [mergedSearchValue]);
 
     // ============================ Selector ============================
-    let displayValues = React.useMemo<DisplayLabelValueType[]>(() => {
+    let displayValues = useMemo<DisplayLabelValueType[]>(() => {
       const tmpValues = mergedRawValue.map((val: RawValueType) => {
         const valueOptions = getValueOption([val]);
         const displayValue = getLabeledValue(val, {
@@ -675,14 +674,14 @@ export default function generateSelector<
     };
 
     // Close dropdown when disabled change
-    React.useEffect(() => {
+    useEffect(() => {
       if (innerOpen && !!disabled) {
         setInnerOpen(false);
       }
     }, [disabled]);
 
     // Close will clean up single mode search text
-    React.useEffect(() => {
+    useEffect(() => {
       if (!mergedOpen && !isMultiple && mode !== 'combobox') {
         triggerSearch('', false, false);
       }
@@ -747,7 +746,7 @@ export default function generateSelector<
 
     // ========================== Focus / Blur ==========================
     /** Record real focus status */
-    const focusRef = React.useRef<boolean>(false);
+    const focusRef = useRef<boolean>(false);
 
     const onContainerFocus: React.FocusEventHandler<HTMLElement> = (...args) => {
       setMockFocused(true);
@@ -793,7 +792,7 @@ export default function generateSelector<
     };
 
     const activeTimeoutIds: number[] = [];
-    React.useEffect(
+    useEffect(
       () => () => {
         activeTimeoutIds.forEach(timeoutId => clearTimeout(timeoutId));
         activeTimeoutIds.splice(0, activeTimeoutIds.length);
@@ -830,7 +829,7 @@ export default function generateSelector<
     };
 
     // ========================= Accessibility ==========================
-    const [accessibilityIndex, setAccessibilityIndex] = React.useState<number>(0);
+    const [accessibilityIndex, setAccessibilityIndex] = useState<number>(0);
     const mergedDefaultActiveFirstOption =
       defaultActiveFirstOption !== undefined ? defaultActiveFirstOption : mode !== 'combobox';
 
@@ -843,7 +842,13 @@ export default function generateSelector<
     };
 
     // ============================= Popup ==============================
-    const [containerWidth, setContainerWidth] = React.useState(null);
+    const [containerWidth, setContainerWidth] = useState(null);
+
+    const [, forceUpdate] = useState({});
+    // We need force update here since popup dom is render async
+    function onPopupMouseEnter() {
+      forceUpdate({});
+    }
 
     useLayoutEffect(() => {
       if (triggerOpen) {
@@ -876,6 +881,7 @@ export default function generateSelector<
         searchValue={mergedSearchValue}
         menuItemSelectedIcon={menuItemSelectedIcon}
         virtual={virtual !== false && dropdownMatchSelectWidth !== false}
+        onMouseEnter={onPopupMouseEnter}
       />
     );
 
