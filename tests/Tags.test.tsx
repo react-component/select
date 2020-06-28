@@ -73,8 +73,6 @@ describe('Select.Tags', () => {
       </Select>,
     );
 
-    (wrapper.find('input').instance() as any).focus = jest.fn();
-
     wrapper.find('input').simulate('change', { target: { value: '2,3,4' } });
 
     expect(handleChange).toHaveBeenCalledWith(['2', '3', '4'], expect.anything());
@@ -90,15 +88,13 @@ describe('Select.Tags', () => {
   it("shounld't separate words when compositing", () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
-    const option2 = <Option value="2">2</Option>;
     const wrapper = mount(
       <Select mode="tags" tokenSeparators={[',']} onChange={handleChange} onSelect={handleSelect}>
         <Option value="1">1</Option>
-        {option2}
+        <Option value="2">2</Option>
       </Select>,
     );
 
-    (wrapper.find('input').instance() as any).focus = jest.fn();
     wrapper.find('input').simulate('compositionstart');
     wrapper.find('input').simulate('change', { target: { value: '2,3,4' } });
     expect(handleChange).not.toHaveBeenCalled();
@@ -111,6 +107,35 @@ describe('Select.Tags', () => {
     expect(findSelection(wrapper).text()).toEqual('2');
     expect(findSelection(wrapper, 1).text()).toEqual('3');
     expect(findSelection(wrapper, 2).text()).toEqual('4');
+    expect(wrapper.find('input').props().value).toBe('');
+    expectOpen(wrapper, false);
+  });
+
+  it('should work when menu is closed', () => {
+    const handleChange = jest.fn();
+    const handleSelect = jest.fn();
+    const wrapper = mount(
+      <Select
+        mode="tags"
+        tokenSeparators={[',']}
+        onChange={handleChange}
+        onSelect={handleSelect}
+        open={false}
+      >
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    wrapper.find('input').simulate('compositionstart');
+    wrapper.find('input').simulate('change', { target: { value: 'Star Kirby' } });
+    wrapper.find('input').simulate('keydown', { which: KeyCode.ENTER });
+    expect(handleChange).not.toHaveBeenCalled();
+    handleChange.mockReset();
+    wrapper.find('input').simulate('compositionend');
+    wrapper.find('input').simulate('keydown', { which: KeyCode.ENTER });
+    expect(handleChange).toHaveBeenCalledWith(['Star Kirby'], expect.anything());
+    expect(handleSelect).toHaveBeenCalledTimes(1);
+    expect(findSelection(wrapper).text()).toEqual('Star Kirby');
     expect(wrapper.find('input').props().value).toBe('');
     expectOpen(wrapper, false);
   });
@@ -220,8 +245,6 @@ describe('Select.Tags', () => {
       );
     };
     const wrapper = mount(<Select mode="tags" tokenSeparators={[',']} tagRender={tagRender} />);
-
-    (wrapper.find('input').instance() as any).focus = jest.fn();
 
     wrapper.find('input').simulate('change', { target: { value: '1,A,42' } });
 

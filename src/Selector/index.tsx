@@ -78,6 +78,7 @@ export interface SelectorProps {
   onToggleOpen: (open?: boolean) => void;
   /** `onSearch` returns go next step boolean to check if need do toggle open */
   onSearch: (searchText: string, fromTyping: boolean, isCompositing: boolean) => boolean;
+  onSearchEnter: (searchText: string, isCompositing: boolean) => void;
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 
@@ -100,6 +101,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     showSearch,
 
     onSearch,
+    onSearchEnter,
     onToggleOpen,
     onInputKeyDown,
 
@@ -128,6 +130,10 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
 
     if (onInputKeyDown) {
       onInputKeyDown(event);
+    }
+
+    if (which === KeyCode.ENTER) {
+      onSearchEnter((event.target as HTMLInputElement).value, compositionStatusRef.current);
     }
 
     if (![KeyCode.SHIFT, KeyCode.TAB, KeyCode.BACKSPACE, KeyCode.ESC].includes(which)) {

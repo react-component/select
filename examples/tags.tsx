@@ -44,7 +44,7 @@ const Test: React.FC = () => {
           onDeselect={(val, option) => {
             console.log('deselected', val, option);
           }}
-          tokenSeparators={[' ', ',']}
+          tokenSeparators={[' ', ',', '\n']}
           onFocus={() => console.log('focus')}
           onBlur={() => console.log('blur')}
         >

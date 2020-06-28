@@ -673,6 +673,20 @@ export default function generateSelector<
       return ret;
     };
 
+    // Menu closed & mode is tags
+    const onSearchEnter =
+      mode === 'tags' && !mergedOpen
+        ? (searchText: string, isCompositing: boolean) => {
+            if (isCompositing) return;
+            const newRawValues = Array.from(new Set<RawValueType>([...mergedRawValue, searchText]));
+            triggerChange(newRawValues);
+            newRawValues.forEach(newRawValue => {
+              triggerSelect(newRawValue, true, 'input');
+            });
+            setInnerSearchValue('');
+          }
+        : () => {};
+
     // Close dropdown when disabled change
     useEffect(() => {
       if (innerOpen && !!disabled) {
@@ -1014,6 +1028,7 @@ export default function generateSelector<
             searchValue={mergedSearchValue}
             activeValue={activeValue}
             onSearch={triggerSearch}
+            onSearchEnter={onSearchEnter}
             onSelect={onInternalSelectionSelect}
           />
         </SelectTrigger>
