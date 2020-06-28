@@ -60,8 +60,8 @@ const SelectSelector: React.FC<SelectorProps> = props => {
     onInputPaste,
     onInputKeyDown,
     onInputMouseDown,
-    onCompositionStart,
-    onCompositionEnd,
+    onInputCompositionStart,
+    onInputCompositionEnd,
   } = props;
 
   const [motionAppear, setMotionAppear] = React.useState(false);
@@ -198,8 +198,8 @@ const SelectSelector: React.FC<SelectorProps> = props => {
           onMouseDown={onInputMouseDown}
           onChange={onInputChange}
           onPaste={onInputPaste}
-          onCompositionStart={onCompositionStart}
-          onCompositionEnd={onCompositionEnd}
+          onCompositionStart={onInputCompositionStart}
+          onCompositionEnd={onInputCompositionEnd}
           tabIndex={tabIndex}
           attrs={pickAttrs(props, true)}
         />

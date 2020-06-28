@@ -37,8 +37,8 @@ export interface InnerSelectorProps {
   onInputMouseDown: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onInputChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onInputPaste: React.ClipboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onCompositionStart: React.CompositionEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onCompositionEnd: React.CompositionEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onInputCompositionStart: React.CompositionEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onInputCompositionEnd: React.CompositionEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }
 
 export interface RefSelectorProps {
@@ -152,11 +152,11 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     }
   };
 
-  const onCompositionStart = () => {
+  const onInputCompositionStart = () => {
     compositionStatusRef.current = true;
   };
 
-  const onCompositionEnd = () => {
+  const onInputCompositionEnd = () => {
     compositionStatusRef.current = false;
   };
 
@@ -215,8 +215,8 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     onInputMouseDown: onInternalInputMouseDown,
     onInputChange,
     onInputPaste,
-    onCompositionStart,
-    onCompositionEnd,
+    onInputCompositionStart,
+    onInputCompositionEnd,
   };
 
   const selectNode = multiple ? (
