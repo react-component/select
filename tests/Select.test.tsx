@@ -779,6 +779,8 @@ describe('Select.Basic', () => {
     const onKeyDown = jest.fn();
     const onChange = jest.fn();
     const onMouseDown = jest.fn();
+    const onCompositionStart = jest.fn();
+    const onCompositionEnd = jest.fn();
     const textareaRef = jest.fn();
     const mouseDownPreventDefault = jest.fn();
     const wrapper = mount(
@@ -789,6 +791,8 @@ describe('Select.Basic', () => {
             onKeyDown={onKeyDown}
             onChange={onChange}
             onMouseDown={onMouseDown}
+            onCompositionStart={onCompositionStart}
+            onCompositionEnd={onCompositionEnd}
             ref={textareaRef}
           />
         )}
@@ -805,7 +809,9 @@ describe('Select.Basic', () => {
       .find('textarea')
       .simulate('mouseDown', { preventDefault: mouseDownPreventDefault })
       .simulate('keyDown', { which: KeyCode.NUM_ONE })
-      .simulate('change', { value: '1' });
+      .simulate('change', { value: '1' })
+      .simulate('compositionStart')
+      .simulate('compositionEnd');
 
     selectItem(wrapper);
     expect(wrapper.find('textarea').props().value).toEqual('1');
@@ -814,6 +820,8 @@ describe('Select.Basic', () => {
     expect(onChange).toHaveBeenCalled();
     expect(onMouseDown).toHaveBeenCalled();
     expect(textareaRef).toHaveBeenCalled();
+    expect(onCompositionStart).toHaveBeenCalled();
+    expect(onCompositionEnd).toHaveBeenCalled();
   });
 
   describe('propTypes', () => {

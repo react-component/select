@@ -33,8 +33,8 @@ const SingleSelector: React.FC<SelectorProps> = props => {
     onInputMouseDown,
     onInputChange,
     onInputPaste,
-    onCompositionStart,
-    onCompositionEnd,
+    onInputCompositionStart,
+    onInputCompositionEnd,
   } = props;
 
   const combobox = mode === 'combobox';
@@ -69,8 +69,8 @@ const SingleSelector: React.FC<SelectorProps> = props => {
           onMouseDown={onInputMouseDown}
           onChange={onInputChange}
           onPaste={onInputPaste}
-          onCompositionStart={onCompositionStart}
-          onCompositionEnd={onCompositionEnd}
+          onCompositionStart={onInputCompositionStart}
+          onCompositionEnd={onInputCompositionEnd}
           tabIndex={tabIndex}
           attrs={pickAttrs(props, true)}
         />
