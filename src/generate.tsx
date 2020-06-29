@@ -674,8 +674,8 @@ export default function generateSelector<
     };
 
     // Only triggered when menu is closed & mode is tags
-    // If mode isn't tag, press enter is not meaningful
     // If menu is open, OptionList will take charge
+    // If mode isn't tags, press enter is not meaningful
     const onSearchSubmit = (searchText: string) => {
       const newRawValues = Array.from(new Set<RawValueType>([...mergedRawValue, searchText]));
       triggerChange(newRawValues);
