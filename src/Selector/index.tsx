@@ -133,6 +133,8 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     }
 
     if (which === KeyCode.ENTER && mode === 'tags' && !compositionStatusRef.current && !open) {
+      // When menu isn't open, OptionList won't trigger a value change
+      // So when enter is pressed, the tag's input value should be emit here to let selector know
       onSearchSubmit((event.target as HTMLInputElement).value);
     }
 
