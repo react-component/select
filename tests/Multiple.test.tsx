@@ -79,7 +79,49 @@ describe('Select.Multiple', () => {
     expectOpen(wrapper, false);
   });
 
-  it(`shouldn't separate words when compositing`, () => {
+  it('tokenize input when mode=tags and open=false', () => {
+    const handleChange = jest.fn();
+    const handleSelect = jest.fn();
+    const wrapper = mount(
+      <Select
+        mode="tags"
+        optionLabelProp="children"
+        tokenSeparators={[',']}
+        onChange={handleChange}
+        onSelect={handleSelect}
+        open={false}
+      >
+        <Option value="0">Zero</Option>
+      </Select>,
+    );
+
+    wrapper.find('input').simulate('change', {
+      target: {
+        value: 'One',
+      },
+    });
+    expect(handleChange).not.toHaveBeenCalled();
+
+    handleChange.mockReset();
+    wrapper.find('input').simulate('change', {
+      target: {
+        value: 'One,Two,Three,',
+      },
+    });
+    expect(handleChange).toHaveBeenCalledWith(['One', 'Two', 'Three'], expect.anything());
+
+    handleChange.mockReset();
+    wrapper.find('input').simulate('change', {
+      target: {
+        value: 'One,Two,',
+      },
+    });
+    expect(handleChange).toHaveBeenCalledWith(['One', 'Two', 'Three'], expect.anything());
+
+    expect(wrapper.find('input').props().value).toBe('');
+  });
+
+  it('shouldn\'t separate words when compositing', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
     const wrapper = mount(
