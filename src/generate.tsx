@@ -673,19 +673,17 @@ export default function generateSelector<
       return ret;
     };
 
-    // Menu closed & mode is tags
-    const onSearchEnter =
-      mode === 'tags' && !mergedOpen
-        ? (searchText: string, isCompositing: boolean) => {
-            if (isCompositing) return;
-            const newRawValues = Array.from(new Set<RawValueType>([...mergedRawValue, searchText]));
-            triggerChange(newRawValues);
-            newRawValues.forEach(newRawValue => {
-              triggerSelect(newRawValue, true, 'input');
-            });
-            setInnerSearchValue('');
-          }
-        : () => {};
+    // Only triggered when menu is closed & mode is tags
+    // If mode isn't tag, press enter is not meaningful
+    // If menu is open, OptionList will take charge
+    const onSearchSubmit = (searchText: string) => {
+      const newRawValues = Array.from(new Set<RawValueType>([...mergedRawValue, searchText]));
+      triggerChange(newRawValues);
+      newRawValues.forEach(newRawValue => {
+        triggerSelect(newRawValue, true, 'input');
+      });
+      setInnerSearchValue('');
+    };
 
     // Close dropdown when disabled change
     useEffect(() => {
@@ -1028,7 +1026,7 @@ export default function generateSelector<
             searchValue={mergedSearchValue}
             activeValue={activeValue}
             onSearch={triggerSearch}
-            onSearchEnter={onSearchEnter}
+            onSearchSubmit={onSearchSubmit}
             onSelect={onInternalSelectionSelect}
           />
         </SelectTrigger>
