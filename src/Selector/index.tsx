@@ -189,9 +189,8 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     pasteClearRef.current = true;
     setTimeout(() => {
       pasteClearRef.current = false;
+      triggerOnSearch(value);
     });
-
-    triggerOnSearch(value);
   };
 
   // ====================== Focus ======================
