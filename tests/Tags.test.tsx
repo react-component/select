@@ -140,7 +140,8 @@ describe('Select.Tags', () => {
     expectOpen(wrapper, false);
   });
 
-  it('paste content to split', () => {
+  it('paste content to split after 100ms', done => {
+    jest.useFakeTimers();
     const onChange = jest.fn();
     const wrapper = mount(
       <Select mode="tags" tokenSeparators={[' ', '\n']} onChange={onChange}>
@@ -160,8 +161,16 @@ describe('Select.Tags', () => {
       target: { value: '         light         bamboo         ' },
     });
 
-    expect(onChange).toHaveBeenCalledWith(['light', 'bamboo'], expect.anything());
-    expect(onChange).toHaveBeenCalledTimes(1);
+    setTimeout(() => {
+      try {
+        expect(onChange).toHaveBeenCalledWith(['light', 'bamboo'], expect.anything());
+        expect(onChange).toHaveBeenCalledTimes(1);
+        done();
+      } catch (err) {
+        done.fail(err);
+      }
+    }, 100);
+    jest.runTimersToTime(100);
   });
 
   it('renders unlisted item in value', () => {
