@@ -201,9 +201,14 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
         event.preventDefault();
       }
       // Should focus input if click the selector
-      setTimeout(() => {
+      const isIE = (document.body.style as any).msTouchAction !== undefined;
+      if (isIE) {
+        setTimeout(() => {
+          inputRef.current.focus();
+        });
+      } else {
         inputRef.current.focus();
-      });
+      }
     }
 
     if ((mode !== 'combobox' && (!showSearch || !inputMouseDown)) || !open) {
