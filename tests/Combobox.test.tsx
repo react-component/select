@@ -213,25 +213,74 @@ describe('Select.Combobox', () => {
     });
   });
 
-  it('backfill', () => {
-    const handleChange = jest.fn();
-    const handleSelect = jest.fn();
-    const wrapper = mount(
-      <Select mode="combobox" backfill open onChange={handleChange} onSelect={handleSelect}>
-        <Option value="One">One</Option>
-        <Option value="Two">Two</Option>
-      </Select>,
-    );
-    const input = wrapper.find('input');
-    input.simulate('keyDown', { which: KeyCode.DOWN });
-    expect(wrapper.find('input').props().value).toEqual('One');
-    expect(handleChange).not.toHaveBeenCalled();
-    expect(handleSelect).not.toHaveBeenCalled();
+  describe('backfill', () => {
+    it('basic', () => {
+      const handleChange = jest.fn();
+      const handleSelect = jest.fn();
+      const wrapper = mount(
+        <Select mode="combobox" backfill open onChange={handleChange} onSelect={handleSelect}>
+          <Option value="One">One</Option>
+          <Option value="Two">Two</Option>
+        </Select>,
+      );
+      const input = wrapper.find('input');
+      input.simulate('keyDown', { which: KeyCode.DOWN });
+      expect(wrapper.find('input').props().value).toEqual('One');
+      expect(handleChange).not.toHaveBeenCalled();
+      expect(handleSelect).not.toHaveBeenCalled();
 
-    input.simulate('keyDown', { which: KeyCode.ENTER });
-    expect(wrapper.find('input').props().value).toEqual('One');
-    expect(handleChange).toHaveBeenCalledWith('One', expect.objectContaining({ value: 'One' }));
-    expect(handleSelect).toHaveBeenCalledWith('One', expect.objectContaining({ value: 'One' }));
+      input.simulate('keyDown', { which: KeyCode.ENTER });
+      expect(wrapper.find('input').props().value).toEqual('One');
+      expect(handleChange).toHaveBeenCalledWith('One', expect.objectContaining({ value: 'One' }));
+      expect(handleSelect).toHaveBeenCalledWith('One', expect.objectContaining({ value: 'One' }));
+    });
+
+    // https://github.com/ant-design/ant-design/issues/25345
+    it('dynamic options', () => {
+      const onChange = jest.fn();
+
+      const Test = () => {
+        const [options, setOptions] = React.useState([]);
+        const onSearch = (value: string) => {
+          let res = [];
+
+          if (!value || value.indexOf('@') >= 0) {
+            res = [];
+          } else {
+            const email = `${value}@gmail.com`;
+            res = [{ value: email, label: email }];
+          }
+          setOptions(res);
+        };
+        return (
+          <Select
+            backfill
+            mode="combobox"
+            onChange={onChange}
+            onSearch={onSearch}
+            options={options}
+          />
+        );
+      };
+
+      const wrapper = mount(<Test />);
+
+      function input() {
+        return wrapper.find('input');
+      }
+
+      input().simulate('change', { target: { value: 'light' } });
+      expectOpen(wrapper);
+      expect(onChange).toHaveBeenCalledWith('light', expect.anything());
+      onChange.mockReset();
+
+      input().simulate('keyDown', { which: KeyCode.DOWN });
+      expect(input().props().value).toEqual('light@gmail.com');
+      expect(onChange).not.toHaveBeenCalled();
+
+      input().simulate('keyDown', { which: KeyCode.ENTER });
+      expect(onChange).toHaveBeenCalledWith('light@gmail.com', expect.anything());
+    });
   });
 
   it("should hide clear icon when value is ''", () => {

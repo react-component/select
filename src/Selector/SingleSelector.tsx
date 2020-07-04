@@ -37,15 +37,22 @@ const SingleSelector: React.FC<SelectorProps> = props => {
     onInputCompositionEnd,
   } = props;
 
+  const [inputChanged, setInputChanged] = React.useState(false);
+
   const combobox = mode === 'combobox';
   const inputEditable = combobox || (showSearch && open);
   const item = values[0];
 
-  const getDisplayValue = (value: React.ReactText): string => (value === null ? '' : String(value));
-  let inputValue: string = searchValue;
-  if (combobox) {
-    inputValue = item ? getDisplayValue(item.value) : activeValue || searchValue;
+  let inputValue: string = searchValue || '';
+  if (combobox && activeValue && !inputChanged) {
+    inputValue = activeValue;
   }
+
+  React.useEffect(() => {
+    if (combobox) {
+      setInputChanged(false);
+    }
+  }, [combobox, activeValue]);
 
   // Not show text when closed expect combobox mode
   const hasTextInput = mode !== 'combobox' && !open ? false : !!inputValue;
@@ -67,7 +74,10 @@ const SingleSelector: React.FC<SelectorProps> = props => {
           value={inputValue}
           onKeyDown={onInputKeyDown}
           onMouseDown={onInputMouseDown}
-          onChange={onInputChange}
+          onChange={e => {
+            setInputChanged(true);
+            onInputChange(e as any);
+          }}
           onPaste={onInputPaste}
           onCompositionStart={onInputCompositionStart}
           onCompositionEnd={onInputCompositionEnd}
