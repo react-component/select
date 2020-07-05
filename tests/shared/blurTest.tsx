@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import React from 'react';
 import Option from '../../src/Option';
 import Select from '../../src/Select';
-import { injectRunAllTimers, toggleOpen } from '../utils/common';
+import { injectRunAllTimers } from '../utils/common';
 
 export default function blurTest(mode: any) {
   describe(`blur of ${mode}`, () => {
@@ -56,7 +56,6 @@ export default function blurTest(mode: any) {
           .find('input')
           .instance()
           .focus();
-        toggleOpen(wrapper);
         expect(handleBlur).not.toHaveBeenCalled();
 
         wrapper.find('input').simulate('blur');
@@ -66,7 +65,7 @@ export default function blurTest(mode: any) {
         wrapper
           .find('input')
           .instance()
-          .focus();
+          .blur();
         jest.runAllTimers();
         handleBlur.mockReset();
 

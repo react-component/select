@@ -573,6 +573,7 @@ describe('Select.Basic', () => {
 
       const focusSpy = jest.spyOn(wrapper.find('input').instance(), 'focus');
 
+      wrapper.find('.rc-select-selector').simulate('mousedown');
       wrapper.find('.rc-select-selector').simulate('click');
       expect(focusSpy).toHaveBeenCalled();
 
@@ -604,6 +605,7 @@ describe('Select.Basic', () => {
 
       const inputSpy = jest.spyOn(wrapper2.find('input').instance(), 'focus');
 
+      wrapper2.find('.rc-select-selection-placeholder').simulate('mousedown');
       wrapper2.find('.rc-select-selection-placeholder').simulate('click');
       expect(inputSpy).toHaveBeenCalled();
     });
@@ -770,8 +772,8 @@ describe('Select.Basic', () => {
     );
 
     const focusSpy = jest.spyOn(wrapper.find('input').instance(), 'focus');
+    wrapper.find('.rc-select-selection-placeholder').simulate('mousedown');
     wrapper.find('.rc-select-selection-placeholder').simulate('click');
-
     expect(focusSpy).toHaveBeenCalled();
   });
 
