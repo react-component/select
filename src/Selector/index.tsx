@@ -196,18 +196,21 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     pastedTextRef.current = value;
   };
 
-  // ====================== Focus ======================
-  // Should focus input if click the selector
-  const onClick = ({ target }) => {
-    if (target !== inputRef.current) {
-      inputRef.current.focus();
-    }
-  };
-
   const onMouseDown: React.MouseEventHandler<HTMLElement> = event => {
     const inputMouseDown = getInputMouseDown();
-    if (event.target !== inputRef.current && !inputMouseDown) {
-      event.preventDefault();
+    if (event.target !== inputRef.current) {
+      if (!inputMouseDown) {
+        event.preventDefault();
+      }
+      // Should focus input if click the selector
+      const isIE = (document.body.style as any).msTouchAction !== undefined;
+      if (isIE) {
+        setTimeout(() => {
+          inputRef.current.focus();
+        });
+      } else {
+        inputRef.current.focus();
+      }
     }
 
     if ((mode !== 'combobox' && (!showSearch || !inputMouseDown)) || !open) {
@@ -236,12 +239,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   );
 
   return (
-    <div
-      ref={domRef}
-      className={`${prefixCls}-selector`}
-      onClick={onClick}
-      onMouseDown={onMouseDown}
-    >
+    <div ref={domRef} className={`${prefixCls}-selector`} onMouseDown={onMouseDown}>
       {selectNode}
     </div>
   );
