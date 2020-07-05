@@ -9,6 +9,7 @@
  */
 
 import * as React from 'react';
+import { useRef } from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import MultipleSelector from './MultipleSelector';
 import SingleSelector from './SingleSelector';
@@ -72,6 +73,9 @@ export interface SelectorProps {
   maxTagPlaceholder?: React.ReactNode | ((omittedValues: LabelValueType[]) => React.ReactNode);
   tagRender?: (props: CustomTagProps) => React.ReactElement;
 
+  /** Check if `tokenSeparators` contains `\n` */
+  tokenWithEnter?: boolean;
+
   // Motion
   choiceTransitionName?: string;
 
@@ -90,8 +94,8 @@ export interface SelectorProps {
 }
 
 const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = (props, ref) => {
-  const inputRef = React.useRef<HTMLInputElement>(null);
-  const compositionStatusRef = React.useRef<boolean>(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const compositionStatusRef = useRef<boolean>(false);
 
   const {
     prefixCls,
@@ -99,6 +103,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     open,
     mode,
     showSearch,
+    tokenWithEnter,
 
     onSearch,
     onSearchSubmit,
@@ -152,7 +157,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   };
 
   // When paste come, ignore next onChange
-  const pasteClearRef = React.useRef(false);
+  const pastedTextRef = useRef<string>(null);
 
   const triggerOnSearch = (value: string) => {
     if (onSearch(value, true, compositionStatusRef.current) !== false) {
@@ -168,30 +173,27 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     compositionStatusRef.current = false;
   };
 
-  const onInputChange = ({ target: { value } }) => {
-    if (pasteClearRef.current) {
-      pasteClearRef.current = false;
-      return;
+  const onInputChange: React.ChangeEventHandler<HTMLInputElement> = event => {
+    let {
+      target: { value },
+    } = event;
+
+    // Pasted text should replace back to origin content
+    if (tokenWithEnter && pastedTextRef.current && /[\r\n]/.test(pastedTextRef.current)) {
+      const replacedText = pastedTextRef.current.replace(/[\r\n]/g, ' ');
+      value = value.replace(replacedText, pastedTextRef.current);
     }
+
+    pastedTextRef.current = null;
 
     triggerOnSearch(value);
   };
 
   const onInputPaste: React.ClipboardEventHandler = e => {
-    // github.com/ant-design/ant-design/issues/24461
-    if ((e.target as HTMLInputElement).value) {
-      return;
-    }
     const { clipboardData } = e;
     const value = clipboardData.getData('text');
 
-    // Block next onChange
-    pasteClearRef.current = true;
-    setTimeout(() => {
-      pasteClearRef.current = false;
-    });
-
-    triggerOnSearch(value);
+    pastedTextRef.current = value;
   };
 
   // ====================== Focus ======================

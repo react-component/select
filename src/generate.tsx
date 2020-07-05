@@ -322,6 +322,8 @@ export default function generateSelector<
     const selectorRef = useRef<RefSelectorProps>(null);
     const listRef = useRef<RefOptionListProps>(null);
 
+    const tokenWithEnter = useMemo(() => (tokenSeparators || []).includes('\n'), [tokenSeparators]);
+
     /** Used for component focused management */
     const [mockFocused, setMockFocused, cancelSetMockFocused] = useDelayReset();
 
@@ -1028,6 +1030,7 @@ export default function generateSelector<
             onSearch={triggerSearch}
             onSearchSubmit={onSearchSubmit}
             onSelect={onInternalSelectionSelect}
+            tokenWithEnter={tokenWithEnter}
           />
         </SelectTrigger>
 
