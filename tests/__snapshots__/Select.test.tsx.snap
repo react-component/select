@@ -186,6 +186,7 @@ exports[`Select.Basic no search 1`] = `
   >
     <span
       class="rc-select-selection-search"
+      title="1"
     >
       <input
         aria-activedescendant="undefined_list_0"
@@ -232,6 +233,7 @@ exports[`Select.Basic render renders aria-attributes correctly 1`] = `
   >
     <span
       class="antd-selection-search"
+      title="2"
     >
       <input
         aria-activedescendant="undefined_list_0"
@@ -290,6 +292,7 @@ exports[`Select.Basic render renders correctly 1`] = `
   >
     <span
       class="antd-selection-search"
+      title="2"
     >
       <input
         aria-activedescendant="undefined_list_0"
@@ -348,6 +351,7 @@ exports[`Select.Basic render renders data-attributes correctly 1`] = `
   >
     <span
       class="antd-selection-search"
+      title="2"
     >
       <input
         aria-activedescendant="undefined_list_0"
@@ -404,6 +408,7 @@ exports[`Select.Basic render renders disabled select correctly 1`] = `
   >
     <span
       class="antd-selection-search"
+      title="2"
     >
       <input
         aria-activedescendant="undefined_list_0"
@@ -450,6 +455,7 @@ exports[`Select.Basic render renders dropdown correctly 1`] = `
   >
     <span
       class="antd-selection-search"
+      title="2"
     >
       <input
         aria-activedescendant="undefined_list_0"
@@ -626,6 +632,7 @@ exports[`Select.Basic render renders role prop correctly 1`] = `
   >
     <span
       class="antd-selection-search"
+      title="2"
     >
       <input
         aria-activedescendant="undefined_list_0"
@@ -682,6 +689,7 @@ exports[`Select.Basic should contain falsy children 1`] = `
   >
     <span
       class="rc-select-selection-search"
+      title="1"
     >
       <input
         aria-activedescendant="undefined_list_0"

@@ -57,9 +57,14 @@ const SingleSelector: React.FC<SelectorProps> = props => {
   // Not show text when closed expect combobox mode
   const hasTextInput = mode !== 'combobox' && !open ? false : !!inputValue;
 
+  const title =
+    item && (typeof item.label === 'string' || typeof item.label === 'number')
+      ? item.label.toString()
+      : undefined;
+
   return (
     <>
-      <span className={`${prefixCls}-selection-search`}>
+      <span className={`${prefixCls}-selection-search`} title={title}>
         <Input
           ref={inputRef}
           prefixCls={prefixCls}
