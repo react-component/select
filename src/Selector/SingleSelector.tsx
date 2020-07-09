@@ -64,7 +64,7 @@ const SingleSelector: React.FC<SelectorProps> = props => {
 
   return (
     <>
-      <span className={`${prefixCls}-selection-search`} title={title}>
+      <span className={`${prefixCls}-selection-search`}>
         <Input
           ref={inputRef}
           prefixCls={prefixCls}
@@ -93,7 +93,9 @@ const SingleSelector: React.FC<SelectorProps> = props => {
 
       {/* Display value */}
       {!combobox && item && !hasTextInput && (
-        <span className={`${prefixCls}-selection-item`}>{item.label}</span>
+        <span className={`${prefixCls}-selection-item`} title={title}>
+          {item.label}
+        </span>
       )}
 
       {/* Display placeholder */}
