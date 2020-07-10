@@ -4,12 +4,14 @@ import Select, { Option } from '../src';
 import '../assets/index.less';
 
 const children = [];
+const plainOptions = [];
 for (let i = 10; i < 36; i += 1) {
   children.push(
     <Option key={i.toString(36) + i} disabled={i === 10} title={`中文${i}`}>
       中文{i}
     </Option>,
   );
+  plainOptions.push({ label: `中文${i}`, value: i.toString(36) + i });
 }
 
 class Test extends React.Component {
@@ -18,6 +20,7 @@ class Test extends React.Component {
     showArrow: false,
     loading: false,
     value: ['a10'],
+    useOptionsPassedByProps: false,
   };
 
   onChange = (value, options) => {
@@ -41,6 +44,12 @@ class Test extends React.Component {
     });
   };
 
+  useOptionsPassedByProps = e => {
+    this.setState({
+      useOptionsPassedByProps: e.target.checked,
+    });
+  };
+
   showArrow = e => {
     this.setState({
       showArrow: e.target.checked,
@@ -54,7 +63,7 @@ class Test extends React.Component {
   };
 
   render() {
-    const { useAnim, showArrow, loading, value } = this.state;
+    const { useAnim, showArrow, loading, useOptionsPassedByProps, value } = this.state;
     return (
       <div>
         <h2>multiple select（scroll the menu）</h2>
@@ -74,6 +83,17 @@ class Test extends React.Component {
           <label htmlFor="loading">
             loading
             <input id="loading" checked={loading} type="checkbox" onChange={this.loading} />
+          </label>
+        </p>
+        <p>
+          <label htmlFor="useOptionPassedByProps">
+            useOptionsPassedByProps
+            <input
+              id="useOptionPassedByProps"
+              checked={useOptionsPassedByProps}
+              type="checkbox"
+              onChange={this.useOptionsPassedByProps}
+            />
           </label>
         </p>
 
@@ -96,8 +116,9 @@ class Test extends React.Component {
             onFocus={() => console.log('focus')}
             onBlur={v => console.log('blur', v)}
             tokenSeparators={[' ', ',']}
+            options={useOptionsPassedByProps ? plainOptions : undefined}
           >
-            {children}
+            {!useOptionsPassedByProps && children}
           </Select>
         </div>
       </div>

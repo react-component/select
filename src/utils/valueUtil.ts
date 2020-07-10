@@ -138,6 +138,8 @@ export const getLabeledValue: GetLabeledValue<FlattenOptionData[]> = (
     }
   } else if (item && optionLabelProp in item) {
     result.label = item[optionLabelProp];
+  } else if (item && item.label) {
+    result.label = item.label;
   } else {
     result.label = value;
   }
