@@ -121,7 +121,7 @@ describe('Select.Multiple', () => {
     expect(wrapper.find('input').props().value).toBe('');
   });
 
-  it('shouldn\'t separate words when compositing', () => {
+  it("shouldn't separate words when compositing", () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
     const wrapper = mount(
@@ -230,6 +230,35 @@ describe('Select.Multiple', () => {
       [1, 2],
       [expect.objectContaining({ value: 1 }), expect.objectContaining({ value: 2, testprop: 2 })],
     );
+  });
+
+  it('pass options by props', () => {
+    const options = [{ value: 1, label: 'a' }, { value: 2, label: 'b' }];
+    const wrapper = mount(
+      <Select
+        mode="multiple"
+        optionFilterProp="children"
+        optionLabelProp="children"
+        defaultValue={[1]}
+        options={options}
+      />,
+    );
+
+    expect(
+      wrapper
+        .find('span.rc-select-selection-item-content')
+        .at(0)
+        .text(),
+    ).toEqual('a');
+    toggleOpen(wrapper);
+    selectItem(wrapper, 1);
+    toggleOpen(wrapper);
+    expect(
+      wrapper
+        .find('span.rc-select-selection-item-content')
+        .at(1)
+        .text(),
+    ).toEqual('b');
   });
 
   it('do not open when close button click', () => {
