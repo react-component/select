@@ -140,28 +140,49 @@ describe('Select.Tags', () => {
     expectOpen(wrapper, false);
   });
 
-  it('paste content to split', () => {
-    const onChange = jest.fn();
-    const wrapper = mount(
-      <Select mode="tags" tokenSeparators={[' ', '\n']} onChange={onChange}>
-        <Option value="1">1</Option>
-      </Select>,
-    );
+  // Paste tests
+  [
+    {
+      tokenSeparators: [' ', '\n'],
+      clipboardText: '\n  light\n  bamboo\n  ',
+      inputValue: '   light   bamboo   ',
+    },
+    {
+      tokenSeparators: ['\r\n'],
+      clipboardText: '\r\nlight\r\nbamboo\r\n',
+      inputValue: ' light bamboo ',
+    },
+    {
+      tokenSeparators: [' ', '\r\n'],
+      clipboardText: '\r\n light\r\n bamboo\r\n ',
+      inputValue: '  light  bamboo  ',
+    },
+    {
+      tokenSeparators: ['\n'],
+      clipboardText: '\nlight\nbamboo\n',
+      inputValue: ' light bamboo ',
+    },
+  ].forEach(({ tokenSeparators, clipboardText, inputValue }) => {
+    it(`paste content to split (${JSON.stringify(tokenSeparators)})`, () => {
+      const onChange = jest.fn();
+      const wrapper = mount(
+        <Select mode="tags" tokenSeparators={tokenSeparators} onChange={onChange}>
+          <Option value="1">1</Option>
+        </Select>,
+      );
 
-    wrapper.find('input').simulate('paste', {
-      clipboardData: {
-        getData: () => `
-        light
-        bamboo
-        `,
-      },
-    });
-    wrapper.find('input').simulate('change', {
-      target: { value: '         light         bamboo         ' },
-    });
+      wrapper.find('input').simulate('paste', {
+        clipboardData: {
+          getData: () => clipboardText,
+        },
+      });
+      wrapper.find('input').simulate('change', {
+        target: { value: inputValue },
+      });
 
-    expect(onChange).toHaveBeenCalledWith(['light', 'bamboo'], expect.anything());
-    expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChange).toHaveBeenCalledWith(['light', 'bamboo'], expect.anything());
+      expect(onChange).toHaveBeenCalledTimes(1);
+    });
   });
 
   it('renders unlisted item in value', () => {
