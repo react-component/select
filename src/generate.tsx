@@ -88,6 +88,7 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   showSearch?: boolean;
   autoClearSearchValue?: boolean;
   onSearch?: (value: string) => void;
+  onClear?: OnClear;
 
   // Icons
   allowClear?: boolean;
@@ -304,6 +305,7 @@ export default function generateSelector<
       onChange,
       onSelect,
       onDeselect,
+      onClear,
 
       internalProps = {},
 
@@ -906,7 +908,9 @@ export default function generateSelector<
       if (useInternalProps && internalProps.onClear) {
         internalProps.onClear();
       }
-
+      if (onClear) {
+        onClear();
+      }
       triggerChange([]);
       triggerSearch('', false, false);
     };

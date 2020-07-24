@@ -10,6 +10,7 @@ import blurTest from './shared/blurTest';
 import keyDownTest from './shared/keyDownTest';
 import inputFilterTest from './shared/inputFilterTest';
 import openControlledTest from './shared/openControlledTest';
+import allowClearTest from './shared/allowClearTest';
 import {
   expectOpen,
   toggleOpen,
@@ -22,6 +23,7 @@ import { INTERNAL_PROPS_MARK } from '../src/interface/generator';
 describe('Select.Basic', () => {
   injectRunAllTimers(jest);
 
+  allowClearTest(undefined, '903');
   focusTest('single', {});
   blurTest('single');
   keyDownTest('single');
@@ -349,42 +351,6 @@ describe('Select.Basic', () => {
 
     wrapper.find('input').simulate('keyDown', { keyCode: 40 });
     expectOpen(wrapper);
-  });
-
-  it('clears value', () => {
-    const handleChange = jest.fn();
-    const onClear = jest.fn();
-
-    const wrapper = mount(
-      <Select
-        value="1"
-        allowClear
-        onChange={handleChange}
-        internalProps={{
-          mark: INTERNAL_PROPS_MARK,
-          onClear,
-        }}
-      >
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
-      </Select>,
-    );
-
-    wrapper.find('input').simulate('change', { target: { value: 'foo' } });
-
-    // disabled
-    wrapper.setProps({ disabled: true });
-    expect(wrapper.find('.rc-select-clear')).toHaveLength(0);
-
-    // enabled
-    wrapper.setProps({ disabled: false });
-    wrapper
-      .find('.rc-select-clear')
-      .last()
-      .simulate('mousedown');
-    expect(handleChange).toHaveBeenCalledWith(undefined, undefined);
-    expect(wrapper.find('input').props().value).toEqual('');
-    expect(onClear).toHaveBeenCalled();
   });
 
   it('adds label to value', () => {
