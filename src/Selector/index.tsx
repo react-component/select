@@ -73,7 +73,7 @@ export interface SelectorProps {
   maxTagPlaceholder?: React.ReactNode | ((omittedValues: LabelValueType[]) => React.ReactNode);
   tagRender?: (props: CustomTagProps) => React.ReactElement;
 
-  /** Check if `tokenSeparators` contains `\n` */
+  /** Check if `tokenSeparators` contains `\n` or `\r\n` */
   tokenWithEnter?: boolean;
 
   // Motion
@@ -180,7 +180,8 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
 
     // Pasted text should replace back to origin content
     if (tokenWithEnter && pastedTextRef.current && /[\r\n]/.test(pastedTextRef.current)) {
-      const replacedText = pastedTextRef.current.replace(/[\r\n]/g, ' ');
+      // CRLF will be treated as a single space for input element
+      const replacedText = pastedTextRef.current.replace(/\r\n/g, ' ').replace(/[\r\n]/g, ' ');
       value = value.replace(replacedText, pastedTextRef.current);
     }
 

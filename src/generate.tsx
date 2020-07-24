@@ -322,7 +322,10 @@ export default function generateSelector<
     const selectorRef = useRef<RefSelectorProps>(null);
     const listRef = useRef<RefOptionListProps>(null);
 
-    const tokenWithEnter = useMemo(() => (tokenSeparators || []).includes('\n'), [tokenSeparators]);
+    const tokenWithEnter = useMemo(
+      () => (tokenSeparators || []).some(tokenSeparator => ['\n', '\r\n'].includes(tokenSeparator)),
+      [tokenSeparators],
+    );
 
     /** Used for component focused management */
     const [mockFocused, setMockFocused, cancelSetMockFocused] = useDelayReset();
