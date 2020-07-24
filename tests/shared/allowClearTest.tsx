@@ -12,12 +12,15 @@ export default function allowClearTest(mode: any, value: any) {
     it('clears value', () => {
       const onClear = jest.fn();
       const internalOnClear = jest.fn();
+      const onChange = jest.fn();
+      const useArrayValue = ['tags', 'multiple'].includes(mode);
       const wrapper = mount(
         <Select
-          value="1"
+          defaultValue={useArrayValue ? ['1'] : '1'}
           allowClear
           mode={mode}
           onClear={onClear}
+          onChange={onChange}
           internalProps={{
             mark: INTERNAL_PROPS_MARK,
             onClear: internalOnClear,
@@ -38,7 +41,11 @@ export default function allowClearTest(mode: any, value: any) {
         .find('.rc-select-clear')
         .last()
         .simulate('mousedown');
-      // expect(handleChange).toHaveBeenCalledWith(undefined, undefined);
+      if (useArrayValue) {
+        expect(onChange).toHaveBeenCalledWith([], []);
+      } else {
+        expect(onChange).toHaveBeenCalledWith(undefined, undefined);
+      }
       expect(wrapper.find('input').props().value).toEqual('');
       expect(onClear).toHaveBeenCalled();
       expect(internalOnClear).toHaveBeenCalled();

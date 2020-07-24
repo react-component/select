@@ -908,9 +908,11 @@ export default function generateSelector<
       if (useInternalProps && internalProps.onClear) {
         internalProps.onClear();
       }
+
       if (onClear) {
         onClear();
       }
+
       triggerChange([]);
       triggerSearch('', false, false);
     };
