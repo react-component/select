@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import pickAttrs from 'rc-util/lib/pickAttrs';
-import CSSMotionList from 'rc-animate/lib/CSSMotionList';
+import { CSSMotionList } from 'rc-motion';
 import TransBtn from '../TransBtn';
 import { LabelValueType, RawValueType, CustomTagProps } from '../interface/generator';
 import { RenderNode } from '../interface';
@@ -126,7 +126,7 @@ const SelectSelector: React.FC<SelectorProps> = props => {
   const selectionNode = (
     <CSSMotionList
       component={false}
-      keys={displayValues}
+      keys={displayValues as Required<LabelValueType>[]}
       motionName={choiceTransitionName}
       motionAppear={motionAppear}
     >

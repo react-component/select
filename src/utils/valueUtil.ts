@@ -142,7 +142,7 @@ export const getLabeledValue: GetLabeledValue<FlattenOptionData[]> = (
     result.label = value;
   }
 
-  // [Legacy] We need fill `key` as `value` to compatible old code usage
+  // Used for motion control
   result.key = result.value;
 
   return result;
