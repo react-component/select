@@ -187,11 +187,15 @@ export interface GenerateConfig<OptionsType extends object[]> {
   /** Convert single raw value into { label, value } format. Will be called by each value */
   getLabeledValue: GetLabeledValue<FlattenOptionsType<OptionsType>>;
   filterOptions: FilterOptions<OptionsType>;
-  findValueOption: (
-    values: RawValueType[],
-    options: FlattenOptionsType<OptionsType>,
-    info?: { prevValueOptions?: OptionsType[] },
-  ) => OptionsType;
+  findValueOption:
+    | (// Need still support legacy ts api
+      (values: RawValueType[], options: FlattenOptionsType<OptionsType>) => OptionsType)
+    | (// New API add prevValueOptions support
+      (
+        values: RawValueType[],
+        options: FlattenOptionsType<OptionsType>,
+        info?: { prevValueOptions?: OptionsType[] },
+      ) => OptionsType);
   /** Check if a value is disabled */
   isValueDisabled: (value: RawValueType, options: FlattenOptionsType<OptionsType>) => boolean;
   warningProps?: (props: any) => void;
