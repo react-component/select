@@ -397,6 +397,7 @@ describe('Select.Multiple', () => {
 
     const wrapper = mount(
       <Select
+        labelInValue
         mode="multiple"
         options={[{ value: 'light', label: 'Light', option: 2333 }]}
         onChange={onChange}
@@ -408,7 +409,7 @@ describe('Select.Multiple', () => {
     toggleOpen(wrapper);
     selectItem(wrapper, 0);
     expect(onChange).toHaveBeenCalledWith(
-      ['light'],
+      [{ label: 'Light', value: 'light', key: 'light' }],
       [{ label: 'Light', value: 'light', option: 2333 }],
     );
     onChange.mockReset();
@@ -418,7 +419,10 @@ describe('Select.Multiple', () => {
     toggleOpen(wrapper);
     selectItem(wrapper, 0);
     expect(onChange).toHaveBeenCalledWith(
-      ['light', 'bamboo'],
+      [
+        { label: 'Light', value: 'light', key: 'light' },
+        { label: 'Bamboo', value: 'bamboo', key: 'bamboo' },
+      ],
       [
         { label: 'Light', value: 'light', option: 2333 },
         { value: 'bamboo', label: 'Bamboo', option: 444 },

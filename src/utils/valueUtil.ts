@@ -90,6 +90,7 @@ function injectPropsWithOption<T>(option: T): T {
 export function findValueOption(
   values: RawValueType[],
   options: FlattenOptionData[],
+  { prevValueOptions = [] }: { prevValueOptions?: OptionData[] } = {},
 ): OptionData[] {
   const optionMap: Map<RawValueType, OptionData> = new Map();
 
@@ -101,7 +102,19 @@ export function findValueOption(
     }
   });
 
-  return values.map(val => injectPropsWithOption(optionMap.get(val)));
+  return values.map(val => {
+    let option = optionMap.get(val);
+
+    // Fallback to try to find prev options
+    if (!option) {
+      option = {
+        // eslint-disable-next-line no-underscore-dangle
+        ...prevValueOptions.find(opt => opt._INTERNAL_OPTION_VALUE_ === val),
+      };
+    }
+
+    return injectPropsWithOption(option);
+  });
 }
 
 export const getLabeledValue: GetLabeledValue<FlattenOptionData[]> = (

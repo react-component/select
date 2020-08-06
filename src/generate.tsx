@@ -190,6 +190,7 @@ export interface GenerateConfig<OptionsType extends object[]> {
   findValueOption: (
     values: RawValueType[],
     options: FlattenOptionsType<OptionsType>,
+    info?: { prevValueOptions?: OptionsType[] },
   ) => OptionsType;
   /** Check if a value is disabled */
   isValueDisabled: (value: RawValueType, options: FlattenOptionsType<OptionsType>) => boolean;
@@ -515,6 +516,9 @@ export default function generateSelector<
       }
     };
 
+    // We need cache options here in case user update the option list
+    const [prevValueOptions, setPrevValueOptions] = useState([]);
+
     const triggerChange = (newRawValues: RawValueType[]) => {
       if (useInternalProps && internalProps.skipTriggerChange) {
         return;
@@ -531,7 +535,18 @@ export default function generateSelector<
       const outValue: ValueType = (isMultiple ? outValues : outValues[0]) as ValueType;
       // Skip trigger if prev & current value is both empty
       if (onChange && (mergedRawValue.length !== 0 || outValues.length !== 0)) {
-        const outOptions = findValueOption(newRawValues, newRawValuesOptions);
+        const outOptions = findValueOption(newRawValues, newRawValuesOptions, { prevValueOptions });
+
+        // We will cache option in case it removed by ajax
+        setPrevValueOptions(
+          outOptions.map((option, index) => {
+            const clone = { ...option };
+            Object.defineProperty(clone, '_INTERNAL_OPTION_VALUE_', {
+              get: () => newRawValues[index],
+            });
+            return clone;
+          }),
+        );
 
         onChange(outValue, isMultiple ? outOptions : outOptions[0]);
       }
