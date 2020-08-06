@@ -121,7 +121,7 @@ describe('Select.Multiple', () => {
     expect(wrapper.find('input').props().value).toBe('');
   });
 
-  it('shouldn\'t separate words when compositing', () => {
+  it("shouldn't separate words when compositing", () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
     const wrapper = mount(
@@ -390,5 +390,43 @@ describe('Select.Multiple', () => {
     toggleOpen(wrapper);
     toggleOpen(wrapper);
     expect(wrapper.find('input').props().value).toEqual('');
+  });
+
+  it('ajax update should keep options', () => {
+    const onChange = jest.fn();
+
+    const wrapper = mount(
+      <Select
+        labelInValue
+        mode="multiple"
+        options={[{ value: 'light', label: 'Light', option: 2333 }]}
+        onChange={onChange}
+        showSearch
+      />,
+    );
+
+    // First select
+    toggleOpen(wrapper);
+    selectItem(wrapper, 0);
+    expect(onChange).toHaveBeenCalledWith(
+      [{ label: 'Light', value: 'light', key: 'light' }],
+      [{ label: 'Light', value: 'light', option: 2333 }],
+    );
+    onChange.mockReset();
+
+    // Next select
+    wrapper.setProps({ options: [{ value: 'bamboo', label: 'Bamboo', option: 444 }] });
+    toggleOpen(wrapper);
+    selectItem(wrapper, 0);
+    expect(onChange).toHaveBeenCalledWith(
+      [
+        { label: 'Light', value: 'light', key: 'light' },
+        { label: 'Bamboo', value: 'bamboo', key: 'bamboo' },
+      ],
+      [
+        { label: 'Light', value: 'light', option: 2333 },
+        { value: 'bamboo', label: 'Bamboo', option: 444 },
+      ],
+    );
   });
 });
