@@ -224,6 +224,21 @@ describe('Select.Tags', () => {
     ]);
   });
 
+  it('renders options matched with optionFilterProp', () => {
+    const wrapper = mount(
+      <Select open value="22" mode="tags" searchValue="option-1" optionFilterProp="children">
+        <Option value="1">option-1</Option>
+        <Option value="2">option-2</Option>
+      </Select>,
+    );
+
+    expect(wrapper.find('List').props().data).toEqual([
+      expect.objectContaining({
+        data: expect.objectContaining({ value: '1' }),
+      }),
+    ]);
+  });
+
   it('use filterOption', () => {
     const filterOption = (inputValue, option) =>
       option.value.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1;

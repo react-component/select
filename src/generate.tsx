@@ -434,7 +434,10 @@ export default function generateSelector<
         optionFilterProp,
         filterOption: mode === 'combobox' && filterOption === undefined ? () => true : filterOption,
       });
-      if (mode === 'tags' && filteredOptions.every(opt => opt.value !== mergedSearchValue)) {
+      if (
+        mode === 'tags' &&
+        filteredOptions.every(opt => opt[optionFilterProp] !== mergedSearchValue)
+      ) {
         filteredOptions.unshift({
           value: mergedSearchValue,
           label: mergedSearchValue,
