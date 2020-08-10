@@ -28,7 +28,15 @@ export function toInnerValue(
 
   if (labelInValue) {
     return (values as LabelValueType[]).filter(Boolean).map(
-      ({ key, value: val }: LabelValueType) => (val !== undefined ? val : key),
+      (value: LabelValueType) => {
+        try {
+          const { key, value: val } = value;
+          return (val !== undefined ? val : key)
+        } catch (e) {
+          console.error('You might passed a malformed value to a Select whose labelInValue is set to true. To fix that, check if the value is in the form of { key, value }', e);
+          throw e;
+        }
+      }
     );
   }
 
