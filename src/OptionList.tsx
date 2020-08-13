@@ -3,7 +3,7 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import useMemo from 'rc-util/lib/hooks/useMemo';
 import classNames from 'classnames';
-import List from 'rc-virtual-list';
+import List, { ListRef } from 'rc-virtual-list';
 import TransBtn from './TransBtn';
 import {
   OptionsType as SelectOptionsType,
@@ -86,7 +86,7 @@ const OptionList: React.RefForwardingComponent<
   );
 
   // =========================== List ===========================
-  const listRef = React.useRef<List>(null);
+  const listRef = React.useRef<ListRef>(null);
 
   const onListMouseDown: React.MouseEventHandler<HTMLDivElement> = event => {
     event.preventDefault();
