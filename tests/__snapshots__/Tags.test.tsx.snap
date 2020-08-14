@@ -107,7 +107,7 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
           </div>
           <div
             class=""
-            style="height: 200px;"
+            style="max-height: 200px; overflow-y: auto;"
           >
             <div>
               <div

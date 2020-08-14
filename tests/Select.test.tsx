@@ -423,16 +423,7 @@ describe('Select.Basic', () => {
     wrapper.find('input').simulate('change', { target: { value: '1' } });
     expect(handleSearch).toHaveBeenCalledWith('1');
 
-    // should reset scroll
-    const scrollTo = jest.spyOn(
-      wrapper
-        .find('List')
-        .last()
-        .instance(),
-      'scrollTo',
-    );
     wrapper.find('input').simulate('change', { target: { value: '' } });
-    expect(scrollTo).toHaveBeenCalled();
   });
 
   it('not fires search event when user select', () => {

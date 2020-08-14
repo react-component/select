@@ -57,7 +57,7 @@ exports[`Select.Basic does not filter when filterOption value is false 1`] = `
         </div>
         <div
           class=""
-          style="height:200px"
+          style="max-height:200px;overflow-y:auto;overflow-anchor:none"
         >
           <div>
             <div
@@ -510,7 +510,7 @@ exports[`Select.Basic render renders dropdown correctly 1`] = `
         </div>
         <div
           class=""
-          style="height:200px"
+          style="max-height:200px;overflow-y:auto;overflow-anchor:none"
         >
           <div>
             <div
@@ -743,7 +743,7 @@ exports[`Select.Basic should contain falsy children 1`] = `
         </div>
         <div
           class=""
-          style="height:200px"
+          style="max-height:200px;overflow-y:auto;overflow-anchor:none"
         >
           <div>
             <div
@@ -878,7 +878,7 @@ exports[`Select.Basic should render custom dropdown correctly 1`] = `
           </div>
           <div
             class=""
-            style="height: 200px;"
+            style="max-height: 200px; overflow-y: auto;"
           >
             <div>
               <div
