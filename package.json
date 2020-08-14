@@ -48,7 +48,7 @@
     "rc-motion": "^1.0.1",
     "rc-trigger": "^4.3.0",
     "rc-util": "^5.0.1",
-    "rc-virtual-list": "^1.1.2",
+    "rc-virtual-list": "^2.1.5",
     "warning": "^4.0.3"
   },
   "devDependencies": {
