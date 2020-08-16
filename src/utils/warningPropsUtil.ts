@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import warning, { noteOnce } from 'rc-util/lib/warning';
 import toNodeArray from 'rc-util/lib/Children/toArray';
 import { SelectProps } from '..';

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { composeRef } from 'rc-util/lib/ref';
 
 type InputRef = HTMLInputElement | HTMLTextAreaElement;
