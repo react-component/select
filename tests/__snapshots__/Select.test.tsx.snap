@@ -56,53 +56,58 @@ exports[`Select.Basic does not filter when filterOption value is false 1`] = `
           </div>
         </div>
         <div
-          class=""
-          style="max-height:200px;overflow-y:auto;overflow-anchor:none"
+          class="rc-virtual-list"
+          style="position:relative"
         >
-          <div>
-            <div
-              class=""
-              style="display:flex;flex-direction:column"
-            >
+          <div
+            class="rc-virtual-list-holder"
+            style="max-height:200px;overflow-y:auto;overflow-anchor:none"
+          >
+            <div>
               <div
-                aria-selected="false"
-                class="rc-select-item rc-select-item-option rc-select-item-option-active"
+                class="rc-virtual-list-holder-inner"
+                style="display:flex;flex-direction:column"
               >
                 <div
-                  class="rc-select-item-option-content"
+                  aria-selected="false"
+                  class="rc-select-item rc-select-item-option rc-select-item-option-active"
                 >
-                  1
-                </div>
-                <span
-                  aria-hidden="true"
-                  class="rc-select-item-option-state"
-                  style="user-select:none;-webkit-user-select:none"
-                  unselectable="on"
-                >
+                  <div
+                    class="rc-select-item-option-content"
+                  >
+                    1
+                  </div>
                   <span
-                    class="rc-select-item-option-state-icon"
-                  />
-                </span>
-              </div>
-              <div
-                aria-selected="false"
-                class="rc-select-item rc-select-item-option"
-              >
+                    aria-hidden="true"
+                    class="rc-select-item-option-state"
+                    style="user-select:none;-webkit-user-select:none"
+                    unselectable="on"
+                  >
+                    <span
+                      class="rc-select-item-option-state-icon"
+                    />
+                  </span>
+                </div>
                 <div
-                  class="rc-select-item-option-content"
+                  aria-selected="false"
+                  class="rc-select-item rc-select-item-option"
                 >
-                  2
-                </div>
-                <span
-                  aria-hidden="true"
-                  class="rc-select-item-option-state"
-                  style="user-select:none;-webkit-user-select:none"
-                  unselectable="on"
-                >
+                  <div
+                    class="rc-select-item-option-content"
+                  >
+                    2
+                  </div>
                   <span
-                    class="rc-select-item-option-state-icon"
-                  />
-                </span>
+                    aria-hidden="true"
+                    class="rc-select-item-option-state"
+                    style="user-select:none;-webkit-user-select:none"
+                    unselectable="on"
+                  >
+                    <span
+                      class="rc-select-item-option-state-icon"
+                    />
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -509,87 +514,92 @@ exports[`Select.Basic render renders dropdown correctly 1`] = `
           </div>
         </div>
         <div
-          class=""
-          style="max-height:200px;overflow-y:auto;overflow-anchor:none"
+          class="rc-virtual-list"
+          style="position:relative"
         >
-          <div>
-            <div
-              class=""
-              style="display:flex;flex-direction:column"
-            >
+          <div
+            class="rc-virtual-list-holder"
+            style="max-height:200px;overflow-y:auto;overflow-anchor:none"
+          >
+            <div>
               <div
-                class="antd-item antd-item-group"
-              >
-                manager
-              </div>
-              <div
-                aria-selected="false"
-                class="antd-item antd-item-option option-test antd-item-option-grouped antd-item-option-active"
+                class="rc-virtual-list-holder-inner"
+                style="display:flex;flex-direction:column"
               >
                 <div
-                  class="antd-item-option-content"
+                  class="antd-item antd-item-group"
                 >
-                  <b
-                    style="color:red"
+                  manager
+                </div>
+                <div
+                  aria-selected="false"
+                  class="antd-item antd-item-option option-test antd-item-option-grouped antd-item-option-active"
+                >
+                  <div
+                    class="antd-item-option-content"
                   >
-                    jack
-                  </b>
-                </div>
-                <span
-                  aria-hidden="true"
-                  class="antd-item-option-state"
-                  style="user-select:none;-webkit-user-select:none"
-                  unselectable="on"
-                >
+                    <b
+                      style="color:red"
+                    >
+                      jack
+                    </b>
+                  </div>
                   <span
-                    class="antd-item-option-state-icon"
-                  />
-                </span>
-              </div>
-              <div
-                aria-selected="false"
-                class="antd-item antd-item-option antd-item-option-grouped"
-              >
+                    aria-hidden="true"
+                    class="antd-item-option-state"
+                    style="user-select:none;-webkit-user-select:none"
+                    unselectable="on"
+                  >
+                    <span
+                      class="antd-item-option-state-icon"
+                    />
+                  </span>
+                </div>
                 <div
-                  class="antd-item-option-content"
+                  aria-selected="false"
+                  class="antd-item antd-item-option antd-item-option-grouped"
                 >
-                  lucy
-                </div>
-                <span
-                  aria-hidden="true"
-                  class="antd-item-option-state"
-                  style="user-select:none;-webkit-user-select:none"
-                  unselectable="on"
-                >
+                  <div
+                    class="antd-item-option-content"
+                  >
+                    lucy
+                  </div>
                   <span
-                    class="antd-item-option-state-icon"
-                  />
-                </span>
-              </div>
-              <div
-                class="antd-item antd-item-group"
-              >
-                engineer
-              </div>
-              <div
-                aria-selected="false"
-                class="antd-item antd-item-option antd-item-option-grouped"
-              >
+                    aria-hidden="true"
+                    class="antd-item-option-state"
+                    style="user-select:none;-webkit-user-select:none"
+                    unselectable="on"
+                  >
+                    <span
+                      class="antd-item-option-state-icon"
+                    />
+                  </span>
+                </div>
                 <div
-                  class="antd-item-option-content"
+                  class="antd-item antd-item-group"
                 >
-                  yiminghe
+                  engineer
                 </div>
-                <span
-                  aria-hidden="true"
-                  class="antd-item-option-state"
-                  style="user-select:none;-webkit-user-select:none"
-                  unselectable="on"
+                <div
+                  aria-selected="false"
+                  class="antd-item antd-item-option antd-item-option-grouped"
                 >
+                  <div
+                    class="antd-item-option-content"
+                  >
+                    yiminghe
+                  </div>
                   <span
-                    class="antd-item-option-state-icon"
-                  />
-                </span>
+                    aria-hidden="true"
+                    class="antd-item-option-state"
+                    style="user-select:none;-webkit-user-select:none"
+                    unselectable="on"
+                  >
+                    <span
+                      class="antd-item-option-state-icon"
+                    />
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -742,55 +752,60 @@ exports[`Select.Basic should contain falsy children 1`] = `
           </div>
         </div>
         <div
-          class=""
-          style="max-height:200px;overflow-y:auto;overflow-anchor:none"
+          class="rc-virtual-list"
+          style="position:relative"
         >
-          <div>
-            <div
-              class=""
-              style="display:flex;flex-direction:column"
-            >
+          <div
+            class="rc-virtual-list-holder"
+            style="max-height:200px;overflow-y:auto;overflow-anchor:none"
+          >
+            <div>
               <div
-                aria-selected="true"
-                class="rc-select-item rc-select-item-option rc-select-item-option-active rc-select-item-option-selected"
+                class="rc-virtual-list-holder-inner"
+                style="display:flex;flex-direction:column"
               >
                 <div
-                  class="rc-select-item-option-content"
+                  aria-selected="true"
+                  class="rc-select-item rc-select-item-option rc-select-item-option-active rc-select-item-option-selected"
                 >
-                  1
-                </div>
-                <span
-                  aria-hidden="true"
-                  class="rc-select-item-option-state"
-                  style="user-select:none;-webkit-user-select:none"
-                  unselectable="on"
-                >
-                  <span
-                    class="rc-select-item-option-state-icon"
+                  <div
+                    class="rc-select-item-option-content"
                   >
-                    ✓
-                  </span>
-                </span>
-              </div>
-              <div
-                aria-selected="false"
-                class="rc-select-item rc-select-item-option"
-              >
-                <div
-                  class="rc-select-item-option-content"
-                >
-                  2
-                </div>
-                <span
-                  aria-hidden="true"
-                  class="rc-select-item-option-state"
-                  style="user-select:none;-webkit-user-select:none"
-                  unselectable="on"
-                >
+                    1
+                  </div>
                   <span
-                    class="rc-select-item-option-state-icon"
-                  />
-                </span>
+                    aria-hidden="true"
+                    class="rc-select-item-option-state"
+                    style="user-select:none;-webkit-user-select:none"
+                    unselectable="on"
+                  >
+                    <span
+                      class="rc-select-item-option-state-icon"
+                    >
+                      ✓
+                    </span>
+                  </span>
+                </div>
+                <div
+                  aria-selected="false"
+                  class="rc-select-item rc-select-item-option"
+                >
+                  <div
+                    class="rc-select-item-option-content"
+                  >
+                    2
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    class="rc-select-item-option-state"
+                    style="user-select:none;-webkit-user-select:none"
+                    unselectable="on"
+                  >
+                    <span
+                      class="rc-select-item-option-state-icon"
+                    />
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -877,53 +892,58 @@ exports[`Select.Basic should render custom dropdown correctly 1`] = `
             </div>
           </div>
           <div
-            class=""
-            style="max-height: 200px; overflow-y: auto;"
+            class="rc-virtual-list"
+            style="position: relative;"
           >
-            <div>
-              <div
-                class=""
-                style="display: flex; flex-direction: column;"
-              >
+            <div
+              class="rc-virtual-list-holder"
+              style="max-height: 200px; overflow-y: auto;"
+            >
+              <div>
                 <div
-                  aria-selected="false"
-                  class="rc-select-item rc-select-item-option rc-select-item-option-active"
+                  class="rc-virtual-list-holder-inner"
+                  style="display: flex; flex-direction: column;"
                 >
                   <div
-                    class="rc-select-item-option-content"
+                    aria-selected="false"
+                    class="rc-select-item rc-select-item-option rc-select-item-option-active"
                   >
-                    1
-                  </div>
-                  <span
-                    aria-hidden="true"
-                    class="rc-select-item-option-state"
-                    style="user-select: none;"
-                    unselectable="on"
-                  >
+                    <div
+                      class="rc-select-item-option-content"
+                    >
+                      1
+                    </div>
                     <span
-                      class="rc-select-item-option-state-icon"
-                    />
-                  </span>
-                </div>
-                <div
-                  aria-selected="false"
-                  class="rc-select-item rc-select-item-option"
-                >
+                      aria-hidden="true"
+                      class="rc-select-item-option-state"
+                      style="user-select: none;"
+                      unselectable="on"
+                    >
+                      <span
+                        class="rc-select-item-option-state-icon"
+                      />
+                    </span>
+                  </div>
                   <div
-                    class="rc-select-item-option-content"
+                    aria-selected="false"
+                    class="rc-select-item rc-select-item-option"
                   >
-                    2
-                  </div>
-                  <span
-                    aria-hidden="true"
-                    class="rc-select-item-option-state"
-                    style="user-select: none;"
-                    unselectable="on"
-                  >
+                    <div
+                      class="rc-select-item-option-content"
+                    >
+                      2
+                    </div>
                     <span
-                      class="rc-select-item-option-state-icon"
-                    />
-                  </span>
+                      aria-hidden="true"
+                      class="rc-select-item-option-state"
+                      style="user-select: none;"
+                      unselectable="on"
+                    >
+                      <span
+                        class="rc-select-item-option-state-icon"
+                      />
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
