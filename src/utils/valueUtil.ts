@@ -180,7 +180,7 @@ function getFilterFunction(optionFilterProp: string) {
     // Option value search
     const rawValue = option[optionFilterProp];
     const value = toRawString(rawValue).toLowerCase();
-    return value.includes(lowerSearchText) && !option.disabled;
+    return value.includes(lowerSearchText);
   };
 }
 
