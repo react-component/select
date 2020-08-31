@@ -840,7 +840,7 @@ describe('Select.Basic', () => {
     );
 
     wrapper.find('input').simulate('change', { target: { value: '1' } });
-    expect(wrapper.find('List').props().data).toHaveLength(2);
+    expect(wrapper.find('List').props().data).toHaveLength(3);
   });
 
   it('should include disabled item in options', () => {
