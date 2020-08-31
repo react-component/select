@@ -30,7 +30,7 @@ exports[`Select.Basic does not filter when filterOption value is false 1`] = `
   <div>
     <div
       class="rc-select-dropdown"
-      style="opacity:0"
+      style="opacity:0;pointer-events:none"
     >
       <div>
         <div
@@ -156,7 +156,7 @@ exports[`Select.Basic filterOption could be true as described in default value 1
   <div>
     <div
       class="rc-select-dropdown"
-      style="opacity: 0; min-width: 0; width: 0px;"
+      style="opacity: 0; pointer-events: none; min-width: 0; width: 0px;"
     >
       <div>
         <div
@@ -484,7 +484,7 @@ exports[`Select.Basic render renders dropdown correctly 1`] = `
   <div>
     <div
       class="antd-dropdown"
-      style="opacity:0"
+      style="opacity:0;pointer-events:none"
     >
       <div>
         <div
@@ -652,7 +652,7 @@ exports[`Select.Basic render renders role prop correctly 1`] = `
         autocomplete="off"
         class="antd-selection-search-input"
         readonly=""
-        role="combobox"
+        role="button"
         style="opacity:0"
         unselectable="on"
         value=""
@@ -726,7 +726,7 @@ exports[`Select.Basic should contain falsy children 1`] = `
   <div>
     <div
       class="rc-select-dropdown"
-      style="opacity:0"
+      style="opacity:0;pointer-events:none"
     >
       <div>
         <div
@@ -860,7 +860,7 @@ exports[`Select.Basic should render custom dropdown correctly 1`] = `
   <div>
     <div
       class="rc-select-dropdown"
-      style="opacity: 0; min-width: 0; width: 0px;"
+      style="opacity: 0; pointer-events: none; min-width: 0; width: 0px;"
     >
       <div>
         <div>
