@@ -870,6 +870,16 @@ describe('Select.Basic', () => {
     expect(wrapper.find('.rc-select-item-empty').text()).toEqual('Not Found');
   });
 
+  it('search input type', () => {
+    const wrapper = mount(
+      <Select showSearch open>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    expect(wrapper.find('input').prop('type')).toBe('search');
+  });
+
   it('warns on invalid children', () => {
     const Foo = value => <div>foo{value}</div>;
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);

@@ -20,6 +20,7 @@ exports[`Select.Combobox renders correctly 1`] = `
         class="rc-select-selection-search-input"
         id="rc_select_TEST_OR_SSR"
         role="combobox"
+        type="search"
         value=""
       />
     </span>
