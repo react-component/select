@@ -22,6 +22,7 @@ exports[`Select.Basic does not filter when filterOption value is false 1`] = `
         readonly=""
         role="combobox"
         style="opacity:0"
+        type="search"
         unselectable="on"
         value=""
       />
@@ -149,6 +150,7 @@ exports[`Select.Basic filterOption could be true as described in default value 1
         class="rc-select-selection-search-input"
         id="rc_select_TEST_OR_SSR"
         role="combobox"
+        type="search"
         value="3"
       />
     </span>
@@ -203,6 +205,7 @@ exports[`Select.Basic no search 1`] = `
         readonly=""
         role="combobox"
         style="opacity:0"
+        type="search"
         unselectable="on"
         value=""
       />
@@ -252,6 +255,7 @@ exports[`Select.Basic render renders aria-attributes correctly 1`] = `
         readonly=""
         role="combobox"
         style="opacity:0"
+        type="search"
         unselectable="on"
         value=""
       />
@@ -309,6 +313,7 @@ exports[`Select.Basic render renders correctly 1`] = `
         readonly=""
         role="combobox"
         style="opacity:0"
+        type="search"
         unselectable="on"
         value=""
       />
@@ -368,6 +373,7 @@ exports[`Select.Basic render renders data-attributes correctly 1`] = `
         readonly=""
         role="combobox"
         style="opacity:0"
+        type="search"
         unselectable="on"
         value=""
       />
@@ -427,6 +433,7 @@ exports[`Select.Basic render renders disabled select correctly 1`] = `
         readonly=""
         role="combobox"
         style="opacity:0"
+        type="search"
         unselectable="on"
         value=""
       />
@@ -471,6 +478,7 @@ exports[`Select.Basic render renders dropdown correctly 1`] = `
         autocomplete="off"
         class="antd-selection-search-input"
         role="combobox"
+        type="search"
         value=""
       />
     </span>
@@ -654,6 +662,7 @@ exports[`Select.Basic render renders role prop correctly 1`] = `
         readonly=""
         role="button"
         style="opacity:0"
+        type="search"
         unselectable="on"
         value=""
       />
@@ -712,6 +721,7 @@ exports[`Select.Basic should contain falsy children 1`] = `
         readonly=""
         role="combobox"
         style="opacity:0"
+        type="search"
         unselectable="on"
         value=""
       />
@@ -849,6 +859,7 @@ exports[`Select.Basic should render custom dropdown correctly 1`] = `
         readonly=""
         role="combobox"
         style="opacity: 0;"
+        type="search"
         unselectable="on"
         value=""
       />
