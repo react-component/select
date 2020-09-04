@@ -73,6 +73,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     disabled,
     tabIndex,
     autoComplete: autoComplete || 'off',
+    type: 'search',
     autoFocus,
     className: `${prefixCls}-selection-search-input`,
     style: { ...style, opacity: editable ? null : 0 },
