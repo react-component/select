@@ -65,6 +65,7 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
           class="rc-select-selection-search-input"
           id="rc_select_TEST_OR_SSR"
           role="combobox"
+          type="search"
           value=""
         />
         <span
@@ -224,6 +225,7 @@ exports[`Select.Tags render not display maxTagPlaceholder if maxTagCount not rea
         class="rc-select-selection-search-input"
         id="rc_select_TEST_OR_SSR"
         role="combobox"
+        type="search"
         value=""
       />
       <span
@@ -314,6 +316,7 @@ exports[`Select.Tags render truncates tags by maxTagCount and show maxTagPlaceho
         class="rc-select-selection-search-input"
         id="rc_select_TEST_OR_SSR"
         role="combobox"
+        type="search"
         value=""
       />
       <span
@@ -401,6 +404,7 @@ exports[`Select.Tags render truncates tags by maxTagCount and show maxTagPlaceho
         class="rc-select-selection-search-input"
         id="rc_select_TEST_OR_SSR"
         role="combobox"
+        type="search"
         value=""
       />
       <span
@@ -477,6 +481,7 @@ exports[`Select.Tags render truncates values by maxTagTextLength 1`] = `
         class="rc-select-selection-search-input"
         id="rc_select_TEST_OR_SSR"
         role="combobox"
+        type="search"
         value=""
       />
       <span
