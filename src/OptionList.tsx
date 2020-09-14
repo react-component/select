@@ -313,17 +313,26 @@ const OptionList: React.RefForwardingComponent<
           const iconVisible =
             !menuItemSelectedIcon || typeof menuItemSelectedIcon === 'function' || selected;
 
+          const content = mergedLabel || value;
+          // https://github.com/ant-design/ant-design/issues/26717
+          let optionTitle =
+            typeof content === 'string' || typeof content === 'number'
+              ? content.toString()
+              : undefined;
+          if (title !== undefined) {
+            optionTitle = title;
+          }
+
           return (
             <div
               {...otherProps}
               aria-selected={selected}
               className={optionClassName}
-              title={title}
+              title={optionTitle}
               onMouseMove={() => {
                 if (activeIndex === itemIndex || disabled) {
                   return;
                 }
-
                 setActive(itemIndex);
               }}
               onClick={() => {
@@ -333,7 +342,7 @@ const OptionList: React.RefForwardingComponent<
               }}
               style={style}
             >
-              <div className={`${optionPrefixCls}-content`}>{mergedLabel || value}</div>
+              <div className={`${optionPrefixCls}-content`}>{content}</div>
               {React.isValidElement(menuItemSelectedIcon) || selected}
               {iconVisible && (
                 <TransBtn

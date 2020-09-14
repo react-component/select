@@ -47,6 +47,7 @@ exports[`OptionList renders correctly 1`] = `
             aria-label="value-1"
             aria-selected="true"
             class="rc-select-item rc-select-item-option rc-select-item-option-grouped rc-select-item-option-active rc-select-item-option-selected"
+            title="1"
           >
             <div
               class="rc-select-item-option-content"
@@ -74,6 +75,7 @@ exports[`OptionList renders correctly 1`] = `
           <div
             aria-selected="false"
             class="rc-select-item rc-select-item-option rc-select-item-option-grouped"
+            title="2"
           >
             <div
               class="rc-select-item-option-content"

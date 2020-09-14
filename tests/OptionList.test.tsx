@@ -152,4 +152,74 @@ describe('OptionList', () => {
         .prop('data-num'),
     ).toBe('123');
   });
+
+  it('should render title defaultly', () => {
+    const wrapper = mount(
+      generateList({
+        options: [{ value: '1', label: 'my-label' }],
+      }),
+    );
+    expect(
+      wrapper
+        .find('.rc-select-item-option')
+        .first()
+        .prop('title'),
+    ).toBe('my-label');
+  });
+
+  it('should render title', () => {
+    const wrapper = mount(
+      generateList({
+        options: [{ value: '1', label: 'my-label', title: 'title' }],
+      }),
+    );
+    expect(
+      wrapper
+        .find('.rc-select-item-option')
+        .first()
+        .prop('title'),
+    ).toBe('title');
+  });
+
+  it('should not render title when title is empty string', () => {
+    const wrapper = mount(
+      generateList({
+        options: [{ value: '1', label: 'my-label', title: '' }],
+      }),
+    );
+    expect(
+      wrapper
+        .find('.rc-select-item-option')
+        .first()
+        .prop('title'),
+    ).toBe('');
+  });
+
+  it('should render title from label when title is undefined', () => {
+    const wrapper = mount(
+      generateList({
+        options: [{ value: '1', label: 'my-label', title: undefined }],
+      }),
+    );
+    expect(
+      wrapper
+        .find('.rc-select-item-option')
+        .first()
+        .prop('title'),
+    ).toBe('my-label');
+  });
+
+  it('should not render title defaultly when label is ReactNode', () => {
+    const wrapper = mount(
+      generateList({
+        options: [{ value: '1', label: <div>label</div> }],
+      }),
+    );
+    expect(
+      wrapper
+        .find('.rc-select-item-option')
+        .first()
+        .prop('title'),
+    ).toBe(undefined);
+  });
 });

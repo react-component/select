@@ -72,6 +72,7 @@ exports[`Select.Basic does not filter when filterOption value is false 1`] = `
                 <div
                   aria-selected="false"
                   class="rc-select-item rc-select-item-option rc-select-item-option-active"
+                  title="1"
                 >
                   <div
                     class="rc-select-item-option-content"
@@ -92,6 +93,7 @@ exports[`Select.Basic does not filter when filterOption value is false 1`] = `
                 <div
                   aria-selected="false"
                   class="rc-select-item rc-select-item-option"
+                  title="2"
                 >
                   <div
                     class="rc-select-item-option-content"
@@ -566,6 +568,7 @@ exports[`Select.Basic render renders dropdown correctly 1`] = `
                 <div
                   aria-selected="false"
                   class="antd-item antd-item-option antd-item-option-grouped"
+                  title="lucy"
                 >
                   <div
                     class="antd-item-option-content"
@@ -591,6 +594,7 @@ exports[`Select.Basic render renders dropdown correctly 1`] = `
                 <div
                   aria-selected="false"
                   class="antd-item antd-item-option antd-item-option-grouped"
+                  title="yiminghe"
                 >
                   <div
                     class="antd-item-option-content"
@@ -777,6 +781,7 @@ exports[`Select.Basic should contain falsy children 1`] = `
                 <div
                   aria-selected="true"
                   class="rc-select-item rc-select-item-option rc-select-item-option-active rc-select-item-option-selected"
+                  title="1"
                 >
                   <div
                     class="rc-select-item-option-content"
@@ -799,6 +804,7 @@ exports[`Select.Basic should contain falsy children 1`] = `
                 <div
                   aria-selected="false"
                   class="rc-select-item rc-select-item-option"
+                  title="2"
                 >
                   <div
                     class="rc-select-item-option-content"
@@ -918,6 +924,7 @@ exports[`Select.Basic should render custom dropdown correctly 1`] = `
                   <div
                     aria-selected="false"
                     class="rc-select-item rc-select-item-option rc-select-item-option-active"
+                    title="1"
                   >
                     <div
                       class="rc-select-item-option-content"
@@ -938,6 +945,7 @@ exports[`Select.Basic should render custom dropdown correctly 1`] = `
                   <div
                     aria-selected="false"
                     class="rc-select-item rc-select-item-option"
+                    title="2"
                   >
                     <div
                       class="rc-select-item-option-content"
