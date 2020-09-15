@@ -17,6 +17,8 @@ jobs:
   test:
     docker:
       - image: circleci/node:latest
+    environment:
+      BASH_ENV: "~/.bashrc"
     working_directory: ~/repo
     steps:
       - checkout
@@ -28,7 +30,7 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: npm test -- --coverage
+      - run: npm test -- --coverage && bash <(curl -s https://codecov.io/bash)
   compile:
     docker:
       - image: circleci/node:latest
