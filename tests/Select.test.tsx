@@ -243,6 +243,21 @@ describe('Select.Basic', () => {
     expect(findSelection(wrapper).text()).toBe('1');
   });
 
+  it('search input should be editable initially', () => {
+    const wrapper = mount(
+      <Select showSearch>
+        <Option value="1">One</Option>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
+    expect(
+      wrapper
+        .find('input')
+        .getDOMNode()
+        .getAttribute('readonly'),
+    ).toBeFalsy();
+  });
+
   it('filter options by "value" prop by default', () => {
     const wrapper = mount(
       <Select showSearch>
