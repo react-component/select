@@ -66,7 +66,7 @@ class Test extends React.Component {
             id="my-select"
             value={value}
             placeholder="placeholder"
-            showSearch={false}
+            showSearch
             style={{ width: 500 }}
             onBlur={this.onBlur}
             onFocus={this.onFocus}
@@ -74,7 +74,6 @@ class Test extends React.Component {
             allowClear
             optionFilterProp="text"
             onChange={this.onChange}
-            backfill
             onPopupScroll={() => {
               console.log('Scroll!');
             }}

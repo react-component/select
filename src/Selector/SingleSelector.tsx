@@ -40,7 +40,7 @@ const SingleSelector: React.FC<SelectorProps> = props => {
   const [inputChanged, setInputChanged] = React.useState(false);
 
   const combobox = mode === 'combobox';
-  const inputEditable = combobox || (showSearch && open);
+  const inputEditable = combobox || showSearch;
   const item = values[0];
 
   let inputValue: string = searchValue || '';
