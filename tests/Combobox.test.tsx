@@ -235,6 +235,22 @@ describe('Select.Combobox', () => {
       expect(handleSelect).toHaveBeenCalledWith('One', expect.objectContaining({ value: 'One' }));
     });
 
+    it('mouse should not trigger', () => {
+      const wrapper = mount(
+        <Select mode="combobox" backfill open>
+          <Option value="One">One</Option>
+          <Option value="Two">Two</Option>
+        </Select>,
+      );
+
+      wrapper
+        .find('.rc-select-item-option')
+        .first()
+        .simulate('mouseMove');
+
+      expect(wrapper.find('input').props().value).toBeFalsy();
+    });
+
     // https://github.com/ant-design/ant-design/issues/25345
     it('dynamic options', () => {
       const onChange = jest.fn();

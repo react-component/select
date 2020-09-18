@@ -10,6 +10,7 @@ import {
   FlattenOptionData as SelectFlattenOptionData,
   OptionData,
   RenderNode,
+  OnActiveValue,
 } from './interface';
 import { RawValueType, FlattenOptionsType } from './interface/generator';
 
@@ -33,7 +34,7 @@ export interface OptionListProps<OptionsType extends object[]> {
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
   onToggleOpen: (open?: boolean) => void;
   /** Tell Select that some value is now active to make accessibility work */
-  onActiveValue: (value: RawValueType, index: number) => void;
+  onActiveValue: OnActiveValue;
   onScroll: React.UIEventHandler<HTMLDivElement>;
 
   /** Tell Select that mouse enter the popup to force re-render */
@@ -115,17 +116,19 @@ const OptionList: React.RefForwardingComponent<
   };
 
   const [activeIndex, setActiveIndex] = React.useState(() => getEnabledActiveIndex(0));
-  const setActive = (index: number) => {
+  const setActive = (index: number, fromKeyboard = false) => {
     setActiveIndex(index);
+
+    const info = { source: fromKeyboard ? ('keyboard' as const) : ('mouse' as const) };
 
     // Trigger active event
     const flattenItem = memoFlattenOptions[index];
     if (!flattenItem) {
-      onActiveValue(null, -1);
+      onActiveValue(null, -1, info);
       return;
     }
 
-    onActiveValue((flattenItem.data as OptionData).value, index);
+    onActiveValue((flattenItem.data as OptionData).value, index, info);
   };
 
   // Auto active first item when list length or searchValue changed
@@ -184,7 +187,7 @@ const OptionList: React.RefForwardingComponent<
           if (offset !== 0) {
             const nextActiveIndex = getEnabledActiveIndex(activeIndex + offset, offset);
             scrollIntoView(nextActiveIndex);
-            setActive(nextActiveIndex);
+            setActive(nextActiveIndex, true);
           }
 
           break;

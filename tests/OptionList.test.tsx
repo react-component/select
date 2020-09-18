@@ -68,7 +68,7 @@ describe('OptionList', () => {
       }),
     );
 
-    expect(onActiveValue).toHaveBeenCalledWith('1', expect.anything());
+    expect(onActiveValue).toHaveBeenCalledWith('1', expect.anything(), expect.anything());
   });
 
   it('key operation', () => {
@@ -86,13 +86,21 @@ describe('OptionList', () => {
     act(() => {
       listRef.current.onKeyDown({ which: KeyCode.DOWN } as any);
     });
-    expect(onActiveValue).toHaveBeenCalledWith('2', expect.anything());
+    expect(onActiveValue).toHaveBeenCalledWith(
+      '2',
+      expect.anything(),
+      expect.objectContaining({ source: 'keyboard' }),
+    );
 
     onActiveValue.mockReset();
     act(() => {
       listRef.current.onKeyDown({ which: KeyCode.UP } as any);
     });
-    expect(onActiveValue).toHaveBeenCalledWith('1', expect.anything());
+    expect(onActiveValue).toHaveBeenCalledWith(
+      '1',
+      expect.anything(),
+      expect.objectContaining({ source: 'keyboard' }),
+    );
   });
 
   it('hover to active', () => {
@@ -109,7 +117,11 @@ describe('OptionList', () => {
       .find('.rc-select-item-option')
       .last()
       .simulate('mouseMove');
-    expect(onActiveValue).toHaveBeenCalledWith('2', expect.anything());
+    expect(onActiveValue).toHaveBeenCalledWith(
+      '2',
+      expect.anything(),
+      expect.objectContaining({ source: 'mouse' }),
+    );
 
     // Same item not repeat trigger
     onActiveValue.mockReset();

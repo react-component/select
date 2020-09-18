@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Key } from './generator';
+import { Key, RawValueType } from './generator';
 
 export type RenderDOMFunc = (props: any) => HTMLElement;
 
@@ -8,6 +8,12 @@ export type RenderNode = React.ReactNode | ((props: any) => React.ReactNode);
 export type Mode = 'multiple' | 'tags' | 'combobox';
 
 // ======================== Option ========================
+export type OnActiveValue = (
+  active: RawValueType,
+  index: number,
+  info?: { source?: 'keyboard' | 'mouse' },
+) => void;
+
 export interface OptionCoreData {
   key?: Key;
   disabled?: boolean;

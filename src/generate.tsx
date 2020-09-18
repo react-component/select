@@ -14,7 +14,7 @@ import classNames from 'classnames';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import Selector, { RefSelectorProps } from './Selector';
 import SelectTrigger, { RefTriggerProps } from './SelectTrigger';
-import { RenderNode, Mode, RenderDOMFunc } from './interface';
+import { RenderNode, Mode, RenderDOMFunc, OnActiveValue } from './interface';
 import {
   GetLabeledValue,
   FilterOptions,
@@ -187,11 +187,10 @@ export interface GenerateConfig<OptionsType extends object[]> {
   /** Convert single raw value into { label, value } format. Will be called by each value */
   getLabeledValue: GetLabeledValue<FlattenOptionsType<OptionsType>>;
   filterOptions: FilterOptions<OptionsType>;
-  findValueOption:
-    | (// Need still support legacy ts api
-      (values: RawValueType[], options: FlattenOptionsType<OptionsType>) => OptionsType)
-    | (// New API add prevValueOptions support
-      (
+  findValueOption: // Need still support legacy ts api
+    | ((values: RawValueType[], options: FlattenOptionsType<OptionsType>) => OptionsType)
+    // New API add prevValueOptions support
+    | ((
         values: RawValueType[],
         options: FlattenOptionsType<OptionsType>,
         info?: { prevValueOptions?: OptionsType[] },
@@ -874,10 +873,10 @@ export default function generateSelector<
     const mergedDefaultActiveFirstOption =
       defaultActiveFirstOption !== undefined ? defaultActiveFirstOption : mode !== 'combobox';
 
-    const onActiveValue = (active: RawValueType, index: number) => {
+    const onActiveValue: OnActiveValue = (active, index, { source = 'keyboard' } = {}) => {
       setAccessibilityIndex(index);
 
-      if (backfill && mode === 'combobox' && active !== null) {
+      if (backfill && mode === 'combobox' && active !== null && source === 'keyboard') {
         setActiveValue(String(active));
       }
     };
