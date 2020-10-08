@@ -32,11 +32,12 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development father doc dev --storybook",
     "build": "father doc build --storybook",
-    "compile": "father build",
+    "compile": "father build && npm run compileLess",
     "prepublishOnly": "npm run compile && np --yolo --no-publish",
     "lint": "eslint src/ examples/ --ext .tsx,.ts,.jsx,.js",
     "test": "father test",
-    "now-build": "npm run build"
+    "now-build": "npm run build",
+    "compileLess": "lessc assets/index.less assets/index.css"
   },
   "peerDependencies": {
     "react": "*",
@@ -63,6 +64,7 @@
     "eslint": "^7.1.0",
     "father": "^2.13.2",
     "jsonp": "^0.2.1",
+    "less": "^3.12.2",
     "np": "^6.0.0",
     "rc-dialog": "^8.1.1",
     "typescript": "^3.9.3"
