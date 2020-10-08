@@ -34,17 +34,15 @@ export default function removeSelectedTest(mode: any) {
           value={['1']}
           onChange={handleChange}
           onDeselect={handleDeselect}
-          disabled={true}
+          disabled
           mode={mode}
         >
           <Option value="1">1</Option>
           <Option value="2">2</Option>
         </Select>,
       );
-      removeSelection(wrapper);
 
-      expect(handleDeselect).not.toHaveBeenCalled();
-      expect(handleChange).not.toHaveBeenCalled();
+      expect(wrapper.find('.rc-select-selection-item-remove')).toHaveLength(0);
     });
 
     it('wrap value when labelInValue', () => {
@@ -55,7 +53,7 @@ export default function removeSelectedTest(mode: any) {
           value={[{ key: '1' }, { key: '2' }]}
           onChange={handleChange}
           onDeselect={handleDeselect}
-          labelInValue={true}
+          labelInValue
           mode={mode}
         >
           <Option value="1">1</Option>
