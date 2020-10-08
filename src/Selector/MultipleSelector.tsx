@@ -132,7 +132,7 @@ const SelectSelector: React.FC<SelectorProps> = props => {
     >
       {({ key, label, value, disabled: itemDisabled, className, style }) => {
         const mergedKey = key || value;
-        const closable = key !== REST_TAG_KEY && !itemDisabled;
+        const closable = !disabled && key !== REST_TAG_KEY && !itemDisabled;
         const onMouseDown = (event: React.MouseEvent) => {
           event.preventDefault();
           event.stopPropagation();

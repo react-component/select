@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default-member */
 import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
@@ -268,26 +269,58 @@ describe('Select.Tags', () => {
     expect(onChange).toHaveBeenCalledWith(['a'], expect.anything());
   });
 
-  it('can render custom tags', () => {
-    const onTagRender = jest.fn();
-    const tagRender = (props: any) => {
-      const { label } = props;
-      onTagRender(label);
-      return (
-        <span className={classNames(label, 'customize-tag')}>
-          {label}
-          {label}
-        </span>
+  describe('tagRender', () => {
+    it('can render custom tags', () => {
+      const onTagRender = jest.fn();
+      const tagRender = (props: any) => {
+        const { label } = props;
+        onTagRender(label);
+        return (
+          <span className={classNames(label, 'customize-tag')}>
+            {label}
+            {label}
+          </span>
+        );
+      };
+      const wrapper = mount(<Select mode="tags" tokenSeparators={[',']} tagRender={tagRender} />);
+
+      wrapper.find('input').simulate('change', { target: { value: '1,A,42' } });
+
+      expect(wrapper.find('span.A').length).toBe(1);
+      expect(wrapper.find('span.A').text()).toBe('AA');
+      expect(onTagRender).toHaveBeenCalled();
+      expect(wrapper.find('.customize-tag')).toHaveLength(3);
+    });
+
+    it('disabled', () => {
+      const tagRender = jest.fn();
+      mount(
+        <Select
+          mode="tags"
+          disabled
+          value={['light']}
+          tagRender={tagRender}
+          options={[{ value: 'light' }]}
+        />,
       );
-    };
-    const wrapper = mount(<Select mode="tags" tokenSeparators={[',']} tagRender={tagRender} />);
 
-    wrapper.find('input').simulate('change', { target: { value: '1,A,42' } });
+      expect(tagRender).toHaveBeenCalledWith(expect.objectContaining({ closable: false }));
+    });
 
-    expect(wrapper.find('span.A').length).toBe(1);
-    expect(wrapper.find('span.A').text()).toBe('AA');
-    expect(onTagRender).toHaveBeenCalledTimes(3);
-    expect(wrapper.find('.customize-tag')).toHaveLength(3);
+    it('option disabled', () => {
+      const tagRender = jest.fn();
+      mount(
+        <Select
+          mode="tags"
+          disabled
+          value={['light']}
+          tagRender={tagRender}
+          options={[{ value: 'light', disabled: true }]}
+        />,
+      );
+
+      expect(tagRender).toHaveBeenCalledWith(expect.objectContaining({ closable: false }));
+    });
   });
 
   describe('OptGroup', () => {
@@ -326,12 +359,14 @@ describe('Select.Tags', () => {
     });
 
     it('should work fine when filterOption function exists', () => {
+      const LegacyOption = Select.Option as any; // Compatible to legacy usage
+
       const children = [];
       for (let i = 10; i < 36; i += 1) {
         children.push(
-          <Option key={i.toString(36) + i} disabled={!(i % 3)}>
+          <LegacyOption key={i.toString(36) + i} disabled={!(i % 3)}>
             {i.toString(36) + i}
-          </Option>,
+          </LegacyOption>,
         );
       }
       const wrapper = mount(
