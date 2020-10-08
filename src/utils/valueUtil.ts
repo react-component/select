@@ -197,7 +197,7 @@ export function filterOptions(
   let filterFunc: FilterFunc<SelectOptionsType[number]>;
 
   if (filterOption === false) {
-    return options;
+    return [...options];
   }
   if (typeof filterOption === 'function') {
     filterFunc = filterOption;

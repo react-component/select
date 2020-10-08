@@ -386,4 +386,17 @@ describe('Select.Tags', () => {
       expect(findSelection(wrapper).text()).toEqual('f');
     });
   });
+
+  it('not modify origin options', () => {
+    const errSpy = jest.spyOn(console, 'error');
+    const wrapper = mount(<Select mode="tags" filterOption={false} options={[]} />);
+    toggleOpen(wrapper);
+    wrapper.find('input').simulate('change', { target: { value: 'a' } });
+    wrapper.find('input').simulate('change', { target: { value: 'ab' } });
+    wrapper.find('input').simulate('change', { target: { value: 'a' } });
+    wrapper.find('input').simulate('change', { target: { value: '' } });
+
+    expect(errSpy).not.toHaveBeenCalled();
+    errSpy.mockRestore();
+  });
 });
