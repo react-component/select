@@ -154,6 +154,11 @@ const OptionList: React.RefForwardingComponent<
       }
     });
 
+    // Force trigger scrollbar visible when open
+    if (open) {
+      listRef.current?.scrollTo(undefined);
+    }
+
     return () => clearTimeout(timeoutId);
   }, [open]);
 
