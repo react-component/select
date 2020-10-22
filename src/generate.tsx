@@ -14,7 +14,7 @@ import classNames from 'classnames';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import Selector, { RefSelectorProps } from './Selector';
 import SelectTrigger, { RefTriggerProps } from './SelectTrigger';
-import { RenderNode, Mode, RenderDOMFunc, OnActiveValue } from './interface';
+import { RenderNode, Mode, RenderDOMFunc, OnActiveValue, SortOrder } from './interface';
 import {
   GetLabeledValue,
   FilterOptions,
@@ -148,6 +148,10 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
 
+  // Sort
+  sorter?: (optionA: OptionsType[number], optionB: OptionsType[number]) => number;
+  sortOrder?: SortOrder;
+
   // Motion
   choiceTransitionName?: string;
 
@@ -187,7 +191,7 @@ export interface GenerateConfig<OptionsType extends object[]> {
   /** Convert single raw value into { label, value } format. Will be called by each value */
   getLabeledValue: GetLabeledValue<FlattenOptionsType<OptionsType>>;
   filterOptions: FilterOptions<OptionsType>;
-  findValueOption: // Need still support legacy ts api
+  findValueOption:  // Need still support legacy ts api
     | ((values: RawValueType[], options: FlattenOptionsType<OptionsType>) => OptionsType)
     // New API add prevValueOptions support
     | ((
@@ -310,6 +314,8 @@ export default function generateSelector<
       onSelect,
       onDeselect,
       onClear,
+      sorter,
+      sortOrder = 'ascend',
 
       internalProps = {},
 
@@ -424,10 +430,25 @@ export default function generateSelector<
 
     const getValueOption = useCacheOptions(mergedRawValue, mergedFlattenOptions);
 
+    const sortOptions = originOptions => {
+      if (sorter == null) {
+        return originOptions;
+      }
+      const sort = sourceOptions => {
+        const compareFn = (optionA, optionB) => {
+          const compareValue = sorter(optionA, optionB);
+          return sortOrder === 'ascend' ? compareValue : compareValue * -1;
+        };
+        return sourceOptions.sort(compareFn);
+      };
+
+      return sort(originOptions || []);
+    };
+
     // Display options for OptionList
     const displayOptions = useMemo<OptionsType>(() => {
       if (!mergedSearchValue || !mergedShowSearch) {
-        return [...mergedOptions] as OptionsType;
+        return [...sortOptions(mergedOptions)] as OptionsType;
       }
       const filteredOptions: OptionsType = filterOptions(mergedSearchValue, mergedOptions, {
         optionFilterProp,
@@ -444,8 +465,8 @@ export default function generateSelector<
         });
       }
 
-      return filteredOptions;
-    }, [mergedOptions, mergedSearchValue, mode, mergedShowSearch]);
+      return sortOptions(filteredOptions);
+    }, [mergedOptions, mergedSearchValue, mode, mergedShowSearch, sortOrder]);
 
     const displayFlattenOptions: FlattenOptionsType<OptionsType> = useMemo(
       () => flattenOptions(displayOptions, props),

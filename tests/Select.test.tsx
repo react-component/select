@@ -1624,4 +1624,21 @@ describe('Select.Basic', () => {
       .first()
       .simulate('mouseenter');
   });
+
+  it('sorter should work', () => {
+    const wrapper = mount(
+      <Select sorter={(optionA, optionB) => optionA.children.localeCompare(optionB.label)}>
+        <Option value="2">2</Option>
+        <Option value="1">1</Option>
+      </Select>,
+    );
+
+    toggleOpen(wrapper);
+    expect(
+      wrapper
+        .find('.rc-select-item-option-content')
+        .first()
+        .text(),
+    ).toBe('1');
+  });
 });

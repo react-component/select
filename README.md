@@ -127,6 +127,8 @@ export default () => (
 | loading | show loading icon in arrow | Boolean | false |
 | virtual | Disable virtual scroll | Boolean | true |
 | direction | direction of dropdown | 'ltr' \| 'rtl' | 'ltr' |
+| sorter | Sort function for local sort, see [Array.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)'s compareFunction. | Function(optionA:Option, optionB: Option) | - |
+| sortOrder | Order of sorted values: 'ascend' 'descend'  | string | 'ascend' |
 
 ### Methods
 
