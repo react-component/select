@@ -50,5 +50,3 @@ export interface FlattenOptionData {
   key: string | number;
   data: OptionData | OptionGroupData;
 }
-
-export type SortOrder = 'descend' | 'ascend';

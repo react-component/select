@@ -14,7 +14,7 @@ import classNames from 'classnames';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import Selector, { RefSelectorProps } from './Selector';
 import SelectTrigger, { RefTriggerProps } from './SelectTrigger';
-import { RenderNode, Mode, RenderDOMFunc, OnActiveValue, SortOrder } from './interface';
+import { RenderNode, Mode, RenderDOMFunc, OnActiveValue } from './interface';
 import {
   GetLabeledValue,
   FilterOptions,
@@ -85,6 +85,7 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
    * It's by design.
    */
   filterOption?: boolean | FilterFunc<OptionsType[number]>;
+  filterSort?: (optionA: OptionsType[number], optionB: OptionsType[number]) => number;
   showSearch?: boolean;
   autoClearSearchValue?: boolean;
   onSearch?: (value: string) => void;
@@ -147,10 +148,6 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
-
-  // Sort
-  sorter?: (optionA: OptionsType[number], optionB: OptionsType[number]) => number;
-  sortOrder?: SortOrder;
 
   // Motion
   choiceTransitionName?: string;
@@ -262,6 +259,7 @@ export default function generateSelector<
       inputValue,
       searchValue,
       filterOption,
+      filterSort,
       optionFilterProp = 'value',
       autoClearSearchValue = true,
       onSearch,
@@ -314,8 +312,6 @@ export default function generateSelector<
       onSelect,
       onDeselect,
       onClear,
-      sorter,
-      sortOrder = 'ascend',
 
       internalProps = {},
 
@@ -430,25 +426,10 @@ export default function generateSelector<
 
     const getValueOption = useCacheOptions(mergedRawValue, mergedFlattenOptions);
 
-    const sortOptions = originOptions => {
-      if (sorter == null) {
-        return originOptions;
-      }
-      const sort = sourceOptions => {
-        const compareFn = (optionA, optionB) => {
-          const compareValue = sorter(optionA, optionB);
-          return sortOrder === 'ascend' ? compareValue : compareValue * -1;
-        };
-        return sourceOptions.sort(compareFn);
-      };
-
-      return sort(originOptions || []);
-    };
-
     // Display options for OptionList
     const displayOptions = useMemo<OptionsType>(() => {
       if (!mergedSearchValue || !mergedShowSearch) {
-        return [...sortOptions(mergedOptions)] as OptionsType;
+        return [...mergedOptions] as OptionsType;
       }
       const filteredOptions: OptionsType = filterOptions(mergedSearchValue, mergedOptions, {
         optionFilterProp,
@@ -464,9 +445,12 @@ export default function generateSelector<
           key: '__RC_SELECT_TAG_PLACEHOLDER__',
         });
       }
+      if (filterSort && Array.isArray(filteredOptions)) {
+        filteredOptions.sort(filterSort);
+      }
 
-      return sortOptions(filteredOptions);
-    }, [mergedOptions, mergedSearchValue, mode, mergedShowSearch, sortOrder]);
+      return filteredOptions;
+    }, [mergedOptions, mergedSearchValue, mode, mergedShowSearch, filterSort]);
 
     const displayFlattenOptions: FlattenOptionsType<OptionsType> = useMemo(
       () => flattenOptions(displayOptions, props),
