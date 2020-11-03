@@ -85,6 +85,7 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
    * It's by design.
    */
   filterOption?: boolean | FilterFunc<OptionsType[number]>;
+  filterSort?: (optionA: OptionsType[number], optionB: OptionsType[number]) => number;
   showSearch?: boolean;
   autoClearSearchValue?: boolean;
   onSearch?: (value: string) => void;
@@ -187,7 +188,7 @@ export interface GenerateConfig<OptionsType extends object[]> {
   /** Convert single raw value into { label, value } format. Will be called by each value */
   getLabeledValue: GetLabeledValue<FlattenOptionsType<OptionsType>>;
   filterOptions: FilterOptions<OptionsType>;
-  findValueOption: // Need still support legacy ts api
+  findValueOption:// Need still support legacy ts api
     | ((values: RawValueType[], options: FlattenOptionsType<OptionsType>) => OptionsType)
     // New API add prevValueOptions support
     | ((
@@ -258,6 +259,7 @@ export default function generateSelector<
       inputValue,
       searchValue,
       filterOption,
+      filterSort,
       optionFilterProp = 'value',
       autoClearSearchValue = true,
       onSearch,
@@ -443,9 +445,12 @@ export default function generateSelector<
           key: '__RC_SELECT_TAG_PLACEHOLDER__',
         });
       }
+      if (filterSort && Array.isArray(filteredOptions)) {
+        return ([...filteredOptions] as OptionsType).sort(filterSort);
+      }
 
       return filteredOptions;
-    }, [mergedOptions, mergedSearchValue, mode, mergedShowSearch]);
+    }, [mergedOptions, mergedSearchValue, mode, mergedShowSearch, filterSort]);
 
     const displayFlattenOptions: FlattenOptionsType<OptionsType> = useMemo(
       () => flattenOptions(displayOptions, props),
