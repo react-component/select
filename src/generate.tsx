@@ -446,7 +446,7 @@ export default function generateSelector<
         });
       }
       if (filterSort && Array.isArray(filteredOptions)) {
-        return [...filteredOptions].sort(filterSort);
+        return ([...filteredOptions] as OptionsType).sort(filterSort);
       }
 
       return filteredOptions;
