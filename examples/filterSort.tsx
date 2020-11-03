@@ -13,9 +13,6 @@ const incidencesStateResource = [
 
 const sorterByLabel = (optionA, optionB) => optionA.label.localeCompare(optionB.label);
 
-const compareFn = (input, option) =>
-  (option.label as string).toLowerCase().indexOf(input.toLowerCase()) >= 0;
-
 const Test = () => (
   <div>
     <h3> with filter sort </h3>
@@ -24,7 +21,6 @@ const Test = () => (
       style={{ width: 500 }}
       filterSort={sorterByLabel}
       optionFilterProp="label"
-      filterOption={compareFn}
       options={incidencesStateResource}
     ></Select>
     <h3> without filter sort </h3>
@@ -32,7 +28,6 @@ const Test = () => (
       showSearch
       style={{ width: 500 }}
       optionFilterProp="label"
-      filterOption={compareFn}
       options={incidencesStateResource}
     />
   </div>

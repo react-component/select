@@ -1625,20 +1625,29 @@ describe('Select.Basic', () => {
       .simulate('mouseenter');
   });
 
-  it('sorter should work', () => {
+  it('filterSort should work', () => {
     const wrapper = mount(
-      <Select sorter={(optionA, optionB) => optionA.children.localeCompare(optionB.label)}>
-        <Option value="2">2</Option>
-        <Option value="1">1</Option>
-      </Select>,
+      <Select
+        showSearch
+        filterSort={(optionA, optionB) =>
+          (optionA.label as string).localeCompare(optionB.label as string)
+        }
+        optionFilterProp="label"
+        options={[
+          { value: 4, label: 'Not Identified' },
+          { value: 3, label: 'Closed' },
+          { value: 2, label: 'Communicated' },
+          { value: 5, label: 'Cancelled' },
+        ]}
+      />,
     );
 
-    toggleOpen(wrapper);
+    wrapper.find('input').simulate('change', { target: { value: 'i' } });
     expect(
       wrapper
         .find('.rc-select-item-option-content')
         .first()
         .text(),
-    ).toBe('1');
+    ).toBe('Communicated');
   });
 });

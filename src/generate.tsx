@@ -188,7 +188,7 @@ export interface GenerateConfig<OptionsType extends object[]> {
   /** Convert single raw value into { label, value } format. Will be called by each value */
   getLabeledValue: GetLabeledValue<FlattenOptionsType<OptionsType>>;
   filterOptions: FilterOptions<OptionsType>;
-  findValueOption:  // Need still support legacy ts api
+  findValueOption:// Need still support legacy ts api
     | ((values: RawValueType[], options: FlattenOptionsType<OptionsType>) => OptionsType)
     // New API add prevValueOptions support
     | ((
