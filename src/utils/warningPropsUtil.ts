@@ -103,21 +103,17 @@ function warningProps(props: SelectProps) {
   if (children) {
     let invalidateChildType = null;
     toNodeArray(children).some((node: React.ReactNode) => {
-      if (!React.isValidElement(node) || !node.type) {
-        return false;
-      }
-
       const { type } = node as { type: { isSelectOption?: boolean; isSelectOptGroup?: boolean } };
 
       if (type.isSelectOption) {
         return false;
       }
       if (type.isSelectOptGroup) {
-        const allChildrenValid = toNodeArray(node.props.children).every(
+        const allChildrenValid = toNodeArray((node as any).props.children).every(
           (subNode: React.ReactElement) => {
             if (
               !React.isValidElement(subNode) ||
-              !node.type ||
+              !(node as any).type ||
               (subNode.type as { isSelectOption?: boolean }).isSelectOption
             ) {
               return true;

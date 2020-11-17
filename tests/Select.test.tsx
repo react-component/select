@@ -435,6 +435,7 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
+    wrapper.find('input').simulate('focus');
     wrapper.find('input').simulate('change', { target: { value: '1' } });
     expect(handleSearch).toHaveBeenCalledWith('1');
 
@@ -481,6 +482,7 @@ describe('Select.Basic', () => {
         <Option value="2">2</Option>
       </Select>,
     );
+    wrapper.find('input').simulate('focus');
     wrapper.find('input').simulate('change', { target: { value: '1' } });
     expect(handleSearch).toHaveBeenCalledTimes(1);
 

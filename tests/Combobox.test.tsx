@@ -123,6 +123,7 @@ describe('Select.Combobox', () => {
     it('displays correct input value when value changes', () => {
       const wrapper = createSelect();
       wrapper.setProps({ value: '1' });
+      wrapper.update();
       expect(wrapper.find('input').props().value).toBe('1');
     });
   });
@@ -285,6 +286,7 @@ describe('Select.Combobox', () => {
         return wrapper.find('input');
       }
 
+      input().simulate('focus');
       input().simulate('change', { target: { value: 'light' } });
       expectOpen(wrapper);
       expect(onChange).toHaveBeenCalledWith('light', expect.anything());
@@ -446,5 +448,280 @@ describe('Select.Combobox', () => {
     const wrapper = mount(<Select mode="combobox" value={null} />);
 
     expect(wrapper.find('input').props().value).toBe('');
+  });
+
+  it('should allow labelInValue prop', () => {
+    const onChange = jest.fn();
+    const wrapper = mount(
+      <Select
+        labelInValue
+        mode="combobox"
+        value={{ value: 'bamboo', label: 'Bamboo', option: 333 }}
+        options={[
+          { value: 'lava', label: 'Lava', option: 100 },
+          { value: 'bamboo', label: 'Bamboo', option: 333 }
+        ]}
+        onChange={onChange}
+      />
+    );
+
+    // Expect the search value to get set correctly via the `value` property
+    expect(wrapper.find('input').props().value).toBe('bamboo');
+
+    // Select first option
+    toggleOpen(wrapper);
+    selectItem(wrapper, 0);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        value: 'lava',
+      }),
+      expect.objectContaining({
+        value: 'lava',
+        label: 'Lava',
+        option: 100,
+      })
+    );
+    onChange.mockReset();
+
+    // Unset the controlled value
+    wrapper.setProps({ value: undefined });
+
+    // Select second option
+    toggleOpen(wrapper);
+    selectItem(wrapper, 1);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        value: 'bamboo',
+      }),
+      expect.objectContaining({
+        value: 'bamboo',
+        label: 'Bamboo',
+        option: 333,
+      })
+    );
+  });
+
+  describe('optionSearchLabelProp', () => {
+    const createSelectableOption = (apiId, apiSearchTerm, optionSearchLabelProp) => {
+      let result = {
+        value: `api${apiId}:${apiSearchTerm}`,
+        label: (
+          <div>
+            <span className={`api-${apiId}-icon`} />
+            <span className="api-search-term">{apiSearchTerm}</span>
+          </div>
+        ),
+        miscellaneousData: `api${apiId}:${apiSearchTerm}:misc`,
+      };
+
+      if (optionSearchLabelProp) {
+        result[optionSearchLabelProp] = apiSearchTerm;
+      }
+
+      return result;
+    };
+
+    it("should use the selected option's value when search label is not provided", () => {
+      const wrapper = mount(
+        <Select
+          mode="combobox"
+          options={[createSelectableOption(44, 'Central Pattern Generator')]}
+        />
+      );
+
+      // When the `defaultValue` property specifies a selected option and a search label (that does not match the `optionSearchLabelProp`),
+      // ensure the search value ignores the provided search label and uses the selected option's value
+      wrapper.setProps({
+        value: undefined,
+        defaultValue: createSelectableOption(44, 'Hypothalamus', 'mySearchLabel'),
+      });
+      wrapper.update();
+      expect(wrapper.find('input').props().value).toEqual('api44:Hypothalamus');
+
+      // Ensure the selected option's value is used for the search value when the `optionSearchLabelProp` is not specified
+      toggleOpen(wrapper);
+      selectItem(wrapper, 0);
+      expect(wrapper.find('input').props().value).toEqual('api44:Central Pattern Generator');
+
+      // When the `value` property specifies a selected option and a search label (that does not match the `optionSearchLabelProp`),
+      // ensure the search value ignores the provided search label and uses the selected option's value
+      wrapper.setProps({
+        value: createSelectableOption(44, 'amygdala', 'mySearchLabel'),
+        defaultValue: createSelectableOption(44, 'Hypothalamus', 'mySearchLabel'),
+      });
+      wrapper.update();
+      expect(wrapper.find('input').props().value).toEqual('api44:amygdala');
+    });
+
+    it("should use the selected option's search label when specified", () => {
+      const onChange = jest.fn();
+
+      const optionSearchLabelProp = 'mySearchLabel';
+
+      const wrapper = mount(
+        <Select
+          mode="combobox"
+          optionSearchLabelProp={optionSearchLabelProp}
+          options={[
+            createSelectableOption(44, 'Central Pattern Generator', optionSearchLabelProp),
+            createSelectableOption(43, 'Central Pattern Generator', optionSearchLabelProp),
+            createSelectableOption(42, 'Central Pattern Generator', optionSearchLabelProp),
+          ]}
+          onChange={onChange}
+          labelInValue
+        />
+      );
+
+      // When the `value` property specifies a selected option and its search label, ensure the search value is set properly
+      wrapper.setProps({
+        value: createSelectableOption(44, 'amygdala', optionSearchLabelProp),
+        defaultValue: createSelectableOption(44, 'Hypothalamus', optionSearchLabelProp),
+      });
+      wrapper.update();
+      expect(wrapper.find('input').props().value).toEqual('amygdala');
+
+      // When the `defaultValue` property specifies a selected option and its search label (and the `value` property does not),
+      // ensure the search value is set properly
+      wrapper.setProps({
+        value: undefined,
+        defaultValue: createSelectableOption(44, 'Hypothalamus', optionSearchLabelProp),
+      });
+      wrapper.update();
+      expect(wrapper.find('input').props().value).toEqual('Hypothalamus');
+
+      // Select the first selectable option (which should override the `defaultValue` property's selected option)
+      toggleOpen(wrapper);
+      selectItem(wrapper, 0);
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          value: 'api44:Central Pattern Generator',
+        }),
+        expect.objectContaining({
+          value: 'api44:Central Pattern Generator',
+          mySearchLabel: 'Central Pattern Generator',
+          miscellaneousData: 'api44:Central Pattern Generator:misc',
+        })
+      );
+      expect(wrapper.find('input').props().value).toEqual('Central Pattern Generator');
+      onChange.mockReset();
+
+      // Dynamically change the options and choose an option that does not define its search label
+      wrapper.setProps({ options: [createSelectableOption(8, 'anterior cingulate cortex')] });
+      wrapper.update();
+      toggleOpen(wrapper);
+      selectItem(wrapper, 0);
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          value: 'api8:anterior cingulate cortex',
+        }),
+        expect.objectContaining({
+          value: 'api8:anterior cingulate cortex',
+          miscellaneousData: 'api8:anterior cingulate cortex:misc',
+        })
+      );
+
+      // Expect "undefined" as no search label was provided for this option
+      expect(wrapper.find('input').props().value).toEqual('undefined');
+    });
+
+    it('should deselect a selected option upon blur (and Escape key) when search value is changed after selecting said option when allowSearchLabelOnly is true', () => {
+      const onChange = jest.fn();
+
+      const optionSearchLabelProp = 'mySearchLabel';
+      const wrapper = mount(
+        <Select
+          mode="combobox"
+          optionSearchLabelProp={optionSearchLabelProp}
+          options={[createSelectableOption(44, 'Central Pattern Generator', optionSearchLabelProp)]}
+          onChange={onChange}
+          allowSearchLabelOnly
+        />
+      );
+
+      // When only search labels are allowed and the provided search value hasn't been set due to selecting an option,
+      // revert the search value to the empty string (when no option has been selected yet)
+      toggleOpen(wrapper);
+      wrapper.find('input').simulate('focus');
+      wrapper.find('input').simulate('change', { target: { value: 'abzdoibgdalba' } });
+      expect(wrapper.find('input').props().value).toEqual('abzdoibgdalba');
+      wrapper.find('input').simulate('blur');
+      expect(wrapper.find('input').props().value).toEqual('');
+
+      // When no option has been selected yet, and default value exists, the search value should
+      // reflect the default value's option's search label as the search value
+      wrapper.setProps({
+        defaultValue: createSelectableOption(44, 'Hypothalamus', optionSearchLabelProp),
+      });
+      wrapper.update();
+      expect(wrapper.find('input').props().value).toEqual('Hypothalamus');
+
+      // Select the first option and see the expected search label
+      selectItem(wrapper, 0);
+      expect(wrapper.find('input').props().value).toEqual('Central Pattern Generator');
+      expect(wrapper.find('.rc-select-selection-search-selects-option').length).toBeTruthy();
+
+      toggleOpen(wrapper);
+      wrapper.find('input').simulate('change', { target: { value: 'Central Pattern Generators' } });
+      expect(wrapper.find('input').props().value).toEqual('Central Pattern Generators');
+      expect(wrapper.find('.rc-select-selection-search-selects-option').length).toBeFalsy();
+      wrapper.find('input').simulate('blur');
+      expect(wrapper.find('input').props().value).toEqual('Central Pattern Generator');
+      expect(wrapper.find('.rc-select-selection-search-selects-option').length).toBeTruthy();
+      wrapper.find('input').simulate('change', { target: { value: 'Central Pattern Generatorssss' } });
+      expect(wrapper.find('.rc-select-selection-search-selects-option').length).toBeFalsy();
+
+      // The Escape key should reselect the previously selected option's search label
+      wrapper.find('input').simulate('keydown', { which: 27 });
+      expect(wrapper.find('input').props().value).toEqual('Central Pattern Generator');
+      expect(wrapper.find('.rc-select-selection-search-selects-option').length).toBeTruthy();
+    });
+
+    it('should persist the changed search value after selecting an option when allowSearchLabelOnly is false', () => {
+      const onChange = jest.fn();
+
+      // The allowSearchLabelOnly prop should default to false when not provided
+      const optionSearchLabelProp = 'mySearchLabel';
+      const wrapper = mount(
+        <Select
+          mode="combobox"
+          optionSearchLabelProp={optionSearchLabelProp}
+          options={[createSelectableOption(44, 'Central Pattern Generator', optionSearchLabelProp)]}
+          onChange={onChange}
+        />
+      );
+
+      toggleOpen(wrapper);
+      selectItem(wrapper, 0);
+      expect(wrapper.find('input').props().value).toEqual('Central Pattern Generator');
+      expect(wrapper.find('.rc-select-selection-search-selects-option').length).toBeTruthy();
+
+      toggleOpen(wrapper);
+      wrapper.find('input').simulate('change', { target: { value: 'Central Pattern Generators' } });
+      expect(wrapper.find('input').props().value).toEqual('Central Pattern Generators');
+      expect(wrapper.find('.rc-select-selection-search-selects-option').length).toBeFalsy();
+      wrapper.find('input').simulate('blur');
+      expect(wrapper.find('input').props().value).toEqual('Central Pattern Generators');
+      expect(wrapper.find('.rc-select-selection-search-selects-option').length).toBeFalsy();
+
+      wrapper.find('input').simulate('change', { target: { value: 'Central Pattern Generatorssss' } });
+      expect(wrapper.find('input').props().value).toEqual('Central Pattern Generatorssss');
+
+      // The Escape key should continue to reselect the previously selected option's search label
+      wrapper.find('input').simulate('keydown', { which: 27 });
+      expect(wrapper.find('input').props().value).toEqual('Central Pattern Generator');
+      expect(wrapper.find('.rc-select-selection-search-selects-option').length).toBeTruthy();
+
+      // The stashed option should be able to be re-applied even after the options are dynamically changed
+      toggleOpen(wrapper);
+      selectItem(wrapper, 0);
+      wrapper.find('input').simulate('change', { target: { value: 'Central Pattern Generatorssss' } });
+      expect(wrapper.find('input').props().value).toEqual('Central Pattern Generatorssss');
+      wrapper.setProps({
+        options: [createSelectableOption(44, 'Hypothalamus', optionSearchLabelProp)]
+      });
+      wrapper.update();
+      wrapper.find('input').simulate('keydown', { which: 27 });
+      expect(wrapper.find('input').props().value).toEqual('Central Pattern Generator');
+    });
   });
 });

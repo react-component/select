@@ -41,7 +41,6 @@ import {
   isValueDisabled as isSelectValueDisabled,
   findValueOption as findSelectValueOption,
   flattenOptions,
-  fillOptionsWithMissingValue,
 } from './utils/valueUtil';
 import generateSelector, { SelectProps, RefSelectProps } from './generate';
 import { DefaultValueType } from './interface/generator';
@@ -59,7 +58,6 @@ const RefSelect = generateSelector<SelectOptionsType>({
   isValueDisabled: isSelectValueDisabled,
   findValueOption: findSelectValueOption,
   warningProps,
-  fillOptionsWithMissingValue,
 });
 
 export type ExportedSelectProps<

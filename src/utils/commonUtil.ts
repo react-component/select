@@ -14,28 +14,6 @@ export function toArray<T>(value: T | T[]): T[] {
 }
 
 /**
- * Convert outer props value into internal value
- */
-export function toInnerValue(
-  value: DefaultValueType,
-  { labelInValue, combobox }: { labelInValue: boolean; combobox: boolean },
-): RawValueType[] {
-  if (value === undefined || (value === '' && combobox)) {
-    return [];
-  }
-
-  const values = Array.isArray(value) ? value : [value];
-
-  if (labelInValue) {
-    return (values as LabelValueType[]).map(
-      ({ key, value: val }: LabelValueType) => (val !== undefined ? val : key),
-    );
-  }
-
-  return values as RawValueType[];
-}
-
-/**
  * Convert internal value into out event value
  */
 export function toOuterValues<FOT extends FlattenOptionsType>(
@@ -77,11 +55,7 @@ export function removeLastEnabledValue<
   const newValues = [...values];
 
   let removeIndex: number;
-  for (
-    removeIndex = measureValues.length - 1;
-    removeIndex >= 0;
-    removeIndex -= 1
-  ) {
+  for (removeIndex = measureValues.length - 1; removeIndex >= 0; removeIndex -= 1) {
     if (!measureValues[removeIndex].disabled) {
       break;
     }
@@ -101,9 +75,7 @@ export function removeLastEnabledValue<
 }
 
 export const isClient =
-  typeof window !== 'undefined' &&
-  window.document &&
-  window.document.documentElement;
+  typeof window !== 'undefined' && window.document && window.document.documentElement;
 
 /** Is client side and not jsdom */
 export const isBrowserClient = process.env.NODE_ENV !== 'test' && isClient;
