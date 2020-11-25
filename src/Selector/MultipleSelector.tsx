@@ -75,7 +75,7 @@ const SelectSelector: React.FC<SelectorProps> = props => {
 
   // ===================== Search ======================
   const inputValue = open || mode === 'tags' ? searchValue : '';
-  const inputEditable: boolean = mode === 'tags' || (open && showSearch);
+  const inputEditable: boolean = mode === 'tags' || showSearch;
 
   // We measure width and set to the input immediately
   useLayoutEffect(() => {
