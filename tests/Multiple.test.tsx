@@ -443,4 +443,23 @@ describe('Select.Multiple', () => {
 
     expect(wrapper.find('Input').prop('editable')).toBeTruthy();
   });
+
+  it('correctly handles the `tabIndex` prop', () => {
+    const wrapper = mount(
+      <Select mode="multiple" options={[{ value: 'bamboo' }, { value: 'light' }]} tabIndex={0} />,
+    );
+    expect(
+      wrapper
+        .find('.rc-select')
+        .getDOMNode()
+        .getAttribute('tabindex'),
+    ).toBeNull();
+
+    expect(
+      wrapper
+        .find('input.rc-select-selection-search-input')
+        .getDOMNode()
+        .getAttribute('tabindex'),
+    ).toBe('0');
+  });
 });

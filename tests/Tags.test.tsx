@@ -399,4 +399,21 @@ describe('Select.Tags', () => {
     expect(errSpy).not.toHaveBeenCalled();
     errSpy.mockRestore();
   });
+
+  it('correctly handles the `tabIndex` prop', () => {
+    const wrapper = mount(<Select mode="tags" tabIndex={0} />);
+    expect(
+      wrapper
+        .find('.rc-select')
+        .getDOMNode()
+        .getAttribute('tabindex'),
+    ).toBeNull();
+
+    expect(
+      wrapper
+        .find('input.rc-select-selection-search-input')
+        .getDOMNode()
+        .getAttribute('tabindex'),
+    ).toBe('0');
+  });
 });
