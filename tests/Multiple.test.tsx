@@ -429,4 +429,18 @@ describe('Select.Multiple', () => {
       ],
     );
   });
+
+  it('focus should enable showSearch input', () => {
+    const wrapper = mount(
+      <Select
+        mode="multiple"
+        options={[{ value: 'light', label: 'Light', option: 2333 }]}
+        showSearch
+      />,
+    );
+
+    wrapper.find('input').simulate('focus');
+
+    expect(wrapper.find('Input').prop('editable')).toBeTruthy();
+  });
 });

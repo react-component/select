@@ -79,6 +79,7 @@ class Test extends React.Component {
 
         <div style={{ width: 300 }}>
           <Select
+            autoFocus
             value={value}
             animation={useAnim ? 'slide-up' : null}
             choiceTransitionName="rc-select-selection__choice-zoom"
