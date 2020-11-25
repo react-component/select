@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import classNames from 'classnames';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import { CSSMotionList } from 'rc-motion';
@@ -64,9 +65,10 @@ const SelectSelector: React.FC<SelectorProps> = props => {
     onInputCompositionEnd,
   } = props;
 
-  const [motionAppear, setMotionAppear] = React.useState(false);
+  const [motionAppear, setMotionAppear] = useState(false);
   const measureRef = React.useRef<HTMLSpanElement>(null);
-  const [inputWidth, setInputWidth] = React.useState(0);
+  const [inputWidth, setInputWidth] = useState(0);
+  const [focused, setFocused] = useState(false);
 
   // ===================== Motion ======================
   React.useEffect(() => {
@@ -75,7 +77,7 @@ const SelectSelector: React.FC<SelectorProps> = props => {
 
   // ===================== Search ======================
   const inputValue = open || mode === 'tags' ? searchValue : '';
-  const inputEditable: boolean = mode === 'tags' || (open && showSearch);
+  const inputEditable: boolean = mode === 'tags' || (showSearch && (open || focused));
 
   // We measure width and set to the input immediately
   useLayoutEffect(() => {
@@ -181,7 +183,16 @@ const SelectSelector: React.FC<SelectorProps> = props => {
     <>
       {selectionNode}
 
-      <span className={`${prefixCls}-selection-search`} style={{ width: inputWidth }}>
+      <span
+        className={`${prefixCls}-selection-search`}
+        style={{ width: inputWidth }}
+        onFocus={() => {
+          setFocused(true);
+        }}
+        onBlur={() => {
+          setFocused(false);
+        }}
+      >
         <Input
           ref={inputRef}
           open={open}
