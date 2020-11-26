@@ -1,6 +1,7 @@
 import { SelectProps, RefSelectProps } from '../generate';
+import { FlattenOptionData } from './index';
 
-export type SelectSource = 'option' | 'selection' | 'input';
+export type SelectSource = 'option' | 'selection' | 'input' | 'stash';
 
 export const INTERNAL_PROPS_MARK = 'RC_SELECT_INTERNAL_PROPS_MARK';
 
@@ -39,10 +40,10 @@ export type CustomTagProps = {
 };
 
 // ==================================== Generator ====================================
-export type GetLabeledValue<FOT extends FlattenOptionsType> = (
+export type GetLabeledValue = (
   value: RawValueType,
   config: {
-    options: FOT;
+    options: FlattenOptionData[];
     prevValue: DefaultValueType;
     labelInValue: boolean;
     optionLabelProp: string;

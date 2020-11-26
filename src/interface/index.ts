@@ -44,9 +44,15 @@ export interface OptionGroupData {
 
 export type OptionsType = (OptionData | OptionGroupData)[];
 
+export type OptionType = OptionsType[number];
+
 export interface FlattenOptionData {
   group?: boolean;
   groupOption?: boolean;
-  key: string | number;
-  data: OptionData | OptionGroupData;
+  key?: string | number;
+  data?: OptionData | OptionGroupData;
+}
+
+export interface DisplayOptionData extends FlattenOptionData {
+  label: RawValueType;
 }

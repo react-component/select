@@ -8,15 +8,23 @@
  */
 
 import * as React from 'react';
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
-import useMergedState from 'rc-util/lib/hooks/useMergedState';
+import useEffectAfterInit from './hooks/useEffectAfterInit';
+import useOptions from './hooks/useOptions';
+import useWarnings from './hooks/useWarnings';
 import Selector, { RefSelectorProps } from './Selector';
 import SelectTrigger, { RefTriggerProps } from './SelectTrigger';
-import { RenderNode, Mode, RenderDOMFunc, OnActiveValue } from './interface';
 import {
-  GetLabeledValue,
+  RenderNode,
+  Mode,
+  RenderDOMFunc,
+  OnActiveValue,
+  OptionData,
+  FlattenOptionData,
+} from './interface';
+import {
   FilterOptions,
   FilterFunc,
   DefaultValueType,
@@ -24,8 +32,6 @@ import {
   LabelValueType,
   Key,
   RefSelectFunc,
-  DisplayLabelValueType,
-  FlattenOptionsType,
   SingleType,
   OnClear,
   INTERNAL_PROPS_MARK,
@@ -33,15 +39,15 @@ import {
   CustomTagProps,
 } from './interface/generator';
 import { OptionListProps, RefOptionListProps } from './OptionList';
-import { toInnerValue, toOuterValues, removeLastEnabledValue, getUUID } from './utils/commonUtil';
+import { removeLastEnabledValue, getUUID } from './utils/commonUtil';
 import TransBtn from './TransBtn';
 import useLock from './hooks/useLock';
 import useDelayReset from './hooks/useDelayReset';
 import useLayoutEffect from './hooks/useLayoutEffect';
-import { getSeparatedContent } from './utils/valueUtil';
-import useSelectTriggerControl from './hooks/useSelectTriggerControl';
-import useCacheDisplayValue from './hooks/useCacheDisplayValue';
-import useCacheOptions from './hooks/useCacheOptions';
+import {
+  toOptionData,
+  getSeparatedContent,
+} from './utils/valueUtil';
 
 const DEFAULT_OMIT_PROPS = [
   'removeIcon',
@@ -52,6 +58,22 @@ const DEFAULT_OMIT_PROPS = [
   'maxTagPlaceholder',
   'choiceTransitionName',
   'onInputKeyDown',
+  'className',
+  'open',
+  'defaultOpen',
+  'options',
+  'value',
+  'inputValue',
+  'searchValue',
+  'showArrow',
+  'optionLabelProp',
+  'labelInValue',
+  'optionSelectedLabelProp',
+  'optionSelectableLabelProp',
+  'persistSelectedLabelsOnly',
+  'showSearch',
+  'values',
+  'disabled',
 ];
 
 export interface RefSelectProps {
@@ -124,6 +146,9 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   placeholder?: React.ReactNode;
   backfill?: boolean;
   getInputElement?: () => JSX.Element;
+  optionSelectedLabelProp?: string;
+  optionSelectableLabelProp?: string;
+  persistSelectedLabelsOnly?: boolean;
   optionLabelProp?: string;
   maxTagTextLength?: number;
   maxTagCount?: number;
@@ -142,7 +167,7 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   onDeselect?: (value: SingleType<ValueType>, option: OptionsType[number]) => void;
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
   onClick?: React.MouseEventHandler;
-  onChange?: (value: ValueType, option: OptionsType[number] | OptionsType) => void;
+  onChange?: (value: ValueType, option: Partial<OptionData> | Partial<OptionData>[]) => void;
   onBlur?: React.FocusEventHandler<HTMLElement>;
   onFocus?: React.FocusEventHandler<HTMLElement>;
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
@@ -175,36 +200,17 @@ export interface GenerateConfig<OptionsType extends object[]> {
   prefixCls: string;
   components: {
     optionList: React.ForwardRefExoticComponent<
-      React.PropsWithoutRef<
-        Omit<OptionListProps<OptionsType>, 'options'> & { options: OptionsType }
-      > &
-        React.RefAttributes<RefOptionListProps>
+      React.PropsWithoutRef<OptionListProps> & React.RefAttributes<RefOptionListProps>
     >;
   };
   /** Convert jsx tree into `OptionsType` */
   convertChildrenToData: (children: React.ReactNode) => OptionsType;
   /** Flatten nest options into raw option list */
-  flattenOptions: (options: OptionsType, props: any) => FlattenOptionsType<OptionsType>;
-  /** Convert single raw value into { label, value } format. Will be called by each value */
-  getLabeledValue: GetLabeledValue<FlattenOptionsType<OptionsType>>;
+  flattenOptions: (options: OptionsType) => FlattenOptionData[];
   filterOptions: FilterOptions<OptionsType>;
-  findValueOption:// Need still support legacy ts api
-    | ((values: RawValueType[], options: FlattenOptionsType<OptionsType>) => OptionsType)
-    // New API add prevValueOptions support
-    | ((
-        values: RawValueType[],
-        options: FlattenOptionsType<OptionsType>,
-        info?: { prevValueOptions?: OptionsType[] },
-      ) => OptionsType);
   /** Check if a value is disabled */
-  isValueDisabled: (value: RawValueType, options: FlattenOptionsType<OptionsType>) => boolean;
+  isValueDisabled?: (value: RawValueType, options: FlattenOptionData[]) => boolean;
   warningProps?: (props: any) => void;
-  fillOptionsWithMissingValue?: (
-    options: OptionsType,
-    value: DefaultValueType,
-    optionLabelProp: string,
-    labelInValue: boolean,
-  ) => OptionsType;
   omitDOMProps?: (props: object) => object;
 }
 
@@ -225,12 +231,8 @@ export default function generateSelector<
     components: { optionList: OptionList },
     convertChildrenToData,
     flattenOptions,
-    getLabeledValue,
     filterOptions,
-    isValueDisabled,
-    findValueOption,
     warningProps,
-    fillOptionsWithMissingValue,
     omitDOMProps,
   } = config;
 
@@ -241,23 +243,14 @@ export default function generateSelector<
   ): React.ReactElement {
     const {
       prefixCls = defaultPrefixCls,
-      className,
       id,
 
-      open,
-      defaultOpen,
-      options,
+      labelInValue,
       children,
 
       mode,
-      value,
-      defaultValue,
-      labelInValue,
 
       // Search related
-      showSearch,
-      inputValue,
-      searchValue,
       filterOption,
       filterSort,
       optionFilterProp = 'value',
@@ -267,16 +260,13 @@ export default function generateSelector<
       // Icons
       allowClear,
       clearIcon,
-      showArrow,
       inputIcon,
       menuItemSelectedIcon,
 
       // Others
-      disabled,
       loading,
       defaultActiveFirstOption,
       notFoundContent = 'Not Found',
-      optionLabelProp,
       backfill,
       getInputElement,
       getPopupContainer,
@@ -345,19 +335,85 @@ export default function generateSelector<
     }, []);
     const mergedId = id || innerId;
 
-    // optionLabelProp
-    let mergedOptionLabelProp = optionLabelProp;
-    if (mergedOptionLabelProp === undefined) {
-      mergedOptionLabelProp = options ? 'label' : 'children';
-    }
-
-    // labelInValue
-    const mergedLabelInValue = mode === 'combobox' ? false : labelInValue;
-
     const isMultiple = mode === 'tags' || mode === 'multiple';
 
-    const mergedShowSearch =
-      showSearch !== undefined ? showSearch : isMultiple || mode === 'combobox';
+    const showSearch = props.showSearch !== undefined
+      ? props.showSearch
+      : ['tags', 'multiple', 'combobox'].includes(props.mode);
+
+    // Whether selected option's labels are being kept within the search value (only combobox mode)
+    const usesSearchLabels = mode === 'combobox';
+
+    const persistSelectedLabelsOnly =
+      props.persistSelectedLabelsOnly !== undefined ? props.persistSelectedLabelsOnly : false;
+
+    const optionLabelProp = [props.optionLabelProp, props.options ? 'label' : 'children'].find(
+      x => x !== undefined,
+    );
+
+    const optionSelectableLabelProp = [
+      props.optionSelectableLabelProp,
+      optionLabelProp,
+    ].find(x => x !== undefined);
+
+    const optionSelectedLabelProp = [
+      props.optionSelectedLabelProp,
+      mode === 'combobox' && showSearch
+        ? 'value'
+        : optionLabelProp,
+    ].find(x => x !== undefined);
+
+    // Whether the exposed event handlers (onChange, onSelect, etc.) provide the selected option's
+    // data as RawValueType instead of OptionData
+    const receiveRawValue = !labelInValue;
+
+    // ========================= Search Value ===========================
+    const [requestedSearchValue, requestSetSearchValue] = useState(undefined);
+    const searchValue = (() => {
+      if (mode === 'combobox' && props.value === null) return '';
+
+      return [
+        usesSearchLabels
+          ? (toOptionData(props.value) || {})[optionSelectedLabelProp]
+          : undefined,
+        props.searchValue,
+        props.inputValue,
+        requestedSearchValue,
+      ].find(x => x !== undefined);
+    })();
+
+    // ============================ Options =============================
+    const {
+      selectedOptions,
+      rawValue,
+      rawValues,
+      options,
+      flattenedOptions,
+      displayOptions,
+      displayValues,
+      toCollectedOptionData,
+      toReceivableValue,
+      toReceivableOption,
+      stashedOption,
+      requestSetSelectedOptions,
+    } = useOptions({
+      convertChildrenToData,
+      searchValue,
+      receiveRawValue,
+      showSearch,
+      filterSort,
+      filterOption,
+      filterOptions,
+      flattenOptions,
+      optionFilterProp,
+      optionSelectedLabelProp,
+      optionSelectableLabelProp,
+      mode,
+      propsOptions: props.options,
+      propsChildren: props.children,
+      propsValue: props.value,
+      propsDefaultValue: props.defaultValue,
+    });
 
     // ============================== Ref ===============================
     const selectorDomRef = useRef<HTMLDivElement>(null);
@@ -367,149 +423,83 @@ export default function generateSelector<
       blur: selectorRef.current.blur,
     }));
 
-    // ============================= Value ==============================
-    const [mergedValue, setMergedValue] = useMergedState(defaultValue, {
-      value,
-    });
-
-    /** Unique raw values */
-    const mergedRawValue = useMemo<RawValueType[]>(
-      () =>
-        toInnerValue(mergedValue, {
-          labelInValue: mergedLabelInValue,
-          combobox: mode === 'combobox',
-        }),
-      [mergedValue, mergedLabelInValue],
-    );
-    /** We cache a set of raw values to speed up check */
-    const rawValues = useMemo<Set<RawValueType>>(() => new Set(mergedRawValue), [mergedRawValue]);
-
-    // ============================= Option =============================
     // Set by option list active, it will merge into search input when mode is `combobox`
     const [activeValue, setActiveValue] = useState<string>(null);
-    const [innerSearchValue, setInnerSearchValue] = useState('');
-    let mergedSearchValue = innerSearchValue;
-    if (mode === 'combobox' && mergedValue !== undefined) {
-      mergedSearchValue = mergedValue as string;
-    } else if (searchValue !== undefined) {
-      mergedSearchValue = searchValue;
-    } else if (inputValue) {
-      mergedSearchValue = inputValue;
-    }
 
-    const mergedOptions = useMemo<OptionsType>((): OptionsType => {
-      let newOptions = options;
-      if (newOptions === undefined) {
-        newOptions = convertChildrenToData(children);
-      }
-
-      /**
-       * `tags` should fill un-list item.
-       * This is not cool here since TreeSelect do not need this
-       */
-      if (mode === 'tags' && fillOptionsWithMissingValue) {
-        newOptions = fillOptionsWithMissingValue(
-          newOptions,
-          mergedValue,
-          mergedOptionLabelProp,
-          labelInValue,
-        );
-      }
-
-      return newOptions || ([] as OptionsType);
-    }, [options, children, mode, mergedValue]);
-
-    const mergedFlattenOptions: FlattenOptionsType<OptionsType> = useMemo(
-      () => flattenOptions(mergedOptions, props),
-      [mergedOptions],
-    );
-
-    const getValueOption = useCacheOptions(mergedRawValue, mergedFlattenOptions);
-
-    // Display options for OptionList
-    const displayOptions = useMemo<OptionsType>(() => {
-      if (!mergedSearchValue || !mergedShowSearch) {
-        return [...mergedOptions] as OptionsType;
-      }
-      const filteredOptions: OptionsType = filterOptions(mergedSearchValue, mergedOptions, {
-        optionFilterProp,
-        filterOption: mode === 'combobox' && filterOption === undefined ? () => true : filterOption,
-      });
-      if (
-        mode === 'tags' &&
-        filteredOptions.every(opt => opt[optionFilterProp] !== mergedSearchValue)
-      ) {
-        filteredOptions.unshift({
-          value: mergedSearchValue,
-          label: mergedSearchValue,
-          key: '__RC_SELECT_TAG_PLACEHOLDER__',
-        });
-      }
-      if (filterSort && Array.isArray(filteredOptions)) {
-        return ([...filteredOptions] as OptionsType).sort(filterSort);
-      }
-
-      return filteredOptions;
-    }, [mergedOptions, mergedSearchValue, mode, mergedShowSearch, filterSort]);
-
-    const displayFlattenOptions: FlattenOptionsType<OptionsType> = useMemo(
-      () => flattenOptions(displayOptions, props),
-      [displayOptions],
-    );
-
+    // ====================== Search Value (Effects) ====================
     useEffect(() => {
       if (listRef.current && listRef.current.scrollTo) {
         listRef.current.scrollTo(0);
       }
-    }, [mergedSearchValue]);
+    }, [searchValue]);
 
-    // ============================ Selector ============================
-    let displayValues = useMemo<DisplayLabelValueType[]>(() => {
-      const tmpValues = mergedRawValue.map((val: RawValueType) => {
-        const valueOptions = getValueOption([val]);
-        const displayValue = getLabeledValue(val, {
-          options: valueOptions,
-          prevValue: mergedValue,
-          labelInValue: mergedLabelInValue,
-          optionLabelProp: mergedOptionLabelProp,
-        });
-
-        return {
-          ...displayValue,
-          disabled: isValueDisabled(val, valueOptions),
-        };
-      });
-
-      if (
-        !mode &&
-        tmpValues.length === 1 &&
-        tmpValues[0].value === null &&
-        tmpValues[0].label === null
-      ) {
-        return [];
+    const selectedOptionSearchLabel: string | undefined = useMemo(() => {
+      if (usesSearchLabels && selectedOptions.length) {
+        return String(selectedOptions[0][optionSelectedLabelProp]);
       }
+      return undefined;
+    }, [usesSearchLabels, selectedOptions, optionSelectedLabelProp]);
 
-      return tmpValues;
-    }, [mergedValue, mergedOptions, mode]);
+    const [searchValueIsSelectedLabel, setSearchValueIsSelectedLabel] = useState<
+      boolean
+    >(false);
 
-    // Polyfill with cache label
-    displayValues = useCacheDisplayValue(displayValues);
+    // Whenever the most recently selected option's search label changes (and when search labels are
+    // being used) and the current search value is undefined, update the search value with the
+    // selected option's search label while indicating that the search value now selects the
+    // currently selected option.
+    useEffect(() => {
+      if (
+        usesSearchLabels &&
+        searchValue === undefined &&
+        selectedOptionSearchLabel !== undefined
+      ) {
+        requestSetSearchValue(selectedOptionSearchLabel);
+        setSearchValueIsSelectedLabel(true);
+      }
+    }, [searchValue, usesSearchLabels, selectedOptions, selectedOptionSearchLabel]);
 
+    // Whenever the search value changes, determine whether this would deselect the currently
+    // selected option
+    useEffect(() => {
+      if (usesSearchLabels && searchValue !== undefined) {
+        // When there is a previously selected option stashed, don't manage the search value
+        if (!stashedOption.isStashed) {
+          if (searchValueIsSelectedLabel && searchValue !== selectedOptionSearchLabel) {
+            // Store the previously selected option to return to it later upon hitting Escape within
+            // the search textbox
+            stashedOption.stash();
+
+            setSearchValueIsSelectedLabel(false);
+          }
+        }
+      }
+    }, [
+      usesSearchLabels,
+      searchValue,
+      stashedOption.isStashed,
+      searchValueIsSelectedLabel,
+      selectedOptionSearchLabel,
+    ]);
+
+    // Whenever the selected options change, attempt to update the search value with a search label
+    // to indicate the newly selected option or an empty string if circumstances require it
+    useEffect(() => {
+      if (usesSearchLabels && searchValue !== undefined) {
+        // When there is a previously selected option stashed, don't manage the search value
+        if (!stashedOption.isStashed) {
+          requestSetSearchValue(selectedOptionSearchLabel);
+          setSearchValueIsSelectedLabel(true);
+        }
+      }
+    }, [selectedOptions, stashedOption.isStashed, selectedOptionSearchLabel]);
+
+    // ======================= onChange / onSelect ======================
     const triggerSelect = (newValue: RawValueType, isSelect: boolean, source: SelectSource) => {
-      const newValueOption = getValueOption([newValue]);
-      const outOption = findValueOption([newValue], newValueOption)[0];
+      const selectValue = toReceivableValue(newValue);
+      const outOption = toReceivableOption(newValue);
 
       if (!internalProps.skipTriggerSelect) {
-        // Skip trigger `onSelect` or `onDeselect` if configured
-        const selectValue = (mergedLabelInValue
-          ? getLabeledValue(newValue, {
-              options: newValueOption,
-              prevValue: mergedValue,
-              labelInValue: mergedLabelInValue,
-              optionLabelProp: mergedOptionLabelProp,
-            })
-          : newValue) as SingleType<ValueType>;
-
         if (isSelect && onSelect) {
           onSelect(selectValue, outOption);
         } else if (!isSelect && onDeselect) {
@@ -527,56 +517,34 @@ export default function generateSelector<
       }
     };
 
-    // We need cache options here in case user update the option list
-    const [prevValueOptions, setPrevValueOptions] = useState([]);
-
-    const triggerChange = (newRawValues: RawValueType[]) => {
+    const triggerChange = (newRawValues: RawValueType[], fromSearching = false) => {
       if (useInternalProps && internalProps.skipTriggerChange) {
         return;
       }
-      const newRawValuesOptions = getValueOption(newRawValues);
-      const outValues = toOuterValues<FlattenOptionsType<OptionsType>>(Array.from(newRawValues), {
-        labelInValue: mergedLabelInValue,
-        options: newRawValuesOptions,
-        getLabeledValue,
-        prevValue: mergedValue,
-        optionLabelProp: mergedOptionLabelProp,
-      });
 
-      const outValue: ValueType = (isMultiple ? outValues : outValues[0]) as ValueType;
-      // Skip trigger if prev & current value is both empty
-      if (onChange && (mergedRawValue.length !== 0 || outValues.length !== 0)) {
-        const outOptions = findValueOption(newRawValues, newRawValuesOptions, { prevValueOptions });
-
-        // We will cache option in case it removed by ajax
-        setPrevValueOptions(
-          outOptions.map((option, index) => {
-            const clone = { ...option };
-            Object.defineProperty(clone, '_INTERNAL_OPTION_VALUE_', {
-              get: () => newRawValues[index],
-            });
-            return clone;
-          }),
+      if (onChange) {
+        const receivableValues = newRawValues.map(value => toReceivableValue(value));
+        const receivableOptions = newRawValues.map(value => toReceivableOption(value));
+        onChange(
+          isMultiple ? receivableValues : receivableValues[0],
+          isMultiple ? receivableOptions : receivableOptions[0],
         );
-
-        onChange(outValue, isMultiple ? outOptions : outOptions[0]);
       }
 
-      setMergedValue(outValue);
+      if (!fromSearching) {
+        requestSetSelectedOptions(
+          newRawValues.map(value => toCollectedOptionData(value)),
+        );
+      }
     };
 
     const onInternalSelect = (
       newValue: RawValueType,
-      { selected, source }: { selected: boolean; source: 'option' | 'selection' },
+      { selected, source }: { selected: boolean; source: SelectSource },
     ) => {
-      if (disabled) {
-        return;
-      }
-
       let newRawValue: Set<RawValueType>;
-
       if (isMultiple) {
-        newRawValue = new Set(mergedRawValue);
+        newRawValue = new Set(rawValue);
         if (selected) {
           newRawValue.add(newValue);
         } else {
@@ -588,7 +556,7 @@ export default function generateSelector<
       }
 
       // Multiple always trigger change and single should change if value changed
-      if (isMultiple || (!isMultiple && Array.from(mergedRawValue)[0] !== newValue)) {
+      if (isMultiple || (!isMultiple && Array.from(rawValue)[0] !== newValue)) {
         triggerChange(Array.from(newRawValue));
       }
 
@@ -596,13 +564,17 @@ export default function generateSelector<
       triggerSelect(newValue, !isMultiple || selected, source);
 
       // Clean search value if single or configured
-      if (mode === 'combobox') {
-        setInnerSearchValue(String(newValue));
+      if (usesSearchLabels) {
+        requestSetSearchValue(toCollectedOptionData(newValue)[optionSelectedLabelProp]);
+        setSearchValueIsSelectedLabel(true);
         setActiveValue('');
       } else if (!isMultiple || autoClearSearchValue) {
-        setInnerSearchValue('');
+        requestSetSearchValue('');
         setActiveValue('');
       }
+
+      // Forget about the stashed option (if there was one) after an option has been selected
+      stashedOption.remove();
     };
 
     const onInternalOptionSelect = (newValue: RawValueType, info: { selected: boolean }) => {
@@ -613,124 +585,166 @@ export default function generateSelector<
       onInternalSelect(newValue, { ...info, source: 'selection' });
     };
 
+    stashedOption.useIfReadyToApply(() => {
+      onInternalSelect(stashedOption.data !== undefined && stashedOption.data.length
+        ? stashedOption.data[0].value
+        : undefined,
+        {
+          selected: true,
+          source: 'stash',
+        },
+      );
+    });
+
     // ============================= Input ==============================
     // Only works in `combobox`
     const customizeInputElement: React.ReactElement =
       (mode === 'combobox' && getInputElement && getInputElement()) || null;
 
     // ============================== Open ==============================
-    const [innerOpen, setInnerOpen] = useMergedState<boolean>(undefined, {
-      defaultValue: defaultOpen,
-      value: open,
-    });
+    const [requestedIsDropdownVisible, requestSetIsDropdownVisible] = useState<boolean>(undefined);
+    const isDropdownEmpty: boolean = !notFoundContent && !displayOptions.length;
+    const dropdownVisibilityAllowed: boolean = !props.disabled && !isDropdownEmpty;
+    const isDropdownVisible: boolean = (() => {
+      let result = [props.open, requestedIsDropdownVisible, props.defaultOpen].find(
+        x => x !== undefined,
+      );
+      if (!dropdownVisibilityAllowed) {
+        result = false;
+      }
+      return result;
+    })();
 
-    let mergedOpen = innerOpen;
+    // Handle when an ajax response is received that subsequently allows dropdown visibility
+    useEffect(() => {
+      if (requestedIsDropdownVisible && dropdownVisibilityAllowed) {
+        requestSetIsDropdownVisible(true);
+      }
+    }, [requestedIsDropdownVisible, dropdownVisibilityAllowed]);
 
-    // Not trigger `open` in `combobox` when `notFoundContent` is empty
-    const emptyListContent = !notFoundContent && !displayOptions.length;
-    if (disabled || (emptyListContent && mergedOpen && mode === 'combobox')) {
-      mergedOpen = false;
-    }
-    const triggerOpen = emptyListContent ? false : mergedOpen;
+    // Setup the "onDropdownVisibleChange" event handler
+    useEffectAfterInit(() => {
+      if (onDropdownVisibleChange) {
+        onDropdownVisibleChange(requestedIsDropdownVisible);
+      }
+    }, [requestedIsDropdownVisible]);
 
-    const onToggleOpen = (newOpen?: boolean) => {
-      const nextOpen = newOpen !== undefined ? newOpen : !mergedOpen;
+    // When click events outside of the component, attempt toggling the dropdown's visibility
+    useEffect(() => {
+      const elements = [
+        containerRef.current,
+        triggerRef.current && triggerRef.current.getPopupElement(),
+      ].filter(e => e);
 
-      if (innerOpen !== nextOpen && !disabled) {
-        setInnerOpen(nextOpen);
+      function onGlobalClick(event: MouseEvent) {
+        const target = event.target as HTMLElement;
+        const isClickOutsideElements = elements.every(
+          element => !element.contains(target) && element !== target,
+        );
 
-        if (onDropdownVisibleChange) {
-          onDropdownVisibleChange(nextOpen);
+        if (isDropdownVisible && isClickOutsideElements) {
+          requestSetIsDropdownVisible(false);
         }
       }
-    };
 
-    useSelectTriggerControl(
-      [containerRef.current, triggerRef.current && triggerRef.current.getPopupElement()],
-      triggerOpen,
-      onToggleOpen,
-    );
+      window.addEventListener('mousedown', onGlobalClick);
+      return () => window.removeEventListener('mousedown', onGlobalClick);
+    }, [isDropdownVisible]);
+
+    // ============================ Selector ============================
+    // Keep track of whether the selector has received focus yet so that the
+    // `onSearch` doesn't get called before search is possible by the user
+    const [selectorHasFocused, setSelectorHasFocused] = useState<boolean>(false);
+    const onSelectorFocus = () => setSelectorHasFocused(true);
 
     // ============================= Search =============================
     const triggerSearch = (searchText: string, fromTyping: boolean, isCompositing: boolean) => {
-      let ret = true;
+      let result = true;
       let newSearchText = searchText;
       setActiveValue(null);
-
-      // Check if match the `tokenSeparators`
-      const patchLabels: string[] = isCompositing
-        ? null
-        : getSeparatedContent(searchText, tokenSeparators);
-      let patchRawValues: RawValueType[] = patchLabels;
 
       if (mode === 'combobox') {
         // Only typing will trigger onChange
         if (fromTyping) {
-          triggerChange([newSearchText]);
+          triggerChange([newSearchText], true);
         }
-      } else if (patchLabels) {
-        newSearchText = '';
+      } else if (!isCompositing) {
+        // Check if match the `tokenSeparators`
+        const patchLabels: string[] = getSeparatedContent(searchText, tokenSeparators);
 
-        if (mode !== 'tags') {
-          patchRawValues = patchLabels
-            .map(label => {
-              const item = mergedFlattenOptions.find(
-                ({ data }) => data[mergedOptionLabelProp] === label,
-              );
-              return item ? item.data.value : null;
-            })
-            .filter((val: RawValueType) => val !== null);
+        if (patchLabels) {
+          let patchRawValues: RawValueType[] = patchLabels;
+
+          newSearchText = '';
+
+          if (mode !== 'tags') {
+            patchRawValues = patchLabels
+              .map(label => {
+                const item = flattenedOptions.find(
+                  ({ data }) => data[optionLabelProp] === label,
+                );
+                return item ? item.data.value : null;
+              })
+              .filter((val: RawValueType) => val !== null);
+          }
+
+          const newRawValues = Array.from(new Set<RawValueType>([...rawValue, ...patchRawValues]));
+          triggerChange(newRawValues);
+          newRawValues.forEach(newRawValue => {
+            triggerSelect(newRawValue, true, 'input');
+          });
+
+          // Should close when paste finish
+          requestSetIsDropdownVisible(false);
+
+          // Tell Selector that break next actions
+          result = false;
         }
-
-        const newRawValues = Array.from(
-          new Set<RawValueType>([...mergedRawValue, ...patchRawValues]),
-        );
-        triggerChange(newRawValues);
-        newRawValues.forEach(newRawValue => {
-          triggerSelect(newRawValue, true, 'input');
-        });
-
-        // Should close when paste finish
-        onToggleOpen(false);
-
-        // Tell Selector that break next actions
-        ret = false;
       }
 
-      setInnerSearchValue(newSearchText);
+      requestSetSearchValue(newSearchText);
 
-      if (onSearch && mergedSearchValue !== newSearchText) {
+      // Handle "onSearch" event handler when the search value changes,
+      // but only after the selector has been focused for the first time
+      if (onSearch && selectorHasFocused && searchValue !== newSearchText) {
         onSearch(newSearchText);
       }
 
-      return ret;
+      return result;
     };
 
     // Only triggered when menu is closed & mode is tags
     // If menu is open, OptionList will take charge
     // If mode isn't tags, press enter is not meaningful when you can't see any option
     const onSearchSubmit = (searchText: string) => {
-      const newRawValues = Array.from(new Set<RawValueType>([...mergedRawValue, searchText]));
+      const newRawValues = Array.from(new Set<RawValueType>([...rawValue, searchText]));
       triggerChange(newRawValues);
       newRawValues.forEach(newRawValue => {
         triggerSelect(newRawValue, true, 'input');
       });
-      setInnerSearchValue('');
+      requestSetSearchValue('');
     };
+
+    // Handle when the Escape key is pressed while the search input textbox was selected
+    const onEscapeSearchInput = useCallback(() => {
+      if (usesSearchLabels && stashedOption.isStashed) {
+        stashedOption.readyToApply();
+      }
+    }, [usesSearchLabels, stashedOption.isStashed, stashedOption.data]);
 
     // Close dropdown when disabled change
     useEffect(() => {
-      if (innerOpen && !!disabled) {
-        setInnerOpen(false);
+      if (props.disabled) {
+        requestSetIsDropdownVisible(false);
       }
-    }, [disabled]);
+    }, [props.disabled]);
 
     // Close will clean up single mode search text
     useEffect(() => {
-      if (!mergedOpen && !isMultiple && mode !== 'combobox') {
+      if (!isDropdownVisible && !isMultiple && !usesSearchLabels) {
         triggerSearch('', false, false);
       }
-    }, [mergedOpen]);
+    }, [isDropdownVisible]);
 
     // ============================ Keyboard ============================
     /**
@@ -747,21 +761,21 @@ export default function generateSelector<
       const { which } = event;
 
       // We only manage open state here, close logic should handle by list component
-      if (!mergedOpen && which === KeyCode.ENTER) {
-        onToggleOpen(true);
+      if (!isDropdownVisible && which === KeyCode.ENTER) {
+        requestSetIsDropdownVisible(true);
       }
 
-      setClearLock(!!mergedSearchValue);
+      setClearLock(!!searchValue);
 
       // Remove value by `backspace`
       if (
         which === KeyCode.BACKSPACE &&
         !clearLock &&
         isMultiple &&
-        !mergedSearchValue &&
-        mergedRawValue.length
+        !searchValue &&
+        rawValue.length
       ) {
-        const removeInfo = removeLastEnabledValue(displayValues, mergedRawValue);
+        const removeInfo = removeLastEnabledValue(displayValues, rawValue);
 
         if (removeInfo.removedValue !== null) {
           triggerChange(removeInfo.values);
@@ -769,7 +783,7 @@ export default function generateSelector<
         }
       }
 
-      if (mergedOpen && listRef.current) {
+      if (isDropdownVisible && listRef.current) {
         listRef.current.onKeyDown(event, ...rest);
       }
 
@@ -780,7 +794,7 @@ export default function generateSelector<
 
     // KeyUp
     const onInternalKeyUp: React.KeyboardEventHandler<HTMLDivElement> = (event, ...rest) => {
-      if (mergedOpen && listRef.current) {
+      if (isDropdownVisible && listRef.current) {
         listRef.current.onKeyUp(event, ...rest);
       }
 
@@ -796,14 +810,14 @@ export default function generateSelector<
     const onContainerFocus: React.FocusEventHandler<HTMLElement> = (...args) => {
       setMockFocused(true);
 
-      if (!disabled) {
+      if (!props.disabled) {
         if (onFocus && !focusRef.current) {
           onFocus(...args);
         }
 
         // `showAction` should handle `focus` if set
         if (showAction.includes('focus')) {
-          onToggleOpen(true);
+          requestSetIsDropdownVisible(true);
         }
       }
 
@@ -813,21 +827,34 @@ export default function generateSelector<
     const onContainerBlur: React.FocusEventHandler<HTMLElement> = (...args) => {
       setMockFocused(false, () => {
         focusRef.current = false;
-        onToggleOpen(false);
+        requestSetIsDropdownVisible(false);
       });
 
-      if (disabled) {
+      if (props.disabled) {
         return;
       }
 
-      if (mergedSearchValue) {
+      // If this selector uses search labels and the search textbox is out-of-sync with the
+      // currently stashed option's search label and the `persistSelectedLabelsOnly` prop is
+      // true, reselect the stashed option when the search textbox loses focus (or deselect
+      // the search value that doesn't select an option)
+      if (usesSearchLabels && !searchValueIsSelectedLabel && persistSelectedLabelsOnly) {
+        if (stashedOption.isStashed) {
+          stashedOption.readyToApply();
+        } else {
+          requestSetSelectedOptions(undefined);
+          requestSetSearchValue(undefined);
+        }
+      }
+
+      if (searchValue) {
         // `tags` mode should move `searchValue` into values
         if (mode === 'tags') {
           triggerSearch('', false, false);
-          triggerChange(Array.from(new Set([...mergedRawValue, mergedSearchValue])));
+          triggerChange(Array.from(new Set([...rawValue, searchValue])));
         } else if (mode === 'multiple') {
           // `multiple` mode only clean the search value but not trigger event
-          setInnerSearchValue('');
+          requestSetSearchValue('');
         }
       }
 
@@ -896,34 +923,33 @@ export default function generateSelector<
     }
 
     useLayoutEffect(() => {
-      if (triggerOpen) {
+      if (isDropdownVisible) {
         const newWidth = Math.ceil(containerRef.current.offsetWidth);
         if (containerWidth !== newWidth) {
           setContainerWidth(newWidth);
         }
       }
-    }, [triggerOpen]);
+    }, [isDropdownVisible]);
 
     const popupNode = (
       <OptionList
         ref={listRef}
         prefixCls={prefixCls}
         id={mergedId}
-        open={mergedOpen}
-        childrenAsData={!options}
-        options={displayOptions}
-        flattenOptions={displayFlattenOptions}
+        open={isDropdownVisible}
+        displayOptions={displayOptions}
+        optionSelectableLabelProp={optionSelectableLabelProp}
         multiple={isMultiple}
         values={rawValues}
         height={listHeight}
         itemHeight={listItemHeight}
         onSelect={onInternalOptionSelect}
-        onToggleOpen={onToggleOpen}
+        requestSetIsDropdownVisible={requestSetIsDropdownVisible}
         onActiveValue={onActiveValue}
         defaultActiveFirstOption={mergedDefaultActiveFirstOption}
         notFoundContent={notFoundContent}
         onScroll={onPopupScroll}
-        searchValue={mergedSearchValue}
+        searchValue={searchValue}
         menuItemSelectedIcon={menuItemSelectedIcon}
         virtual={virtual !== false && dropdownMatchSelectWidth !== false}
         onMouseEnter={onPopupMouseEnter}
@@ -931,7 +957,6 @@ export default function generateSelector<
     );
 
     // ============================= Clear ==============================
-    let clearNode: React.ReactNode;
     const onClearMouseDown: React.MouseEventHandler<HTMLSpanElement> = () => {
       // Trigger internal `onClear` event
       if (useInternalProps && internalProps.onClear) {
@@ -944,9 +969,13 @@ export default function generateSelector<
 
       triggerChange([]);
       triggerSearch('', false, false);
+      if (mode === 'combobox') {
+        requestSetSelectedOptions([toOptionData('') as OptionData]);
+      }
     };
 
-    if (!disabled && allowClear && (mergedRawValue.length || mergedSearchValue)) {
+    let clearNode: React.ReactNode;
+    if (!props.disabled && allowClear && (rawValue.length || searchValue)) {
       clearNode = (
         <TransBtn
           className={`${prefixCls}-clear`}
@@ -959,11 +988,12 @@ export default function generateSelector<
     }
 
     // ============================= Arrow ==============================
-    const mergedShowArrow =
-      showArrow !== undefined ? showArrow : loading || (!isMultiple && mode !== 'combobox');
+    const showArrow =
+      props.showArrow !== undefined
+        ? props.showArrow
+        : loading || (!isMultiple && mode !== 'combobox');
     let arrowNode: React.ReactNode;
-
-    if (mergedShowArrow) {
+    if (showArrow) {
       arrowNode = (
         <TransBtn
           className={classNames(`${prefixCls}-arrow`, {
@@ -972,37 +1002,43 @@ export default function generateSelector<
           customizeIcon={inputIcon}
           customizeIconProps={{
             loading,
-            searchValue: mergedSearchValue,
-            open: mergedOpen,
+            searchValue,
+            open: isDropdownVisible,
             focused: mockFocused,
-            showSearch: mergedShowSearch,
+            showSearch,
           }}
         />
       );
     }
 
     // ============================ Warning =============================
-    if (process.env.NODE_ENV !== 'production' && warningProps) {
-      warningProps(props);
-    }
+    useWarnings({
+      warningsEnabled: process.env.NODE_ENV !== 'production',
+      evaluateProps: warningProps,
+      toCollectedOptionData,
+      labelInValue,
+      optionSelectedLabelProp,
+      optionSelectableLabelProp,
+      props,
+    });
 
     // ============================= Render =============================
-    const mergedClassName = classNames(prefixCls, className, {
+    const className = classNames(prefixCls, props.className, {
       [`${prefixCls}-focused`]: mockFocused,
       [`${prefixCls}-multiple`]: isMultiple,
       [`${prefixCls}-single`]: !isMultiple,
       [`${prefixCls}-allow-clear`]: allowClear,
-      [`${prefixCls}-show-arrow`]: mergedShowArrow,
-      [`${prefixCls}-disabled`]: disabled,
+      [`${prefixCls}-show-arrow`]: showArrow,
+      [`${prefixCls}-disabled`]: props.disabled,
       [`${prefixCls}-loading`]: loading,
-      [`${prefixCls}-open`]: mergedOpen,
+      [`${prefixCls}-open`]: isDropdownVisible,
       [`${prefixCls}-customize-input`]: customizeInputElement,
-      [`${prefixCls}-show-search`]: mergedShowSearch,
+      [`${prefixCls}-show-search`]: showSearch,
     });
 
     return (
       <div
-        className={mergedClassName}
+        className={className}
         {...domProps}
         ref={containerRef}
         onMouseDown={onInternalMouseDown}
@@ -1011,7 +1047,7 @@ export default function generateSelector<
         onFocus={onContainerFocus}
         onBlur={onContainerBlur}
       >
-        {mockFocused && !mergedOpen && (
+        {mockFocused && !isDropdownVisible && (
           <span
             style={{
               width: 0,
@@ -1023,14 +1059,14 @@ export default function generateSelector<
             aria-live="polite"
           >
             {/* Merge into one string to make screen reader work as expect */}
-            {`${mergedRawValue.join(', ')}`}
+            {`${rawValue.join(', ')}`}
           </span>
         )}
         <SelectTrigger
           ref={triggerRef}
-          disabled={disabled}
+          disabled={props.disabled}
           prefixCls={prefixCls}
-          visible={triggerOpen}
+          visible={isDropdownVisible}
           popupElement={popupNode}
           containerWidth={containerWidth}
           animation={animation}
@@ -1042,7 +1078,7 @@ export default function generateSelector<
           dropdownRender={dropdownRender}
           dropdownAlign={dropdownAlign}
           getPopupContainer={getPopupContainer}
-          empty={!mergedOptions.length}
+          empty={!options.length}
           getTriggerDOMNode={() => selectorDomRef.current}
         >
           <Selector
@@ -1052,20 +1088,23 @@ export default function generateSelector<
             inputElement={customizeInputElement}
             ref={selectorRef}
             id={mergedId}
-            showSearch={mergedShowSearch}
+            showSearch={showSearch}
             mode={mode}
             accessibilityIndex={accessibilityIndex}
             multiple={isMultiple}
             tagRender={tagRender}
-            values={displayValues}
-            open={mergedOpen}
-            onToggleOpen={onToggleOpen}
-            searchValue={mergedSearchValue}
+            displayValues={displayValues}
+            open={isDropdownVisible}
+            requestSetIsDropdownVisible={requestSetIsDropdownVisible}
+            onFocus={onSelectorFocus}
+            searchValue={searchValue}
             activeValue={activeValue}
             onSearch={triggerSearch}
             onSearchSubmit={onSearchSubmit}
             onSelect={onInternalSelectionSelect}
             tokenWithEnter={tokenWithEnter}
+            searchValueIsSelectedLabel={searchValueIsSelectedLabel}
+            onEscapeSearchInput={onEscapeSearchInput}
           />
         </SelectTrigger>
 

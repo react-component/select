@@ -35,7 +35,7 @@ const SelectSelector: React.FC<SelectorProps> = props => {
     id,
     prefixCls,
 
-    values,
+    displayValues: providedDisplayValues,
     open,
     searchValue,
     inputRef,
@@ -85,42 +85,36 @@ const SelectSelector: React.FC<SelectorProps> = props => {
   }, [inputValue]);
 
   // ==================== Selection ====================
-  let displayValues: LabelValueType[] = values;
+  let displayValues: LabelValueType[] = providedDisplayValues;
+  let truncatedDisplayValues: LabelValueType[] = [];
 
-  // Cut by `maxTagCount`
-  let restCount: number;
-  if (typeof maxTagCount === 'number') {
-    restCount = values.length - maxTagCount;
-    displayValues = values.slice(0, maxTagCount);
+  if (typeof maxTagCount === 'number' && providedDisplayValues.length > maxTagCount) {
+    displayValues = providedDisplayValues.slice(0, maxTagCount);
+    truncatedDisplayValues = providedDisplayValues.slice(maxTagCount);
   }
 
   // Update by `maxTagTextLength`
   if (typeof maxTagTextLength === 'number') {
-    displayValues = displayValues.map(({ label, ...rest }) => {
-      let displayLabel: React.ReactNode = label;
-
+    const getTruncatedLabel = label => {
       if (typeof label === 'string' || typeof label === 'number') {
-        const strLabel = String(displayLabel);
-
-        if (strLabel.length > maxTagTextLength) {
-          displayLabel = `${strLabel.slice(0, maxTagTextLength)}...`;
+        if (String(label).length > maxTagTextLength) {
+          return `${String(label).slice(0, maxTagTextLength)}...`;
         }
       }
-
-      return {
-        ...rest,
-        label: displayLabel,
-      };
-    });
+      return label;
+    };
+    displayValues = displayValues.map(({ label, ...rest }) => ({
+      ...rest,
+      label: getTruncatedLabel(label),
+    }));
   }
 
-  // Fill rest
-  if (restCount > 0) {
+  if (truncatedDisplayValues.length) {
     displayValues.push({
       key: REST_TAG_KEY,
       label:
         typeof maxTagPlaceholder === 'function'
-          ? maxTagPlaceholder(values.slice(maxTagCount))
+          ? maxTagPlaceholder(truncatedDisplayValues)
           : maxTagPlaceholder,
     });
   }
@@ -221,7 +215,7 @@ const SelectSelector: React.FC<SelectorProps> = props => {
         </span>
       </span>
 
-      {!values.length && !inputValue && (
+      {!providedDisplayValues.length && !inputValue && (
         <span className={`${prefixCls}-selection-placeholder`}>{placeholder}</span>
       )}
     </>

@@ -2,6 +2,8 @@ import React from 'react';
 import Select from '../src';
 import { convertChildrenToData } from '../src/utils/legacyUtil';
 import { flattenOptions, getSeparatedContent } from '../src/utils/valueUtil';
+import { handleClickAction } from '../src/utils/miscUtil';
+import { toMap } from '../src/utils/commonUtil';
 
 describe('Utils', () => {
   describe('legacy', () => {
@@ -62,6 +64,50 @@ describe('Utils', () => {
         expect(getSeparatedContent('12312313123123', [' ', ','])).toEqual(null);
         expect(getSeparatedContent('12312313123123', [])).toEqual(null);
       });
+    });
+  });
+
+  describe('handleClickAction', () => {
+    it('should execute action immediately for non-IE browsers', () => {
+      jest.useFakeTimers();
+      const fn = jest.fn();
+
+      handleClickAction(fn, { isIE: false });
+      expect(fn).toHaveBeenCalledTimes(1);
+
+      jest.useRealTimers();
+    });
+
+    it('should execute action using a timer for IE browsers', () => {
+      jest.useFakeTimers();
+      const fn = jest.fn();
+
+      // Expect that the function hasn't been run immediately
+      handleClickAction(fn, { isIE: true });
+      expect(fn).toHaveBeenCalledTimes(0);
+
+      // Expect function to have run once after running all timers
+      jest.runAllTimers();
+      expect(fn).toHaveBeenCalledTimes(1);
+
+      jest.useRealTimers();
+    });
+  });
+
+  describe('toMap', () => {
+    it('should map values by default', () => {
+      const myValuesData = [
+        { value: 'hi', dataField: 'world' },
+        { value: 'hello', dataField: 'world!' },
+        { value: 'hey', dataField: 'world~!' },
+      ];
+
+      const myMap = toMap(myValuesData);
+
+      expect(myMap.get('hi').dataField).toBe('world');
+      expect(myMap.get('hello').dataField).toBe('world!');
+      expect(myMap.get('hey')).toStrictEqual({ value: 'hey', dataField: 'world~!' });
+      expect(myMap.get('howdy!')).toBeUndefined();
     });
   });
 });

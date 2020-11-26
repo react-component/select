@@ -5,15 +5,34 @@ import {
   OptionGroupData,
   FlattenOptionData,
 } from '../interface';
-import {
-  LabelValueType,
-  FilterFunc,
-  RawValueType,
-  GetLabeledValue,
-  DefaultValueType,
-} from '../interface/generator';
-
+import { FilterFunc, RawValueType } from '../interface/generator';
 import { toArray } from './commonUtil';
+
+export function toOptionData(
+  data?: object | number | string | Array<object | number | string>,
+): OptionData[] | OptionData | undefined {
+  if (
+    typeof data === 'string'
+    || typeof data === 'number'
+    || data === null
+  ) {
+    return {
+      value: data,
+    } as OptionData;
+  }
+  if (Array.isArray(data)) {
+    return data.map(v => toOptionData(v)) as OptionData[];
+  }
+  if (typeof data === 'object') {
+    const result = { ...data } as OptionData;
+    if (!('value' in result) && 'key' in result) {
+      result.value = result.key;
+    }
+    return result as OptionData;
+  }
+  return undefined;
+}
+
 
 function getKey(data: OptionData | OptionGroupData, index: number) {
   const { key } = data;
@@ -64,13 +83,13 @@ export function flattenOptions(options: SelectOptionsType): FlattenOptionData[] 
 
   dig(options, false);
 
-  return flattenList;
+  return flattenList as FlattenOptionData[];
 }
 
 /**
  * Inject `props` into `option` for legacy usage
  */
-function injectPropsWithOption<T>(option: T): T {
+export function injectLegacyPropsIntoOption<T>(option: T): T {
   const newOption = { ...option };
   if (!('props' in newOption)) {
     Object.defineProperty(newOption, 'props', {
@@ -86,80 +105,6 @@ function injectPropsWithOption<T>(option: T): T {
 
   return newOption;
 }
-
-export function findValueOption(
-  values: RawValueType[],
-  options: FlattenOptionData[],
-  { prevValueOptions = [] }: { prevValueOptions?: OptionData[] } = {},
-): OptionData[] {
-  const optionMap: Map<RawValueType, OptionData> = new Map();
-
-  options.forEach(flattenItem => {
-    if (!flattenItem.group) {
-      const data = flattenItem.data as OptionData;
-      // Check if match
-      optionMap.set(data.value, data);
-    }
-  });
-
-  return values.map(val => {
-    let option = optionMap.get(val);
-
-    // Fallback to try to find prev options
-    if (!option) {
-      option = {
-        // eslint-disable-next-line no-underscore-dangle
-        ...prevValueOptions.find(opt => opt._INTERNAL_OPTION_VALUE_ === val),
-      };
-    }
-
-    return injectPropsWithOption(option);
-  });
-}
-
-export const getLabeledValue: GetLabeledValue<FlattenOptionData[]> = (
-  value,
-  { options, prevValue, labelInValue, optionLabelProp },
-) => {
-  const item = findValueOption([value], options)[0];
-  const result: LabelValueType = {
-    value,
-  };
-
-  let prevValItem: LabelValueType;
-  const prevValues = toArray<RawValueType | LabelValueType>(prevValue);
-  if (labelInValue) {
-    prevValItem = prevValues.find((prevItem: LabelValueType) => {
-      if (typeof prevItem === 'object' && 'value' in prevItem) {
-        return prevItem.value === value;
-      }
-      // [Legacy] Support `key` as `value`
-      return prevItem.key === value;
-    }) as LabelValueType;
-  }
-
-  if (prevValItem && typeof prevValItem === 'object' && 'label' in prevValItem) {
-    result.label = prevValItem.label;
-
-    if (
-      item &&
-      typeof prevValItem.label === 'string' &&
-      typeof item[optionLabelProp] === 'string' &&
-      prevValItem.label.trim() !== item[optionLabelProp].trim()
-    ) {
-      warning(false, '`label` of `value` is not same as `label` in Select options.');
-    }
-  } else if (item && optionLabelProp in item) {
-    result.label = item[optionLabelProp];
-  } else {
-    result.label = value;
-  }
-
-  // Used for motion control
-  result.key = result.value;
-
-  return result;
-};
 
 function toRawString(content: React.ReactNode): string {
   return toArray(content).join('');
@@ -226,7 +171,7 @@ export function filterOptions(
       return;
     }
 
-    if (filterFunc(searchValue, injectPropsWithOption(item))) {
+    if (filterFunc(searchValue, injectLegacyPropsIntoOption(item))) {
       filteredOptions.push(item);
     }
   });
@@ -256,56 +201,4 @@ export function getSeparatedContent(text: string, tokens: string[]): string[] {
 
   const list = separate(text, tokens);
   return match ? list : null;
-}
-
-export function isValueDisabled(value: RawValueType, options: FlattenOptionData[]): boolean {
-  const option = findValueOption([value], options)[0];
-  return option.disabled;
-}
-
-/**
- * `tags` mode should fill un-list item into the option list
- */
-export function fillOptionsWithMissingValue(
-  options: SelectOptionsType,
-  value: DefaultValueType,
-  optionLabelProp: string,
-  labelInValue: boolean,
-): SelectOptionsType {
-  const values = toArray<RawValueType | LabelValueType>(value)
-    .slice()
-    .sort();
-  const cloneOptions = [...options];
-
-  // Convert options value to set
-  const optionValues = new Set<RawValueType>();
-  options.forEach(opt => {
-    if (opt.options) {
-      opt.options.forEach((subOpt: OptionData) => {
-        optionValues.add(subOpt.value);
-      });
-    } else {
-      optionValues.add((opt as OptionData).value);
-    }
-  });
-
-  // Fill missing value
-  values.forEach(item => {
-    const val: RawValueType = labelInValue
-      ? (item as LabelValueType).value
-      : (item as RawValueType);
-
-    if (!optionValues.has(val)) {
-      cloneOptions.push(
-        labelInValue
-          ? {
-              [optionLabelProp]: (item as LabelValueType).label,
-              value: val,
-            }
-          : { value: val },
-      );
-    }
-  });
-
-  return cloneOptions;
 }
