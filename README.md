@@ -101,10 +101,13 @@ export default () => (
 | filterOption | whether filter options by input value. default filter by option's optionFilterProp prop's value | bool | true/Function(inputValue:string, option:Option) |
 | optionFilterProp | which prop value of option will be used for filter if filterOption is true | String | 'value' |
 | filterSort | Sort function for search options sorting, see [Array.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)'s compareFunction. | Function(optionA:Option, optionB: Option) | - |
+| optionSelectedLabelProp | which property of option data is used as the selected option's label | string | 'value'/'children'/'label' |
+| optionSelectableLabelProp | which property of option data is used as an option's label to appear in the option dropdown | string | 'children'/'label' |
+| persistSelectedLabelsOnly | ensures that the search value only matches a selected option's selected label when the search field no longer has focus (only works in combobox mode) | bool | false |
 | optionLabelProp | render option value or option children as content of select | String: 'value'/'children' | 'value' |
-| defaultValue | initial selected option(s) | String/Array<String> | - |
-| value | current selected option(s) | String/Array<String>/{key:String, label:React.Node}/Array<{key, label}> | - |
-| labelInValue | whether to embed label in value, see above value type. Not support `combobox` mode | Bool | false |
+| defaultValue | initial selected option(s) | string/Array<string>/{value:string\|number, label:React.Node}/Array<{value:string\|number, label:React.Node}> | - |
+| value | current selected option(s) | string/Array<string>/{value:string\|number, label:React.Node}/Array<{value:string\|number, label:React.Node}> | - |
+| labelInValue | whether to embed label in value, see above value type | Bool | false |
 | backfill | whether backfill select option to search input (Only works in single and combobox mode) | Bool | false |
 | onChange | called when select an option or input value change(combobox) | function(value, option:Option/Array<Option>) | - |
 | onSearch | called when input changed | function | - |

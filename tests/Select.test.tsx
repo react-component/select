@@ -113,7 +113,7 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    expect(wrapper.find('Selector').props().values).toEqual([
+    expect(wrapper.find('Selector').props().displayValues).toEqual([
       expect.objectContaining({ label: '1-label', value: '1' }),
     ]);
     expect(findSelection(wrapper).text()).toEqual('1-label');
@@ -129,7 +129,7 @@ describe('Select.Basic', () => {
         </OptGroup>
       </Select>,
     );
-    expect(wrapper.find('Selector').props().values).toEqual([
+    expect(wrapper.find('Selector').props().displayValues).toEqual([
       expect.objectContaining({ value: '1' }),
     ]);
     expect(findSelection(wrapper).text()).toEqual('1');
@@ -435,6 +435,7 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
+    wrapper.find('input').simulate('focus');
     wrapper.find('input').simulate('change', { target: { value: '1' } });
     expect(handleSearch).toHaveBeenCalledWith('1');
 
@@ -481,6 +482,7 @@ describe('Select.Basic', () => {
         <Option value="2">2</Option>
       </Select>,
     );
+    wrapper.find('input').simulate('focus');
     wrapper.find('input').simulate('change', { target: { value: '1' } });
     expect(handleSearch).toHaveBeenCalledTimes(1);
 
@@ -881,7 +883,7 @@ describe('Select.Basic', () => {
     );
 
     wrapper.find('input').simulate('change', { target: { value: '3' } });
-    expect(wrapper.find('OptionList').props().options).toHaveLength(0);
+    expect(wrapper.find('OptionList').props().displayOptions).toHaveLength(0);
     expect(wrapper.find('.rc-select-item-empty').text()).toEqual('Not Found');
   });
 
@@ -1131,7 +1133,7 @@ describe('Select.Basic', () => {
 
     wrapper.find('input').simulate('change', { target: { value: 'c' } });
     expect(wrapper.find('input').props().value).toBe('c');
-    expect(wrapper.find('OptionList').props().options).toHaveLength(0);
+    expect(wrapper.find('OptionList').props().displayOptions).toHaveLength(0);
     expect(wrapper.find('.rc-select-item-empty').text()).toEqual('Not Found');
 
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ENTER });
@@ -1565,7 +1567,7 @@ describe('Select.Basic', () => {
     });
   });
 
-  it('`null` is a value', () => {
+  it('null is a value', () => {
     const onChange = jest.fn();
 
     const wrapper = mount(

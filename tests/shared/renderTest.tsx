@@ -17,6 +17,17 @@ export default function maxTagTextLengthTest(mode: any) {
       expect(wrapper.render()).toMatchSnapshot();
     });
 
+    it('does not truncate values when shorter or equal to maxTagTextLength', () => {
+      const wrapper = mount(
+        <Select mode={mode} value={['one', 'two']} maxTagTextLength={3}>
+          <Option value="one">One</Option>
+          <Option value="two">Two</Option>
+        </Select>,
+      );
+      
+      expect(wrapper.render()).toMatchSnapshot();
+    });
+
     it('truncates tags by maxTagCount', () => {
       const wrapper = mount(
         <Select mode={mode} value={['one', 'two', 'three']} maxTagCount={2}>

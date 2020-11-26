@@ -4,7 +4,6 @@ import { act } from 'react-dom/test-utils';
 import React from 'react';
 import OptionList, { OptionListProps, RefOptionListProps } from '../src/OptionList';
 import { injectRunAllTimers } from './utils/common';
-import { OptionsType } from '../src/interface';
 import { flattenOptions } from '../src/utils/valueUtil';
 
 describe('OptionList', () => {
@@ -19,10 +18,10 @@ describe('OptionList', () => {
   });
 
   function generateList({
-    options,
+    displayOptions: nonflatDisplayOptions,
     ...props
-  }: { options: OptionsType } & Partial<OptionListProps<OptionsType>> & { ref?: any }) {
-    const flatten = flattenOptions(options);
+  }: Partial<OptionListProps> & { ref?: any }) {
+    const displayOptions = flattenOptions(nonflatDisplayOptions);
 
     return (
       <div>
@@ -30,8 +29,8 @@ describe('OptionList', () => {
           prefixCls="rc-select"
           onActiveValue={() => {}}
           values={new Set()}
-          options={options}
-          flattenOptions={flatten}
+          displayOptions={displayOptions}
+          optionSelectableLabelProp="label"
           {...(props as any)}
         />
       </div>
@@ -41,7 +40,7 @@ describe('OptionList', () => {
   it('renders correctly', () => {
     const wrapper = mount(
       generateList({
-        options: [
+        displayOptions: [
           {
             key: 'group1',
             options: [{ value: '1', 'aria-label': 'value-1' }],
@@ -62,7 +61,7 @@ describe('OptionList', () => {
 
     mount(
       generateList({
-        options: [{ value: '1' }, { value: '2' }],
+        displayOptions: [{ value: '1' }, { value: '2' }],
         values: new Set('1'),
         onActiveValue,
       }),
@@ -76,7 +75,7 @@ describe('OptionList', () => {
     const listRef = React.createRef<RefOptionListProps>();
     mount(
       generateList({
-        options: [{ value: '1' }, { value: '2' }],
+        displayOptions: [{ value: '1' }, { value: '2' }],
         onActiveValue,
         ref: listRef,
       }),
@@ -107,7 +106,7 @@ describe('OptionList', () => {
     const onActiveValue = jest.fn();
     const wrapper = mount(
       generateList({
-        options: [{ value: '1' }, { value: '2' }],
+        displayOptions: [{ value: '1' }, { value: '2' }],
         onActiveValue,
       }),
     );
@@ -135,7 +134,7 @@ describe('OptionList', () => {
   it('Should prevent default with list mouseDown to avoid losing focus', () => {
     const wrapper = mount(
       generateList({
-        options: [{ value: '1' }, { value: '2' }],
+        displayOptions: [{ value: '1' }, { value: '2' }],
       }),
     );
 
@@ -153,7 +152,7 @@ describe('OptionList', () => {
   it('Data attributes should be set correct', () => {
     const wrapper = mount(
       generateList({
-        options: [{ value: '1', label: 'my-label' }, { value: '2', 'data-num': '123' }],
+        displayOptions: [{ value: '1', label: 'my-label' }, { value: '2', 'data-num': '123' }],
       }),
     );
 
@@ -168,7 +167,7 @@ describe('OptionList', () => {
   it('should render title defaultly', () => {
     const wrapper = mount(
       generateList({
-        options: [{ value: '1', label: 'my-label' }],
+        displayOptions: [{ value: '1', label: 'my-label' }],
       }),
     );
     expect(
@@ -182,7 +181,7 @@ describe('OptionList', () => {
   it('should render title', () => {
     const wrapper = mount(
       generateList({
-        options: [{ value: '1', label: 'my-label', title: 'title' }],
+        displayOptions: [{ value: '1', label: 'my-label', title: 'title' }],
       }),
     );
     expect(
@@ -196,7 +195,7 @@ describe('OptionList', () => {
   it('should not render title when title is empty string', () => {
     const wrapper = mount(
       generateList({
-        options: [{ value: '1', label: 'my-label', title: '' }],
+        displayOptions: [{ value: '1', label: 'my-label', title: '' }],
       }),
     );
     expect(
@@ -210,7 +209,7 @@ describe('OptionList', () => {
   it('should render title from label when title is undefined', () => {
     const wrapper = mount(
       generateList({
-        options: [{ value: '1', label: 'my-label', title: undefined }],
+        displayOptions: [{ value: '1', label: 'my-label', title: undefined }],
       }),
     );
     expect(
@@ -224,7 +223,7 @@ describe('OptionList', () => {
   it('should not render title defaultly when label is ReactNode', () => {
     const wrapper = mount(
       generateList({
-        options: [{ value: '1', label: <div>label</div> }],
+        displayOptions: [{ value: '1', label: <div>label</div> }],
       }),
     );
     expect(
@@ -233,5 +232,21 @@ describe('OptionList', () => {
         .first()
         .prop('title'),
     ).toBe(undefined);
+  });
+
+  it('should set active index correctly when a value is selected', () => {
+    const wrapper = mount(
+      generateList({
+        displayOptions: [{ value: '1' }, { value: '2' }],
+        multiple: false,
+        open: true,
+        values: new Set(['1']),
+      }),
+    );
+
+    jest.runAllTimers();
+
+    expect(wrapper.find('.rc-select-item-option').first().hasClass('rc-select-item-option-active')).toBeTruthy();
+    expect(wrapper.find('.rc-select-item-option').last().hasClass('rc-select-item-option-active')).toBeFalsy();
   });
 });

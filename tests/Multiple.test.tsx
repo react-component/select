@@ -248,7 +248,7 @@ describe('Select.Multiple', () => {
     expectOpen(wrapper, false);
     removeSelection(wrapper);
     expectOpen(wrapper, false);
-    expect(wrapper.find('Selector').props().values).toEqual([
+    expect(wrapper.find('Selector').props().displayValues).toEqual([
       expect.objectContaining({ value: 2 }),
     ]);
   });
@@ -269,7 +269,7 @@ describe('Select.Multiple', () => {
 
     wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
     expectOpen(wrapper);
-    expect(wrapper.find('Selector').props().values).toEqual([
+    expect(wrapper.find('Selector').props().displayValues).toEqual([
       expect.objectContaining({ value: 2 }),
     ]);
   });
@@ -295,7 +295,7 @@ describe('Select.Multiple', () => {
       .simulate('mousemove');
     wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
 
-    expect(wrapper.find('Selector').props().values).toEqual([]);
+    expect(wrapper.find('Selector').props().displayValues).toEqual([]);
   });
 
   it('do not crash when children has empty', () => {
@@ -426,6 +426,23 @@ describe('Select.Multiple', () => {
       [
         { label: 'Light', value: 'light', option: 2333 },
         { value: 'bamboo', label: 'Bamboo', option: 444 },
+      ],
+    );
+
+    // Third select
+    wrapper.setProps({ options: [{ value: 'flooring', label: 'Flooring', option: 5505 }] });
+    toggleOpen(wrapper);
+    selectItem(wrapper, 0);
+    expect(onChange).toHaveBeenCalledWith(
+      [
+        { label: 'Light', value: 'light', key: 'light' },
+        { label: 'Bamboo', value: 'bamboo', key: 'bamboo' },
+        { label: 'Flooring', value: 'flooring', key: 'flooring' },
+      ],
+      [
+        { label: 'Light', value: 'light', option: 2333 },
+        { value: 'bamboo', label: 'Bamboo', option: 444 },
+        { value: 'flooring', label: 'Flooring', option: 5505 },
       ],
     );
   });

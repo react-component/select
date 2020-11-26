@@ -34,14 +34,10 @@ import { OptionsType as SelectOptionsType } from './interface';
 import SelectOptionList from './OptionList';
 import Option from './Option';
 import OptGroup from './OptGroup';
-import { convertChildrenToData as convertSelectChildrenToData } from './utils/legacyUtil';
+import { convertChildrenToData } from './utils/legacyUtil';
 import {
-  getLabeledValue as getSelectLabeledValue,
-  filterOptions as selectDefaultFilterOptions,
-  isValueDisabled as isSelectValueDisabled,
-  findValueOption as findSelectValueOption,
+  filterOptions,
   flattenOptions,
-  fillOptionsWithMissingValue,
 } from './utils/valueUtil';
 import generateSelector, { SelectProps, RefSelectProps } from './generate';
 import { DefaultValueType } from './interface/generator';
@@ -52,14 +48,10 @@ const RefSelect = generateSelector<SelectOptionsType>({
   components: {
     optionList: SelectOptionList,
   },
-  convertChildrenToData: convertSelectChildrenToData,
+  convertChildrenToData,
   flattenOptions,
-  getLabeledValue: getSelectLabeledValue,
-  filterOptions: selectDefaultFilterOptions,
-  isValueDisabled: isSelectValueDisabled,
-  findValueOption: findSelectValueOption,
+  filterOptions,
   warningProps,
-  fillOptionsWithMissingValue,
 });
 
 export type ExportedSelectProps<

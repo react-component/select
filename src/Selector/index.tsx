@@ -14,8 +14,9 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import MultipleSelector from './MultipleSelector';
 import SingleSelector from './SingleSelector';
 import { LabelValueType, RawValueType, CustomTagProps } from '../interface/generator';
-import { RenderNode, Mode } from '../interface';
+import { RenderNode, Mode, FlattenOptionData } from '../interface';
 import useLock from '../hooks/useLock';
+import { handleClickAction } from '../utils/miscUtil';
 
 export interface InnerSelectorProps {
   prefixCls: string;
@@ -27,7 +28,7 @@ export interface InnerSelectorProps {
   disabled?: boolean;
   autoFocus?: boolean;
   autoComplete?: string;
-  values: LabelValueType[];
+  displayValues: LabelValueType[];
   showSearch?: boolean;
   searchValue: string;
   accessibilityIndex: number;
@@ -52,8 +53,7 @@ export interface SelectorProps {
   prefixCls: string;
   showSearch?: boolean;
   open: boolean;
-  /** Display in the Selector value, it's not same as `value` prop */
-  values: LabelValueType[];
+  searchValueIsSelectedLabel: boolean;
   multiple: boolean;
   mode: Mode;
   searchValue: string;
@@ -79,12 +79,15 @@ export interface SelectorProps {
   // Motion
   choiceTransitionName?: string;
 
-  onToggleOpen: (open?: boolean) => void;
+  displayValues: FlattenOptionData[];
+  requestSetIsDropdownVisible: (open?: boolean) => void;
   /** `onSearch` returns go next step boolean to check if need do toggle open */
   onSearch: (searchText: string, fromTyping: boolean, isCompositing: boolean) => boolean;
   onSearchSubmit: (searchText: string) => void;
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onEscapeSearchInput: () => void;
+  onFocus: () => void;
 
   /**
    * @private get real dom for trigger align.
@@ -104,11 +107,15 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     mode,
     showSearch,
     tokenWithEnter,
+    searchValueIsSelectedLabel,
+
+    requestSetIsDropdownVisible,
 
     onSearch,
     onSearchSubmit,
-    onToggleOpen,
     onInputKeyDown,
+    onEscapeSearchInput,
+    onFocus,
 
     domRef,
   } = props;
@@ -129,8 +136,12 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   const onInternalInputKeyDown: React.KeyboardEventHandler<HTMLInputElement> = event => {
     const { which } = event;
 
-    if (which === KeyCode.UP || which === KeyCode.DOWN) {
+    if ([KeyCode.UP, KeyCode.DOWN, KeyCode.ESC].includes(which)) {
       event.preventDefault();
+    }
+
+    if (which === KeyCode.ESC && onEscapeSearchInput) {
+      onEscapeSearchInput();
     }
 
     if (onInputKeyDown) {
@@ -144,7 +155,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     }
 
     if (![KeyCode.SHIFT, KeyCode.TAB, KeyCode.BACKSPACE, KeyCode.ESC].includes(which)) {
-      onToggleOpen(true);
+      requestSetIsDropdownVisible(true);
     }
   };
 
@@ -158,12 +169,6 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
 
   // When paste come, ignore next onChange
   const pastedTextRef = useRef<string>(null);
-
-  const triggerOnSearch = (value: string) => {
-    if (onSearch(value, true, compositionStatusRef.current) !== false) {
-      onToggleOpen(true);
-    }
-  };
 
   const onInputCompositionStart = () => {
     compositionStatusRef.current = true;
@@ -187,7 +192,9 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
 
     pastedTextRef.current = null;
 
-    triggerOnSearch(value);
+    if (onSearch(value, true, compositionStatusRef.current) !== false) {
+      requestSetIsDropdownVisible(true);
+    }
   };
 
   const onInputPaste: React.ClipboardEventHandler = e => {
@@ -200,14 +207,12 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   const onClick = ({ target }) => {
     if (target !== inputRef.current) {
       // Should focus input if click the selector
-      const isIE = (document.body.style as any).msTouchAction !== undefined;
-      if (isIE) {
-        setTimeout(() => {
-          inputRef.current.focus();
-        });
-      } else {
-        inputRef.current.focus();
-      }
+      handleClickAction(
+        () => inputRef.current.focus(),
+        {
+          isIE: (document.body.style as any).msTouchAction !== undefined,
+        },
+      );
     }
   };
 
@@ -221,7 +226,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
       if (open) {
         onSearch('', true, false);
       }
-      onToggleOpen();
+      requestSetIsDropdownVisible(!open);
     }
   };
 
@@ -239,7 +244,11 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   const selectNode = multiple ? (
     <MultipleSelector {...props} {...sharedProps} />
   ) : (
-    <SingleSelector {...props} {...sharedProps} />
+    <SingleSelector
+      {...props}
+      {...sharedProps}
+      searchValueIsSelectedLabel={searchValueIsSelectedLabel}
+    />
   );
 
   return (
@@ -248,6 +257,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
       className={`${prefixCls}-selector`}
       onClick={onClick}
       onMouseDown={onMouseDown}
+      onFocus={onFocus}
     >
       {selectNode}
     </div>

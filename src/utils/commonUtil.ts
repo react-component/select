@@ -1,10 +1,4 @@
-import {
-  RawValueType,
-  GetLabeledValue,
-  LabelValueType,
-  DefaultValueType,
-  FlattenOptionsType,
-} from '../interface/generator';
+import { RawValueType } from '../interface/generator';
 
 export function toArray<T>(value: T | T[]): T[] {
   if (Array.isArray(value)) {
@@ -13,62 +7,26 @@ export function toArray<T>(value: T | T[]): T[] {
   return value !== undefined ? [value] : [];
 }
 
-/**
- * Convert outer props value into internal value
- */
-export function toInnerValue(
-  value: DefaultValueType,
-  { labelInValue, combobox }: { labelInValue: boolean; combobox: boolean },
-): RawValueType[] {
-  if (value === undefined || (value === '' && combobox)) {
-    return [];
-  }
+/* eslint-disable no-shadow */
 
-  const values = Array.isArray(value) ? value : [value];
+export const toMap = (
+  data,
+  getKey = data => data.value,
+  getValue = data => data,
+) => {
+  const map = new Map();
+  data.forEach(dataItem => {
+    map.set(getKey(dataItem), getValue(dataItem));
+  });
+  return map;
+};
 
-  if (labelInValue) {
-    return (values as LabelValueType[]).map(
-      ({ key, value: val }: LabelValueType) => (val !== undefined ? val : key),
-    );
-  }
+export const toMapByValue = (
+  data,
+  getValue = data => data,
+) => toMap(data, data => data.value, getValue);
 
-  return values as RawValueType[];
-}
-
-/**
- * Convert internal value into out event value
- */
-export function toOuterValues<FOT extends FlattenOptionsType>(
-  valueList: RawValueType[],
-  {
-    optionLabelProp,
-    labelInValue,
-    prevValue,
-    options,
-    getLabeledValue,
-  }: {
-    optionLabelProp: string;
-    labelInValue: boolean;
-    getLabeledValue: GetLabeledValue<FOT>;
-    options: FOT;
-    prevValue: DefaultValueType;
-  },
-): RawValueType[] | LabelValueType[] {
-  let values: DefaultValueType = valueList;
-
-  if (labelInValue) {
-    values = values.map(val =>
-      getLabeledValue(val, {
-        options,
-        prevValue,
-        labelInValue,
-        optionLabelProp,
-      }),
-    );
-  }
-
-  return values;
-}
+/* eslint-enable no-shadow */
 
 export function removeLastEnabledValue<
   T extends { disabled?: boolean },
@@ -77,11 +35,7 @@ export function removeLastEnabledValue<
   const newValues = [...values];
 
   let removeIndex: number;
-  for (
-    removeIndex = measureValues.length - 1;
-    removeIndex >= 0;
-    removeIndex -= 1
-  ) {
+  for (removeIndex = measureValues.length - 1; removeIndex >= 0; removeIndex -= 1) {
     if (!measureValues[removeIndex].disabled) {
       break;
     }
@@ -101,9 +55,7 @@ export function removeLastEnabledValue<
 }
 
 export const isClient =
-  typeof window !== 'undefined' &&
-  window.document &&
-  window.document.documentElement;
+  typeof window !== 'undefined' && window.document && window.document.documentElement;
 
 /** Is client side and not jsdom */
 export const isBrowserClient = process.env.NODE_ENV !== 'test' && isClient;
