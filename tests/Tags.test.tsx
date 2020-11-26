@@ -60,7 +60,7 @@ describe('Select.Tags', () => {
 
     jest.runAllTimers();
     expect(findSelection(wrapper).text()).toBe('foo');
-    expect(onChange).toHaveBeenCalledWith(['foo'], [{}]);
+    expect(onChange).toHaveBeenCalledWith(['foo'], expect.anything());
   });
 
   it('tokenize input', () => {

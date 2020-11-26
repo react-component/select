@@ -428,6 +428,23 @@ describe('Select.Multiple', () => {
         { value: 'bamboo', label: 'Bamboo', option: 444 },
       ],
     );
+
+    // Third select
+    wrapper.setProps({ options: [{ value: 'flooring', label: 'Flooring', option: 5505 }] });
+    toggleOpen(wrapper);
+    selectItem(wrapper, 0);
+    expect(onChange).toHaveBeenCalledWith(
+      [
+        { label: 'Light', value: 'light', key: 'light' },
+        { label: 'Bamboo', value: 'bamboo', key: 'bamboo' },
+        { label: 'Flooring', value: 'flooring', key: 'flooring' },
+      ],
+      [
+        { label: 'Light', value: 'light', option: 2333 },
+        { value: 'bamboo', label: 'Bamboo', option: 444 },
+        { value: 'flooring', label: 'Flooring', option: 5505 },
+      ],
+    );
   });
 
   it('focus should enable showSearch input', () => {

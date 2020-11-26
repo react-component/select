@@ -1,5 +1,6 @@
 import * as React from 'react';
 import pickAttrs from 'rc-util/lib/pickAttrs';
+import classNames from 'classnames';
 import Input from './Input';
 import { InnerSelectorProps } from '.';
 
@@ -7,6 +8,7 @@ interface SelectorProps extends InnerSelectorProps {
   inputElement: React.ReactElement;
   activeValue: string;
   backfill?: boolean;
+  searchValueSelectsCurrentSelection: boolean;
 }
 
 const SingleSelector: React.FC<SelectorProps> = props => {
@@ -35,6 +37,8 @@ const SingleSelector: React.FC<SelectorProps> = props => {
     onInputPaste,
     onInputCompositionStart,
     onInputCompositionEnd,
+
+    searchValueSelectsCurrentSelection,
   } = props;
 
   const [inputChanged, setInputChanged] = React.useState(false);
@@ -62,9 +66,15 @@ const SingleSelector: React.FC<SelectorProps> = props => {
       ? item.label.toString()
       : undefined;
 
+  const showSelectedOptionLabel = !combobox && item && !hasTextInput;
+  const showPlaceholder = !item && !hasTextInput;
+  const className = classNames(`${prefixCls}-selection-search`, {
+    [`${prefixCls}-selection-search-selects-option`]: searchValueSelectsCurrentSelection,
+  });
+
   return (
     <>
-      <span className={`${prefixCls}-selection-search`}>
+      <span className={className}>
         <Input
           ref={inputRef}
           prefixCls={prefixCls}
@@ -91,15 +101,15 @@ const SingleSelector: React.FC<SelectorProps> = props => {
         />
       </span>
 
-      {/* Display value */}
-      {!combobox && item && !hasTextInput && (
+      {/* Show the selected option's label */}
+      {showSelectedOptionLabel && (
         <span className={`${prefixCls}-selection-item`} title={title}>
           {item.label}
         </span>
       )}
 
       {/* Display placeholder */}
-      {!item && !hasTextInput && (
+      {showPlaceholder && (
         <span className={`${prefixCls}-selection-placeholder`}>{placeholder}</span>
       )}
     </>

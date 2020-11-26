@@ -32,7 +32,7 @@ export interface OptionListProps<OptionsType extends object[]> {
   virtual: boolean;
 
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
-  onToggleOpen: (open?: boolean) => void;
+  requestSetIsDropdownVisible: (open?: boolean) => void;
   /** Tell Select that some value is now active to make accessibility work */
   onActiveValue: OnActiveValue;
   onScroll: React.UIEventHandler<HTMLDivElement>;
@@ -71,7 +71,7 @@ const OptionList: React.RefForwardingComponent<
     menuItemSelectedIcon,
     virtual,
     onSelect,
-    onToggleOpen,
+    requestSetIsDropdownVisible,
     onActiveValue,
     onScroll,
     onMouseEnter,
@@ -83,7 +83,8 @@ const OptionList: React.RefForwardingComponent<
   const memoFlattenOptions = useMemo(
     () => flattenOptions,
     [open, flattenOptions],
-    (prev, next) => next[0] && prev[1] !== next[1],
+    ([, prevFlattenOptions], [nextOpen, nextFlattenOptions]) =>
+      nextOpen && prevFlattenOptions !== nextFlattenOptions,
   );
 
   // =========================== List ===========================
@@ -170,7 +171,7 @@ const OptionList: React.RefForwardingComponent<
 
     // Single mode should always close by select
     if (!multiple) {
-      onToggleOpen(false);
+      requestSetIsDropdownVisible(false);
     }
   };
 
@@ -182,18 +183,10 @@ const OptionList: React.RefForwardingComponent<
         // >>> Arrow keys
         case KeyCode.UP:
         case KeyCode.DOWN: {
-          let offset = 0;
-          if (which === KeyCode.UP) {
-            offset = -1;
-          } else if (which === KeyCode.DOWN) {
-            offset = 1;
-          }
-
-          if (offset !== 0) {
-            const nextActiveIndex = getEnabledActiveIndex(activeIndex + offset, offset);
-            scrollIntoView(nextActiveIndex);
-            setActive(nextActiveIndex, true);
-          }
+          const offset = which === KeyCode.UP ? -1 : 1;
+          const nextActiveIndex = getEnabledActiveIndex(activeIndex + offset, offset);
+          scrollIntoView(nextActiveIndex);
+          setActive(nextActiveIndex, true);
 
           break;
         }
@@ -217,7 +210,7 @@ const OptionList: React.RefForwardingComponent<
 
         // >>> Close
         case KeyCode.ESC: {
-          onToggleOpen(false);
+          requestSetIsDropdownVisible(false);
         }
       }
     },
@@ -250,7 +243,7 @@ const OptionList: React.RefForwardingComponent<
     const { value, label, children } = itemData;
     const attrs = pickAttrs(itemData, true);
     const mergedLabel = childrenAsData ? children : label;
-    return item ? (
+    return (
       <div
         aria-label={typeof mergedLabel === 'string' ? mergedLabel : null}
         {...attrs}
@@ -261,7 +254,7 @@ const OptionList: React.RefForwardingComponent<
       >
         {value}
       </div>
-    ) : null;
+    );
   }
 
   return (

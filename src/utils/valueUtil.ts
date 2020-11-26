@@ -10,7 +10,6 @@ import {
   FilterFunc,
   RawValueType,
   GetLabeledValue,
-  DefaultValueType,
 } from '../interface/generator';
 
 import { toArray } from './commonUtil';
@@ -129,13 +128,11 @@ export const getLabeledValue: GetLabeledValue<FlattenOptionData[]> = (
   let prevValItem: LabelValueType;
   const prevValues = toArray<RawValueType | LabelValueType>(prevValue);
   if (labelInValue) {
-    prevValItem = prevValues.find((prevItem: LabelValueType) => {
-      if (typeof prevItem === 'object' && 'value' in prevItem) {
-        return prevItem.value === value;
-      }
-      // [Legacy] Support `key` as `value`
-      return prevItem.key === value;
-    }) as LabelValueType;
+    prevValItem = prevValues.find((prevItem: LabelValueType) => (
+      typeof prevItem === 'object' &&
+        'value' in prevItem &&
+        prevItem.value === value),
+    ) as LabelValueType
   }
 
   if (prevValItem && typeof prevValItem === 'object' && 'label' in prevValItem) {
@@ -261,51 +258,4 @@ export function getSeparatedContent(text: string, tokens: string[]): string[] {
 export function isValueDisabled(value: RawValueType, options: FlattenOptionData[]): boolean {
   const option = findValueOption([value], options)[0];
   return option.disabled;
-}
-
-/**
- * `tags` mode should fill un-list item into the option list
- */
-export function fillOptionsWithMissingValue(
-  options: SelectOptionsType,
-  value: DefaultValueType,
-  optionLabelProp: string,
-  labelInValue: boolean,
-): SelectOptionsType {
-  const values = toArray<RawValueType | LabelValueType>(value)
-    .slice()
-    .sort();
-  const cloneOptions = [...options];
-
-  // Convert options value to set
-  const optionValues = new Set<RawValueType>();
-  options.forEach(opt => {
-    if (opt.options) {
-      opt.options.forEach((subOpt: OptionData) => {
-        optionValues.add(subOpt.value);
-      });
-    } else {
-      optionValues.add((opt as OptionData).value);
-    }
-  });
-
-  // Fill missing value
-  values.forEach(item => {
-    const val: RawValueType = labelInValue
-      ? (item as LabelValueType).value
-      : (item as RawValueType);
-
-    if (!optionValues.has(val)) {
-      cloneOptions.push(
-        labelInValue
-          ? {
-              [optionLabelProp]: (item as LabelValueType).label,
-              value: val,
-            }
-          : { value: val },
-      );
-    }
-  });
-
-  return cloneOptions;
 }

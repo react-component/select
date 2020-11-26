@@ -234,4 +234,20 @@ describe('OptionList', () => {
         .prop('title'),
     ).toBe(undefined);
   });
+
+  it('should set active index correctly when a value is selected', () => {
+    const wrapper = mount(
+      generateList({
+        options: [{ value: '1' }, { value: '2' }],
+        multiple: false,
+        open: true,
+        values: new Set(['1']),
+      }),
+    );
+
+    jest.runAllTimers();
+
+    expect(wrapper.find('.rc-select-item-option').first().hasClass('rc-select-item-option-active')).toBeTruthy();
+    expect(wrapper.find('.rc-select-item-option').last().hasClass('rc-select-item-option-active')).toBeFalsy();
+  });
 });
