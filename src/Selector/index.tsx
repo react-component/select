@@ -33,6 +33,7 @@ export interface InnerSelectorProps {
   accessibilityIndex: number;
   open: boolean;
   tabIndex?: number;
+  maxLength?: number;
 
   onInputKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onInputMouseDown: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;

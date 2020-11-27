@@ -13,6 +13,7 @@ interface InputProps {
   editable: boolean;
   accessibilityIndex: number;
   value: string;
+  maxLength?: number;
   open: boolean;
   tabIndex: number;
   /** Pass accessibility props to input */
@@ -42,6 +43,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     editable,
     accessibilityIndex,
     value,
+    maxLength,
     onKeyDown,
     onMouseDown,
     onChange,
@@ -86,6 +88,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     'aria-activedescendant': `${id}_list_${accessibilityIndex}`,
     ...attrs,
     value: editable ? value : '',
+    maxLength,
     readOnly: !editable,
     unselectable: !editable ? 'on' : null,
     onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
