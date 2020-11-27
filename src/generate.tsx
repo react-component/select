@@ -74,6 +74,8 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   value?: ValueType;
   defaultValue?: ValueType;
   labelInValue?: boolean;
+  /** Config max length of input. This is only work when `mode` is `combobox` */
+  maxLength?: number;
 
   // Search
   inputValue?: string;
@@ -188,7 +190,7 @@ export interface GenerateConfig<OptionsType extends object[]> {
   /** Convert single raw value into { label, value } format. Will be called by each value */
   getLabeledValue: GetLabeledValue<FlattenOptionsType<OptionsType>>;
   filterOptions: FilterOptions<OptionsType>;
-  findValueOption:// Need still support legacy ts api
+  findValueOption: // Need still support legacy ts api
     | ((values: RawValueType[], options: FlattenOptionsType<OptionsType>) => OptionsType)
     // New API add prevValueOptions support
     | ((

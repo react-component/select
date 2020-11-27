@@ -89,8 +89,9 @@ class Combobox extends React.Component {
             onInputKeyDown={this.onKeyDown}
             notFoundContent=""
             allowClear
-            placeholder="please select"
+            placeholder="please input, max len: 10"
             value={value}
+            maxLength={10}
             mode="combobox"
             backfill
             onFocus={() => console.log('focus')}
@@ -112,11 +113,7 @@ class Combobox extends React.Component {
             mode="combobox"
             style={{ width: 200 }}
             getInputElement={() => (
-              <textarea
-                style={{ background: 'red' }}
-                rows={3}
-                ref={this.textareaRef}
-              />
+              <textarea style={{ background: 'red' }} rows={3} ref={this.textareaRef} />
             )}
             options={[{ value: 'light' }, { value: 'bamboo' }]}
             allowClear
