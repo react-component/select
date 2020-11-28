@@ -447,4 +447,16 @@ describe('Select.Combobox', () => {
 
     expect(wrapper.find('input').props().value).toBe('');
   });
+
+  describe('maxLength', () => {
+    it('should support', () => {
+      const wrapper = mount(<Select maxLength={6} />);
+      expect(wrapper.find('input').props().maxLength).toBeFalsy();
+    });
+
+    it('normal should not support', () => {
+      const wrapper = mount(<Select mode="combobox" maxLength={6} />);
+      expect(wrapper.find('input').props().maxLength).toBe(6);
+    });
+  });
 });
