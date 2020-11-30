@@ -89,7 +89,7 @@ const SingleSelector: React.FC<SelectorProps> = props => {
           onCompositionEnd={onInputCompositionEnd}
           tabIndex={tabIndex}
           attrs={pickAttrs(props, true)}
-          maxLength={combobox && maxLength}
+          maxLength={combobox ? maxLength : undefined}
         />
       </span>
 
