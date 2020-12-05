@@ -52,6 +52,7 @@ const DEFAULT_OMIT_PROPS = [
   'maxTagPlaceholder',
   'choiceTransitionName',
   'onInputKeyDown',
+  'tabIndex',
 ];
 
 export interface RefSelectProps {
