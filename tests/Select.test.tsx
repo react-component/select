@@ -1650,4 +1650,21 @@ describe('Select.Basic', () => {
         .text(),
     ).toBe('Communicated');
   });
+
+  it('correctly handles the `tabIndex` prop', () => {
+    const wrapper = mount(<Select tabIndex={0} />);
+    expect(
+      wrapper
+        .find('.rc-select')
+        .getDOMNode()
+        .getAttribute('tabindex'),
+    ).toBeNull();
+
+    expect(
+      wrapper
+        .find('input.rc-select-selection-search-input')
+        .getDOMNode()
+        .getAttribute('tabindex'),
+    ).toBe('0');
+  });
 });

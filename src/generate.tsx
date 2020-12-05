@@ -280,6 +280,7 @@ export default function generateSelector<
       notFoundContent = 'Not Found',
       optionLabelProp,
       backfill,
+      tabIndex,
       getInputElement,
       getPopupContainer,
 
