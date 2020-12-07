@@ -75,6 +75,10 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
            
         </span>
       </span>
+      <span
+        class="rc-select-selection-placeholder"
+        style="display: none;"
+      />
     </div>
     <div>
       <div
@@ -240,6 +244,7 @@ exports[`Select.Tags render not display maxTagPlaceholder if maxTagCount not rea
     </span>
     <span
       class="rc-select-selection-placeholder"
+      style="display: block;"
     />
   </div>
 </div>
@@ -329,6 +334,10 @@ exports[`Select.Tags render truncates tags by maxTagCount and show maxTagPlaceho
          
       </span>
     </span>
+    <span
+      class="rc-select-selection-placeholder"
+      style="display: none;"
+    />
   </div>
 </div>
 `;
@@ -417,6 +426,10 @@ exports[`Select.Tags render truncates tags by maxTagCount and show maxTagPlaceho
          
       </span>
     </span>
+    <span
+      class="rc-select-selection-placeholder"
+      style="display: none;"
+    />
   </div>
 </div>
 `;
@@ -494,6 +507,10 @@ exports[`Select.Tags render truncates values by maxTagTextLength 1`] = `
          
       </span>
     </span>
+    <span
+      class="rc-select-selection-placeholder"
+      style="display: none;"
+    />
   </div>
 </div>
 `;

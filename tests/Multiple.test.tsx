@@ -375,9 +375,13 @@ describe('Select.Multiple', () => {
 
   it('show placeholder when searchValue is controlled', () => {
     const wrapper = mount(<Select mode="multiple" searchValue="light" placeholder="bamboo" />);
-    expect(wrapper.find('.rc-select-selection-placeholder').length).toBeTruthy();
+    expect(wrapper.find('.rc-select-selection-placeholder').props().style).toEqual({
+      display: 'block',
+    });
     toggleOpen(wrapper);
-    expect(wrapper.find('.rc-select-selection-placeholder').length).toBeFalsy();
+    expect(wrapper.find('.rc-select-selection-placeholder').props().style).toEqual({
+      display: 'none',
+    });
   });
 
   it('clear input when popup closed', () => {
