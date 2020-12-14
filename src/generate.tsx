@@ -129,7 +129,7 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   getInputElement?: () => JSX.Element;
   optionLabelProp?: string;
   maxTagTextLength?: number;
-  maxTagCount?: number;
+  maxTagCount?: number | 'responsive';
   maxTagPlaceholder?: React.ReactNode | ((omittedValues: LabelValueType[]) => React.ReactNode);
   tokenSeparators?: string[];
   tagRender?: (props: CustomTagProps) => React.ReactElement;
@@ -192,7 +192,7 @@ export interface GenerateConfig<OptionsType extends object[]> {
   getLabeledValue: GetLabeledValue<FlattenOptionsType<OptionsType>>;
   filterOptions: FilterOptions<OptionsType>;
   findValueOption: // Need still support legacy ts api
-    | ((values: RawValueType[], options: FlattenOptionsType<OptionsType>) => OptionsType)
+  | ((values: RawValueType[], options: FlattenOptionsType<OptionsType>) => OptionsType)
     // New API add prevValueOptions support
     | ((
         values: RawValueType[],
@@ -714,7 +714,9 @@ export default function generateSelector<
     // If menu is open, OptionList will take charge
     // If mode isn't tags, press enter is not meaningful when you can't see any option
     const onSearchSubmit = (searchText: string) => {
-      const newRawValues = Array.from(new Set<RawValueType>([...mergedRawValue, searchText]));
+      const newRawValues = Array.from(
+        new Set<RawValueType>([...mergedRawValue, searchText]),
+      );
       triggerChange(newRawValues);
       newRawValues.forEach(newRawValue => {
         triggerSelect(newRawValue, true, 'input');

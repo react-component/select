@@ -14,10 +14,20 @@ for (let i = 10; i < 36; i += 1) {
 
 const Test: React.FC = () => {
   const [disabled, setDisabled] = React.useState(false);
-  const [value, setValue] = React.useState<string[]>(['name2', 'name3']);
-  const [maxTagCount, setMaxTagCount] = React.useState<number>(null);
+  const [value, setValue] = React.useState<string[]>([
+    'name1',
+    'name2',
+    'name3',
+    'name4',
+    'name5',
+    'a10',
+    'b11',
+    'c12',
+    'd13',
+  ]);
+  const [maxTagCount, setMaxTagCount] = React.useState<number | 'responsive'>('responsive');
 
-  const toggleMaxTagCount = (count: number) => {
+  const toggleMaxTagCount = (count: number | 'responsive') => {
     setMaxTagCount(count);
   };
 
@@ -29,7 +39,7 @@ const Test: React.FC = () => {
         <Select
           placeholder="placeholder"
           mode="tags"
-          style={{ width: 500 }}
+          style={{ width: 400 }}
           disabled={disabled}
           maxTagCount={maxTagCount}
           maxTagTextLength={10}
@@ -68,6 +78,9 @@ const Test: React.FC = () => {
         </button>
         <button type="button" onClick={() => toggleMaxTagCount(null)}>
           toggle maxTagCount (null)
+        </button>
+        <button type="button" onClick={() => toggleMaxTagCount('responsive')}>
+          toggle maxTagCount (responsive)
         </button>
       </p>
       <h2>tags select with open = false</h2>

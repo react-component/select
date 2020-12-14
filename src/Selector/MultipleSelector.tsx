@@ -2,9 +2,15 @@ import * as React from 'react';
 import { useState } from 'react';
 import classNames from 'classnames';
 import pickAttrs from 'rc-util/lib/pickAttrs';
+import Overflow from 'rc-overflow';
 import { CSSMotionList } from 'rc-motion';
 import TransBtn from '../TransBtn';
-import { LabelValueType, RawValueType, CustomTagProps } from '../interface/generator';
+import {
+  LabelValueType,
+  DisplayLabelValueType,
+  RawValueType,
+  CustomTagProps,
+} from '../interface/generator';
 import { RenderNode } from '../interface';
 import { InnerSelectorProps } from '.';
 import Input from './Input';
@@ -17,7 +23,7 @@ interface SelectorProps extends InnerSelectorProps {
   removeIcon?: RenderNode;
 
   // Tags
-  maxTagCount?: number;
+  maxTagCount?: number | 'responsive';
   maxTagTextLength?: number;
   maxTagPlaceholder?: React.ReactNode | ((omittedValues: LabelValueType[]) => React.ReactNode);
   tokenSeparators?: string[];
@@ -70,6 +76,8 @@ const SelectSelector: React.FC<SelectorProps> = props => {
   const [inputWidth, setInputWidth] = useState(0);
   const [focused, setFocused] = useState(false);
 
+  const selectionPrefixCls = `${prefixCls}-selection`;
+
   // ===================== Motion ======================
   React.useEffect(() => {
     setMotionAppear(true);
@@ -120,12 +128,12 @@ const SelectSelector: React.FC<SelectorProps> = props => {
       key: REST_TAG_KEY,
       label:
         typeof maxTagPlaceholder === 'function'
-          ? maxTagPlaceholder(values.slice(maxTagCount))
+          ? maxTagPlaceholder(values.slice(maxTagCount as any))
           : maxTagPlaceholder,
     });
   }
 
-  const selectionNode = (
+  const selectionNode1 = (
     <CSSMotionList
       component={false}
       keys={displayValues as Required<LabelValueType>[]}
@@ -157,15 +165,15 @@ const SelectSelector: React.FC<SelectorProps> = props => {
         ) : (
           <span
             key={mergedKey}
-            className={classNames(className, `${prefixCls}-selection-item`, {
-              [`${prefixCls}-selection-item-disabled`]: itemDisabled,
+            className={classNames(className, `${selectionPrefixCls}-item`, {
+              [`${selectionPrefixCls}-item-disabled`]: itemDisabled,
             })}
             style={style}
           >
-            <span className={`${prefixCls}-selection-item-content`}>{label}</span>
+            <span className={`${selectionPrefixCls}-item-content`}>{label}</span>
             {closable && (
               <TransBtn
-                className={`${prefixCls}-selection-item-remove`}
+                className={`${selectionPrefixCls}-item-remove`}
                 onMouseDown={onMouseDown}
                 onClick={onClose}
                 customizeIcon={removeIcon}
@@ -179,50 +187,124 @@ const SelectSelector: React.FC<SelectorProps> = props => {
     </CSSMotionList>
   );
 
+  function renderSelectorNode(childNode: React.ReactNode, itemDisabled?: boolean) {
+    if (typeof tagRender === 'function') {
+      // TODO: handle this
+    }
+
+    return (
+      <span
+        className={classNames(`${selectionPrefixCls}-item`, {
+          [`${selectionPrefixCls}-item-disabled`]: itemDisabled,
+        })}
+      >
+        {childNode}
+      </span>
+    );
+  }
+
+  function renderItem(item: DisplayLabelValueType) {
+    const { label, value, disabled: itemDisabled } = item;
+    const closable = !disabled && !itemDisabled;
+
+    const onMouseDown = (event: React.MouseEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+    };
+    const onClose = (event?: React.MouseEvent) => {
+      if (event) event.stopPropagation();
+      onSelect(value, { selected: false });
+    };
+
+    return renderSelectorNode(
+      <>
+        <span className={`${selectionPrefixCls}-item-content`}>{label}</span>
+        {closable && (
+          <TransBtn
+            className={`${selectionPrefixCls}-item-remove`}
+            onMouseDown={onMouseDown}
+            onClick={onClose}
+            customizeIcon={removeIcon}
+          >
+            ×
+          </TransBtn>
+        )}
+      </>,
+      itemDisabled,
+    );
+  }
+
+  function renderRest(omittedValues: DisplayLabelValueType[]) {
+    return renderSelectorNode(
+      typeof maxTagPlaceholder === 'function'
+        ? maxTagPlaceholder(omittedValues)
+        : maxTagPlaceholder,
+    );
+  }
+
+  // ===================== Render ======================
+  console.log('>>>', inputWidth);
+
+  // >>> Input Node
+  const inputNode = (
+    <div
+      className={`${selectionPrefixCls}-search`}
+      style={{ width: inputWidth }}
+      onFocus={() => {
+        setFocused(true);
+      }}
+      onBlur={() => {
+        setFocused(false);
+      }}
+    >
+      <Input
+        ref={inputRef}
+        open={open}
+        prefixCls={prefixCls}
+        id={id}
+        inputElement={null}
+        disabled={disabled}
+        autoFocus={autoFocus}
+        autoComplete={autoComplete}
+        editable={inputEditable}
+        accessibilityIndex={accessibilityIndex}
+        value={inputValue}
+        onKeyDown={onInputKeyDown}
+        onMouseDown={onInputMouseDown}
+        onChange={onInputChange}
+        onPaste={onInputPaste}
+        onCompositionStart={onInputCompositionStart}
+        onCompositionEnd={onInputCompositionEnd}
+        tabIndex={tabIndex}
+        attrs={pickAttrs(props, true)}
+      />
+
+      {/* Measure Node */}
+      <span ref={measureRef} className={`${selectionPrefixCls}-search-mirror`} aria-hidden>
+        {inputValue}&nbsp;
+      </span>
+    </div>
+  );
+
+  // >>> Selections
+  const selectionNode = (
+    <Overflow
+      prefixCls={`${selectionPrefixCls}-overflow`}
+      data={values}
+      renderItem={renderItem}
+      renderRest={renderRest}
+      suffix={inputNode}
+      itemKey="key"
+      maxCount={maxTagCount}
+    />
+  );
+
   return (
     <>
       {selectionNode}
 
-      <span
-        className={`${prefixCls}-selection-search`}
-        style={{ width: inputWidth }}
-        onFocus={() => {
-          setFocused(true);
-        }}
-        onBlur={() => {
-          setFocused(false);
-        }}
-      >
-        <Input
-          ref={inputRef}
-          open={open}
-          prefixCls={prefixCls}
-          id={id}
-          inputElement={null}
-          disabled={disabled}
-          autoFocus={autoFocus}
-          autoComplete={autoComplete}
-          editable={inputEditable}
-          accessibilityIndex={accessibilityIndex}
-          value={inputValue}
-          onKeyDown={onInputKeyDown}
-          onMouseDown={onInputMouseDown}
-          onChange={onInputChange}
-          onPaste={onInputPaste}
-          onCompositionStart={onInputCompositionStart}
-          onCompositionEnd={onInputCompositionEnd}
-          tabIndex={tabIndex}
-          attrs={pickAttrs(props, true)}
-        />
-
-        {/* Measure Node */}
-        <span ref={measureRef} className={`${prefixCls}-selection-search-mirror`} aria-hidden>
-          {inputValue}&nbsp;
-        </span>
-      </span>
-
       {!values.length && !inputValue && (
-        <span className={`${prefixCls}-selection-placeholder`}>{placeholder}</span>
+        <span className={`${selectionPrefixCls}-placeholder`}>{placeholder}</span>
       )}
     </>
   );
