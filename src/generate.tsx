@@ -129,7 +129,7 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   getInputElement?: () => JSX.Element;
   optionLabelProp?: string;
   maxTagTextLength?: number;
-  maxTagCount?: number;
+  maxTagCount?: number | 'responsive';
   maxTagPlaceholder?: React.ReactNode | ((omittedValues: LabelValueType[]) => React.ReactNode);
   tokenSeparators?: string[];
   tagRender?: (props: CustomTagProps) => React.ReactElement;

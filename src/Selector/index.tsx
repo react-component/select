@@ -69,7 +69,7 @@ export interface SelectorProps {
   removeIcon?: RenderNode;
 
   // Tags
-  maxTagCount?: number;
+  maxTagCount?: number | 'responsive';
   maxTagTextLength?: number;
   maxTagPlaceholder?: React.ReactNode | ((omittedValues: LabelValueType[]) => React.ReactNode);
   tagRender?: (props: CustomTagProps) => React.ReactElement;
