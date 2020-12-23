@@ -13,6 +13,7 @@ export interface LabelValueType {
   key?: Key;
   value?: RawValueType;
   label?: React.ReactNode;
+  isCacheable?: Boolean;
 }
 export type DefaultValueType = RawValueType | RawValueType[] | LabelValueType | LabelValueType[];
 

@@ -1612,6 +1612,9 @@ describe('Select.Basic', () => {
 
     wrapper.setProps({ options: [] });
     expect(findSelection(wrapper).text()).toEqual('Bamboo');
+
+    wrapper.setProps({ options: [{ value: 903, label: 903 }] });
+    expect(findSelection(wrapper).text()).toEqual('903');
   });
 
   // https://github.com/ant-design/ant-design/issues/24747

@@ -153,6 +153,7 @@ export const getLabeledValue: GetLabeledValue<FlattenOptionData[]> = (
     result.label = item[optionLabelProp];
   } else {
     result.label = value;
+    result.isCacheable = true;
   }
 
   // Used for motion control
