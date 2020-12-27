@@ -26,6 +26,7 @@ interface SelectorProps extends InnerSelectorProps {
   maxTagPlaceholder?: React.ReactNode | ((omittedValues: LabelValueType[]) => React.ReactNode);
   tokenSeparators?: string[];
   tagRender?: (props: CustomTagProps) => React.ReactElement;
+  onToggleOpen: (open?: boolean) => void;
 
   // Motion
   choiceTransitionName?: string;
@@ -62,6 +63,7 @@ const SelectSelector: React.FC<SelectorProps> = props => {
     maxTagTextLength,
     maxTagPlaceholder = (omittedValues: LabelValueType[]) => `+ ${omittedValues.length} ...`,
     tagRender,
+    onToggleOpen,
 
     onSelect,
     onInputChange,
@@ -123,8 +125,13 @@ const SelectSelector: React.FC<SelectorProps> = props => {
     closable: boolean,
     onClose: React.MouseEventHandler,
   ) {
+    const onMouseDown = (e: React.MouseEvent) => {
+      onPreventMouseDown(e);
+      onToggleOpen(true);
+    };
+
     return (
-      <span onMouseDown={onPreventMouseDown}>
+      <span onMouseDown={onMouseDown}>
         {tagRender({
           label: content,
           value,

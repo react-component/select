@@ -285,7 +285,9 @@ describe('Select.Tags', () => {
       const wrapper = mount(<Select mode="tags" tokenSeparators={[',']} tagRender={tagRender} />);
 
       wrapper.find('input').simulate('change', { target: { value: '1,A,42' } });
+      wrapper.find('span.A').simulate('mousedown');
 
+      expectOpen(wrapper, true);
       expect(wrapper.find('span.A').length).toBe(1);
       expect(wrapper.find('span.A').text()).toBe('AA');
       expect(onTagRender).toHaveBeenCalled();
