@@ -247,7 +247,7 @@ describe('Select.Multiple', () => {
     toggleOpen(wrapper);
     expectOpen(wrapper, false);
     removeSelection(wrapper);
-    expectOpen(wrapper, true);
+    expectOpen(wrapper, false);
     expect(wrapper.find('Selector').props().values).toEqual([
       expect.objectContaining({ value: 2 }),
     ]);
