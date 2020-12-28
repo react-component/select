@@ -12,6 +12,7 @@ import { useState, useRef, useEffect, useMemo } from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
+import { ScrollTo } from 'rc-virtual-list/lib/List';
 import Selector, { RefSelectorProps } from './Selector';
 import SelectTrigger, { RefTriggerProps } from './SelectTrigger';
 import { RenderNode, Mode, RenderDOMFunc, OnActiveValue } from './interface';
@@ -58,6 +59,7 @@ const DEFAULT_OMIT_PROPS = [
 export interface RefSelectProps {
   focus: () => void;
   blur: () => void;
+  scrollTo?: ScrollTo,
 }
 
 export interface SelectProps<OptionsType extends object[], ValueType> extends React.AriaAttributes {
@@ -369,6 +371,7 @@ export default function generateSelector<
     React.useImperativeHandle(ref, () => ({
       focus: selectorRef.current.focus,
       blur: selectorRef.current.blur,
+      scrollTo: listRef.current?.scrollTo,
     }));
 
     // ============================= Value ==============================

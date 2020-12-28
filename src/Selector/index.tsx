@@ -11,6 +11,7 @@
 import * as React from 'react';
 import { useRef } from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
+import { ScrollTo } from 'rc-virtual-list/lib/List';
 import MultipleSelector from './MultipleSelector';
 import SingleSelector from './SingleSelector';
 import { LabelValueType, RawValueType, CustomTagProps } from '../interface/generator';
@@ -46,6 +47,7 @@ export interface InnerSelectorProps {
 export interface RefSelectorProps {
   focus: () => void;
   blur: () => void;
+  scrollTo?: ScrollTo,
 }
 
 export interface SelectorProps {
