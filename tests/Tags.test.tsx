@@ -86,7 +86,7 @@ describe('Select.Tags', () => {
     expectOpen(wrapper, false);
   });
 
-  it("shounld't separate words when compositing", () => {
+  it('should not separate words when compositing but trigger after composition end', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
     const wrapper = mount(
@@ -96,13 +96,16 @@ describe('Select.Tags', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('compositionstart');
+    // composition start
+    wrapper.find('input').simulate('compositionStart');
     wrapper.find('input').simulate('change', { target: { value: '2,3,4' } });
     expect(handleChange).not.toHaveBeenCalled();
     handleChange.mockReset();
-    wrapper.find('input').simulate('compositionend');
-    wrapper.find('input').simulate('change', { target: { value: '2,3,4' } });
+
+    // composition end
+    wrapper.find('input').simulate('compositionEnd');
     expect(handleChange).toHaveBeenCalledWith(['2', '3', '4'], expect.anything());
+
     expect(handleSelect).toHaveBeenCalledTimes(3);
     expect(handleSelect).toHaveBeenLastCalledWith('4', expect.anything());
     expect(findSelection(wrapper).text()).toEqual('2');
