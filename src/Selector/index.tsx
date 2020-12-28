@@ -47,7 +47,7 @@ export interface InnerSelectorProps {
 export interface RefSelectorProps {
   focus: () => void;
   blur: () => void;
-  scrollTo?: ScrollTo,
+  scrollTo?: ScrollTo;
 }
 
 export interface SelectorProps {
@@ -172,8 +172,9 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     compositionStatusRef.current = true;
   };
 
-  const onInputCompositionEnd = () => {
+  const onInputCompositionEnd: React.CompositionEventHandler<HTMLInputElement> = e => {
     compositionStatusRef.current = false;
+    triggerOnSearch((e.target as HTMLInputElement).value);
   };
 
   const onInputChange: React.ChangeEventHandler<HTMLInputElement> = event => {
