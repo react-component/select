@@ -19,20 +19,26 @@ export function toArray<T>(value: T | T[]): T[] {
 export function toInnerValue(
   value: DefaultValueType,
   { labelInValue, combobox }: { labelInValue: boolean; combobox: boolean },
-): RawValueType[] {
+): [RawValueType[], Map<RawValueType, LabelValueType>] {
+  const valueMap = new Map<RawValueType, LabelValueType>();
+
   if (value === undefined || (value === '' && combobox)) {
-    return [];
+    return [[], valueMap];
   }
 
   const values = Array.isArray(value) ? value : [value];
+  let rawValues = values as RawValueType[];
 
   if (labelInValue) {
-    return (values as LabelValueType[]).map(
-      ({ key, value: val }: LabelValueType) => (val !== undefined ? val : key),
-    );
+    rawValues = (values as LabelValueType[]).map((itemValue: LabelValueType) => {
+      const { key, value: val } = itemValue;
+      const finalVal = val !== undefined ? val : key;
+      valueMap.set(finalVal, itemValue);
+      return finalVal;
+    });
   }
 
-  return values as RawValueType[];
+  return [rawValues, valueMap];
 }
 
 /**
@@ -43,7 +49,7 @@ export function toOuterValues<FOT extends FlattenOptionsType>(
   {
     optionLabelProp,
     labelInValue,
-    prevValue,
+    prevValueMap,
     options,
     getLabeledValue,
   }: {
@@ -51,7 +57,7 @@ export function toOuterValues<FOT extends FlattenOptionsType>(
     labelInValue: boolean;
     getLabeledValue: GetLabeledValue<FOT>;
     options: FOT;
-    prevValue: DefaultValueType;
+    prevValueMap: Map<RawValueType, LabelValueType>;
   },
 ): RawValueType[] | LabelValueType[] {
   let values: DefaultValueType = valueList;
@@ -60,7 +66,7 @@ export function toOuterValues<FOT extends FlattenOptionsType>(
     values = values.map(val =>
       getLabeledValue(val, {
         options,
-        prevValue,
+        prevValueMap,
         labelInValue,
         optionLabelProp,
       }),
@@ -77,11 +83,7 @@ export function removeLastEnabledValue<
   const newValues = [...values];
 
   let removeIndex: number;
-  for (
-    removeIndex = measureValues.length - 1;
-    removeIndex >= 0;
-    removeIndex -= 1
-  ) {
+  for (removeIndex = measureValues.length - 1; removeIndex >= 0; removeIndex -= 1) {
     if (!measureValues[removeIndex].disabled) {
       break;
     }
@@ -101,9 +103,7 @@ export function removeLastEnabledValue<
 }
 
 export const isClient =
-  typeof window !== 'undefined' &&
-  window.document &&
-  window.document.documentElement;
+  typeof window !== 'undefined' && window.document && window.document.documentElement;
 
 /** Is client side and not jsdom */
 export const isBrowserClient = process.env.NODE_ENV !== 'test' && isClient;

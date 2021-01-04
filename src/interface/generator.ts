@@ -38,7 +38,7 @@ export type GetLabeledValue<FOT extends FlattenOptionsType> = (
   value: RawValueType,
   config: {
     options: FOT;
-    prevValue: DefaultValueType;
+    prevValueMap: Map<RawValueType, LabelValueType>;
     labelInValue: boolean;
     optionLabelProp: string;
   },

@@ -8,7 +8,7 @@ export default function useCacheOptions<
     key?: Key;
     disabled?: boolean;
   }[]
->(values: RawValueType[], options: FlattenOptionsType<OptionsType>) {
+>(options: FlattenOptionsType<OptionsType>) {
   const prevOptionMapRef = React.useRef<Map<RawValueType, FlattenOptionsType<OptionsType>[number]>>(
     null,
   );
@@ -22,7 +22,7 @@ export default function useCacheOptions<
       map.set(value, item);
     });
     return map;
-  }, [values, options]);
+  }, [options]);
 
   prevOptionMapRef.current = optionMap;
 
