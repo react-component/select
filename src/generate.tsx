@@ -371,7 +371,7 @@ export default function generateSelector<
     React.useImperativeHandle(ref, () => ({
       focus: selectorRef.current.focus,
       blur: selectorRef.current.blur,
-      scrollTo: listRef.current?.scrollTo,
+      scrollTo: listRef.current?.scrollTo as ScrollTo,
     }));
 
     // ============================= Value ==============================
@@ -380,7 +380,9 @@ export default function generateSelector<
     });
 
     /** Unique raw values */
-    const mergedRawValue = useMemo<RawValueType[]>(
+    const [mergedRawValue, mergedValueMap] = useMemo<
+      [RawValueType[], Map<RawValueType, LabelValueType>]
+    >(
       () =>
         toInnerValue(mergedValue, {
           labelInValue: mergedLabelInValue,
@@ -431,7 +433,7 @@ export default function generateSelector<
       [mergedOptions],
     );
 
-    const getValueOption = useCacheOptions(mergedRawValue, mergedFlattenOptions);
+    const getValueOption = useCacheOptions(mergedFlattenOptions);
 
     // Display options for OptionList
     const displayOptions = useMemo<OptionsType>(() => {
@@ -476,7 +478,7 @@ export default function generateSelector<
         const valueOptions = getValueOption([val]);
         const displayValue = getLabeledValue(val, {
           options: valueOptions,
-          prevValue: mergedValue,
+          prevValueMap: mergedValueMap,
           labelInValue: mergedLabelInValue,
           optionLabelProp: mergedOptionLabelProp,
         });
@@ -511,7 +513,7 @@ export default function generateSelector<
         const selectValue = (mergedLabelInValue
           ? getLabeledValue(newValue, {
               options: newValueOption,
-              prevValue: mergedValue,
+              prevValueMap: mergedValueMap,
               labelInValue: mergedLabelInValue,
               optionLabelProp: mergedOptionLabelProp,
             })
@@ -546,7 +548,7 @@ export default function generateSelector<
         labelInValue: mergedLabelInValue,
         options: newRawValuesOptions,
         getLabeledValue,
-        prevValue: mergedValue,
+        prevValueMap: mergedValueMap,
         optionLabelProp: mergedOptionLabelProp,
       });
 
