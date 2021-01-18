@@ -666,7 +666,12 @@ describe('Select.Basic', () => {
   });
 
   it('close on ESC', () => {
-    const wrapper = mount(<Select />);
+    const onKeyDown = jest.fn();
+    const wrapper = mount(
+      <div onKeyDown={onKeyDown}>
+        <Select />
+      </div>,
+    );
     toggleOpen(wrapper);
     wrapper
       .find('input')
@@ -677,6 +682,7 @@ describe('Select.Basic', () => {
 
     expect(wrapper.find('input').props().value).toBe('');
     expectOpen(wrapper, false);
+    expect(onKeyDown).not.toHaveBeenCalled();
   });
 
   it('close after select', () => {
