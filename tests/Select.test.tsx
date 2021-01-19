@@ -682,7 +682,12 @@ describe('Select.Basic', () => {
 
     expect(wrapper.find('input').props().value).toBe('');
     expectOpen(wrapper, false);
-    expect(onKeyDown).not.toHaveBeenCalled();
+    expect(onKeyDown).toHaveBeenCalledTimes(0);
+
+    // should keep propagation when optionList is closed
+    wrapper.simulate('keyDown', { which: KeyCode.ESC });
+    wrapper.update();
+    expect(onKeyDown).toHaveBeenCalledTimes(1);
   });
 
   it('close after select', () => {
