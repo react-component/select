@@ -218,6 +218,9 @@ const OptionList: React.RefForwardingComponent<
         // >>> Close
         case KeyCode.ESC: {
           onToggleOpen(false);
+          if (open) {
+            event.stopPropagation();
+          }
         }
       }
     },

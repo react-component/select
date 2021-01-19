@@ -666,7 +666,12 @@ describe('Select.Basic', () => {
   });
 
   it('close on ESC', () => {
-    const wrapper = mount(<Select />);
+    const onKeyDown = jest.fn();
+    const wrapper = mount(
+      <div onKeyDown={onKeyDown}>
+        <Select />
+      </div>,
+    );
     toggleOpen(wrapper);
     wrapper
       .find('input')
@@ -677,6 +682,12 @@ describe('Select.Basic', () => {
 
     expect(wrapper.find('input').props().value).toBe('');
     expectOpen(wrapper, false);
+    expect(onKeyDown).toHaveBeenCalledTimes(0);
+
+    // should keep propagation when optionList is closed
+    wrapper.simulate('keyDown', { which: KeyCode.ESC });
+    wrapper.update();
+    expect(onKeyDown).toHaveBeenCalledTimes(1);
   });
 
   it('close after select', () => {
