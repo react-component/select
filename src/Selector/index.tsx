@@ -185,7 +185,10 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     // Pasted text should replace back to origin content
     if (tokenWithEnter && pastedTextRef.current && /[\r\n]/.test(pastedTextRef.current)) {
       // CRLF will be treated as a single space for input element
-      const replacedText = pastedTextRef.current.replace(/\r\n/g, ' ').replace(/[\r\n]/g, ' ');
+      const replacedText = pastedTextRef.current
+        .replace(/[\r\n]+$/, '')
+        .replace(/\r\n/g, ' ')
+        .replace(/[\r\n]/g, ' ');
       value = value.replace(replacedText, pastedTextRef.current);
     }
 
