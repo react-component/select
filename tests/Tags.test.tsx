@@ -154,7 +154,7 @@ describe('Select.Tags', () => {
     {
       tokenSeparators: ['\r\n'],
       clipboardText: '\r\nlight\r\nbamboo\r\n',
-      inputValue: ' light bamboo ',
+      inputValue: ' light bamboo',
     },
     {
       tokenSeparators: [' ', '\r\n'],
@@ -164,7 +164,7 @@ describe('Select.Tags', () => {
     {
       tokenSeparators: ['\n'],
       clipboardText: '\nlight\nbamboo\n',
-      inputValue: ' light bamboo ',
+      inputValue: ' light bamboo',
     },
   ].forEach(({ tokenSeparators, clipboardText, inputValue }) => {
     it(`paste content to split (${JSON.stringify(tokenSeparators)})`, () => {
