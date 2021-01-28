@@ -22,7 +22,11 @@ export function toInnerValue(
 ): [RawValueType[], Map<RawValueType, LabelValueType>] {
   const valueMap = new Map<RawValueType, LabelValueType>();
 
-  if (value === undefined || (value === '' && combobox)) {
+  if (
+    value === null ||
+    value === undefined ||
+    (value === '' && combobox)
+  ) {
     return [[], valueMap];
   }
 
