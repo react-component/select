@@ -23,7 +23,6 @@ export function toInnerValue(
   const valueMap = new Map<RawValueType, LabelValueType>();
 
   if (
-    value === null ||
     value === undefined ||
     (value === '' && combobox)
   ) {
@@ -34,12 +33,14 @@ export function toInnerValue(
   let rawValues = values as RawValueType[];
 
   if (labelInValue) {
-    rawValues = (values as LabelValueType[]).map((itemValue: LabelValueType) => {
-      const { key, value: val } = itemValue;
-      const finalVal = val !== undefined ? val : key;
-      valueMap.set(finalVal, itemValue);
-      return finalVal;
-    });
+    rawValues = (values as LabelValueType[])
+      .filter(item => !!item)
+      .map((itemValue: LabelValueType) => {
+        const { key, value: val } = itemValue;
+        const finalVal = val !== undefined ? val : key;
+        valueMap.set(finalVal, itemValue);
+        return finalVal;
+      });
   }
 
   return [rawValues, valueMap];
