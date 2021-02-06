@@ -14,12 +14,15 @@ export default function useSelectTriggerControl(
 
   React.useEffect(() => {
     function onGlobalMouseDown(event: MouseEvent) {
-      const target = event.target as HTMLElement;
+      let target = event.target as HTMLElement;
+
+      if (target.shadowRoot && event.composed) {
+        target = (event.composedPath()[0] || target) as HTMLElement;
+      }
+
       if (
         propsRef.current.open &&
-        propsRef.current.elements.every(
-          element => !element.contains(target) && element !== target,
-        )
+        propsRef.current.elements.every(element => !element.contains(target) && element !== target)
       ) {
         // Should trigger close
         propsRef.current.triggerOpen(false);
