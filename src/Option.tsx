@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 import * as React from 'react';
 import { OptionCoreData } from './interface';
-import { Key } from './interface/generator';
+import { Key, RawValueType } from './interface/generator';
 
 export interface OptionProps<TValue extends RawValueType = RawValueType, TKey extends Key = Key>
   extends Omit<OptionCoreData<TValue, TKey>, 'label'> {

@@ -44,7 +44,7 @@ import {
   fillOptionsWithMissingValue,
 } from './utils/valueUtil';
 import generateSelector, { SelectProps, RefSelectProps } from './generate';
-import { DefaultValueType, Key, RawValueType } from './interface/generator';
+import { DefaultValueType, Key } from './interface/generator';
 import warningProps from './utils/warningPropsUtil';
 
 const RefSelect = generateSelector<SelectOptionsType>({
