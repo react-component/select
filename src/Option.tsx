@@ -3,25 +3,25 @@ import * as React from 'react';
 import { OptionCoreData } from './interface';
 import { Key } from './interface/generator';
 
-export interface OptionProps<TKey extends Key = Key, TValue = any>
-  extends Omit<OptionCoreData<TKey, TValue>, 'label'> {
+export interface OptionProps<TValue extends RawValueType = RawValueType, TKey extends Key = Key>
+  extends Omit<OptionCoreData<TValue, TKey>, 'label'> {
   children: React.ReactNode;
 
   /** Save for customize data */
   [prop: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
-export interface OptionFC<TKey extends Key = Key, TValue = any>
-  extends React.FC<OptionProps<TKey, TValue>> {
+export interface OptionFC<TValue extends RawValueType = RawValueType, TKey extends Key = Key>
+  extends React.FC<OptionProps<TValue, TKey>> {
   /** Legacy for check if is a Option Group */
   isSelectOption: boolean;
 }
 
 /** This is a placeholder, not real render in dom */
-const Option = <TKey extends Key = Key, TValue = any>(
+const Option = <TValue extends RawValueType = RawValueType, TKey extends Key = Key>(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  props: Parameters<OptionFC<TKey, TValue>>[0],
-): ReturnType<OptionFC<TKey, TValue>> => null;
+  props: Parameters<OptionFC<TValue, TKey>>[0],
+): ReturnType<OptionFC<TValue, TKey>> => null;
 Option.isSelectOption = true;
 
 export default Option;
