@@ -291,61 +291,6 @@ exports[`Select.Basic render renders aria-attributes correctly 1`] = `
 </div>
 `;
 
-exports[`Select.Basic render renders correctly 1`] = `
-<div
-  class="antd select-test antd-single antd-allow-clear antd-show-arrow antd-show-search"
->
-  <div
-    class="antd-selector"
-  >
-    <span
-      class="antd-selection-search"
-    >
-      <input
-        aria-activedescendant="undefined_list_0"
-        aria-autocomplete="list"
-        aria-controls="undefined_list"
-        aria-haspopup="listbox"
-        aria-owns="undefined_list"
-        autocomplete="off"
-        class="antd-selection-search-input"
-        role="combobox"
-        type="search"
-        value=""
-      />
-    </span>
-    <span
-      class="antd-selection-item"
-      title="2"
-    >
-      2
-    </span>
-  </div>
-  <span
-    aria-hidden="true"
-    class="antd-arrow"
-    style="user-select:none;-webkit-user-select:none"
-    unselectable="on"
-  >
-    <span
-      class="antd-arrow-icon"
-    />
-  </span>
-  <span
-    aria-hidden="true"
-    class="antd-clear"
-    style="user-select:none;-webkit-user-select:none"
-    unselectable="on"
-  >
-    <span
-      class="antd-clear-icon"
-    >
-      ×
-    </span>
-  </span>
-</div>
-`;
-
 exports[`Select.Basic render renders data-attributes correctly 1`] = `
 <div
   class="antd select-test antd-single antd-allow-clear antd-show-arrow antd-show-search"
