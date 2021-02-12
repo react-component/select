@@ -14,11 +14,12 @@ export type OnActiveValue = (
   info?: { source?: 'keyboard' | 'mouse' },
 ) => void;
 
-export interface OptionCoreData {
-  key?: Key;
+export interface OptionCoreData<TKey extends Key = Key, TValue = any> {
+  key?: TKey;
   disabled?: boolean;
-  value: Key;
+  value: TValue;
   title?: string;
+  options?: undefined;
   className?: string;
   style?: React.CSSProperties;
   label?: React.ReactNode;
@@ -26,15 +27,16 @@ export interface OptionCoreData {
   children?: React.ReactNode;
 }
 
-export interface OptionData extends OptionCoreData {
+export interface OptionData<TKey extends Key = Key, TValue = any>
+  extends OptionCoreData<TKey, TValue> {
   /** Save for customize data */
   [prop: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
-export interface OptionGroupData {
-  key?: Key;
+export interface OptionGroupData<TKey extends Key = Key, TValue = any> {
+  key?: TKey;
   label?: React.ReactNode;
-  options: OptionData[];
+  options: Array<OptionData<TKey, TValue>>;
   className?: string;
   style?: React.CSSProperties;
 
@@ -42,11 +44,13 @@ export interface OptionGroupData {
   [prop: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
-export type OptionsType = (OptionData | OptionGroupData)[];
+export type OptionsType<TKey extends Key = Key, TValue = any> = Array<
+  OptionData<TKey, TValue> | OptionGroupData<TKey, TValue>
+>;
 
-export interface FlattenOptionData {
+export interface FlattenOptionData<TKey extends Key = Key, TValue = any> {
   group?: boolean;
   groupOption?: boolean;
   key: string | number;
-  data: OptionData | OptionGroupData;
+  data: OptionData<TKey, TValue> | OptionGroupData<TKey, TValue>;
 }

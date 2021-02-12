@@ -44,7 +44,7 @@ import {
   fillOptionsWithMissingValue,
 } from './utils/valueUtil';
 import generateSelector, { SelectProps, RefSelectProps } from './generate';
-import { DefaultValueType } from './interface/generator';
+import { DefaultValueType, Key } from './interface/generator';
 import warningProps from './utils/warningPropsUtil';
 
 const RefSelect = generateSelector<SelectOptionsType>({
@@ -70,7 +70,9 @@ export type ExportedSelectProps<
  * Typescript not support generic with function component,
  * we have to wrap an class component to handle this.
  */
-class Select<VT> extends React.Component<SelectProps<SelectOptionsType, VT>> {
+class Select<VT, TKeyForOptions extends Key = Key> extends React.Component<
+  SelectProps<SelectOptionsType<TKeyForOptions, VT>, VT>
+> {
   static Option: typeof Option = Option;
 
   static OptGroup: typeof OptGroup = OptGroup;
