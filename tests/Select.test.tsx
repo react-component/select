@@ -880,12 +880,13 @@ describe('Select.Basic', () => {
   });
 
   it('should include disabled item in options', () => {
+    type AllowedNames = 'name1' | 'name2';
     const wrapper = mount(
-      <Select mode="tags" open value={['name1']}>
-        <Option key="name1" value="name1" disabled>
+      <Select<AllowedNames[]> mode="tags" open value={['name1']}>
+        <Option<AllowedNames, AllowedNames> key="name1" value="name1" disabled>
           name1
         </Option>
-        <Option key="name2" value="name2">
+        <Option<AllowedNames, AllowedNames> key="name2" value="name2">
           name2
         </Option>
       </Select>,
