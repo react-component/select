@@ -329,7 +329,7 @@ describe('Select.Tags', () => {
   });
 
   describe('OptGroup', () => {
-    const createSelect = props => (
+    const createSelect = (props) => (
       <div>
         <Select mode="tags" {...props}>
           <OptGroup key="Manager" label="Manager">
@@ -407,18 +407,21 @@ describe('Select.Tags', () => {
 
   it('correctly handles the `tabIndex` prop', () => {
     const wrapper = mount(<Select mode="tags" tabIndex={0} />);
-    expect(
-      wrapper
-        .find('.rc-select')
-        .getDOMNode()
-        .getAttribute('tabindex'),
-    ).toBeNull();
+    expect(wrapper.find('.rc-select').getDOMNode().getAttribute('tabindex')).toBeNull();
 
     expect(
-      wrapper
-        .find('input.rc-select-selection-search-input')
-        .getDOMNode()
-        .getAttribute('tabindex'),
+      wrapper.find('input.rc-select-selection-search-input').getDOMNode().getAttribute('tabindex'),
     ).toBe('0');
+  });
+
+  it('press enter should not submit form', () => {
+    const wrapper = mount(<Select mode="tags" open={false} />);
+    const preventDefault = jest.fn();
+    wrapper.find('input').simulate('keyDown', {
+      which: KeyCode.ENTER,
+      preventDefault,
+    });
+
+    expect(preventDefault).toHaveBeenCalled();
   });
 });
