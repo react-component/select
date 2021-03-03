@@ -32,10 +32,9 @@ import type {
   SingleType,
   OnClear,
   SelectSource,
-  CustomTagProps} from './interface/generator';
-import {
-  INTERNAL_PROPS_MARK
+  CustomTagProps,
 } from './interface/generator';
+import { INTERNAL_PROPS_MARK } from './interface/generator';
 import type { OptionListProps, RefOptionListProps } from './OptionList';
 import { toInnerValue, toOuterValues, removeLastEnabledValue, getUUID } from './utils/commonUtil';
 import TransBtn from './TransBtn';
@@ -761,9 +760,16 @@ export default function generateSelector<
       const clearLock = getClearLock();
       const { which } = event;
 
-      // We only manage open state here, close logic should handle by list component
-      if (!mergedOpen && which === KeyCode.ENTER) {
-        onToggleOpen(true);
+      if (which === KeyCode.ENTER) {
+        // Do not submit form when type in the input
+        if (mode !== 'combobox') {
+          event.preventDefault();
+        }
+
+        // We only manage open state here, close logic should handle by list component
+        if (!mergedOpen) {
+          onToggleOpen(true);
+        }
       }
 
       setClearLock(!!mergedSearchValue);
