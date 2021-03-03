@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable no-console, max-classes-per-file */
 import React from 'react';
 import Select, { Option } from '../src';
 import '../assets/index.less';
@@ -22,7 +22,7 @@ const clearPath =
   ' 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h618c35.3 0 64-' +
   '28.7 64-64V306c0-35.3-28.7-64-64-64z';
 
-const menuItemSelectedIcon = props => {
+const menuItemSelectedIcon = (props) => {
   const { ...p } = props;
   return <span style={{ position: 'absolute', right: 0 }}>{p.isSelected ? '🌹' : '☑️'}</span>;
 };
@@ -33,7 +33,7 @@ const singleItemIcon = (
   </span>
 );
 
-const getSvg = path => (
+const getSvg = (path) => (
   <i>
     <svg
       viewBox="0 0 1024 1024"
@@ -60,7 +60,7 @@ class CustomIconComponent extends React.Component {
     });
   };
 
-  onKeyDown = e => {
+  onKeyDown = (e) => {
     const { value } = this.state;
     if (e.keyCode === 13) {
       console.log('onEnter', value);
@@ -158,7 +158,7 @@ class Test extends React.Component {
     console.log(args);
   };
 
-  useAnim = e => {
+  useAnim = (e) => {
     this.setState({
       useAnim: e.target.checked,
     });
