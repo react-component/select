@@ -11,11 +11,11 @@
 import * as React from 'react';
 import { useRef } from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
-import { ScrollTo } from 'rc-virtual-list/lib/List';
+import type { ScrollTo } from 'rc-virtual-list/lib/List';
 import MultipleSelector from './MultipleSelector';
 import SingleSelector from './SingleSelector';
-import { LabelValueType, RawValueType, CustomTagProps } from '../interface/generator';
-import { RenderNode, Mode } from '../interface';
+import type { LabelValueType, RawValueType, CustomTagProps } from '../interface/generator';
+import type { RenderNode, Mode } from '../interface';
 import useLock from '../hooks/useLock';
 
 export interface InnerSelectorProps {
@@ -129,7 +129,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   // ====================== Input ======================
   const [getInputMouseDown, setInputMouseDown] = useLock(0);
 
-  const onInternalInputKeyDown: React.KeyboardEventHandler<HTMLInputElement> = event => {
+  const onInternalInputKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
     const { which } = event;
 
     if (which === KeyCode.UP || which === KeyCode.DOWN) {
@@ -172,12 +172,16 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     compositionStatusRef.current = true;
   };
 
-  const onInputCompositionEnd: React.CompositionEventHandler<HTMLInputElement> = e => {
+  const onInputCompositionEnd: React.CompositionEventHandler<HTMLInputElement> = (e) => {
     compositionStatusRef.current = false;
-    triggerOnSearch((e.target as HTMLInputElement).value);
+
+    // Trigger search again to support `tokenSeparators` with typewriting
+    if (mode !== 'combobox') {
+      triggerOnSearch((e.target as HTMLInputElement).value);
+    }
   };
 
-  const onInputChange: React.ChangeEventHandler<HTMLInputElement> = event => {
+  const onInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     let {
       target: { value },
     } = event;
@@ -197,7 +201,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     triggerOnSearch(value);
   };
 
-  const onInputPaste: React.ClipboardEventHandler = e => {
+  const onInputPaste: React.ClipboardEventHandler = (e) => {
     const { clipboardData } = e;
     const value = clipboardData.getData('text');
 
@@ -218,7 +222,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     }
   };
 
-  const onMouseDown: React.MouseEventHandler<HTMLElement> = event => {
+  const onMouseDown: React.MouseEventHandler<HTMLElement> = (event) => {
     const inputMouseDown = getInputMouseDown();
     if (event.target !== inputRef.current && !inputMouseDown) {
       event.preventDefault();
