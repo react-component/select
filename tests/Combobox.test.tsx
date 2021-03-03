@@ -1,8 +1,11 @@
+/* eslint-disable max-classes-per-file */
+
 import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import React from 'react';
 import { resetWarned } from 'rc-util/lib/warning';
-import Select, { Option, SelectProps } from '../src';
+import type { SelectProps } from '../src';
+import Select, { Option } from '../src';
 import focusTest from './shared/focusTest';
 import keyDownTest from './shared/keyDownTest';
 import openControlledTest from './shared/openControlledTest';
@@ -11,7 +14,7 @@ import allowClearTest from './shared/allowClearTest';
 import throwOptionValue from './shared/throwOptionValue';
 
 async function delay(timeout = 0) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(resolve, timeout);
   });
 }
@@ -139,13 +142,16 @@ describe('Select.Combobox', () => {
         public handleChange = () => {
           setTimeout(() => {
             this.setState({
-              data: [{ key: '1', label: '1' }, { key: '2', label: '2' }],
+              data: [
+                { key: '1', label: '1' },
+                { key: '2', label: '2' },
+              ],
             });
           }, 500);
         };
 
         public render() {
-          const options = this.state.data.map(item => (
+          const options = this.state.data.map((item) => (
             <Option value={item.key}>{item.label}</Option>
           ));
           return (
@@ -174,19 +180,25 @@ describe('Select.Combobox', () => {
       jest.useFakeTimers();
       class AsyncCombobox extends React.Component {
         public state = {
-          data: [{ key: '1', label: '1' }, { key: '2', label: '2' }],
+          data: [
+            { key: '1', label: '1' },
+            { key: '2', label: '2' },
+          ],
         };
 
         public onSelect = () => {
           setTimeout(() => {
             this.setState({
-              data: [{ key: '3', label: '3' }, { key: '4', label: '4' }],
+              data: [
+                { key: '3', label: '3' },
+                { key: '4', label: '4' },
+              ],
             });
           }, 500);
         };
 
         public render() {
-          const options = this.state.data.map(item => (
+          const options = this.state.data.map((item) => (
             <Option value={item.key}>{item.label}</Option>
           ));
           return (
@@ -243,10 +255,7 @@ describe('Select.Combobox', () => {
         </Select>,
       );
 
-      wrapper
-        .find('.rc-select-item-option')
-        .first()
-        .simulate('mouseMove');
+      wrapper.find('.rc-select-item-option').first().simulate('mouseMove');
 
       expect(wrapper.find('input').props().value).toBeFalsy();
     });
@@ -341,7 +350,7 @@ describe('Select.Combobox', () => {
         options: [],
       };
 
-      public updateOptions = value => {
+      public updateOptions = (value) => {
         const options = [value, value + value, value + value + value];
         this.setState({
           options,
@@ -351,7 +360,7 @@ describe('Select.Combobox', () => {
       public render() {
         return (
           <Select mode="combobox" onChange={this.updateOptions}>
-            {this.state.options.map(opt => (
+            {this.state.options.map((opt) => (
               <Option value={opt}>{opt}</Option>
             ))}
           </Select>
@@ -458,5 +467,22 @@ describe('Select.Combobox', () => {
       const wrapper = mount(<Select mode="combobox" maxLength={6} />);
       expect(wrapper.find('input').props().maxLength).toBe(6);
     });
+  });
+
+  it('typewriting should not trigger onChange multiple times', () => {
+    const onChange = jest.fn();
+    const wrapper = mount(<Select mode="combobox" onChange={onChange} />);
+
+    wrapper.find('input').simulate('compositionStart', { target: { value: '' } });
+    wrapper.find('input').simulate('change', { target: { value: 'a' } });
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenLastCalledWith('a', expect.anything());
+
+    wrapper.find('input').simulate('change', { target: { value: '啊' } });
+    expect(onChange).toHaveBeenCalledTimes(2);
+    expect(onChange).toHaveBeenLastCalledWith('啊', expect.anything());
+
+    wrapper.find('input').simulate('compositionEnd', { target: { value: '啊' } });
+    expect(onChange).toHaveBeenCalledTimes(2);
   });
 });
