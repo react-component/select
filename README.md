@@ -4,13 +4,7 @@
 
 React Select
 
-[![NPM version][npm-image]][npm-url]
-[![npm download][download-image]][download-url]
-[![build status][github-actions-image]][github-actions-url]
-[![Test coverage][coveralls-image]][coveralls-url]
-[![Dependencies][david-image]](david-url)
-[![DevDependencies][david-dev-image]][david-dev-url]
-[![bundle size][bundlephobia-image]][bundlephobia-url]
+[![NPM version][npm-image]][npm-url] [![npm download][download-image]][download-url] [![build status][github-actions-image]][github-actions-url] [![Test coverage][coveralls-image]][coveralls-url] [![Dependencies][david-image]](david-url) [![DevDependencies][david-dev-image]][david-dev-url] [![bundle size][bundlephobia-image]][bundlephobia-url]
 
 [npm-image]: http://img.shields.io/npm/v/rc-select.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/rc-select
@@ -77,7 +71,7 @@ export default () => (
 | animation | dropdown animation name. only support slide-up now | String | '' |
 | transitionName | dropdown css animation name | String | '' |
 | choiceTransitionName | css animation name for selected items at multiple mode | String | '' |
-| dropdownMatchSelectWidth | whether dropdown's with is same with select | bool | true |
+| dropdownMatchSelectWidth | whether set the width of the dropdown to that of the select or a specific number | bool \| number | true |
 | dropdownClassName | additional className applied to dropdown | String | - |
 | dropdownStyle | additional style applied to dropdown | Object | {} |
 | dropdownAlign | additional align applied to dropdown | Object | {} |

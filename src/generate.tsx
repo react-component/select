@@ -42,6 +42,7 @@ import useLock from './hooks/useLock';
 import useDelayReset from './hooks/useDelayReset';
 import useLayoutEffect from './hooks/useLayoutEffect';
 import { getSeparatedContent } from './utils/valueUtil';
+import { throttleByAnimationFrame } from './utils/commonUtil';
 import useSelectTriggerControl from './hooks/useSelectTriggerControl';
 import useCacheDisplayValue from './hooks/useCacheDisplayValue';
 import useCacheOptions from './hooks/useCacheOptions';
@@ -916,14 +917,26 @@ export default function generateSelector<
       forceUpdate({});
     }
 
+    const onContainerWidthMayChange = React.useCallback(() => {
+      const newWidth = Math.ceil(containerRef.current.offsetWidth);
+      if (containerWidth !== newWidth) {
+        setContainerWidth(newWidth);
+      }
+    }, [containerWidth]);
+
     useLayoutEffect(() => {
       if (triggerOpen) {
-        const newWidth = Math.ceil(containerRef.current.offsetWidth);
-        if (containerWidth !== newWidth) {
-          setContainerWidth(newWidth);
-        }
+        onContainerWidthMayChange();
       }
-    }, [triggerOpen]);
+    }, [triggerOpen, onContainerWidthMayChange]);
+
+    useLayoutEffect(() => {
+      const onWidthChange = throttleByAnimationFrame(onContainerWidthMayChange);
+      window.addEventListener('resize', onWidthChange);
+      return () => {
+        window.removeEventListener('resize', onWidthChange);
+      };
+    }, [onContainerWidthMayChange]);
 
     const popupNode = (
       <OptionList

@@ -32,51 +32,37 @@ class Test extends React.Component {
           height: 'calc(100vh - 16px)',
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
           <div>
-            <Select
-              onChange={this.onChange}
-              dropdownMatchSelectWidth={500}
-              value={value}
-            >
-              <Option value="1">
-                Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack
-              </Option>
-              <Option value="2">
-                Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy
-              </Option>
+            <Select onChange={this.onChange} dropdownMatchSelectWidth={500} value={value}>
+              <Option value="1">Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack</Option>
+              <Option value="2">Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy</Option>
               <Option value="3">Jill</Option>
             </Select>
           </div>
           <div>
-            <Select
-              onChange={this.onChange}
-              dropdownMatchSelectWidth={500}
-              value={value}
-            >
-              <Option value="1">
-                Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack
-              </Option>
-              <Option value="2">
-                Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy
-              </Option>{' '}
+            <Select onChange={this.onChange} dropdownMatchSelectWidth={500} value={value}>
+              <Option value="1">Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack</Option>
+              <Option value="2">Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy</Option>{' '}
               <Option value="3">Jill</Option>
             </Select>
           </div>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
           <div>
-            <Select
-              onChange={this.onChange}
-              dropdownMatchSelectWidth={500}
-              value={value}
-            >
-              <Option value="1">
-                Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack
-              </Option>
-              <Option value="2">
-                Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy
-              </Option>
+            <Select onChange={this.onChange} dropdownMatchSelectWidth={500} value={value}>
+              <Option value="1">Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack</Option>
+              <Option value="2">Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy</Option>
               <Option value="3">Jill</Option>
             </Select>
           </div>
@@ -88,35 +74,27 @@ class Test extends React.Component {
           }}
         >
           <div>
-            <Select
-              onChange={this.onChange}
-              dropdownMatchSelectWidth={500}
-              value={value}
-            >
-              <Option value="1">
-                Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack
-              </Option>
-              <Option value="2">
-                Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy
-              </Option>
+            <Select onChange={this.onChange} dropdownMatchSelectWidth={500} value={value}>
+              <Option value="1">Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack</Option>
+              <Option value="2">Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy</Option>
               <Option value="3">Jill</Option>
             </Select>
           </div>
           <div>
-            <Select
-              onChange={this.onChange}
-              dropdownMatchSelectWidth={500}
-              value={value}
-            >
-              <Option value="1">
-                Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack
-              </Option>
-              <Option value="2">
-                Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy
-              </Option>
+            <Select onChange={this.onChange} dropdownMatchSelectWidth={500} value={value}>
+              <Option value="1">Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack</Option>
+              <Option value="2">Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy</Option>
               <Option value="3">Jill</Option>
             </Select>
           </div>
+        </div>
+
+        <div>
+          <Select onChange={this.onChange} style={{ width: '100%' }} value={value}>
+            <Option value="1">Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack</Option>
+            <Option value="2">Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy</Option>
+            <Option value="3">Jill</Option>
+          </Select>
         </div>
       </div>
     );
