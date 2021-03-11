@@ -722,6 +722,10 @@ export default function generateSelector<
     // If menu is open, OptionList will take charge
     // If mode isn't tags, press enter is not meaningful when you can't see any option
     const onSearchSubmit = (searchText: string) => {
+      // prevent empty tags from appearing when you click the Enter button
+      if (!searchText || !searchText.trim()) {
+        return;
+      }
       const newRawValues = Array.from(
         new Set<RawValueType>([...mergedRawValue, searchText]),
       );
