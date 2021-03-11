@@ -18,7 +18,7 @@ interface InputProps {
   open: boolean;
   tabIndex: number;
   /** Pass accessibility props to input */
-  attrs: object;
+  attrs: Record<string, unknown>;
 
   onKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
   onMouseDown: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
