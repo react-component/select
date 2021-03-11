@@ -5,7 +5,9 @@ import '../assets/index.less';
 
 import { fetch } from './common/tbFetchSuggest';
 
-const Input = React.forwardRef<HTMLInputElement>((props, ref) => <input ref={ref} {...props} />);
+const Input = React.forwardRef<HTMLInputElement, any>((props, ref) => (
+  <input ref={ref} {...props} />
+));
 
 class Test extends React.Component {
   state = {
@@ -13,7 +15,7 @@ class Test extends React.Component {
     value: '',
   };
 
-  onKeyDown = e => {
+  onKeyDown = (e) => {
     if (e.keyCode === 13) {
       const { value } = this.state;
       console.log('onEnter', value);
@@ -21,21 +23,21 @@ class Test extends React.Component {
     }
   };
 
-  onSelect = value => {
+  onSelect = (value) => {
     console.log('select ', value);
     this.jump(value);
   };
 
-  jump = v => {
+  jump = (v) => {
     console.log('jump ', v);
     // location.href = 'https://s.taobao.com/search?q=' + encodeURIComponent(v);
   };
 
-  fetchData = value => {
+  fetchData = (value) => {
     this.setState({
       value,
     });
-    fetch(value, data => {
+    fetch(value, (data) => {
       this.setState({
         data,
       });
@@ -44,7 +46,7 @@ class Test extends React.Component {
 
   render() {
     const { data, value } = this.state;
-    const options = data.map(d => <Option key={d.value}>{d.text}</Option>);
+    const options = data.map((d) => <Option key={d.value}>{d.text}</Option>);
     return (
       <div>
         <h2>suggest</h2>
@@ -56,7 +58,7 @@ class Test extends React.Component {
             value={value}
             placeholder="placeholder"
             defaultActiveFirstOption={false}
-            getInputElement={() => <Input />}
+            getInputElement={() => <Input className="custom-input" />}
             showArrow={false}
             notFoundContent=""
             onChange={this.fetchData}

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import classNames from 'classnames';
 import { composeRef } from 'rc-util/lib/ref';
 
 type InputRef = HTMLInputElement | HTMLTextAreaElement;
@@ -77,7 +78,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     autoComplete: autoComplete || 'off',
     type: 'search',
     autoFocus,
-    className: `${prefixCls}-selection-search-input`,
+    className: classNames(`${prefixCls}-selection-search-input`, inputNode?.props?.className),
     style: { ...style, opacity: editable ? null : 0 },
     role: 'combobox',
     'aria-expanded': open,

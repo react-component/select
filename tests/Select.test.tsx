@@ -4,7 +4,8 @@ import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { resetWarned } from 'rc-util/lib/warning';
 import { spyElementPrototype } from 'rc-util/lib/test/domHook';
-import Select, { OptGroup, Option, SelectProps } from '../src';
+import type { SelectProps } from '../src';
+import Select, { OptGroup, Option } from '../src';
 import focusTest from './shared/focusTest';
 import blurTest from './shared/blurTest';
 import keyDownTest from './shared/keyDownTest';
@@ -148,18 +149,12 @@ describe('Select.Basic', () => {
       </Select>,
     );
     expect(
-      wrapper1
-        .find('.rc-select-dropdown')
-        .first()
-        .hasClass('rc-select-dropdown-empty'),
+      wrapper1.find('.rc-select-dropdown').first().hasClass('rc-select-dropdown-empty'),
     ).toBeFalsy();
 
     const wrapper2 = mount(<Select open />);
     expect(
-      wrapper2
-        .find('.rc-select-dropdown')
-        .first()
-        .hasClass('rc-select-dropdown-empty'),
+      wrapper2.find('.rc-select-dropdown').first().hasClass('rc-select-dropdown-empty'),
     ).toBeTruthy();
   });
 
@@ -189,7 +184,7 @@ describe('Select.Basic', () => {
     expect(
       wrapper
         .find('.rc-select-item-option-selected div.rc-select-item-option-content')
-        .map(node => node.text()),
+        .map((node) => node.text()),
     ).toEqual(['1', '2']);
   });
 
@@ -250,12 +245,7 @@ describe('Select.Basic', () => {
         <Option value="2">Two</Option>
       </Select>,
     );
-    expect(
-      wrapper
-        .find('input')
-        .getDOMNode()
-        .getAttribute('readonly'),
-    ).toBeFalsy();
+    expect(wrapper.find('input').getDOMNode().getAttribute('readonly')).toBeFalsy();
   });
 
   it('filter options by "value" prop by default', () => {
@@ -657,7 +647,7 @@ describe('Select.Basic', () => {
     });
   });
 
-  [KeyCode.ENTER, KeyCode.DOWN].forEach(keyCode => {
+  [KeyCode.ENTER, KeyCode.DOWN].forEach((keyCode) => {
     it('open on key press', () => {
       const wrapper = mount(<Select />);
       wrapper.find('input').simulate('keyDown', { keyCode });
@@ -726,7 +716,7 @@ describe('Select.Basic', () => {
         open: true,
       };
 
-      public onDropdownVisibleChange = open => {
+      public onDropdownVisibleChange = (open) => {
         this.setState({ open });
       };
 
@@ -779,6 +769,7 @@ describe('Select.Basic', () => {
             onCompositionStart={onCompositionStart}
             onCompositionEnd={onCompositionEnd}
             ref={textareaRef}
+            className="custom-input"
           />
         )}
       >
@@ -800,6 +791,7 @@ describe('Select.Basic', () => {
 
     selectItem(wrapper);
     expect(wrapper.find('textarea').props().value).toEqual('1');
+    expect(wrapper.find('textarea').hasClass('custom-input')).toBe(true);
     expect(mouseDownPreventDefault).not.toHaveBeenCalled();
     expect(onKeyDown).toHaveBeenCalled();
     expect(onChange).toHaveBeenCalled();
@@ -907,7 +899,7 @@ describe('Select.Basic', () => {
   });
 
   it('warns on invalid children', () => {
-    const Foo = value => <div>foo{value}</div>;
+    const Foo = (value) => <div>foo{value}</div>;
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
     mount(
       <Select open>
@@ -1031,7 +1023,7 @@ describe('Select.Basic', () => {
     const wrapper = mount(
       <Select
         open
-        dropdownRender={menu => (
+        dropdownRender={(menu) => (
           <div>
             <div className="dropdown-custom-node">CUSTOM NODE</div>
             {menu}
@@ -1053,7 +1045,7 @@ describe('Select.Basic', () => {
     const wrapper = mount(
       <Select
         onMouseDown={onMouseDown}
-        dropdownRender={menu => (
+        dropdownRender={(menu) => (
           <div>
             <div id="dropdown-custom-node" onClick={onChildClick}>
               CUSTOM NODE
@@ -1202,12 +1194,7 @@ describe('Select.Basic', () => {
         />,
       );
       toggleOpen(wrapper);
-      expect(
-        wrapper
-          .find('.rc-select-dropdown')
-          .last()
-          .props().style.minWidth,
-      ).toBe(1000);
+      expect(wrapper.find('.rc-select-dropdown').last().props().style.minWidth).toBe(1000);
 
       // dropdownMatchSelectWidth is false means close virtual scroll
       expect(wrapper.find('.rc-select-item')).toHaveLength(options.length);
@@ -1504,7 +1491,7 @@ describe('Select.Basic', () => {
   });
 
   describe('reset value to undefined should reset display value', () => {
-    [undefined].forEach(value => {
+    [undefined].forEach((value) => {
       it(`to ${value}`, () => {
         const wrapper = mount(<Select value="light" />);
         expect(wrapper.find('.rc-select-selection-item').text()).toEqual('light');
@@ -1588,7 +1575,12 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    [[1, '1'], [null, 'No'], [0, '0'], ['', 'Empty']].forEach(([value, showValue], index) => {
+    [
+      [1, '1'],
+      [null, 'No'],
+      [0, '0'],
+      ['', 'Empty'],
+    ].forEach(([value, showValue], index) => {
       toggleOpen(wrapper);
       selectItem(wrapper, index);
       expect(onChange).toHaveBeenCalledWith(value, expect.anything());
@@ -1632,11 +1624,7 @@ describe('Select.Basic', () => {
   // This can not test function called with jest spy, coverage only
   it('mouse enter to refresh', () => {
     const wrapper = mount(<Select options={[{ value: 903, label: 'Bamboo' }]} open />);
-    wrapper
-      .find('List')
-      .find('div')
-      .first()
-      .simulate('mouseenter');
+    wrapper.find('List').find('div').first().simulate('mouseenter');
   });
 
   it('filterSort should work', () => {
@@ -1657,28 +1645,15 @@ describe('Select.Basic', () => {
     );
 
     wrapper.find('input').simulate('change', { target: { value: 'i' } });
-    expect(
-      wrapper
-        .find('.rc-select-item-option-content')
-        .first()
-        .text(),
-    ).toBe('Communicated');
+    expect(wrapper.find('.rc-select-item-option-content').first().text()).toBe('Communicated');
   });
 
   it('correctly handles the `tabIndex` prop', () => {
     const wrapper = mount(<Select tabIndex={0} />);
-    expect(
-      wrapper
-        .find('.rc-select')
-        .getDOMNode()
-        .getAttribute('tabindex'),
-    ).toBeNull();
+    expect(wrapper.find('.rc-select').getDOMNode().getAttribute('tabindex')).toBeNull();
 
     expect(
-      wrapper
-        .find('input.rc-select-selection-search-input')
-        .getDOMNode()
-        .getAttribute('tabindex'),
+      wrapper.find('input.rc-select-selection-search-input').getDOMNode().getAttribute('tabindex'),
     ).toBe('0');
   });
 });
