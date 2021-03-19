@@ -10,6 +10,7 @@
 import * as React from 'react';
 import { useState, useRef, useEffect, useMemo } from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
+import isMobile from 'rc-util/lib/isMobile';
 import classNames from 'classnames';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import type { ScrollTo } from 'rc-virtual-list/lib/List';
@@ -368,12 +369,19 @@ export default function generateSelector<
     const mergedShowSearch =
       showSearch !== undefined ? showSearch : isMultiple || mode === 'combobox';
 
+    // ======================== Mobile ========================
+    const [mobile, setMobile] = useState(false);
+    useEffect(() => {
+      // Only update on the client side
+      setMobile(isMobile());
+    }, []);
+
     // ============================== Ref ===============================
     const selectorDomRef = useRef<HTMLDivElement>(null);
 
     React.useImperativeHandle(ref, () => ({
-      focus: selectorRef.current.focus,
-      blur: selectorRef.current.blur,
+      focus: selectorRef.current?.focus,
+      blur: selectorRef.current?.blur,
       scrollTo: listRef.current?.scrollTo as ScrollTo,
     }));
 
@@ -885,8 +893,8 @@ export default function generateSelector<
 
           cancelSetMockFocused();
 
-          if (!popupElement.contains(document.activeElement)) {
-            selectorRef.current.focus();
+          if (!mobile && !popupElement.contains(document.activeElement)) {
+            selectorRef.current?.focus();
           }
         });
 
