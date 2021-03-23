@@ -4,15 +4,15 @@ import classNames from 'classnames';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import Overflow from 'rc-overflow';
 import TransBtn from '../TransBtn';
-import {
+import type {
   LabelValueType,
   DisplayLabelValueType,
   RawValueType,
   CustomTagProps,
   DefaultValueType,
 } from '../interface/generator';
-import { RenderNode } from '../interface';
-import { InnerSelectorProps } from '.';
+import type { RenderNode } from '../interface';
+import type { InnerSelectorProps } from '.';
 import Input from './Input';
 import useLayoutEffect from '../hooks/useLayoutEffect';
 
@@ -35,11 +35,7 @@ interface SelectorProps extends InnerSelectorProps {
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
 }
 
-const onPreventMouseDown = (event: React.MouseEvent) => {
-  event.preventDefault();
-  event.stopPropagation();
-};
-const SelectSelector: React.FC<SelectorProps> = props => {
+const SelectSelector: React.FC<SelectorProps> = (props) => {
   const {
     id,
     prefixCls,
@@ -107,7 +103,6 @@ const SelectSelector: React.FC<SelectorProps> = props => {
         {closable && (
           <TransBtn
             className={`${selectionPrefixCls}-item-remove`}
-            onMouseDown={onPreventMouseDown}
             onClick={onClose}
             customizeIcon={removeIcon}
           >
@@ -125,8 +120,7 @@ const SelectSelector: React.FC<SelectorProps> = props => {
     closable: boolean,
     onClose: React.MouseEventHandler,
   ) {
-    const onMouseDown = (e: React.MouseEvent) => {
-      onPreventMouseDown(e);
+    const onMouseDown = () => {
       onToggleOpen(true);
     };
 

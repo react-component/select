@@ -15,10 +15,7 @@ export function toggleOpen(wrapper: any) {
 }
 
 export function selectItem(wrapper: any, index: number = 0) {
-  wrapper
-    .find('div.rc-select-item-option-content')
-    .at(index)
-    .simulate('click');
+  wrapper.find('div.rc-select-item-option-content').at(index).simulate('click');
 }
 
 export function findSelection(wrapper: any, index: number = 0) {
@@ -33,17 +30,13 @@ export function findSelection(wrapper: any, index: number = 0) {
 }
 
 export function removeSelection(wrapper: any, index: number = 0) {
-  const preventDefault = jest.fn();
-
   wrapper
     .find('.rc-select-selection-item')
     .at(index)
     .find('.rc-select-selection-item-remove')
     .last()
-    .simulate('mousedown', { preventDefault })
-    .simulate('click');
-
-  expect(preventDefault).toHaveBeenCalled();
+    .simulate('click')
+    .simulate('mousedown');
 }
 
 type Jest = typeof jest;

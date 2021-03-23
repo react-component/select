@@ -224,15 +224,19 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
 
   const onMouseDown: React.MouseEventHandler<HTMLElement> = (event) => {
     const inputMouseDown = getInputMouseDown();
-    if (event.target !== inputRef.current && !inputMouseDown) {
-      event.preventDefault();
-    }
+    const tagCloseMouseDown = (event.target as HTMLElement).innerText === '×';
 
-    if ((mode !== 'combobox' && (!showSearch || !inputMouseDown)) || !open) {
-      if (open) {
-        onSearch('', true, false);
+    if (!tagCloseMouseDown) {
+      if (event.target !== inputRef.current && !inputMouseDown) {
+        event.preventDefault();
       }
-      onToggleOpen();
+
+      if ((mode !== 'combobox' && (!showSearch || !inputMouseDown)) || !open) {
+        if (open) {
+          onSearch('', true, false);
+        }
+        onToggleOpen();
+      }
     }
   };
 
