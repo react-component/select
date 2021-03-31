@@ -1450,6 +1450,10 @@ describe('Select.Basic', () => {
     mount(<Select options={null} />);
   });
 
+  it('not crash when labelInValue and value is null', () => {
+    mount(<Select labelInValue value={null} />);
+  });
+
   it('not open when `notFoundCount` is empty & no data', () => {
     const wrapper = mount(<Select options={null} notFoundContent={null} open showSearch />);
     expect(wrapper.find('SelectTrigger').props().visible).toBeFalsy();
