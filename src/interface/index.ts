@@ -14,11 +14,15 @@ export type OnActiveValue = (
   info?: { source?: 'keyboard' | 'mouse' },
 ) => void;
 
-export interface OptionCoreData {
-  key?: Key;
+export interface OptionCoreData<
+  TValue extends RawValueType = RawValueType,
+  TKey extends Key = Key
+> {
+  key?: TKey;
   disabled?: boolean;
-  value: Key;
+  value: TValue;
   title?: string;
+  options?: undefined;
   className?: string;
   style?: React.CSSProperties;
   label?: React.ReactNode;
@@ -26,15 +30,19 @@ export interface OptionCoreData {
   children?: React.ReactNode;
 }
 
-export interface OptionData extends OptionCoreData {
+export interface OptionData<TValue extends RawValueType = RawValueType, TKey extends Key = Key>
+  extends OptionCoreData<TValue, TKey> {
   /** Save for customize data */
   [prop: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
-export interface OptionGroupData {
-  key?: Key;
+export interface OptionGroupData<
+  TValue extends RawValueType = RawValueType,
+  TKey extends Key = Key
+> {
+  key?: TKey;
   label?: React.ReactNode;
-  options: OptionData[];
+  options: Array<OptionData<TValue, TKey>>;
   className?: string;
   style?: React.CSSProperties;
 
@@ -42,11 +50,16 @@ export interface OptionGroupData {
   [prop: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
-export type OptionsType = (OptionData | OptionGroupData)[];
+export type OptionsType<TValue extends RawValueType = RawValueType, TKey extends Key = Key> = Array<
+  OptionData<TValue, TKey> | OptionGroupData<TValue, TKey>
+>;
 
-export interface FlattenOptionData {
+export interface FlattenOptionData<
+  TValue extends RawValueType = RawValueType,
+  TKey extends Key = Key
+> {
   group?: boolean;
   groupOption?: boolean;
   key: string | number;
-  data: OptionData | OptionGroupData;
+  data: OptionData<TValue, TKey> | OptionGroupData<TValue, TKey>;
 }

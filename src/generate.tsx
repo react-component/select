@@ -77,8 +77,8 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   mode?: Mode;
 
   // Value
-  value?: ValueType;
-  defaultValue?: ValueType;
+  value?: ValueType | {key: Key, label: string};
+  defaultValue?: ValueType | {key: Key, label: string};
   labelInValue?: boolean;
   /** Config max length of input. This is only work when `mode` is `combobox` */
   maxLength?: number;

@@ -20,6 +20,7 @@ import {
   injectRunAllTimers,
 } from './utils/common';
 import { INTERNAL_PROPS_MARK } from '../src/interface/generator';
+import { OptionData } from '../src/interface';
 
 describe('Select.Basic', () => {
   injectRunAllTimers(jest);
@@ -30,37 +31,37 @@ describe('Select.Basic', () => {
   keyDownTest('single');
   inputFilterTest('single');
   openControlledTest('single');
+  type NumericalStrings = '1' | '2' | '3';
+  type AllowedName = 'jack' | 'lucy' | 'disabled' | 'yiminghe';
 
   describe('render', () => {
-    function genSelect(props?: Partial<SelectProps>) {
-      return (
-        <Select
-          prefixCls="antd"
-          className="select-test"
-          value="2"
-          placeholder="Select a number"
-          showArrow
-          allowClear
-          showSearch
-          {...props}
-        >
-          <OptGroup label="manager">
-            <Option className="option-test" value="jack">
-              <b style={{ color: 'red' }}>jack</b>
-            </Option>
-            <Option value="lucy">lucy</Option>
-          </OptGroup>
-          <OptGroup label="engineer">
-            <Option value="yiminghe">yiminghe</Option>
-          </OptGroup>
-        </Select>
-      );
-    }
-
-    it('renders correctly', () => {
-      const wrapper = render(genSelect());
-      expect(wrapper).toMatchSnapshot();
-    });
+    const genSelect = (
+      props: Pick<
+        SelectProps<NumericalStrings>,
+        'open' | 'disabled' | 'aria-labelledby' | 'aria-label'
+      >,
+    ) => (
+      <Select<NumericalStrings>
+        prefixCls="antd"
+        className="select-test"
+        value="2"
+        placeholder="Select a number"
+        showArrow
+        allowClear
+        showSearch
+        {...props}
+      >
+        <OptGroup label="manager">
+          <Option<AllowedName> className="option-test" value="jack">
+            <b style={{ color: 'red' }}>jack</b>
+          </Option>
+          <Option<AllowedName> value="lucy">lucy</Option>
+        </OptGroup>
+        <OptGroup label="engineer">
+          <Option<AllowedName> value="yiminghe">yiminghe</Option>
+        </OptGroup>
+      </Select>
+    );
 
     it('renders dropdown correctly', () => {
       const wrapper = render(genSelect({ open: true }));
@@ -105,9 +106,9 @@ describe('Select.Basic', () => {
 
   it('convert value to array', () => {
     const wrapper = mount(
-      <Select value="1" optionLabelProp="children">
-        <OptGroup>
-          <Option value="1" title="一">
+      <Select<NumericalStrings> value="1" optionLabelProp="children">
+        <OptGroup<NumericalStrings>>
+          <Option<NumericalStrings> value="1" title="一">
             1-label
           </Option>
         </OptGroup>
@@ -122,9 +123,9 @@ describe('Select.Basic', () => {
 
   it('convert defaultValue to array', () => {
     const wrapper = mount(
-      <Select defaultValue="1">
-        <OptGroup>
-          <Option value="1" title="一">
+      <Select<NumericalStrings> defaultValue="1">
+        <OptGroup<NumericalStrings>>
+          <Option<NumericalStrings> value="1" title="一">
             1
           </Option>
         </OptGroup>
@@ -143,9 +144,10 @@ describe('Select.Basic', () => {
   });
 
   it('should show empty class', () => {
+    type AllowedValue = 'bamboo' | 'grass';
     const wrapper1 = mount(
-      <Select open>
-        <Select.Option value="bamboo">Bamboo</Select.Option>
+      <Select<AllowedValue> open>
+        <Select.Option<AllowedValue> value="bamboo">Bamboo</Select.Option>
       </Select>,
     );
     expect(
@@ -160,9 +162,9 @@ describe('Select.Basic', () => {
 
   it('should default select the right option', () => {
     const wrapper = mount(
-      <Select defaultValue="2">
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+      <Select<NumericalStrings> defaultValue="2">
+        <Option<NumericalStrings> value="1">1</Option>
+        <Option<NumericalStrings> value="2">2</Option>
       </Select>,
     );
 
@@ -174,10 +176,10 @@ describe('Select.Basic', () => {
 
   it('should can select multiple items', () => {
     const wrapper = mount(
-      <Select mode="multiple" value={['1', '2']}>
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
-        <Option value="3">2</Option>
+      <Select<NumericalStrings[]> mode="multiple" value={['1', '2']}>
+        <Option<NumericalStrings> value="1">1</Option>
+        <Option<NumericalStrings> value="2">2</Option>
+        <Option<NumericalStrings> value="3">2</Option>
       </Select>,
     );
     toggleOpen(wrapper);
@@ -190,17 +192,17 @@ describe('Select.Basic', () => {
 
   it('should hide clear button', () => {
     const wrapper1 = mount(
-      <Select allowClear value="1">
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+      <Select<NumericalStrings> allowClear value="1">
+        <Option<NumericalStrings> value="1">1</Option>
+        <Option<NumericalStrings> value="2">2</Option>
       </Select>,
     );
     expect(wrapper1.find('.rc-select-clear-icon').length).toBeTruthy();
 
     const wrapper2 = mount(
-      <Select allowClear>
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+      <Select<NumericalStrings> allowClear>
+        <Option<NumericalStrings> value="1">1</Option>
+        <Option<NumericalStrings> value="2">2</Option>
       </Select>,
     );
     expect(wrapper2.find('.rc-select-clear-icon').length).toBeFalsy();
@@ -208,9 +210,9 @@ describe('Select.Basic', () => {
 
   it('should direction rtl', () => {
     const wrapper = mount(
-      <Select direction="rtl">
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+      <Select<NumericalStrings> direction="rtl">
+        <Option<NumericalStrings> value="1">1</Option>
+        <Option<NumericalStrings> value="2">2</Option>
       </Select>,
     );
     expect(wrapper.find('Trigger').props().popupPlacement).toBe('bottomRight');
@@ -218,9 +220,9 @@ describe('Select.Basic', () => {
 
   it('should not response click event when select is disabled', () => {
     const wrapper = mount(
-      <Select disabled defaultValue="2">
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+      <Select<NumericalStrings> disabled defaultValue="2">
+        <Option<NumericalStrings> value="1">1</Option>
+        <Option<NumericalStrings> value="2">2</Option>
       </Select>,
     );
     toggleOpen(wrapper);
@@ -229,9 +231,9 @@ describe('Select.Basic', () => {
 
   it('should show selected value in singleMode when close', () => {
     const wrapper = mount(
-      <Select value="1">
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+      <Select<NumericalStrings> value="1">
+        <Option<NumericalStrings> value="1">1</Option>
+        <Option<NumericalStrings> value="2">2</Option>
       </Select>,
     );
 
@@ -240,9 +242,9 @@ describe('Select.Basic', () => {
 
   it('search input should be editable initially', () => {
     const wrapper = mount(
-      <Select showSearch>
-        <Option value="1">One</Option>
-        <Option value="2">Two</Option>
+      <Select<NumericalStrings> showSearch>
+        <Option<NumericalStrings> value="1">One</Option>
+        <Option<NumericalStrings> value="2">Two</Option>
       </Select>,
     );
     expect(wrapper.find('input').getDOMNode().getAttribute('readonly')).toBeFalsy();
@@ -250,9 +252,9 @@ describe('Select.Basic', () => {
 
   it('filter options by "value" prop by default', () => {
     const wrapper = mount(
-      <Select showSearch>
-        <Option value="1">One</Option>
-        <Option value="2">Two</Option>
+      <Select<NumericalStrings> showSearch>
+        <Option<NumericalStrings> value="1">One</Option>
+        <Option<NumericalStrings> value="2">Two</Option>
       </Select>,
     );
 
@@ -263,36 +265,38 @@ describe('Select.Basic', () => {
 
   it('should filter options when filterOption is true', () => {
     const wrapper = mount(
-      <Select showSearch filterOption>
-        <Option value="1">One</Option>
-        <Option value="2">Two</Option>
+      <Select<NumericalStrings> showSearch filterOption>
+        <Option<NumericalStrings> value="1">One</Option>
+        <Option<NumericalStrings> value="2">Two</Option>
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: '2' } });
+    const targetedValue: NumericalStrings = '2';
+    wrapper.find('input').simulate('change', { target: { value: targetedValue } });
     expect(wrapper.find('List').props().data.length).toBe(1);
     expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('Two');
   });
 
   it('should not filter options when filterOption is false', () => {
     const wrapper = mount(
-      <Select filterOption={false}>
-        <Option value="1">One</Option>
-        <Option value="2">Two</Option>
+      <Select<NumericalStrings> filterOption={false}>
+        <Option<NumericalStrings> value="1">One</Option>
+        <Option<NumericalStrings> value="2">Two</Option>
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    const targetedValue: NumericalStrings = '1';
+    wrapper.find('input').simulate('change', { target: { value: targetedValue } });
     expect(wrapper.find('List').props().data.length).toBe(2);
   });
 
   it('specify which prop to filter', () => {
     const wrapper = mount(
-      <Select optionFilterProp="label" showSearch>
-        <Option value="1" label="One">
+      <Select<NumericalStrings> optionFilterProp="label" showSearch>
+        <Option<NumericalStrings> value="1" label="One">
           1
         </Option>
-        <Option value="2" label="Two">
+        <Option<NumericalStrings> value="2" label="Two">
           2
         </Option>
       </Select>,
@@ -301,16 +305,17 @@ describe('Select.Basic', () => {
     wrapper.find('input').simulate('change', { target: { value: 'Two' } });
 
     expect(wrapper.find('List').props().data.length).toBe(1);
-    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('2');
+    const expectedNumber: NumericalStrings = '2';
+    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe(expectedNumber);
   });
 
   it('filter array children', () => {
     const wrapper = mount(
-      <Select optionFilterProp="children" showSearch>
-        <Option value="1" label="One">
+      <Select<NumericalStrings> optionFilterProp="children" showSearch>
+        <Option<NumericalStrings> value="1" label="One">
           One{1}
         </Option>
-        <Option value="2" label="Two">
+        <Option<NumericalStrings> value="2" label="Two">
           Two{2}
         </Option>
       </Select>,
@@ -324,9 +329,9 @@ describe('Select.Basic', () => {
 
   it('no search', () => {
     const wrapper = render(
-      <Select showSearch={false} value="1">
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+      <Select<NumericalStrings> showSearch={false} value="1">
+        <Option<NumericalStrings> value="1">1</Option>
+        <Option<NumericalStrings> value="2">2</Option>
       </Select>,
     );
 
@@ -335,10 +340,10 @@ describe('Select.Basic', () => {
 
   it('should contain falsy children', () => {
     const wrapper = render(
-      <Select value="1" open>
-        <Option value="1">1</Option>
+      <Select<NumericalStrings> value="1" open>
+        <Option<NumericalStrings> value="1">1</Option>
         {null}
-        <Option value="2">2</Option>
+        <Option<NumericalStrings> value="2">2</Option>
         {false}
       </Select>,
     );
@@ -348,9 +353,9 @@ describe('Select.Basic', () => {
 
   it('open dropdown on down key press', () => {
     const wrapper = mount(
-      <Select value="1">
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+      <Select<NumericalStrings> value="1">
+        <Option<NumericalStrings> value="1">1</Option>
+        <Option<NumericalStrings> value="2">2</Option>
       </Select>,
     );
 
@@ -361,11 +366,11 @@ describe('Select.Basic', () => {
   it('adds label to value', () => {
     const handleChange = jest.fn();
     const wrapper = mount(
-      <Select onChange={handleChange} labelInValue optionLabelProp="children">
-        <Option value="1" testprop="test">
+      <Select<NumericalStrings> onChange={handleChange} labelInValue optionLabelProp="children">
+        <Option<NumericalStrings> value="1" testprop="test">
           One
         </Option>
-        <Option value="2">Two</Option>
+        <Option<NumericalStrings> value="2">Two</Option>
       </Select>,
     );
 
@@ -380,27 +385,31 @@ describe('Select.Basic', () => {
   it('give right option when use OptGroup', () => {
     const handleChange = jest.fn();
     const wrapper = mount(
-      <Select onChange={handleChange} labelInValue optionLabelProp="children">
-        <OptGroup label="grouplabel">
-          <Option value="1" testprop="test">
+      <Select<NumericalStrings> onChange={handleChange} labelInValue optionLabelProp="children">
+        <OptGroup<NumericalStrings> label="grouplabel">
+          <Option<NumericalStrings> value="1" testprop="test">
             One
           </Option>
         </OptGroup>
-        <Option value="2">Two</Option>
+        <Option<NumericalStrings> value="2">Two</Option>
       </Select>,
     );
 
     toggleOpen(wrapper);
     selectItem(wrapper);
-    expect(handleChange).toHaveBeenCalledWith(
-      { key: '1', label: 'One', value: '1' },
-      { children: 'One', key: null, testprop: 'test', value: '1' },
-    );
+    const expectedCallProps1: OptionData<NumericalStrings> = { key: '1', label: 'One', value: '1' };
+    const expectedCallProps2: OptionData<NumericalStrings> = {
+      children: 'One',
+      key: null,
+      testprop: 'test',
+      value: '1',
+    };
+    expect(handleChange).toHaveBeenCalledWith(expectedCallProps1, expectedCallProps2);
   });
 
   it('use label in props.value', () => {
     const wrapper = mount(
-      <Select labelInValue value={{ key: 1, label: 'One' }}>
+      <Select<NumericalStrings> labelInValue value={{ key: 1, label: 'One' }}>
         <Option value="2">Two</Option>
       </Select>,
     );
@@ -409,7 +418,7 @@ describe('Select.Basic', () => {
 
   it('use label in props.defaultValue', () => {
     const wrapper = mount(
-      <Select labelInValue defaultValue={{ key: 1, label: 'One' }}>
+      <Select<NumericalStrings> labelInValue defaultValue={{ key: 1, label: 'One' }}>
         <Option value="2">Two</Option>
       </Select>,
     );
@@ -419,14 +428,15 @@ describe('Select.Basic', () => {
   it('fires search event when user input', () => {
     const handleSearch = jest.fn();
     const wrapper = mount(
-      <Select showSearch onSearch={handleSearch}>
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+      <Select<NumericalStrings> showSearch onSearch={handleSearch}>
+        <Option<NumericalStrings> value="1">1</Option>
+        <Option<NumericalStrings> value="2">2</Option>
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: '1' } });
-    expect(handleSearch).toHaveBeenCalledWith('1');
+    const expectedNumber: NumericalStrings = '1';
+    wrapper.find('input').simulate('change', { target: { value: expectedNumber } });
+    expect(handleSearch).toHaveBeenCalledWith(expectedNumber);
 
     wrapper.find('input').simulate('change', { target: { value: '' } });
   });
@@ -434,9 +444,9 @@ describe('Select.Basic', () => {
   it('not fires search event when user select', () => {
     const handleSearch = jest.fn();
     const wrapper = mount(
-      <Select showSearch onSearch={handleSearch}>
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+      <Select<NumericalStrings> showSearch onSearch={handleSearch}>
+        <Option<NumericalStrings> value="1">1</Option>
+        <Option<NumericalStrings> value="2">2</Option>
       </Select>,
     );
     toggleOpen(wrapper);
@@ -447,8 +457,8 @@ describe('Select.Basic', () => {
   it('not close when click on the input', () => {
     const wrapper = mount(
       <Select showSearch>
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+        <Option<NumericalStrings> value="1">1</Option>
+        <Option<NumericalStrings> value="2">2</Option>
       </Select>,
     );
 
@@ -466,9 +476,9 @@ describe('Select.Basic', () => {
 
     const handleSearch = jest.fn();
     const wrapper = mount(
-      <Select showSearch onSearch={handleSearch}>
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
+      <Select<NumericalStrings> showSearch onSearch={handleSearch}>
+        <Option<NumericalStrings> value="1">1</Option>
+        <Option<NumericalStrings> value="2">2</Option>
       </Select>,
     );
     wrapper.find('input').simulate('change', { target: { value: '1' } });
@@ -496,9 +506,9 @@ describe('Select.Basic', () => {
       jest.useFakeTimers();
       handleFocus = jest.fn();
       wrapper = mount(
-        <Select onFocus={handleFocus} showSearch={false}>
-          <Option value="1">1</Option>
-          <Option value="2">2</Option>
+        <Select<NumericalStrings> onFocus={handleFocus} showSearch={false}>
+          <Option<NumericalStrings> value="1">1</Option>
+          <Option<NumericalStrings> value="2">2</Option>
         </Select>,
       );
 
@@ -527,9 +537,9 @@ describe('Select.Basic', () => {
       jest.useFakeTimers();
       handleFocus = jest.fn();
       wrapper = mount(
-        <Select onFocus={handleFocus}>
-          <Option value="1">1</Option>
-          <Option value="2">2</Option>
+        <Select<NumericalStrings> onFocus={handleFocus}>
+          <Option<NumericalStrings> value="1">1</Option>
+          <Option<NumericalStrings> value="2">2</Option>
         </Select>,
       );
 
@@ -559,9 +569,9 @@ describe('Select.Basic', () => {
 
     it('click placeholder should trigger onFocus', () => {
       const wrapper2 = mount(
-        <Select placeholder="xxxx">
-          <Option value="1">1</Option>
-          <Option value="2">2</Option>
+        <Select<NumericalStrings> placeholder="xxxx">
+          <Option<NumericalStrings> value="1">1</Option>
+          <Option<NumericalStrings> value="2">2</Option>
         </Select>,
       );
 
@@ -862,12 +872,13 @@ describe('Select.Basic', () => {
   });
 
   it('should include disabled item in options', () => {
+    type AllowedNames = 'name1' | 'name2';
     const wrapper = mount(
-      <Select mode="tags" open value={['name1']}>
-        <Option key="name1" value="name1" disabled>
+      <Select<AllowedNames[]> mode="tags" open value={['name1']}>
+        <Option<AllowedNames, AllowedNames> key="name1" value="name1" disabled>
           name1
         </Option>
-        <Option key="name2" value="name2">
+        <Option<AllowedNames, AllowedNames> key="name2" value="name2">
           name2
         </Option>
       </Select>,
@@ -1177,7 +1188,7 @@ describe('Select.Basic', () => {
     });
 
     it('dropdown menu width should not be smaller than trigger even dropdownMatchSelectWidth is false', () => {
-      const options = [];
+      const options: Array<{ value: number }> = [];
       for (let i = 0; i < 99; i += 1) {
         options.push({
           value: i,
@@ -1185,7 +1196,7 @@ describe('Select.Basic', () => {
       }
 
       const wrapper = mount(
-        <Select
+        <Select<number>
           listItemHeight={10}
           listHeight={100}
           style={{ width: 1000 }}
@@ -1201,7 +1212,7 @@ describe('Select.Basic', () => {
     });
 
     it('virtual false also no render virtual list', () => {
-      const options = [];
+      const options: Array<{ value: number }> = [];
       for (let i = 0; i < 99; i += 1) {
         options.push({
           value: i,
@@ -1209,7 +1220,7 @@ describe('Select.Basic', () => {
       }
 
       const wrapper = mount(
-        <Select listItemHeight={10} listHeight={100} virtual={false} options={options} />,
+        <Select<number> listItemHeight={10} listHeight={100} virtual={false} options={options} />,
       );
       toggleOpen(wrapper);
       expect(wrapper.find('.rc-select-item')).toHaveLength(options.length);
@@ -1228,9 +1239,9 @@ describe('Select.Basic', () => {
 
   it('dropdown should not auto-adjust horizontally when dropdownMatchSelectWidth is true', () => {
     const wrapper = mount(
-      <Select>
-        <Option value={0}>0</Option>
-        <Option value={1}>1</Option>
+      <Select<number>>
+        <Option<number> value={0}>0</Option>
+        <Option<number> value={1}>1</Option>
       </Select>,
     );
     expect(wrapper.find('Trigger').props().builtinPlacements.bottomLeft.overflow.adjustX).toBe(0);
@@ -1291,7 +1302,7 @@ describe('Select.Basic', () => {
   it('dropdown selection item customize icon', () => {
     const menuItemSelectedIcon = jest.fn();
     mount(
-      <Select
+      <Select<NumericalStrings>
         value="1"
         options={[{ value: '1' }]}
         open
@@ -1570,12 +1581,14 @@ describe('Select.Basic', () => {
   it('`null` is a value', () => {
     const onChange = jest.fn();
 
+    type OneZeroNullOrEmpty = 1 | 0 | null | '';
+
     const wrapper = mount(
-      <Select onChange={onChange}>
-        <Option value={1}>1</Option>
-        <Option value={null}>No</Option>
-        <Option value={0}>0</Option>
-        <Option value="">Empty</Option>
+      <Select<NumericalStrings, NumericalStrings> onChange={onChange}>
+        <Option<OneZeroNullOrEmpty> value={1}>1</Option>
+        <Option<OneZeroNullOrEmpty> value={null}>No</Option>
+        <Option<OneZeroNullOrEmpty> value={0}>0</Option>
+        <Option<OneZeroNullOrEmpty> value="">Empty</Option>
       </Select>,
     );
 
@@ -1633,7 +1646,7 @@ describe('Select.Basic', () => {
 
   it('filterSort should work', () => {
     const wrapper = mount(
-      <Select
+      <Select<number, number>
         showSearch
         filterSort={(optionA, optionB) =>
           (optionA.label as string).localeCompare(optionB.label as string)
