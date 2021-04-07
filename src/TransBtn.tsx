@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import { RenderNode } from './interface';
+import type { RenderNode } from './interface';
 
 export interface TransBtnProps {
   className: string;
@@ -30,7 +30,7 @@ const TransBtn: React.FC<TransBtnProps> = ({
   return (
     <span
       className={className}
-      onMouseDown={event => {
+      onMouseDown={(event) => {
         event.preventDefault();
         if (onMouseDown) {
           onMouseDown(event);
@@ -47,7 +47,7 @@ const TransBtn: React.FC<TransBtnProps> = ({
       {icon !== undefined ? (
         icon
       ) : (
-        <span className={classNames(className.split(/\s+/).map(cls => `${cls}-icon`))}>
+        <span className={classNames(className.split(/\s+/).map((cls) => `${cls}-icon`))}>
           {children}
         </span>
       )}

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import warning, { noteOnce } from 'rc-util/lib/warning';
 import toNodeArray from 'rc-util/lib/Children/toArray';
-import { SelectProps } from '..';
+import type { SelectProps } from '..';
 import { convertChildrenToData } from './legacyUtil';
-import { OptionData, OptionGroupData } from '../interface';
+import type { OptionData, OptionGroupData } from '../interface';
 import { toArray } from './commonUtil';
-import { RawValueType, LabelValueType } from '../interface/generator';
+import type { RawValueType, LabelValueType } from '../interface/generator';
 
 function warningProps(props: SelectProps) {
   const {
@@ -39,7 +39,7 @@ function warningProps(props: SelectProps) {
 
   // `combobox` & `tags` should option be `string` type
   if (mode === 'tags' || mode === 'combobox') {
-    const hasNumberValue = mergedOptions.some(item => {
+    const hasNumberValue = mergedOptions.some((item) => {
       if (item.options) {
         return item.options.some(
           (opt: OptionData) => typeof ('value' in opt ? opt.value : opt.key) === 'number',
@@ -76,7 +76,7 @@ function warningProps(props: SelectProps) {
   );
 
   // `onSearch` should use in `combobox` or `showSearch`
-  if (onSearch && (!mergedShowSearch && mode !== 'combobox' && mode !== 'tags')) {
+  if (onSearch && !mergedShowSearch && mode !== 'combobox' && mode !== 'tags') {
     warning(false, '`onSearch` should work with `showSearch` instead of use alone.');
   }
 
@@ -89,7 +89,7 @@ function warningProps(props: SelectProps) {
     const values = toArray<RawValueType | LabelValueType>(value);
     warning(
       !labelInValue ||
-        values.every(val => typeof val === 'object' && ('key' in val || 'value' in val)),
+        values.every((val) => typeof val === 'object' && ('key' in val || 'value' in val)),
       '`value` should in shape of `{ value: string | number, label?: ReactNode }` when you set `labelInValue` to `true`',
     );
 
@@ -139,9 +139,9 @@ function warningProps(props: SelectProps) {
     if (invalidateChildType) {
       warning(
         false,
-        `\`children\` should be \`Select.Option\` or \`Select.OptGroup\` instead of \`${invalidateChildType.displayName ||
-          invalidateChildType.name ||
-          invalidateChildType}\`.`,
+        `\`children\` should be \`Select.Option\` or \`Select.OptGroup\` instead of \`${
+          invalidateChildType.displayName || invalidateChildType.name || invalidateChildType
+        }\`.`,
       );
     }
 

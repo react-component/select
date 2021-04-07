@@ -1,11 +1,11 @@
 import warning from 'rc-util/lib/warning';
-import {
+import type {
   OptionsType as SelectOptionsType,
   OptionData,
   OptionGroupData,
   FlattenOptionData,
 } from '../interface';
-import {
+import type {
   LabelValueType,
   FilterFunc,
   RawValueType,
@@ -41,7 +41,7 @@ export function flattenOptions(options: SelectOptionsType): FlattenOptionData[] 
   const flattenList: FlattenOptionData[] = [];
 
   function dig(list: SelectOptionsType, isGroupOption: boolean) {
-    list.forEach(data => {
+    list.forEach((data) => {
       if (isGroupOption || !('options' in data)) {
         // Option
         flattenList.push({
@@ -94,7 +94,7 @@ export function findValueOption(
 ): OptionData[] {
   const optionMap: Map<RawValueType, OptionData> = new Map();
 
-  options.forEach(flattenItem => {
+  options.forEach((flattenItem) => {
     if (!flattenItem.group) {
       const data = flattenItem.data as OptionData;
       // Check if match
@@ -102,14 +102,14 @@ export function findValueOption(
     }
   });
 
-  return values.map(val => {
+  return values.map((val) => {
     let option = optionMap.get(val);
 
     // Fallback to try to find prev options
     if (!option) {
       option = {
         // eslint-disable-next-line no-underscore-dangle
-        ...prevValueOptions.find(opt => opt._INTERNAL_OPTION_VALUE_ === val),
+        ...prevValueOptions.find((opt) => opt._INTERNAL_OPTION_VALUE_ === val),
       };
     }
 
@@ -163,9 +163,7 @@ function getFilterFunction(optionFilterProp: string) {
 
     // Group label search
     if ('options' in option) {
-      return toRawString(option.label)
-        .toLowerCase()
-        .includes(lowerSearchText);
+      return toRawString(option.label).toLowerCase().includes(lowerSearchText);
     }
 
     // Option value search
@@ -196,7 +194,7 @@ export function filterOptions(
     filterFunc = getFilterFunction(optionFilterProp);
   }
 
-  options.forEach(item => {
+  options.forEach((item) => {
     // Group should check child options
     if ('options' in item) {
       // Check group first
@@ -205,7 +203,7 @@ export function filterOptions(
         filteredOptions.push(item);
       } else {
         // Check option
-        const subOptions = item.options.filter(subItem => filterFunc(searchValue, subItem));
+        const subOptions = item.options.filter((subItem) => filterFunc(searchValue, subItem));
         if (subOptions.length) {
           filteredOptions.push({
             ...item,
@@ -242,7 +240,7 @@ export function getSeparatedContent(text: string, tokens: string[]): string[] {
 
     return list
       .reduce((prevList, unitStr) => [...prevList, ...separate(unitStr, restTokens)], [])
-      .filter(unit => unit);
+      .filter((unit) => unit);
   }
 
   const list = separate(text, tokens);
@@ -263,14 +261,12 @@ export function fillOptionsWithMissingValue(
   optionLabelProp: string,
   labelInValue: boolean,
 ): SelectOptionsType {
-  const values = toArray<RawValueType | LabelValueType>(value)
-    .slice()
-    .sort();
+  const values = toArray<RawValueType | LabelValueType>(value).slice().sort();
   const cloneOptions = [...options];
 
   // Convert options value to set
   const optionValues = new Set<RawValueType>();
-  options.forEach(opt => {
+  options.forEach((opt) => {
     if (opt.options) {
       opt.options.forEach((subOpt: OptionData) => {
         optionValues.add(subOpt.value);
@@ -281,7 +277,7 @@ export function fillOptionsWithMissingValue(
   });
 
   // Fill missing value
-  values.forEach(item => {
+  values.forEach((item) => {
     const val: RawValueType = labelInValue
       ? (item as LabelValueType).value
       : (item as RawValueType);

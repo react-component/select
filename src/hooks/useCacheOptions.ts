@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RawValueType, FlattenOptionsType, Key } from '../interface/generator';
+import type { RawValueType, FlattenOptionsType, Key } from '../interface/generator';
 
 export default function useCacheOptions<
   OptionsType extends {
@@ -15,7 +15,7 @@ export default function useCacheOptions<
 
   const optionMap = React.useMemo(() => {
     const map: Map<RawValueType, FlattenOptionsType<OptionsType>[number]> = new Map();
-    options.forEach(item => {
+    options.forEach((item) => {
       const {
         data: { value },
       } = item;
@@ -27,7 +27,7 @@ export default function useCacheOptions<
   prevOptionMapRef.current = optionMap;
 
   const getValueOption = (vals: RawValueType[]): FlattenOptionsType<OptionsType> =>
-    vals.map(value => prevOptionMapRef.current.get(value)).filter(Boolean);
+    vals.map((value) => prevOptionMapRef.current.get(value)).filter(Boolean);
 
   return getValueOption;
 }

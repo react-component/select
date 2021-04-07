@@ -1,4 +1,4 @@
-import {
+import type {
   RawValueType,
   GetLabeledValue,
   LabelValueType,
@@ -22,10 +22,7 @@ export function toInnerValue(
 ): [RawValueType[], Map<RawValueType, LabelValueType>] {
   const valueMap = new Map<RawValueType, LabelValueType>();
 
-  if (
-    value === undefined ||
-    (value === '' && combobox)
-  ) {
+  if (value === undefined || (value === '' && combobox)) {
     return [[], valueMap];
   }
 
@@ -34,7 +31,7 @@ export function toInnerValue(
 
   if (labelInValue) {
     rawValues = (values as LabelValueType[])
-      .filter(item => !!item)
+      .filter((item) => item !== null)
       .map((itemValue: LabelValueType) => {
         const { key, value: val } = itemValue;
         const finalVal = val !== undefined ? val : key;
@@ -68,7 +65,7 @@ export function toOuterValues<FOT extends FlattenOptionsType>(
   let values: DefaultValueType = valueList;
 
   if (labelInValue) {
-    values = values.map(val =>
+    values = values.map((val) =>
       getLabeledValue(val, {
         options,
         prevValueMap,

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Trigger from 'rc-trigger';
 import classNames from 'classnames';
-import { RenderDOMFunc } from './interface';
+import type { RenderDOMFunc } from './interface';
 
 const getBuiltInPlacements = (dropdownMatchSelectWidth: number | boolean) => {
   // Enable horizontal overflow auto-adjustment when a custom dropdown width is provided

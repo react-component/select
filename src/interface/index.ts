@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { Key, RawValueType } from './generator';
+import type * as React from 'react';
+import type { Key, RawValueType } from './generator';
 
 export type RenderDOMFunc = (props: any) => HTMLElement;
 

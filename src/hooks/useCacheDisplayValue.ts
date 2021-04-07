@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DisplayLabelValueType } from '../interface/generator';
+import type { DisplayLabelValueType } from '../interface/generator';
 
 export default function useCacheDisplayValue(
   values: DisplayLabelValueType[],
@@ -15,7 +15,7 @@ export default function useCacheDisplayValue(
       }
     });
 
-    const resultValues = values.map(item => {
+    const resultValues = values.map((item) => {
       const cacheLabel = valueLabels.get(item.value);
       if (item.isCacheable && cacheLabel) {
         return {

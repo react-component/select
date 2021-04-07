@@ -1,6 +1,6 @@
 /* istanbul ignore file */
-import * as React from 'react';
-import { OptionCoreData } from './interface';
+import type * as React from 'react';
+import type { OptionCoreData } from './interface';
 
 export interface OptionProps extends Omit<OptionCoreData, 'label'> {
   children: React.ReactNode;

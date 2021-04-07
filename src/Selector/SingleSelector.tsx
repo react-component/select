@@ -1,7 +1,7 @@
 import * as React from 'react';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import Input from './Input';
-import { InnerSelectorProps } from '.';
+import type { InnerSelectorProps } from '.';
 
 interface SelectorProps extends InnerSelectorProps {
   inputElement: React.ReactElement;
@@ -9,7 +9,7 @@ interface SelectorProps extends InnerSelectorProps {
   backfill?: boolean;
 }
 
-const SingleSelector: React.FC<SelectorProps> = props => {
+const SingleSelector: React.FC<SelectorProps> = (props) => {
   const {
     inputElement,
     prefixCls,
@@ -80,7 +80,7 @@ const SingleSelector: React.FC<SelectorProps> = props => {
           value={inputValue}
           onKeyDown={onInputKeyDown}
           onMouseDown={onInputMouseDown}
-          onChange={e => {
+          onChange={(e) => {
             setInputChanged(true);
             onInputChange(e as any);
           }}

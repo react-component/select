@@ -3,16 +3,17 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import useMemo from 'rc-util/lib/hooks/useMemo';
 import classNames from 'classnames';
-import List, { ListRef } from 'rc-virtual-list';
+import type { ListRef } from 'rc-virtual-list';
+import List from 'rc-virtual-list';
 import TransBtn from './TransBtn';
-import {
+import type {
   OptionsType as SelectOptionsType,
   FlattenOptionData as SelectFlattenOptionData,
   OptionData,
   RenderNode,
   OnActiveValue,
 } from './interface';
-import { RawValueType, FlattenOptionsType } from './interface/generator';
+import type { RawValueType, FlattenOptionsType } from './interface/generator';
 
 export interface OptionListProps<OptionsType extends object[]> {
   prefixCls: string;
@@ -89,7 +90,7 @@ const OptionList: React.RefForwardingComponent<
   // =========================== List ===========================
   const listRef = React.useRef<ListRef>(null);
 
-  const onListMouseDown: React.MouseEventHandler<HTMLDivElement> = event => {
+  const onListMouseDown: React.MouseEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
   };
 
@@ -176,7 +177,7 @@ const OptionList: React.RefForwardingComponent<
 
   // ========================= Keyboard =========================
   React.useImperativeHandle(ref, () => ({
-    onKeyDown: event => {
+    onKeyDown: (event) => {
       const { which } = event;
       switch (which) {
         // >>> Arrow keys
@@ -226,7 +227,7 @@ const OptionList: React.RefForwardingComponent<
     },
     onKeyUp: () => {},
 
-    scrollTo: index => {
+    scrollTo: (index) => {
       scrollIntoView(index);
     },
   }));

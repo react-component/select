@@ -1,6 +1,6 @@
 /* istanbul ignore file */
-import * as React from 'react';
-import { OptionGroupData } from './interface';
+import type * as React from 'react';
+import type { OptionGroupData } from './interface';
 
 export interface OptGroupProps extends Omit<OptionGroupData, 'options'> {
   children?: React.ReactNode;

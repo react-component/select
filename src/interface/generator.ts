@@ -1,4 +1,4 @@
-import { SelectProps, RefSelectProps } from '../generate';
+import type { SelectProps, RefSelectProps } from '../generate';
 
 export type SelectSource = 'option' | 'selection' | 'input';
 
@@ -13,7 +13,7 @@ export interface LabelValueType {
   key?: Key;
   value?: RawValueType;
   label?: React.ReactNode;
-  isCacheable?: Boolean;
+  isCacheable?: boolean;
 }
 export type DefaultValueType = RawValueType | RawValueType[] | LabelValueType | LabelValueType[];
 

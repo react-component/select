@@ -1,6 +1,6 @@
 import * as React from 'react';
 import toArray from 'rc-util/lib/Children/toArray';
-import { OptionData, OptionGroupData, OptionsType } from '../interface';
+import type { OptionData, OptionGroupData, OptionsType } from '../interface';
 
 function convertNodeToOption(node: React.ReactElement): OptionData {
   const {
@@ -40,5 +40,5 @@ export function convertChildrenToData(
         options: convertChildrenToData(children),
       };
     })
-    .filter(data => data);
+    .filter((data) => data);
 }
