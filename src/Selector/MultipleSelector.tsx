@@ -127,7 +127,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
   ) {
     const onMouseDown = (e: React.MouseEvent) => {
       onPreventMouseDown(e);
-      onToggleOpen(true);
+      onToggleOpen(!open);
     };
 
     return (
