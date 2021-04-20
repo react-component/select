@@ -295,6 +295,9 @@ describe('Select.Tags', () => {
       expect(wrapper.find('span.A').text()).toBe('AA');
       expect(onTagRender).toHaveBeenCalled();
       expect(wrapper.find('.customize-tag')).toHaveLength(3);
+
+      wrapper.find('span.A').simulate('mousedown');
+      expectOpen(wrapper, false);
     });
 
     it('disabled', () => {
