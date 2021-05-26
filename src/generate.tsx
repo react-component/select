@@ -226,7 +226,7 @@ export default function generateSelector<
     label?: React.ReactNode;
     key?: Key;
     disabled?: boolean;
-  }[]
+  }[],
 >(config: GenerateConfig<OptionsType>) {
   const {
     prefixCls: defaultPrefixCls,
@@ -476,6 +476,27 @@ export default function generateSelector<
       () => flattenOptions(displayOptions, props),
       [displayOptions],
     );
+    /**
+     * init a temp visible state
+     * we use it for comparison
+     */
+    const [tempVisible, setTempVisible] = useState(null);
+    useEffect(() => {
+      const hasOptionsToShow = displayOptions && displayOptions.length;
+      /**
+       * only invoke onDropdownVisibleChange when
+       * current state is different from hasOptionsToShow
+       */
+      if (onDropdownVisibleChange) {
+        if (hasOptionsToShow && !tempVisible) {
+          setTempVisible(true);
+          onDropdownVisibleChange(true);
+        } else if (!hasOptionsToShow && tempVisible) {
+          setTempVisible(false);
+          onDropdownVisibleChange(false);
+        }
+      }
+    }, [displayOptions]);
 
     useEffect(() => {
       if (listRef.current && listRef.current.scrollTo) {
@@ -521,14 +542,16 @@ export default function generateSelector<
 
       if (!internalProps.skipTriggerSelect) {
         // Skip trigger `onSelect` or `onDeselect` if configured
-        const selectValue = (mergedLabelInValue
-          ? getLabeledValue(newValue, {
-              options: newValueOption,
-              prevValueMap: mergedValueMap,
-              labelInValue: mergedLabelInValue,
-              optionLabelProp: mergedOptionLabelProp,
-            })
-          : newValue) as SingleType<ValueType>;
+        const selectValue = (
+          mergedLabelInValue
+            ? getLabeledValue(newValue, {
+                options: newValueOption,
+                prevValueMap: mergedValueMap,
+                labelInValue: mergedLabelInValue,
+                optionLabelProp: mergedOptionLabelProp,
+              })
+            : newValue
+        ) as SingleType<ValueType>;
 
         if (isSelect && onSelect) {
           onSelect(selectValue, outOption);
@@ -646,6 +669,25 @@ export default function generateSelector<
 
     let mergedOpen = innerOpen;
 
+    // emit dropdownVisibleChange when toggle change
+    const emitDropdownVisibleChange = (nextToggleStatus) => {
+      const hasOptionsToShow = displayOptions && displayOptions.length;
+      if (nextToggleStatus && hasOptionsToShow) {
+        /**
+         * invoke with true when
+         * component has been focused and get options ready to show
+         */
+        onDropdownVisibleChange(true);
+      } else if (!nextToggleStatus && hasOptionsToShow) {
+        /**
+         * invoke with false when
+         * component has been blured and still get options ready to show
+         * if there aren't any, this function must has already been invoked before
+         * so we don't do this unnecessary thing
+         */
+        onDropdownVisibleChange(false);
+      }
+    };
     // Not trigger `open` in `combobox` when `notFoundContent` is empty
     const emptyListContent = !notFoundContent && !displayOptions.length;
     if (disabled || (emptyListContent && mergedOpen && mode === 'combobox')) {
@@ -660,7 +702,7 @@ export default function generateSelector<
         setInnerOpen(nextOpen);
 
         if (onDropdownVisibleChange) {
-          onDropdownVisibleChange(nextOpen);
+          emitDropdownVisibleChange(nextOpen);
         }
       }
     };
@@ -734,9 +776,7 @@ export default function generateSelector<
       if (!searchText || !searchText.trim()) {
         return;
       }
-      const newRawValues = Array.from(
-        new Set<RawValueType>([...mergedRawValue, searchText]),
-      );
+      const newRawValues = Array.from(new Set<RawValueType>([...mergedRawValue, searchText]));
       triggerChange(newRawValues);
       newRawValues.forEach((newRawValue) => {
         triggerSelect(newRawValue, true, 'input');
@@ -1110,7 +1150,7 @@ export default function generateSelector<
 
   // Ref of Select
   type RefSelectFuncType = typeof RefSelectFunc;
-  const RefSelect = ((React.forwardRef as unknown) as RefSelectFuncType)(Select);
+  const RefSelect = (React.forwardRef as unknown as RefSelectFuncType)(Select);
 
   return RefSelect;
 }
