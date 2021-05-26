@@ -476,12 +476,23 @@ export default function generateSelector<
       () => flattenOptions(displayOptions, props),
       [displayOptions],
     );
+
+    // onDropdownVisibleChange Bug fix:
     /**
      * init a temp visible state
      * we use it for comparison
      */
     const [tempVisible, setTempVisible] = useState(null);
     useEffect(() => {
+      /**
+       * beause this function will be invoke at least once before user's manipulations
+       * we didn't want to emit any onDropdownVisibleChange related events
+       * so we set the tempVisible to false boolean and return;
+       */
+      if (tempVisible === null) {
+        setTempVisible(false);
+        return;
+      }
       const hasOptionsToShow = displayOptions && displayOptions.length;
       /**
        * only invoke onDropdownVisibleChange when
