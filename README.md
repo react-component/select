@@ -82,7 +82,7 @@ export default () => (
 | dropdownStyle | additional style applied to dropdown | Object | {} |
 | dropdownAlign | additional align applied to dropdown | Object | {} |
 | dropdownMenuStyle | additional style applied to dropdown menu | Object | {} |
-| notFoundContent | specify content to show when no result matches. | String | 'Not Found' |
+| notFoundContent | specify content to show when no result matches. | ReactNode | 'Not Found' |
 | tokenSeparators | separator used to tokenize on tag/multiple mode | string[]? |  |
 | open | control select open | bool |  |
 | defaultOpen | control select default open | bool |  |
