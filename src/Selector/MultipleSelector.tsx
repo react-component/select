@@ -102,6 +102,11 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
         className={classNames(`${selectionPrefixCls}-item`, {
           [`${selectionPrefixCls}-item-disabled`]: itemDisabled,
         })}
+        title={
+          typeof content === 'string' || typeof content === 'number'
+            ? content.toString()
+            : undefined
+        }
       >
         <span className={`${selectionPrefixCls}-item-content`}>{content}</span>
         {closable && (
