@@ -1,13 +1,12 @@
 import * as React from 'react';
 
 export default function useSelectTriggerControl(
-  elements: (HTMLElement | undefined)[],
+  elements: () => (HTMLElement | undefined)[],
   open: boolean,
   triggerOpen: (open: boolean) => void,
 ) {
   const propsRef = React.useRef(null);
   propsRef.current = {
-    elements: elements.filter(e => e),
     open,
     triggerOpen,
   };
@@ -22,7 +21,9 @@ export default function useSelectTriggerControl(
 
       if (
         propsRef.current.open &&
-        propsRef.current.elements.every(element => !element.contains(target) && element !== target)
+        elements()
+          .filter((element) => element)
+          .every((element) => !element.contains(target) && element !== target)
       ) {
         // Should trigger close
         propsRef.current.triggerOpen(false);
