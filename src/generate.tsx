@@ -131,6 +131,7 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   notFoundContent?: React.ReactNode;
   placeholder?: React.ReactNode;
   backfill?: boolean;
+  /** @private Internal usage. Do not use in your production. */
   getInputElement?: () => JSX.Element;
   optionLabelProp?: string;
   maxTagTextLength?: number;
@@ -634,9 +635,9 @@ export default function generateSelector<
     };
 
     // ============================= Input ==============================
-    // Only works in `combobox`
+    // Only works in `combobox` or `rc-cascader`
     const customizeInputElement: React.ReactElement =
-      (mode === 'combobox' && getInputElement && getInputElement()) || null;
+      (typeof getInputElement === 'function' && getInputElement()) || null;
 
     // ============================== Open ==============================
     const [innerOpen, setInnerOpen] = useMergedState<boolean>(undefined, {
