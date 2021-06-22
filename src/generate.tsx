@@ -683,7 +683,7 @@ export default function generateSelector<
     }
 
     useSelectTriggerControl(
-      [containerRef.current, triggerRef.current && triggerRef.current.getPopupElement()],
+      () => [containerRef.current, triggerRef.current?.getPopupElement()],
       triggerOpen,
       onToggleOpen,
     );
@@ -897,8 +897,7 @@ export default function generateSelector<
 
     const onInternalMouseDown: React.MouseEventHandler<HTMLDivElement> = (event, ...restArgs) => {
       const { target } = event;
-      const popupElement: HTMLDivElement =
-        triggerRef.current && triggerRef.current.getPopupElement();
+      const popupElement: HTMLDivElement = triggerRef.current?.getPopupElement();
 
       // We should give focus back to selector if clicked item is not focusable
       if (popupElement && popupElement.contains(target as HTMLElement)) {
