@@ -67,6 +67,7 @@ export interface SelectTriggerProps {
   empty: boolean;
 
   getTriggerDOMNode: () => HTMLElement;
+  onPopupVisibleChange?: (visible: boolean) => void;
 }
 
 const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTriggerProps> = (
@@ -91,6 +92,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     getPopupContainer,
     empty,
     getTriggerDOMNode,
+    onPopupVisibleChange,
     ...restProps
   } = props;
 
@@ -129,8 +131,8 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
   return (
     <Trigger
       {...restProps}
-      showAction={[]}
-      hideAction={[]}
+      showAction={onPopupVisibleChange ? ['click'] : []}
+      hideAction={onPopupVisibleChange ? ['click'] : []}
       popupPlacement={direction === 'rtl' ? 'bottomRight' : 'bottomLeft'}
       builtinPlacements={builtInPlacements}
       prefixCls={dropdownPrefixCls}
@@ -144,6 +146,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
       })}
       popupStyle={popupStyle}
       getTriggerDOMNode={getTriggerDOMNode}
+      onPopupVisibleChange={onPopupVisibleChange}
     >
       {children}
     </Trigger>
