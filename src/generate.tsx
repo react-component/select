@@ -11,6 +11,7 @@ import * as React from 'react';
 import { useState, useRef, useEffect, useMemo } from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import isMobile from 'rc-util/lib/isMobile';
+import { composeRef } from 'rc-util/lib/ref';
 import classNames from 'classnames';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import type { ScrollTo } from 'rc-virtual-list/lib/List';
@@ -1070,7 +1071,11 @@ export default function generateSelector<
         getTriggerDOMNode={() => selectorDomRef.current}
         onPopupVisibleChange={onTriggerVisibleChange}
       >
-        {customizeRawInputElement || (
+        {customizeRawInputElement ? (
+          React.cloneElement(customizeRawInputElement, {
+            ref: composeRef(selectorDomRef, customizeRawInputElement.props.ref),
+          })
+        ) : (
           <Selector
             {...props}
             domRef={selectorDomRef}

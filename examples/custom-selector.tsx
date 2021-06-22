@@ -7,6 +7,7 @@ export default () => {
   return (
     <Select
       getRawInputElement={() => <span>Content</span>}
+      mode="multiple"
       options={[{ value: 'light' }, { value: 'bamboo' }]}
       allowClear
       placeholder="2333"
