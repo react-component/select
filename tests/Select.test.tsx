@@ -801,6 +801,24 @@ describe('Select.Basic', () => {
     expect(onCompositionEnd).toHaveBeenCalled();
   });
 
+  it('getRawInputElement for rc-cascader', () => {
+    const wrapper = mount(
+      <Select
+        getRawInputElement={() => <span className="bamboo" />}
+        options={[
+          {
+            label: <span className="little" />,
+            value: 'little',
+          },
+        ]}
+        open
+      />,
+    );
+
+    expect(wrapper.exists('.bamboo')).toBeTruthy();
+    expect(wrapper.exists('.little')).toBeTruthy();
+  });
+
   describe('propTypes', () => {
     let errorSpy;
 
