@@ -17,6 +17,7 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
         >
           <span
             class="rc-select-selection-item"
+            title="Jack"
           >
             <span
               class="rc-select-selection-item-content"
@@ -43,6 +44,7 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
         >
           <span
             class="rc-select-selection-item"
+            title="foo"
           >
             <span
               class="rc-select-selection-item-content"
@@ -289,6 +291,7 @@ exports[`Select.Tags render truncates tags by maxTagCount and show maxTagPlaceho
       >
         <span
           class="rc-select-selection-item"
+          title="One"
         >
           <span
             class="rc-select-selection-item-content"
@@ -315,6 +318,7 @@ exports[`Select.Tags render truncates tags by maxTagCount and show maxTagPlaceho
       >
         <span
           class="rc-select-selection-item"
+          title="Two"
         >
           <span
             class="rc-select-selection-item-content"
@@ -401,6 +405,7 @@ exports[`Select.Tags render truncates tags by maxTagCount and show maxTagPlaceho
       >
         <span
           class="rc-select-selection-item"
+          title="One"
         >
           <span
             class="rc-select-selection-item-content"
@@ -427,6 +432,7 @@ exports[`Select.Tags render truncates tags by maxTagCount and show maxTagPlaceho
       >
         <span
           class="rc-select-selection-item"
+          title="Two"
         >
           <span
             class="rc-select-selection-item-content"
@@ -513,6 +519,7 @@ exports[`Select.Tags render truncates values by maxTagTextLength 1`] = `
       >
         <span
           class="rc-select-selection-item"
+          title="On..."
         >
           <span
             class="rc-select-selection-item-content"
@@ -539,6 +546,7 @@ exports[`Select.Tags render truncates values by maxTagTextLength 1`] = `
       >
         <span
           class="rc-select-selection-item"
+          title="Tw..."
         >
           <span
             class="rc-select-selection-item-content"

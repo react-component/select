@@ -262,10 +262,7 @@ describe('Select.Multiple', () => {
     );
 
     toggleOpen(wrapper);
-    wrapper
-      .find('div.rc-select-item-option')
-      .at(1)
-      .simulate('mouseMove');
+    wrapper.find('div.rc-select-item-option').at(1).simulate('mouseMove');
 
     wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
     expectOpen(wrapper);
@@ -283,16 +280,10 @@ describe('Select.Multiple', () => {
     );
 
     toggleOpen(wrapper);
-    wrapper
-      .find('div.rc-select-item-option')
-      .first()
-      .simulate('mousemove');
+    wrapper.find('div.rc-select-item-option').first().simulate('mousemove');
     wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
 
-    wrapper
-      .find('div.rc-select-item-option')
-      .first()
-      .simulate('mousemove');
+    wrapper.find('div.rc-select-item-option').first().simulate('mousemove');
     wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
 
     expect(wrapper.find('Selector').props().values).toEqual([]);
@@ -448,18 +439,24 @@ describe('Select.Multiple', () => {
     const wrapper = mount(
       <Select mode="multiple" options={[{ value: 'bamboo' }, { value: 'light' }]} tabIndex={0} />,
     );
-    expect(
-      wrapper
-        .find('.rc-select')
-        .getDOMNode()
-        .getAttribute('tabindex'),
-    ).toBeNull();
+    expect(wrapper.find('.rc-select').getDOMNode().getAttribute('tabindex')).toBeNull();
 
     expect(
-      wrapper
-        .find('input.rc-select-selection-search-input')
-        .getDOMNode()
-        .getAttribute('tabindex'),
+      wrapper.find('input.rc-select-selection-search-input').getDOMNode().getAttribute('tabindex'),
     ).toBe('0');
+  });
+
+  it('should render title defaultly', () => {
+    const wrapper = mount(
+      <Select mode="multiple" options={[{ value: 'title' }]} value={['title']} />,
+    );
+    expect(wrapper.find('.rc-select-selection-item').first().prop('title')).toBe('title');
+  });
+
+  it('should not render title defaultly when label is ReactNode', () => {
+    const wrapper = mount(
+      <Select mode="multiple" options={[{ value: '1', label: <div>label</div> }]} value={['1']} />,
+    );
+    expect(wrapper.find('.rc-select-selection-item').first().prop('title')).toBe(undefined);
   });
 });
