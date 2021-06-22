@@ -11,6 +11,7 @@ import * as React from 'react';
 import { useState, useRef, useEffect, useMemo } from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import isMobile from 'rc-util/lib/isMobile';
+import { composeRef } from 'rc-util/lib/ref';
 import classNames from 'classnames';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import type { ScrollTo } from 'rc-virtual-list/lib/List';
@@ -133,6 +134,8 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   backfill?: boolean;
   /** @private Internal usage. Do not use in your production. */
   getInputElement?: () => JSX.Element;
+  /** @private Internal usage. Do not use in your production. */
+  getRawInputElement?: () => JSX.Element;
   optionLabelProp?: string;
   maxTagTextLength?: number;
   maxTagCount?: number | 'responsive';
@@ -289,6 +292,7 @@ export default function generateSelector<
       backfill,
       tabIndex,
       getInputElement,
+      getRawInputElement,
       getPopupContainer,
 
       // Dropdown
@@ -635,9 +639,13 @@ export default function generateSelector<
     };
 
     // ============================= Input ==============================
-    // Only works in `combobox` or `rc-cascader`
+    // Only works in `combobox`
     const customizeInputElement: React.ReactElement =
-      (typeof getInputElement === 'function' && getInputElement()) || null;
+      (mode === 'combobox' && typeof getInputElement === 'function' && getInputElement()) || null;
+
+    // Used for customize replacement for `rc-cascader`
+    const customizeRawInputElement: React.ReactElement =
+      typeof getRawInputElement === 'function' && getRawInputElement();
 
     // ============================== Open ==============================
     const [innerOpen, setInnerOpen] = useMergedState<boolean>(undefined, {
@@ -665,6 +673,14 @@ export default function generateSelector<
         }
       }
     };
+
+    // Used for raw custom input trigger
+    let onTriggerVisibleChange: null | ((newOpen: boolean) => void);
+    if (customizeRawInputElement) {
+      onTriggerVisibleChange = (newOpen: boolean) => {
+        onToggleOpen(newOpen);
+      };
+    }
 
     useSelectTriggerControl(
       [containerRef.current, triggerRef.current && triggerRef.current.getPopupElement()],
@@ -931,8 +947,8 @@ export default function generateSelector<
 
     useLayoutEffect(() => {
       if (triggerOpen) {
-        const newWidth = Math.ceil(containerRef.current.offsetWidth);
-        if (containerWidth !== newWidth) {
+        const newWidth = Math.ceil(containerRef.current?.offsetWidth);
+        if (containerWidth !== newWidth && !Number.isNaN(newWidth)) {
           setContainerWidth(newWidth);
         }
       }
@@ -1034,6 +1050,63 @@ export default function generateSelector<
       [`${prefixCls}-show-search`]: mergedShowSearch,
     });
 
+    const selectorNode = (
+      <SelectTrigger
+        ref={triggerRef}
+        disabled={disabled}
+        prefixCls={prefixCls}
+        visible={triggerOpen}
+        popupElement={popupNode}
+        containerWidth={containerWidth}
+        animation={animation}
+        transitionName={transitionName}
+        dropdownStyle={dropdownStyle}
+        dropdownClassName={dropdownClassName}
+        direction={direction}
+        dropdownMatchSelectWidth={dropdownMatchSelectWidth}
+        dropdownRender={dropdownRender}
+        dropdownAlign={dropdownAlign}
+        getPopupContainer={getPopupContainer}
+        empty={!mergedOptions.length}
+        getTriggerDOMNode={() => selectorDomRef.current}
+        onPopupVisibleChange={onTriggerVisibleChange}
+      >
+        {customizeRawInputElement ? (
+          React.cloneElement(customizeRawInputElement, {
+            ref: composeRef(selectorDomRef, customizeRawInputElement.props.ref),
+          })
+        ) : (
+          <Selector
+            {...props}
+            domRef={selectorDomRef}
+            prefixCls={prefixCls}
+            inputElement={customizeInputElement}
+            ref={selectorRef}
+            id={mergedId}
+            showSearch={mergedShowSearch}
+            mode={mode}
+            accessibilityIndex={accessibilityIndex}
+            multiple={isMultiple}
+            tagRender={tagRender}
+            values={displayValues}
+            open={mergedOpen}
+            onToggleOpen={onToggleOpen}
+            searchValue={mergedSearchValue}
+            activeValue={activeValue}
+            onSearch={triggerSearch}
+            onSearchSubmit={onSearchSubmit}
+            onSelect={onInternalSelectionSelect}
+            tokenWithEnter={tokenWithEnter}
+          />
+        )}
+      </SelectTrigger>
+    );
+
+    // Render raw
+    if (customizeRawInputElement) {
+      return selectorNode;
+    }
+
     return (
       <div
         className={mergedClassName}
@@ -1060,48 +1133,7 @@ export default function generateSelector<
             {`${mergedRawValue.join(', ')}`}
           </span>
         )}
-        <SelectTrigger
-          ref={triggerRef}
-          disabled={disabled}
-          prefixCls={prefixCls}
-          visible={triggerOpen}
-          popupElement={popupNode}
-          containerWidth={containerWidth}
-          animation={animation}
-          transitionName={transitionName}
-          dropdownStyle={dropdownStyle}
-          dropdownClassName={dropdownClassName}
-          direction={direction}
-          dropdownMatchSelectWidth={dropdownMatchSelectWidth}
-          dropdownRender={dropdownRender}
-          dropdownAlign={dropdownAlign}
-          getPopupContainer={getPopupContainer}
-          empty={!mergedOptions.length}
-          getTriggerDOMNode={() => selectorDomRef.current}
-        >
-          <Selector
-            {...props}
-            domRef={selectorDomRef}
-            prefixCls={prefixCls}
-            inputElement={customizeInputElement}
-            ref={selectorRef}
-            id={mergedId}
-            showSearch={mergedShowSearch}
-            mode={mode}
-            accessibilityIndex={accessibilityIndex}
-            multiple={isMultiple}
-            tagRender={tagRender}
-            values={displayValues}
-            open={mergedOpen}
-            onToggleOpen={onToggleOpen}
-            searchValue={mergedSearchValue}
-            activeValue={activeValue}
-            onSearch={triggerSearch}
-            onSearchSubmit={onSearchSubmit}
-            onSelect={onInternalSelectionSelect}
-            tokenWithEnter={tokenWithEnter}
-          />
-        </SelectTrigger>
+        {selectorNode}
 
         {arrowNode}
         {clearNode}
