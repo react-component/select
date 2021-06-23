@@ -60,12 +60,16 @@ export function flattenOptions(
 
   function dig(list: SelectOptionsType, isGroupOption: boolean) {
     list.forEach((data) => {
-      if (isGroupOption || !('options' in data)) {
+      const label = data[fieldLabel];
+
+      if (isGroupOption || !(fieldOptions in data)) {
         // Option
         flattenList.push({
           key: getKey(data, flattenList.length),
           groupOption: isGroupOption,
           data,
+          label,
+          value: data[fieldValue],
         });
       } else {
         // Option Group
@@ -73,8 +77,7 @@ export function flattenOptions(
           key: getKey(data, flattenList.length),
           group: true,
           data,
-          label: data[fieldLabel],
-          value: data[fieldValue],
+          label,
         });
 
         dig(data[fieldOptions], true);
