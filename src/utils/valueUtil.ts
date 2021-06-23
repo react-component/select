@@ -4,6 +4,7 @@ import type {
   OptionData,
   OptionGroupData,
   FlattenOptionData,
+  FieldNames,
 } from '../interface';
 import type {
   LabelValueType,
@@ -32,13 +33,30 @@ function getKey(data: OptionData | OptionGroupData, index: number) {
   return `rc-index-key-${index}`;
 }
 
+export function fillFieldNames(fieldNames?: FieldNames) {
+  const { label, value, options } = fieldNames || {};
+
+  return {
+    label: label || 'label',
+    value: value || 'value',
+    options: options || 'options',
+  };
+}
+
 /**
  * Flat options into flatten list.
  * We use `optionOnly` here is aim to avoid user use nested option group.
  * Here is simply set `key` to the index if not provided.
  */
-export function flattenOptions(options: SelectOptionsType): FlattenOptionData[] {
+export function flattenOptions(
+  options: SelectOptionsType,
+  { fieldNames }: { fieldNames?: FieldNames } = {},
+): FlattenOptionData[] {
   const flattenList: FlattenOptionData[] = [];
+
+  const { label: fieldLabel, value: fieldValue, options: fieldOptions } = fillFieldNames(
+    fieldNames,
+  );
 
   function dig(list: SelectOptionsType, isGroupOption: boolean) {
     list.forEach((data) => {
@@ -55,9 +73,11 @@ export function flattenOptions(options: SelectOptionsType): FlattenOptionData[] 
           key: getKey(data, flattenList.length),
           group: true,
           data,
+          label: data[fieldLabel],
+          value: data[fieldValue],
         });
 
-        dig(data.options, true);
+        dig(data[fieldOptions], true);
       }
     });
   }
