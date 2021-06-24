@@ -54,9 +54,11 @@ export function flattenOptions(
 ): FlattenOptionData[] {
   const flattenList: FlattenOptionData[] = [];
 
-  const { label: fieldLabel, value: fieldValue, options: fieldOptions } = fillFieldNames(
-    fieldNames,
-  );
+  const {
+    label: fieldLabel,
+    value: fieldValue,
+    options: fieldOptions,
+  } = fillFieldNames(fieldNames);
 
   function dig(list: SelectOptionsType, isGroupOption: boolean) {
     list.forEach((data) => {
@@ -117,11 +119,10 @@ export function findValueOption(
 ): OptionData[] {
   const optionMap: Map<RawValueType, OptionData> = new Map();
 
-  options.forEach((flattenItem) => {
-    if (!flattenItem.group) {
-      const data = flattenItem.data as OptionData;
+  options.forEach(({ data, group, value }) => {
+    if (!group) {
       // Check if match
-      optionMap.set(data.value, data);
+      optionMap.set(value, data as OptionData);
     }
   });
 

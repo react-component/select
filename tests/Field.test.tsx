@@ -3,6 +3,7 @@ import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import * as React from 'react';
 import Select from '../src';
+import type { SelectProps } from '../src';
 import { injectRunAllTimers } from './utils/common';
 
 describe('Select.Field', () => {
@@ -16,21 +17,18 @@ describe('Select.Field', () => {
     jest.useRealTimers();
   });
 
-  it('fieldNames should work', () => {
-    const onChange = jest.fn();
+  const OPTION_1 = { bambooLabel: 'Light', bambooValue: 'light' };
+  const OPTION_2 = { bambooLabel: 'Little', bambooValue: 'little' };
 
-    const wrapper = mount(
+  function mountSelect(props?: Partial<SelectProps<any>>) {
+    return mount(
       <Select
         open
-        onChange={onChange}
         options={
           [
             {
               bambooLabel: 'Bamboo',
-              bambooChildren: [
-                { bambooLabel: 'Light', bambooValue: 'light' },
-                { bambooLabel: 'Little', bambooValue: 'little' },
-              ],
+              bambooChildren: [OPTION_1, OPTION_2],
             },
           ] as any
         }
@@ -39,8 +37,16 @@ describe('Select.Field', () => {
           value: 'bambooValue',
           options: 'bambooChildren',
         }}
+        {...props}
       />,
     );
+  }
+
+  it('fieldNames should work', () => {
+    const onChange = jest.fn();
+    const onSelect = jest.fn();
+
+    const wrapper = mountSelect({ onChange, onSelect });
 
     act(() => {
       jest.runAllTimers();
@@ -53,6 +59,21 @@ describe('Select.Field', () => {
 
     // Click
     wrapper.find('.rc-select-item-option-content').last().simulate('click');
-    expect(onChange).toHaveBeenCalledWith(2333);
+    expect(onChange).toHaveBeenCalledWith('little', OPTION_2);
+    expect(onSelect).toHaveBeenCalledWith('little', OPTION_2);
+  });
+
+  it('multiple', () => {
+    const onChange = jest.fn();
+    const wrapper = mountSelect({ mode: 'multiple', onChange });
+
+    // First one
+    wrapper.find('.rc-select-item-option-content').first().simulate('click');
+    expect(onChange).toHaveBeenCalledWith(['light'], [OPTION_1]);
+
+    // Last one
+    onChange.mockReset();
+    wrapper.find('.rc-select-item-option-content').last().simulate('click');
+    expect(onChange).toHaveBeenCalledWith(['light', 'little'], [OPTION_1, OPTION_2]);
   });
 });

@@ -251,7 +251,7 @@ const OptionList: React.RefForwardingComponent<
     );
   }
 
-  const omitFieldNameList = Object.keys(fillFieldNames(fieldNames));
+  const omitFieldNameList = Object.values(fillFieldNames(fieldNames));
 
   const renderItem = (index: number) => {
     const item = memoFlattenOptions[index];
