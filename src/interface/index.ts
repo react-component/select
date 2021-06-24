@@ -8,6 +8,12 @@ export type RenderNode = React.ReactNode | ((props: any) => React.ReactNode);
 export type Mode = 'multiple' | 'tags' | 'combobox';
 
 // ======================== Option ========================
+export interface FieldNames {
+  value?: string;
+  label?: string;
+  options?: string;
+}
+
 export type OnActiveValue = (
   active: RawValueType,
   index: number,
@@ -49,4 +55,6 @@ export interface FlattenOptionData {
   groupOption?: boolean;
   key: string | number;
   data: OptionData | OptionGroupData;
+  label?: React.ReactNode;
+  value?: React.Key;
 }

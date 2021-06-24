@@ -19,7 +19,7 @@ import type { RefSelectorProps } from './Selector';
 import Selector from './Selector';
 import type { RefTriggerProps } from './SelectTrigger';
 import SelectTrigger from './SelectTrigger';
-import type { RenderNode, Mode, RenderDOMFunc, OnActiveValue } from './interface';
+import type { RenderNode, Mode, RenderDOMFunc, OnActiveValue, FieldNames } from './interface';
 import type {
   GetLabeledValue,
   FilterOptions,
@@ -83,6 +83,9 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   labelInValue?: boolean;
   /** Config max length of input. This is only work when `mode` is `combobox` */
   maxLength?: number;
+
+  // Field
+  fieldNames?: FieldNames;
 
   // Search
   inputValue?: string;
@@ -275,6 +278,8 @@ export default function generateSelector<
       optionFilterProp = 'value',
       autoClearSearchValue = true,
       onSearch,
+
+      fieldNames,
 
       // Icons
       allowClear,
@@ -961,6 +966,7 @@ export default function generateSelector<
         open={mergedOpen}
         childrenAsData={!options}
         options={displayOptions}
+        fieldNames={fieldNames}
         flattenOptions={displayFlattenOptions}
         multiple={isMultiple}
         values={rawValues}

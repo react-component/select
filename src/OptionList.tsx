@@ -1,5 +1,6 @@
 import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
+import omit from 'rc-util/lib/omit';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import useMemo from 'rc-util/lib/hooks/useMemo';
 import classNames from 'classnames';
@@ -12,13 +13,16 @@ import type {
   OptionData,
   RenderNode,
   OnActiveValue,
+  FieldNames,
 } from './interface';
 import type { RawValueType, FlattenOptionsType } from './interface/generator';
+import { fillFieldNames } from './utils/valueUtil';
 
 export interface OptionListProps<OptionsType extends object[]> {
   prefixCls: string;
   id: string;
   options: OptionsType;
+  fieldNames?: FieldNames;
   flattenOptions: FlattenOptionsType<OptionsType>;
   height: number;
   itemHeight: number;
@@ -59,6 +63,7 @@ const OptionList: React.RefForwardingComponent<
   {
     prefixCls,
     id,
+    fieldNames,
     flattenOptions,
     childrenAsData,
     values,
@@ -246,7 +251,9 @@ const OptionList: React.RefForwardingComponent<
     );
   }
 
-  function renderItem(index: number) {
+  const omitFieldNameList = Object.values(fillFieldNames(fieldNames));
+
+  const renderItem = (index: number) => {
     const item = memoFlattenOptions[index];
     if (!item) return null;
 
@@ -266,7 +273,7 @@ const OptionList: React.RefForwardingComponent<
         {value}
       </div>
     ) : null;
-  }
+  };
 
   return (
     <>
@@ -287,8 +294,8 @@ const OptionList: React.RefForwardingComponent<
         virtual={virtual}
         onMouseEnter={onMouseEnter}
       >
-        {({ group, groupOption, data }, itemIndex) => {
-          const { label, key } = data;
+        {({ group, groupOption, data, label, value }, itemIndex) => {
+          const { key } = data;
 
           // Group
           if (group) {
@@ -299,15 +306,8 @@ const OptionList: React.RefForwardingComponent<
             );
           }
 
-          const {
-            disabled,
-            value,
-            title,
-            children,
-            style,
-            className,
-            ...otherProps
-          } = data as OptionData;
+          const { disabled, title, children, style, className, ...otherProps } = data as OptionData;
+          const passedProps = omit(otherProps, omitFieldNameList);
 
           // Option
           const selected = values.has(value);
@@ -337,7 +337,7 @@ const OptionList: React.RefForwardingComponent<
 
           return (
             <div
-              {...otherProps}
+              {...passedProps}
               aria-selected={selected}
               className={optionClassName}
               title={optionTitle}

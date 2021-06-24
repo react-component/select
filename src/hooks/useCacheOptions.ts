@@ -16,9 +16,7 @@ export default function useCacheOptions<
   const optionMap = React.useMemo(() => {
     const map: Map<RawValueType, FlattenOptionsType<OptionsType>[number]> = new Map();
     options.forEach((item) => {
-      const {
-        data: { value },
-      } = item;
+      const { value } = item;
       map.set(value, item);
     });
     return map;
@@ -26,8 +24,8 @@ export default function useCacheOptions<
 
   prevOptionMapRef.current = optionMap;
 
-  const getValueOption = (vals: RawValueType[]): FlattenOptionsType<OptionsType> =>
-    vals.map((value) => prevOptionMapRef.current.get(value)).filter(Boolean);
+  const getValueOption = (valueList: RawValueType[]): FlattenOptionsType<OptionsType> =>
+    valueList.map((value) => prevOptionMapRef.current.get(value)).filter(Boolean);
 
   return getValueOption;
 }

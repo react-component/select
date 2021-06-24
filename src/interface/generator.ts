@@ -65,6 +65,8 @@ export declare function RefSelectFunc<OptionsType extends object[], ValueType>(
 export type FlattenOptionsType<OptionsType extends object[] = object[]> = {
   key: Key;
   data: OptionsType[number];
+  label?: React.ReactNode;
+  value?: RawValueType;
   /** Used for customize data */
   [name: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }[];
