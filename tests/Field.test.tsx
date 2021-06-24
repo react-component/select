@@ -17,10 +17,12 @@ describe('Select.Field', () => {
   });
 
   it('fieldNames should work', () => {
-    // Use special name to avoid compatible match
+    const onChange = jest.fn();
+
     const wrapper = mount(
       <Select
         open
+        onChange={onChange}
         options={
           [
             {
@@ -35,7 +37,7 @@ describe('Select.Field', () => {
         fieldNames={{
           label: 'bambooLabel',
           value: 'bambooValue',
-          children: 'bambooChildren',
+          options: 'bambooChildren',
         }}
       />,
     );
@@ -44,7 +46,13 @@ describe('Select.Field', () => {
       jest.runAllTimers();
     });
 
-    // expect(wrapper.);
-    console.log('>>>', wrapper.find('.rc-virtual-list-holder-inner').html());
+    // Label match
+    expect(wrapper.find('.rc-select-item-group').text()).toEqual('Bamboo');
+    expect(wrapper.find('.rc-select-item-option').first().text()).toEqual('Light');
+    expect(wrapper.find('.rc-select-item-option').last().text()).toEqual('Little');
+
+    // Click
+    wrapper.find('.rc-select-item-option-content').last().simulate('click');
+    expect(onChange).toHaveBeenCalledWith(2333);
   });
 });

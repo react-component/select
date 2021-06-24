@@ -143,7 +143,7 @@ export function findValueOption(
 export const getLabeledValue: GetLabeledValue<FlattenOptionData[]> = (
   value,
   { options, prevValueMap, labelInValue, optionLabelProp },
-) => {
+): LabelValueType => {
   const item = findValueOption([value], options)[0];
   const result: LabelValueType = {
     value,
