@@ -203,14 +203,11 @@ export interface GenerateConfig<OptionsType extends object[]> {
   /** Convert single raw value into { label, value } format. Will be called by each value */
   getLabeledValue: GetLabeledValue<FlattenOptionsType<OptionsType>>;
   filterOptions: FilterOptions<OptionsType>;
-  findValueOption: // Need still support legacy ts api
-  | ((values: RawValueType[], options: FlattenOptionsType<OptionsType>) => OptionsType)
-    // New API add prevValueOptions support
-    | ((
-        values: RawValueType[],
-        options: FlattenOptionsType<OptionsType>,
-        info?: { prevValueOptions?: OptionsType[] },
-      ) => OptionsType);
+  findValueOption: (
+    values: RawValueType[],
+    options: FlattenOptionsType<OptionsType>,
+    info?: { prevValueOptions?: OptionsType[]; props?: any },
+  ) => OptionsType;
   /** Check if a value is disabled */
   isValueDisabled: (value: RawValueType, options: FlattenOptionsType<OptionsType>) => boolean;
   warningProps?: (props: any) => void;
@@ -233,7 +230,7 @@ export default function generateSelector<
     label?: React.ReactNode;
     key?: Key;
     disabled?: boolean;
-  }[]
+  }[],
 >(config: GenerateConfig<OptionsType>) {
   const {
     prefixCls: defaultPrefixCls,
@@ -527,18 +524,20 @@ export default function generateSelector<
 
     const triggerSelect = (newValue: RawValueType, isSelect: boolean, source: SelectSource) => {
       const newValueOption = getValueOption([newValue]);
-      const outOption = findValueOption([newValue], newValueOption)[0];
+      const outOption = findValueOption([newValue], newValueOption, { props })[0];
 
       if (!internalProps.skipTriggerSelect) {
         // Skip trigger `onSelect` or `onDeselect` if configured
-        const selectValue = (mergedLabelInValue
-          ? getLabeledValue(newValue, {
-              options: newValueOption,
-              prevValueMap: mergedValueMap,
-              labelInValue: mergedLabelInValue,
-              optionLabelProp: mergedOptionLabelProp,
-            })
-          : newValue) as SingleType<ValueType>;
+        const selectValue = (
+          mergedLabelInValue
+            ? getLabeledValue(newValue, {
+                options: newValueOption,
+                prevValueMap: mergedValueMap,
+                labelInValue: mergedLabelInValue,
+                optionLabelProp: mergedOptionLabelProp,
+              })
+            : newValue
+        ) as SingleType<ValueType>;
 
         if (isSelect && onSelect) {
           onSelect(selectValue, outOption);
@@ -576,7 +575,10 @@ export default function generateSelector<
       const outValue: ValueType = (isMultiple ? outValues : outValues[0]) as ValueType;
       // Skip trigger if prev & current value is both empty
       if (onChange && (mergedRawValue.length !== 0 || outValues.length !== 0)) {
-        const outOptions = findValueOption(newRawValues, newRawValuesOptions, { prevValueOptions });
+        const outOptions = findValueOption(newRawValues, newRawValuesOptions, {
+          prevValueOptions,
+          props,
+        });
 
         // We will cache option in case it removed by ajax
         setPrevValueOptions(
@@ -756,9 +758,7 @@ export default function generateSelector<
       if (!searchText || !searchText.trim()) {
         return;
       }
-      const newRawValues = Array.from(
-        new Set<RawValueType>([...mergedRawValue, searchText]),
-      );
+      const newRawValues = Array.from(new Set<RawValueType>([...mergedRawValue, searchText]));
       triggerChange(newRawValues);
       newRawValues.forEach((newRawValue) => {
         triggerSelect(newRawValue, true, 'input');
@@ -1148,7 +1148,7 @@ export default function generateSelector<
 
   // Ref of Select
   type RefSelectFuncType = typeof RefSelectFunc;
-  const RefSelect = ((React.forwardRef as unknown) as RefSelectFuncType)(Select);
+  const RefSelect = (React.forwardRef as unknown as RefSelectFuncType)(Select);
 
   return RefSelect;
 }
