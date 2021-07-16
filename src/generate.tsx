@@ -158,6 +158,7 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
   onClick?: React.MouseEventHandler;
   onChange?: (value: ValueType, option: OptionsType[number] | OptionsType) => void;
+  onBeforeBlur?: (event: React.FocusEvent<HTMLElement>) => boolean;
   onBlur?: React.FocusEventHandler<HTMLElement>;
   onFocus?: React.FocusEventHandler<HTMLElement>;
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
@@ -322,6 +323,7 @@ export default function generateSelector<
       onPopupScroll,
       onDropdownVisibleChange,
       onFocus,
+      onBeforeBlur,
       onBlur,
       onKeyUp,
       onKeyDown,
@@ -869,6 +871,8 @@ export default function generateSelector<
     };
 
     const onContainerBlur: React.FocusEventHandler<HTMLElement> = (...args) => {
+      if (onBeforeBlur && !onBeforeBlur(args[0])) return;
+
       setMockFocused(false, () => {
         focusRef.current = false;
         onToggleOpen(false);
