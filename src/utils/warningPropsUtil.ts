@@ -101,7 +101,7 @@ function warningProps(props: SelectProps) {
 
   // Syntactic sugar should use correct children type
   if (children) {
-    let invalidateChildType = null;
+    let invalidateChildType: any = null;
     toNodeArray(children).some((node: React.ReactNode) => {
       if (!React.isValidElement(node) || !node.type) {
         return false;
@@ -140,7 +140,9 @@ function warningProps(props: SelectProps) {
       warning(
         false,
         `\`children\` should be \`Select.Option\` or \`Select.OptGroup\` instead of \`${
-          invalidateChildType.displayName || invalidateChildType.name || invalidateChildType
+          (invalidateChildType as any).displayName ||
+          (invalidateChildType as any).name ||
+          invalidateChildType
         }\`.`,
       );
     }
