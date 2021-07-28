@@ -54,7 +54,7 @@ export interface SelectTriggerProps {
   visible: boolean;
   popupElement: React.ReactElement;
 
-  animation?: string;
+  animation?: string | null;
   transitionName?: string;
   containerWidth: number;
   dropdownStyle: React.CSSProperties;
@@ -103,9 +103,10 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     popupNode = dropdownRender(popupElement);
   }
 
-  const builtInPlacements = React.useMemo(() => getBuiltInPlacements(dropdownMatchSelectWidth), [
-    dropdownMatchSelectWidth,
-  ]);
+  const builtInPlacements = React.useMemo(
+    () => getBuiltInPlacements(dropdownMatchSelectWidth),
+    [dropdownMatchSelectWidth],
+  );
 
   // ===================== Motion ======================
   const mergedTransitionName = animation ? `${dropdownPrefixCls}-${animation}` : transitionName;

@@ -8,20 +8,28 @@ class Test extends React.Component {
     options: [],
   };
 
-  onSelect = value => {
+  onSelect = (value) => {
     console.log('onSelect', value);
   };
 
-  onChange = value => {
+  onChange = (value) => {
     console.log('onChange', value);
     let options: React.ReactNode = [];
     if (value) {
       if (value.indexOf('@') >= 0) {
-        options = <Option key={value}>{value}</Option>;
+        options = (
+          <Option key={value} value={value}>
+            {value}
+          </Option>
+        );
       } else {
-        options = ['gmail.com', 'yahoo.com', 'outlook.com'].map(domain => {
+        options = ['gmail.com', 'yahoo.com', 'outlook.com'].map((domain) => {
           const email = `${value}@${domain}`;
-          return <Option key={email}>{email}</Option>;
+          return (
+            <Option key={email} value={email}>
+              {email}
+            </Option>
+          );
         });
       }
     }

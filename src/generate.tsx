@@ -122,7 +122,7 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   virtual?: boolean;
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
   dropdownAlign?: any;
-  animation?: string;
+  animation?: string | null;
   transitionName?: string;
   getPopupContainer?: RenderDOMFunc;
   direction?: string;

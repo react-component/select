@@ -128,10 +128,15 @@ class CustomIconComponent extends React.Component {
   }
 }
 
-const children = [];
+const children: React.ReactNode[] = [];
 for (let i = 10; i < 36; i += 1) {
   children.push(
-    <Option key={i.toString(36) + i} disabled={i === 10} title={`中文${i}`}>
+    <Option
+      key={i.toString(36) + i}
+      value={i.toString(36) + i}
+      disabled={i === 10}
+      title={`中文${i}`}
+    >
       中文{i}
     </Option>,
   );

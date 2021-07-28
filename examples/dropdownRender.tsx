@@ -3,10 +3,10 @@ import React from 'react';
 import Select, { Option } from '../src';
 import '../assets/index.less';
 
-const children = [];
+const children: React.ReactNode[] = [];
 for (let i = 10; i < 36; i += 1) {
   children.push(
-    <Option key={i.toString(36) + i} test={i}>
+    <Option key={i.toString(36) + i} value={i.toString(36) + i} test={i}>
       {i.toString(36) + i}
     </Option>,
   );
@@ -50,7 +50,7 @@ class Test extends React.Component {
             tokenSeparators={[' ', ',']}
             onFocus={() => console.log('focus')}
             onBlur={() => console.log('blur')}
-            dropdownRender={menu => (
+            dropdownRender={(menu) => (
               <React.Fragment>
                 <div
                   onClick={() => {

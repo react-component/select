@@ -28,10 +28,15 @@ class Test extends React.Component {
   };
 
   loadData = () => {
-    const children = [];
+    const children: React.ReactNode[] = [];
     for (let i = 10; i < 36; i += 1) {
       children.push(
-        <Option key={i.toString(36) + i} disabled={i === 10} title={`中文${i}`}>
+        <Option
+          key={i.toString(36) + i}
+          value={i.toString(36) + i}
+          disabled={i === 10}
+          title={`中文${i}`}
+        >
           中文{i}
         </Option>,
       );
@@ -60,7 +65,7 @@ class Test extends React.Component {
             placeholder="please select"
             onChange={this.onChange}
             onFocus={() => console.log('focus')}
-            onBlur={v => console.log('blur', v)}
+            onBlur={(v) => console.log('blur', v)}
             tokenSeparators={[' ', ',']}
           >
             {children}
