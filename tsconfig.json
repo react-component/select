@@ -5,6 +5,7 @@
     "baseUrl": "./",
     "jsx": "preserve",
     "declaration": true,
+    "noEmit": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "paths": {
