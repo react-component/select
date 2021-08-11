@@ -17,6 +17,7 @@ import type {
 } from './interface';
 import type { RawValueType, FlattenOptionsType } from './interface/generator';
 import { fillFieldNames } from './utils/valueUtil';
+import { isPlatformMac } from './utils/platformUtil';
 
 export interface OptionListProps<OptionsType extends object[]> {
   prefixCls: string;
@@ -183,9 +184,11 @@ const OptionList: React.RefForwardingComponent<
   // ========================= Keyboard =========================
   React.useImperativeHandle(ref, () => ({
     onKeyDown: (event) => {
-      const { which } = event;
+      const { which, ctrlKey } = event;
       switch (which) {
-        // >>> Arrow keys
+        // >>> Arrow keys & ctrl + n/p on Mac
+        case KeyCode.N:
+        case KeyCode.P:
         case KeyCode.UP:
         case KeyCode.DOWN: {
           let offset = 0;
@@ -193,6 +196,12 @@ const OptionList: React.RefForwardingComponent<
             offset = -1;
           } else if (which === KeyCode.DOWN) {
             offset = 1;
+          } else if (isPlatformMac() && ctrlKey) {
+            if (which === KeyCode.N) {
+              offset = 1;
+            } else if (which === KeyCode.P) {
+              offset = -1;
+            }
           }
 
           if (offset !== 0) {
