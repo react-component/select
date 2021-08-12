@@ -8,6 +8,8 @@ import { injectRunAllTimers } from './utils/common';
 import type { OptionsType } from '../src/interface';
 import { flattenOptions } from '../src/utils/valueUtil';
 
+jest.mock('../src/utils/platformUtil');
+
 describe('OptionList', () => {
   injectRunAllTimers(jest);
 
@@ -106,7 +108,7 @@ describe('OptionList', () => {
 
   // this won't pass on test environment which is usually running on Linux
   // you can test it with a Mac
-  xit('special key operation on Mac', () => {
+  it('special key operation on Mac', () => {
     const onActiveValue = jest.fn();
     const listRef = React.createRef<RefOptionListProps>();
     mount(
