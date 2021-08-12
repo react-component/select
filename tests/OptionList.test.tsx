@@ -106,8 +106,7 @@ describe('OptionList', () => {
     );
   });
 
-  // this won't pass on test environment which is usually running on Linux
-  // you can test it with a Mac
+  // mocked how we detect running platform in test environment
   it('special key operation on Mac', () => {
     const onActiveValue = jest.fn();
     const listRef = React.createRef<RefOptionListProps>();
