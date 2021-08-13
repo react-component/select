@@ -2,10 +2,13 @@ import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { act } from 'react-dom/test-utils';
 import React from 'react';
-import OptionList, { OptionListProps, RefOptionListProps } from '../src/OptionList';
+import type { OptionListProps, RefOptionListProps } from '../src/OptionList';
+import OptionList from '../src/OptionList';
 import { injectRunAllTimers } from './utils/common';
-import { OptionsType } from '../src/interface';
+import type { OptionsType } from '../src/interface';
 import { flattenOptions } from '../src/utils/valueUtil';
+
+jest.mock('../src/utils/platformUtil');
 
 describe('OptionList', () => {
   injectRunAllTimers(jest);
@@ -103,6 +106,39 @@ describe('OptionList', () => {
     );
   });
 
+  // mocked how we detect running platform in test environment
+  it('special key operation on Mac', () => {
+    const onActiveValue = jest.fn();
+    const listRef = React.createRef<RefOptionListProps>();
+    mount(
+      generateList({
+        options: [{ value: '1' }, { value: '2' }],
+        onActiveValue,
+        ref: listRef,
+      }),
+    );
+
+    onActiveValue.mockReset();
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.N, ctrlKey: true } as any);
+    });
+    expect(onActiveValue).toHaveBeenCalledWith(
+      '2',
+      expect.anything(),
+      expect.objectContaining({ source: 'keyboard' }),
+    );
+
+    onActiveValue.mockReset();
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.P, ctrlKey: true } as any);
+    });
+    expect(onActiveValue).toHaveBeenCalledWith(
+      '1',
+      expect.anything(),
+      expect.objectContaining({ source: 'keyboard' }),
+    );
+  });
+
   it('hover to active', () => {
     const onActiveValue = jest.fn();
     const wrapper = mount(
@@ -113,10 +149,7 @@ describe('OptionList', () => {
     );
 
     onActiveValue.mockReset();
-    wrapper
-      .find('.rc-select-item-option')
-      .last()
-      .simulate('mouseMove');
+    wrapper.find('.rc-select-item-option').last().simulate('mouseMove');
     expect(onActiveValue).toHaveBeenCalledWith(
       '2',
       expect.anything(),
@@ -125,10 +158,7 @@ describe('OptionList', () => {
 
     // Same item not repeat trigger
     onActiveValue.mockReset();
-    wrapper
-      .find('.rc-select-item-option')
-      .last()
-      .simulate('mouseMove');
+    wrapper.find('.rc-select-item-option').last().simulate('mouseMove');
     expect(onActiveValue).not.toHaveBeenCalled();
   });
 
@@ -140,12 +170,9 @@ describe('OptionList', () => {
     );
 
     const preventDefault = jest.fn();
-    wrapper
-      .find('.rc-select-item-option')
-      .last()
-      .simulate('mouseDown', {
-        preventDefault,
-      });
+    wrapper.find('.rc-select-item-option').last().simulate('mouseDown', {
+      preventDefault,
+    });
 
     expect(preventDefault).toHaveBeenCalled();
   });
@@ -153,16 +180,14 @@ describe('OptionList', () => {
   it('Data attributes should be set correct', () => {
     const wrapper = mount(
       generateList({
-        options: [{ value: '1', label: 'my-label' }, { value: '2', 'data-num': '123' }],
+        options: [
+          { value: '1', label: 'my-label' },
+          { value: '2', 'data-num': '123' },
+        ],
       }),
     );
 
-    expect(
-      wrapper
-        .find('.rc-select-item-option')
-        .last()
-        .prop('data-num'),
-    ).toBe('123');
+    expect(wrapper.find('.rc-select-item-option').last().prop('data-num')).toBe('123');
   });
 
   it('should render title defaultly', () => {
@@ -171,12 +196,7 @@ describe('OptionList', () => {
         options: [{ value: '1', label: 'my-label' }],
       }),
     );
-    expect(
-      wrapper
-        .find('.rc-select-item-option')
-        .first()
-        .prop('title'),
-    ).toBe('my-label');
+    expect(wrapper.find('.rc-select-item-option').first().prop('title')).toBe('my-label');
   });
 
   it('should render title', () => {
@@ -185,12 +205,7 @@ describe('OptionList', () => {
         options: [{ value: '1', label: 'my-label', title: 'title' }],
       }),
     );
-    expect(
-      wrapper
-        .find('.rc-select-item-option')
-        .first()
-        .prop('title'),
-    ).toBe('title');
+    expect(wrapper.find('.rc-select-item-option').first().prop('title')).toBe('title');
   });
 
   it('should not render title when title is empty string', () => {
@@ -199,12 +214,7 @@ describe('OptionList', () => {
         options: [{ value: '1', label: 'my-label', title: '' }],
       }),
     );
-    expect(
-      wrapper
-        .find('.rc-select-item-option')
-        .first()
-        .prop('title'),
-    ).toBe('');
+    expect(wrapper.find('.rc-select-item-option').first().prop('title')).toBe('');
   });
 
   it('should render title from label when title is undefined', () => {
@@ -213,12 +223,7 @@ describe('OptionList', () => {
         options: [{ value: '1', label: 'my-label', title: undefined }],
       }),
     );
-    expect(
-      wrapper
-        .find('.rc-select-item-option')
-        .first()
-        .prop('title'),
-    ).toBe('my-label');
+    expect(wrapper.find('.rc-select-item-option').first().prop('title')).toBe('my-label');
   });
 
   it('should not render title defaultly when label is ReactNode', () => {
@@ -227,11 +232,6 @@ describe('OptionList', () => {
         options: [{ value: '1', label: <div>label</div> }],
       }),
     );
-    expect(
-      wrapper
-        .find('.rc-select-item-option')
-        .first()
-        .prop('title'),
-    ).toBe(undefined);
+    expect(wrapper.find('.rc-select-item-option').first().prop('title')).toBe(undefined);
   });
 });
