@@ -369,7 +369,7 @@ const OptionList: React.RefForwardingComponent<
                 <TransBtn
                   className={`${itemPrefixCls}-option-state`}
                   customizeIcon={menuItemSelectedIcon}
-                  customizeIconProps={{ isSelected: selected }}
+                  customizeIconProps={{ isSelected: selected, isDisabled: disabled }}
                 >
                   {selected ? '✓' : null}
                 </TransBtn>
