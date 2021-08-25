@@ -36,6 +36,7 @@ export interface OptionListProps<OptionsType extends object[]> {
   childrenAsData: boolean;
   searchValue: string;
   virtual: boolean;
+  direction?: 'ltr' | 'rtl';
 
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
   onToggleOpen: (open?: boolean) => void;
@@ -57,7 +58,7 @@ export interface RefOptionListProps {
  * Using virtual list of option display.
  * Will fallback to dom if use customize render.
  */
-const OptionList: React.RefForwardingComponent<
+const OptionList: React.ForwardRefRenderFunction<
   RefOptionListProps,
   OptionListProps<SelectOptionsType>
 > = (

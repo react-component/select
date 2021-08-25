@@ -208,12 +208,14 @@ describe('Select.Basic', () => {
 
   it('should direction rtl', () => {
     const wrapper = mount(
-      <Select direction="rtl">
+      <Select direction="rtl" open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
     expect(wrapper.find('Trigger').props().popupPlacement).toBe('bottomRight');
+
+    expect(wrapper.find('OptionList').props().direction).toEqual('rtl');
   });
 
   it('should not response click event when select is disabled', () => {

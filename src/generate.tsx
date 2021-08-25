@@ -125,7 +125,7 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   animation?: string;
   transitionName?: string;
   getPopupContainer?: RenderDOMFunc;
-  direction?: string;
+  direction?: 'ltr' | 'rtl';
 
   // Others
   disabled?: boolean;
@@ -985,6 +985,7 @@ export default function generateSelector<
         menuItemSelectedIcon={menuItemSelectedIcon}
         virtual={virtual !== false && dropdownMatchSelectWidth !== false}
         onMouseEnter={onPopupMouseEnter}
+        direction={direction}
       />
     );
 
