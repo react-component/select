@@ -3,7 +3,11 @@ import React from 'react';
 import Select, { Option } from '../src';
 import '../assets/index.less';
 
-const children = [];
+const children = [
+  <Option key="long">
+    l{'o'.repeat(100)}ng
+  </Option>,
+];
 for (let i = 10; i < 36; i += 1) {
   children.push(
     <Option key={i.toString(36) + i} disabled={i === 10} title={`中文${i}`}>
@@ -16,6 +20,7 @@ class Test extends React.Component {
   state = {
     useAnim: false,
     showArrow: false,
+    showSearch: true,
     loading: false,
     value: ['a10'],
   };
@@ -47,6 +52,12 @@ class Test extends React.Component {
     });
   };
 
+  showSearch = e => {
+    this.setState({
+      showSearch: e.target.checked,
+    });
+  };
+
   loading = e => {
     this.setState({
       loading: e.target.checked,
@@ -54,7 +65,7 @@ class Test extends React.Component {
   };
 
   render() {
-    const { useAnim, showArrow, loading, value } = this.state;
+    const { useAnim, showArrow, showSearch, loading, value } = this.state;
     return (
       <div>
         <h2>multiple select（scroll the menu）</h2>
@@ -68,6 +79,16 @@ class Test extends React.Component {
           <label htmlFor="showArrow">
             showArrow
             <input id="showArrow" checked={showArrow} type="checkbox" onChange={this.showArrow} />
+          </label>
+          <p />
+          <label htmlFor="showSearch">
+            showSearch
+            <input
+              id="showSearch"
+              checked={showSearch}
+              type="checkbox"
+              onChange={this.showSearch}
+            />
           </label>
         </p>
         <p>
@@ -85,6 +106,7 @@ class Test extends React.Component {
             choiceTransitionName="rc-select-selection__choice-zoom"
             style={{ width: 500 }}
             mode="multiple"
+            showSearch={showSearch}
             loading={loading}
             showArrow={showArrow}
             allowClear
