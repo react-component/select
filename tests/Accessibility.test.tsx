@@ -25,10 +25,16 @@ describe('Select.Accessibility', () => {
     );
   });
 
-  it.only('active index should keep', () => {
+  // https://github.com/ant-design/ant-design/issues/31850
+  it('active index should keep', () => {
     const wrapper = mount(
       <Select
+        showSearch
         options={[
+          {
+            label: 'Little',
+            value: 'little',
+          },
           {
             label: 'Bamboo',
             value: 'bamboo',
@@ -54,7 +60,8 @@ describe('Select.Accessibility', () => {
     expectOpen(wrapper, false);
 
     // Next Match
-    wrapper.find('input').simulate('change', { target: { value: 'l' } });
+    wrapper.find('input').simulate('change', { target: { value: '' } });
+    wrapper.find('input').simulate('change', { target: { value: 'g' } });
     jest.runAllTimers();
 
     expectOpen(wrapper);

@@ -158,8 +158,11 @@ const OptionList: React.ForwardRefRenderFunction<
         const index = memoFlattenOptions.findIndex(
           ({ data }) => (data as OptionData).value === value,
         );
-        setActive(index);
-        scrollIntoView(index);
+
+        if (index !== -1) {
+          setActive(index);
+          scrollIntoView(index);
+        }
       }
     });
 
@@ -169,7 +172,7 @@ const OptionList: React.ForwardRefRenderFunction<
     }
 
     return () => clearTimeout(timeoutId);
-  }, [open]);
+  }, [open, searchValue]);
 
   // ========================== Values ==========================
   const onSelectValue = (value: RawValueType) => {
