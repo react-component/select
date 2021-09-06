@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import omit from 'rc-util/lib/omit';
 import pickAttrs from 'rc-util/lib/pickAttrs';
@@ -140,12 +141,12 @@ const OptionList: React.ForwardRefRenderFunction<
   };
 
   // Auto active first item when list length or searchValue changed
-  React.useEffect(() => {
+  useEffect(() => {
     setActive(defaultActiveFirstOption !== false ? getEnabledActiveIndex(0) : -1);
   }, [memoFlattenOptions.length, searchValue]);
 
   // Auto scroll to item position in single mode
-  React.useEffect(() => {
+  useEffect(() => {
     /**
      * React will skip `onChange` when component update.
      * `setActive` function will call root accessibility state update which makes re-render.

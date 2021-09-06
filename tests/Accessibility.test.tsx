@@ -1,7 +1,8 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
+import KeyCode from 'rc-util/lib/KeyCode';
 import Select from '../src';
-import { injectRunAllTimers } from './utils/common';
+import { injectRunAllTimers, expectOpen } from './utils/common';
 
 describe('Select.Accessibility', () => {
   injectRunAllTimers(jest);
@@ -22,5 +23,43 @@ describe('Select.Accessibility', () => {
         'aria-label': 'light',
       }),
     );
+  });
+
+  it.only('active index should keep', () => {
+    const wrapper = mount(
+      <Select
+        options={[
+          {
+            label: 'Bamboo',
+            value: 'bamboo',
+          },
+          {
+            label: 'Light',
+            value: 'light',
+          },
+        ]}
+      />,
+    );
+
+    // First Match
+    wrapper.find('input').simulate('change', { target: { value: 'b' } });
+    jest.runAllTimers();
+
+    expectOpen(wrapper);
+    expect(
+      wrapper.find('.rc-select-item-option-active .rc-select-item-option-content').text(),
+    ).toEqual('Bamboo');
+
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+    expectOpen(wrapper, false);
+
+    // Next Match
+    wrapper.find('input').simulate('change', { target: { value: 'l' } });
+    jest.runAllTimers();
+
+    expectOpen(wrapper);
+    expect(
+      wrapper.find('.rc-select-item-option-active .rc-select-item-option-content').text(),
+    ).toEqual('Light');
   });
 });
