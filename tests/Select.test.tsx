@@ -1680,4 +1680,21 @@ describe('Select.Basic', () => {
       wrapper.find('input.rc-select-selection-search-input').getDOMNode().getAttribute('tabindex'),
     ).toBe('0');
   });
+
+  describe('placement', () => {
+    it('default', () => {
+      const wrapper = mount(<Select open />);
+      expect(wrapper.find('Trigger').prop('popupPlacement')).toEqual('bottomLeft');
+    });
+
+    it('rtl', () => {
+      const wrapper = mount(<Select direction="rtl" open />);
+      expect(wrapper.find('Trigger').prop('popupPlacement')).toEqual('bottomRight');
+    });
+
+    it('customize', () => {
+      const wrapper = mount(<Select placement="topRight" open />);
+      expect(wrapper.find('Trigger').prop('popupPlacement')).toEqual('topRight');
+    });
+  });
 });
