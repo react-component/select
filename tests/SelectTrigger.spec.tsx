@@ -12,6 +12,6 @@ describe('Select.Trigger', () => {
       </SimpleSelectTrigger>,
     );
 
-    expect(wrapper.find('Trigger').props().popupTransitionName).toBe('rc-select-dropdown-slide-up');
+    expect(wrapper.find('Trigger').prop('popupTransitionName')).toBe('rc-select-dropdown-slide-up');
   });
 });

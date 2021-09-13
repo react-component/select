@@ -66,6 +66,8 @@ export interface RefSelectProps {
   scrollTo?: ScrollTo;
 }
 
+export type Placement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
+
 export interface SelectProps<OptionsType extends object[], ValueType> extends React.AriaAttributes {
   prefixCls?: string;
   id?: string;
@@ -119,6 +121,7 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   dropdownStyle?: React.CSSProperties;
   dropdownClassName?: string;
   dropdownMatchSelectWidth?: boolean | number;
+  placement?: Placement;
   virtual?: boolean;
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
   dropdownAlign?: any;
@@ -301,6 +304,7 @@ export default function generateSelector<
       getPopupContainer,
 
       // Dropdown
+      placement,
       listHeight = 200,
       listItemHeight = 20,
       animation,
@@ -1075,6 +1079,7 @@ export default function generateSelector<
         dropdownMatchSelectWidth={dropdownMatchSelectWidth}
         dropdownRender={dropdownRender}
         dropdownAlign={dropdownAlign}
+        placement={placement}
         getPopupContainer={getPopupContainer}
         empty={!mergedOptions.length}
         getTriggerDOMNode={() => selectorDomRef.current}
