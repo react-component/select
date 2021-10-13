@@ -15,7 +15,7 @@ export interface LabelValueType {
   label?: React.ReactNode;
   isCacheable?: boolean;
 }
-export type DefaultValueType = RawValueType | RawValueType[] | LabelValueType | LabelValueType[];
+export type DefaultValueType = RawValueType | RawValueType[] | LabelValueType | LabelValueType[] | undefined;
 
 export interface DisplayLabelValueType extends LabelValueType {
   disabled?: boolean;
