@@ -160,7 +160,7 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   onDeselect?: (value: SingleType<ValueType>, option: OptionsType[number]) => void;
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
   onClick?: React.MouseEventHandler;
-  onChange?: (value: ValueType, option: OptionsType[number] | OptionsType) => void;
+  onChange?: (value: ValueType, option: OptionsType[number] | OptionsType | undefined) => void;
   onBlur?: React.FocusEventHandler<HTMLElement>;
   onFocus?: React.FocusEventHandler<HTMLElement>;
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
