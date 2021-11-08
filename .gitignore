@@ -21,6 +21,7 @@ Thumbs.db
 node_modules
 .cache
 dist
+debug.tsx
 assets/**/*.css
 build
 lib

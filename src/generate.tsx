@@ -773,10 +773,14 @@ export default function generateSelector<
       setInnerSearchValue('');
     };
 
-    // Close dropdown when disabled change
+    // Close dropdown & remove focus state when disabled change
     useEffect(() => {
-      if (innerOpen && !!disabled) {
+      if (innerOpen && disabled) {
         setInnerOpen(false);
+      }
+
+      if (disabled) {
+        setMockFocused(false);
       }
     }, [disabled]);
 

@@ -1697,4 +1697,29 @@ describe('Select.Basic', () => {
       expect(wrapper.find('Trigger').prop('popupPlacement')).toEqual('topRight');
     });
   });
+
+  it('disabled should reset focused', () => {
+    jest.useFakeTimers();
+    jest.clearAllTimers();
+
+    const wrapper = mount(<Select />);
+
+    // Focus
+    wrapper.find('input').simulate('focus');
+    act(() => {
+      jest.runAllTimers();
+      wrapper.update();
+    });
+    expect(wrapper.exists('.rc-select-focused')).toBeTruthy();
+
+    // Disabled
+    wrapper.setProps({ disabled: true });
+    act(() => {
+      jest.runAllTimers();
+      wrapper.update();
+    });
+    expect(wrapper.exists('.rc-select-focused')).toBeFalsy();
+
+    jest.useRealTimers();
+  });
 });
