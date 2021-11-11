@@ -17,13 +17,18 @@ const Test: React.FC = () => {
   const [disabled, setDisabled] = React.useState(false);
   const [value, setValue] = React.useState<string[]>(['name2', '42', 'name3']);
   const [maxTagCount, setMaxTagCount] = React.useState<number>(null);
+  const [renderExtraTag, setRenderExtraTag] = React.useState<boolean>(false);
+
+  const toggleRenderExtraTag = (newV: boolean) => {
+    setRenderExtraTag(newV);
+  };
 
   const toggleMaxTagCount = (count: number) => {
     setMaxTagCount(count);
   };
 
   const tagRender = (props: CustomTagProps) => {
-    const { label, closable, onClose } = props;
+    const { label, closable, onClose, isExtraTag } = props;
     let style: React.CSSProperties;
     if (parseInt(label as string, 10)) {
       style = { backgroundColor: 'blue' };
@@ -33,7 +38,7 @@ const Test: React.FC = () => {
       style = { backgroundColor: 'red' };
     }
     return (
-      <span style={style}>
+      <span style={isExtraTag ? { background: 'purple' } : style}>
         {label}
         {closable ? (
           <button type="button" onClick={onClose}>
@@ -69,6 +74,7 @@ const Test: React.FC = () => {
           }}
           tokenSeparators={[',']}
           tagRender={tagRender}
+          renderExtraTag={renderExtraTag}
           onFocus={() => console.log('focus')}
           onBlur={() => console.log('blur')}
         >
@@ -92,6 +98,12 @@ const Test: React.FC = () => {
         </button>
         <button type="button" onClick={() => toggleMaxTagCount(null)}>
           toggle maxTagCount (null)
+        </button>
+        <button type="button" onClick={() => toggleRenderExtraTag(true)}>
+          toggle renderExtraTag (true)
+        </button>
+        <button type="button" onClick={() => toggleRenderExtraTag(false)}>
+          toggle renderExtraTag (false)
         </button>
       </p>
     </div>

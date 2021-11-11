@@ -148,6 +148,8 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   maxTagPlaceholder?: React.ReactNode | ((omittedValues: LabelValueType[]) => React.ReactNode);
   tokenSeparators?: string[];
   tagRender?: (props: CustomTagProps) => React.ReactElement;
+  // new feature: https://github.com/ant-design/ant-design/issues/32072
+  renderExtraTag?: boolean;
   showAction?: ('focus' | 'click')[];
   tabIndex?: number;
 
@@ -321,6 +323,7 @@ export default function generateSelector<
       // Tags
       tokenSeparators,
       tagRender,
+      renderExtraTag,
 
       // Events
       onPopupScroll,
