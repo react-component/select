@@ -459,4 +459,18 @@ describe('Select.Multiple', () => {
     );
     expect(wrapper.find('.rc-select-selection-item').first().prop('title')).toBe(undefined);
   });
+
+  it('should hide internal input when showSearch=false', () => {
+    const wrapper = mount(
+      <Select mode="multiple" showSearch={false} options={[{ value: '1' }]} value={['1']} />,
+    );
+    expect(wrapper.find('input').exists()).toBeFalsy();
+  });
+
+  it('should show internal input when mode=tags and showSearch=false', () => {
+    const wrapper = mount(
+      <Select mode="tags" showSearch={false} options={[{ value: '1' }]} value={['1']} />,
+    );
+    expect(wrapper.find('input').exists()).toBeTruthy();
+  });
 });

@@ -83,11 +83,14 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
   // ===================== Search ======================
   const inputValue = open || mode === 'tags' ? searchValue : '';
   const inputEditable: boolean = mode === 'tags' || (showSearch && (open || focused));
+  const showInput = mode === 'tags' || showSearch;
 
   // We measure width and set to the input immediately
   useLayoutEffect(() => {
-    setInputWidth(measureRef.current.scrollWidth);
-  }, [inputValue]);
+    if (showInput) {
+      setInputWidth(measureRef.current.scrollWidth);
+    }
+  }, [showInput, inputValue]);
 
   // ===================== Render ======================
   // >>> Render Selector Node. Includes Item & Rest
@@ -183,7 +186,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
   }
 
   // >>> Input Node
-  const inputNode = (
+  const inputNode = showInput ? (
     <div
       className={`${selectionPrefixCls}-search`}
       style={{ width: inputWidth }}
@@ -221,7 +224,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
         {inputValue}&nbsp;
       </span>
     </div>
-  );
+  ) : undefined;
 
   // >>> Selections
   const selectionNode = (
