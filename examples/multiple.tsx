@@ -3,10 +3,15 @@ import React from 'react';
 import Select, { Option } from '../src';
 import '../assets/index.less';
 
-const children = [];
+const children: React.ReactNode[] = [];
 for (let i = 10; i < 36; i += 1) {
   children.push(
-    <Option key={i.toString(36) + i} disabled={i === 10} title={`中文${i}`}>
+    <Option
+      key={i.toString(36) + i}
+      value={i.toString(36) + i}
+      disabled={i === 10}
+      title={`中文${i}`}
+    >
       中文{i}
     </Option>,
   );
@@ -35,19 +40,19 @@ class Test extends React.Component {
     console.log(args);
   };
 
-  useAnim = e => {
+  useAnim = (e) => {
     this.setState({
       useAnim: e.target.checked,
     });
   };
 
-  showArrow = e => {
+  showArrow = (e) => {
     this.setState({
       showArrow: e.target.checked,
     });
   };
 
-  loading = e => {
+  loading = (e) => {
     this.setState({
       loading: e.target.checked,
     });
@@ -95,7 +100,7 @@ class Test extends React.Component {
             placeholder="please select"
             onChange={this.onChange}
             onFocus={() => console.log('focus')}
-            onBlur={v => console.log('blur', v)}
+            onBlur={(v) => console.log('blur', v)}
             tokenSeparators={[' ', ',']}
           >
             {children}

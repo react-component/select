@@ -4,10 +4,10 @@ import Select, { Option } from '../src';
 import '../assets/index.less';
 import type { CustomTagProps } from '../src/interface/generator';
 
-const children = [];
+const children: React.ReactNode[] = [];
 for (let i = 10; i < 36; i += 1) {
   children.push(
-    <Option key={i.toString(36) + i} test={i}>
+    <Option key={i.toString(36) + i} value={i.toString(36) + i} test={i}>
       {i.toString(36) + i}
     </Option>,
   );

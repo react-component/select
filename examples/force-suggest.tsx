@@ -8,20 +8,20 @@ import { fetch } from './common/tbFetchSuggest';
 class Test extends React.Component {
   state = {
     disabled: false,
-    data: [],
+    data: [] as any[],
     value: undefined,
   };
 
-  onChange = value => {
+  onChange = (value) => {
     console.log('select ', value);
     this.setState({
       value,
     });
   };
 
-  fetchData = value => {
+  fetchData = (value) => {
     if (value) {
-      fetch(value, data => {
+      fetch(value, (data) => {
         this.setState({
           data,
         });
@@ -42,8 +42,8 @@ class Test extends React.Component {
 
   render() {
     const { data, value, disabled } = this.state;
-    const options = data.map(d => (
-      <Option key={d.value}>
+    const options = data.map((d) => (
+      <Option key={d.value} value={d.value}>
         <i>{d.text}</i>
       </Option>
     ));

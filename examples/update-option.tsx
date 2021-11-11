@@ -28,7 +28,7 @@ class Test extends React.Component {
     this.count += 1;
   };
 
-  updateOptions = value => {
+  updateOptions = (value) => {
     const options = [value, value + value, value + value + value];
     this.setState({
       options,
@@ -58,8 +58,10 @@ class Test extends React.Component {
         </p>
         <hr />
         <Select mode="combobox" optionLabelProp="children" onChange={this.updateOptions}>
-          {options.map(opt => (
-            <Option key={opt}>{opt}</Option>
+          {options.map((opt) => (
+            <Option key={opt} value={opt}>
+              {opt}
+            </Option>
           ))}
         </Select>
         <hr />

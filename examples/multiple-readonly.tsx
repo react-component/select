@@ -3,11 +3,11 @@ import React from 'react';
 import Select, { Option } from '../src';
 import '../assets/index.less';
 
-const children = [];
+const children: React.ReactNode[] = [];
 for (let i = 10; i < 36; i += 1) {
   // 11 => readonly selected item
   children.push(
-    <Option disabled={i === 11} key={i.toString(36) + i}>
+    <Option disabled={i === 11} key={i.toString(36) + i} value={i.toString(36) + i}>
       中文{i}
     </Option>,
   );
@@ -18,7 +18,7 @@ class Test extends React.Component {
     value: ['b11'],
   };
 
-  onChange = value => {
+  onChange = (value) => {
     console.log('onChange', value);
     this.setState({ value });
   };

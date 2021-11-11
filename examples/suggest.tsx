@@ -11,7 +11,7 @@ const Input = React.forwardRef<HTMLInputElement, any>((props, ref) => (
 
 class Test extends React.Component {
   state = {
-    data: [],
+    data: [] as any[],
     value: '',
   };
 
@@ -46,7 +46,11 @@ class Test extends React.Component {
 
   render() {
     const { data, value } = this.state;
-    const options = data.map((d) => <Option key={d.value}>{d.text}</Option>);
+    const options = data.map((d) => (
+      <Option key={d.value} value={d.value}>
+        {d.text}
+      </Option>
+    ));
     return (
       <div>
         <h2>suggest</h2>

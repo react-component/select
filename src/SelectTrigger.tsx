@@ -55,7 +55,7 @@ export interface SelectTriggerProps {
   visible: boolean;
   popupElement: React.ReactElement;
 
-  animation?: string;
+  animation?: string | null;
   transitionName?: string;
   containerWidth: number;
   placement?: Placement;

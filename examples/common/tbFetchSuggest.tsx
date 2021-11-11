@@ -19,8 +19,8 @@ export function fetch(value, callback) {
     jsonp(`http://suggest.taobao.com/sug?${str}`, (err, d) => {
       if (currentValue === value) {
         const { result } = d;
-        const data = [];
-        result.forEach(r => {
+        const data: any[] = [];
+        result.forEach((r) => {
           data.push({
             value: r[0],
             text: r[0],
