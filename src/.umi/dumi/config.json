@@ -1,0 +1,168 @@
+{
+  "menus": {
+    "en-US": {
+      "*": [
+        {
+          "path": "/",
+          "title": "rc-select",
+          "meta": {
+            "order": null
+          }
+        },
+        {
+          "title": "Demo",
+          "path": "/demo",
+          "meta": {},
+          "children": [
+            {
+              "path": "/demo/auto-adjust-dropdown",
+              "title": "auto-adjust-dropdown",
+              "meta": {}
+            },
+            {
+              "path": "/demo/combobox",
+              "title": "combobox",
+              "meta": {}
+            },
+            {
+              "path": "/demo/controlled",
+              "title": "controlled",
+              "meta": {}
+            },
+            {
+              "path": "/demo/custom-icon",
+              "title": "custom-icon",
+              "meta": {}
+            },
+            {
+              "path": "/demo/custom-selector",
+              "title": "custom-selector",
+              "meta": {}
+            },
+            {
+              "path": "/demo/custom-tags",
+              "title": "custom-tags",
+              "meta": {}
+            },
+            {
+              "path": "/demo/debug",
+              "title": "debug",
+              "meta": {}
+            },
+            {
+              "path": "/demo/dropdown-render",
+              "title": "dropdownRender",
+              "meta": {}
+            },
+            {
+              "path": "/demo/email",
+              "title": "email",
+              "meta": {}
+            },
+            {
+              "path": "/demo/filter-sort",
+              "title": "filterSort",
+              "meta": {}
+            },
+            {
+              "path": "/demo/force-suggest",
+              "title": "force-suggest",
+              "meta": {}
+            },
+            {
+              "path": "/demo/get-popup-container",
+              "title": "getPopupContainer",
+              "meta": {}
+            },
+            {
+              "path": "/demo/loading",
+              "title": "loading",
+              "meta": {}
+            },
+            {
+              "path": "/demo/mul-suggest",
+              "title": "mul-suggest",
+              "meta": {}
+            },
+            {
+              "path": "/demo/mul-tag-suggest",
+              "title": "mul-tag-suggest",
+              "meta": {}
+            },
+            {
+              "path": "/demo/multiple",
+              "title": "multiple",
+              "meta": {}
+            },
+            {
+              "path": "/demo/multiple-readonly",
+              "title": "multiple-readonly",
+              "meta": {}
+            },
+            {
+              "path": "/demo/optgroup",
+              "title": "optgroup",
+              "meta": {}
+            },
+            {
+              "path": "/demo/option-filter-prop",
+              "title": "optionFilterProp",
+              "meta": {}
+            },
+            {
+              "path": "/demo/option-label-prop",
+              "title": "optionLabelProp",
+              "meta": {}
+            },
+            {
+              "path": "/demo/single",
+              "title": "single",
+              "meta": {}
+            },
+            {
+              "path": "/demo/single-animation",
+              "title": "single-animation",
+              "meta": {}
+            },
+            {
+              "path": "/demo/single-field-names",
+              "title": "singleFieldNames",
+              "meta": {}
+            },
+            {
+              "path": "/demo/suggest",
+              "title": "suggest",
+              "meta": {}
+            },
+            {
+              "path": "/demo/tags",
+              "title": "tags",
+              "meta": {}
+            },
+            {
+              "path": "/demo/update-option",
+              "title": "update-option",
+              "meta": {}
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "locales": [
+    {
+      "name": "en-US",
+      "label": "English"
+    }
+  ],
+  "navs": {},
+  "title": "rc-select",
+  "logo": "https://avatars0.githubusercontent.com/u/9441414?s=200&v=4",
+  "mode": "doc",
+  "repository": {
+    "url": "https://github.com/react-component/select",
+    "branch": "master"
+  },
+  "theme": {},
+  "exportStatic": {}
+}
