@@ -22,6 +22,7 @@ node_modules
 .cache
 dist
 debug.tsx
+debug.md
 assets/**/*.css
 build
 lib
