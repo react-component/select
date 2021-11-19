@@ -22,6 +22,7 @@ node_modules
 .cache
 dist
 debug.tsx
+debug.md
 assets/**/*.css
 build
 lib
@@ -37,3 +38,5 @@ tsconfig.test.json
 .prettierignore
 .storybook
 storybook/index.js
+.doc
+.umi

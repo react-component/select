@@ -30,11 +30,11 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "cross-env NODE_ENV=development father doc dev --storybook",
-    "build": "father doc build --storybook",
+    "start": "dumi dev",
+    "build": "dumi build",
     "compile": "father build",
     "prepublishOnly": "npm run compile && np --yolo --no-publish",
-    "lint": "eslint src/ examples/ --ext .tsx,.ts,.jsx,.js",
+    "lint": "eslint src/ docs/examples/ --ext .tsx,.ts,.jsx,.js",
     "test": "father test",
     "tsc": "tsc --noEmit",
     "now-build": "npm run build"
@@ -58,6 +58,7 @@
     "@types/react": "^17.0.15",
     "@types/react-dom": "^17.0.3",
     "cross-env": "^7.0.0",
+    "dumi": "^1.1.32",
     "enzyme": "^3.3.0",
     "enzyme-to-json": "^3.4.0",
     "eslint": "^7.1.0",

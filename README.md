@@ -52,7 +52,7 @@ React Select
 
 ### basic use
 
-```js
+```jsx | pure
 import Select, { Option } from 'rc-select';
 
 export default () => (
@@ -102,11 +102,11 @@ export default () => (
 | optionFilterProp | which prop value of option will be used for filter if filterOption is true | String | 'value' |
 | filterSort | Sort function for search options sorting, see [Array.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)'s compareFunction. | Function(optionA:Option, optionB: Option) | - |
 | optionLabelProp | render option value or option children as content of select | String: 'value'/'children' | 'value' |
-| defaultValue | initial selected option(s) | String/Array<String> | - |
-| value | current selected option(s) | String/Array<String>/{key:String, label:React.Node}/Array<{key, label}> | - |
+| defaultValue | initial selected option(s) | String \| String[] | - |
+| value | current selected option(s) | String \| String[] \| {key:String, label:React.Node} \| {key:String, label:React.Node}[] | - |
 | labelInValue | whether to embed label in value, see above value type. Not support `combobox` mode | Bool | false |
 | backfill | whether backfill select option to search input (Only works in single and combobox mode) | Bool | false |
-| onChange | called when select an option or input value change(combobox) | function(value, option:Option/Array<Option>) | - |
+| onChange | called when select an option or input value change(combobox) | function(value, option:Option \| Option[]) | - |
 | onSearch | called when input changed | function | - |
 | onBlur | called when blur | function | - |
 | onFocus | called when focus | function | - |
