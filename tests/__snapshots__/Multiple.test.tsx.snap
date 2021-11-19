@@ -300,7 +300,7 @@ exports[`Select.Multiple render truncates values by maxTagTextLength 1`] = `
       >
         <span
           class="rc-select-selection-item"
-          title="On..."
+          title="One"
         >
           <span
             class="rc-select-selection-item-content"
@@ -327,7 +327,7 @@ exports[`Select.Multiple render truncates values by maxTagTextLength 1`] = `
       >
         <span
           class="rc-select-selection-item"
-          title="Tw..."
+          title="Two"
         >
           <span
             class="rc-select-selection-item-content"
