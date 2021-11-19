@@ -92,6 +92,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
   // ===================== Render ======================
   // >>> Render Selector Node. Includes Item & Rest
   function defaultRenderSelector(
+    title: React.ReactNode,
     content: React.ReactNode,
     itemDisabled: boolean,
     closable?: boolean,
@@ -103,9 +104,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
           [`${selectionPrefixCls}-item-disabled`]: itemDisabled,
         })}
         title={
-          typeof content === 'string' || typeof content === 'number'
-            ? content.toString()
-            : undefined
+          typeof title === 'string' || typeof title === 'number' ? title.toString() : undefined
         }
       >
         <span className={`${selectionPrefixCls}-item-content`}>{content}</span>
@@ -170,7 +169,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
 
     return typeof tagRender === 'function'
       ? customizeRenderSelector(value, displayLabel, itemDisabled, closable, onClose)
-      : defaultRenderSelector(displayLabel, itemDisabled, closable, onClose);
+      : defaultRenderSelector(label, displayLabel, itemDisabled, closable, onClose);
   }
 
   function renderRest(omittedValues: DisplayLabelValueType[]) {
@@ -179,7 +178,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
         ? maxTagPlaceholder(omittedValues)
         : maxTagPlaceholder;
 
-    return defaultRenderSelector(content, false);
+    return defaultRenderSelector(content, content, false);
   }
 
   // >>> Input Node
