@@ -27,6 +27,10 @@ exports[`Select.Basic does not filter when filterOption value is false 1`] = `
         value=""
       />
     </span>
+    <span
+      class="rc-select-selection-placeholder"
+      style="visibility:hidden"
+    />
   </div>
   <div>
     <div
@@ -156,6 +160,10 @@ exports[`Select.Basic filterOption could be true as described in default value 1
         value="3"
       />
     </span>
+    <span
+      class="rc-select-selection-placeholder"
+      style="visibility: hidden;"
+    />
   </div>
   <div>
     <div
