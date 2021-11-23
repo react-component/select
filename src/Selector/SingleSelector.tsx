@@ -63,6 +63,18 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
       ? item.label.toString()
       : undefined;
 
+  const renderPlaceholder = () => {
+    if (item) {
+      return null;
+    }
+    const hiddenStyle = hasTextInput ? { visibility: 'hidden' as const } : undefined;
+    return (
+      <span className={`${prefixCls}-selection-placeholder`} style={hiddenStyle}>
+        {placeholder}
+      </span>
+    );
+  };
+
   return (
     <>
       <span className={`${prefixCls}-selection-search`}>
@@ -101,9 +113,7 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
       )}
 
       {/* Display placeholder */}
-      {!item && !hasTextInput && (
-        <span className={`${prefixCls}-selection-placeholder`}>{placeholder}</span>
-      )}
+      {renderPlaceholder()}
     </>
   );
 };
