@@ -1615,9 +1615,14 @@ describe('Select.Basic', () => {
   describe('show placeholder', () => {
     it('when searchValue is controlled', () => {
       const wrapper = mount(<Select searchValue="light" placeholder="bamboo" />);
-      expect(wrapper.find('.rc-select-selection-placeholder').length).toBeTruthy();
+      expect(
+        wrapper.find('.rc-select-selection-placeholder').getDOMNode().hasAttribute('style'),
+      ).toBe(false);
       toggleOpen(wrapper);
-      expect(wrapper.find('.rc-select-selection-placeholder').length).toBeFalsy();
+      expect(
+        (wrapper.find('.rc-select-selection-placeholder').getDOMNode() as HTMLSpanElement).style
+          .visibility,
+      ).toBe('hidden');
     });
 
     it('when value is null', () => {
