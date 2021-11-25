@@ -524,7 +524,7 @@ export default function generateSelector<
       }
 
       return tmpValues;
-    }, [mergedValue, mergedOptions, mode]);
+    }, [mergedValue, mergedOptions, mode, optionLabelProp]);
 
     // Polyfill with cache label
     displayValues = useCacheDisplayValue(displayValues);
