@@ -108,6 +108,7 @@ export default () => (
 | backfill | whether backfill select option to search input (Only works in single and combobox mode) | Bool | false |
 | onChange | called when select an option or input value change(combobox) | function(value, option:Option \| Option[]) | - |
 | onSearch | called when input changed | function | - |
+| onBeforeBlur | called when blur, if returned true onBlur will be fired, else onBlur won't fired | function(event) => boolean | - |
 | onBlur | called when blur | function | - |
 | onFocus | called when focus | function | - |
 | onPopupScroll | called when menu is scrolled | function | - |
