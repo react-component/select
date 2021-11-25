@@ -491,6 +491,38 @@ export default function generateSelector<
       [displayOptions],
     );
 
+    // onDropdownVisibleChange Bug fix:
+    /**
+     * init a temp visible state
+     * we use it for comparison
+     */
+    const [tempVisible, setTempVisible] = useState(null);
+    useEffect(() => {
+      /**
+       * beause this function will be invoke at least once before user's manipulations
+       * we didn't want to emit any onDropdownVisibleChange related events
+       * so we set the tempVisible to false boolean and return;
+       */
+      if (tempVisible === null) {
+        setTempVisible(false);
+        return;
+      }
+      const hasOptionsToShow = displayOptions && displayOptions.length;
+      /**
+       * only invoke onDropdownVisibleChange when
+       * current state is different from hasOptionsToShow
+       */
+      if (onDropdownVisibleChange) {
+        if (hasOptionsToShow && !tempVisible) {
+          setTempVisible(true);
+          onDropdownVisibleChange(true);
+        } else if (!hasOptionsToShow && tempVisible) {
+          setTempVisible(false);
+          onDropdownVisibleChange(false);
+        }
+      }
+    }, [displayOptions]);
+
     useEffect(() => {
       if (listRef.current && listRef.current.scrollTo) {
         listRef.current.scrollTo(0);
@@ -669,6 +701,25 @@ export default function generateSelector<
 
     let mergedOpen = innerOpen;
 
+    // emit dropdownVisibleChange when toggle change
+    const emitDropdownVisibleChange = (nextToggleStatus) => {
+      const hasOptionsToShow = displayOptions && displayOptions.length;
+      if (nextToggleStatus && hasOptionsToShow) {
+        /**
+         * invoke with true when
+         * component has been focused and get options ready to show
+         */
+        onDropdownVisibleChange(true);
+      } else if (!nextToggleStatus && hasOptionsToShow) {
+        /**
+         * invoke with false when
+         * component has been blured and still get options ready to show
+         * if there aren't any, this function must has already been invoked before
+         * so we don't do this unnecessary thing
+         */
+        onDropdownVisibleChange(false);
+      }
+    };
     // Not trigger `open` in `combobox` when `notFoundContent` is empty
     const emptyListContent = !notFoundContent && !displayOptions.length;
     if (disabled || (emptyListContent && mergedOpen && mode === 'combobox')) {
@@ -683,7 +734,7 @@ export default function generateSelector<
         setInnerOpen(nextOpen);
 
         if (onDropdownVisibleChange) {
-          onDropdownVisibleChange(nextOpen);
+          emitDropdownVisibleChange(nextOpen);
         }
       }
     };
