@@ -5,7 +5,11 @@ import SelectTrigger, { RefTriggerProps } from './SelectTrigger';
 import Selector, { RefSelectorProps } from './Selector';
 import useId from './hooks/useId';
 
+export type RenderDOMFunc = (props: any) => HTMLElement;
+
 export type Mode = 'multiple' | 'tags' | 'combobox';
+
+export type Placement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
 
 export type RawValueType = string | number;
 
@@ -74,6 +78,12 @@ export interface BaseSelectProps {
   dropdownContent?: React.ReactElement;
   dropdownStyle?: React.CSSProperties;
   dropdownClassName?: string;
+  dropdownMatchSelectWidth?: boolean | number;
+  dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
+  dropdownAlign?: any;
+  placement?: Placement;
+  getPopupContainer?: RenderDOMFunc;
+  dropdownEmpty?: boolean;
 }
 
 const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
@@ -119,6 +129,12 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
     dropdownContent,
     dropdownStyle,
     dropdownClassName,
+    dropdownMatchSelectWidth,
+    dropdownRender,
+    dropdownAlign,
+    dropdownEmpty,
+    placement,
+    getPopupContainer,
   } = props;
 
   // ============================== MISC ==============================
@@ -145,6 +161,15 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
     customizeRawInputElement.props.ref,
   );
 
+  // ============================== Open ==============================
+  const onToggleOpen = (newOpen?: boolean) => {
+    const nextOpen = newOpen !== undefined ? newOpen : !open;
+
+    if (open !== nextOpen && !disabled) {
+      onOpen(nextOpen);
+    }
+  };
+
   // ============================ Dropdown ============================
   const [containerWidth, setContainerWidth] = React.useState(null);
 
@@ -158,6 +183,14 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
       }
     }
   }, [open]);
+
+  // Used for raw custom input trigger
+  let onTriggerVisibleChange: null | ((newOpen: boolean) => void);
+  if (customizeRawInputElement) {
+    onTriggerVisibleChange = (newOpen: boolean) => {
+      onToggleOpen(newOpen);
+    };
+  }
 
   // ============================= Render =============================
   const selectorNode = (
@@ -173,14 +206,14 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
       dropdownStyle={dropdownStyle}
       dropdownClassName={dropdownClassName}
       direction={direction}
-      // dropdownMatchSelectWidth={dropdownMatchSelectWidth}
-      // dropdownRender={dropdownRender}
-      // dropdownAlign={dropdownAlign}
-      // placement={placement}
-      // getPopupContainer={getPopupContainer}
-      // empty={!mergedOptions.length}
-      // getTriggerDOMNode={() => selectorDomRef.current}
-      // onPopupVisibleChange={onTriggerVisibleChange}
+      dropdownMatchSelectWidth={dropdownMatchSelectWidth}
+      dropdownRender={dropdownRender}
+      dropdownAlign={dropdownAlign}
+      placement={placement}
+      getPopupContainer={getPopupContainer}
+      empty={dropdownEmpty}
+      getTriggerDOMNode={() => selectorDomRef.current}
+      onPopupVisibleChange={onTriggerVisibleChange}
     >
       {customizeRawInputElement ? (
         React.cloneElement(customizeRawInputElement, {
@@ -201,7 +234,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
           tagRender={tagRender}
           values={displayValues}
           open={open}
-          onToggleOpen={onOpen}
+          onToggleOpen={onToggleOpen}
           activeValue={activeValue}
           searchValue={searchValue}
           onSearch={onSearch}
