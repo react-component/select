@@ -22,6 +22,7 @@ export interface InnerSelectorProps {
   prefixCls: string;
   id: string;
   mode: Mode;
+  backfill?: boolean;
 
   inputRef: React.Ref<HTMLInputElement | HTMLTextAreaElement>;
   placeholder?: React.ReactNode;
@@ -31,7 +32,7 @@ export interface InnerSelectorProps {
   values: LabelValueType[];
   showSearch?: boolean;
   searchValue: string;
-  accessibilityIndex: number;
+  activeDescendantId?: string;
   open: boolean;
   tabIndex?: number;
   maxLength?: number;
@@ -64,7 +65,7 @@ export interface SelectorProps {
   inputElement: JSX.Element;
 
   autoFocus?: boolean;
-  accessibilityIndex: number;
+  activeDescendantId?: string;
   tabIndex?: number;
   disabled?: boolean;
   placeholder?: React.ReactNode;
@@ -85,7 +86,7 @@ export interface SelectorProps {
   onToggleOpen: (open?: boolean) => void;
   /** `onSearch` returns go next step boolean to check if need do toggle open */
   onSearch: (searchText: string, fromTyping: boolean, isCompositing: boolean) => boolean;
-  onSearchSubmit: (searchText: string) => void;
+  onSearchSubmit?: (searchText: string) => void;
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 
@@ -143,7 +144,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     if (which === KeyCode.ENTER && mode === 'tags' && !compositionStatusRef.current && !open) {
       // When menu isn't open, OptionList won't trigger a value change
       // So when enter is pressed, the tag's input value should be emitted here to let selector know
-      onSearchSubmit((event.target as HTMLInputElement).value);
+      onSearchSubmit?.((event.target as HTMLInputElement).value);
     }
 
     if (![KeyCode.SHIFT, KeyCode.TAB, KeyCode.BACKSPACE, KeyCode.ESC].includes(which)) {

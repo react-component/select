@@ -54,7 +54,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
     showSearch,
     autoFocus,
     autoComplete,
-    accessibilityIndex,
+    activeDescendantId,
     tabIndex,
 
     removeIcon,
@@ -203,7 +203,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
         autoFocus={autoFocus}
         autoComplete={autoComplete}
         editable={inputEditable}
-        accessibilityIndex={accessibilityIndex}
+        activeDescendantId={activeDescendantId}
         value={inputValue}
         onKeyDown={onInputKeyDown}
         onMouseDown={onInputMouseDown}

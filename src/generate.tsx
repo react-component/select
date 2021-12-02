@@ -381,7 +381,7 @@ export default function generateSelector<
     const isMultiple = mode === 'tags' || mode === 'multiple';
 
     const mergedShowSearch =
-      showSearch !== undefined ? showSearch : isMultiple || mode === 'combobox';
+      (showSearch !== undefined ? showSearch : isMultiple) || mode === 'combobox';
 
     // ======================== Mobile ========================
     const [mobile, setMobile] = useState(false);
