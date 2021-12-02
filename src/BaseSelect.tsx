@@ -1,7 +1,11 @@
 import * as React from 'react';
-import SelectTrigger from './SelectTrigger';
-import Selector from './Selector';
+import { useComposeRef } from 'rc-util/lib/ref';
+import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
+import SelectTrigger, { RefTriggerProps } from './SelectTrigger';
+import Selector, { RefSelectorProps } from './Selector';
 import useId from './hooks/useId';
+
+export type Mode = 'multiple' | 'tags' | 'combobox';
 
 export type RawValueType = string | number;
 
@@ -28,14 +32,25 @@ export interface BaseSelectProps {
   multiple?: boolean;
   tagRender?: (props: CustomTagProps) => React.ReactElement;
   displayValues?: LabelValueType[];
+  direction?: 'ltr' | 'rtl';
+
+  // Mode
+  mode?: Mode;
+
+  // Disabled
+  disabled?: boolean;
 
   // Open
   open: boolean;
   onOpen: (open: boolean) => void;
 
+  // Customize Input
+  /** @private Internal usage. Do not use in your production. */
+  getInputElement?: () => JSX.Element;
+  /** @private Internal usage. Do not use in your production. */
+  getRawInputElement?: () => JSX.Element;
+
   // Active
-  // TODO: only combo box support this
-  backfill?: boolean;
   /** Current dropdown list active item string value */
   activeValue?: string;
   // TODO: handle this
@@ -52,6 +67,13 @@ export interface BaseSelectProps {
 
   // Value
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
+
+  // Dropdown
+  animation?: string;
+  transitionName?: string;
+  dropdownContent?: React.ReactElement;
+  dropdownStyle?: React.CSSProperties;
+  dropdownClassName?: string;
 }
 
 const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
@@ -62,13 +84,23 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
     multiple,
     tagRender,
     displayValues,
+    direction,
+
+    // Mode
+    mode,
+
+    // Disabled
+    disabled,
+
+    // Customize Input
+    getInputElement,
+    getRawInputElement,
 
     // Open
     open,
     onOpen,
 
     // Active
-    backfill,
     activeValue,
     activeDescendantId,
 
@@ -80,47 +112,90 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
 
     // Value
     onSelect,
+
+    // Dropdown
+    animation,
+    transitionName,
+    dropdownContent,
+    dropdownStyle,
+    dropdownClassName,
   } = props;
 
   // ============================== MISC ==============================
   const mergedId = useId(id);
 
+  // ============================== Refs ==============================
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const selectorDomRef = React.useRef<HTMLDivElement>(null);
+  const triggerRef = React.useRef<RefTriggerProps>(null);
+  const selectorRef = React.useRef<RefSelectorProps>(null);
+  // const listRef = React.useRef<RefOptionListProps>(null);
+
   // ========================== Custom Input ==========================
-  const customizeRawInputElement = null;
+  // Only works in `combobox`
+  const customizeInputElement: React.ReactElement =
+    (mode === 'combobox' && typeof getInputElement === 'function' && getInputElement()) || null;
+
+  // Used for customize replacement for `rc-cascader`
+  const customizeRawInputElement: React.ReactElement =
+    typeof getRawInputElement === 'function' && getRawInputElement();
+
+  const customizeRawInputRef = useComposeRef<HTMLElement>(
+    selectorDomRef,
+    customizeRawInputElement.props.ref,
+  );
+
+  // ============================ Dropdown ============================
+  const [containerWidth, setContainerWidth] = React.useState(null);
+
+  // TODO: here has onPopupMouseEnter
+
+  useLayoutEffect(() => {
+    if (open) {
+      const newWidth = Math.ceil(containerRef.current?.offsetWidth);
+      if (containerWidth !== newWidth && !Number.isNaN(newWidth)) {
+        setContainerWidth(newWidth);
+      }
+    }
+  }, [open]);
 
   // ============================= Render =============================
   const selectorNode = (
     <SelectTrigger
-    // ref={triggerRef}
-    // disabled={disabled}
-    // prefixCls={prefixCls}
-    // visible={triggerOpen}
-    // popupElement={popupNode}
-    // containerWidth={containerWidth}
-    // animation={animation}
-    // transitionName={transitionName}
-    // dropdownStyle={dropdownStyle}
-    // dropdownClassName={dropdownClassName}
-    // direction={direction}
-    // dropdownMatchSelectWidth={dropdownMatchSelectWidth}
-    // dropdownRender={dropdownRender}
-    // dropdownAlign={dropdownAlign}
-    // placement={placement}
-    // getPopupContainer={getPopupContainer}
-    // empty={!mergedOptions.length}
-    // getTriggerDOMNode={() => selectorDomRef.current}
-    // onPopupVisibleChange={onTriggerVisibleChange}
+      ref={triggerRef}
+      disabled={disabled}
+      prefixCls={prefixCls}
+      visible={open}
+      popupElement={dropdownContent}
+      containerWidth={containerWidth}
+      animation={animation}
+      transitionName={transitionName}
+      dropdownStyle={dropdownStyle}
+      dropdownClassName={dropdownClassName}
+      direction={direction}
+      // dropdownMatchSelectWidth={dropdownMatchSelectWidth}
+      // dropdownRender={dropdownRender}
+      // dropdownAlign={dropdownAlign}
+      // placement={placement}
+      // getPopupContainer={getPopupContainer}
+      // empty={!mergedOptions.length}
+      // getTriggerDOMNode={() => selectorDomRef.current}
+      // onPopupVisibleChange={onTriggerVisibleChange}
     >
-      {customizeRawInputElement ? null : ( // }) //   ref: composeRef(selectorDomRef, customizeRawInputElement.props.ref), // React.cloneElement(customizeRawInputElement, {
+      {customizeRawInputElement ? (
+        React.cloneElement(customizeRawInputElement, {
+          ref: customizeRawInputRef,
+        })
+      ) : (
         <Selector
           {...props}
-          // domRef={selectorDomRef}
+          domRef={selectorDomRef}
           prefixCls={prefixCls}
-          // inputElement={customizeInputElement}
-          // ref={selectorRef}
+          inputElement={customizeInputElement}
+          ref={selectorRef}
           id={mergedId}
           showSearch={showSearch}
-          // mode={mode}
+          mode={mode}
           activeDescendantId={activeDescendantId}
           multiple={multiple}
           tagRender={tagRender}
@@ -139,9 +214,9 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
   );
 
   // Render raw
-  // if (customizeRawInputElement) {
-  //   return selectorNode;
-  // }
+  if (customizeRawInputElement) {
+    return selectorNode;
+  }
 
   // return (
   //   <div
