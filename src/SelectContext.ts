@@ -1,5 +1,6 @@
 import * as React from 'react';
-import type { OnActiveValue } from './Select';
+import type { RenderNode } from './BaseSelect';
+import type { OnActiveValue, OnInternalSelect } from './Select';
 
 // Use any here since we do not get the type during compilation
 export interface SelectContextProps {
@@ -7,6 +8,8 @@ export interface SelectContextProps {
   flattenOptions: any[];
   onActiveValue: OnActiveValue;
   defaultActiveFirstOption?: boolean;
+  onSelect: OnInternalSelect;
+  menuItemSelectedIcon?: RenderNode;
 }
 
 const SelectContext = React.createContext<SelectContextProps>(null);

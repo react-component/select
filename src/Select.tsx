@@ -31,18 +31,21 @@
 
 import * as React from 'react';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
-import BaseSelect, { DisplayValueType } from './BaseSelect';
+import BaseSelect, { DisplayValueType, RenderNode } from './BaseSelect';
 import OptionList from './OptionList';
 import type { BaseSelectRef, BaseSelectPropsWithoutPrivate, BaseSelectProps } from './BaseSelect';
 import useOptions from './hooks/useOptions';
 import SelectContext from './SelectContext';
 import useId from './hooks/useId';
+import useCallback from './hooks/useCallback';
 
 export type OnActiveValue = (
   active: RawValueType,
   index: number,
   info?: { source?: 'keyboard' | 'mouse' },
 ) => void;
+
+export type OnInternalSelect = (value: RawValueType, info: { selected: boolean }) => void;
 
 export type RawValueType = string | number;
 export interface LabelInValueType {
@@ -85,6 +88,9 @@ export interface SharedSelectProps<OptionType extends BaseOptionType = DefaultOp
   children?: React.ReactNode;
   options?: OptionType[];
   defaultActiveFirstOption?: boolean;
+
+  // >>> Icon
+  menuItemSelectedIcon?: RenderNode;
 }
 
 export interface SingleRawSelectProps<OptionType extends BaseOptionType = DefaultOptionType>
@@ -130,9 +136,14 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
     options,
     children,
     defaultActiveFirstOption,
+    menuItemSelectedIcon,
   } = props;
 
   const mergedId = useId(id);
+
+  // =========================== Option ===========================
+  const flattenOptions = useOptions(options, children, fieldNames);
+  const { valueOptions } = flattenOptions;
 
   // =========================== Values ===========================
   const [displayValues, setDisplayValues] = React.useState<DisplayValueType[]>([]);
@@ -140,6 +151,12 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
   const onDisplayValuesChange: BaseSelectProps['onDisplayValuesChange'] = (nextValues, info) => {
     setDisplayValues(nextValues);
   };
+
+  const onInternalSelect = useCallback<OnInternalSelect>((value, info) => {
+    const option = valueOptions.get(value);
+
+    // TODO: handle this
+  });
 
   // =========================== Search ===========================
   const [mergedSearchValue] = useMergedState('', {
@@ -149,9 +166,6 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
   const onInternalSearch: BaseSelectProps['onSearch'] = (searchText, info) => {};
 
   const onInternalSearchSplit: BaseSelectProps['onSearchSplit'] = (words) => {};
-
-  // ========================= OptionList =========================
-  const flattenOptions = useOptions(options, children, fieldNames);
 
   // ======================= Accessibility ========================
   const [activeValue, setActiveValue] = React.useState<string>(null);
@@ -175,9 +189,17 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
     () => ({
       ...flattenOptions,
       onActiveValue,
-      defaultActiveFirstOption,
+      defaultActiveFirstOption: mergedDefaultActiveFirstOption,
+      onSelect: onInternalSelect,
+      menuItemSelectedIcon,
     }),
-    [flattenOptions, onActiveValue, defaultActiveFirstOption],
+    [
+      flattenOptions,
+      onActiveValue,
+      mergedDefaultActiveFirstOption,
+      onInternalSelect,
+      menuItemSelectedIcon,
+    ],
   );
 
   // ==============================================================
@@ -201,6 +223,7 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
         // >>> OptionList
         OptionList={OptionList}
         // >>> Accessibility
+        activeValue={activeValue}
         activeDescendantId={`${id}_list_${accessibilityIndex}`}
       />
     </SelectContext.Provider>

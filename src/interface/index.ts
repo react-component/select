@@ -1,3 +1,4 @@
+import { BaseOptionType } from '@/Select';
 import type * as React from 'react';
 import type { Key, RawValueType } from './generator';
 
@@ -54,7 +55,7 @@ export interface FlattenOptionData {
   group?: boolean;
   groupOption?: boolean;
   key: string | number;
-  data: OptionData | OptionGroupData;
+  data: BaseOptionType;
   label?: React.ReactNode;
   value?: React.Key;
 }

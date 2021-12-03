@@ -88,8 +88,13 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
   // }
 
   const { prefixCls, id, open, multiple, searchValue, toggleOpen } = useBaseProps();
-  const { flattenOptions, onActiveValue, defaultActiveFirstOption } =
-    React.useContext(SelectContext);
+  const {
+    flattenOptions,
+    onActiveValue,
+    defaultActiveFirstOption,
+    onSelect,
+    menuItemSelectedIcon,
+  } = React.useContext(SelectContext);
 
   const itemPrefixCls = `${prefixCls}-item`;
 
@@ -392,9 +397,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
   );
 };
 
-const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<SelectOptionsType>>(
-  OptionList,
-);
+const RefOptionList = React.forwardRef(OptionList);
 RefOptionList.displayName = 'OptionList';
 
 export default RefOptionList;

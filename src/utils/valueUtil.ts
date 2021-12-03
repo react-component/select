@@ -17,7 +17,7 @@ import type {
 
 import { toArray } from './commonUtil';
 
-function getKey(data: OptionData | OptionGroupData, index: number) {
+function getKey(data: BaseOptionType, index: number) {
   const { key } = data;
   let value: RawValueType;
 
@@ -52,8 +52,9 @@ export function fillFieldNames(fieldNames?: FieldNames) {
 export function flattenOptions<OptionType extends BaseOptionType>(
   options: OptionType[],
   { fieldNames }: { fieldNames?: FieldNames } = {},
-): FlattenOptionData[] {
+): [FlattenOptionData[], Map<RawValueType, OptionType>] {
   const flattenList: FlattenOptionData[] = [];
+  const optionMap = new Map<RawValueType, OptionType>();
 
   const {
     label: fieldLabel,
@@ -61,19 +62,23 @@ export function flattenOptions<OptionType extends BaseOptionType>(
     options: fieldOptions,
   } = fillFieldNames(fieldNames);
 
-  function dig(list: SelectOptionsType, isGroupOption: boolean) {
+  function dig(list: OptionType[], isGroupOption: boolean) {
     list.forEach((data) => {
       const label = data[fieldLabel];
 
       if (isGroupOption || !(fieldOptions in data)) {
+        const value = data[fieldValue];
+
         // Option
         flattenList.push({
           key: getKey(data, flattenList.length),
           groupOption: isGroupOption,
           data,
           label,
-          value: data[fieldValue],
+          value,
         });
+
+        optionMap.set(value, data);
       } else {
         // Option Group
         flattenList.push({
@@ -90,7 +95,7 @@ export function flattenOptions<OptionType extends BaseOptionType>(
 
   dig(options, false);
 
-  return flattenList;
+  return [flattenList, optionMap];
 }
 
 /**

@@ -19,11 +19,12 @@ export default function useOptions<OptionType>(
       mergedOptions = convertChildrenToData(children);
     }
 
-    const flattenedOptions = flattenOptions(options, { fieldNames });
+    const [flattenedOptions, valueOptions] = flattenOptions(options, { fieldNames });
 
     return {
       options: mergedOptions,
       flattenOptions: flattenedOptions,
+      valueOptions,
     };
   }, [options, children, fieldNames]);
 }
