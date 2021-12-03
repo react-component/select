@@ -8,8 +8,10 @@ import pickAttrs from 'rc-util/lib/pickAttrs';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import { getSeparatedContent } from './utils/valueUtil';
-import SelectTrigger, { RefTriggerProps } from './SelectTrigger';
-import Selector, { RefSelectorProps } from './Selector';
+import type { RefTriggerProps } from './SelectTrigger';
+import SelectTrigger from './SelectTrigger';
+import type { RefSelectorProps } from './Selector';
+import Selector from './Selector';
 import { toInnerValue, toOuterValues, removeLastEnabledValue } from './utils/commonUtil';
 import useId from './hooks/useId';
 import useSelectTriggerControl from './hooks/useSelectTriggerControl';
@@ -72,6 +74,7 @@ export interface BaseSelectProps {
   emptyOptions?: boolean;
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
   notFoundContent?: React.ReactNode;
+  onClear?: () => void;
 
   // Mode
   mode?: Mode;
@@ -105,7 +108,7 @@ export interface BaseSelectProps {
   onSearch: (
     searchValue: string,
     info: {
-      source: 'typing' | 'effect' | 'submit' | 'clear';
+      source: 'typing' | 'effect' | 'submit' | 'blur';
     },
   ) => void;
   /** Trigger when search text match the `tokenSeparators`. Will provide split content */
@@ -118,6 +121,7 @@ export interface BaseSelectProps {
   allowClear?: boolean;
   showArrow?: boolean;
   inputIcon?: RenderNode;
+  clearIcon?: RenderNode;
 
   // Dropdown
   OptionList: React.ForwardRefExoticComponent<
@@ -140,6 +144,8 @@ export interface BaseSelectProps {
   onFocus?: React.FocusEventHandler<HTMLElement>;
 
   // Rest Events
+  onKeyUp?: React.KeyboardEventHandler<HTMLDivElement>;
+  onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
 }
 
@@ -159,6 +165,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
     onSelect,
     emptyOptions,
     notFoundContent = 'Not Found',
+    onClear,
 
     // Mode
     mode,
@@ -192,6 +199,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
     allowClear,
     showArrow,
     inputIcon,
+    clearIcon,
 
     // Dropdown
     OptionList,
@@ -212,6 +220,8 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
     onBlur,
 
     // Rest Events
+    onKeyUp,
+    onKeyDown,
     onMouseDown,
 
     // Rest Props
@@ -424,9 +434,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
       listRef.current.onKeyDown(event, ...rest);
     }
 
-    if (onKeyDown) {
-      onKeyDown(event, ...rest);
-    }
+    onKeyDown?.(event, ...rest);
   };
 
   // KeyUp
@@ -435,9 +443,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
       listRef.current.onKeyUp(event, ...rest);
     }
 
-    if (onKeyUp) {
-      onKeyUp(event, ...rest);
-    }
+    onKeyUp?.(event, ...rest);
   };
 
   // ========================== Focus / Blur ==========================
@@ -479,7 +485,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
       } else if (mode === 'multiple') {
         // `multiple` mode only clean the search value but not trigger event
         onSearch('', {
-          source: 'clear',
+          source: 'blur',
         });
       }
     }
@@ -592,6 +598,30 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
     );
   }
 
+  // ============================= Clear ==============================
+  let clearNode: React.ReactNode;
+  const onClearMouseDown: React.MouseEventHandler<HTMLSpanElement> = () => {
+    onClear?.();
+
+    onDisplayValuesChange([], {
+      type: 'remove',
+      values: displayValues,
+    });
+    onInternalSearch('', false, false);
+  };
+
+  if (!disabled && allowClear && (displayValues.length || searchValue)) {
+    clearNode = (
+      <TransBtn
+        className={`${prefixCls}-clear`}
+        onMouseDown={onClearMouseDown}
+        customizeIcon={clearIcon}
+      >
+        ×
+      </TransBtn>
+    );
+  }
+
   // =========================== OptionList ===========================
   const optionList = <OptionList ref={listRef} />;
 
@@ -677,11 +707,12 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
         ref={containerRef}
         onMouseDown={onInternalMouseDown}
         onKeyDown={onInternalKeyDown}
-        // onKeyUp={onInternalKeyUp}
-        // onFocus={onContainerFocus}
-        // onBlur={onContainerBlur}
+        onKeyUp={onInternalKeyUp}
+        onFocus={onContainerFocus}
+        onBlur={onContainerBlur}
       >
         {arrowNode}
+        {clearNode}
       </div>
     );
   }
