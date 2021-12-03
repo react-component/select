@@ -52,16 +52,16 @@ export interface DisplayValueType {
   disabled?: boolean;
 }
 
-export interface BaseSelectProps {
-  prefixCls: string;
-  className: string;
-  id?: string;
-  showSearch?: boolean;
-  multiple?: boolean;
-  tagRender?: (props: CustomTagProps) => React.ReactElement;
-  direction?: 'ltr' | 'rtl';
+export interface BaseSelectRef {
+  focus: () => void;
+  blur: () => void;
+}
 
-  // Value
+export interface BaseSelectPrivateProps {
+  // >>> MISC
+  prefixCls: string;
+
+  // >>> Value
   displayValues?: DisplayValueType[];
   onDisplayValuesChange?: (
     values: DisplayValueType[],
@@ -71,29 +71,8 @@ export interface BaseSelectProps {
     },
   ) => void;
   emptyOptions?: boolean;
-  onSelect: (value: RawValueType, option: { selected: boolean }) => void;
-  notFoundContent?: React.ReactNode;
-  onClear?: () => void;
 
-  // Mode
-  mode?: Mode;
-
-  // Status
-  disabled?: boolean;
-  loading?: boolean;
-
-  // Open
-  open?: boolean;
-  defaultOpen?: boolean;
-  onDropdownVisibleChange?: (open: boolean) => void;
-
-  // Customize Input
-  /** @private Internal usage. Do not use in your production. */
-  getInputElement?: () => JSX.Element;
-  /** @private Internal usage. Do not use in your production. */
-  getRawInputElement?: () => JSX.Element;
-
-  // Active
+  // >>> Active
   /** Current dropdown list active item string value */
   activeValue?: string;
   // TODO: handle this
@@ -101,7 +80,7 @@ export interface BaseSelectProps {
   activeDescendantId?: string;
   onActiveValueChange?: (value: string | null) => void;
 
-  // Search
+  // >>> Search
   searchValue: string;
   /** Trigger onSearch, return false to prevent trigger open event */
   onSearch: (
@@ -112,20 +91,54 @@ export interface BaseSelectProps {
   ) => void;
   /** Trigger when search text match the `tokenSeparators`. Will provide split content */
   onSearchSplit: (words: string[]) => void;
-  /** Only used for tag mode. Check if separator has \r\n */
-  tokenWithEnter?: boolean;
+
+  // >>> Dropdown
+  OptionList: React.ForwardRefExoticComponent<
+    React.PropsWithoutRef<any> & React.RefAttributes<RefOptionListProps>
+  >;
+  dropdownEmpty?: boolean;
+}
+
+export type BaseSelectPropsWithoutPrivate = Omit<BaseSelectProps, keyof BaseSelectPrivateProps>;
+
+export interface BaseSelectProps extends BaseSelectPrivateProps {
+  className?: string;
+  id?: string;
+  showSearch?: boolean;
+  tagRender?: (props: CustomTagProps) => React.ReactElement;
+  direction?: 'ltr' | 'rtl';
+
+  notFoundContent?: React.ReactNode;
+  onClear?: () => void;
+
+  // >>> Mode
+  mode?: Mode;
+
+  // >>> Status
+  disabled?: boolean;
+  loading?: boolean;
+
+  // >>> Open
+  open?: boolean;
+  defaultOpen?: boolean;
+  onDropdownVisibleChange?: (open: boolean) => void;
+
+  // >>> Customize Input
+  /** @private Internal usage. Do not use in your production. */
+  getInputElement?: () => JSX.Element;
+  /** @private Internal usage. Do not use in your production. */
+  getRawInputElement?: () => JSX.Element;
+
+  // >>> Search
   tokenSeparators?: string[];
 
-  // Icons
+  // >>> Icons
   allowClear?: boolean;
   showArrow?: boolean;
   inputIcon?: RenderNode;
   clearIcon?: RenderNode;
 
-  // Dropdown
-  OptionList: React.ForwardRefExoticComponent<
-    React.PropsWithoutRef<any> & React.RefAttributes<RefOptionListProps>
-  >;
+  // >>> Dropdown
   animation?: string;
   transitionName?: string;
   dropdownStyle?: React.CSSProperties;
@@ -135,33 +148,30 @@ export interface BaseSelectProps {
   dropdownAlign?: any;
   placement?: Placement;
   getPopupContainer?: RenderDOMFunc;
-  dropdownEmpty?: boolean;
 
-  // Focus
+  // >>> Focus
   showAction?: ('focus' | 'click')[];
   onBlur?: React.FocusEventHandler<HTMLElement>;
   onFocus?: React.FocusEventHandler<HTMLElement>;
 
-  // Rest Events
+  // >>> Rest Events
   onKeyUp?: React.KeyboardEventHandler<HTMLDivElement>;
   onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
 }
 
-const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
+const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<BaseSelectRef>) => {
   const {
     id,
     prefixCls,
     className,
     showSearch,
-    multiple,
     tagRender,
     direction,
 
     // Value
     displayValues,
     onDisplayValuesChange,
-    onSelect,
     emptyOptions,
     notFoundContent = 'Not Found',
     onClear,
@@ -188,7 +198,6 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
     activeDescendantId,
 
     // Search
-    tokenWithEnter,
     searchValue,
     onSearch,
     onSearchSplit,
@@ -305,6 +314,11 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
   };
 
   // ============================= Search =============================
+  const tokenWithEnter = React.useMemo(
+    () => (tokenSeparators || []).some((tokenSeparator) => ['\n', '\r\n'].includes(tokenSeparator)),
+    [tokenSeparators],
+  );
+
   const onInternalSearch = (searchText: string, fromTyping: boolean, isCompositing: boolean) => {
     let ret = true;
     let newSearchText = searchText;
@@ -443,6 +457,16 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
     }
 
     onKeyUp?.(event, ...rest);
+  };
+
+  // ============================ Selector ============================
+  const onSelectorRemove = (val: DisplayValueType) => {
+    const newValues = displayValues.filter((i) => i !== val);
+
+    onDisplayValuesChange(newValues, {
+      type: 'remove',
+      values: [val],
+    });
   };
 
   // ========================== Focus / Blur ==========================
@@ -676,7 +700,6 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
           showSearch={mergedShowSearch}
           mode={mode}
           activeDescendantId={activeDescendantId}
-          multiple={multiple}
           tagRender={tagRender}
           values={displayValues}
           open={mergedOpen}
@@ -685,7 +708,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
           searchValue={searchValue}
           onSearch={onInternalSearch}
           onSearchSubmit={onInternalSearchSubmit}
-          onSelect={onSelect}
+          onRemove={onSelectorRemove}
           tokenWithEnter={tokenWithEnter}
         />
       )}

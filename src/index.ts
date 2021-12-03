@@ -2,9 +2,10 @@ import Select from './Select';
 import Option from './Option';
 import OptGroup from './OptGroup';
 import type { ExportedSelectProps as SelectProps } from './Select';
-import type { RefSelectProps } from './generate';
+import BaseSelect from './BaseSelect';
+import type { BaseSelectProps } from './BaseSelect';
 
-export { Option, OptGroup };
-export type { SelectProps, RefSelectProps };
+export { Option, OptGroup, BaseSelect, BaseSelectProps };
+export type { SelectProps };
 
 export default Select;

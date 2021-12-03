@@ -14,9 +14,10 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import type { ScrollTo } from 'rc-virtual-list/lib/List';
 import MultipleSelector from './MultipleSelector';
 import SingleSelector from './SingleSelector';
-import type { LabelValueType, RawValueType, CustomTagProps } from '../interface/generator';
+import type { LabelValueType, CustomTagProps } from '../interface/generator';
 import type { RenderNode, Mode } from '../interface';
 import useLock from '../hooks/useLock';
+import type { DisplayValueType } from '../BaseSelect';
 
 export interface InnerSelectorProps {
   prefixCls: string;
@@ -57,7 +58,6 @@ export interface SelectorProps {
   open: boolean;
   /** Display in the Selector value, it's not same as `value` prop */
   values: LabelValueType[];
-  multiple: boolean;
   mode: Mode;
   searchValue: string;
   activeValue: string;
@@ -86,7 +86,7 @@ export interface SelectorProps {
   /** `onSearch` returns go next step boolean to check if need do toggle open */
   onSearch: (searchText: string, fromTyping: boolean, isCompositing: boolean) => boolean;
   onSearchSubmit?: (searchText: string) => void;
-  onSelect: (value: RawValueType, option: { selected: boolean }) => void;
+  onRemove: (value: DisplayValueType) => void;
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 
   /**
@@ -102,7 +102,6 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
 
   const {
     prefixCls,
-    multiple,
     open,
     mode,
     showSearch,
@@ -247,11 +246,12 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     onInputCompositionEnd,
   };
 
-  const selectNode = multiple ? (
-    <MultipleSelector {...props} {...sharedProps} />
-  ) : (
-    <SingleSelector {...props} {...sharedProps} />
-  );
+  const selectNode =
+    mode === 'multiple' || mode === 'tags' ? (
+      <MultipleSelector {...props} {...sharedProps} />
+    ) : (
+      <SingleSelector {...props} {...sharedProps} />
+    );
 
   return (
     <div

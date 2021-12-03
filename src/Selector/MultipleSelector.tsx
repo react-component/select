@@ -7,7 +7,6 @@ import TransBtn from '../TransBtn';
 import type {
   LabelValueType,
   DisplayLabelValueType,
-  RawValueType,
   CustomTagProps,
   DefaultValueType,
 } from '../interface/generator';
@@ -15,6 +14,7 @@ import type { RenderNode } from '../interface';
 import type { InnerSelectorProps } from '.';
 import Input from './Input';
 import useLayoutEffect from '../hooks/useLayoutEffect';
+import type { DisplayValueType } from '../BaseSelect';
 
 interface SelectorProps extends InnerSelectorProps {
   // Icon
@@ -32,7 +32,7 @@ interface SelectorProps extends InnerSelectorProps {
   choiceTransitionName?: string;
 
   // Event
-  onSelect: (value: RawValueType, option: { selected: boolean }) => void;
+  onRemove: (value: DisplayValueType) => void;
 }
 
 const onPreventMouseDown = (event: React.MouseEvent) => {
@@ -65,7 +65,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
     tagRender,
     onToggleOpen,
 
-    onSelect,
+    onRemove,
     onInputChange,
     onInputPaste,
     onInputKeyDown,
@@ -147,7 +147,8 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
     );
   }
 
-  function renderItem({ disabled: itemDisabled, label, value }: DisplayLabelValueType) {
+  function renderItem(valueItem: DisplayLabelValueType) {
+    const { disabled: itemDisabled, label, value } = valueItem;
     const closable = !disabled && !itemDisabled;
 
     let displayLabel: React.ReactNode = label;
@@ -164,7 +165,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
 
     const onClose = (event?: React.MouseEvent) => {
       if (event) event.stopPropagation();
-      onSelect(value, { selected: false });
+      onRemove(valueItem);
     };
 
     return typeof tagRender === 'function'

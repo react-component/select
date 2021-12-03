@@ -30,65 +30,57 @@
  */
 
 import * as React from 'react';
-import type { OptionsType as SelectOptionsType } from './interface';
-import SelectOptionList from './OptionList';
-import Option from './Option';
-import OptGroup from './OptGroup';
-import { convertChildrenToData as convertSelectChildrenToData } from './utils/legacyUtil';
-import {
-  getLabeledValue as getSelectLabeledValue,
-  filterOptions as selectDefaultFilterOptions,
-  isValueDisabled as isSelectValueDisabled,
-  findValueOption as findSelectValueOption,
-  flattenOptions,
-  fillOptionsWithMissingValue,
-} from './utils/valueUtil';
-import type { SelectProps, RefSelectProps } from './generate';
-import generateSelector from './generate';
-import type { DefaultValueType } from './interface/generator';
-import warningProps from './utils/warningPropsUtil';
+import useMergedState from 'rc-util/lib/hooks/useMergedState';
+import BaseSelect from './BaseSelect';
+import type { BaseSelectRef, BaseSelectPropsWithoutPrivate, BaseSelectProps } from './BaseSelect';
 
-const RefSelect = generateSelector<SelectOptionsType>({
-  prefixCls: 'rc-select',
-  components: {
-    optionList: SelectOptionList,
-  },
-  convertChildrenToData: convertSelectChildrenToData,
-  flattenOptions,
-  getLabeledValue: getSelectLabeledValue,
-  filterOptions: selectDefaultFilterOptions,
-  isValueDisabled: isSelectValueDisabled,
-  findValueOption: findSelectValueOption,
-  warningProps,
-  fillOptionsWithMissingValue,
-});
-
-export type ExportedSelectProps<
-  ValueType extends DefaultValueType = DefaultValueType
-> = SelectProps<SelectOptionsType, ValueType>;
-
-/**
- * Typescript not support generic with function component,
- * we have to wrap an class component to handle this.
- */
-class Select<VT> extends React.Component<SelectProps<SelectOptionsType, VT>> {
-  static Option: typeof Option = Option;
-
-  static OptGroup: typeof OptGroup = OptGroup;
-
-  selectRef = React.createRef<RefSelectProps>();
-
-  focus = () => {
-    this.selectRef.current.focus();
-  };
-
-  blur = () => {
-    this.selectRef.current.blur();
-  };
-
-  render() {
-    return <RefSelect ref={this.selectRef} {...this.props} />;
-  }
+export interface BaseOptionType {
+  disabled?: boolean;
+  [name: string]: any;
 }
+
+export interface DefaultOptionType extends BaseOptionType {
+  label: React.ReactNode;
+  value?: string | number | null;
+  children?: Omit<DefaultOptionType, 'children'>[];
+}
+
+export interface SelectProps<OptionType extends BaseOptionType = DefaultOptionType>
+  extends BaseSelectPropsWithoutPrivate {
+  prefixCls?: string;
+
+  // >>> Search
+  searchValue?: string;
+  onSearch?: (value: string) => void;
+
+  // >>> Options
+  options: OptionType[];
+}
+
+const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRef>) => {
+  const { prefixCls = 'rc-select', searchValue } = props;
+
+  // ======================= Search =======================
+  const [mergedSearchValue] = useMergedState('', {
+    value: searchValue,
+  });
+
+  const onInternalSearch: BaseSelectProps['onSearch'] = (searchText, info) => {};
+
+  const onSearchSplit: BaseSelectProps['onSearchSplit'] = (words) => {};
+
+  // ======================= Render =======================
+  return (
+    <BaseSelect
+      {...props}
+      // >>> MISC
+      prefixCls={prefixCls}
+      ref={ref}
+      // >>> Search
+      searchValue={mergedSearchValue}
+      onSearch={onInternalSearch}
+    />
+  );
+});
 
 export default Select;
