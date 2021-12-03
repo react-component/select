@@ -87,13 +87,16 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
   //   onMouseEnter,
   // }
 
-  const { prefixCls, id, open, multiple, searchValue, toggleOpen } = useBaseProps();
+  const { prefixCls, id, open, multiple, searchValue, toggleOpen, notFoundContent } =
+    useBaseProps();
   const {
     flattenOptions,
     onActiveValue,
     defaultActiveFirstOption,
     onSelect,
     menuItemSelectedIcon,
+    rawValues,
+    fieldNames,
   } = React.useContext(SelectContext);
 
   const itemPrefixCls = `${prefixCls}-item`;
@@ -162,8 +165,8 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
      * So we need to delay to let Input component trigger onChange first.
      */
     const timeoutId = setTimeout(() => {
-      if (!multiple && open && values.size === 1) {
-        const value: RawValueType = Array.from(values)[0];
+      if (!multiple && open && rawValues.size === 1) {
+        const value: RawValueType = Array.from(rawValues)[0];
         const index = memoFlattenOptions.findIndex(
           ({ data }) => (data as OptionData).value === value,
         );
@@ -186,7 +189,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
   // ========================== Values ==========================
   const onSelectValue = (value: RawValueType) => {
     if (value !== undefined) {
-      onSelect(value, { selected: !values.has(value) });
+      onSelect(value, { selected: !rawValues.has(value) });
     }
 
     // Single mode should always close by select
@@ -282,17 +285,16 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
     if (!item) return null;
 
     const itemData = (item.data || {}) as OptionData;
-    const { value, label, children } = itemData;
+    const { value, label } = itemData;
     const attrs = pickAttrs(itemData, true);
-    const mergedLabel = childrenAsData ? children : label;
     return item ? (
       <div
-        aria-label={typeof mergedLabel === 'string' ? mergedLabel : null}
+        aria-label={typeof label === 'string' ? label : null}
         {...attrs}
         key={index}
         role="option"
         id={`${id}_list_${index}`}
-        aria-selected={values.has(value)}
+        aria-selected={rawValues.has(value)}
       >
         {value}
       </div>
@@ -334,7 +336,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
           const passedProps = omit(otherProps, omitFieldNameList);
 
           // Option
-          const selected = values.has(value);
+          const selected = rawValues.has(value);
 
           const optionPrefixCls = `${itemPrefixCls}-option`;
           const optionClassName = classNames(itemPrefixCls, optionPrefixCls, className, {
@@ -344,12 +346,10 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
             [`${optionPrefixCls}-selected`]: selected,
           });
 
-          const mergedLabel = childrenAsData ? children : label;
-
           const iconVisible =
             !menuItemSelectedIcon || typeof menuItemSelectedIcon === 'function' || selected;
 
-          const content = mergedLabel || value;
+          const content = label || value;
           // https://github.com/ant-design/ant-design/issues/26717
           let optionTitle =
             typeof content === 'string' || typeof content === 'number'

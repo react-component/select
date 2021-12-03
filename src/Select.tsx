@@ -158,6 +158,12 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
     // TODO: handle this
   });
 
+  /** Convert `displayValues` to raw value type set */
+  const rawValues = React.useMemo(
+    () => new Set(displayValues.map((dv) => dv.value)),
+    [displayValues],
+  );
+
   // =========================== Search ===========================
   const [mergedSearchValue] = useMergedState('', {
     value: searchValue,
@@ -192,6 +198,8 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
       defaultActiveFirstOption: mergedDefaultActiveFirstOption,
       onSelect: onInternalSelect,
       menuItemSelectedIcon,
+      rawValues,
+      fieldNames,
     }),
     [
       flattenOptions,
@@ -199,6 +207,8 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
       mergedDefaultActiveFirstOption,
       onInternalSelect,
       menuItemSelectedIcon,
+      rawValues,
+      fieldNames,
     ],
   );
 
