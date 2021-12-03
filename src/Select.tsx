@@ -31,7 +31,7 @@
 
 import * as React from 'react';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
-import BaseSelect from './BaseSelect';
+import BaseSelect, { DisplayValueType } from './BaseSelect';
 import OptionList from './OptionList';
 import type { BaseSelectRef, BaseSelectPropsWithoutPrivate, BaseSelectProps } from './BaseSelect';
 
@@ -61,6 +61,13 @@ export interface SelectProps<OptionType extends BaseOptionType = DefaultOptionTy
 const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRef>) => {
   const { prefixCls = 'rc-select', searchValue } = props;
 
+  // ======================= Values =======================
+  const [displayValues, setDisplayValues] = React.useState<DisplayValueType[]>([]);
+
+  const onDisplayValuesChange: BaseSelectProps['onDisplayValuesChange'] = (nextValues, info) => {
+    setDisplayValues(nextValues);
+  };
+
   // ======================= Search =======================
   const [mergedSearchValue] = useMergedState('', {
     value: searchValue,
@@ -77,6 +84,9 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
       // >>> MISC
       prefixCls={prefixCls}
       ref={ref}
+      // >>> Values
+      displayValues={displayValues}
+      onDisplayValuesChange={onDisplayValuesChange}
       // >>> Search
       searchValue={mergedSearchValue}
       onSearch={onInternalSearch}

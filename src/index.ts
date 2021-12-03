@@ -5,7 +5,7 @@ import type { SelectProps } from './Select';
 import BaseSelect from './BaseSelect';
 import type { BaseSelectProps } from './BaseSelect';
 
-export { Option, OptGroup, BaseSelect, BaseSelectProps };
-export type { SelectProps };
+export { Option, OptGroup, BaseSelect };
+export type { SelectProps, BaseSelectProps };
 
 export default Select;

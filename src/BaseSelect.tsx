@@ -62,8 +62,8 @@ export interface BaseSelectPrivateProps {
   prefixCls: string;
 
   // >>> Value
-  displayValues?: DisplayValueType[];
-  onDisplayValuesChange?: (
+  displayValues: DisplayValueType[];
+  onDisplayValuesChange: (
     values: DisplayValueType[],
     info: {
       type: 'add' | 'remove';
@@ -286,7 +286,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
 
   const customizeRawInputRef = useComposeRef<HTMLElement>(
     selectorDomRef,
-    customizeRawInputElement.props.ref,
+    customizeRawInputElement?.props?.ref,
   );
 
   // ============================== Open ==============================
@@ -322,7 +322,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   const onInternalSearch = (searchText: string, fromTyping: boolean, isCompositing: boolean) => {
     let ret = true;
     let newSearchText = searchText;
-    onActiveValueChange(null);
+    onActiveValueChange?.(null);
 
     // Check if match the `tokenSeparators`
     const patchLabels: string[] = isCompositing
