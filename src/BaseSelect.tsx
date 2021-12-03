@@ -10,6 +10,9 @@ import Selector, { RefSelectorProps } from './Selector';
 import useId from './hooks/useId';
 import useSelectTriggerControl from './hooks/useSelectTriggerControl';
 import useDelayReset from './hooks/useDelayReset';
+import TransBtn from './TransBtn';
+
+export type RenderNode = React.ReactNode | ((props: any) => React.ReactNode);
 
 export type RenderDOMFunc = (props: any) => HTMLElement;
 
@@ -52,8 +55,9 @@ export interface BaseSelectProps {
   // Mode
   mode?: Mode;
 
-  // Disabled
+  // Status
   disabled?: boolean;
+  loading?: boolean;
 
   // Open
   open?: boolean;
@@ -88,6 +92,11 @@ export interface BaseSelectProps {
   /** Only used for tag mode. Check if separator has \r\n */
   tokenWithEnter?: boolean;
   tokenSeparators?: string[];
+
+  // Icons
+  allowClear?: boolean;
+  showArrow?: boolean;
+  inputIcon?: RenderNode;
 
   // Dropdown
   animation?: string;
@@ -130,8 +139,9 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
     // Mode
     mode,
 
-    // Disabled
+    // Status
     disabled,
+    loading,
 
     // Customize Input
     getInputElement,
@@ -153,6 +163,11 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
     onSearch,
     onSearchSplit,
     tokenSeparators,
+
+    // Icons
+    allowClear,
+    showArrow,
+    inputIcon,
 
     // Dropdown
     animation,
@@ -179,6 +194,8 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
   // ============================== MISC ==============================
   const mergedId = useId(id);
   const isMultiple = mode === 'tags' || mode === 'multiple';
+  const mergedShowSearch =
+    (showSearch !== undefined ? showSearch : isMultiple) || mode === 'combobox';
 
   // ============================= Mobile =============================
   const [mobile, setMobile] = React.useState(false);
@@ -423,18 +440,45 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
     onToggleOpen,
   );
 
-  // ============================= Render =============================
+  // ==================================================================
+  // ==                            Render                            ==
+  // ==================================================================
+
+  // ============================= Arrow ==============================
+  const mergedShowArrow =
+    showArrow !== undefined ? showArrow : loading || (!isMultiple && mode !== 'combobox');
+  let arrowNode: React.ReactNode;
+
+  if (mergedShowArrow) {
+    arrowNode = (
+      <TransBtn
+        className={classNames(`${prefixCls}-arrow`, {
+          [`${prefixCls}-arrow-loading`]: loading,
+        })}
+        customizeIcon={inputIcon}
+        customizeIconProps={{
+          loading,
+          searchValue,
+          open: mergedOpen,
+          focused: mockFocused,
+          showSearch: mergedShowSearch,
+        }}
+      />
+    );
+  }
+
+  // ============================= Select =============================
   const mergedClassName = classNames(prefixCls, className, {
     [`${prefixCls}-focused`]: mockFocused,
     [`${prefixCls}-multiple`]: isMultiple,
     [`${prefixCls}-single`]: !isMultiple,
-    // [`${prefixCls}-allow-clear`]: allowClear,
-    // [`${prefixCls}-show-arrow`]: mergedShowArrow,
-    // [`${prefixCls}-disabled`]: disabled,
-    // [`${prefixCls}-loading`]: loading,
-    // [`${prefixCls}-open`]: mergedOpen,
-    // [`${prefixCls}-customize-input`]: customizeInputElement,
-    // [`${prefixCls}-show-search`]: mergedShowSearch,
+    [`${prefixCls}-allow-clear`]: allowClear,
+    [`${prefixCls}-show-arrow`]: mergedShowArrow,
+    [`${prefixCls}-disabled`]: disabled,
+    [`${prefixCls}-loading`]: loading,
+    [`${prefixCls}-open`]: mergedOpen,
+    [`${prefixCls}-customize-input`]: customizeInputElement,
+    [`${prefixCls}-show-search`]: mergedShowSearch,
   });
 
   // >>> Selector
@@ -472,7 +516,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
           inputElement={customizeInputElement}
           ref={selectorRef}
           id={mergedId}
-          showSearch={showSearch}
+          showSearch={mergedShowSearch}
           mode={mode}
           activeDescendantId={activeDescendantId}
           multiple={multiple}
@@ -506,7 +550,9 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
       // onKeyUp={onInternalKeyUp}
       // onFocus={onContainerFocus}
       // onBlur={onContainerBlur}
-    ></div>
+    >
+      {arrowNode}
+    </div>
   );
 
   return null;
