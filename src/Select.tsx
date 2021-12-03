@@ -32,6 +32,7 @@
 import * as React from 'react';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import BaseSelect from './BaseSelect';
+import OptionList from './OptionList';
 import type { BaseSelectRef, BaseSelectPropsWithoutPrivate, BaseSelectProps } from './BaseSelect';
 
 export interface BaseOptionType {
@@ -67,7 +68,7 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
 
   const onInternalSearch: BaseSelectProps['onSearch'] = (searchText, info) => {};
 
-  const onSearchSplit: BaseSelectProps['onSearchSplit'] = (words) => {};
+  const onInternalSearchSplit: BaseSelectProps['onSearchSplit'] = (words) => {};
 
   // ======================= Render =======================
   return (
@@ -79,6 +80,9 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
       // >>> Search
       searchValue={mergedSearchValue}
       onSearch={onInternalSearch}
+      onSearchSplit={onInternalSearchSplit}
+      // >>> OptionList
+      OptionList={OptionList}
     />
   );
 });
