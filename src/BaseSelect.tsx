@@ -12,7 +12,6 @@ import type { RefTriggerProps } from './SelectTrigger';
 import SelectTrigger from './SelectTrigger';
 import type { RefSelectorProps } from './Selector';
 import Selector from './Selector';
-import { toInnerValue, toOuterValues, removeLastEnabledValue } from './utils/commonUtil';
 import useId from './hooks/useId';
 import useSelectTriggerControl from './hooks/useSelectTriggerControl';
 import useDelayReset from './hooks/useDelayReset';
@@ -711,6 +710,27 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
         onFocus={onContainerFocus}
         onBlur={onContainerBlur}
       >
+        {mockFocused && !mergedOpen && (
+          <span
+            style={{
+              width: 0,
+              height: 0,
+              display: 'flex',
+              overflow: 'hidden',
+              opacity: 0,
+            }}
+            aria-live="polite"
+          >
+            {/* Merge into one string to make screen reader work as expect */}
+            {`${displayValues
+              .map(({ label, value }) =>
+                ['number', 'string'].includes(typeof label) ? label : value,
+              )
+              .join(', ')}`}
+          </span>
+        )}
+        {selectorNode}
+
         {arrowNode}
         {clearNode}
       </div>
