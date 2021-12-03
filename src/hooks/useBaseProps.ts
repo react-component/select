@@ -8,6 +8,8 @@ import type { BaseSelectProps } from '../BaseSelect';
 
 export interface BaseSelectContextProps extends BaseSelectProps {
   triggerOpen: boolean;
+  multiple: boolean;
+  toggleOpen: (open?: boolean) => void;
 }
 
 export const BaseSelectContext = React.createContext<BaseSelectContextProps>(null);

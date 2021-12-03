@@ -11,10 +11,10 @@ function convertNodeToOption(node: React.ReactElement): OptionData {
   return { key, value: value !== undefined ? value : key, children, ...restProps };
 }
 
-export function convertChildrenToData(
+export function convertChildrenToData<RetOptionsType = OptionsType>(
   nodes: React.ReactNode,
   optionOnly: boolean = false,
-): OptionsType {
+): RetOptionsType {
   return toArray(nodes)
     .map((node: React.ReactElement, index: number): OptionData | OptionGroupData | null => {
       if (!React.isValidElement(node) || !node.type) {

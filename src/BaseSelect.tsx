@@ -12,7 +12,6 @@ import type { RefTriggerProps } from './SelectTrigger';
 import SelectTrigger from './SelectTrigger';
 import type { RefSelectorProps } from './Selector';
 import Selector from './Selector';
-import useId from './hooks/useId';
 import useSelectTriggerControl from './hooks/useSelectTriggerControl';
 import useDelayReset from './hooks/useDelayReset';
 import TransBtn from './TransBtn';
@@ -59,6 +58,7 @@ export interface BaseSelectRef {
 
 export interface BaseSelectPrivateProps {
   // >>> MISC
+  id: string;
   prefixCls: string;
 
   // >>> Value
@@ -103,7 +103,6 @@ export type BaseSelectPropsWithoutPrivate = Omit<BaseSelectProps, keyof BaseSele
 
 export interface BaseSelectProps extends BaseSelectPrivateProps {
   className?: string;
-  id?: string;
   showSearch?: boolean;
   tagRender?: (props: CustomTagProps) => React.ReactElement;
   direction?: 'ltr' | 'rtl';
@@ -237,7 +236,6 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   } = props;
 
   // ============================== MISC ==============================
-  const mergedId = useId(id);
   const isMultiple = mode === 'tags' || mode === 'multiple';
   const mergedShowSearch =
     (showSearch !== undefined ? showSearch : isMultiple) || mode === 'combobox';
@@ -304,14 +302,17 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   }
   const triggerOpen = emptyListContent ? false : mergedOpen;
 
-  const onToggleOpen = (newOpen?: boolean) => {
-    const nextOpen = newOpen !== undefined ? newOpen : !mergedOpen;
+  const onToggleOpen = React.useCallback(
+    (newOpen?: boolean) => {
+      const nextOpen = newOpen !== undefined ? newOpen : !mergedOpen;
 
-    if (mergedOpen !== nextOpen && !disabled) {
-      setInnerOpen(nextOpen);
-      onDropdownVisibleChange?.(nextOpen);
-    }
-  };
+      if (mergedOpen !== nextOpen && !disabled) {
+        setInnerOpen(nextOpen);
+        onDropdownVisibleChange?.(nextOpen);
+      }
+    },
+    [disabled, mergedOpen, setInnerOpen, onDropdownVisibleChange],
+  );
 
   // ============================= Search =============================
   const tokenWithEnter = React.useMemo(
@@ -588,10 +589,12 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       ...props,
       open: mergedOpen,
       triggerOpen,
-      id: mergedId,
+      id,
       showSearch: mergedShowSearch,
+      multiple: isMultiple,
+      toggleOpen: onToggleOpen,
     }),
-    [props, triggerOpen, mergedOpen, mergedId, mergedShowSearch],
+    [props, triggerOpen, mergedOpen, id, mergedShowSearch, isMultiple, onToggleOpen],
   );
 
   // ==================================================================
@@ -696,7 +699,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
           prefixCls={prefixCls}
           inputElement={customizeInputElement}
           ref={selectorRef}
-          id={mergedId}
+          id={id}
           showSearch={mergedShowSearch}
           mode={mode}
           activeDescendantId={activeDescendantId}

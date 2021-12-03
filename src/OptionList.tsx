@@ -19,34 +19,35 @@ import type {
 import type { RawValueType, FlattenOptionsType } from './interface/generator';
 import { fillFieldNames } from './utils/valueUtil';
 import { isPlatformMac } from './utils/platformUtil';
+import useBaseProps from './hooks/useBaseProps';
+import SelectContext from './SelectContext';
 
-export interface OptionListProps<OptionsType extends object[]> {
-  prefixCls: string;
-  id: string;
-  options: OptionsType;
-  fieldNames?: FieldNames;
-  flattenOptions: FlattenOptionsType<OptionsType>;
-  height: number;
-  itemHeight: number;
-  values: Set<RawValueType>;
-  multiple: boolean;
-  open: boolean;
-  defaultActiveFirstOption?: boolean;
-  notFoundContent?: React.ReactNode;
-  menuItemSelectedIcon?: RenderNode;
-  childrenAsData: boolean;
-  searchValue: string;
-  virtual: boolean;
-  direction?: 'ltr' | 'rtl';
-
-  onSelect: (value: RawValueType, option: { selected: boolean }) => void;
-  onToggleOpen: (open?: boolean) => void;
-  /** Tell Select that some value is now active to make accessibility work */
-  onActiveValue: OnActiveValue;
-  onScroll: React.UIEventHandler<HTMLDivElement>;
-
-  /** Tell Select that mouse enter the popup to force re-render */
-  onMouseEnter?: React.MouseEventHandler;
+// export interface OptionListProps<OptionsType extends object[]> {
+export interface OptionListProps {
+  // prefixCls: string;
+  // id: string;
+  // options: OptionsType;
+  // fieldNames?: FieldNames;
+  // flattenOptions: FlattenOptionsType<OptionsType>;
+  // height: number;
+  // itemHeight: number;
+  // values: Set<RawValueType>;
+  // multiple: boolean;
+  // open: boolean;
+  // defaultActiveFirstOption?: boolean;
+  // notFoundContent?: React.ReactNode;
+  // menuItemSelectedIcon?: RenderNode;
+  // childrenAsData: boolean;
+  // searchValue: string;
+  // virtual: boolean;
+  // direction?: 'ltr' | 'rtl';
+  // onSelect: (value: RawValueType, option: { selected: boolean }) => void;
+  // onToggleOpen: (open?: boolean) => void;
+  // /** Tell Select that some value is now active to make accessibility work */
+  // onActiveValue: OnActiveValue;
+  // onScroll: React.UIEventHandler<HTMLDivElement>;
+  // /** Tell Select that mouse enter the popup to force re-render */
+  // onMouseEnter?: React.MouseEventHandler;
 }
 
 export interface RefOptionListProps {
@@ -59,34 +60,37 @@ export interface RefOptionListProps {
  * Using virtual list of option display.
  * Will fallback to dom if use customize render.
  */
-const OptionList: React.ForwardRefRenderFunction<
-  RefOptionListProps,
-  OptionListProps<SelectOptionsType>
-> = (
-  {
-    prefixCls,
-    id,
-    fieldNames,
-    flattenOptions,
-    childrenAsData,
-    values,
-    searchValue,
-    multiple,
-    defaultActiveFirstOption,
-    height,
-    itemHeight,
-    notFoundContent,
-    open,
-    menuItemSelectedIcon,
-    virtual,
-    onSelect,
-    onToggleOpen,
-    onActiveValue,
-    onScroll,
-    onMouseEnter,
-  },
+const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListProps> = (
+  props,
   ref,
 ) => {
+  // {
+  //   prefixCls,
+  //   id,
+  //   fieldNames,
+  //   flattenOptions,
+  //   childrenAsData,
+  //   values,
+  //   searchValue,
+  //   multiple,
+  //   defaultActiveFirstOption,
+  //   height,
+  //   itemHeight,
+  //   notFoundContent,
+  //   open,
+  //   menuItemSelectedIcon,
+  //   virtual,
+  //   onSelect,
+  //   onToggleOpen,
+  //   onActiveValue,
+  //   onScroll,
+  //   onMouseEnter,
+  // }
+
+  const { prefixCls, id, open, multiple, searchValue, toggleOpen } = useBaseProps();
+  const { flattenOptions, onActiveValue, defaultActiveFirstOption } =
+    React.useContext(SelectContext);
+
   const itemPrefixCls = `${prefixCls}-item`;
 
   const memoFlattenOptions = useMemo(
@@ -182,7 +186,7 @@ const OptionList: React.ForwardRefRenderFunction<
 
     // Single mode should always close by select
     if (!multiple) {
-      onToggleOpen(false);
+      toggleOpen(false);
     }
   };
 
@@ -237,7 +241,7 @@ const OptionList: React.ForwardRefRenderFunction<
 
         // >>> Close
         case KeyCode.ESC: {
-          onToggleOpen(false);
+          toggleOpen(false);
           if (open) {
             event.stopPropagation();
           }

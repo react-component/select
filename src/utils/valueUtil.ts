@@ -1,3 +1,4 @@
+import { BaseOptionType } from '@/Select';
 import warning from 'rc-util/lib/warning';
 import type {
   OptionsType as SelectOptionsType,
@@ -48,8 +49,8 @@ export function fillFieldNames(fieldNames?: FieldNames) {
  * We use `optionOnly` here is aim to avoid user use nested option group.
  * Here is simply set `key` to the index if not provided.
  */
-export function flattenOptions(
-  options: SelectOptionsType,
+export function flattenOptions<OptionType extends BaseOptionType>(
+  options: OptionType[],
   { fieldNames }: { fieldNames?: FieldNames } = {},
 ): FlattenOptionData[] {
   const flattenList: FlattenOptionData[] = [];

@@ -34,6 +34,27 @@ import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import BaseSelect, { DisplayValueType } from './BaseSelect';
 import OptionList from './OptionList';
 import type { BaseSelectRef, BaseSelectPropsWithoutPrivate, BaseSelectProps } from './BaseSelect';
+import useOptions from './hooks/useOptions';
+import SelectContext from './SelectContext';
+import useId from './hooks/useId';
+
+export type OnActiveValue = (
+  active: RawValueType,
+  index: number,
+  info?: { source?: 'keyboard' | 'mouse' },
+) => void;
+
+export type RawValueType = string | number;
+export interface LabelInValueType {
+  label: React.ReactNode;
+  value: RawValueType;
+}
+
+export interface FieldNames {
+  value?: string;
+  label?: string;
+  options?: string;
+}
 
 export interface BaseOptionType {
   disabled?: boolean;
@@ -46,29 +67,81 @@ export interface DefaultOptionType extends BaseOptionType {
   children?: Omit<DefaultOptionType, 'children'>[];
 }
 
-export interface SelectProps<OptionType extends BaseOptionType = DefaultOptionType>
+export interface SharedSelectProps<OptionType extends BaseOptionType = DefaultOptionType>
   extends BaseSelectPropsWithoutPrivate {
   prefixCls?: string;
+  id?: string;
+
+  backfill?: boolean;
+
+  // >>> Field Names
+  fieldNames?: FieldNames;
 
   // >>> Search
   searchValue?: string;
   onSearch?: (value: string) => void;
 
   // >>> Options
-  options: OptionType[];
+  children?: React.ReactNode;
+  options?: OptionType[];
+  defaultActiveFirstOption?: boolean;
 }
 
-const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRef>) => {
-  const { prefixCls = 'rc-select', searchValue } = props;
+export interface SingleRawSelectProps<OptionType extends BaseOptionType = DefaultOptionType>
+  extends SharedSelectProps<OptionType> {
+  mode?: 'combobox';
+  value?: RawValueType | null;
+}
 
-  // ======================= Values =======================
+export interface SingleLabeledSelectProps<OptionType extends BaseOptionType = DefaultOptionType>
+  extends SharedSelectProps<OptionType> {
+  mode?: 'combobox';
+  labelInValue: true;
+  value?: LabelInValueType | null;
+}
+
+export interface MultipleRawSelectProps<OptionType extends BaseOptionType = DefaultOptionType>
+  extends SharedSelectProps<OptionType> {
+  mode: 'multiple' | 'tags';
+  value?: RawValueType[] | null;
+}
+
+export interface MultipleLabeledSelectProps<OptionType extends BaseOptionType = DefaultOptionType>
+  extends SharedSelectProps<OptionType> {
+  mode: 'multiple' | 'tags';
+  labelInValue: true;
+  value?: LabelInValueType[] | null;
+}
+
+export type SelectProps<OptionType extends BaseOptionType = DefaultOptionType> =
+  | SingleRawSelectProps<OptionType>
+  | SingleLabeledSelectProps<OptionType>
+  | MultipleRawSelectProps<OptionType>
+  | MultipleLabeledSelectProps<OptionType>;
+
+const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRef>) => {
+  const {
+    id,
+    mode,
+    prefixCls = 'rc-select',
+    backfill,
+    fieldNames,
+    searchValue,
+    options,
+    children,
+    defaultActiveFirstOption,
+  } = props;
+
+  const mergedId = useId(id);
+
+  // =========================== Values ===========================
   const [displayValues, setDisplayValues] = React.useState<DisplayValueType[]>([]);
 
   const onDisplayValuesChange: BaseSelectProps['onDisplayValuesChange'] = (nextValues, info) => {
     setDisplayValues(nextValues);
   };
 
-  // ======================= Search =======================
+  // =========================== Search ===========================
   const [mergedSearchValue] = useMergedState('', {
     value: searchValue,
   });
@@ -77,23 +150,60 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
 
   const onInternalSearchSplit: BaseSelectProps['onSearchSplit'] = (words) => {};
 
-  // ======================= Render =======================
+  // ========================= OptionList =========================
+  const flattenOptions = useOptions(options, children, fieldNames);
+
+  // ======================= Accessibility ========================
+  const [activeValue, setActiveValue] = React.useState<string>(null);
+  const [accessibilityIndex, setAccessibilityIndex] = React.useState(0);
+  const mergedDefaultActiveFirstOption =
+    defaultActiveFirstOption !== undefined ? defaultActiveFirstOption : mode !== 'combobox';
+
+  const onActiveValue: OnActiveValue = React.useCallback(
+    (active, index, { source = 'keyboard' } = {}) => {
+      setAccessibilityIndex(index);
+
+      if (backfill && mode === 'combobox' && active !== null && source === 'keyboard') {
+        setActiveValue(String(active));
+      }
+    },
+    [backfill, mode],
+  );
+
+  // ========================== Context ===========================
+  const selectContext = React.useMemo(
+    () => ({
+      ...flattenOptions,
+      onActiveValue,
+      defaultActiveFirstOption,
+    }),
+    [flattenOptions, onActiveValue, defaultActiveFirstOption],
+  );
+
+  // ==============================================================
+  // ==                          Render                          ==
+  // ==============================================================
   return (
-    <BaseSelect
-      {...props}
-      // >>> MISC
-      prefixCls={prefixCls}
-      ref={ref}
-      // >>> Values
-      displayValues={displayValues}
-      onDisplayValuesChange={onDisplayValuesChange}
-      // >>> Search
-      searchValue={mergedSearchValue}
-      onSearch={onInternalSearch}
-      onSearchSplit={onInternalSearchSplit}
-      // >>> OptionList
-      OptionList={OptionList}
-    />
+    <SelectContext.Provider value={selectContext}>
+      <BaseSelect
+        {...props}
+        // >>> MISC
+        id={mergedId}
+        prefixCls={prefixCls}
+        ref={ref}
+        // >>> Values
+        displayValues={displayValues}
+        onDisplayValuesChange={onDisplayValuesChange}
+        // >>> Search
+        searchValue={mergedSearchValue}
+        onSearch={onInternalSearch}
+        onSearchSplit={onInternalSearchSplit}
+        // >>> OptionList
+        OptionList={OptionList}
+        // >>> Accessibility
+        activeDescendantId={`${id}_list_${accessibilityIndex}`}
+      />
+    </SelectContext.Provider>
   );
 });
 
