@@ -1,9 +1,15 @@
 import * as React from 'react';
+import classNames from 'classnames';
+import isMobile from 'rc-util/lib/isMobile';
 import { useComposeRef } from 'rc-util/lib/ref';
+import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
+import { getSeparatedContent } from './utils/valueUtil';
 import SelectTrigger, { RefTriggerProps } from './SelectTrigger';
 import Selector, { RefSelectorProps } from './Selector';
 import useId from './hooks/useId';
+import useSelectTriggerControl from './hooks/useSelectTriggerControl';
+import useDelayReset from './hooks/useDelayReset';
 
 export type RenderDOMFunc = (props: any) => HTMLElement;
 
@@ -38,6 +44,11 @@ export interface BaseSelectProps {
   displayValues?: LabelValueType[];
   direction?: 'ltr' | 'rtl';
 
+  // Value
+  emptyOptions?: boolean;
+  onSelect: (value: RawValueType, option: { selected: boolean }) => void;
+  notFoundContent?: React.ReactNode;
+
   // Mode
   mode?: Mode;
 
@@ -45,8 +56,9 @@ export interface BaseSelectProps {
   disabled?: boolean;
 
   // Open
-  open: boolean;
-  onOpen: (open: boolean) => void;
+  open?: boolean;
+  defaultOpen?: boolean;
+  onDropdownVisibleChange?: (open: boolean) => void;
 
   // Customize Input
   /** @private Internal usage. Do not use in your production. */
@@ -60,17 +72,22 @@ export interface BaseSelectProps {
   // TODO: handle this
   /** Link search input with target element */
   activeDescendantId?: string;
+  onActiveValueChange?: (value: string | null) => void;
 
   // Search
   searchValue: string;
   /** Trigger onSearch, return false to prevent trigger open event */
-  onSearch: (searchValue: string, fromTyping: boolean, isCompositing: boolean) => boolean;
-  onSearchSubmit?: (searchText: string) => void;
+  onSearch: (
+    searchValue: string,
+    info: {
+      source: 'typing' | 'effect' | 'submit' | 'clear';
+    },
+  ) => void;
+  /** Trigger when search text match the `tokenSeparators`. Will provide split content */
+  onSearchSplit: (words: string[]) => void;
   /** Only used for tag mode. Check if separator has \r\n */
   tokenWithEnter?: boolean;
-
-  // Value
-  onSelect: (value: RawValueType, option: { selected: boolean }) => void;
+  tokenSeparators?: string[];
 
   // Dropdown
   animation?: string;
@@ -84,17 +101,31 @@ export interface BaseSelectProps {
   placement?: Placement;
   getPopupContainer?: RenderDOMFunc;
   dropdownEmpty?: boolean;
+
+  // Focus
+  showAction?: ('focus' | 'click')[];
+  onBlur?: React.FocusEventHandler<HTMLElement>;
+  onFocus?: React.FocusEventHandler<HTMLElement>;
+
+  // Rest Events
+  onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
 }
 
 const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
   const {
     id,
     prefixCls,
+    className,
     showSearch,
     multiple,
     tagRender,
     displayValues,
     direction,
+
+    // Value
+    onSelect,
+    emptyOptions,
+    notFoundContent = 'Not Found',
 
     // Mode
     mode,
@@ -108,20 +139,20 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
 
     // Open
     open,
-    onOpen,
+    defaultOpen,
+    onDropdownVisibleChange,
 
     // Active
     activeValue,
+    onActiveValueChange,
     activeDescendantId,
 
     // Search
     tokenWithEnter,
     searchValue,
     onSearch,
-    onSearchSubmit,
-
-    // Value
-    onSelect,
+    onSearchSplit,
+    tokenSeparators,
 
     // Dropdown
     animation,
@@ -135,10 +166,26 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
     dropdownEmpty,
     placement,
     getPopupContainer,
+
+    // Focus
+    showAction = [],
+    onFocus,
+    onBlur,
+
+    // Rest Events
+    onMouseDown,
   } = props;
 
   // ============================== MISC ==============================
   const mergedId = useId(id);
+  const isMultiple = mode === 'tags' || mode === 'multiple';
+
+  // ============================= Mobile =============================
+  const [mobile, setMobile] = React.useState(false);
+  React.useEffect(() => {
+    // Only update on the client side
+    setMobile(isMobile());
+  }, []);
 
   // ============================== Refs ==============================
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -146,6 +193,17 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
   const triggerRef = React.useRef<RefTriggerProps>(null);
   const selectorRef = React.useRef<RefSelectorProps>(null);
   // const listRef = React.useRef<RefOptionListProps>(null);
+
+  /** Used for component focused management */
+  const [mockFocused, setMockFocused, cancelSetMockFocused] = useDelayReset();
+
+  // =========================== Imperative ===========================
+  React.useImperativeHandle(ref, () => ({
+    focus: selectorRef.current?.focus,
+    blur: selectorRef.current?.blur,
+    // TODO: handle this
+    // scrollTo: listRef.current?.scrollTo as ScrollTo,
+  }));
 
   // ========================== Custom Input ==========================
   // Only works in `combobox`
@@ -162,12 +220,178 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
   );
 
   // ============================== Open ==============================
-  const onToggleOpen = (newOpen?: boolean) => {
-    const nextOpen = newOpen !== undefined ? newOpen : !open;
+  const [innerOpen, setInnerOpen] = useMergedState<boolean>(undefined, {
+    defaultValue: defaultOpen,
+    value: open,
+  });
 
-    if (open !== nextOpen && !disabled) {
-      onOpen(nextOpen);
+  let mergedOpen = innerOpen;
+
+  // Not trigger `open` in `combobox` when `notFoundContent` is empty
+  const emptyListContent = !notFoundContent && emptyOptions;
+  if (disabled || (emptyListContent && mergedOpen && mode === 'combobox')) {
+    mergedOpen = false;
+  }
+  const triggerOpen = emptyListContent ? false : mergedOpen;
+
+  const onToggleOpen = (newOpen?: boolean) => {
+    const nextOpen = newOpen !== undefined ? newOpen : !mergedOpen;
+
+    if (mergedOpen !== nextOpen && !disabled) {
+      setInnerOpen(nextOpen);
+      onDropdownVisibleChange?.(nextOpen);
     }
+  };
+
+  // ============================= Search =============================
+  const onInternalSearch = (searchText: string, fromTyping: boolean, isCompositing: boolean) => {
+    let ret = true;
+    let newSearchText = searchText;
+    onActiveValueChange(null);
+
+    // Check if match the `tokenSeparators`
+    const patchLabels: string[] = isCompositing
+      ? null
+      : getSeparatedContent(searchText, tokenSeparators);
+
+    if (mode === 'combobox') {
+      // Only typing will trigger onChange
+      if (fromTyping) {
+        onSearch(newSearchText, { source: 'typing' });
+      }
+    } else if (patchLabels) {
+      newSearchText = '';
+
+      onSearchSplit(patchLabels);
+
+      // Should close when paste finish
+      onToggleOpen(false);
+
+      // Tell Selector that break next actions
+      ret = false;
+    }
+
+    if (onSearch && searchValue !== newSearchText) {
+      onSearch(newSearchText, {
+        source: fromTyping ? 'typing' : 'effect',
+      });
+    }
+
+    return ret;
+  };
+
+  // Only triggered when menu is closed & mode is tags
+  // If menu is open, OptionList will take charge
+  // If mode isn't tags, press enter is not meaningful when you can't see any option
+  const onInternalSearchSubmit = (searchText: string) => {
+    // prevent empty tags from appearing when you click the Enter button
+    if (!searchText || !searchText.trim()) {
+      return;
+    }
+    onSearch(searchText, { source: 'submit' });
+  };
+
+  // Close will clean up single mode search text
+  React.useEffect(() => {
+    if (!mergedOpen && !isMultiple && mode !== 'combobox') {
+      onInternalSearch('', false, false);
+    }
+  }, [mergedOpen]);
+
+  // ============================ Disabled ============================
+  // Close dropdown & remove focus state when disabled change
+  React.useEffect(() => {
+    if (innerOpen && disabled) {
+      setInnerOpen(false);
+    }
+
+    if (disabled) {
+      setMockFocused(false);
+    }
+  }, [disabled]);
+
+  // ========================== Focus / Blur ==========================
+  /** Record real focus status */
+  const focusRef = React.useRef<boolean>(false);
+
+  const onContainerFocus: React.FocusEventHandler<HTMLElement> = (...args) => {
+    setMockFocused(true);
+
+    if (!disabled) {
+      if (onFocus && !focusRef.current) {
+        onFocus(...args);
+      }
+
+      // `showAction` should handle `focus` if set
+      if (showAction.includes('focus')) {
+        onToggleOpen(true);
+      }
+    }
+
+    focusRef.current = true;
+  };
+
+  const onContainerBlur: React.FocusEventHandler<HTMLElement> = (...args) => {
+    setMockFocused(false, () => {
+      focusRef.current = false;
+      onToggleOpen(false);
+    });
+
+    if (disabled) {
+      return;
+    }
+
+    if (searchValue) {
+      // `tags` mode should move `searchValue` into values
+      if (mode === 'tags') {
+        // TODO: blur need submit to change value
+        onSearch(searchValue, { source: 'submit' });
+      } else if (mode === 'multiple') {
+        // `multiple` mode only clean the search value but not trigger event
+        onSearch('', {
+          source: 'clear',
+        });
+      }
+    }
+
+    if (onBlur) {
+      onBlur(...args);
+    }
+  };
+
+  // Give focus back of Select
+  const activeTimeoutIds: any[] = [];
+  React.useEffect(
+    () => () => {
+      activeTimeoutIds.forEach((timeoutId) => clearTimeout(timeoutId));
+      activeTimeoutIds.splice(0, activeTimeoutIds.length);
+    },
+    [],
+  );
+
+  const onInternalMouseDown: React.MouseEventHandler<HTMLDivElement> = (event, ...restArgs) => {
+    const { target } = event;
+    const popupElement: HTMLDivElement = triggerRef.current?.getPopupElement();
+
+    // We should give focus back to selector if clicked item is not focusable
+    if (popupElement && popupElement.contains(target as HTMLElement)) {
+      const timeoutId = setTimeout(() => {
+        const index = activeTimeoutIds.indexOf(timeoutId);
+        if (index !== -1) {
+          activeTimeoutIds.splice(index, 1);
+        }
+
+        cancelSetMockFocused();
+
+        if (!mobile && !popupElement.contains(document.activeElement)) {
+          selectorRef.current?.focus();
+        }
+      });
+
+      activeTimeoutIds.push(timeoutId);
+    }
+
+    onMouseDown?.(event, ...restArgs);
   };
 
   // ============================ Dropdown ============================
@@ -176,13 +400,13 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
   // TODO: here has onPopupMouseEnter
 
   useLayoutEffect(() => {
-    if (open) {
+    if (triggerOpen) {
       const newWidth = Math.ceil(containerRef.current?.offsetWidth);
       if (containerWidth !== newWidth && !Number.isNaN(newWidth)) {
         setContainerWidth(newWidth);
       }
     }
-  }, [open]);
+  }, [triggerOpen]);
 
   // Used for raw custom input trigger
   let onTriggerVisibleChange: null | ((newOpen: boolean) => void);
@@ -192,13 +416,34 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
     };
   }
 
+  // Close when click on non-select element
+  useSelectTriggerControl(
+    () => [containerRef.current, triggerRef.current?.getPopupElement()],
+    triggerOpen,
+    onToggleOpen,
+  );
+
   // ============================= Render =============================
+  const mergedClassName = classNames(prefixCls, className, {
+    [`${prefixCls}-focused`]: mockFocused,
+    [`${prefixCls}-multiple`]: isMultiple,
+    [`${prefixCls}-single`]: !isMultiple,
+    // [`${prefixCls}-allow-clear`]: allowClear,
+    // [`${prefixCls}-show-arrow`]: mergedShowArrow,
+    // [`${prefixCls}-disabled`]: disabled,
+    // [`${prefixCls}-loading`]: loading,
+    // [`${prefixCls}-open`]: mergedOpen,
+    // [`${prefixCls}-customize-input`]: customizeInputElement,
+    // [`${prefixCls}-show-search`]: mergedShowSearch,
+  });
+
+  // >>> Selector
   const selectorNode = (
     <SelectTrigger
       ref={triggerRef}
       disabled={disabled}
       prefixCls={prefixCls}
-      visible={open}
+      visible={triggerOpen}
       popupElement={dropdownContent}
       containerWidth={containerWidth}
       animation={animation}
@@ -233,12 +478,12 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
           multiple={multiple}
           tagRender={tagRender}
           values={displayValues}
-          open={open}
+          open={mergedOpen}
           onToggleOpen={onToggleOpen}
           activeValue={activeValue}
           searchValue={searchValue}
-          onSearch={onSearch}
-          onSearchSubmit={onSearchSubmit}
+          onSearch={onInternalSearch}
+          onSearchSubmit={onInternalSearchSubmit}
           onSelect={onSelect}
           tokenWithEnter={tokenWithEnter}
         />
@@ -251,38 +496,18 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: any) => {
     return selectorNode;
   }
 
-  // return (
-  //   <div
-  //     className={mergedClassName}
-  //     {...domProps}
-  //     ref={containerRef}
-  //     onMouseDown={onInternalMouseDown}
-  //     onKeyDown={onInternalKeyDown}
-  //     onKeyUp={onInternalKeyUp}
-  //     onFocus={onContainerFocus}
-  //     onBlur={onContainerBlur}
-  //   >
-  //     {mockFocused && !mergedOpen && (
-  //       <span
-  //         style={{
-  //           width: 0,
-  //           height: 0,
-  //           display: 'flex',
-  //           overflow: 'hidden',
-  //           opacity: 0,
-  //         }}
-  //         aria-live="polite"
-  //       >
-  //         {/* Merge into one string to make screen reader work as expect */}
-  //         {`${mergedRawValue.join(', ')}`}
-  //       </span>
-  //     )}
-  //     {selectorNode}
-
-  //     {arrowNode}
-  //     {clearNode}
-  //   </div>
-  // );
+  return (
+    <div
+      className={mergedClassName}
+      // {...domProps}
+      // ref={containerRef}
+      // onMouseDown={onInternalMouseDown}
+      // onKeyDown={onInternalKeyDown}
+      // onKeyUp={onInternalKeyUp}
+      // onFocus={onContainerFocus}
+      // onBlur={onContainerBlur}
+    ></div>
+  );
 
   return null;
 });
