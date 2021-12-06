@@ -88,6 +88,9 @@ export interface SharedSelectProps<OptionType extends BaseOptionType = DefaultOp
   children?: React.ReactNode;
   options?: OptionType[];
   defaultActiveFirstOption?: boolean;
+  virtual?: boolean;
+  listHeight?: number;
+  listItemHeight?: number;
 
   // >>> Icon
   menuItemSelectedIcon?: RenderNode;
@@ -137,6 +140,10 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
     children,
     defaultActiveFirstOption,
     menuItemSelectedIcon,
+    virtual,
+    listHeight,
+    listItemHeight,
+    Í,
   } = props;
 
   const mergedId = useId(id);
@@ -200,6 +207,9 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
       menuItemSelectedIcon,
       rawValues,
       fieldNames,
+      virtual,
+      listHeight,
+      listItemHeight,
     }),
     [
       flattenOptions,
@@ -209,6 +219,9 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
       menuItemSelectedIcon,
       rawValues,
       fieldNames,
+      virtual,
+      listHeight,
+      listItemHeight,
     ],
   );
 

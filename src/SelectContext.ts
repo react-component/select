@@ -12,6 +12,9 @@ export interface SelectContextProps {
   menuItemSelectedIcon?: RenderNode;
   rawValues: Set<RawValueType>;
   fieldNames?: FieldNames;
+  virtual?: boolean;
+  listHeight?: number;
+  listItemHeight?: number;
 }
 
 const SelectContext = React.createContext<SelectContextProps>(null);

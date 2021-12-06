@@ -87,7 +87,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
   //   onMouseEnter,
   // }
 
-  const { prefixCls, id, open, multiple, searchValue, toggleOpen, notFoundContent } =
+  const { prefixCls, id, open, multiple, searchValue, toggleOpen, notFoundContent, onPopupScroll } =
     useBaseProps();
   const {
     flattenOptions,
@@ -97,6 +97,9 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
     menuItemSelectedIcon,
     rawValues,
     fieldNames,
+    virtual,
+    listHeight,
+    listItemHeight,
   } = React.useContext(SelectContext);
 
   const itemPrefixCls = `${prefixCls}-item`;
@@ -312,13 +315,12 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
         itemKey="key"
         ref={listRef}
         data={memoFlattenOptions}
-        height={height}
-        itemHeight={itemHeight}
+        height={listHeight}
+        itemHeight={listItemHeight}
         fullHeight={false}
         onMouseDown={onListMouseDown}
-        onScroll={onScroll}
+        onScroll={onPopupScroll}
         virtual={virtual}
-        onMouseEnter={onMouseEnter}
       >
         {({ group, groupOption, data, label, value }, itemIndex) => {
           const { key } = data;

@@ -157,6 +157,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps {
   onKeyUp?: React.KeyboardEventHandler<HTMLDivElement>;
   onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
+  onPopupScroll?: React.UIEventHandler<HTMLDivElement>;
 }
 
 const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<BaseSelectRef>) => {
@@ -557,7 +558,11 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   // ============================ Dropdown ============================
   const [containerWidth, setContainerWidth] = React.useState(null);
 
-  // TODO: here has onPopupMouseEnter
+  const [, forceUpdate] = React.useState({});
+  // We need force update here since popup dom is render async
+  function onPopupMouseEnter() {
+    forceUpdate({});
+  }
 
   useLayoutEffect(() => {
     if (triggerOpen) {
@@ -687,6 +692,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       empty={dropdownEmpty}
       getTriggerDOMNode={() => selectorDomRef.current}
       onPopupVisibleChange={onTriggerVisibleChange}
+      onPopupMouseEnter={onPopupMouseEnter}
     >
       {customizeRawInputElement ? (
         React.cloneElement(customizeRawInputElement, {

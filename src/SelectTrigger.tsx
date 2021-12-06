@@ -70,6 +70,8 @@ export interface SelectTriggerProps {
 
   getTriggerDOMNode: () => HTMLElement;
   onPopupVisibleChange?: (visible: boolean) => void;
+
+  onPopupMouseEnter: () => void;
 }
 
 const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTriggerProps> = (
@@ -96,6 +98,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     empty,
     getTriggerDOMNode,
     onPopupVisibleChange,
+    onPopupMouseEnter,
     ...restProps
   } = props;
 
@@ -141,7 +144,11 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
       builtinPlacements={builtInPlacements}
       prefixCls={dropdownPrefixCls}
       popupTransitionName={mergedTransitionName}
-      popup={<div ref={popupRef}>{popupNode}</div>}
+      popup={
+        <div ref={popupRef} onMouseEnter={onPopupMouseEnter}>
+          {popupNode}
+        </div>
+      }
       popupAlign={dropdownAlign}
       popupVisible={visible}
       getPopupContainer={getPopupContainer}
