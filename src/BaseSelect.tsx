@@ -18,7 +18,7 @@ import TransBtn from './TransBtn';
 import useLock from './hooks/useLock';
 import { BaseSelectContext } from './hooks/useBaseProps';
 
-const DEFAULT_OMIT_PROPS = ['placeholder', 'autoFocus', 'onInputKeyDown', 'tabIndex'];
+const DEFAULT_OMIT_PROPS = ['value', 'placeholder', 'autoFocus', 'onInputKeyDown', 'tabIndex'];
 
 export type RenderNode = React.ReactNode | ((props: any) => React.ReactNode);
 
@@ -70,7 +70,6 @@ export interface BaseSelectPrivateProps {
       values: DisplayValueType[];
     },
   ) => void;
-  emptyOptions?: boolean;
 
   // >>> Active
   /** Current dropdown list active item string value */
@@ -95,18 +94,21 @@ export interface BaseSelectPrivateProps {
   OptionList: React.ForwardRefExoticComponent<
     React.PropsWithoutRef<any> & React.RefAttributes<RefOptionListProps>
   >;
-  dropdownEmpty?: boolean;
+  /** Tell if provided `options` is empty */
+  emptyOptions: boolean;
 }
 
 export type BaseSelectPropsWithoutPrivate = Omit<BaseSelectProps, keyof BaseSelectPrivateProps>;
 
-export interface BaseSelectProps extends BaseSelectPrivateProps {
+export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttributes {
   className?: string;
   style?: React.CSSProperties;
   showSearch?: boolean;
   tagRender?: (props: CustomTagProps) => React.ReactElement;
   direction?: 'ltr' | 'rtl';
 
+  // MISC
+  tabIndex?: number;
   autoFocus?: boolean;
   notFoundContent?: React.ReactNode;
   placeholder?: React.ReactNode;
@@ -224,7 +226,6 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     dropdownMatchSelectWidth,
     dropdownRender,
     dropdownAlign,
-    dropdownEmpty,
     placement,
     getPopupContainer,
 
@@ -695,7 +696,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       dropdownAlign={dropdownAlign}
       placement={placement}
       getPopupContainer={getPopupContainer}
-      empty={dropdownEmpty}
+      empty={emptyOptions}
       getTriggerDOMNode={() => selectorDomRef.current}
       onPopupVisibleChange={onTriggerVisibleChange}
       onPopupMouseEnter={onPopupMouseEnter}

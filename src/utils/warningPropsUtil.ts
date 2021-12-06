@@ -6,6 +6,7 @@ import { convertChildrenToData } from './legacyUtil';
 import type { OptionData, OptionGroupData } from '../interface';
 import { toArray } from './commonUtil';
 import type { RawValueType, LabelValueType } from '../interface/generator';
+import { isMultiple } from '../BaseSelect';
 
 function warningProps(props: SelectProps) {
   const {
@@ -26,7 +27,7 @@ function warningProps(props: SelectProps) {
     optionLabelProp,
   } = props;
 
-  const multiple = mode === 'multiple' || mode === 'tags';
+  const multiple = isMultiple(mode);
   const mergedShowSearch = showSearch !== undefined ? showSearch : multiple || mode === 'combobox';
   const mergedOptions = options || convertChildrenToData(children);
 

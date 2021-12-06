@@ -289,13 +289,14 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
 
     const itemData = (item.data || {}) as OptionData;
     const { value, label } = itemData;
+    const { group } = item;
     const attrs = pickAttrs(itemData, true);
     return item ? (
       <div
-        aria-label={typeof label === 'string' ? label : null}
+        aria-label={typeof label === 'string' && !group ? label : null}
         {...attrs}
         key={index}
-        role="option"
+        role={group ? 'presentation' : 'option'}
         id={`${id}_list_${index}`}
         aria-selected={rawValues.has(value)}
       >

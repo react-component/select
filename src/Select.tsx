@@ -34,12 +34,14 @@ import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import BaseSelect, { isMultiple } from './BaseSelect';
 import type { DisplayValueType, RenderNode } from './BaseSelect';
 import OptionList from './OptionList';
+import Option from './Option';
 import type { BaseSelectRef, BaseSelectPropsWithoutPrivate, BaseSelectProps } from './BaseSelect';
 import useOptions from './hooks/useOptions';
 import SelectContext from './SelectContext';
 import useId from './hooks/useId';
 import useRefFunc from './hooks/useRefFunc';
 import { fillFieldNames } from './utils/valueUtil';
+import warningProps from './utils/warningPropsUtil';
 
 export type OnActiveValue = (
   active: RawValueType,
@@ -91,6 +93,8 @@ export interface SharedSelectProps<OptionType extends BaseOptionType = DefaultOp
   fieldNames?: FieldNames;
 
   // >>> Search
+  /** @deprecated Use `searchValue` instead */
+  inputValue?: string;
   searchValue?: string;
   onSearch?: (value: string) => void;
 
@@ -173,6 +177,7 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
     fieldNames,
 
     // Search
+    inputValue,
     searchValue,
     onSearch,
 
@@ -210,7 +215,7 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
 
   // =========================== Search ===========================
   const [mergedSearchValue, setSearchValue] = useMergedState('', {
-    value: searchValue,
+    value: searchValue !== undefined ? searchValue : inputValue,
     postState: (search) => search || '',
   });
 
@@ -267,7 +272,7 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
         }
 
         return {
-          label: rawLabel,
+          label: rawLabel === undefined ? rawValue : rawLabel,
           value: rawValue,
         };
       });
@@ -376,6 +381,11 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
     ],
   );
 
+  // ========================== Warning ===========================
+  if (process.env.NODE_ENV !== 'production') {
+    warningProps(props);
+  }
+
   // ==============================================================
   // ==                          Render                          ==
   // ==============================================================
@@ -396,6 +406,7 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
         onSearchSplit={onInternalSearchSplit}
         // >>> OptionList
         OptionList={OptionList}
+        emptyOptions={!filteredOptions.length}
         // >>> Accessibility
         activeValue={activeValue}
         activeDescendantId={`${id}_list_${accessibilityIndex}`}
@@ -404,4 +415,12 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
   );
 });
 
-export default Select;
+type SelectType = typeof Select;
+
+const TypedSelect = Select as SelectType & {
+  Option: typeof Option;
+};
+
+TypedSelect.Option = Option;
+
+export default TypedSelect;

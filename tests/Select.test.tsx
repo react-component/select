@@ -5,7 +5,7 @@ import { act } from 'react-dom/test-utils';
 import { resetWarned } from 'rc-util/lib/warning';
 import { spyElementPrototype } from 'rc-util/lib/test/domHook';
 import type { SelectProps } from '../src';
-import Select, { OptGroup, Option } from '../src';
+import Select, { OptGroup, Option, useBaseProps } from '../src';
 import focusTest from './shared/focusTest';
 import blurTest from './shared/blurTest';
 import keyDownTest from './shared/keyDownTest';
@@ -207,15 +207,29 @@ describe('Select.Basic', () => {
   });
 
   it('should direction rtl', () => {
+    const Hooker = () => {
+      const { direction } = useBaseProps();
+      return <span className="direction">{direction}</span>;
+    };
+
     const wrapper = mount(
-      <Select direction="rtl" open>
+      <Select
+        direction="rtl"
+        dropdownRender={(origin) => (
+          <>
+            <Hooker />
+            {origin}
+          </>
+        )}
+        open
+      >
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
-    expect(wrapper.find('Trigger').props().popupPlacement).toBe('bottomRight');
+    expect(wrapper.find('Trigger').prop('popupPlacement')).toBe('bottomRight');
 
-    expect(wrapper.find('OptionList').props().direction).toEqual('rtl');
+    expect(wrapper.find('.direction').last().text()).toEqual('rtl');
   });
 
   it('should not response click event when select is disabled', () => {
