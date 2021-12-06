@@ -42,6 +42,7 @@ import useId from './hooks/useId';
 import useRefFunc from './hooks/useRefFunc';
 import { fillFieldNames } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
+import { toArray } from './utils/commonUtil';
 
 export type OnActiveValue = (
   active: RawValueType,
@@ -55,6 +56,8 @@ export type RawValueType = string | number;
 export interface LabelInValueType {
   label: React.ReactNode;
   value: RawValueType;
+  /** @deprecated `key` is useless since it should always same as `value` */
+  key?: React.Key;
 }
 
 export type DraftValueType =
@@ -106,6 +109,7 @@ export interface SharedSelectProps<OptionType extends BaseOptionType = DefaultOp
    */
   filterOption?: boolean | FilterFunc<OptionType>;
   optionFilterProp?: string;
+  optionLabelProp?: string;
   children?: React.ReactNode;
   options?: OptionType[];
   defaultActiveFirstOption?: boolean;
@@ -184,6 +188,7 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
     // Options
     filterOption,
     optionFilterProp = 'value',
+    optionLabelProp,
     options,
     children,
     defaultActiveFirstOption,
@@ -201,14 +206,16 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
 
   const mergedId = useId(id);
   const multiple = isMultiple(mode);
+  const childrenAsData = !!(!options && children);
 
   // ========================= FieldNames =========================
   const mergedFieldNames = React.useMemo(
-    () => fillFieldNames(fieldNames),
+    () => fillFieldNames(fieldNames, childrenAsData),
     /* eslint-disable react-hooks/exhaustive-deps */
     [
       // We stringify fieldNames to avoid unnecessary re-renders.
       JSON.stringify(fieldNames),
+      childrenAsData,
     ],
     /* eslint-enable react-hooks/exhaustive-deps */
   );
@@ -242,7 +249,7 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
 
     const upperSearch = mergedSearchValue.toUpperCase();
     return flattenOptions.filter((opt) =>
-      String(opt.data[optionFilterProp]).toUpperCase().includes(upperSearch),
+      toArray(opt.data[optionFilterProp]).join('').toUpperCase().includes(upperSearch),
     );
   }, [filterOption, flattenOptions, mergedSearchValue, optionFilterProp]);
 
@@ -250,13 +257,13 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
   const convert2LabelValues = React.useCallback(
     (draftValues: DraftValueType) => {
       // Convert to array
-      const valueList =
-        draftValues === undefined ? [] : Array.isArray(draftValues) ? draftValues : [draftValues];
+      const valueList = toArray(draftValues);
 
       // Convert to labelInValue type
       return valueList.map((val) => {
         let rawValue: RawValueType;
         let rawLabel: React.ReactNode;
+        let rawKey: React.Key;
 
         // Fill label & value
         if (isRawValue(val)) {
@@ -264,16 +271,20 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
         } else {
           rawValue = val.value;
           rawLabel = val.label;
+          rawKey = val.key;
         }
 
         // If label is not provided, fill it
-        if (rawLabel === undefined) {
-          rawLabel = valueOptions.get(rawValue)?.[mergedFieldNames.label];
+        if (rawLabel === undefined || rawKey === undefined) {
+          const option = valueOptions.get(rawValue);
+          if (rawLabel === undefined) rawLabel = option?.[mergedFieldNames.label];
+          if (rawKey === undefined) rawKey = option?.key ?? rawValue;
         }
 
         return {
           label: rawLabel === undefined ? rawValue : rawLabel,
           value: rawValue,
+          key: rawKey,
         };
       });
     },
@@ -365,6 +376,8 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
       virtual,
       listHeight,
       listItemHeight,
+      childrenAsData,
+      optionLabelProp,
     }),
     [
       parsedOptions,
@@ -378,6 +391,8 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
       virtual,
       listHeight,
       listItemHeight,
+      childrenAsData,
+      optionLabelProp,
     ],
   );
 

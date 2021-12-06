@@ -8,7 +8,7 @@ function convertNodeToOption(node: React.ReactElement): OptionData {
     props: { children, value, ...restProps },
   } = node as React.ReactElement;
 
-  return { key, value: value !== undefined ? value : key, label: children, ...restProps };
+  return { key, value: value !== undefined ? value : key, children, ...restProps };
 }
 
 export function convertChildrenToData<RetOptionsType = OptionsType>(

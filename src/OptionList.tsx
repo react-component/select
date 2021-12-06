@@ -90,6 +90,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
   const { prefixCls, id, open, multiple, searchValue, toggleOpen, notFoundContent, onPopupScroll } =
     useBaseProps();
   const {
+    childrenAsData,
     flattenOptions,
     onActiveValue,
     defaultActiveFirstOption,
@@ -100,6 +101,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
     virtual,
     listHeight,
     listItemHeight,
+    optionLabelProp,
   } = React.useContext(SelectContext);
 
   const itemPrefixCls = `${prefixCls}-item`;
@@ -280,20 +282,30 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
     );
   }
 
-  const filledFieldNames = fillFieldNames(fieldNames);
-  const omitFieldNameList = Object.keys(filledFieldNames).map((key) => filledFieldNames[key]);
+  const omitFieldNameList = Object.keys(fieldNames).map((key) => fieldNames[key]);
+
+  const getLabel = (itemData: Record<string, any>) => {
+    const { label, children } = itemData;
+
+    if (optionLabelProp) {
+      return itemData[optionLabelProp];
+    }
+
+    return childrenAsData ? children : label;
+  };
 
   const renderItem = (index: number) => {
     const item = memoFlattenOptions[index];
     if (!item) return null;
 
     const itemData = (item.data || {}) as OptionData;
-    const { value, label } = itemData;
+    const { value } = itemData;
     const { group } = item;
     const attrs = pickAttrs(itemData, true);
+    const mergedLabel = getLabel(itemData);
     return item ? (
       <div
-        aria-label={typeof label === 'string' && !group ? label : null}
+        aria-label={typeof mergedLabel === 'string' && !group ? mergedLabel : null}
         {...attrs}
         key={index}
         role={group ? 'presentation' : 'option'}
@@ -349,10 +361,12 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
             [`${optionPrefixCls}-selected`]: selected,
           });
 
+          const mergedLabel = getLabel(data);
+
           const iconVisible =
             !menuItemSelectedIcon || typeof menuItemSelectedIcon === 'function' || selected;
 
-          const content = label || value;
+          const content = mergedLabel || value;
           // https://github.com/ant-design/ant-design/issues/26717
           let optionTitle =
             typeof content === 'string' || typeof content === 'number'

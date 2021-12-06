@@ -34,11 +34,11 @@ function getKey(data: BaseOptionType, index: number) {
   return `rc-index-key-${index}`;
 }
 
-export function fillFieldNames(fieldNames?: FieldNames) {
+export function fillFieldNames(fieldNames: FieldNames | undefined, childrenAsData: boolean) {
   const { label, value, options } = fieldNames || {};
 
   return {
-    label: label || 'label',
+    label: label || childrenAsData ? 'children' : 'label',
     value: value || 'value',
     options: options || 'options',
   };
