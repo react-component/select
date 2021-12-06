@@ -1,4 +1,4 @@
-import { BaseOptionType } from '@/Select';
+import type { BaseOptionType } from '../Select';
 import warning from 'rc-util/lib/warning';
 import type {
   OptionsType as SelectOptionsType,

@@ -31,13 +31,15 @@
 
 import * as React from 'react';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
-import BaseSelect, { DisplayValueType, RenderNode } from './BaseSelect';
+import BaseSelect from './BaseSelect';
+import type { DisplayValueType, RenderNode } from './BaseSelect';
 import OptionList from './OptionList';
 import type { BaseSelectRef, BaseSelectPropsWithoutPrivate, BaseSelectProps } from './BaseSelect';
 import useOptions from './hooks/useOptions';
 import SelectContext from './SelectContext';
 import useId from './hooks/useId';
 import useCallback from './hooks/useCallback';
+import { fillFieldNames } from './utils/valueUtil';
 
 export type OnActiveValue = (
   active: RawValueType,
@@ -100,6 +102,7 @@ export interface SingleRawSelectProps<OptionType extends BaseOptionType = Defaul
   extends SharedSelectProps<OptionType> {
   mode?: 'combobox';
   value?: RawValueType | null;
+  defaultValue?: RawValueType | null;
 }
 
 export interface SingleLabeledSelectProps<OptionType extends BaseOptionType = DefaultOptionType>
@@ -107,12 +110,14 @@ export interface SingleLabeledSelectProps<OptionType extends BaseOptionType = De
   mode?: 'combobox';
   labelInValue: true;
   value?: LabelInValueType | null;
+  defaultValue?: LabelInValueType | null;
 }
 
 export interface MultipleRawSelectProps<OptionType extends BaseOptionType = DefaultOptionType>
   extends SharedSelectProps<OptionType> {
   mode: 'multiple' | 'tags';
   value?: RawValueType[] | null;
+  defaultValue?: RawValueType[] | null;
 }
 
 export interface MultipleLabeledSelectProps<OptionType extends BaseOptionType = DefaultOptionType>
@@ -120,6 +125,7 @@ export interface MultipleLabeledSelectProps<OptionType extends BaseOptionType = 
   mode: 'multiple' | 'tags';
   labelInValue: true;
   value?: LabelInValueType[] | null;
+  defaultValue?: LabelInValueType[] | null;
 }
 
 export type SelectProps<OptionType extends BaseOptionType = DefaultOptionType> =
@@ -141,18 +147,62 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
     defaultActiveFirstOption,
     menuItemSelectedIcon,
     virtual,
-    listHeight,
-    listItemHeight,
-    Í,
+    listHeight = 200,
+    listItemHeight = 20,
+
+    // Value
+    value,
+    defaultValue,
   } = props;
 
   const mergedId = useId(id);
 
+  // ========================= FieldNames =========================
+  const mergedFieldNames = React.useMemo(
+    () => fillFieldNames(fieldNames),
+    /* eslint-disable react-hooks/exhaustive-deps */
+    [
+      // We stringify fieldNames to avoid unnecessary re-renders.
+      JSON.stringify(fieldNames),
+    ],
+    /* eslint-enable react-hooks/exhaustive-deps */
+  );
+
   // =========================== Option ===========================
-  const flattenOptions = useOptions(options, children, fieldNames);
+  const flattenOptions = useOptions(options, children, mergedFieldNames);
   const { valueOptions } = flattenOptions;
 
   // =========================== Values ===========================
+  const [internalValue, setInternalValue] = useMergedState(defaultValue, {
+    value,
+  });
+
+  // Merged value with LabelValueType
+  const mergedValues = React.useMemo(() => {
+    // Convert to array
+    const valueList =
+      internalValue === undefined
+        ? []
+        : Array.isArray(internalValue)
+        ? internalValue
+        : [internalValue];
+
+    // Convert to labelInValue type
+    return valueList.map((val) => {
+      if (typeof val === 'object' && 'value' in val) {
+        return val;
+      }
+
+      const label = valueOptions.get(val)?.[mergedFieldNames.label];
+
+      return {
+        label,
+        value: val,
+      };
+    });
+  }, [internalValue, mergedFieldNames, valueOptions]);
+
+  // ======================= Display Values =======================
   const [displayValues, setDisplayValues] = React.useState<DisplayValueType[]>([]);
 
   const onDisplayValuesChange: BaseSelectProps['onDisplayValuesChange'] = (nextValues, info) => {
@@ -206,7 +256,7 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
       onSelect: onInternalSelect,
       menuItemSelectedIcon,
       rawValues,
-      fieldNames,
+      fieldNames: mergedFieldNames,
       virtual,
       listHeight,
       listItemHeight,
@@ -218,7 +268,7 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
       onInternalSelect,
       menuItemSelectedIcon,
       rawValues,
-      fieldNames,
+      mergedFieldNames,
       virtual,
       listHeight,
       listItemHeight,
@@ -237,7 +287,7 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
         prefixCls={prefixCls}
         ref={ref}
         // >>> Values
-        displayValues={displayValues}
+        displayValues={mergedValues}
         onDisplayValuesChange={onDisplayValuesChange}
         // >>> Search
         searchValue={mergedSearchValue}

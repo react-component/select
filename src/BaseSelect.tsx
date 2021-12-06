@@ -103,11 +103,14 @@ export type BaseSelectPropsWithoutPrivate = Omit<BaseSelectProps, keyof BaseSele
 
 export interface BaseSelectProps extends BaseSelectPrivateProps {
   className?: string;
+  style?: React.CSSProperties;
   showSearch?: boolean;
   tagRender?: (props: CustomTagProps) => React.ReactElement;
   direction?: 'ltr' | 'rtl';
 
+  autoFocus?: boolean;
   notFoundContent?: React.ReactNode;
+  placeholder?: React.ReactNode;
   onClear?: () => void;
 
   // >>> Mode
