@@ -31,14 +31,14 @@
 
 import * as React from 'react';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
-import BaseSelect from './BaseSelect';
+import BaseSelect, { isMultiple } from './BaseSelect';
 import type { DisplayValueType, RenderNode } from './BaseSelect';
 import OptionList from './OptionList';
 import type { BaseSelectRef, BaseSelectPropsWithoutPrivate, BaseSelectProps } from './BaseSelect';
 import useOptions from './hooks/useOptions';
 import SelectContext from './SelectContext';
 import useId from './hooks/useId';
-import useCallback from './hooks/useCallback';
+import useRefFunc from './hooks/useRefFunc';
 import { fillFieldNames } from './utils/valueUtil';
 
 export type OnActiveValue = (
@@ -54,6 +54,12 @@ export interface LabelInValueType {
   label: React.ReactNode;
   value: RawValueType;
 }
+
+export type DraftValueType =
+  | RawValueType
+  | LabelInValueType
+  | DisplayValueType
+  | (RawValueType | LabelInValueType | DisplayValueType)[];
 
 export interface FieldNames {
   value?: string;
@@ -101,8 +107,10 @@ export interface SharedSelectProps<OptionType extends BaseOptionType = DefaultOp
 export interface SingleRawSelectProps<OptionType extends BaseOptionType = DefaultOptionType>
   extends SharedSelectProps<OptionType> {
   mode?: 'combobox';
+  labelInValue?: false;
   value?: RawValueType | null;
   defaultValue?: RawValueType | null;
+  onChange?: (value: RawValueType, option: OptionType) => void;
 }
 
 export interface SingleLabeledSelectProps<OptionType extends BaseOptionType = DefaultOptionType>
@@ -111,13 +119,16 @@ export interface SingleLabeledSelectProps<OptionType extends BaseOptionType = De
   labelInValue: true;
   value?: LabelInValueType | null;
   defaultValue?: LabelInValueType | null;
+  onChange?: (value: LabelInValueType, option: OptionType) => void;
 }
 
 export interface MultipleRawSelectProps<OptionType extends BaseOptionType = DefaultOptionType>
   extends SharedSelectProps<OptionType> {
   mode: 'multiple' | 'tags';
+  labelInValue?: false;
   value?: RawValueType[] | null;
   defaultValue?: RawValueType[] | null;
+  onChange?: (value: RawValueType[], option: OptionType[]) => void;
 }
 
 export interface MultipleLabeledSelectProps<OptionType extends BaseOptionType = DefaultOptionType>
@@ -126,13 +137,19 @@ export interface MultipleLabeledSelectProps<OptionType extends BaseOptionType = 
   labelInValue: true;
   value?: LabelInValueType[] | null;
   defaultValue?: LabelInValueType[] | null;
+  onChange?: (value: LabelInValueType[], option: OptionType[]) => void;
 }
 
-export type SelectProps<OptionType extends BaseOptionType = DefaultOptionType> =
+// TODO: Types test
+export type SelectProps<OptionType extends BaseOptionType = DefaultOptionType> = Omit<
   | SingleRawSelectProps<OptionType>
   | SingleLabeledSelectProps<OptionType>
   | MultipleRawSelectProps<OptionType>
-  | MultipleLabeledSelectProps<OptionType>;
+  | MultipleLabeledSelectProps<OptionType>,
+  'onChange'
+> & {
+  onChange?: (value: DraftValueType, option: OptionType | OptionType[]) => void;
+};
 
 const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRef>) => {
   const {
@@ -153,9 +170,12 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
     // Value
     value,
     defaultValue,
+    labelInValue,
+    onChange,
   } = props;
 
   const mergedId = useId(id);
+  const multiple = isMultiple(mode);
 
   // ========================= FieldNames =========================
   const mergedFieldNames = React.useMemo(
@@ -172,54 +192,91 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
   const flattenOptions = useOptions(options, children, mergedFieldNames);
   const { valueOptions } = flattenOptions;
 
+  const convert2LabelValues = React.useCallback(
+    (draftValues: DraftValueType) => {
+      // Convert to array
+      const valueList =
+        draftValues === undefined ? [] : Array.isArray(draftValues) ? draftValues : [draftValues];
+
+      // Convert to labelInValue type
+      return valueList.map((val) => {
+        let rawValue: RawValueType;
+        let rawLabel: React.ReactNode;
+
+        // Fill label & value
+        if (typeof val === 'object' && 'value' in val) {
+          rawValue = val.value;
+          rawLabel = val.label;
+        } else {
+          rawValue = val;
+        }
+
+        // If label is not provided, fill it
+        if (rawLabel === undefined) {
+          rawLabel = valueOptions.get(rawValue)?.[mergedFieldNames.label];
+        }
+
+        return {
+          label: rawLabel,
+          value: rawValue,
+        };
+      });
+    },
+    [mergedFieldNames, valueOptions],
+  );
+
   // =========================== Values ===========================
   const [internalValue, setInternalValue] = useMergedState(defaultValue, {
     value,
   });
 
   // Merged value with LabelValueType
-  const mergedValues = React.useMemo(() => {
-    // Convert to array
-    const valueList =
-      internalValue === undefined
-        ? []
-        : Array.isArray(internalValue)
-        ? internalValue
-        : [internalValue];
-
-    // Convert to labelInValue type
-    return valueList.map((val) => {
-      if (typeof val === 'object' && 'value' in val) {
-        return val;
-      }
-
-      const label = valueOptions.get(val)?.[mergedFieldNames.label];
-
-      return {
-        label,
-        value: val,
-      };
-    });
-  }, [internalValue, mergedFieldNames, valueOptions]);
-
-  // ======================= Display Values =======================
-  const [displayValues, setDisplayValues] = React.useState<DisplayValueType[]>([]);
-
-  const onDisplayValuesChange: BaseSelectProps['onDisplayValuesChange'] = (nextValues, info) => {
-    setDisplayValues(nextValues);
-  };
-
-  const onInternalSelect = useCallback<OnInternalSelect>((value, info) => {
-    const option = valueOptions.get(value);
-
-    // TODO: handle this
-  });
+  const mergedValues = React.useMemo(
+    () => convert2LabelValues(internalValue),
+    [internalValue, convert2LabelValues],
+  );
 
   /** Convert `displayValues` to raw value type set */
   const rawValues = React.useMemo(
-    () => new Set(displayValues.map((dv) => dv.value)),
-    [displayValues],
+    () => new Set(mergedValues.map((val) => val.value)),
+    [mergedValues],
   );
+
+  // =========================== Change ===========================
+  const triggerChange = (values: DraftValueType) => {
+    const labeledValues = convert2LabelValues(values);
+    setInternalValue(labeledValues);
+
+    if (onChange) {
+      const returnValues = labelInValue ? labeledValues : labeledValues.map((v) => v.value);
+      const returnOptions = labeledValues.map((v) => valueOptions.get(v.value));
+
+      onChange(
+        // Value
+        multiple ? returnValues : returnValues[0],
+        // Option
+        multiple ? returnOptions : returnOptions[0],
+      );
+    }
+  };
+
+  const onDisplayValuesChange: BaseSelectProps['onDisplayValuesChange'] = (nextValues, info) => {
+    triggerChange(nextValues);
+  };
+
+  // ========================= OptionList =========================
+  // Used for OptionList selection
+  const onInternalSelect = useRefFunc<OnInternalSelect>((val, info) => {
+    let cloneValues: (RawValueType | LabelInValueType)[];
+
+    if (info.selected) {
+      cloneValues = multiple ? [...mergedValues, val] : [val];
+    } else {
+      cloneValues = mergedValues.filter((v) => v.value !== val);
+    }
+
+    triggerChange(cloneValues);
+  });
 
   // =========================== Search ===========================
   const [mergedSearchValue] = useMergedState('', {

@@ -46,7 +46,7 @@ export type CustomTagProps = {
 
 export interface DisplayValueType {
   key?: React.Key;
-  value?: RawValueType;
+  value: RawValueType;
   label?: React.ReactNode;
   disabled?: boolean;
 }
@@ -163,6 +163,10 @@ export interface BaseSelectProps extends BaseSelectPrivateProps {
   onPopupScroll?: React.UIEventHandler<HTMLDivElement>;
 }
 
+export function isMultiple(mode: Mode) {
+  return mode === 'tags' || mode === 'multiple';
+}
+
 const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<BaseSelectRef>) => {
   const {
     id,
@@ -240,9 +244,9 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   } = props;
 
   // ============================== MISC ==============================
-  const isMultiple = mode === 'tags' || mode === 'multiple';
+  const multiple = isMultiple(mode);
   const mergedShowSearch =
-    (showSearch !== undefined ? showSearch : isMultiple) || mode === 'combobox';
+    (showSearch !== undefined ? showSearch : multiple) || mode === 'combobox';
 
   const domProps = pickAttrs(restProps, {
     aria: true,
@@ -373,7 +377,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
 
   // Close will clean up single mode search text
   React.useEffect(() => {
-    if (!mergedOpen && !isMultiple && mode !== 'combobox') {
+    if (!mergedOpen && !multiple && mode !== 'combobox') {
       onInternalSearch('', false, false);
     }
   }, [mergedOpen]);
@@ -422,7 +426,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     if (
       which === KeyCode.BACKSPACE &&
       !clearLock &&
-      isMultiple &&
+      multiple &&
       !searchValue &&
       displayValues.length
     ) {
@@ -599,10 +603,10 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       triggerOpen,
       id,
       showSearch: mergedShowSearch,
-      multiple: isMultiple,
+      multiple,
       toggleOpen: onToggleOpen,
     }),
-    [props, triggerOpen, mergedOpen, id, mergedShowSearch, isMultiple, onToggleOpen],
+    [props, triggerOpen, mergedOpen, id, mergedShowSearch, multiple, onToggleOpen],
   );
 
   // ==================================================================
@@ -611,7 +615,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
 
   // ============================= Arrow ==============================
   const mergedShowArrow =
-    showArrow !== undefined ? showArrow : loading || (!isMultiple && mode !== 'combobox');
+    showArrow !== undefined ? showArrow : loading || (!multiple && mode !== 'combobox');
   let arrowNode: React.ReactNode;
 
   if (mergedShowArrow) {
@@ -662,8 +666,8 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   // ============================= Select =============================
   const mergedClassName = classNames(prefixCls, className, {
     [`${prefixCls}-focused`]: mockFocused,
-    [`${prefixCls}-multiple`]: isMultiple,
-    [`${prefixCls}-single`]: !isMultiple,
+    [`${prefixCls}-multiple`]: multiple,
+    [`${prefixCls}-single`]: !multiple,
     [`${prefixCls}-allow-clear`]: allowClear,
     [`${prefixCls}-show-arrow`]: mergedShowArrow,
     [`${prefixCls}-disabled`]: disabled,
