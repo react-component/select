@@ -1,4 +1,4 @@
-import { BaseOptionType } from '@/Select';
+import { BaseOptionType, DefaultOptionType } from '@/Select';
 import type * as React from 'react';
 import type { Key, RawValueType } from './generator';
 
@@ -51,11 +51,11 @@ export interface OptionGroupData {
 
 export type OptionsType = (OptionData | OptionGroupData)[];
 
-export interface FlattenOptionData {
+export interface FlattenOptionData<OptionType extends BaseOptionType = DefaultOptionType> {
   group?: boolean;
   groupOption?: boolean;
   key: string | number;
-  data: BaseOptionType;
+  data: OptionType;
   label?: React.ReactNode;
   value?: React.Key;
 }

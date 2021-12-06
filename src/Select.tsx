@@ -61,6 +61,8 @@ export type DraftValueType =
   | DisplayValueType
   | (RawValueType | LabelInValueType | DisplayValueType)[];
 
+export type FilterFunc<OptionType> = (inputValue: string, option?: OptionType) => boolean;
+
 export interface FieldNames {
   value?: string;
   label?: string;
@@ -93,6 +95,13 @@ export interface SharedSelectProps<OptionType extends BaseOptionType = DefaultOp
   onSearch?: (value: string) => void;
 
   // >>> Options
+  /**
+   * In Select, `false` means do nothing.
+   * In TreeSelect, `false` will highlight match item.
+   * It's by design.
+   */
+  filterOption?: boolean | FilterFunc<OptionType>;
+  optionFilterProp?: string;
   children?: React.ReactNode;
   options?: OptionType[];
   defaultActiveFirstOption?: boolean;
@@ -151,6 +160,10 @@ export type SelectProps<OptionType extends BaseOptionType = DefaultOptionType> =
   onChange?: (value: DraftValueType, option: OptionType | OptionType[]) => void;
 };
 
+function isRawValue(value: DraftValueType): value is RawValueType {
+  return !value || typeof value !== 'object';
+}
+
 const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRef>) => {
   const {
     id,
@@ -158,7 +171,14 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
     prefixCls = 'rc-select',
     backfill,
     fieldNames,
+
+    // Search
     searchValue,
+    onSearch,
+
+    // Options
+    filterOption,
+    optionFilterProp = 'value',
     options,
     children,
     defaultActiveFirstOption,
@@ -188,10 +208,40 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
     /* eslint-enable react-hooks/exhaustive-deps */
   );
 
-  // =========================== Option ===========================
-  const flattenOptions = useOptions(options, children, mergedFieldNames);
-  const { valueOptions } = flattenOptions;
+  // =========================== Search ===========================
+  const [mergedSearchValue, setSearchValue] = useMergedState('', {
+    value: searchValue,
+    postState: (search) => search || '',
+  });
 
+  const onInternalSearch: BaseSelectProps['onSearch'] = (searchText, info) => {
+    setSearchValue(searchText);
+    onSearch?.(searchText);
+  };
+
+  const onInternalSearchSplit: BaseSelectProps['onSearchSplit'] = (words) => {};
+
+  // =========================== Option ===========================
+  const parsedOptions = useOptions(options, children, mergedFieldNames);
+  const { valueOptions, flattenOptions } = parsedOptions;
+
+  const filteredOptions = React.useMemo(() => {
+    if (!mergedSearchValue || filterOption === false) {
+      return flattenOptions;
+    }
+
+    // Provide `filterOption`
+    if (typeof filterOption === 'function') {
+      return flattenOptions.filter((opt) => filterOption(mergedSearchValue, opt.data));
+    }
+
+    const upperSearch = mergedSearchValue.toUpperCase();
+    return flattenOptions.filter((opt) =>
+      String(opt.data[optionFilterProp]).toUpperCase().includes(upperSearch),
+    );
+  }, [filterOption, flattenOptions, mergedSearchValue, optionFilterProp]);
+
+  // ========================= Wrap Value =========================
   const convert2LabelValues = React.useCallback(
     (draftValues: DraftValueType) => {
       // Convert to array
@@ -204,11 +254,11 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
         let rawLabel: React.ReactNode;
 
         // Fill label & value
-        if (typeof val === 'object' && 'value' in val) {
+        if (isRawValue(val)) {
+          rawValue = val;
+        } else {
           rawValue = val.value;
           rawLabel = val.label;
-        } else {
-          rawValue = val;
         }
 
         // If label is not provided, fill it
@@ -260,6 +310,7 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
     }
   };
 
+  // BaseSelect display values change
   const onDisplayValuesChange: BaseSelectProps['onDisplayValuesChange'] = (nextValues, info) => {
     triggerChange(nextValues);
   };
@@ -277,15 +328,6 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
 
     triggerChange(cloneValues);
   });
-
-  // =========================== Search ===========================
-  const [mergedSearchValue] = useMergedState('', {
-    value: searchValue,
-  });
-
-  const onInternalSearch: BaseSelectProps['onSearch'] = (searchText, info) => {};
-
-  const onInternalSearchSplit: BaseSelectProps['onSearchSplit'] = (words) => {};
 
   // ======================= Accessibility ========================
   const [activeValue, setActiveValue] = React.useState<string>(null);
@@ -307,7 +349,8 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
   // ========================== Context ===========================
   const selectContext = React.useMemo(
     () => ({
-      ...flattenOptions,
+      ...parsedOptions,
+      flattenOptions: filteredOptions,
       onActiveValue,
       defaultActiveFirstOption: mergedDefaultActiveFirstOption,
       onSelect: onInternalSelect,
@@ -319,7 +362,8 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
       listItemHeight,
     }),
     [
-      flattenOptions,
+      parsedOptions,
+      filteredOptions,
       onActiveValue,
       mergedDefaultActiveFirstOption,
       onInternalSelect,

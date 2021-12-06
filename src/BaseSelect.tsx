@@ -75,7 +75,6 @@ export interface BaseSelectPrivateProps {
   // >>> Active
   /** Current dropdown list active item string value */
   activeValue?: string;
-  // TODO: handle this
   /** Link search input with target element */
   activeDescendantId?: string;
   onActiveValueChange?: (value: string | null) => void;
