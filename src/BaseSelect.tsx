@@ -84,7 +84,11 @@ export interface BaseSelectPrivateProps {
   onSearch: (
     searchValue: string,
     info: {
-      source: 'typing' | 'effect' | 'submit' | 'blur';
+      source:
+        | 'typing' //User typing
+        | 'effect' // Code logic trigger
+        | 'submit' // tag mode only
+        | 'blur'; // Not trigger event
     },
   ) => void;
   /** Trigger when search text match the `tokenSeparators`. Will provide split content */
@@ -430,7 +434,6 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       !searchValue &&
       displayValues.length
     ) {
-      // const removeInfo = removeLastEnabledValue(displayValues);
       const cloneDisplayValues = [...displayValues];
       let removedDisplayValue = null;
 

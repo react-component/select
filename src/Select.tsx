@@ -100,6 +100,7 @@ export interface SharedSelectProps<OptionType extends BaseOptionType = DefaultOp
   inputValue?: string;
   searchValue?: string;
   onSearch?: (value: string) => void;
+  autoClearSearchValue?: boolean;
 
   // >>> Options
   /**
@@ -184,6 +185,7 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
     inputValue,
     searchValue,
     onSearch,
+    autoClearSearchValue = true,
 
     // Options
     filterOption,
@@ -228,10 +230,19 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
 
   const onInternalSearch: BaseSelectProps['onSearch'] = (searchText, info) => {
     setSearchValue(searchText);
-    onSearch?.(searchText);
+
+    if (onSearch && info.source !== 'blur') {
+      onSearch(searchText);
+    }
   };
 
   const onInternalSearchSplit: BaseSelectProps['onSearchSplit'] = (words) => {};
+
+  React.useEffect(() => {
+    if (mode === 'combobox' && isRawValue(value)) {
+      setSearchValue(String(value));
+    }
+  }, [value]);
 
   // =========================== Option ===========================
   const parsedOptions = useOptions(options, children, mergedFieldNames);
@@ -331,20 +342,6 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
     triggerChange(nextValues);
   };
 
-  // ========================= OptionList =========================
-  // Used for OptionList selection
-  const onInternalSelect = useRefFunc<OnInternalSelect>((val, info) => {
-    let cloneValues: (RawValueType | LabelInValueType)[];
-
-    if (info.selected) {
-      cloneValues = multiple ? [...mergedValues, val] : [val];
-    } else {
-      cloneValues = mergedValues.filter((v) => v.value !== val);
-    }
-
-    triggerChange(cloneValues);
-  });
-
   // ======================= Accessibility ========================
   const [activeValue, setActiveValue] = React.useState<string>(null);
   const [accessibilityIndex, setAccessibilityIndex] = React.useState(0);
@@ -361,6 +358,29 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
     },
     [backfill, mode],
   );
+
+  // ========================= OptionList =========================
+  // Used for OptionList selection
+  const onInternalSelect = useRefFunc<OnInternalSelect>((val, info) => {
+    let cloneValues: (RawValueType | LabelInValueType)[];
+
+    if (info.selected) {
+      cloneValues = multiple ? [...mergedValues, val] : [val];
+    } else {
+      cloneValues = mergedValues.filter((v) => v.value !== val);
+    }
+
+    triggerChange(cloneValues);
+
+    // Clean search value if single or configured
+    if (mode === 'combobox') {
+      // setSearchValue(String(newValue));
+      setActiveValue('');
+    } else if (!isMultiple || autoClearSearchValue) {
+      setSearchValue('');
+      setActiveValue('');
+    }
+  });
 
   // ========================== Context ===========================
   const selectContext = React.useMemo(

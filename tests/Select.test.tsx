@@ -480,7 +480,7 @@ describe('Select.Basic', () => {
   it('should also fires extra search event when user search and select', () => {
     jest.useFakeTimers();
 
-    const handleSearch = jest.fn();
+    const handleSearch = jest.fn(() => console.trace());
     const wrapper = mount(
       <Select showSearch onSearch={handleSearch}>
         <Option value="1">1</Option>
@@ -801,7 +801,7 @@ describe('Select.Basic', () => {
       .find('textarea')
       .simulate('mouseDown', { preventDefault: mouseDownPreventDefault })
       .simulate('keyDown', { which: KeyCode.NUM_ONE })
-      .simulate('change', { value: '1' })
+      .simulate('change', { target: { value: '1' } })
       .simulate('compositionStart')
       .simulate('compositionEnd');
 
