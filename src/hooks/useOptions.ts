@@ -14,12 +14,16 @@ export default function useOptions<OptionType>(
 ) {
   return React.useMemo(() => {
     let mergedOptions = options;
+    const childrenAsData = !options;
 
-    if (!options) {
+    if (childrenAsData) {
       mergedOptions = convertChildrenToData(children);
     }
 
-    const [flattenedOptions, valueOptions] = flattenOptions(mergedOptions, { fieldNames });
+    const [flattenedOptions, valueOptions] = flattenOptions(mergedOptions, {
+      fieldNames,
+      childrenAsData,
+    });
 
     return {
       options: mergedOptions,

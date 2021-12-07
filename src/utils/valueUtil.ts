@@ -1,4 +1,4 @@
-import type { BaseOptionType } from '../Select';
+import type { BaseOptionType, DefaultOptionType } from '../Select';
 import warning from 'rc-util/lib/warning';
 import type {
   OptionsType as SelectOptionsType,
@@ -49,18 +49,18 @@ export function fillFieldNames(fieldNames: FieldNames | undefined, childrenAsDat
  * We use `optionOnly` here is aim to avoid user use nested option group.
  * Here is simply set `key` to the index if not provided.
  */
-export function flattenOptions<OptionType extends BaseOptionType>(
+export function flattenOptions<OptionType extends BaseOptionType = DefaultOptionType>(
   options: OptionType[],
-  { fieldNames }: { fieldNames?: FieldNames } = {},
-): [FlattenOptionData[], Map<RawValueType, OptionType>] {
-  const flattenList: FlattenOptionData[] = [];
+  { fieldNames, childrenAsData }: { fieldNames?: FieldNames; childrenAsData: boolean } = {},
+): [FlattenOptionData<OptionType>[], Map<RawValueType, OptionType>] {
+  const flattenList: FlattenOptionData<OptionType>[] = [];
   const optionMap = new Map<RawValueType, OptionType>();
 
   const {
     label: fieldLabel,
     value: fieldValue,
     options: fieldOptions,
-  } = fillFieldNames(fieldNames);
+  } = fillFieldNames(fieldNames, false);
 
   function dig(list: OptionType[], isGroupOption: boolean) {
     list.forEach((data) => {
@@ -80,12 +80,17 @@ export function flattenOptions<OptionType extends BaseOptionType>(
 
         optionMap.set(value, data);
       } else {
+        let grpLabel = label;
+        if (grpLabel === undefined && childrenAsData) {
+          grpLabel = data.label;
+        }
+
         // Option Group
         flattenList.push({
           key: getKey(data, flattenList.length),
           group: true,
           data,
-          label,
+          label: grpLabel,
         });
 
         dig(data[fieldOptions], true);
