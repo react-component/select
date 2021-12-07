@@ -918,7 +918,7 @@ describe('Select.Basic', () => {
     );
 
     wrapper.find('input').simulate('change', { target: { value: '3' } });
-    expect(wrapper.find('OptionList').props().options).toHaveLength(0);
+    expect(wrapper.find('.rc-select-item')).toHaveLength(0);
     expect(wrapper.find('.rc-select-item-empty').text()).toEqual('Not Found');
   });
 

@@ -602,6 +602,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   const baseSelectContext = React.useMemo(
     () => ({
       ...props,
+      notFoundContent,
       open: mergedOpen,
       triggerOpen,
       id,
@@ -609,7 +610,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       multiple,
       toggleOpen: onToggleOpen,
     }),
-    [props, triggerOpen, mergedOpen, id, mergedShowSearch, multiple, onToggleOpen],
+    [props, notFoundContent, triggerOpen, mergedOpen, id, mergedShowSearch, multiple, onToggleOpen],
   );
 
   // ==================================================================

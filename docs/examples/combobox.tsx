@@ -108,7 +108,7 @@ class Combobox extends React.Component {
             <Option value="竹林星光">竹林星光</Option>
           </Select>
 
-          {/* <h3>Customize Input Element</h3>
+          <h3>Customize Input Element</h3>
           <Select
             mode="combobox"
             style={{ width: 200 }}
@@ -127,7 +127,7 @@ class Combobox extends React.Component {
             style={{ width: 200 }}
             options={this.state.options}
             onChange={this.onAsyncChange}
-          /> */}
+          />
         </div>
       </div>
     );
