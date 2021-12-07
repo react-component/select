@@ -346,12 +346,18 @@ const Select = React.forwardRef(
       // https://github.com/ant-design/ant-design/issues/25057
       if (!mode && mergedValues.length === 1) {
         const firstValue = mergedValues[0];
-        if (firstValue.value === null && firstValue.label === null) {
+        if (
+          firstValue.value === null &&
+          (firstValue.label === null || firstValue.label === undefined)
+        ) {
           return [];
         }
       }
 
-      return mergedValues;
+      return mergedValues.map((item) => ({
+        ...item,
+        label: item.label ?? item.value,
+      }));
     }, [mode, mergedValues]);
 
     /** Convert `displayValues` to raw value type set */
