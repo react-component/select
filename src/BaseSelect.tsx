@@ -18,7 +18,15 @@ import TransBtn from './TransBtn';
 import useLock from './hooks/useLock';
 import { BaseSelectContext } from './hooks/useBaseProps';
 
-const DEFAULT_OMIT_PROPS = ['value', 'placeholder', 'autoFocus', 'onInputKeyDown', 'tabIndex'];
+const DEFAULT_OMIT_PROPS = [
+  'value',
+  'onChange',
+  'onSelect',
+  'placeholder',
+  'autoFocus',
+  'onInputKeyDown',
+  'tabIndex',
+];
 
 export type RenderNode = React.ReactNode | ((props: any) => React.ReactNode);
 
@@ -46,7 +54,7 @@ export type CustomTagProps = {
 
 export interface DisplayValueType {
   key?: React.Key;
-  value: RawValueType;
+  value?: RawValueType;
   label?: React.ReactNode;
   disabled?: boolean;
 }
@@ -135,6 +143,11 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   getInputElement?: () => JSX.Element;
   /** @private Internal usage. Do not use in your production. */
   getRawInputElement?: () => JSX.Element;
+
+  // >>> Selector
+  maxTagTextLength?: number;
+  maxTagCount?: number | 'responsive';
+  maxTagPlaceholder?: React.ReactNode | ((omittedValues: DisplayValueType[]) => React.ReactNode);
 
   // >>> Search
   tokenSeparators?: string[];

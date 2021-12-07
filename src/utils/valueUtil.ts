@@ -16,6 +16,7 @@ import type {
 } from '../interface/generator';
 
 import { toArray } from './commonUtil';
+import React from '_@types_react@17.0.37@@types/react';
 
 function getKey(data: BaseOptionType, index: number) {
   const { key } = data;
@@ -51,10 +52,15 @@ export function fillFieldNames(fieldNames: FieldNames | undefined, childrenAsDat
  */
 export function flattenOptions<OptionType extends BaseOptionType = DefaultOptionType>(
   options: OptionType[],
-  { fieldNames, childrenAsData }: { fieldNames?: FieldNames; childrenAsData: boolean } = {},
-): [FlattenOptionData<OptionType>[], Map<RawValueType, OptionType>] {
+  { fieldNames, childrenAsData }: { fieldNames?: FieldNames; childrenAsData?: boolean } = {},
+): [
+  FlattenOptionData<OptionType>[],
+  Map<RawValueType, OptionType>,
+  Map<React.ReactNode, OptionType>,
+] {
   const flattenList: FlattenOptionData<OptionType>[] = [];
-  const optionMap = new Map<RawValueType, OptionType>();
+  const valueOptions = new Map<RawValueType, OptionType>();
+  const labelOptions = new Map<React.ReactNode, OptionType>();
 
   const {
     label: fieldLabel,
@@ -78,7 +84,8 @@ export function flattenOptions<OptionType extends BaseOptionType = DefaultOption
           value,
         });
 
-        optionMap.set(value, data);
+        valueOptions.set(value, data);
+        labelOptions.set(label, data);
       } else {
         let grpLabel = label;
         if (grpLabel === undefined && childrenAsData) {
@@ -100,7 +107,7 @@ export function flattenOptions<OptionType extends BaseOptionType = DefaultOption
 
   dig(options, false);
 
-  return [flattenList, optionMap];
+  return [flattenList, valueOptions, labelOptions];
 }
 
 /**

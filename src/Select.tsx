@@ -45,6 +45,7 @@ import { fillFieldNames, injectPropsWithOption } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
 import { toArray } from './utils/commonUtil';
 import useCacheDisplayValue from './hooks/useCacheDisplayValue';
+import type { FlattenOptionData } from './interface';
 
 export type OnActiveValue = (
   active: RawValueType,
@@ -241,19 +242,9 @@ const Select = React.forwardRef(
       postState: (search) => search || '',
     });
 
-    const onInternalSearch: BaseSelectProps['onSearch'] = (searchText, info) => {
-      setSearchValue(searchText);
-
-      if (onSearch && info.source !== 'blur') {
-        onSearch(searchText);
-      }
-    };
-
-    const onInternalSearchSplit: BaseSelectProps['onSearchSplit'] = (words) => {};
-
     // =========================== Option ===========================
     const parsedOptions = useOptions(options, children, mergedFieldNames);
-    const { valueOptions, flattenOptions } = parsedOptions;
+    const { valueOptions, flattenOptions, labelOptions } = parsedOptions;
 
     const filteredOptions = React.useMemo(() => {
       if (!mergedSearchValue || filterOption === false) {
@@ -273,13 +264,37 @@ const Select = React.forwardRef(
       );
     }, [filterOption, flattenOptions, mergedSearchValue, optionFilterProp]);
 
-    const orderedFilteredOptions = React.useMemo(() => {
-      if (!filterSort) {
+    // Fill tag as option if mode is `tags`
+    const filledTagOptions = React.useMemo(() => {
+      if (
+        mode !== 'tags' ||
+        !mergedSearchValue ||
+        filteredOptions.some((opt) => opt.value === mergedSearchValue)
+      ) {
         return filteredOptions;
       }
 
-      return filteredOptions.sort((a, b) => filterSort(a.data, b.data));
-    }, [filteredOptions, filterSort]);
+      return [
+        {
+          value: mergedSearchValue,
+          label: mergedSearchValue,
+          key: '__RC_SELECT_TAG_PLACEHOLDER__',
+          data: {
+            [mergedFieldNames.label]: mergedSearchValue,
+            [mergedFieldNames.value]: mergedSearchValue,
+          },
+        },
+        ...filteredOptions,
+      ] as FlattenOptionData<DefaultOptionType>[];
+    }, [filteredOptions, mergedSearchValue, mode, mergedFieldNames]);
+
+    const orderedFilteredOptions = React.useMemo(() => {
+      if (!filterSort) {
+        return filledTagOptions;
+      }
+
+      return filledTagOptions.sort((a, b) => filterSort(a.data, b.data));
+    }, [filledTagOptions, filterSort]);
 
     // ========================= Wrap Value =========================
     const convert2LabelValues = React.useCallback(
@@ -333,13 +348,13 @@ const Select = React.forwardRef(
     });
 
     // Merged value with LabelValueType
-    const labeledValues = React.useMemo(
+    const rawLabeledValues = React.useMemo(
       () => convert2LabelValues(internalValue),
       [internalValue, convert2LabelValues],
     );
 
     // Fill label with cache to avoid option remove
-    const mergedValues = useCacheDisplayValue(labeledValues);
+    const mergedValues = useCacheDisplayValue(rawLabeledValues);
 
     const displayValues = React.useMemo(() => {
       // `null` need show as placeholder instead
@@ -450,7 +465,7 @@ const Select = React.forwardRef(
 
     // Used for OptionList selection
     const onInternalSelect = useRefFunc<OnInternalSelect>((val, info) => {
-      let cloneValues: (RawValueType | LabelInValueType)[];
+      let cloneValues: (RawValueType | DisplayValueType)[];
 
       // Single mode always trigger select only with option list
       const mergedSelect = multiple ? info.selected : true;
@@ -473,6 +488,49 @@ const Select = React.forwardRef(
         setActiveValue('');
       }
     });
+
+    // =========================== Search ===========================
+    const onInternalSearch: BaseSelectProps['onSearch'] = (searchText, info) => {
+      setSearchValue(searchText);
+      setActiveValue(null);
+
+      // [Submit] Tag mode should flush input
+      if (info.source === 'submit') {
+        const formatted = (searchText || '').trim();
+        // prevent empty tags from appearing when you click the Enter button
+        if (!formatted) {
+          return;
+        }
+
+        const newRawValues = Array.from(new Set<RawValueType>([...rawValues, formatted]));
+        triggerChange(newRawValues);
+        triggerSelect(formatted, true);
+        return;
+      }
+
+      if (onSearch && info.source !== 'blur') {
+        onSearch(searchText);
+      }
+    };
+
+    const onInternalSearchSplit: BaseSelectProps['onSearchSplit'] = (words) => {
+      let patchValues: RawValueType[] = words;
+
+      if (mode !== 'tags') {
+        patchValues = words
+          .map((word) => {
+            const opt = labelOptions.get(word);
+            return opt?.value;
+          })
+          .filter((val) => val !== undefined);
+      }
+
+      const newRawValues = [...rawValues, ...patchValues];
+      triggerChange(newRawValues);
+      newRawValues.forEach((newRawValue) => {
+        triggerSelect(newRawValue, true);
+      });
+    };
 
     // ========================== Context ===========================
     const selectContext = React.useMemo(
