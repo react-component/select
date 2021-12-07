@@ -102,6 +102,10 @@ export interface SharedSelectProps<OptionType extends BaseOptionType = DefaultOp
   onSearch?: (value: string) => void;
   autoClearSearchValue?: boolean;
 
+  // >>> Select
+  onSelect?: (value: RawValueType | LabelInValueType, option: OptionType) => void;
+  onDeselect?: (value: RawValueType | LabelInValueType, option: OptionType) => void;
+
   // >>> Options
   /**
    * In Select, `false` means do nothing.
@@ -173,282 +177,317 @@ function isRawValue(value: DraftValueType): value is RawValueType {
   return !value || typeof value !== 'object';
 }
 
-const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRef>) => {
-  const {
-    id,
-    mode,
-    prefixCls = 'rc-select',
-    backfill,
-    fieldNames,
+const Select = React.forwardRef(
+  (props: SelectProps<DefaultOptionType>, ref: React.Ref<BaseSelectRef>) => {
+    const {
+      id,
+      mode,
+      prefixCls = 'rc-select',
+      backfill,
+      fieldNames,
 
-    // Search
-    inputValue,
-    searchValue,
-    onSearch,
-    autoClearSearchValue = true,
+      // Search
+      inputValue,
+      searchValue,
+      onSearch,
+      autoClearSearchValue = true,
 
-    // Options
-    filterOption,
-    optionFilterProp = 'value',
-    optionLabelProp,
-    options,
-    children,
-    defaultActiveFirstOption,
-    menuItemSelectedIcon,
-    virtual,
-    listHeight = 200,
-    listItemHeight = 20,
+      // Select
+      onSelect,
+      onDeselect,
 
-    // Value
-    value,
-    defaultValue,
-    labelInValue,
-    onChange,
-  } = props;
+      // Options
+      filterOption,
+      optionFilterProp = 'value',
+      optionLabelProp,
+      options,
+      children,
+      defaultActiveFirstOption,
+      menuItemSelectedIcon,
+      virtual,
+      listHeight = 200,
+      listItemHeight = 20,
 
-  const mergedId = useId(id);
-  const multiple = isMultiple(mode);
-  const childrenAsData = !!(!options && children);
+      // Value
+      value,
+      defaultValue,
+      labelInValue,
+      onChange,
+    } = props;
 
-  // ========================= FieldNames =========================
-  const mergedFieldNames = React.useMemo(
-    () => fillFieldNames(fieldNames, childrenAsData),
-    /* eslint-disable react-hooks/exhaustive-deps */
-    [
-      // We stringify fieldNames to avoid unnecessary re-renders.
-      JSON.stringify(fieldNames),
-      childrenAsData,
-    ],
-    /* eslint-enable react-hooks/exhaustive-deps */
-  );
+    const mergedId = useId(id);
+    const multiple = isMultiple(mode);
+    const childrenAsData = !!(!options && children);
 
-  // =========================== Search ===========================
-  const [mergedSearchValue, setSearchValue] = useMergedState('', {
-    value: searchValue !== undefined ? searchValue : inputValue,
-    postState: (search) => search || '',
-  });
-
-  const onInternalSearch: BaseSelectProps['onSearch'] = (searchText, info) => {
-    setSearchValue(searchText);
-
-    if (onSearch && info.source !== 'blur') {
-      onSearch(searchText);
-    }
-  };
-
-  const onInternalSearchSplit: BaseSelectProps['onSearchSplit'] = (words) => {};
-
-  React.useEffect(() => {
-    if (mode === 'combobox' && isRawValue(value)) {
-      setSearchValue(String(value));
-    }
-  }, [value]);
-
-  // =========================== Option ===========================
-  const parsedOptions = useOptions(options, children, mergedFieldNames);
-  const { valueOptions, flattenOptions } = parsedOptions;
-
-  const filteredOptions = React.useMemo(() => {
-    if (!mergedSearchValue || filterOption === false) {
-      return flattenOptions;
-    }
-
-    // Provide `filterOption`
-    if (typeof filterOption === 'function') {
-      return flattenOptions.filter((opt) => filterOption(mergedSearchValue, opt.data));
-    }
-
-    const upperSearch = mergedSearchValue.toUpperCase();
-    return flattenOptions.filter((opt) =>
-      toArray(opt.data[optionFilterProp]).join('').toUpperCase().includes(upperSearch),
+    // ========================= FieldNames =========================
+    const mergedFieldNames = React.useMemo(
+      () => fillFieldNames(fieldNames, childrenAsData),
+      /* eslint-disable react-hooks/exhaustive-deps */
+      [
+        // We stringify fieldNames to avoid unnecessary re-renders.
+        JSON.stringify(fieldNames),
+        childrenAsData,
+      ],
+      /* eslint-enable react-hooks/exhaustive-deps */
     );
-  }, [filterOption, flattenOptions, mergedSearchValue, optionFilterProp]);
 
-  // ========================= Wrap Value =========================
-  const convert2LabelValues = React.useCallback(
-    (draftValues: DraftValueType) => {
-      // Convert to array
-      const valueList = toArray(draftValues);
+    // =========================== Search ===========================
+    const [mergedSearchValue, setSearchValue] = useMergedState('', {
+      value: searchValue !== undefined ? searchValue : inputValue,
+      postState: (search) => search || '',
+    });
 
-      // Convert to labelInValue type
-      return valueList.map((val) => {
-        let rawValue: RawValueType;
-        let rawLabel: React.ReactNode;
-        let rawKey: React.Key;
+    const onInternalSearch: BaseSelectProps['onSearch'] = (searchText, info) => {
+      setSearchValue(searchText);
 
-        // Fill label & value
-        if (isRawValue(val)) {
-          rawValue = val;
-        } else {
-          rawValue = val.value;
-          rawLabel = val.label;
-          rawKey = val.key;
-        }
-
-        // If label is not provided, fill it
-        if (rawLabel === undefined || rawKey === undefined) {
-          const option = valueOptions.get(rawValue);
-          if (rawLabel === undefined) rawLabel = option?.[mergedFieldNames.label];
-          if (rawKey === undefined) rawKey = option?.key ?? rawValue;
-        }
-
-        return {
-          label: rawLabel === undefined ? rawValue : rawLabel,
-          value: rawValue,
-          key: rawKey,
-        };
-      });
-    },
-    [mergedFieldNames, valueOptions],
-  );
-
-  // =========================== Values ===========================
-  const [internalValue, setInternalValue] = useMergedState(defaultValue, {
-    value,
-  });
-
-  // Merged value with LabelValueType
-  const mergedValues = React.useMemo(
-    () => convert2LabelValues(internalValue),
-    [internalValue, convert2LabelValues],
-  );
-
-  /** Convert `displayValues` to raw value type set */
-  const rawValues = React.useMemo(
-    () => new Set(mergedValues.map((val) => val.value)),
-    [mergedValues],
-  );
-
-  // =========================== Change ===========================
-  const triggerChange = (values: DraftValueType) => {
-    const labeledValues = convert2LabelValues(values);
-    setInternalValue(labeledValues);
-
-    if (onChange) {
-      const returnValues = labelInValue ? labeledValues : labeledValues.map((v) => v.value);
-      const returnOptions = labeledValues.map((v) => valueOptions.get(v.value));
-
-      onChange(
-        // Value
-        multiple ? returnValues : returnValues[0],
-        // Option
-        multiple ? returnOptions : returnOptions[0],
-      );
-    }
-  };
-
-  // BaseSelect display values change
-  const onDisplayValuesChange: BaseSelectProps['onDisplayValuesChange'] = (nextValues, info) => {
-    triggerChange(nextValues);
-  };
-
-  // ======================= Accessibility ========================
-  const [activeValue, setActiveValue] = React.useState<string>(null);
-  const [accessibilityIndex, setAccessibilityIndex] = React.useState(0);
-  const mergedDefaultActiveFirstOption =
-    defaultActiveFirstOption !== undefined ? defaultActiveFirstOption : mode !== 'combobox';
-
-  const onActiveValue: OnActiveValue = React.useCallback(
-    (active, index, { source = 'keyboard' } = {}) => {
-      setAccessibilityIndex(index);
-
-      if (backfill && mode === 'combobox' && active !== null && source === 'keyboard') {
-        setActiveValue(String(active));
+      if (onSearch && info.source !== 'blur') {
+        onSearch(searchText);
       }
-    },
-    [backfill, mode],
-  );
+    };
 
-  // ========================= OptionList =========================
-  // Used for OptionList selection
-  const onInternalSelect = useRefFunc<OnInternalSelect>((val, info) => {
-    let cloneValues: (RawValueType | LabelInValueType)[];
+    const onInternalSearchSplit: BaseSelectProps['onSearchSplit'] = (words) => {};
 
-    if (info.selected) {
-      cloneValues = multiple ? [...mergedValues, val] : [val];
-    } else {
-      cloneValues = mergedValues.filter((v) => v.value !== val);
+    // =========================== Option ===========================
+    const parsedOptions = useOptions(options, children, mergedFieldNames);
+    const { valueOptions, flattenOptions } = parsedOptions;
+
+    const filteredOptions = React.useMemo(() => {
+      if (!mergedSearchValue || filterOption === false) {
+        return flattenOptions;
+      }
+
+      // Provide `filterOption`
+      if (typeof filterOption === 'function') {
+        return flattenOptions.filter((opt) => filterOption(mergedSearchValue, opt.data));
+      }
+
+      const upperSearch = mergedSearchValue.toUpperCase();
+      return flattenOptions.filter((opt) =>
+        toArray(opt.data[optionFilterProp]).join('').toUpperCase().includes(upperSearch),
+      );
+    }, [filterOption, flattenOptions, mergedSearchValue, optionFilterProp]);
+
+    // ========================= Wrap Value =========================
+    const convert2LabelValues = React.useCallback(
+      (draftValues: DraftValueType) => {
+        // Convert to array
+        const valueList = toArray(draftValues);
+
+        // Convert to labelInValue type
+        return valueList.map((val) => {
+          let rawValue: RawValueType;
+          let rawLabel: React.ReactNode;
+          let rawKey: React.Key;
+
+          // Fill label & value
+          if (isRawValue(val)) {
+            rawValue = val;
+          } else {
+            rawValue = val.value;
+            rawLabel = val.label;
+            rawKey = val.key;
+          }
+
+          // If label is not provided, fill it
+          if (rawLabel === undefined || rawKey === undefined) {
+            const option = valueOptions.get(rawValue);
+            if (rawLabel === undefined) rawLabel = option?.[mergedFieldNames.label];
+            if (rawKey === undefined) rawKey = option?.key ?? rawValue;
+          }
+
+          return {
+            label: rawLabel === undefined ? rawValue : rawLabel,
+            value: rawValue,
+            key: rawKey,
+          };
+        });
+      },
+      [mergedFieldNames, valueOptions],
+    );
+
+    // =========================== Values ===========================
+    const [internalValue, setInternalValue] = useMergedState(defaultValue, {
+      value,
+    });
+
+    // Merged value with LabelValueType
+    const mergedValues = React.useMemo(
+      () => convert2LabelValues(internalValue),
+      [internalValue, convert2LabelValues],
+    );
+
+    /** Convert `displayValues` to raw value type set */
+    const rawValues = React.useMemo(
+      () => new Set(mergedValues.map((val) => val.value)),
+      [mergedValues],
+    );
+
+    React.useEffect(() => {
+      if (mode === 'combobox') {
+        const strValue = mergedValues[0]?.value;
+
+        if (strValue !== undefined && strValue !== null) {
+          setSearchValue(String(strValue));
+        }
+      }
+    }, [mergedValues]);
+
+    // =========================== Change ===========================
+    const triggerChange = (values: DraftValueType) => {
+      const labeledValues = convert2LabelValues(values);
+      setInternalValue(labeledValues);
+
+      if (onChange) {
+        const returnValues = labelInValue ? labeledValues : labeledValues.map((v) => v.value);
+        const returnOptions = labeledValues.map((v) => valueOptions.get(v.value));
+
+        onChange(
+          // Value
+          multiple ? returnValues : returnValues[0],
+          // Option
+          multiple ? returnOptions : returnOptions[0],
+        );
+      }
+    };
+
+    // BaseSelect display values change
+    const onDisplayValuesChange: BaseSelectProps['onDisplayValuesChange'] = (nextValues, info) => {
+      triggerChange(nextValues);
+    };
+
+    // ======================= Accessibility ========================
+    const [activeValue, setActiveValue] = React.useState<string>(null);
+    const [accessibilityIndex, setAccessibilityIndex] = React.useState(0);
+    const mergedDefaultActiveFirstOption =
+      defaultActiveFirstOption !== undefined ? defaultActiveFirstOption : mode !== 'combobox';
+
+    const onActiveValue: OnActiveValue = React.useCallback(
+      (active, index, { source = 'keyboard' } = {}) => {
+        setAccessibilityIndex(index);
+
+        if (backfill && mode === 'combobox' && active !== null && source === 'keyboard') {
+          setActiveValue(String(active));
+        }
+      },
+      [backfill, mode],
+    );
+
+    // ========================= OptionList =========================
+    // TODO: search need 2 trigger select, remove need 1 trigger
+    const triggerSelect = (val: RawValueType, selected: boolean) => {
+      const getSelectEnt = (): [RawValueType | LabelInValueType, DefaultOptionType] => {
+        const option = valueOptions.get(val);
+        return [
+          labelInValue
+            ? {
+                label: option?.[mergedFieldNames.label],
+                value: val,
+              }
+            : val,
+          option,
+        ];
+      };
+
+      if (selected && onSelect) {
+        const [wrappedValue, option] = getSelectEnt();
+        onSelect(wrappedValue, option);
+      } else if (!selected && onDeselect) {
+        const [wrappedValue, option] = getSelectEnt();
+        onDeselect(wrappedValue, option);
+      }
+    };
+
+    // Used for OptionList selection
+    const onInternalSelect = useRefFunc<OnInternalSelect>((val, info) => {
+      let cloneValues: (RawValueType | LabelInValueType)[];
+
+      if (info.selected) {
+        cloneValues = multiple ? [...mergedValues, val] : [val];
+      } else {
+        cloneValues = mergedValues.filter((v) => v.value !== val);
+      }
+
+      triggerChange(cloneValues);
+      triggerSelect(val, info.selected);
+
+      // Clean search value if single or configured
+      if (mode === 'combobox') {
+        // setSearchValue(String(val));
+        setActiveValue('');
+      } else if (!isMultiple || autoClearSearchValue) {
+        setSearchValue('');
+        setActiveValue('');
+      }
+    });
+
+    // ========================== Context ===========================
+    const selectContext = React.useMemo(
+      () => ({
+        ...parsedOptions,
+        flattenOptions: filteredOptions,
+        onActiveValue,
+        defaultActiveFirstOption: mergedDefaultActiveFirstOption,
+        onSelect: onInternalSelect,
+        menuItemSelectedIcon,
+        rawValues,
+        fieldNames: mergedFieldNames,
+        virtual,
+        listHeight,
+        listItemHeight,
+        childrenAsData,
+        optionLabelProp,
+      }),
+      [
+        parsedOptions,
+        filteredOptions,
+        onActiveValue,
+        mergedDefaultActiveFirstOption,
+        onInternalSelect,
+        menuItemSelectedIcon,
+        rawValues,
+        mergedFieldNames,
+        virtual,
+        listHeight,
+        listItemHeight,
+        childrenAsData,
+        optionLabelProp,
+      ],
+    );
+
+    // ========================== Warning ===========================
+    if (process.env.NODE_ENV !== 'production') {
+      warningProps(props);
     }
 
-    triggerChange(cloneValues);
-
-    // Clean search value if single or configured
-    if (mode === 'combobox') {
-      // setSearchValue(String(newValue));
-      setActiveValue('');
-    } else if (!isMultiple || autoClearSearchValue) {
-      setSearchValue('');
-      setActiveValue('');
-    }
-  });
-
-  // ========================== Context ===========================
-  const selectContext = React.useMemo(
-    () => ({
-      ...parsedOptions,
-      flattenOptions: filteredOptions,
-      onActiveValue,
-      defaultActiveFirstOption: mergedDefaultActiveFirstOption,
-      onSelect: onInternalSelect,
-      menuItemSelectedIcon,
-      rawValues,
-      fieldNames: mergedFieldNames,
-      virtual,
-      listHeight,
-      listItemHeight,
-      childrenAsData,
-      optionLabelProp,
-    }),
-    [
-      parsedOptions,
-      filteredOptions,
-      onActiveValue,
-      mergedDefaultActiveFirstOption,
-      onInternalSelect,
-      menuItemSelectedIcon,
-      rawValues,
-      mergedFieldNames,
-      virtual,
-      listHeight,
-      listItemHeight,
-      childrenAsData,
-      optionLabelProp,
-    ],
-  );
-
-  // ========================== Warning ===========================
-  if (process.env.NODE_ENV !== 'production') {
-    warningProps(props);
-  }
-
-  // ==============================================================
-  // ==                          Render                          ==
-  // ==============================================================
-  return (
-    <SelectContext.Provider value={selectContext}>
-      <BaseSelect
-        {...props}
-        // >>> MISC
-        id={mergedId}
-        prefixCls={prefixCls}
-        ref={ref}
-        // >>> Values
-        displayValues={mergedValues}
-        onDisplayValuesChange={onDisplayValuesChange}
-        // >>> Search
-        searchValue={mergedSearchValue}
-        onSearch={onInternalSearch}
-        onSearchSplit={onInternalSearchSplit}
-        // >>> OptionList
-        OptionList={OptionList}
-        emptyOptions={!filteredOptions.length}
-        // >>> Accessibility
-        activeValue={activeValue}
-        activeDescendantId={`${mergedId}_list_${accessibilityIndex}`}
-      />
-    </SelectContext.Provider>
-  );
-});
+    // ==============================================================
+    // ==                          Render                          ==
+    // ==============================================================
+    return (
+      <SelectContext.Provider value={selectContext}>
+        <BaseSelect
+          {...props}
+          // >>> MISC
+          id={mergedId}
+          prefixCls={prefixCls}
+          ref={ref}
+          // >>> Values
+          displayValues={mergedValues}
+          onDisplayValuesChange={onDisplayValuesChange}
+          // >>> Search
+          searchValue={mergedSearchValue}
+          onSearch={onInternalSearch}
+          onSearchSplit={onInternalSearchSplit}
+          // >>> OptionList
+          OptionList={OptionList}
+          emptyOptions={!filteredOptions.length}
+          // >>> Accessibility
+          activeValue={activeValue}
+          activeDescendantId={`${mergedId}_list_${accessibilityIndex}`}
+        />
+      </SelectContext.Provider>
+    );
+  },
+);
 
 type SelectType = typeof Select;
 
