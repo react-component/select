@@ -444,7 +444,7 @@ const Select = React.forwardRef((props: SelectProps, ref: React.Ref<BaseSelectRe
         emptyOptions={!filteredOptions.length}
         // >>> Accessibility
         activeValue={activeValue}
-        activeDescendantId={`${id}_list_${accessibilityIndex}`}
+        activeDescendantId={`${mergedId}_list_${accessibilityIndex}`}
       />
     </SelectContext.Provider>
   );
