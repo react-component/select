@@ -30,6 +30,7 @@
  */
 
 import * as React from 'react';
+import warning from 'rc-util/lib/warning';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import BaseSelect, { isMultiple } from './BaseSelect';
 import type { DisplayValueType, RenderNode } from './BaseSelect';
@@ -43,6 +44,7 @@ import useRefFunc from './hooks/useRefFunc';
 import { fillFieldNames } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
 import { toArray } from './utils/commonUtil';
+
 
 export type OnActiveValue = (
   active: RawValueType,
@@ -295,6 +297,14 @@ const Select = React.forwardRef(
             if (rawKey === undefined) rawKey = option?.key ?? rawValue;
           }
 
+          // Warning if label not same as provided
+          if (process.env.NODE_ENV !== 'production' && !isRawValue(val)) {
+            const optionLabel = valueOptions.get(rawValue)?.[mergedFieldNames.label];
+            if (optionLabel !== undefined && optionLabel !== rawLabel) {
+              warning(false, '`label` of `value` is not same as `label` in Select options.');
+            }
+          }
+
           return {
             label: rawLabel === undefined ? rawValue : rawLabel,
             value: rawValue,
@@ -404,7 +414,7 @@ const Select = React.forwardRef(
     // Used for OptionList selection
     const onInternalSelect = useRefFunc<OnInternalSelect>((val, info) => {
       let cloneValues: (RawValueType | LabelInValueType)[];
-      
+
       // Single mode always trigger select only with option list
       const mergedSelect = multiple ? info.selected : true;
 
