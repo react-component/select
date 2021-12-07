@@ -41,10 +41,9 @@ import useOptions from './hooks/useOptions';
 import SelectContext from './SelectContext';
 import useId from './hooks/useId';
 import useRefFunc from './hooks/useRefFunc';
-import { fillFieldNames } from './utils/valueUtil';
+import { fillFieldNames, injectPropsWithOption } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
 import { toArray } from './utils/commonUtil';
-
 
 export type OnActiveValue = (
   active: RawValueType,
@@ -260,7 +259,9 @@ const Select = React.forwardRef(
 
       // Provide `filterOption`
       if (typeof filterOption === 'function') {
-        return flattenOptions.filter((opt) => filterOption(mergedSearchValue, opt.data));
+        return flattenOptions.filter((opt) =>
+          filterOption(mergedSearchValue, injectPropsWithOption(opt.data)),
+        );
       }
 
       const upperSearch = mergedSearchValue.toUpperCase();
@@ -326,6 +327,19 @@ const Select = React.forwardRef(
       [internalValue, convert2LabelValues],
     );
 
+    const displayValues = React.useMemo(() => {
+      // `null` need show as placeholder instead
+      // https://github.com/ant-design/ant-design/issues/25057
+      if (!mode && mergedValues.length === 1) {
+        const firstValue = mergedValues[0];
+        if (firstValue.value === null && firstValue.label === null) {
+          return [];
+        }
+      }
+
+      return mergedValues;
+    }, [mode, mergedValues]);
+
     /** Convert `displayValues` to raw value type set */
     const rawValues = React.useMemo(
       () => new Set(mergedValues.map((val) => val.value)),
@@ -353,7 +367,9 @@ const Select = React.forwardRef(
         labeledValues.some((newVal, index) => mergedValues[index]?.value !== newVal?.value)
       ) {
         const returnValues = labelInValue ? labeledValues : labeledValues.map((v) => v.value);
-        const returnOptions = labeledValues.map((v) => valueOptions.get(v.value));
+        const returnOptions = labeledValues.map((v) =>
+          injectPropsWithOption(valueOptions.get(v.value)),
+        );
 
         onChange(
           // Value
@@ -398,7 +414,7 @@ const Select = React.forwardRef(
                 value: val,
               }
             : val,
-          option,
+          injectPropsWithOption(option),
         ];
       };
 
@@ -488,7 +504,7 @@ const Select = React.forwardRef(
           prefixCls={prefixCls}
           ref={ref}
           // >>> Values
-          displayValues={mergedValues}
+          displayValues={displayValues}
           onDisplayValuesChange={onDisplayValuesChange}
           // >>> Search
           searchValue={mergedSearchValue}

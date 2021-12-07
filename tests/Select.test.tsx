@@ -1398,22 +1398,8 @@ describe('Select.Basic', () => {
         expect(opt.props).toBeTruthy();
       };
 
-      // We also test if internal hooks work here.
-      // Can be remove if not need in `rc-tree-select` anymore.
-      const onRawSelect = jest.fn();
-      const onRawDeselect = jest.fn();
-
       const wrapper = mount(
-        <Select
-          mode="multiple"
-          onSelect={readPropsFunc}
-          onDeselect={readPropsFunc}
-          internalProps={{
-            mark: INTERNAL_PROPS_MARK,
-            onRawSelect,
-            onRawDeselect,
-          }}
-        >
+        <Select mode="multiple" onSelect={readPropsFunc} onDeselect={readPropsFunc}>
           <Option value="light">Light</Option>
           <Option value="bamboo">Bamboo</Option>
         </Select>,
@@ -1424,7 +1410,6 @@ describe('Select.Basic', () => {
       expect(errorSpy).toHaveBeenCalledWith(
         'Warning: Return type is option instead of Option instance. Please read value directly instead of reading from `props`.',
       );
-      expect(onRawSelect).toHaveBeenCalled();
 
       errorSpy.mockReset();
       resetWarned();
@@ -1432,7 +1417,6 @@ describe('Select.Basic', () => {
       expect(errorSpy).toHaveBeenCalledWith(
         'Warning: Return type is option instead of Option instance. Please read value directly instead of reading from `props`.',
       );
-      expect(onRawDeselect).toHaveBeenCalled();
 
       errorSpy.mockRestore();
     });
@@ -1459,25 +1443,6 @@ describe('Select.Basic', () => {
       );
 
       errorSpy.mockRestore();
-    });
-
-    // This test case can be safe remove
-    it('skip onChange', () => {
-      const onChange = jest.fn();
-      const wrapper = mount(
-        <Select
-          onChange={onChange}
-          internalProps={{ mark: INTERNAL_PROPS_MARK, skipTriggerChange: true }}
-        >
-          <Option value="light">Light</Option>
-          <Option value="bamboo">Bamboo</Option>
-        </Select>,
-      );
-
-      toggleOpen(wrapper);
-      selectItem(wrapper);
-
-      expect(onChange).not.toHaveBeenCalled();
     });
   });
 

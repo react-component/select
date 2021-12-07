@@ -106,7 +106,7 @@ export function flattenOptions<OptionType extends BaseOptionType = DefaultOption
 /**
  * Inject `props` into `option` for legacy usage
  */
-function injectPropsWithOption<T>(option: T): T {
+export function injectPropsWithOption<T>(option: T): T {
   const newOption = { ...option };
   if (!('props' in newOption)) {
     Object.defineProperty(newOption, 'props', {
