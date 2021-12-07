@@ -44,6 +44,7 @@ import useRefFunc from './hooks/useRefFunc';
 import { fillFieldNames, injectPropsWithOption } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
 import { toArray } from './utils/commonUtil';
+import useCacheDisplayValue from './hooks/useCacheDisplayValue';
 
 export type OnActiveValue = (
   active: RawValueType,
@@ -114,6 +115,7 @@ export interface SharedSelectProps<OptionType extends BaseOptionType = DefaultOp
    * It's by design.
    */
   filterOption?: boolean | FilterFunc<OptionType>;
+  filterSort?: (optionA: OptionType, optionB: OptionType) => number;
   optionFilterProp?: string;
   optionLabelProp?: string;
   children?: React.ReactNode;
@@ -199,6 +201,7 @@ const Select = React.forwardRef(
 
       // Options
       filterOption,
+      filterSort,
       optionFilterProp = 'value',
       optionLabelProp,
       options,
@@ -270,6 +273,14 @@ const Select = React.forwardRef(
       );
     }, [filterOption, flattenOptions, mergedSearchValue, optionFilterProp]);
 
+    const orderedFilteredOptions = React.useMemo(() => {
+      if (!filterSort) {
+        return filteredOptions;
+      }
+
+      return filteredOptions.sort((a, b) => filterSort(a.data, b.data));
+    }, [filteredOptions, filterSort]);
+
     // ========================= Wrap Value =========================
     const convert2LabelValues = React.useCallback(
       (draftValues: DraftValueType) => {
@@ -307,7 +318,7 @@ const Select = React.forwardRef(
           }
 
           return {
-            label: rawLabel === undefined ? rawValue : rawLabel,
+            label: rawLabel,
             value: rawValue,
             key: rawKey,
           };
@@ -322,10 +333,13 @@ const Select = React.forwardRef(
     });
 
     // Merged value with LabelValueType
-    const mergedValues = React.useMemo(
+    const labeledValues = React.useMemo(
       () => convert2LabelValues(internalValue),
       [internalValue, convert2LabelValues],
     );
+
+    // Fill label with cache to avoid option remove
+    const mergedValues = useCacheDisplayValue(labeledValues);
 
     const displayValues = React.useMemo(() => {
       // `null` need show as placeholder instead
@@ -364,7 +378,8 @@ const Select = React.forwardRef(
       if (
         onChange &&
         // Trigger event only when value changed
-        labeledValues.some((newVal, index) => mergedValues[index]?.value !== newVal?.value)
+        (labeledValues.length !== mergedValues.length ||
+          labeledValues.some((newVal, index) => mergedValues[index]?.value !== newVal?.value))
       ) {
         const returnValues = labelInValue ? labeledValues : labeledValues.map((v) => v.value);
         const returnOptions = labeledValues.map((v) =>
@@ -457,7 +472,7 @@ const Select = React.forwardRef(
     const selectContext = React.useMemo(
       () => ({
         ...parsedOptions,
-        flattenOptions: filteredOptions,
+        flattenOptions: orderedFilteredOptions,
         onActiveValue,
         defaultActiveFirstOption: mergedDefaultActiveFirstOption,
         onSelect: onInternalSelect,
@@ -472,7 +487,7 @@ const Select = React.forwardRef(
       }),
       [
         parsedOptions,
-        filteredOptions,
+        orderedFilteredOptions,
         onActiveValue,
         mergedDefaultActiveFirstOption,
         onInternalSelect,
@@ -512,7 +527,7 @@ const Select = React.forwardRef(
           onSearchSplit={onInternalSearchSplit}
           // >>> OptionList
           OptionList={OptionList}
-          emptyOptions={!filteredOptions.length}
+          emptyOptions={!orderedFilteredOptions.length}
           // >>> Accessibility
           activeValue={activeValue}
           activeDescendantId={`${mergedId}_list_${accessibilityIndex}`}

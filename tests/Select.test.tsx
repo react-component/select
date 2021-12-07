@@ -19,7 +19,6 @@ import {
   findSelection,
   injectRunAllTimers,
 } from './utils/common';
-import { INTERNAL_PROPS_MARK } from '../src/interface/generator';
 
 describe('Select.Basic', () => {
   injectRunAllTimers(jest);

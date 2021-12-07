@@ -16,11 +16,10 @@ export default function useCacheDisplayValue(
     });
 
     const resultValues = values.map((item) => {
-      const cacheLabel = valueLabels.get(item.value);
-      if (item.isCacheable && cacheLabel) {
+      if (item.label === undefined) {
         return {
           ...item,
-          label: cacheLabel,
+          label: valueLabels.get(item.value),
         };
       }
 
