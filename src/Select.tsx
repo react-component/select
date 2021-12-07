@@ -337,7 +337,11 @@ const Select = React.forwardRef(
       const labeledValues = convert2LabelValues(values);
       setInternalValue(labeledValues);
 
-      if (onChange) {
+      if (
+        onChange &&
+        // Trigger event only when value changed
+        labeledValues.some((newVal, index) => mergedValues[index]?.value !== newVal?.value)
+      ) {
         const returnValues = labelInValue ? labeledValues : labeledValues.map((v) => v.value);
         const returnOptions = labeledValues.map((v) => valueOptions.get(v.value));
 
@@ -400,15 +404,18 @@ const Select = React.forwardRef(
     // Used for OptionList selection
     const onInternalSelect = useRefFunc<OnInternalSelect>((val, info) => {
       let cloneValues: (RawValueType | LabelInValueType)[];
+      
+      // Single mode always trigger select only with option list
+      const mergedSelect = multiple ? info.selected : true;
 
-      if (info.selected) {
+      if (mergedSelect) {
         cloneValues = multiple ? [...mergedValues, val] : [val];
       } else {
         cloneValues = mergedValues.filter((v) => v.value !== val);
       }
 
       triggerChange(cloneValues);
-      triggerSelect(val, info.selected);
+      triggerSelect(val, mergedSelect);
 
       // Clean search value if single or configured
       if (mode === 'combobox') {

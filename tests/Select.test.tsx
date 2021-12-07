@@ -1168,7 +1168,7 @@ describe('Select.Basic', () => {
 
     wrapper.find('input').simulate('change', { target: { value: 'c' } });
     expect(wrapper.find('input').props().value).toBe('c');
-    expect(wrapper.find('OptionList').props().options).toHaveLength(0);
+    expect(wrapper.find('.rc-select-item')).toHaveLength(0);
     expect(wrapper.find('.rc-select-item-empty').text()).toEqual('Not Found');
 
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ENTER });
@@ -1304,6 +1304,7 @@ describe('Select.Basic', () => {
     );
 
     for (let i = 0; i < 10; i += 1) {
+      console.log('=>', i);
       onSelect.mockReset();
       wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
       expect(onSelect).toHaveBeenCalledWith('1', expect.anything());
