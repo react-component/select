@@ -405,14 +405,14 @@ const Select = React.forwardRef(
       if (
         mode !== 'tags' ||
         !mergedSearchValue ||
-        filteredOptions.some((item) => item.value === mergedSearchValue)
+        filteredOptions.some((item) => item.data[optionFilterProp] === mergedSearchValue)
       ) {
         return filteredOptions;
       }
 
       // Fill search value as option
       return [createTagOption(mergedSearchValue), ...filteredOptions];
-    }, [createTagOption, mode, filteredOptions, mergedSearchValue]);
+    }, [createTagOption, optionFilterProp, mode, filteredOptions, mergedSearchValue]);
 
     const orderedFilteredOptions = React.useMemo(() => {
       if (!filterSort) {
