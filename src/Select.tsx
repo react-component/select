@@ -246,56 +246,6 @@ const Select = React.forwardRef(
     const parsedOptions = useOptions(options, children, mergedFieldNames);
     const { valueOptions, flattenOptions, labelOptions } = parsedOptions;
 
-    const filteredOptions = React.useMemo(() => {
-      if (!mergedSearchValue || filterOption === false) {
-        return flattenOptions;
-      }
-
-      // Provide `filterOption`
-      if (typeof filterOption === 'function') {
-        return flattenOptions.filter((opt) =>
-          filterOption(mergedSearchValue, injectPropsWithOption(opt.data)),
-        );
-      }
-
-      const upperSearch = mergedSearchValue.toUpperCase();
-      return flattenOptions.filter((opt) =>
-        toArray(opt.data[optionFilterProp]).join('').toUpperCase().includes(upperSearch),
-      );
-    }, [filterOption, flattenOptions, mergedSearchValue, optionFilterProp]);
-
-    // Fill tag as option if mode is `tags`
-    const filledTagOptions = React.useMemo(() => {
-      if (
-        mode !== 'tags' ||
-        !mergedSearchValue ||
-        filteredOptions.some((opt) => opt.value === mergedSearchValue)
-      ) {
-        return filteredOptions;
-      }
-
-      return [
-        {
-          value: mergedSearchValue,
-          label: mergedSearchValue,
-          key: '__RC_SELECT_TAG_PLACEHOLDER__',
-          data: {
-            [mergedFieldNames.label]: mergedSearchValue,
-            [mergedFieldNames.value]: mergedSearchValue,
-          },
-        },
-        ...filteredOptions,
-      ] as FlattenOptionData<DefaultOptionType>[];
-    }, [filteredOptions, mergedSearchValue, mode, mergedFieldNames]);
-
-    const orderedFilteredOptions = React.useMemo(() => {
-      if (!filterSort) {
-        return filledTagOptions;
-      }
-
-      return filledTagOptions.sort((a, b) => filterSort(a.data, b.data));
-    }, [filledTagOptions, filterSort]);
-
     // ========================= Wrap Value =========================
     const convert2LabelValues = React.useCallback(
       (draftValues: DraftValueType) => {
@@ -312,9 +262,9 @@ const Select = React.forwardRef(
           if (isRawValue(val)) {
             rawValue = val;
           } else {
-            rawValue = val.value;
-            rawLabel = val.label;
             rawKey = val.key;
+            rawLabel = val.label;
+            rawValue = val.value ?? rawKey;
           }
 
           // If label is not provided, fill it
@@ -391,6 +341,72 @@ const Select = React.forwardRef(
       }
     }, [mergedValues]);
 
+    // ======================== FilterOption ========================
+    const filteredOptions = React.useMemo(() => {
+      if (!mergedSearchValue || filterOption === false) {
+        return flattenOptions;
+      }
+
+      // Provide `filterOption`
+      if (typeof filterOption === 'function') {
+        return flattenOptions.filter((opt) =>
+          filterOption(mergedSearchValue, injectPropsWithOption(opt.data)),
+        );
+      }
+
+      const upperSearch = mergedSearchValue.toUpperCase();
+      return flattenOptions.filter((opt) =>
+        toArray(opt.data[optionFilterProp]).join('').toUpperCase().includes(upperSearch),
+      );
+    }, [filterOption, flattenOptions, mergedSearchValue, optionFilterProp]);
+
+    // Fill tag as option if mode is `tags`
+    const filledTagOptions = React.useMemo(() => {
+      if (mode !== 'tags') {
+        return filteredOptions;
+      }
+
+      // >>> Tag mode
+      const cloneOptions = [...filteredOptions];
+
+      if (mode === 'tags') {
+        const createTagOption = (val: RawValueType, label?: React.ReactNode) => {
+          const mergedLabel = label ?? val;
+          return {
+            value: val,
+            label: mergedLabel,
+            key: val,
+            data: {
+              [mergedFieldNames.value]: val,
+              [mergedFieldNames.label]: mergedLabel,
+            },
+          } as FlattenOptionData<DefaultOptionType>;
+        };
+
+        // Fill current search value as option
+        if (mergedSearchValue && !valueOptions.has(mergedSearchValue)) {
+          cloneOptions.unshift(createTagOption(mergedSearchValue));
+        }
+
+        // Fill current value as option
+        mergedValues.forEach((item) => {
+          if (!valueOptions.has(item.value) && item.value !== mergedSearchValue) {
+            cloneOptions.push(createTagOption(item.value, item.label));
+          }
+        });
+      }
+
+      return cloneOptions;
+    }, [filteredOptions, mergedSearchValue, valueOptions, mergedValues, mode, mergedFieldNames]);
+
+    const orderedFilteredOptions = React.useMemo(() => {
+      if (!filterSort) {
+        return filledTagOptions;
+      }
+
+      return filledTagOptions.sort((a, b) => filterSort(a.data, b.data));
+    }, [filledTagOptions, filterSort]);
+
     // =========================== Change ===========================
     const triggerChange = (values: DraftValueType) => {
       const labeledValues = convert2LabelValues(values);
@@ -416,11 +432,6 @@ const Select = React.forwardRef(
       }
     };
 
-    // BaseSelect display values change
-    const onDisplayValuesChange: BaseSelectProps['onDisplayValuesChange'] = (nextValues, info) => {
-      triggerChange(nextValues);
-    };
-
     // ======================= Accessibility ========================
     const [activeValue, setActiveValue] = React.useState<string>(null);
     const [accessibilityIndex, setAccessibilityIndex] = React.useState(0);
@@ -439,7 +450,6 @@ const Select = React.forwardRef(
     );
 
     // ========================= OptionList =========================
-    // TODO: search need 2 trigger select, remove need 1 trigger
     const triggerSelect = (val: RawValueType, selected: boolean) => {
       const getSelectEnt = (): [RawValueType | LabelInValueType, DefaultOptionType] => {
         const option = valueOptions.get(val);
@@ -448,6 +458,7 @@ const Select = React.forwardRef(
             ? {
                 label: option?.[mergedFieldNames.label],
                 value: val,
+                key: option.key ?? val,
               }
             : val,
           injectPropsWithOption(option),
@@ -489,6 +500,18 @@ const Select = React.forwardRef(
       }
     });
 
+    // ======================= Display Change =======================
+    // BaseSelect display values change
+    const onDisplayValuesChange: BaseSelectProps['onDisplayValuesChange'] = (nextValues, info) => {
+      triggerChange(nextValues);
+
+      if (info.type === 'remove') {
+        info.values.forEach((item) => {
+          triggerSelect(item.value, false);
+        });
+      }
+    };
+
     // =========================== Search ===========================
     const onInternalSearch: BaseSelectProps['onSearch'] = (searchText, info) => {
       setSearchValue(searchText);
@@ -505,6 +528,7 @@ const Select = React.forwardRef(
         const newRawValues = Array.from(new Set<RawValueType>([...rawValues, formatted]));
         triggerChange(newRawValues);
         triggerSelect(formatted, true);
+        setSearchValue('');
         return;
       }
 
