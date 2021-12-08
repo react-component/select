@@ -101,6 +101,7 @@ export interface BaseSelectPrivateProps {
   ) => void;
   /** Trigger when search text match the `tokenSeparators`. Will provide split content */
   onSearchSplit: (words: string[]) => void;
+  maxLength?: number;
 
   // >>> Dropdown
   OptionList: React.ForwardRefExoticComponent<
@@ -298,6 +299,15 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     scrollTo: listRef.current?.scrollTo as ScrollTo,
   }));
 
+  // ========================== Search Value ==========================
+  const mergedSearchValue = React.useMemo(() => {
+    if (mode !== 'combobox') {
+      return searchValue;
+    }
+
+    return displayValues[0]?.value;
+  }, [searchValue, mode, displayValues]);
+
   // ========================== Custom Input ==========================
   // Only works in `combobox`
   const customizeInputElement: React.ReactElement =
@@ -355,12 +365,8 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       ? null
       : getSeparatedContent(searchText, tokenSeparators);
 
-    if (mode === 'combobox') {
-      // Only typing will trigger onChange
-      if (fromTyping) {
-        onSearch(newSearchText, { source: 'typing' });
-      }
-    } else if (patchLabels) {
+    // Ignore combobox since it's not split-able
+    if (mode !== 'combobox' && patchLabels) {
       newSearchText = '';
 
       onSearchSplit(patchLabels);
@@ -372,7 +378,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       ret = false;
     }
 
-    if (onSearch && searchValue !== newSearchText) {
+    if (onSearch && mergedSearchValue !== newSearchText) {
       onSearch(newSearchText, {
         source: fromTyping ? 'typing' : 'effect',
       });
@@ -437,14 +443,14 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       }
     }
 
-    setClearLock(!!searchValue);
+    setClearLock(!!mergedSearchValue);
 
     // Remove value by `backspace`
     if (
       which === KeyCode.BACKSPACE &&
       !clearLock &&
       multiple &&
-      !searchValue &&
+      !mergedSearchValue &&
       displayValues.length
     ) {
       const cloneDisplayValues = [...displayValues];
@@ -525,11 +531,11 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       return;
     }
 
-    if (searchValue) {
+    if (mergedSearchValue) {
       // `tags` mode should move `searchValue` into values
       if (mode === 'tags') {
         // TODO: blur need submit to change value
-        onSearch(searchValue, { source: 'submit' });
+        onSearch(mergedSearchValue, { source: 'submit' });
       } else if (mode === 'multiple') {
         // `multiple` mode only clean the search value but not trigger event
         onSearch('', {
@@ -644,7 +650,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
         customizeIcon={inputIcon}
         customizeIconProps={{
           loading,
-          searchValue,
+          searchValue: mergedSearchValue,
           open: mergedOpen,
           focused: mockFocused,
           showSearch: mergedShowSearch,
@@ -665,7 +671,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     onInternalSearch('', false, false);
   };
 
-  if (!disabled && allowClear && (displayValues.length || searchValue)) {
+  if (!disabled && allowClear && (displayValues.length || mergedSearchValue)) {
     clearNode = (
       <TransBtn
         className={`${prefixCls}-clear`}
@@ -738,7 +744,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
           open={mergedOpen}
           onToggleOpen={onToggleOpen}
           activeValue={activeValue}
-          searchValue={searchValue}
+          searchValue={mergedSearchValue}
           onSearch={onInternalSearch}
           onSearchSubmit={onInternalSearchSubmit}
           onRemove={onSelectorRemove}

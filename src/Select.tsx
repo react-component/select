@@ -298,10 +298,16 @@ const Select = React.forwardRef(
     });
 
     // Merged value with LabelValueType
-    const rawLabeledValues = React.useMemo(
-      () => convert2LabelValues(internalValue),
-      [internalValue, convert2LabelValues],
-    );
+    const rawLabeledValues = React.useMemo(() => {
+      const values = convert2LabelValues(internalValue);
+
+      // combobox no need save value when it's empty
+      if (mode === 'combobox' && !values[0]?.value) {
+        return [];
+      }
+
+      return values;
+    }, [internalValue, convert2LabelValues, mode]);
 
     // Fill label with cache to avoid option remove
     const mergedValues = useCacheDisplayValue(rawLabeledValues);
@@ -547,8 +553,12 @@ const Select = React.forwardRef(
         return;
       }
 
-      if (onSearch && info.source !== 'blur') {
-        onSearch(searchText);
+      if (info.source !== 'blur') {
+        if (mode === 'combobox') {
+          triggerChange(searchText);
+        }
+
+        onSearch?.(searchText);
       }
     };
 
