@@ -305,7 +305,9 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       return searchValue;
     }
 
-    return displayValues[0]?.value;
+    const val = displayValues[0]?.value;
+
+    return typeof val === 'string' || typeof val === 'number' ? String(val) : '';
   }, [searchValue, mode, displayValues]);
 
   // ========================== Custom Input ==========================
@@ -534,7 +536,6 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     if (mergedSearchValue) {
       // `tags` mode should move `searchValue` into values
       if (mode === 'tags') {
-        // TODO: blur need submit to change value
         onSearch(mergedSearchValue, { source: 'submit' });
       } else if (mode === 'multiple') {
         // `multiple` mode only clean the search value but not trigger event

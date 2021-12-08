@@ -4,17 +4,10 @@ import classNames from 'classnames';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import Overflow from 'rc-overflow';
 import TransBtn from '../TransBtn';
-import type {
-  LabelValueType,
-  DisplayLabelValueType,
-  CustomTagProps,
-  DefaultValueType,
-} from '../interface/generator';
-import type { RenderNode } from '../interface';
 import type { InnerSelectorProps } from '.';
 import Input from './Input';
 import useLayoutEffect from '../hooks/useLayoutEffect';
-import type { DisplayValueType } from '../BaseSelect';
+import type { DisplayValueType, RenderNode, CustomTagProps, RawValueType } from '../BaseSelect';
 
 interface SelectorProps extends InnerSelectorProps {
   // Icon
@@ -23,7 +16,7 @@ interface SelectorProps extends InnerSelectorProps {
   // Tags
   maxTagCount?: number | 'responsive';
   maxTagTextLength?: number;
-  maxTagPlaceholder?: React.ReactNode | ((omittedValues: LabelValueType[]) => React.ReactNode);
+  maxTagPlaceholder?: React.ReactNode | ((omittedValues: DisplayValueType[]) => React.ReactNode);
   tokenSeparators?: string[];
   tagRender?: (props: CustomTagProps) => React.ReactElement;
   onToggleOpen: (open?: boolean) => void;
@@ -61,7 +54,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
 
     maxTagCount,
     maxTagTextLength,
-    maxTagPlaceholder = (omittedValues: LabelValueType[]) => `+ ${omittedValues.length} ...`,
+    maxTagPlaceholder = (omittedValues: DisplayValueType[]) => `+ ${omittedValues.length} ...`,
     tagRender,
     onToggleOpen,
 
@@ -123,7 +116,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
   }
 
   function customizeRenderSelector(
-    value: DefaultValueType,
+    value: RawValueType,
     content: React.ReactNode,
     itemDisabled: boolean,
     closable: boolean,
@@ -147,7 +140,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
     );
   }
 
-  function renderItem(valueItem: DisplayLabelValueType) {
+  function renderItem(valueItem: DisplayValueType) {
     const { disabled: itemDisabled, label, value } = valueItem;
     const closable = !disabled && !itemDisabled;
 
@@ -173,7 +166,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
       : defaultRenderSelector(label, displayLabel, itemDisabled, closable, onClose);
   }
 
-  function renderRest(omittedValues: DisplayLabelValueType[]) {
+  function renderRest(omittedValues: DisplayValueType[]) {
     const content =
       typeof maxTagPlaceholder === 'function'
         ? maxTagPlaceholder(omittedValues)

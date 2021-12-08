@@ -14,10 +14,8 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import type { ScrollTo } from 'rc-virtual-list/lib/List';
 import MultipleSelector from './MultipleSelector';
 import SingleSelector from './SingleSelector';
-import type { LabelValueType, CustomTagProps } from '../interface/generator';
-import type { RenderNode, Mode } from '../interface';
 import useLock from '../hooks/useLock';
-import type { DisplayValueType } from '../BaseSelect';
+import type { CustomTagProps, DisplayValueType, Mode, RenderNode } from '../BaseSelect';
 
 export interface InnerSelectorProps {
   prefixCls: string;
@@ -29,7 +27,7 @@ export interface InnerSelectorProps {
   disabled?: boolean;
   autoFocus?: boolean;
   autoComplete?: string;
-  values: LabelValueType[];
+  values: DisplayValueType[];
   showSearch?: boolean;
   searchValue: string;
   activeDescendantId?: string;
@@ -57,7 +55,7 @@ export interface SelectorProps {
   showSearch?: boolean;
   open: boolean;
   /** Display in the Selector value, it's not same as `value` prop */
-  values: LabelValueType[];
+  values: DisplayValueType[];
   mode: Mode;
   searchValue: string;
   activeValue: string;
@@ -73,7 +71,7 @@ export interface SelectorProps {
   // Tags
   maxTagCount?: number | 'responsive';
   maxTagTextLength?: number;
-  maxTagPlaceholder?: React.ReactNode | ((omittedValues: LabelValueType[]) => React.ReactNode);
+  maxTagPlaceholder?: React.ReactNode | ((omittedValues: DisplayValueType[]) => React.ReactNode);
   tagRender?: (props: CustomTagProps) => React.ReactElement;
 
   /** Check if `tokenSeparators` contains `\n` or `\r\n` */

@@ -45,8 +45,6 @@ import useRefFunc from './hooks/useRefFunc';
 import { fillFieldNames, flattenOptions, injectPropsWithOption } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
 import { toArray } from './utils/commonUtil';
-import useCacheDisplayValue from './hooks/useCacheDisplayValue';
-import type { FlattenOptionData } from './interface';
 import useFilterOptions from './hooks/useFilterOptions';
 import useCache from './hooks/useCache';
 

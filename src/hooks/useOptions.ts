@@ -1,7 +1,6 @@
 import * as React from 'react';
 import type { FieldNames, RawValueType } from '../Select';
 import { convertChildrenToData } from '../utils/legacyUtil';
-import { flattenOptions } from '../utils/valueUtil';
 
 /**
  * Parse `children` to `options` if `options` is not provided.

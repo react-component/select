@@ -1,7 +1,7 @@
 import type { BaseOptionType, DefaultOptionType } from '../Select';
 import warning from 'rc-util/lib/warning';
-import type { FlattenOptionData, FieldNames } from '../interface';
-import type { RawValueType } from '../interface/generator';
+import type { RawValueType, FieldNames } from '../Select';
+import type { FlattenOptionData } from '../interface';
 
 function getKey(data: BaseOptionType, index: number) {
   const { key } = data;
