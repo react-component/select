@@ -90,7 +90,6 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
   const { prefixCls, id, open, multiple, searchValue, toggleOpen, notFoundContent, onPopupScroll } =
     useBaseProps();
   const {
-    childrenAsData,
     flattenOptions,
     onActiveValue,
     defaultActiveFirstOption,
@@ -284,14 +283,12 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
 
   const omitFieldNameList = Object.keys(fieldNames).map((key) => fieldNames[key]);
 
-  const getLabel = (itemData: Record<string, any>) => {
-    const { label, children } = itemData;
-
+  const getLabel = (item: Record<string, any>) => {
     if (optionLabelProp) {
-      return itemData[optionLabelProp];
+      return item.data[optionLabelProp];
     }
 
-    return childrenAsData ? children : label;
+    return item.label;
   };
 
   const renderItem = (index: number) => {
@@ -302,7 +299,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
     const { value } = itemData;
     const { group } = item;
     const attrs = pickAttrs(itemData, true);
-    const mergedLabel = getLabel(itemData);
+    const mergedLabel = getLabel(item);
     return item ? (
       <div
         aria-label={typeof mergedLabel === 'string' && !group ? mergedLabel : null}
@@ -335,7 +332,8 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
         onScroll={onPopupScroll}
         virtual={virtual}
       >
-        {({ group, groupOption, data, label, value }, itemIndex) => {
+        {(item, itemIndex) => {
+          const { group, groupOption, data, label, value } = item;
           const { key } = data;
 
           // Group
@@ -361,7 +359,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
             [`${optionPrefixCls}-selected`]: selected,
           });
 
-          const mergedLabel = getLabel(data);
+          const mergedLabel = getLabel(item);
 
           const iconVisible =
             !menuItemSelectedIcon || typeof menuItemSelectedIcon === 'function' || selected;

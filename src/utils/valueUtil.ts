@@ -39,7 +39,7 @@ export function fillFieldNames(fieldNames: FieldNames | undefined, childrenAsDat
   const { label, value, options } = fieldNames || {};
 
   return {
-    label: label || childrenAsData ? 'children' : 'label',
+    label: label || (childrenAsData ? 'children' : 'label'),
     value: value || 'value',
     options: options || 'options',
   };
