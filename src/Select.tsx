@@ -41,11 +41,12 @@ import useOptions from './hooks/useOptions';
 import SelectContext from './SelectContext';
 import useId from './hooks/useId';
 import useRefFunc from './hooks/useRefFunc';
-import { fillFieldNames, injectPropsWithOption } from './utils/valueUtil';
+import { fillFieldNames, flattenOptions, injectPropsWithOption } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
 import { toArray } from './utils/commonUtil';
 import useCacheDisplayValue from './hooks/useCacheDisplayValue';
 import type { FlattenOptionData } from './interface';
+import useFilterOptions from './hooks/useFilterOptions';
 
 export type OnActiveValue = (
   active: RawValueType,
@@ -203,7 +204,7 @@ const Select = React.forwardRef(
       // Options
       filterOption,
       filterSort,
-      optionFilterProp = 'value',
+      optionFilterProp,
       optionLabelProp,
       options,
       children,
@@ -244,7 +245,7 @@ const Select = React.forwardRef(
 
     // =========================== Option ===========================
     const parsedOptions = useOptions(options, children, mergedFieldNames);
-    const { valueOptions, flattenOptions, labelOptions } = parsedOptions;
+    const { valueOptions, labelOptions, options: mergedOptions } = parsedOptions;
 
     // ========================= Wrap Value =========================
     const convert2LabelValues = React.useCallback(
@@ -347,29 +348,24 @@ const Select = React.forwardRef(
       }
     }, [mergedValues]);
 
-    // ======================== FilterOption ========================
+    // ======================= Display Option =======================
     // Create a placeholder item if not exist in `options`
     const createTagOption = useRefFunc((val: RawValueType, label?: React.ReactNode) => {
       const mergedLabel = label ?? val;
       return {
-        value: val,
-        label: mergedLabel,
-        key: val,
-        data: {
-          [mergedFieldNames.value]: val,
-          [mergedFieldNames.label]: mergedLabel,
-        },
-      } as FlattenOptionData<DefaultOptionType>;
+        [mergedFieldNames.value]: val,
+        [mergedFieldNames.label]: mergedLabel,
+      } as DefaultOptionType;
     });
 
     // Fill tag as option if mode is `tags`
     const filledTagOptions = React.useMemo(() => {
       if (mode !== 'tags') {
-        return flattenOptions;
+        return mergedOptions;
       }
 
       // >>> Tag mode
-      const cloneOptions = [...flattenOptions];
+      const cloneOptions = [...mergedOptions];
 
       // Check if value exist in options (include new patch item)
       const existOptions = (val: RawValueType) => valueOptions.has(val);
@@ -386,32 +382,22 @@ const Select = React.forwardRef(
         });
 
       return cloneOptions;
-    }, [createTagOption, flattenOptions, valueOptions, mergedValues, mode]);
+    }, [createTagOption, mergedOptions, valueOptions, mergedValues, mode]);
 
-    const filteredOptions = React.useMemo(() => {
-      if (!mergedSearchValue || filterOption === false) {
-        return filledTagOptions;
-      }
-
-      // Provide `filterOption`
-      if (typeof filterOption === 'function') {
-        return filledTagOptions.filter((opt) =>
-          filterOption(mergedSearchValue, injectPropsWithOption(opt.data)),
-        );
-      }
-
-      const upperSearch = mergedSearchValue.toUpperCase();
-      return filledTagOptions.filter((opt) =>
-        toArray(opt.data[optionFilterProp]).join('').toUpperCase().includes(upperSearch),
-      );
-    }, [filterOption, filledTagOptions, mergedSearchValue, optionFilterProp]);
+    const filteredOptions = useFilterOptions(
+      filledTagOptions,
+      mergedFieldNames,
+      mergedSearchValue,
+      filterOption,
+      optionFilterProp,
+    );
 
     // Fill options with search value if needed
     const filledSearchOptions = React.useMemo(() => {
       if (
         mode !== 'tags' ||
         !mergedSearchValue ||
-        filteredOptions.some((item) => item.data[optionFilterProp] === mergedSearchValue)
+        filteredOptions.some((item) => item.data[optionFilterProp || 'value'] === mergedSearchValue)
       ) {
         return filteredOptions;
       }
@@ -425,8 +411,13 @@ const Select = React.forwardRef(
         return filledSearchOptions;
       }
 
-      return filledSearchOptions.sort((a, b) => filterSort(a.data, b.data));
+      return [...filledSearchOptions].sort((a, b) => filterSort(a, b));
     }, [filledSearchOptions, filterSort]);
+
+    const displayOptions = React.useMemo(
+      () => flattenOptions(orderedFilteredOptions),
+      [orderedFilteredOptions],
+    );
 
     // =========================== Change ===========================
     const triggerChange = (values: DraftValueType) => {
@@ -585,7 +576,7 @@ const Select = React.forwardRef(
     const selectContext = React.useMemo(
       () => ({
         ...parsedOptions,
-        flattenOptions: orderedFilteredOptions,
+        flattenOptions: displayOptions,
         onActiveValue,
         defaultActiveFirstOption: mergedDefaultActiveFirstOption,
         onSelect: onInternalSelect,
@@ -600,7 +591,7 @@ const Select = React.forwardRef(
       }),
       [
         parsedOptions,
-        orderedFilteredOptions,
+        displayOptions,
         onActiveValue,
         mergedDefaultActiveFirstOption,
         onInternalSelect,
@@ -640,7 +631,7 @@ const Select = React.forwardRef(
           onSearchSplit={onInternalSearchSplit}
           // >>> OptionList
           OptionList={OptionList}
-          emptyOptions={!orderedFilteredOptions.length}
+          emptyOptions={!displayOptions.length}
           // >>> Accessibility
           activeValue={activeValue}
           activeDescendantId={`${mergedId}_list_${accessibilityIndex}`}

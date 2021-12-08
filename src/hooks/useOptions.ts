@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { FieldNames } from '../Select';
+import type { FieldNames, RawValueType } from '../Select';
 import { convertChildrenToData } from '../utils/legacyUtil';
 import { flattenOptions } from '../utils/valueUtil';
 
@@ -20,14 +20,25 @@ export default function useOptions<OptionType>(
       mergedOptions = convertChildrenToData(children);
     }
 
-    const [flattenedOptions, valueOptions, labelOptions] = flattenOptions(mergedOptions, {
-      fieldNames,
-      childrenAsData,
-    });
+    const valueOptions = new Map<RawValueType, OptionType>();
+    const labelOptions = new Map<React.ReactNode, OptionType>();
+
+    function dig(optionList: OptionType[], isChildren = false) {
+      // for loop to speed up collection speed
+      for (let i = 0; i < optionList.length; i += 1) {
+        const option = optionList[i];
+        if (!option[fieldNames.options] || isChildren) {
+          valueOptions.set(option[fieldNames.value], option);
+          labelOptions.set(option[fieldNames.label], option);
+        } else {
+          dig(option[fieldNames.options], true);
+        }
+      }
+    }
+    dig(mergedOptions);
 
     return {
       options: mergedOptions,
-      flattenOptions: flattenedOptions,
       valueOptions,
       labelOptions,
     };
