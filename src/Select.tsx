@@ -415,8 +415,9 @@ const Select = React.forwardRef(
     }, [filledSearchOptions, filterSort]);
 
     const displayOptions = React.useMemo(
-      () => flattenOptions(orderedFilteredOptions),
-      [orderedFilteredOptions],
+      () =>
+        flattenOptions(orderedFilteredOptions, { fieldNames: mergedFieldNames, childrenAsData }),
+      [orderedFilteredOptions, mergedFieldNames, childrenAsData],
     );
 
     // =========================== Change ===========================
