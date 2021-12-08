@@ -342,70 +342,85 @@ const Select = React.forwardRef(
     }, [mergedValues]);
 
     // ======================== FilterOption ========================
+    // Create a placeholder item if not exist in `options`
+    const createTagOption = useRefFunc((val: RawValueType, label?: React.ReactNode) => {
+      const mergedLabel = label ?? val;
+      return {
+        value: val,
+        label: mergedLabel,
+        key: val,
+        data: {
+          [mergedFieldNames.value]: val,
+          [mergedFieldNames.label]: mergedLabel,
+        },
+      } as FlattenOptionData<DefaultOptionType>;
+    });
+
+    // Fill tag as option if mode is `tags`
+    const filledTagOptions = React.useMemo(() => {
+      if (mode !== 'tags') {
+        return flattenOptions;
+      }
+
+      // >>> Tag mode
+      const cloneOptions = [...flattenOptions];
+
+      // Check if value exist in options (include new patch item)
+      const existOptions = (val: RawValueType) => valueOptions.has(val);
+
+      // Fill current value as option
+      [...mergedValues]
+        .sort((a, b) => (a.value < b.value ? -1 : 1))
+        .forEach((item) => {
+          const val = item.value;
+
+          if (!existOptions(val)) {
+            cloneOptions.push(createTagOption(val, item.label));
+          }
+        });
+
+      return cloneOptions;
+    }, [createTagOption, flattenOptions, valueOptions, mergedValues, mode]);
+
     const filteredOptions = React.useMemo(() => {
       if (!mergedSearchValue || filterOption === false) {
-        return flattenOptions;
+        return filledTagOptions;
       }
 
       // Provide `filterOption`
       if (typeof filterOption === 'function') {
-        return flattenOptions.filter((opt) =>
+        return filledTagOptions.filter((opt) =>
           filterOption(mergedSearchValue, injectPropsWithOption(opt.data)),
         );
       }
 
       const upperSearch = mergedSearchValue.toUpperCase();
-      return flattenOptions.filter((opt) =>
+      return filledTagOptions.filter((opt) =>
         toArray(opt.data[optionFilterProp]).join('').toUpperCase().includes(upperSearch),
       );
-    }, [filterOption, flattenOptions, mergedSearchValue, optionFilterProp]);
+    }, [filterOption, filledTagOptions, mergedSearchValue, optionFilterProp]);
 
-    // Fill tag as option if mode is `tags`
-    const filledTagOptions = React.useMemo(() => {
-      if (mode !== 'tags') {
+    // Fill options with search value if needed
+    const filledSearchOptions = React.useMemo(() => {
+      if (
+        mode !== 'tags' ||
+        !mergedSearchValue ||
+        filteredOptions.some((item) => item.value === mergedSearchValue)
+      ) {
         return filteredOptions;
       }
 
-      // >>> Tag mode
-      const cloneOptions = [...filteredOptions];
-
-      if (mode === 'tags') {
-        const createTagOption = (val: RawValueType, label?: React.ReactNode) => {
-          const mergedLabel = label ?? val;
-          return {
-            value: val,
-            label: mergedLabel,
-            key: val,
-            data: {
-              [mergedFieldNames.value]: val,
-              [mergedFieldNames.label]: mergedLabel,
-            },
-          } as FlattenOptionData<DefaultOptionType>;
-        };
-
-        // Fill current search value as option
-        if (mergedSearchValue && !valueOptions.has(mergedSearchValue)) {
-          cloneOptions.unshift(createTagOption(mergedSearchValue));
-        }
-
-        // Fill current value as option
-        mergedValues.forEach((item) => {
-          if (!valueOptions.has(item.value) && item.value !== mergedSearchValue) {
-            cloneOptions.push(createTagOption(item.value, item.label));
-          }
-        });
-      }
-
-      return cloneOptions;
-    }, [filteredOptions, mergedSearchValue, valueOptions, mergedValues, mode, mergedFieldNames]);
+      // Fill search value as option
+      return [createTagOption(mergedSearchValue), ...filteredOptions];
+    }, [createTagOption, mode, filteredOptions, mergedSearchValue]);
 
     const orderedFilteredOptions = React.useMemo(() => {
       if (!filterSort) {
-        return filledTagOptions;
+        return filledSearchOptions;
       }
 
-      return filledTagOptions.sort((a, b) => filterSort(a.data, b.data));
-    }, [filledTagOptions, filterSort]);
+      return filledSearchOptions.sort((a, b) => filterSort(a.data, b.data));
+    }, [filledSearchOptions, filterSort]);
 
     // =========================== Change ===========================
     const triggerChange = (values: DraftValueType) => {
