@@ -1327,7 +1327,7 @@ describe('Select.Basic', () => {
     mount(
       <Select
         value="1"
-        options={[{ value: '1' }]}
+        options={[{ value: '1' } as any]}
         open
         menuItemSelectedIcon={menuItemSelectedIcon}
       />,
@@ -1455,8 +1455,8 @@ describe('Select.Basic', () => {
 
   it('not open when `notFoundCount` is empty & no data', () => {
     const wrapper = mount(<Select options={null} notFoundContent={null} open showSearch />);
-    expect(wrapper.find('SelectTrigger').props().visible).toBeFalsy();
-    expect(wrapper.find('Input').props().editable).toBeTruthy();
+    expect(wrapper.find('SelectTrigger').prop('visible')).toBeFalsy();
+    expect(wrapper.find('Input').prop('editable')).toBeTruthy();
   });
 
   it('click outside to close select', () => {
@@ -1555,7 +1555,7 @@ describe('Select.Basic', () => {
             value: 'test',
             className: 'test-class',
             style: { background: 'yellow' },
-          },
+          } as any,
         ]}
       />,
     );
@@ -1695,5 +1695,16 @@ describe('Select.Basic', () => {
       const wrapper = mount(<Select placement="topRight" open />);
       expect(wrapper.find('Trigger').prop('popupPlacement')).toEqual('topRight');
     });
+  });
+
+  it('scrollTo should work', () => {
+    const ref = React.createRef<any>();
+    mount(
+      <>
+        <Select ref={ref} />
+      </>,
+    );
+
+    expect(ref.current.scrollTo).toBeTruthy();
   });
 });

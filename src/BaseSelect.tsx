@@ -62,6 +62,7 @@ export interface DisplayValueType {
 export interface BaseSelectRef {
   focus: () => void;
   blur: () => void;
+  scrollTo: ScrollTo;
 }
 
 export interface BaseSelectPrivateProps {
@@ -296,7 +297,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   React.useImperativeHandle(ref, () => ({
     focus: selectorRef.current?.focus,
     blur: selectorRef.current?.blur,
-    scrollTo: listRef.current?.scrollTo as ScrollTo,
+    scrollTo: (arg) => listRef.current?.scrollTo(arg as any),
   }));
 
   // ========================== Search Value ==========================
