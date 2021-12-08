@@ -397,7 +397,7 @@ const Select = React.forwardRef(
       if (
         mode !== 'tags' ||
         !mergedSearchValue ||
-        filteredOptions.some((item) => item.data[optionFilterProp || 'value'] === mergedSearchValue)
+        filteredOptions.some((item) => item[optionFilterProp || 'value'] === mergedSearchValue)
       ) {
         return filteredOptions;
       }
