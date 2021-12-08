@@ -28,32 +28,9 @@ export interface RefOptionListProps {
  * Will fallback to dom if use customize render.
  */
 const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListProps> = (
-  props,
+  _,
   ref,
 ) => {
-  // {
-  //   prefixCls,
-  //   id,
-  //   fieldNames,
-  //   flattenOptions,
-  //   childrenAsData,
-  //   values,
-  //   searchValue,
-  //   multiple,
-  //   defaultActiveFirstOption,
-  //   height,
-  //   itemHeight,
-  //   notFoundContent,
-  //   open,
-  //   menuItemSelectedIcon,
-  //   virtual,
-  //   onSelect,
-  //   onToggleOpen,
-  //   onActiveValue,
-  //   onScroll,
-  //   onMouseEnter,
-  // }
-
   const { prefixCls, id, open, multiple, searchValue, toggleOpen, notFoundContent, onPopupScroll } =
     useBaseProps();
   const {

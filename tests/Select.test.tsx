@@ -19,6 +19,7 @@ import {
   findSelection,
   injectRunAllTimers,
 } from './utils/common';
+import type { BaseSelectRef } from '../src/BaseSelect';
 
 describe('Select.Basic', () => {
   injectRunAllTimers(jest);
@@ -1698,13 +1699,17 @@ describe('Select.Basic', () => {
   });
 
   it('scrollTo should work', () => {
-    const ref = React.createRef<any>();
-    mount(
-      <>
-        <Select ref={ref} />
-      </>,
-    );
+    const ref = React.createRef<BaseSelectRef>();
+    const wrapper = mount(<Select ref={ref} />);
 
-    expect(ref.current.scrollTo).toBeTruthy();
+    // Not crash
+    ref.current.scrollTo(100);
+
+    // Open to call again
+    wrapper.setProps({
+      open: true,
+    });
+    wrapper.update();
+    ref.current.scrollTo(100);
   });
 });
