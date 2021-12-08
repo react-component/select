@@ -534,14 +534,13 @@ const Select = React.forwardRef(
       if (info.source === 'submit') {
         const formatted = (searchText || '').trim();
         // prevent empty tags from appearing when you click the Enter button
-        if (!formatted) {
-          return;
+        if (formatted) {
+          const newRawValues = Array.from(new Set<RawValueType>([...rawValues, formatted]));
+          triggerChange(newRawValues);
+          triggerSelect(formatted, true);
+          setSearchValue('');
         }
 
-        const newRawValues = Array.from(new Set<RawValueType>([...rawValues, formatted]));
-        triggerChange(newRawValues);
-        triggerSelect(formatted, true);
-        setSearchValue('');
         return;
       }
 
