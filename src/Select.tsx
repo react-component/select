@@ -36,6 +36,7 @@ import BaseSelect, { isMultiple } from './BaseSelect';
 import type { DisplayValueType, RenderNode } from './BaseSelect';
 import OptionList from './OptionList';
 import Option from './Option';
+import OptGroup from './OptGroup';
 import type { BaseSelectRef, BaseSelectPropsWithoutPrivate, BaseSelectProps } from './BaseSelect';
 import useOptions from './hooks/useOptions';
 import SelectContext from './SelectContext';
@@ -47,6 +48,7 @@ import { toArray } from './utils/commonUtil';
 import useCacheDisplayValue from './hooks/useCacheDisplayValue';
 import type { FlattenOptionData } from './interface';
 import useFilterOptions from './hooks/useFilterOptions';
+import useCache from './hooks/useCache';
 
 export type OnActiveValue = (
   active: RawValueType,
@@ -311,7 +313,7 @@ const Select = React.forwardRef(
     }, [internalValue, convert2LabelValues, mode]);
 
     // Fill label with cache to avoid option remove
-    const mergedValues = useCacheDisplayValue(rawLabeledValues);
+    const [mergedValues, getMixedOption] = useCache(rawLabeledValues, valueOptions);
 
     const displayValues = React.useMemo(() => {
       // `null` need show as placeholder instead
@@ -433,7 +435,7 @@ const Select = React.forwardRef(
       ) {
         const returnValues = labelInValue ? labeledValues : labeledValues.map((v) => v.value);
         const returnOptions = labeledValues.map((v) =>
-          injectPropsWithOption(valueOptions.get(v.value)),
+          injectPropsWithOption(getMixedOption(v.value)),
         );
 
         onChange(
@@ -465,7 +467,7 @@ const Select = React.forwardRef(
     // ========================= OptionList =========================
     const triggerSelect = (val: RawValueType, selected: boolean) => {
       const getSelectEnt = (): [RawValueType | LabelInValueType, DefaultOptionType] => {
-        const option = valueOptions.get(val);
+        const option = getMixedOption(val);
         return [
           labelInValue
             ? {
@@ -566,7 +568,7 @@ const Select = React.forwardRef(
           .filter((val) => val !== undefined);
       }
 
-      const newRawValues = [...rawValues, ...patchValues];
+      const newRawValues = Array.from(new Set<RawValueType>([...rawValues, ...patchValues]));
       triggerChange(newRawValues);
       newRawValues.forEach((newRawValue) => {
         triggerSelect(newRawValue, true);
@@ -646,8 +648,10 @@ type SelectType = typeof Select;
 
 const TypedSelect = Select as SelectType & {
   Option: typeof Option;
+  OptGroup: typeof OptGroup;
 };
 
 TypedSelect.Option = Option;
+TypedSelect.OptGroup = OptGroup;
 
 export default TypedSelect;

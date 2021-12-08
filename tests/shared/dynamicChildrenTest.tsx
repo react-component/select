@@ -14,7 +14,7 @@ export default function dynamicChildrenTest(mode: any, props?: Partial<SelectPro
     jest.useRealTimers();
   });
 
-  it('dynamic children', () => {
+  it('dynamic children2', () => {
     const onChange = jest.fn();
     const onSelect = jest.fn();
 
