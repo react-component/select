@@ -23,7 +23,7 @@ describe('OptionList', () => {
     jest.useRealTimers();
   });
 
-  function generateList({ options, values, ...props }: any) {
+  function generateList({ options, values, ref, ...props }: any) {
     const fieldNames = fillFieldNames({}, false);
     const flattenedOptions = flattenOptions(options, {
       fieldNames,
@@ -39,17 +39,17 @@ describe('OptionList', () => {
       >
         <SelectContext.Provider
           value={{
-            ...props,
             fieldNames,
             flattenOptions: flattenedOptions,
             options,
             onActiveValue: () => {},
             onSelect: () => {},
             rawValues: values || new Set(),
+            ...props,
           }}
         >
           <div>
-            <OptionList />
+            <OptionList ref={ref} />
           </div>
         </SelectContext.Provider>
       </BaseSelectContext.Provider>
