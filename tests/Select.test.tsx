@@ -1631,8 +1631,23 @@ describe('Select.Basic', () => {
   // https://github.com/ant-design/ant-design/issues/24747
   // This can not test function called with jest spy, coverage only
   it('mouse enter to refresh', () => {
-    const wrapper = mount(<Select options={[{ value: 903, label: 'Bamboo' }]} open />);
-    wrapper.find('List').find('div').first().simulate('mouseenter');
+    let renderTimes = 0;
+    const Wrapper = ({ children }: any) => {
+      renderTimes += 1;
+      return children;
+    };
+
+    const wrapper = mount(
+      <Select
+        options={[{ value: 903, label: 'Bamboo' }]}
+        dropdownRender={(node) => <Wrapper>{node}</Wrapper>}
+        open
+      />,
+    );
+
+    renderTimes = 0;
+    wrapper.find('.rc-select-dropdown div').first().simulate('mouseenter');
+    expect(renderTimes).toBe(1);
   });
 
   it('filterSort should work', () => {
