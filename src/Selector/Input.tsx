@@ -12,7 +12,7 @@ interface InputProps {
   autoFocus: boolean;
   autoComplete: string;
   editable: boolean;
-  accessibilityIndex: number;
+  activeDescendantId?: string;
   value: string;
   maxLength?: number;
   open: boolean;
@@ -42,7 +42,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     autoFocus,
     autoComplete,
     editable,
-    accessibilityIndex,
+    activeDescendantId,
     value,
     maxLength,
     onKeyDown,
@@ -86,7 +86,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     'aria-owns': `${id}_list`,
     'aria-autocomplete': 'list',
     'aria-controls': `${id}_list`,
-    'aria-activedescendant': `${id}_list_${accessibilityIndex}`,
+    'aria-activedescendant': activeDescendantId,
     ...attrs,
     value: editable ? value : '',
     maxLength,

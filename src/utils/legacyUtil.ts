@@ -1,8 +1,10 @@
 import * as React from 'react';
 import toArray from 'rc-util/lib/Children/toArray';
-import type { OptionData, OptionGroupData, OptionsType } from '../interface';
+import type { BaseOptionType, DefaultOptionType } from '../Select';
 
-function convertNodeToOption(node: React.ReactElement): OptionData {
+function convertNodeToOption<OptionType extends BaseOptionType = DefaultOptionType>(
+  node: React.ReactElement,
+): OptionType {
   const {
     key,
     props: { children, value, ...restProps },
@@ -11,12 +13,12 @@ function convertNodeToOption(node: React.ReactElement): OptionData {
   return { key, value: value !== undefined ? value : key, children, ...restProps };
 }
 
-export function convertChildrenToData(
+export function convertChildrenToData<OptionType extends BaseOptionType = DefaultOptionType>(
   nodes: React.ReactNode,
   optionOnly: boolean = false,
-): OptionsType {
+): OptionType[] {
   return toArray(nodes)
-    .map((node: React.ReactElement, index: number): OptionData | OptionGroupData | null => {
+    .map((node: React.ReactElement, index: number): OptionType | null => {
       if (!React.isValidElement(node) || !node.type) {
         return null;
       }

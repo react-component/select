@@ -8,46 +8,14 @@ import classNames from 'classnames';
 import type { ListRef } from 'rc-virtual-list';
 import List from 'rc-virtual-list';
 import TransBtn from './TransBtn';
-import type {
-  OptionsType as SelectOptionsType,
-  FlattenOptionData as SelectFlattenOptionData,
-  OptionData,
-  RenderNode,
-  OnActiveValue,
-  FieldNames,
-} from './interface';
-import type { RawValueType, FlattenOptionsType } from './interface/generator';
-import { fillFieldNames } from './utils/valueUtil';
 import { isPlatformMac } from './utils/platformUtil';
+import useBaseProps from './hooks/useBaseProps';
+import SelectContext from './SelectContext';
+import type { BaseOptionType, RawValueType } from './Select';
+import type { FlattenOptionData } from './interface';
 
-export interface OptionListProps<OptionsType extends object[]> {
-  prefixCls: string;
-  id: string;
-  options: OptionsType;
-  fieldNames?: FieldNames;
-  flattenOptions: FlattenOptionsType<OptionsType>;
-  height: number;
-  itemHeight: number;
-  values: Set<RawValueType>;
-  multiple: boolean;
-  open: boolean;
-  defaultActiveFirstOption?: boolean;
-  notFoundContent?: React.ReactNode;
-  menuItemSelectedIcon?: RenderNode;
-  childrenAsData: boolean;
-  searchValue: string;
-  virtual: boolean;
-  direction?: 'ltr' | 'rtl';
-
-  onSelect: (value: RawValueType, option: { selected: boolean }) => void;
-  onToggleOpen: (open?: boolean) => void;
-  /** Tell Select that some value is now active to make accessibility work */
-  onActiveValue: OnActiveValue;
-  onScroll: React.UIEventHandler<HTMLDivElement>;
-
-  /** Tell Select that mouse enter the popup to force re-render */
-  onMouseEnter?: React.MouseEventHandler;
-}
+// export interface OptionListProps<OptionsType extends object[]> {
+export type OptionListProps = Record<string, never>;
 
 export interface RefOptionListProps {
   onKeyDown: React.KeyboardEventHandler;
@@ -59,34 +27,26 @@ export interface RefOptionListProps {
  * Using virtual list of option display.
  * Will fallback to dom if use customize render.
  */
-const OptionList: React.ForwardRefRenderFunction<
-  RefOptionListProps,
-  OptionListProps<SelectOptionsType>
-> = (
-  {
-    prefixCls,
-    id,
-    fieldNames,
-    flattenOptions,
-    childrenAsData,
-    values,
-    searchValue,
-    multiple,
-    defaultActiveFirstOption,
-    height,
-    itemHeight,
-    notFoundContent,
-    open,
-    menuItemSelectedIcon,
-    virtual,
-    onSelect,
-    onToggleOpen,
-    onActiveValue,
-    onScroll,
-    onMouseEnter,
-  },
+const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListProps> = (
+  _,
   ref,
 ) => {
+  const { prefixCls, id, open, multiple, searchValue, toggleOpen, notFoundContent, onPopupScroll } =
+    useBaseProps();
+  const {
+    flattenOptions,
+    onActiveValue,
+    defaultActiveFirstOption,
+    onSelect,
+    menuItemSelectedIcon,
+    rawValues,
+    fieldNames,
+    virtual,
+    listHeight,
+    listItemHeight,
+    optionLabelProp,
+  } = React.useContext(SelectContext);
+
   const itemPrefixCls = `${prefixCls}-item`;
 
   const memoFlattenOptions = useMemo(
@@ -116,7 +76,7 @@ const OptionList: React.ForwardRefRenderFunction<
       const current = (index + i * offset + len) % len;
 
       const { group, data } = memoFlattenOptions[current];
-      if (!group && !(data as OptionData).disabled) {
+      if (!group && !data.disabled) {
         return current;
       }
     }
@@ -137,7 +97,7 @@ const OptionList: React.ForwardRefRenderFunction<
       return;
     }
 
-    onActiveValue((flattenItem.data as OptionData).value, index, info);
+    onActiveValue(flattenItem.data.value, index, info);
   };
 
   // Auto active first item when list length or searchValue changed
@@ -153,11 +113,9 @@ const OptionList: React.ForwardRefRenderFunction<
      * So we need to delay to let Input component trigger onChange first.
      */
     const timeoutId = setTimeout(() => {
-      if (!multiple && open && values.size === 1) {
-        const value: RawValueType = Array.from(values)[0];
-        const index = memoFlattenOptions.findIndex(
-          ({ data }) => (data as OptionData).value === value,
-        );
+      if (!multiple && open && rawValues.size === 1) {
+        const value: RawValueType = Array.from(rawValues)[0];
+        const index = memoFlattenOptions.findIndex(({ data }) => data.value === value);
 
         if (index !== -1) {
           setActive(index);
@@ -177,12 +135,12 @@ const OptionList: React.ForwardRefRenderFunction<
   // ========================== Values ==========================
   const onSelectValue = (value: RawValueType) => {
     if (value !== undefined) {
-      onSelect(value, { selected: !values.has(value) });
+      onSelect(value, { selected: !rawValues.has(value) });
     }
 
     // Single mode should always close by select
     if (!multiple) {
-      onToggleOpen(false);
+      toggleOpen(false);
     }
   };
 
@@ -222,8 +180,8 @@ const OptionList: React.ForwardRefRenderFunction<
         case KeyCode.ENTER: {
           // value
           const item = memoFlattenOptions[activeIndex];
-          if (item && !(item.data as OptionData).disabled) {
-            onSelectValue((item.data as OptionData).value);
+          if (item && !item.data.disabled) {
+            onSelectValue(item.data.value);
           } else {
             onSelectValue(undefined);
           }
@@ -237,7 +195,7 @@ const OptionList: React.ForwardRefRenderFunction<
 
         // >>> Close
         case KeyCode.ESC: {
-          onToggleOpen(false);
+          toggleOpen(false);
           if (open) {
             event.stopPropagation();
           }
@@ -265,25 +223,33 @@ const OptionList: React.ForwardRefRenderFunction<
     );
   }
 
-  const filledFieldNames = fillFieldNames(fieldNames);
-  const omitFieldNameList = Object.keys(filledFieldNames).map((key) => filledFieldNames[key]);
+  const omitFieldNameList = Object.keys(fieldNames).map((key) => fieldNames[key]);
+
+  const getLabel = (item: Record<string, any>) => {
+    if (optionLabelProp) {
+      return item.data[optionLabelProp];
+    }
+
+    return item.label;
+  };
 
   const renderItem = (index: number) => {
     const item = memoFlattenOptions[index];
     if (!item) return null;
 
-    const itemData = (item.data || {}) as OptionData;
-    const { value, label, children } = itemData;
+    const itemData = item.data || {};
+    const { value } = itemData;
+    const { group } = item;
     const attrs = pickAttrs(itemData, true);
-    const mergedLabel = childrenAsData ? children : label;
+    const mergedLabel = getLabel(item);
     return item ? (
       <div
-        aria-label={typeof mergedLabel === 'string' ? mergedLabel : null}
+        aria-label={typeof mergedLabel === 'string' && !group ? mergedLabel : null}
         {...attrs}
         key={index}
-        role="option"
+        role={group ? 'presentation' : 'option'}
         id={`${id}_list_${index}`}
-        aria-selected={values.has(value)}
+        aria-selected={rawValues.has(value)}
       >
         {value}
       </div>
@@ -297,19 +263,19 @@ const OptionList: React.ForwardRefRenderFunction<
         {renderItem(activeIndex)}
         {renderItem(activeIndex + 1)}
       </div>
-      <List<SelectFlattenOptionData>
+      <List<FlattenOptionData<BaseOptionType>>
         itemKey="key"
         ref={listRef}
         data={memoFlattenOptions}
-        height={height}
-        itemHeight={itemHeight}
+        height={listHeight}
+        itemHeight={listItemHeight}
         fullHeight={false}
         onMouseDown={onListMouseDown}
-        onScroll={onScroll}
+        onScroll={onPopupScroll}
         virtual={virtual}
-        onMouseEnter={onMouseEnter}
       >
-        {({ group, groupOption, data, label, value }, itemIndex) => {
+        {(item, itemIndex) => {
+          const { group, groupOption, data, label, value } = item;
           const { key } = data;
 
           // Group
@@ -321,11 +287,11 @@ const OptionList: React.ForwardRefRenderFunction<
             );
           }
 
-          const { disabled, title, children, style, className, ...otherProps } = data as OptionData;
+          const { disabled, title, children, style, className, ...otherProps } = data;
           const passedProps = omit(otherProps, omitFieldNameList);
 
           // Option
-          const selected = values.has(value);
+          const selected = rawValues.has(value);
 
           const optionPrefixCls = `${itemPrefixCls}-option`;
           const optionClassName = classNames(itemPrefixCls, optionPrefixCls, className, {
@@ -335,7 +301,7 @@ const OptionList: React.ForwardRefRenderFunction<
             [`${optionPrefixCls}-selected`]: selected,
           });
 
-          const mergedLabel = childrenAsData ? children : label;
+          const mergedLabel = getLabel(item);
 
           const iconVisible =
             !menuItemSelectedIcon || typeof menuItemSelectedIcon === 'function' || selected;
@@ -388,9 +354,7 @@ const OptionList: React.ForwardRefRenderFunction<
   );
 };
 
-const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<SelectOptionsType>>(
-  OptionList,
-);
+const RefOptionList = React.forwardRef(OptionList);
 RefOptionList.displayName = 'OptionList';
 
 export default RefOptionList;

@@ -5,7 +5,7 @@ import { act } from 'react-dom/test-utils';
 import { resetWarned } from 'rc-util/lib/warning';
 import { spyElementPrototype } from 'rc-util/lib/test/domHook';
 import type { SelectProps } from '../src';
-import Select, { OptGroup, Option } from '../src';
+import Select, { OptGroup, Option, useBaseProps } from '../src';
 import focusTest from './shared/focusTest';
 import blurTest from './shared/blurTest';
 import keyDownTest from './shared/keyDownTest';
@@ -19,7 +19,7 @@ import {
   findSelection,
   injectRunAllTimers,
 } from './utils/common';
-import { INTERNAL_PROPS_MARK } from '../src/interface/generator';
+import type { BaseSelectRef } from '../src/BaseSelect';
 
 describe('Select.Basic', () => {
   injectRunAllTimers(jest);
@@ -207,15 +207,29 @@ describe('Select.Basic', () => {
   });
 
   it('should direction rtl', () => {
+    const Hooker = () => {
+      const { direction } = useBaseProps();
+      return <span className="direction">{direction}</span>;
+    };
+
     const wrapper = mount(
-      <Select direction="rtl" open>
+      <Select
+        direction="rtl"
+        dropdownRender={(origin) => (
+          <>
+            <Hooker />
+            {origin}
+          </>
+        )}
+        open
+      >
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
-    expect(wrapper.find('Trigger').props().popupPlacement).toBe('bottomRight');
+    expect(wrapper.find('Trigger').prop('popupPlacement')).toBe('bottomRight');
 
-    expect(wrapper.find('OptionList').props().direction).toEqual('rtl');
+    expect(wrapper.find('.direction').last().text()).toEqual('rtl');
   });
 
   it('should not response click event when select is disabled', () => {
@@ -466,7 +480,7 @@ describe('Select.Basic', () => {
   it('should also fires extra search event when user search and select', () => {
     jest.useFakeTimers();
 
-    const handleSearch = jest.fn();
+    const handleSearch = jest.fn(() => console.trace());
     const wrapper = mount(
       <Select showSearch onSearch={handleSearch}>
         <Option value="1">1</Option>
@@ -787,7 +801,7 @@ describe('Select.Basic', () => {
       .find('textarea')
       .simulate('mouseDown', { preventDefault: mouseDownPreventDefault })
       .simulate('keyDown', { which: KeyCode.NUM_ONE })
-      .simulate('change', { value: '1' })
+      .simulate('change', { target: { value: '1' } })
       .simulate('compositionStart')
       .simulate('compositionEnd');
 
@@ -904,7 +918,7 @@ describe('Select.Basic', () => {
     );
 
     wrapper.find('input').simulate('change', { target: { value: '3' } });
-    expect(wrapper.find('OptionList').props().options).toHaveLength(0);
+    expect(wrapper.find('.rc-select-item')).toHaveLength(0);
     expect(wrapper.find('.rc-select-item-empty').text()).toEqual('Not Found');
   });
 
@@ -1154,7 +1168,7 @@ describe('Select.Basic', () => {
 
     wrapper.find('input').simulate('change', { target: { value: 'c' } });
     expect(wrapper.find('input').props().value).toBe('c');
-    expect(wrapper.find('OptionList').props().options).toHaveLength(0);
+    expect(wrapper.find('.rc-select-item')).toHaveLength(0);
     expect(wrapper.find('.rc-select-item-empty').text()).toEqual('Not Found');
 
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ENTER });
@@ -1290,6 +1304,7 @@ describe('Select.Basic', () => {
     );
 
     for (let i = 0; i < 10; i += 1) {
+      console.log('=>', i);
       onSelect.mockReset();
       wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
       expect(onSelect).toHaveBeenCalledWith('1', expect.anything());
@@ -1313,7 +1328,7 @@ describe('Select.Basic', () => {
     mount(
       <Select
         value="1"
-        options={[{ value: '1' }]}
+        options={[{ value: '1' } as any]}
         open
         menuItemSelectedIcon={menuItemSelectedIcon}
       />,
@@ -1383,22 +1398,8 @@ describe('Select.Basic', () => {
         expect(opt.props).toBeTruthy();
       };
 
-      // We also test if internal hooks work here.
-      // Can be remove if not need in `rc-tree-select` anymore.
-      const onRawSelect = jest.fn();
-      const onRawDeselect = jest.fn();
-
       const wrapper = mount(
-        <Select
-          mode="multiple"
-          onSelect={readPropsFunc}
-          onDeselect={readPropsFunc}
-          internalProps={{
-            mark: INTERNAL_PROPS_MARK,
-            onRawSelect,
-            onRawDeselect,
-          }}
-        >
+        <Select mode="multiple" onSelect={readPropsFunc} onDeselect={readPropsFunc}>
           <Option value="light">Light</Option>
           <Option value="bamboo">Bamboo</Option>
         </Select>,
@@ -1409,7 +1410,6 @@ describe('Select.Basic', () => {
       expect(errorSpy).toHaveBeenCalledWith(
         'Warning: Return type is option instead of Option instance. Please read value directly instead of reading from `props`.',
       );
-      expect(onRawSelect).toHaveBeenCalled();
 
       errorSpy.mockReset();
       resetWarned();
@@ -1417,7 +1417,6 @@ describe('Select.Basic', () => {
       expect(errorSpy).toHaveBeenCalledWith(
         'Warning: Return type is option instead of Option instance. Please read value directly instead of reading from `props`.',
       );
-      expect(onRawDeselect).toHaveBeenCalled();
 
       errorSpy.mockRestore();
     });
@@ -1445,25 +1444,6 @@ describe('Select.Basic', () => {
 
       errorSpy.mockRestore();
     });
-
-    // This test case can be safe remove
-    it('skip onChange', () => {
-      const onChange = jest.fn();
-      const wrapper = mount(
-        <Select
-          onChange={onChange}
-          internalProps={{ mark: INTERNAL_PROPS_MARK, skipTriggerChange: true }}
-        >
-          <Option value="light">Light</Option>
-          <Option value="bamboo">Bamboo</Option>
-        </Select>,
-      );
-
-      toggleOpen(wrapper);
-      selectItem(wrapper);
-
-      expect(onChange).not.toHaveBeenCalled();
-    });
   });
 
   it('not crash when options is null', () => {
@@ -1476,8 +1456,8 @@ describe('Select.Basic', () => {
 
   it('not open when `notFoundCount` is empty & no data', () => {
     const wrapper = mount(<Select options={null} notFoundContent={null} open showSearch />);
-    expect(wrapper.find('SelectTrigger').props().visible).toBeFalsy();
-    expect(wrapper.find('Input').props().editable).toBeTruthy();
+    expect(wrapper.find('SelectTrigger').prop('visible')).toBeFalsy();
+    expect(wrapper.find('Input').prop('editable')).toBeTruthy();
   });
 
   it('click outside to close select', () => {
@@ -1576,7 +1556,7 @@ describe('Select.Basic', () => {
             value: 'test',
             className: 'test-class',
             style: { background: 'yellow' },
-          },
+          } as any,
         ]}
       />,
     );
@@ -1652,8 +1632,23 @@ describe('Select.Basic', () => {
   // https://github.com/ant-design/ant-design/issues/24747
   // This can not test function called with jest spy, coverage only
   it('mouse enter to refresh', () => {
-    const wrapper = mount(<Select options={[{ value: 903, label: 'Bamboo' }]} open />);
-    wrapper.find('List').find('div').first().simulate('mouseenter');
+    let renderTimes = 0;
+    const Wrapper = ({ children }: any) => {
+      renderTimes += 1;
+      return children;
+    };
+
+    const wrapper = mount(
+      <Select
+        options={[{ value: 903, label: 'Bamboo' }]}
+        dropdownRender={(node) => <Wrapper>{node}</Wrapper>}
+        open
+      />,
+    );
+
+    renderTimes = 0;
+    wrapper.find('.rc-select-dropdown div').first().simulate('mouseenter');
+    expect(renderTimes).toBe(1);
   });
 
   it('filterSort should work', () => {
@@ -1701,5 +1696,20 @@ describe('Select.Basic', () => {
       const wrapper = mount(<Select placement="topRight" open />);
       expect(wrapper.find('Trigger').prop('popupPlacement')).toEqual('topRight');
     });
+  });
+
+  it('scrollTo should work', () => {
+    const ref = React.createRef<BaseSelectRef>();
+    const wrapper = mount(<Select ref={ref} />);
+
+    // Not crash
+    ref.current.scrollTo(100);
+
+    // Open to call again
+    wrapper.setProps({
+      open: true,
+    });
+    wrapper.update();
+    ref.current.scrollTo(100);
   });
 });

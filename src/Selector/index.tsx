@@ -14,9 +14,8 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import type { ScrollTo } from 'rc-virtual-list/lib/List';
 import MultipleSelector from './MultipleSelector';
 import SingleSelector from './SingleSelector';
-import type { LabelValueType, RawValueType, CustomTagProps } from '../interface/generator';
-import type { RenderNode, Mode } from '../interface';
 import useLock from '../hooks/useLock';
+import type { CustomTagProps, DisplayValueType, Mode, RenderNode } from '../BaseSelect';
 
 export interface InnerSelectorProps {
   prefixCls: string;
@@ -28,10 +27,10 @@ export interface InnerSelectorProps {
   disabled?: boolean;
   autoFocus?: boolean;
   autoComplete?: string;
-  values: LabelValueType[];
+  values: DisplayValueType[];
   showSearch?: boolean;
   searchValue: string;
-  accessibilityIndex: number;
+  activeDescendantId?: string;
   open: boolean;
   tabIndex?: number;
   maxLength?: number;
@@ -56,15 +55,14 @@ export interface SelectorProps {
   showSearch?: boolean;
   open: boolean;
   /** Display in the Selector value, it's not same as `value` prop */
-  values: LabelValueType[];
-  multiple: boolean;
+  values: DisplayValueType[];
   mode: Mode;
   searchValue: string;
   activeValue: string;
   inputElement: JSX.Element;
 
   autoFocus?: boolean;
-  accessibilityIndex: number;
+  activeDescendantId?: string;
   tabIndex?: number;
   disabled?: boolean;
   placeholder?: React.ReactNode;
@@ -73,7 +71,7 @@ export interface SelectorProps {
   // Tags
   maxTagCount?: number | 'responsive';
   maxTagTextLength?: number;
-  maxTagPlaceholder?: React.ReactNode | ((omittedValues: LabelValueType[]) => React.ReactNode);
+  maxTagPlaceholder?: React.ReactNode | ((omittedValues: DisplayValueType[]) => React.ReactNode);
   tagRender?: (props: CustomTagProps) => React.ReactElement;
 
   /** Check if `tokenSeparators` contains `\n` or `\r\n` */
@@ -85,8 +83,8 @@ export interface SelectorProps {
   onToggleOpen: (open?: boolean) => void;
   /** `onSearch` returns go next step boolean to check if need do toggle open */
   onSearch: (searchText: string, fromTyping: boolean, isCompositing: boolean) => boolean;
-  onSearchSubmit: (searchText: string) => void;
-  onSelect: (value: RawValueType, option: { selected: boolean }) => void;
+  onSearchSubmit?: (searchText: string) => void;
+  onRemove: (value: DisplayValueType) => void;
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 
   /**
@@ -102,7 +100,6 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
 
   const {
     prefixCls,
-    multiple,
     open,
     mode,
     showSearch,
@@ -143,7 +140,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     if (which === KeyCode.ENTER && mode === 'tags' && !compositionStatusRef.current && !open) {
       // When menu isn't open, OptionList won't trigger a value change
       // So when enter is pressed, the tag's input value should be emitted here to let selector know
-      onSearchSubmit((event.target as HTMLInputElement).value);
+      onSearchSubmit?.((event.target as HTMLInputElement).value);
     }
 
     if (![KeyCode.SHIFT, KeyCode.TAB, KeyCode.BACKSPACE, KeyCode.ESC].includes(which)) {
@@ -247,11 +244,12 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     onInputCompositionEnd,
   };
 
-  const selectNode = multiple ? (
-    <MultipleSelector {...props} {...sharedProps} />
-  ) : (
-    <SingleSelector {...props} {...sharedProps} />
-  );
+  const selectNode =
+    mode === 'multiple' || mode === 'tags' ? (
+      <MultipleSelector {...props} {...sharedProps} />
+    ) : (
+      <SingleSelector {...props} {...sharedProps} />
+    );
 
   return (
     <div

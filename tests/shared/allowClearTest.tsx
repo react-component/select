@@ -1,7 +1,6 @@
 import { render, mount } from 'enzyme';
 import * as React from 'react';
 import Select, { Option } from '../../src';
-import { INTERNAL_PROPS_MARK } from '../../src/interface/generator';
 
 export default function allowClearTest(mode: any, value: any) {
   describe('allowClear', () => {
@@ -11,7 +10,6 @@ export default function allowClearTest(mode: any, value: any) {
     });
     it('clears value', () => {
       const onClear = jest.fn();
-      const internalOnClear = jest.fn();
       const onChange = jest.fn();
       const useArrayValue = ['tags', 'multiple'].includes(mode);
       const wrapper = mount(
@@ -21,10 +19,6 @@ export default function allowClearTest(mode: any, value: any) {
           mode={mode}
           onClear={onClear}
           onChange={onChange}
-          internalProps={{
-            mark: INTERNAL_PROPS_MARK,
-            onClear: internalOnClear,
-          }}
         >
           <Option value="1">1</Option>
           <Option value="2">2</Option>
@@ -48,7 +42,6 @@ export default function allowClearTest(mode: any, value: any) {
       }
       expect(wrapper.find('input').props().value).toEqual('');
       expect(onClear).toHaveBeenCalled();
-      expect(internalOnClear).toHaveBeenCalled();
     });
   });
 }

@@ -167,7 +167,7 @@ exports[`Select.Basic filterOption could be true as described in default value 1
   </div>
   <div>
     <div
-      class="rc-select-dropdown"
+      class="rc-select-dropdown rc-select-dropdown-empty"
       style="opacity: 0; pointer-events: none; min-width: 0; width: 0px;"
     >
       <div>
@@ -501,7 +501,7 @@ exports[`Select.Basic render renders dropdown correctly 1`] = `
           <div
             aria-selected="false"
             id="undefined_list_0"
-            role="option"
+            role="presentation"
           />
           <div
             aria-selected="false"

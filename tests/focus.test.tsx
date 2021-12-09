@@ -30,4 +30,23 @@ describe('Select.Focus', () => {
 
     jest.useRealTimers();
   });
+
+  it('IE focus', () => {
+    jest.clearAllTimers();
+    jest.useFakeTimers();
+
+    jest.clearAllTimers();
+
+    (document.body.style as any).msTouchAction = true;
+    const wrapper = mount(<Select mode="tags" value="bamboo" />);
+
+    const focusFn = jest.spyOn(wrapper.find('input').instance(), 'focus' as any);
+
+    wrapper.find('.rc-select-selector').simulate('click');
+    jest.runAllTimers();
+
+    expect(focusFn).toHaveBeenCalled();
+
+    jest.useRealTimers();
+  });
 });

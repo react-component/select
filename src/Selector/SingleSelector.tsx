@@ -6,7 +6,6 @@ import type { InnerSelectorProps } from '.';
 interface SelectorProps extends InnerSelectorProps {
   inputElement: React.ReactElement;
   activeValue: string;
-  backfill?: boolean;
 }
 
 const SingleSelector: React.FC<SelectorProps> = (props) => {
@@ -18,7 +17,7 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
     disabled,
     autoFocus,
     autoComplete,
-    accessibilityIndex,
+    activeDescendantId,
     mode,
     open,
     values,
@@ -88,7 +87,7 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
           autoFocus={autoFocus}
           autoComplete={autoComplete}
           editable={inputEditable}
-          accessibilityIndex={accessibilityIndex}
+          activeDescendantId={activeDescendantId}
           value={inputValue}
           onKeyDown={onInputKeyDown}
           onMouseDown={onInputMouseDown}

@@ -1,6 +1,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
-import Select, { Option, SelectProps } from '../../src';
+import type { SelectProps } from '../../src';
+import Select, { Option } from '../../src';
 import { injectRunAllTimers, toggleOpen, selectItem, findSelection } from '../utils/common';
 
 export default function dynamicChildrenTest(mode: any, props?: Partial<SelectProps>) {
@@ -47,7 +48,7 @@ export default function dynamicChildrenTest(mode: any, props?: Partial<SelectPro
         return (
           <Select
             value={this.state.value}
-            ref={node => {
+            ref={(node) => {
               this.select = node;
             }}
             mode={mode}
@@ -117,7 +118,7 @@ export default function dynamicChildrenTest(mode: any, props?: Partial<SelectPro
           <Select
             optionLabelProp="children"
             value={this.state.value}
-            ref={node => {
+            ref={(node) => {
               this.select = node;
             }}
             mode={mode}
@@ -166,7 +167,7 @@ export default function dynamicChildrenTest(mode: any, props?: Partial<SelectPro
           <Select
             optionLabelProp="children"
             defaultValue={this.state.value}
-            ref={node => {
+            ref={(node) => {
               this.select = node;
             }}
             mode={mode}

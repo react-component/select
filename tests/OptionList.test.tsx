@@ -6,7 +6,9 @@ import type { OptionListProps, RefOptionListProps } from '../src/OptionList';
 import OptionList from '../src/OptionList';
 import { injectRunAllTimers } from './utils/common';
 import type { OptionsType } from '../src/interface';
-import { flattenOptions } from '../src/utils/valueUtil';
+import { fillFieldNames, flattenOptions } from '../src/utils/valueUtil';
+import SelectContext from '../src/SelectContext';
+import { BaseSelectContext } from '../src/hooks/useBaseProps';
 
 jest.mock('../src/utils/platformUtil');
 
@@ -21,23 +23,36 @@ describe('OptionList', () => {
     jest.useRealTimers();
   });
 
-  function generateList({
-    options,
-    ...props
-  }: { options: OptionsType } & Partial<OptionListProps<OptionsType>> & { ref?: any }) {
-    const flatten = flattenOptions(options);
+  function generateList({ options, values, ref, ...props }: any) {
+    const fieldNames = fillFieldNames({}, false);
+    const flattenedOptions = flattenOptions(options, {
+      fieldNames,
+      childrenAsData: false,
+    });
 
     return (
-      <div>
-        <OptionList
-          prefixCls="rc-select"
-          onActiveValue={() => {}}
-          values={new Set()}
-          options={options}
-          flattenOptions={flatten}
-          {...(props as any)}
-        />
-      </div>
+      <BaseSelectContext.Provider
+        value={{
+          prefixCls: 'rc-select',
+          ...props,
+        }}
+      >
+        <SelectContext.Provider
+          value={{
+            fieldNames,
+            flattenOptions: flattenedOptions,
+            options,
+            onActiveValue: () => {},
+            onSelect: () => {},
+            rawValues: values || new Set(),
+            ...props,
+          }}
+        >
+          <div>
+            <OptionList ref={ref} />
+          </div>
+        </SelectContext.Provider>
+      </BaseSelectContext.Provider>
     );
   }
 

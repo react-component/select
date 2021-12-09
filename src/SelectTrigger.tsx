@@ -1,8 +1,7 @@
 import * as React from 'react';
 import Trigger from 'rc-trigger';
 import classNames from 'classnames';
-import type { RenderDOMFunc } from './interface';
-import type { Placement } from './generate';
+import type { Placement, RenderDOMFunc } from './BaseSelect';
 
 const getBuiltInPlacements = (dropdownMatchSelectWidth: number | boolean) => {
   // Enable horizontal overflow auto-adjustment when a custom dropdown width is provided
@@ -70,6 +69,8 @@ export interface SelectTriggerProps {
 
   getTriggerDOMNode: () => HTMLElement;
   onPopupVisibleChange?: (visible: boolean) => void;
+
+  onPopupMouseEnter: () => void;
 }
 
 const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTriggerProps> = (
@@ -96,6 +97,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     empty,
     getTriggerDOMNode,
     onPopupVisibleChange,
+    onPopupMouseEnter,
     ...restProps
   } = props;
 
@@ -141,7 +143,11 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
       builtinPlacements={builtInPlacements}
       prefixCls={dropdownPrefixCls}
       popupTransitionName={mergedTransitionName}
-      popup={<div ref={popupRef}>{popupNode}</div>}
+      popup={
+        <div ref={popupRef} onMouseEnter={onPopupMouseEnter}>
+          {popupNode}
+        </div>
+      }
       popupAlign={dropdownAlign}
       popupVisible={visible}
       getPopupContainer={getPopupContainer}
