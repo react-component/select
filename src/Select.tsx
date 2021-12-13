@@ -258,6 +258,7 @@ const Select = React.forwardRef(
           let rawValue: RawValueType;
           let rawLabel: React.ReactNode;
           let rawKey: React.Key;
+          let rawDisabled: boolean | undefined;
 
           // Fill label & value
           if (isRawValue(val)) {
@@ -268,18 +269,19 @@ const Select = React.forwardRef(
             rawValue = val.value ?? rawKey;
           }
 
-          // If label is not provided, fill it
-          if (rawLabel === undefined || rawKey === undefined) {
-            const option = valueOptions.get(rawValue);
+          const option = valueOptions.get(rawValue);
+          if (option) {
+            // Fill missing props
             if (rawLabel === undefined) rawLabel = option?.[mergedFieldNames.label];
             if (rawKey === undefined) rawKey = option?.key ?? rawValue;
-          }
+            rawDisabled = option?.disabled;
 
-          // Warning if label not same as provided
-          if (process.env.NODE_ENV !== 'production' && !isRawValue(val)) {
-            const optionLabel = valueOptions.get(rawValue)?.[mergedFieldNames.label];
-            if (optionLabel !== undefined && optionLabel !== rawLabel) {
-              warning(false, '`label` of `value` is not same as `label` in Select options.');
+            // Warning if label not same as provided
+            if (process.env.NODE_ENV !== 'production' && !isRawValue(val)) {
+              const optionLabel = option?.[mergedFieldNames.label];
+              if (optionLabel !== undefined && optionLabel !== rawLabel) {
+                warning(false, '`label` of `value` is not same as `label` in Select options.');
+              }
             }
           }
 
@@ -287,6 +289,7 @@ const Select = React.forwardRef(
             label: rawLabel,
             value: rawValue,
             key: rawKey,
+            disabled: rawDisabled,
           };
         });
       },
