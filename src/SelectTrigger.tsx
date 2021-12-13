@@ -66,6 +66,7 @@ export interface SelectTriggerProps {
   getPopupContainer?: RenderDOMFunc;
   dropdownAlign: object;
   empty: boolean;
+  autoAdjustOverflow?: boolean;
 
   getTriggerDOMNode: () => HTMLElement;
   onPopupVisibleChange?: (visible: boolean) => void;
@@ -98,6 +99,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     getTriggerDOMNode,
     onPopupVisibleChange,
     onPopupMouseEnter,
+    autoAdjustOverflow,
     ...restProps
   } = props;
 
@@ -109,7 +111,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
   }
 
   const builtInPlacements = React.useMemo(
-    () => getBuiltInPlacements(dropdownMatchSelectWidth),
+    () => getBuiltInPlacements(autoAdjustOverflow || dropdownMatchSelectWidth),
     [dropdownMatchSelectWidth],
   );
 
