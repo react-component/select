@@ -462,4 +462,16 @@ describe('Select.Multiple', () => {
     );
     expect(wrapper.find('.rc-select-selection-item').first().prop('title')).toBe(undefined);
   });
+
+  it('disabled should not show remove icon', () => {
+    const wrapper = mount(
+      <Select mode="multiple" value={[1]}>
+        <Option value={1} disabled>
+          1
+        </Option>
+      </Select>,
+    );
+
+    expect(wrapper.exists('.rc-select-selection-item-remove')).toBeFalsy();
+  });
 });
