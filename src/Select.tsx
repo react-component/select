@@ -518,7 +518,7 @@ const Select = React.forwardRef(
     const onDisplayValuesChange: BaseSelectProps['onDisplayValuesChange'] = (nextValues, info) => {
       triggerChange(nextValues);
 
-      if (info.type === 'remove') {
+      if (info.type === 'remove' || info.type === 'clear') {
         info.values.forEach((item) => {
           triggerSelect(item.value, false);
         });

@@ -75,7 +75,7 @@ export interface BaseSelectPrivateProps {
   onDisplayValuesChange: (
     values: DisplayValueType[],
     info: {
-      type: 'add' | 'remove';
+      type: 'add' | 'remove' | 'clear';
       values: DisplayValueType[];
     },
   ) => void;
@@ -667,7 +667,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     onClear?.();
 
     onDisplayValuesChange([], {
-      type: 'remove',
+      type: 'clear',
       values: displayValues,
     });
     onInternalSearch('', false, false);
