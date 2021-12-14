@@ -3,10 +3,7 @@ import Trigger from 'rc-trigger';
 import classNames from 'classnames';
 import type { Placement, RenderDOMFunc } from './BaseSelect';
 
-const getBuiltInPlacements = (dropdownMatchSelectWidth: number | boolean) => {
-  // Enable horizontal overflow auto-adjustment when a custom dropdown width is provided
-  const adjustX = typeof dropdownMatchSelectWidth !== 'number' ? 0 : 1;
-
+const getBuiltInPlacements = (adjustX: number) => {
   return {
     bottomLeft: {
       points: ['tl', 'bl'],
@@ -42,6 +39,13 @@ const getBuiltInPlacements = (dropdownMatchSelectWidth: number | boolean) => {
     },
   };
 };
+
+const getAdjustX = (adjustXDependencies: Pick<SelectTriggerProps, 'autoAdjustOverflow' | 'dropdownMatchSelectWidth'>) => {
+  const { autoAdjustOverflow, dropdownMatchSelectWidth } = adjustXDependencies;
+  if(!!autoAdjustOverflow) return 1;
+  // Enable horizontal overflow auto-adjustment when a custom dropdown width is provided
+  return typeof dropdownMatchSelectWidth !== 'number' ? 0 : 1
+}
 
 export interface RefTriggerProps {
   getPopupElement: () => HTMLDivElement;
@@ -111,8 +115,11 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
   }
 
   const builtInPlacements = React.useMemo(
-    () => getBuiltInPlacements(autoAdjustOverflow || dropdownMatchSelectWidth),
-    [dropdownMatchSelectWidth],
+    () => getBuiltInPlacements(getAdjustX({
+      autoAdjustOverflow,
+      dropdownMatchSelectWidth,
+    })),
+    [dropdownMatchSelectWidth, autoAdjustOverflow],
   );
 
   // ===================== Motion ======================
