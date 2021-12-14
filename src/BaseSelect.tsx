@@ -128,6 +128,8 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   placeholder?: React.ReactNode;
   onClear?: () => void;
 
+  choiceTransitionName?: string;
+
   // >>> Mode
   mode?: Mode;
 
