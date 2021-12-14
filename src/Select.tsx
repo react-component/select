@@ -644,9 +644,17 @@ const Select = React.forwardRef(
   },
 );
 
-type SelectType = typeof Select;
+if (process.env.NODE_ENV !== 'production') {
+  Select.displayName = 'Select';
+}
 
-const TypedSelect = Select as SelectType & {
+const TypedSelect = Select as unknown as (<
+  Values extends BaseOptionType | DefaultOptionType = DefaultOptionType,
+>(
+  props: React.PropsWithChildren<SelectProps<Values>> & {
+    ref?: React.Ref<BaseSelectRef>;
+  },
+) => React.ReactElement) & {
   Option: typeof Option;
   OptGroup: typeof OptGroup;
 };
