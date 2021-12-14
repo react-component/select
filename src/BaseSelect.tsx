@@ -101,7 +101,7 @@ export interface BaseSelectPrivateProps {
     },
   ) => void;
   /** Trigger when search text match the `tokenSeparators`. Will provide split content */
-  onSearchSplit: (words: string[]) => void;
+  onSearchSplit?: (words: string[]) => void;
   maxLength?: number;
 
   // >>> Dropdown
@@ -372,7 +372,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     if (mode !== 'combobox' && patchLabels) {
       newSearchText = '';
 
-      onSearchSplit(patchLabels);
+      onSearchSplit?.(patchLabels);
 
       // Should close when paste finish
       onToggleOpen(false);
