@@ -1712,4 +1712,17 @@ describe('Select.Basic', () => {
     wrapper.update();
     ref.current.scrollTo(100);
   });
+
+  it('pass props', () => {
+    // `count` is not a valid dom prop. Just compatible with origin logic.
+    const wrapper = mount(
+      <Select
+        {...({
+          count: 10,
+        } as any)}
+      />,
+    );
+
+    expect(wrapper.find('div.rc-select').prop('count')).toEqual(10);
+  });
 });

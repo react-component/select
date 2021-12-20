@@ -4,7 +4,6 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import isMobile from 'rc-util/lib/isMobile';
 import { useComposeRef } from 'rc-util/lib/ref';
 import type { ScrollTo } from 'rc-virtual-list/lib/List';
-import pickAttrs from 'rc-util/lib/pickAttrs';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import { getSeparatedContent } from './utils/valueUtil';
@@ -21,12 +20,17 @@ import { BaseSelectContext } from './hooks/useBaseProps';
 const DEFAULT_OMIT_PROPS = [
   'value',
   'onChange',
-  'onSelect',
+  'removeIcon',
   'placeholder',
   'autoFocus',
+  'maxTagCount',
+  'maxTagTextLength',
+  'maxTagPlaceholder',
+  'choiceTransitionName',
   'onInputKeyDown',
+  'onPopupScroll',
   'tabIndex',
-];
+] as const;
 
 export type RenderNode = React.ReactNode | ((props: any) => React.ReactNode);
 
@@ -69,6 +73,7 @@ export interface BaseSelectPrivateProps {
   // >>> MISC
   id: string;
   prefixCls: string;
+  omitProps?: string[];
 
   // >>> Value
   displayValues: DisplayValueType[];
@@ -197,6 +202,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     showSearch,
     tagRender,
     direction,
+    omitProps,
 
     // Value
     displayValues,
@@ -269,13 +275,16 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   const mergedShowSearch =
     (showSearch !== undefined ? showSearch : multiple) || mode === 'combobox';
 
-  const domProps = pickAttrs(restProps, {
-    aria: true,
-    attr: true,
-    data: true,
+  const domProps = {
+    ...restProps,
+  } as Omit<keyof typeof restProps, typeof DEFAULT_OMIT_PROPS[number]>;
+
+  DEFAULT_OMIT_PROPS.forEach((propName) => {
+    delete domProps[propName];
   });
-  DEFAULT_OMIT_PROPS.forEach((prop) => {
-    delete domProps[prop];
+
+  omitProps?.forEach((propName) => {
+    delete domProps[propName];
   });
 
   // ============================= Mobile =============================
