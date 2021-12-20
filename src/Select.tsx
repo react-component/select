@@ -48,6 +48,8 @@ import { toArray } from './utils/commonUtil';
 import useFilterOptions from './hooks/useFilterOptions';
 import useCache from './hooks/useCache';
 
+const OMIT_PROPS = ['inputValue'];
+
 export type OnActiveValue = (
   active: RawValueType,
   index: number,
@@ -625,6 +627,7 @@ const Select = React.forwardRef(
           id={mergedId}
           prefixCls={prefixCls}
           ref={ref}
+          omitProps={OMIT_PROPS}
           // >>> Values
           displayValues={displayValues}
           onDisplayValuesChange={onDisplayValuesChange}
