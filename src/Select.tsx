@@ -48,7 +48,7 @@ import { toArray } from './utils/commonUtil';
 import useFilterOptions from './hooks/useFilterOptions';
 import useCache from './hooks/useCache';
 
-const OMIT_PROPS = ['inputValue'];
+const OMIT_DOM_PROPS = ['inputValue'];
 
 export type OnActiveValue = (
   active: RawValueType,
@@ -221,6 +221,8 @@ const Select = React.forwardRef(
       defaultValue,
       labelInValue,
       onChange,
+
+      ...restProps
     } = props;
 
     const mergedId = useId(id);
@@ -622,12 +624,13 @@ const Select = React.forwardRef(
     return (
       <SelectContext.Provider value={selectContext}>
         <BaseSelect
-          {...props}
+          {...restProps}
           // >>> MISC
           id={mergedId}
           prefixCls={prefixCls}
           ref={ref}
-          omitProps={OMIT_PROPS}
+          omitDomProps={OMIT_DOM_PROPS}
+          mode={mode}
           // >>> Values
           displayValues={displayValues}
           onDisplayValuesChange={onDisplayValuesChange}

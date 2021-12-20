@@ -73,7 +73,7 @@ export interface BaseSelectPrivateProps {
   // >>> MISC
   id: string;
   prefixCls: string;
-  omitProps?: string[];
+  omitDomProps?: string[];
 
   // >>> Value
   displayValues: DisplayValueType[];
@@ -202,7 +202,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     showSearch,
     tagRender,
     direction,
-    omitProps,
+    omitDomProps,
 
     // Value
     displayValues,
@@ -283,7 +283,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     delete domProps[propName];
   });
 
-  omitProps?.forEach((propName) => {
+  omitDomProps?.forEach((propName) => {
     delete domProps[propName];
   });
 
