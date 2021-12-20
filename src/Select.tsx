@@ -48,7 +48,7 @@ import { toArray } from './utils/commonUtil';
 import useFilterOptions from './hooks/useFilterOptions';
 import useCache from './hooks/useCache';
 
-const OMIT_PROPS = ['inputValue'] as const;
+const OMIT_PROPS = ['inputValue'];
 
 export type OnActiveValue = (
   active: RawValueType,
