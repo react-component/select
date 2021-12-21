@@ -44,7 +44,6 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
     virtual,
     listHeight,
     listItemHeight,
-    optionLabelProp,
   } = React.useContext(SelectContext);
 
   const itemPrefixCls = `${prefixCls}-item`;
@@ -225,13 +224,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
 
   const omitFieldNameList = Object.keys(fieldNames).map((key) => fieldNames[key]);
 
-  const getLabel = (item: Record<string, any>) => {
-    if (optionLabelProp) {
-      return item.data[optionLabelProp];
-    }
-
-    return item.label;
-  };
+  const getLabel = (item: Record<string, any>) => item.label;
 
   const renderItem = (index: number) => {
     const item = memoFlattenOptions[index];
