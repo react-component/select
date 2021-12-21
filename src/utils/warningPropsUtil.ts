@@ -3,15 +3,10 @@ import warning, { noteOnce } from 'rc-util/lib/warning';
 import toNodeArray from 'rc-util/lib/Children/toArray';
 import { convertChildrenToData } from './legacyUtil';
 import { toArray } from './commonUtil';
-import type {
-  RawValueType,
-  LabelInValueType,
-  BaseOptionType,
-  InternalSelectProps,
-} from '../Select';
+import type { RawValueType, LabelInValueType, BaseOptionType, SelectProps } from '../Select';
 import { isMultiple } from '../BaseSelect';
 
-function warningProps(props: InternalSelectProps) {
+function warningProps(props: SelectProps) {
   const {
     mode,
     options,
