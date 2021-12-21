@@ -276,7 +276,8 @@ const Select = React.forwardRef(
           const option = valueOptions.get(rawValue);
           if (option) {
             // Fill missing props
-            if (rawLabel === undefined) rawLabel = option?.[mergedFieldNames.label];
+            if (rawLabel === undefined)
+              rawLabel = option?.[optionLabelProp || mergedFieldNames.label];
             if (rawKey === undefined) rawKey = option?.key ?? rawValue;
             rawDisabled = option?.disabled;
 
@@ -297,7 +298,7 @@ const Select = React.forwardRef(
           };
         });
       },
-      [mergedFieldNames, valueOptions],
+      [mergedFieldNames, optionLabelProp, valueOptions],
     );
 
     // =========================== Values ===========================
@@ -594,7 +595,6 @@ const Select = React.forwardRef(
         listHeight,
         listItemHeight,
         childrenAsData,
-        optionLabelProp,
       }),
       [
         parsedOptions,
@@ -609,7 +609,6 @@ const Select = React.forwardRef(
         listHeight,
         listItemHeight,
         childrenAsData,
-        optionLabelProp,
       ],
     );
 

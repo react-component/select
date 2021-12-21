@@ -17,7 +17,6 @@ export interface SelectContextProps {
   listHeight?: number;
   listItemHeight?: number;
   childrenAsData?: boolean;
-  optionLabelProp?: string;
 }
 
 const SelectContext = React.createContext<SelectContextProps>(null);
