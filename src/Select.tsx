@@ -91,7 +91,7 @@ export interface DefaultOptionType extends BaseOptionType {
   children?: Omit<DefaultOptionType, 'children'>[];
 }
 
-export interface SharedSelectProps<OptionType extends BaseOptionType = DefaultOptionType>
+export interface SelectProps<ValueType = any, OptionType extends BaseOptionType = DefaultOptionType>
   extends BaseSelectPropsWithoutPrivate {
   prefixCls?: string;
   id?: string;
@@ -131,47 +131,20 @@ export interface SharedSelectProps<OptionType extends BaseOptionType = DefaultOp
 
   // >>> Icon
   menuItemSelectedIcon?: RenderNode;
-}
 
-export interface SingleSelectProps<
-  ValueType = any,
-  OptionType extends BaseOptionType = DefaultOptionType,
-> extends SharedSelectProps<OptionType> {
-  mode?: 'combobox';
+  mode?: 'combobox' | 'multiple' | 'tags';
   labelInValue?: boolean;
   value?: ValueType | null;
   defaultValue?: ValueType | null;
-  onChange?: (value: ValueType, option: OptionType) => void;
+  onChange?: (value: ValueType, option: OptionType | OptionType[]) => void;
 }
-
-export interface MultipleSelectProps<
-  ValueType = any[],
-  OptionType extends BaseOptionType = DefaultOptionType,
-> extends SharedSelectProps<OptionType> {
-  mode: 'multiple' | 'tags';
-  labelInValue?: boolean;
-  value?: ValueType[] | null;
-  defaultValue?: ValueType[] | null;
-  onChange?: (value: ValueType[], option: OptionType[]) => void;
-}
-
-export type SelectProps<ValueType = any, OptionType extends BaseOptionType = DefaultOptionType> =
-  | SingleSelectProps<ValueType, OptionType>
-  | MultipleSelectProps<ValueType, OptionType>;
-
-export type InternalSelectProps<
-  ValueType = any,
-  OptionType extends BaseOptionType = DefaultOptionType,
-> = Omit<SelectProps<ValueType, OptionType>, 'onChange'> & {
-  onChange?: (value: DraftValueType, option: OptionType | OptionType[]) => void;
-};
 
 function isRawValue(value: DraftValueType): value is RawValueType {
   return !value || typeof value !== 'object';
 }
 
 const Select = React.forwardRef(
-  (props: InternalSelectProps<any, DefaultOptionType>, ref: React.Ref<BaseSelectRef>) => {
+  (props: SelectProps<any, DefaultOptionType>, ref: React.Ref<BaseSelectRef>) => {
     const {
       id,
       mode,
