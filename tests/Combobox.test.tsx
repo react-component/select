@@ -485,4 +485,26 @@ describe('Select.Combobox', () => {
     wrapper.find('input').simulate('compositionEnd', { target: { value: '啊' } });
     expect(onChange).toHaveBeenCalledTimes(2);
   });
+
+  it('default filterOption is false', () => {
+    const wrapper = mount(
+      <Select
+        mode="combobox"
+        open
+        searchValue="not exist"
+        options={[
+          {
+            label: 'Light',
+            value: 'light',
+          },
+          {
+            label: 'Bamboo',
+            value: 'bamboo',
+          },
+        ]}
+      />,
+    );
+
+    expect(wrapper.find('List').prop('data')).toHaveLength(2);
+  });
 });

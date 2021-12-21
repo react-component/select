@@ -229,6 +229,13 @@ const Select = React.forwardRef(
     const multiple = isMultiple(mode);
     const childrenAsData = !!(!options && children);
 
+    const mergedFilterOption = React.useMemo(() => {
+      if (filterOption === undefined && mode === 'combobox') {
+        return false;
+      }
+      return filterOption;
+    }, [filterOption, mode]);
+
     // ========================= FieldNames =========================
     const mergedFieldNames = React.useMemo(
       () => fillFieldNames(fieldNames, childrenAsData),
@@ -396,7 +403,7 @@ const Select = React.forwardRef(
       filledTagOptions,
       mergedFieldNames,
       mergedSearchValue,
-      filterOption,
+      mergedFilterOption,
       optionFilterProp,
     );
 
