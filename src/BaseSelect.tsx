@@ -165,7 +165,10 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   allowClear?: boolean;
   showArrow?: boolean;
   inputIcon?: RenderNode;
+  /** Clear all icon */
   clearIcon?: RenderNode;
+  /** Selector remove icon */
+  removeIcon?: RenderNode;
 
   // >>> Dropdown
   animation?: string;
