@@ -133,50 +133,36 @@ export interface SharedSelectProps<OptionType extends BaseOptionType = DefaultOp
   menuItemSelectedIcon?: RenderNode;
 }
 
-export interface SingleRawSelectProps<OptionType extends BaseOptionType = DefaultOptionType>
-  extends SharedSelectProps<OptionType> {
+export interface SingleSelectProps<
+  ValueType = any,
+  OptionType extends BaseOptionType = DefaultOptionType,
+> extends SharedSelectProps<OptionType> {
   mode?: 'combobox';
-  labelInValue?: false;
-  value?: RawValueType | null;
-  defaultValue?: RawValueType | null;
-  onChange?: (value: RawValueType, option: OptionType) => void;
+  labelInValue?: boolean;
+  value?: ValueType | null;
+  defaultValue?: ValueType | null;
+  onChange?: (value: ValueType, option: OptionType) => void;
 }
 
-export interface SingleLabeledSelectProps<OptionType extends BaseOptionType = DefaultOptionType>
-  extends SharedSelectProps<OptionType> {
-  mode?: 'combobox';
-  labelInValue: true;
-  value?: LabelInValueType | null;
-  defaultValue?: LabelInValueType | null;
-  onChange?: (value: LabelInValueType, option: OptionType) => void;
-}
-
-export interface MultipleRawSelectProps<OptionType extends BaseOptionType = DefaultOptionType>
-  extends SharedSelectProps<OptionType> {
+export interface MultipleSelectProps<
+  ValueType = any[],
+  OptionType extends BaseOptionType = DefaultOptionType,
+> extends SharedSelectProps<OptionType> {
   mode: 'multiple' | 'tags';
-  labelInValue?: false;
-  value?: RawValueType[] | null;
-  defaultValue?: RawValueType[] | null;
-  onChange?: (value: RawValueType[], option: OptionType[]) => void;
+  labelInValue?: boolean;
+  value?: ValueType[] | null;
+  defaultValue?: ValueType[] | null;
+  onChange?: (value: ValueType[], option: OptionType[]) => void;
 }
 
-export interface MultipleLabeledSelectProps<OptionType extends BaseOptionType = DefaultOptionType>
-  extends SharedSelectProps<OptionType> {
-  mode: 'multiple' | 'tags';
-  labelInValue: true;
-  value?: LabelInValueType[] | null;
-  defaultValue?: LabelInValueType[] | null;
-  onChange?: (value: LabelInValueType[], option: OptionType[]) => void;
-}
+export type SelectProps<ValueType = any, OptionType extends BaseOptionType = DefaultOptionType> =
+  | SingleSelectProps<ValueType, OptionType>
+  | MultipleSelectProps<ValueType, OptionType>;
 
-// TODO: Types test
-export type SelectProps<OptionType extends BaseOptionType = DefaultOptionType> = Omit<
-  | SingleRawSelectProps<OptionType>
-  | SingleLabeledSelectProps<OptionType>
-  | MultipleRawSelectProps<OptionType>
-  | MultipleLabeledSelectProps<OptionType>,
-  'onChange'
-> & {
+export type InternalSelectProps<
+  ValueType = any,
+  OptionType extends BaseOptionType = DefaultOptionType,
+> = Omit<SelectProps<ValueType, OptionType>, 'onChange'> & {
   onChange?: (value: DraftValueType, option: OptionType | OptionType[]) => void;
 };
 
@@ -185,7 +171,7 @@ function isRawValue(value: DraftValueType): value is RawValueType {
 }
 
 const Select = React.forwardRef(
-  (props: SelectProps<DefaultOptionType>, ref: React.Ref<BaseSelectRef>) => {
+  (props: InternalSelectProps<any, DefaultOptionType>, ref: React.Ref<BaseSelectRef>) => {
     const {
       id,
       mode,
@@ -661,9 +647,10 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const TypedSelect = Select as unknown as (<
-  Values extends BaseOptionType | DefaultOptionType = DefaultOptionType,
+  ValueType = any,
+  OptionType extends BaseOptionType | DefaultOptionType = DefaultOptionType,
 >(
-  props: React.PropsWithChildren<SelectProps<Values>> & {
+  props: React.PropsWithChildren<SelectProps<ValueType, OptionType>> & {
     ref?: React.Ref<BaseSelectRef>;
   },
 ) => React.ReactElement) & {

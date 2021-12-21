@@ -1,13 +1,17 @@
 import * as React from 'react';
 import warning, { noteOnce } from 'rc-util/lib/warning';
 import toNodeArray from 'rc-util/lib/Children/toArray';
-import type { SelectProps } from '..';
 import { convertChildrenToData } from './legacyUtil';
 import { toArray } from './commonUtil';
-import type { RawValueType, LabelInValueType, BaseOptionType } from '../Select';
+import type {
+  RawValueType,
+  LabelInValueType,
+  BaseOptionType,
+  InternalSelectProps,
+} from '../Select';
 import { isMultiple } from '../BaseSelect';
 
-function warningProps(props: SelectProps) {
+function warningProps(props: InternalSelectProps) {
   const {
     mode,
     options,
