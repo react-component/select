@@ -16,6 +16,7 @@ import MultipleSelector from './MultipleSelector';
 import SingleSelector from './SingleSelector';
 import useLock from '../hooks/useLock';
 import type { CustomTagProps, DisplayValueType, Mode, RenderNode } from '../BaseSelect';
+import { isValidateOpenKey } from '../utils/keyUtil';
 
 export interface InnerSelectorProps {
   prefixCls: string;
@@ -143,7 +144,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
       onSearchSubmit?.((event.target as HTMLInputElement).value);
     }
 
-    if (![KeyCode.SHIFT, KeyCode.TAB, KeyCode.BACKSPACE, KeyCode.ESC].includes(which)) {
+    if (isValidateOpenKey(which)) {
       onToggleOpen(true);
     }
   };
