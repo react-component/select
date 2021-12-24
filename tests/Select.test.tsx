@@ -696,6 +696,47 @@ describe('Select.Basic', () => {
     expect(onKeyDown).toHaveBeenCalledTimes(1);
   });
 
+  it('not open when system key down', () => {
+    const wrapper = mount(
+      <Select>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+
+    wrapper
+      .find('input')
+      .simulate('keyDown', { which: KeyCode.ESC })
+      .simulate('keyDown', { which: KeyCode.SHIFT })
+      .simulate('keyDown', { which: KeyCode.BACKSPACE })
+      .simulate('keyDown', { which: KeyCode.TAB })
+      .simulate('keyDown', { which: KeyCode.WIN_KEY })
+      .simulate('keyDown', { which: KeyCode.ALT })
+      .simulate('keyDown', { which: KeyCode.META })
+      .simulate('keyDown', { which: KeyCode.WIN_KEY_RIGHT })
+      .simulate('keyDown', { which: KeyCode.CTRL })
+      .simulate('keyDown', { which: KeyCode.SEMICOLON })
+      .simulate('keyDown', { which: KeyCode.EQUALS })
+      .simulate('keyDown', { which: KeyCode.CAPS_LOCK })
+      .simulate('keyDown', { which: KeyCode.CONTEXT_MENU })
+      .simulate('keyDown', { which: KeyCode.F1 })
+      .simulate('keyDown', { which: KeyCode.F2 })
+      .simulate('keyDown', { which: KeyCode.F3 })
+      .simulate('keyDown', { which: KeyCode.F4 })
+      .simulate('keyDown', { which: KeyCode.F5 })
+      .simulate('keyDown', { which: KeyCode.F6 })
+      .simulate('keyDown', { which: KeyCode.F7 })
+      .simulate('keyDown', { which: KeyCode.F8 })
+      .simulate('keyDown', { which: KeyCode.F9 })
+      .simulate('keyDown', { which: KeyCode.F10 })
+      .simulate('keyDown', { which: KeyCode.F11 })
+      .simulate('keyDown', { which: KeyCode.F12 });
+    expectOpen(wrapper, false);
+
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.NUM_ONE });
+    expectOpen(wrapper, true);
+  });
+
   it('close after select', () => {
     const wrapper = mount(
       <Select>
