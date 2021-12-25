@@ -31,8 +31,16 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
   _,
   ref,
 ) => {
-  const { prefixCls, id, open, multiple, searchValue, toggleOpen, notFoundContent, onPopupScroll } =
-    useBaseProps();
+  const {
+    prefixCls,
+    id,
+    open,
+    multiple,
+    searchValue,
+    toggleOpen,
+    notFoundContent,
+    onPopupScroll,
+  } = useBaseProps();
   const {
     flattenOptions,
     onActiveValue,
@@ -44,6 +52,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
     virtual,
     listHeight,
     listItemHeight,
+    tabSelection,
   } = React.useContext(SelectContext);
 
   const itemPrefixCls = `${prefixCls}-item`;
@@ -170,6 +179,31 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
             const nextActiveIndex = getEnabledActiveIndex(activeIndex + offset, offset);
             scrollIntoView(nextActiveIndex);
             setActive(nextActiveIndex, true);
+          }
+
+          break;
+        }
+
+        // >>> Select on Tab
+        case KeyCode.TAB: {
+          // preventing tab selection based in props value
+          if (!tabSelection) {
+            if (open) {
+              return event.preventDefault();
+            }
+
+            break;
+          }
+          // value
+          const item = memoFlattenOptions[activeIndex];
+          if (item && !item.data.disabled) {
+            onSelectValue(item.data.value);
+          } else {
+            onSelectValue(undefined);
+          }
+
+          if (open) {
+            event.preventDefault();
           }
 
           break;
