@@ -38,6 +38,7 @@ export interface OptionListProps<OptionsType extends object[]> {
   searchValue: string;
   virtual: boolean;
   direction?: 'ltr' | 'rtl';
+  tabSelection?: boolean;
 
   onSelect: (value: RawValueType, option: { selected: boolean }) => void;
   onToggleOpen: (open?: boolean) => void;
@@ -76,6 +77,7 @@ const OptionList: React.ForwardRefRenderFunction<
     height,
     itemHeight,
     notFoundContent,
+    tabSelection,
     open,
     menuItemSelectedIcon,
     virtual,
@@ -213,6 +215,31 @@ const OptionList: React.ForwardRefRenderFunction<
             const nextActiveIndex = getEnabledActiveIndex(activeIndex + offset, offset);
             scrollIntoView(nextActiveIndex);
             setActive(nextActiveIndex, true);
+          }
+
+          break;
+        }
+
+        // >>> Select on Tab
+        case KeyCode.TAB: {
+          // preventing tab selection based in props value
+          if (!tabSelection) {
+            if (open) {
+              return event.preventDefault();
+            }
+
+            break;
+          }
+          // value
+          const item = memoFlattenOptions[activeIndex];
+          if (item && !(item.data as OptionData).disabled) {
+            onSelectValue((item.data as OptionData).value);
+          } else {
+            onSelectValue(undefined);
+          }
+
+          if (open) {
+            event.preventDefault();
           }
 
           break;

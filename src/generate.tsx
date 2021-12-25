@@ -129,6 +129,7 @@ export interface SelectProps<OptionsType extends object[], ValueType> extends Re
   transitionName?: string;
   getPopupContainer?: RenderDOMFunc;
   direction?: 'ltr' | 'rtl';
+  tabSelection?: boolean;
 
   // Others
   disabled?: boolean;
@@ -317,6 +318,7 @@ export default function generateSelector<
       dropdownAlign,
       showAction = [],
       direction,
+      tabSelection,
 
       // Tags
       tokenSeparators,
@@ -994,6 +996,7 @@ export default function generateSelector<
         virtual={virtual !== false && dropdownMatchSelectWidth !== false}
         onMouseEnter={onPopupMouseEnter}
         direction={direction}
+        tabSelection={tabSelection}
       />
     );
 
