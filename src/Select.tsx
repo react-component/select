@@ -161,6 +161,7 @@ const Select = React.forwardRef(
       // Select
       onSelect,
       onDeselect,
+      dropdownMatchSelectWidth,
 
       // Options
       filterOption,
@@ -547,8 +548,9 @@ const Select = React.forwardRef(
     };
 
     // ========================== Context ===========================
-    const selectContext = React.useMemo(
-      () => ({
+    const selectContext = React.useMemo(() => {
+      const realVirtual = virtual !== false && dropdownMatchSelectWidth !== false;
+      return {
         ...parsedOptions,
         flattenOptions: displayOptions,
         onActiveValue,
@@ -557,26 +559,26 @@ const Select = React.forwardRef(
         menuItemSelectedIcon,
         rawValues,
         fieldNames: mergedFieldNames,
-        virtual,
+        virtual: realVirtual,
         listHeight,
         listItemHeight,
         childrenAsData,
-      }),
-      [
-        parsedOptions,
-        displayOptions,
-        onActiveValue,
-        mergedDefaultActiveFirstOption,
-        onInternalSelect,
-        menuItemSelectedIcon,
-        rawValues,
-        mergedFieldNames,
-        virtual,
-        listHeight,
-        listItemHeight,
-        childrenAsData,
-      ],
-    );
+      };
+    }, [
+      parsedOptions,
+      displayOptions,
+      onActiveValue,
+      mergedDefaultActiveFirstOption,
+      onInternalSelect,
+      menuItemSelectedIcon,
+      rawValues,
+      mergedFieldNames,
+      virtual,
+      dropdownMatchSelectWidth,
+      listHeight,
+      listItemHeight,
+      childrenAsData,
+    ]);
 
     // ========================== Warning ===========================
     if (process.env.NODE_ENV !== 'production') {
@@ -603,6 +605,7 @@ const Select = React.forwardRef(
           searchValue={mergedSearchValue}
           onSearch={onInternalSearch}
           onSearchSplit={onInternalSearchSplit}
+          dropdownMatchSelectWidth={dropdownMatchSelectWidth}
           // >>> OptionList
           OptionList={OptionList}
           emptyOptions={!displayOptions.length}
