@@ -4,6 +4,7 @@ import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { resetWarned } from 'rc-util/lib/warning';
 import { spyElementPrototype } from 'rc-util/lib/test/domHook';
+import VirtualList from 'rc-virtual-list';
 import type { SelectProps } from '../src';
 import Select, { OptGroup, Option, useBaseProps } from '../src';
 import focusTest from './shared/focusTest';
@@ -1273,6 +1274,7 @@ describe('Select.Basic', () => {
 
       // dropdownMatchSelectWidth is false means close virtual scroll
       expect(wrapper.find('.rc-select-item')).toHaveLength(options.length);
+      expect((wrapper.find(VirtualList).props() as any).virtual).toBe(false);
     });
 
     it('virtual false also no render virtual list', () => {
