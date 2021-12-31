@@ -187,6 +187,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   onFocus?: React.FocusEventHandler<HTMLElement>;
 
   // >>> Rest Events
+  onClick?: React.MouseEventHandler;
   onKeyUp?: React.KeyboardEventHandler<HTMLDivElement>;
   onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;

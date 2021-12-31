@@ -1768,4 +1768,11 @@ describe('Select.Basic', () => {
 
     expect(wrapper.find('div.rc-select').prop('count')).toEqual(10);
   });
+
+  it('should support onClick', () => {
+    const onClick = jest.fn();
+    const wrapper = mount(<Select onClick={onClick} />);
+    wrapper.simulate('click');
+    expect(onClick).toHaveBeenCalled();
+  });
 });
