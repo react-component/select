@@ -194,6 +194,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
 export function isMultiple(mode: Mode) {
