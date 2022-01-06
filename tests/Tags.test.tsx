@@ -1,5 +1,5 @@
 /* eslint-disable import/no-named-as-default-member */
-import { mount } from 'enzyme';
+import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
 import * as React from 'react';
@@ -47,6 +47,17 @@ describe('Select.Tags', () => {
       .simulate('keyDown', { which: KeyCode.ENTER });
 
     expect(findSelection(wrapper).text()).toBe('foo');
+  });
+
+  it('no search', () => {
+    const wrapper = render(
+      <Select mode="tags" showSearch={false} value="1">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+
+    expect(wrapper).toMatchSnapshot();
   });
 
   it('should call onChange on blur', () => {
