@@ -91,6 +91,10 @@ export interface DefaultOptionType extends BaseOptionType {
   children?: Omit<DefaultOptionType, 'children'>[];
 }
 
+export type SelectHandler<ValueType = any, OptionType extends BaseOptionType = DefaultOptionType> =
+  | ((value: RawValueType | LabelInValueType, option: OptionType) => void)
+  | ((value: ValueType, option: OptionType) => void);
+
 export interface SelectProps<ValueType = any, OptionType extends BaseOptionType = DefaultOptionType>
   extends BaseSelectPropsWithoutPrivate {
   prefixCls?: string;
@@ -109,8 +113,8 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   autoClearSearchValue?: boolean;
 
   // >>> Select
-  onSelect?: (value: RawValueType | LabelInValueType, option: OptionType) => void;
-  onDeselect?: (value: RawValueType | LabelInValueType, option: OptionType) => void;
+  onSelect?: SelectHandler<ValueType, OptionType>;
+  onDeselect?: SelectHandler<ValueType, OptionType>;
 
   // >>> Options
   /**
