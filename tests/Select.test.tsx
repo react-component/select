@@ -1775,4 +1775,14 @@ describe('Select.Basic', () => {
     wrapper.simulate('click');
     expect(onClick).toHaveBeenCalled();
   });
+
+  it('should hide placeholder if force closed and showSearch with searchValue', () => {
+    const wrapper = mount(
+      <Select showSearch searchValue="search" open={false} placeholder="placeholder" />,
+    );
+    expect(
+      (wrapper.find('.rc-select-selection-placeholder').getDOMNode() as HTMLSpanElement).style
+        .visibility,
+    ).toBe('hidden');
+  });
 });
