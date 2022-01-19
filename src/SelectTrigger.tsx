@@ -3,49 +3,40 @@ import Trigger from 'rc-trigger';
 import classNames from 'classnames';
 import type { Placement, RenderDOMFunc } from './BaseSelect';
 
-const getBuiltInPlacements = (adjustX: number) => {
-  return {
-    bottomLeft: {
-      points: ['tl', 'bl'],
-      offset: [0, 4],
-      overflow: {
-        adjustX,
-        adjustY: 1,
-      },
+const BUILT_IN_PLACEMENTS = {
+  bottomLeft: {
+    points: ['tl', 'bl'],
+    offset: [0, 4],
+    overflow: {
+      adjustX: 1,
+      adjustY: 1,
     },
-    bottomRight: {
-      points: ['tr', 'br'],
-      offset: [0, 4],
-      overflow: {
-        adjustX,
-        adjustY: 1,
-      },
+  },
+  bottomRight: {
+    points: ['tr', 'br'],
+    offset: [0, 4],
+    overflow: {
+      adjustX: 1,
+      adjustY: 1,
     },
-    topLeft: {
-      points: ['bl', 'tl'],
-      offset: [0, -4],
-      overflow: {
-        adjustX,
-        adjustY: 1,
-      },
+  },
+  topLeft: {
+    points: ['bl', 'tl'],
+    offset: [0, -4],
+    overflow: {
+      adjustX: 1,
+      adjustY: 1,
     },
-    topRight: {
-      points: ['br', 'tr'],
-      offset: [0, -4],
-      overflow: {
-        adjustX,
-        adjustY: 1,
-      },
+  },
+  topRight: {
+    points: ['br', 'tr'],
+    offset: [0, -4],
+    overflow: {
+      adjustX: 1,
+      adjustY: 1,
     },
-  };
+  },
 };
-
-const getAdjustX = (adjustXDependencies: Pick<SelectTriggerProps, 'autoAdjustOverflow' | 'dropdownMatchSelectWidth'>) => {
-  const { autoAdjustOverflow, dropdownMatchSelectWidth } = adjustXDependencies;
-  if(!!autoAdjustOverflow) return 1;
-  // Enable horizontal overflow auto-adjustment when a custom dropdown width is provided
-  return typeof dropdownMatchSelectWidth !== 'number' ? 0 : 1
-}
 
 export interface RefTriggerProps {
   getPopupElement: () => HTMLDivElement;
@@ -70,7 +61,6 @@ export interface SelectTriggerProps {
   getPopupContainer?: RenderDOMFunc;
   dropdownAlign: object;
   empty: boolean;
-  autoAdjustOverflow?: boolean;
 
   getTriggerDOMNode: () => HTMLElement;
   onPopupVisibleChange?: (visible: boolean) => void;
@@ -103,7 +93,6 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     getTriggerDOMNode,
     onPopupVisibleChange,
     onPopupMouseEnter,
-    autoAdjustOverflow,
     ...restProps
   } = props;
 
@@ -113,14 +102,6 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
   if (dropdownRender) {
     popupNode = dropdownRender(popupElement);
   }
-
-  const builtInPlacements = React.useMemo(
-    () => getBuiltInPlacements(getAdjustX({
-      autoAdjustOverflow,
-      dropdownMatchSelectWidth,
-    })),
-    [dropdownMatchSelectWidth, autoAdjustOverflow],
-  );
 
   // ===================== Motion ======================
   const mergedTransitionName = animation ? `${dropdownPrefixCls}-${animation}` : transitionName;
@@ -149,7 +130,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
       showAction={onPopupVisibleChange ? ['click'] : []}
       hideAction={onPopupVisibleChange ? ['click'] : []}
       popupPlacement={placement || (direction === 'rtl' ? 'bottomRight' : 'bottomLeft')}
-      builtinPlacements={builtInPlacements}
+      builtinPlacements={BUILT_IN_PLACEMENTS}
       prefixCls={dropdownPrefixCls}
       popupTransitionName={mergedTransitionName}
       popup={
