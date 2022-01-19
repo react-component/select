@@ -17,10 +17,13 @@ const Test = () => (
         allowClear
         placeholder="placeholder"
         defaultValue="lucy"
-        style={{ width: 500 }}
+        style={{ width: '100%' }}
         animation="slide-up"
         showSearch
         onChange={onChange}
+        dropdownStyle={{
+          width: 'auto',
+        }}
       >
         <Option value="jack">
           <b

@@ -165,7 +165,7 @@ const Select = React.forwardRef(
       // Select
       onSelect,
       onDeselect,
-      dropdownMatchSelectWidth,
+      dropdownMatchSelectWidth = true,
 
       // Options
       filterOption,

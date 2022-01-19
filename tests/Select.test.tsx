@@ -1300,7 +1300,9 @@ describe('Select.Basic', () => {
         <Option value={1}>1</Option>
       </Select>,
     );
-    expect(wrapper.find('Trigger').props().builtinPlacements.bottomLeft.overflow.adjustX).toBe(1);
+    expect(
+      (wrapper.find('Trigger').prop('builtinPlacements') as any).bottomLeft.overflow.adjustX,
+    ).toBe(1);
   });
 
   it('dropdown should not auto-adjust horizontally when dropdownMatchSelectWidth is true', () => {
@@ -1310,7 +1312,9 @@ describe('Select.Basic', () => {
         <Option value={1}>1</Option>
       </Select>,
     );
-    expect(wrapper.find('Trigger').props().builtinPlacements.bottomLeft.overflow.adjustX).toBe(0);
+    expect(
+      (wrapper.find('Trigger').prop('builtinPlacements') as any).bottomLeft.overflow.adjustX,
+    ).toBe(0);
   });
 
   it('if loading, arrow should show loading icon', () => {
