@@ -72,7 +72,8 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
     const len = memoFlattenOptions.length;
 
     for (let i = 0; i < len; i += 1) {
-      const current = (index + i * offset + len) % len;
+      // Use `len * 2` because if all the options are disabled `index + i * offset + len` can be < 0 (but > -len)
+      const current = (index + i * offset + len * 2) % len;
 
       const { group, data } = memoFlattenOptions[current];
       if (!group && !data.disabled) {
