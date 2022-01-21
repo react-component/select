@@ -128,6 +128,7 @@ export default () => (
 | loading | show loading icon in arrow | Boolean | false |
 | virtual | Disable virtual scroll | Boolean | true |
 | direction | direction of dropdown | 'ltr' \| 'rtl' | 'ltr' |
+| suffix | suffix of select input | ReactNode | - |
 
 ### Methods
 

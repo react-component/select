@@ -16,6 +16,7 @@ import useDelayReset from './hooks/useDelayReset';
 import TransBtn from './TransBtn';
 import useLock from './hooks/useLock';
 import { BaseSelectContext } from './hooks/useBaseProps';
+import type { ReactNode } from 'react';
 
 const DEFAULT_OMIT_PROPS = [
   'value',
@@ -169,6 +170,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   clearIcon?: RenderNode;
   /** Selector remove icon */
   removeIcon?: RenderNode;
+  suffix?: ReactNode;
 
   // >>> Dropdown
   animation?: string;
@@ -272,6 +274,8 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     onKeyUp,
     onKeyDown,
     onMouseDown,
+
+    suffix,
 
     // Rest Props
     ...restProps
@@ -718,6 +722,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     [`${prefixCls}-open`]: mergedOpen,
     [`${prefixCls}-customize-input`]: customizeInputElement,
     [`${prefixCls}-show-search`]: mergedShowSearch,
+    [`${prefixCls}-has-suffix`]: suffix,
   });
 
   // >>> Selector
@@ -815,6 +820,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
 
         {arrowNode}
         {clearNode}
+        {suffix && <span className={`${prefixCls}-suffix`}>{suffix}</span>}
       </div>
     );
   }

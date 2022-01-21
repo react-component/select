@@ -1789,4 +1789,12 @@ describe('Select.Basic', () => {
         .visibility,
     ).toBe('hidden');
   });
+
+  it('should support suffix', () => {
+    const wrapper = mount(<Select suffix=":)" />);
+
+    expect(wrapper.find('.rc-select-has-suffix')).toBeTruthy();
+    expect(wrapper.find('.rc-select-suffix')).toBeTruthy();
+    expect(wrapper.find('.rc-select-suffix').text()).toEqual(':)');
+  });
 });
