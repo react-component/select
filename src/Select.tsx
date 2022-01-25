@@ -32,17 +32,12 @@
 import * as React from 'react';
 import warning from 'rc-util/lib/warning';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
-import type {
-  BaseSelectProps,
-  BaseSelectPropsWithoutPrivate,
-  BaseSelectRef,
-  DisplayValueType,
-  RenderNode,
-} from './BaseSelect';
 import BaseSelect, { isMultiple } from './BaseSelect';
+import type { DisplayValueType, RenderNode } from './BaseSelect';
 import OptionList from './OptionList';
 import Option from './Option';
 import OptGroup from './OptGroup';
+import type { BaseSelectRef, BaseSelectPropsWithoutPrivate, BaseSelectProps } from './BaseSelect';
 import useOptions from './hooks/useOptions';
 import SelectContext from './SelectContext';
 import useId from './hooks/useId';

@@ -9,7 +9,6 @@
  */
 
 import * as React from 'react';
-import type { ReactNode } from 'react';
 import { useRef } from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import type { ScrollTo } from 'rc-virtual-list/lib/List';
@@ -94,8 +93,6 @@ export interface SelectorProps {
    * This may be removed after React provides replacement of `findDOMNode`
    */
   domRef: React.Ref<HTMLDivElement>;
-
-  suffix?: ReactNode;
 }
 
 const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = (props, ref) => {
