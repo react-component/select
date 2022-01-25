@@ -24,7 +24,7 @@ describe('OptionList', () => {
   });
 
   function generateList({ options, values, ref, ...props }: any) {
-    const fieldNames = fillFieldNames({}, false);
+    const fieldNames = fillFieldNames(props.fieldNames || {}, false);
     const flattenedOptions = flattenOptions(options, {
       fieldNames,
       childrenAsData: false,
@@ -119,6 +119,56 @@ describe('OptionList', () => {
       expect.anything(),
       expect.objectContaining({ source: 'keyboard' }),
     );
+  });
+
+  it('key operation with fieldNames', () => {
+    const onActiveValue = jest.fn();
+    const toggleOpen = jest.fn();
+    const onSelect = jest.fn();
+    const listRef = React.createRef<RefOptionListProps>();
+    mount(
+      generateList({
+        fieldNames: { value: 'foo', label: 'bar' },
+        options: [{ foo: '1' }, { foo: '2' }],
+        onActiveValue,
+        onSelect,
+        toggleOpen,
+        ref: listRef,
+      }),
+    );
+
+    onActiveValue.mockReset();
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.DOWN } as any);
+    });
+    expect(onActiveValue).toHaveBeenCalledWith(
+      '2',
+      expect.anything(),
+      expect.objectContaining({ source: 'keyboard' }),
+    );
+
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.ENTER } as any);
+    });
+    expect(onSelect).toHaveBeenCalledTimes(1);
+    expect(onSelect).toHaveBeenCalledWith('2', expect.objectContaining({ selected: true }));
+
+    onSelect.mockReset();
+    onActiveValue.mockReset();
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.UP } as any);
+    });
+    expect(onActiveValue).toHaveBeenCalledWith(
+      '1',
+      expect.anything(),
+      expect.objectContaining({ source: 'keyboard' }),
+    );
+
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.ENTER } as any);
+    });
+    expect(onSelect).toHaveBeenCalledTimes(1);
+    expect(onSelect).toHaveBeenCalledWith('1', expect.objectContaining({ selected: true }));
   });
 
   // mocked how we detect running platform in test environment
