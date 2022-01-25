@@ -31,8 +31,16 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
   _,
   ref,
 ) => {
-  const { prefixCls, id, open, multiple, searchValue, toggleOpen, notFoundContent, onPopupScroll } =
-    useBaseProps();
+  const {
+    prefixCls,
+    id,
+    open,
+    multiple,
+    searchValue,
+    toggleOpen,
+    notFoundContent,
+    onPopupScroll,
+  } = useBaseProps();
   const {
     flattenOptions,
     onActiveValue,
@@ -180,7 +188,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
           // value
           const item = memoFlattenOptions[activeIndex];
           if (item && !item.data.disabled) {
-            onSelectValue(item.data.value);
+            onSelectValue(item.value);
           } else {
             onSelectValue(undefined);
           }
