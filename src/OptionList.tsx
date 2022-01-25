@@ -103,8 +103,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
       onActiveValue(null, -1, info);
       return;
     }
-
-    onActiveValue(flattenItem.data.value, index, info);
+    onActiveValue(flattenItem.value, index, info);
   };
 
   // Auto active first item when list length or searchValue changed
