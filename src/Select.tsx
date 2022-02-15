@@ -253,7 +253,7 @@ const Select = React.forwardRef(
             rawDisabled = option?.disabled;
 
             // Warning if label not same as provided
-            if (process.env.NODE_ENV !== 'production' && !isRawValue(val)) {
+            if (process.env.NODE_ENV !== 'production' && !optionLabelProp) {
               const optionLabel = option?.[mergedFieldNames.label];
               if (optionLabel !== undefined && optionLabel !== rawLabel) {
                 warning(false, '`label` of `value` is not same as `label` in Select options.');
