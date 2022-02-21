@@ -506,6 +506,25 @@ describe('Select.Basic', () => {
     jest.useRealTimers();
   });
 
+  it('should render 0 as text properly', () => {
+    const data = [
+      { text: 0, value: '=0' },
+      { text: 1, value: '=1' },
+    ];
+
+    const wrapper = mount(
+      <Select style={{ width: 120 }} open>
+        {data.map((d) => (
+          <Select.Option value={d.value} key={d.value}>
+            {d.text}
+          </Select.Option>
+        ))}
+      </Select>,
+    );
+
+    expect(wrapper.find('.rc-select-item-option-content').first().text()).toEqual('0');
+  });
+
   describe('focus', () => {
     let handleFocus;
     let wrapper;
