@@ -31,16 +31,8 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
   _,
   ref,
 ) => {
-  const {
-    prefixCls,
-    id,
-    open,
-    multiple,
-    searchValue,
-    toggleOpen,
-    notFoundContent,
-    onPopupScroll,
-  } = useBaseProps();
+  const { prefixCls, id, open, multiple, searchValue, toggleOpen, notFoundContent, onPopupScroll } =
+    useBaseProps();
   const {
     flattenOptions,
     onActiveValue,
@@ -306,7 +298,8 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
           const iconVisible =
             !menuItemSelectedIcon || typeof menuItemSelectedIcon === 'function' || selected;
 
-          const content = mergedLabel || value;
+          // https://github.com/ant-design/ant-design/issues/34145
+          const content = typeof mergedLabel === 'number' ? mergedLabel : mergedLabel || value;
           // https://github.com/ant-design/ant-design/issues/26717
           let optionTitle =
             typeof content === 'string' || typeof content === 'number'
