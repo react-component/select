@@ -54,7 +54,7 @@
   },
   "devDependencies": {
     "@types/enzyme": "^3.10.9",
-    "@types/jest": "^26.0.24",
+    "@types/jest": "^27.4.1",
     "@types/react": "^17.0.15",
     "@types/react-dom": "^17.0.3",
     "cross-env": "^7.0.0",
