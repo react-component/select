@@ -450,7 +450,7 @@ const Select = React.forwardRef(
             ? {
                 label: option?.[mergedFieldNames.label],
                 value: val,
-                key: option.key ?? val,
+                key: option?.key ?? val,
               }
             : val,
           injectPropsWithOption(option),

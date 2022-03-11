@@ -5,8 +5,9 @@ import '../../assets/index.less';
 
 const children = [];
 for (let i = 10; i < 36; i += 1) {
+  const val = i.toString(36) + i;
   children.push(
-    <Option key={i.toString(36) + i} disabled={i === 10} title={`中文${i}`}>
+    <Option key={val} value={val} disabled={i === 10} title={`中文${i}`}>
       中文{i}
     </Option>,
   );
@@ -17,7 +18,12 @@ class Test extends React.Component {
     useAnim: false,
     showArrow: false,
     loading: false,
-    value: ['a10'],
+    value: [
+      {
+        label: '默认值',
+        value: 'value-not-in-options',
+      },
+    ],
   };
 
   onChange = (value, options) => {
@@ -32,22 +38,22 @@ class Test extends React.Component {
   };
 
   onDeselect = (...args) => {
-    console.log(args);
+    console.log('onDeselect', args);
   };
 
-  useAnim = e => {
+  useAnim = (e) => {
     this.setState({
       useAnim: e.target.checked,
     });
   };
 
-  showArrow = e => {
+  showArrow = (e) => {
     this.setState({
       showArrow: e.target.checked,
     });
   };
 
-  loading = e => {
+  loading = (e) => {
     this.setState({
       loading: e.target.checked,
     });
@@ -95,8 +101,9 @@ class Test extends React.Component {
             placeholder="please select"
             onChange={this.onChange}
             onFocus={() => console.log('focus')}
-            onBlur={v => console.log('blur', v)}
+            onBlur={(v) => console.log('blur', v)}
             tokenSeparators={[' ', ',']}
+            labelInValue={true}
           >
             {children}
           </Select>
