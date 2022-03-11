@@ -58,17 +58,16 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
 ) => {
   let inputNode: React.ComponentElement<any, any> = inputElement || <input />;
 
+  const { ref: originRef, props: originProps } = inputNode;
+
   const {
-    ref: originRef,
-    props: {
-      onKeyDown: onOriginKeyDown,
-      onChange: onOriginChange,
-      onMouseDown: onOriginMouseDown,
-      onCompositionStart: onOriginCompositionStart,
-      onCompositionEnd: onOriginCompositionEnd,
-      style,
-    },
-  } = inputNode;
+    onKeyDown: onOriginKeyDown,
+    onChange: onOriginChange,
+    onMouseDown: onOriginMouseDown,
+    onCompositionStart: onOriginCompositionStart,
+    onCompositionEnd: onOriginCompositionEnd,
+    style,
+  } = originProps;
 
   inputNode = React.cloneElement(inputNode, {
     id,
@@ -79,7 +78,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     type: 'search',
     autoFocus,
     className: classNames(`${prefixCls}-selection-search-input`, inputNode?.props?.className),
-    style: { ...style, opacity: editable ? null : 0 },
+
     role: 'combobox',
     'aria-expanded': open,
     'aria-haspopup': 'listbox',
@@ -92,6 +91,12 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     maxLength,
     readOnly: !editable,
     unselectable: !editable ? 'on' : null,
+
+    ...originProps,
+
+    // Override over origin props
+    style: { ...style, opacity: editable ? null : 0 },
+
     onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
       onKeyDown(event);
       if (onOriginKeyDown) {
