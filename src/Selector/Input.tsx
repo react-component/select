@@ -70,12 +70,16 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
   } = originProps;
 
   inputNode = React.cloneElement(inputNode, {
+    type: 'search',
+    ...originProps,
+
+    // Override over origin props
     id,
     ref: composeRef(ref, originRef as any),
     disabled,
     tabIndex,
     autoComplete: autoComplete || 'off',
-    type: 'search',
+
     autoFocus,
     className: classNames(`${prefixCls}-selection-search-input`, inputNode?.props?.className),
 
@@ -92,9 +96,6 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     readOnly: !editable,
     unselectable: !editable ? 'on' : null,
 
-    ...originProps,
-
-    // Override over origin props
     style: { ...style, opacity: editable ? null : 0 },
 
     onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
