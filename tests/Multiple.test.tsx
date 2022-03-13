@@ -475,6 +475,26 @@ describe('Select.Multiple', () => {
     expect(wrapper.exists('.rc-select-selection-item-remove')).toBeFalsy();
   });
 
+  it('do not crash if value not in options when removing option', () => {
+    const wrapper = mount(
+      <Select
+        defaultValue={[
+          {
+            label: 'value not in options',
+            value: 'value-not-in-options',
+          },
+        ]}
+        mode="multiple"
+        labelInValue
+      >
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>,
+    );
+
+    removeSelection(wrapper, 0);
+  });
+
   describe('optionLabelProp', () => {
     it('basic', () => {
       const wrapper = mount(
