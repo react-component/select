@@ -493,6 +493,8 @@ describe('Select.Multiple', () => {
     );
 
     removeSelection(wrapper, 0);
+    expectOpen(wrapper, false);
+    expect(wrapper.find('Selector').props().values.length).toEqual(0);
   });
 
   describe('optionLabelProp', () => {
