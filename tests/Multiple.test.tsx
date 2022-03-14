@@ -491,9 +491,8 @@ describe('Select.Multiple', () => {
         <Option value={2}>2</Option>
       </Select>,
     );
-
+    expect(findSelection(wrapper, 0).text()).toEqual('value not in options');
     removeSelection(wrapper, 0);
-    expectOpen(wrapper, false);
     expect(wrapper.find('Selector').props().values.length).toEqual(0);
   });
 
