@@ -140,6 +140,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   labelInValue?: boolean;
   value?: ValueType | null;
   defaultValue?: ValueType | null;
+  alternativeLabel?: React.ReactNode;
   onChange?: (value: ValueType, option: OptionType | OptionType[]) => void;
 }
 
@@ -155,6 +156,7 @@ const Select = React.forwardRef(
       prefixCls = 'rc-select',
       backfill,
       fieldNames,
+      alternativeLabel,
 
       // Search
       inputValue,
@@ -235,6 +237,8 @@ const Select = React.forwardRef(
           let rawKey: React.Key;
           let rawDisabled: boolean | undefined;
 
+          let isAlternative: boolean = false;
+
           // Fill label & value
           if (isRawValue(val)) {
             rawValue = val;
@@ -260,16 +264,21 @@ const Select = React.forwardRef(
               }
             }
           }
+          if (rawLabel === undefined && alternativeLabel) {
+            rawLabel = alternativeLabel;
+            isAlternative = true;
+          }
 
           return {
             label: rawLabel,
             value: rawValue,
             key: rawKey,
             disabled: rawDisabled,
+            isAlternative,
           };
         });
       },
-      [mergedFieldNames, optionLabelProp, valueOptions],
+      [mergedFieldNames, optionLabelProp, valueOptions, alternativeLabel],
     );
 
     // =========================== Values ===========================
@@ -312,10 +321,9 @@ const Select = React.forwardRef(
     }, [mode, mergedValues]);
 
     /** Convert `displayValues` to raw value type set */
-    const rawValues = React.useMemo(
-      () => new Set(mergedValues.map((val) => val.value)),
-      [mergedValues],
-    );
+    const rawValues = React.useMemo(() => new Set(mergedValues.map((val) => val.value)), [
+      mergedValues,
+    ]);
 
     React.useEffect(() => {
       if (mode === 'combobox') {
@@ -514,7 +522,9 @@ const Select = React.forwardRef(
         const formatted = (searchText || '').trim();
         // prevent empty tags from appearing when you click the Enter button
         if (formatted) {
-          const newRawValues = Array.from(new Set<RawValueType>([...rawValues, formatted]));
+          const newRawValues = Array.from(
+            new Set<RawValueType>([...rawValues, formatted]),
+          );
           triggerChange(newRawValues);
           triggerSelect(formatted, true);
           setSearchValue('');
@@ -544,7 +554,9 @@ const Select = React.forwardRef(
           .filter((val) => val !== undefined);
       }
 
-      const newRawValues = Array.from(new Set<RawValueType>([...rawValues, ...patchValues]));
+      const newRawValues = Array.from(
+        new Set<RawValueType>([...rawValues, ...patchValues]),
+      );
       triggerChange(newRawValues);
       newRawValues.forEach((newRawValue) => {
         triggerSelect(newRawValue, true);
@@ -626,9 +638,9 @@ if (process.env.NODE_ENV !== 'production') {
   Select.displayName = 'Select';
 }
 
-const TypedSelect = Select as unknown as (<
+const TypedSelect = (Select as unknown) as (<
   ValueType = any,
-  OptionType extends BaseOptionType | DefaultOptionType = DefaultOptionType,
+  OptionType extends BaseOptionType | DefaultOptionType = DefaultOptionType
 >(
   props: React.PropsWithChildren<SelectProps<ValueType, OptionType>> & {
     ref?: React.Ref<BaseSelectRef>;

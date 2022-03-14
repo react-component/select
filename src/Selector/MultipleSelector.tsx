@@ -88,6 +88,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
     title: React.ReactNode,
     content: React.ReactNode,
     itemDisabled: boolean,
+    isAlternative: boolean,
     closable?: boolean,
     onClose?: React.MouseEventHandler,
   ) {
@@ -95,6 +96,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
       <span
         className={classNames(`${selectionPrefixCls}-item`, {
           [`${selectionPrefixCls}-item-disabled`]: itemDisabled,
+          [`${selectionPrefixCls}-item-alternative`]: isAlternative,
         })}
         title={
           typeof title === 'string' || typeof title === 'number' ? title.toString() : undefined
@@ -119,6 +121,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
     value: RawValueType,
     content: React.ReactNode,
     itemDisabled: boolean,
+    isAlternative: boolean,
     closable: boolean,
     onClose: React.MouseEventHandler,
   ) {
@@ -133,6 +136,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
           label: content,
           value,
           disabled: itemDisabled,
+          isAlternative,
           closable,
           onClose,
         })}
@@ -141,7 +145,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
   }
 
   function renderItem(valueItem: DisplayValueType) {
-    const { disabled: itemDisabled, label, value } = valueItem;
+    const { disabled: itemDisabled, label, value, isAlternative } = valueItem;
     const closable = !disabled && !itemDisabled;
 
     let displayLabel: React.ReactNode = label;
@@ -162,8 +166,8 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
     };
 
     return typeof tagRender === 'function'
-      ? customizeRenderSelector(value, displayLabel, itemDisabled, closable, onClose)
-      : defaultRenderSelector(label, displayLabel, itemDisabled, closable, onClose);
+      ? customizeRenderSelector(value, displayLabel, itemDisabled, isAlternative, closable, onClose)
+      : defaultRenderSelector(label, displayLabel, itemDisabled, isAlternative, closable, onClose);
   }
 
   function renderRest(omittedValues: DisplayValueType[]) {
@@ -172,7 +176,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
         ? maxTagPlaceholder(omittedValues)
         : maxTagPlaceholder;
 
-    return defaultRenderSelector(content, content, false);
+    return defaultRenderSelector(content, content, false, false);
   }
 
   // >>> Input Node
