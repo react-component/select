@@ -534,6 +534,7 @@ exports[`Select.Basic render renders dropdown correctly 1`] = `
               >
                 <div
                   class="antd-item antd-item-group"
+                  title="manager"
                 >
                   manager
                 </div>
@@ -584,6 +585,7 @@ exports[`Select.Basic render renders dropdown correctly 1`] = `
                 </div>
                 <div
                   class="antd-item antd-item-group"
+                  title="engineer"
                 >
                   engineer
                 </div>

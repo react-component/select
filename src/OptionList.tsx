@@ -23,6 +23,10 @@ export interface RefOptionListProps {
   scrollTo?: (index: number) => void;
 }
 
+function isTitleType(content: any) {
+  return typeof content === 'string' || typeof content === 'number';
+}
+
 /**
  * Using virtual list of option display.
  * Will fallback to dom if use customize render.
@@ -272,8 +276,13 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
 
           // Group
           if (group) {
+            const groupTitle = data.title ?? (isTitleType(label) && label);
+
             return (
-              <div className={classNames(itemPrefixCls, `${itemPrefixCls}-group`)}>
+              <div
+                className={classNames(itemPrefixCls, `${itemPrefixCls}-group`)}
+                title={groupTitle}
+              >
                 {label !== undefined ? label : key}
               </div>
             );
@@ -301,10 +310,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
           // https://github.com/ant-design/ant-design/issues/34145
           const content = typeof mergedLabel === 'number' ? mergedLabel : mergedLabel || value;
           // https://github.com/ant-design/ant-design/issues/26717
-          let optionTitle =
-            typeof content === 'string' || typeof content === 'number'
-              ? content.toString()
-              : undefined;
+          let optionTitle = isTitleType(content) ? content.toString() : undefined;
           if (title !== undefined) {
             optionTitle = title;
           }
