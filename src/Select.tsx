@@ -95,6 +95,8 @@ export type SelectHandler<ValueType = any, OptionType extends BaseOptionType = D
   | ((value: RawValueType | LabelInValueType, option: OptionType) => void)
   | ((value: ValueType, option: OptionType) => void);
 
+type ArrayElementType<T> = T extends (infer E)[] ? E : T;
+
 export interface SelectProps<ValueType = any, OptionType extends BaseOptionType = DefaultOptionType>
   extends BaseSelectPropsWithoutPrivate {
   prefixCls?: string;
@@ -113,8 +115,8 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   autoClearSearchValue?: boolean;
 
   // >>> Select
-  onSelect?: SelectHandler<ValueType, OptionType>;
-  onDeselect?: SelectHandler<ValueType, OptionType>;
+  onSelect?: SelectHandler<ArrayElementType<ValueType>, OptionType>;
+  onDeselect?: SelectHandler<ArrayElementType<ValueType>, OptionType>;
 
   // >>> Options
   /**
