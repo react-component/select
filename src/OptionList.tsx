@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useEffect } from 'react';
+import type { ScrollConfig } from 'rc-virtual-list/lib/List';
 import KeyCode from 'rc-util/lib/KeyCode';
 import omit from 'rc-util/lib/omit';
 import pickAttrs from 'rc-util/lib/pickAttrs';
@@ -20,7 +21,7 @@ export type OptionListProps = Record<string, never>;
 export interface RefOptionListProps {
   onKeyDown: React.KeyboardEventHandler;
   onKeyUp: React.KeyboardEventHandler;
-  scrollTo?: (index: number) => void;
+  scrollTo?: (args: number | ScrollConfig) => void;
 }
 
 function isTitleType(content: any) {
@@ -65,9 +66,9 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
     event.preventDefault();
   };
 
-  const scrollIntoView = (index: number) => {
+  const scrollIntoView = (args: number | ScrollConfig) => {
     if (listRef.current) {
-      listRef.current.scrollTo({ index });
+      listRef.current.scrollTo(args);
     }
   };
 
