@@ -1777,7 +1777,21 @@ describe('Select.Basic', () => {
     });
   });
 
-  it('scrollTo should work', () => {
+  it('scrollTo should work with number', () => {
+    const ref = React.createRef<BaseSelectRef>();
+    const wrapper = mount(<Select ref={ref} />);
+
+    // Not crash
+    ref.current.scrollTo(100);
+    // Open to call again
+    wrapper.setProps({
+      open: true,
+    });
+    wrapper.update();
+    ref.current.scrollTo(100);
+  });
+
+  it('scrollTo should work with scrollConfig object', () => {
     const ref = React.createRef<BaseSelectRef>();
     const wrapper = mount(<Select ref={ref} />);
     const scrollParams: ScrollConfig = {
@@ -1786,14 +1800,12 @@ describe('Select.Basic', () => {
     };
 
     // Not crash
-    ref.current.scrollTo(100);
     ref.current.scrollTo(scrollParams);
     // Open to call again
     wrapper.setProps({
       open: true,
     });
     wrapper.update();
-    ref.current.scrollTo(100);
     ref.current.scrollTo(scrollParams);
   });
 
