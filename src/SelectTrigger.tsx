@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Trigger from 'rc-trigger';
+import type { AlignType } from 'rc-trigger/lib/interface';
 import classNames from 'classnames';
 import type { Placement, RenderDOMFunc } from './BaseSelect';
 
@@ -63,7 +64,7 @@ export interface SelectTriggerProps {
   dropdownMatchSelectWidth?: boolean | number;
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
   getPopupContainer?: RenderDOMFunc;
-  dropdownAlign: object;
+  dropdownAlign: AlignType;
   empty: boolean;
 
   getTriggerDOMNode: () => HTMLElement;
