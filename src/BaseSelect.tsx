@@ -4,7 +4,7 @@ import type { AlignType } from 'rc-trigger/lib/interface';
 import KeyCode from 'rc-util/lib/KeyCode';
 import isMobile from 'rc-util/lib/isMobile';
 import { useComposeRef } from 'rc-util/lib/ref';
-import type { ScrollTo } from 'rc-virtual-list/lib/List';
+import type { ScrollTo, ScrollConfig } from 'rc-virtual-list/lib/List';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import { getSeparatedContent } from './utils/valueUtil';
@@ -46,7 +46,7 @@ export type RawValueType = string | number;
 export interface RefOptionListProps {
   onKeyDown: React.KeyboardEventHandler;
   onKeyUp: React.KeyboardEventHandler;
-  scrollTo?: (index: number) => void;
+  scrollTo?: (args: number | ScrollConfig) => void;
 }
 
 export type CustomTagProps = {
@@ -316,7 +316,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   React.useImperativeHandle(ref, () => ({
     focus: selectorRef.current?.focus,
     blur: selectorRef.current?.blur,
-    scrollTo: (arg) => listRef.current?.scrollTo(arg as any),
+    scrollTo: (arg) => listRef.current?.scrollTo(arg),
   }));
 
   // ========================== Search Value ==========================

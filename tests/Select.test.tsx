@@ -3,6 +3,7 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { resetWarned } from 'rc-util/lib/warning';
+import type { ScrollConfig } from 'rc-virtual-list/lib/List';
 import { spyElementPrototype } from 'rc-util/lib/test/domHook';
 import VirtualList from 'rc-virtual-list';
 import type { SelectProps } from '../src';
@@ -1776,19 +1777,36 @@ describe('Select.Basic', () => {
     });
   });
 
-  it('scrollTo should work', () => {
+  it('scrollTo should work with number', () => {
     const ref = React.createRef<BaseSelectRef>();
     const wrapper = mount(<Select ref={ref} />);
 
     // Not crash
     ref.current.scrollTo(100);
-
     // Open to call again
     wrapper.setProps({
       open: true,
     });
     wrapper.update();
     ref.current.scrollTo(100);
+  });
+
+  it('scrollTo should work with scrollConfig object', () => {
+    const ref = React.createRef<BaseSelectRef>();
+    const wrapper = mount(<Select ref={ref} />);
+    const scrollParams: ScrollConfig = {
+      index: 30,
+      align: 'top',
+    };
+
+    // Not crash
+    ref.current.scrollTo(scrollParams);
+    // Open to call again
+    wrapper.setProps({
+      open: true,
+    });
+    wrapper.update();
+    ref.current.scrollTo(scrollParams);
   });
 
   it('pass props', () => {
