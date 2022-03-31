@@ -1,5 +1,6 @@
 import * as React from 'react';
 import classNames from 'classnames';
+import type { AlignType } from 'rc-trigger/lib/interface';
 import KeyCode from 'rc-util/lib/KeyCode';
 import isMobile from 'rc-util/lib/isMobile';
 import { useComposeRef } from 'rc-util/lib/ref';
@@ -177,7 +178,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   dropdownClassName?: string;
   dropdownMatchSelectWidth?: boolean | number;
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
-  dropdownAlign?: any;
+  dropdownAlign?: AlignType;
   placement?: Placement;
   getPopupContainer?: RenderDOMFunc;
 
