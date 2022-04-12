@@ -137,7 +137,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
 
         if (index !== -1) {
           setActive(index);
-          scrollIntoView(index);
+          scrollIntoView({ index });
         }
       }
     });
@@ -187,7 +187,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
 
           if (offset !== 0) {
             const nextActiveIndex = getEnabledActiveIndex(activeIndex + offset, offset);
-            scrollIntoView(nextActiveIndex);
+            scrollIntoView({ index: nextActiveIndex });
             setActive(nextActiveIndex, true);
           }
 
