@@ -36,8 +36,17 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
   _,
   ref,
 ) => {
-  const { prefixCls, id, open, multiple, searchValue, toggleOpen, notFoundContent, onPopupScroll } =
-    useBaseProps();
+  const {
+    prefixCls,
+    id,
+    open,
+    multiple,
+    mode,
+    searchValue,
+    toggleOpen,
+    notFoundContent,
+    onPopupScroll,
+  } = useBaseProps();
   const {
     flattenOptions,
     onActiveValue,
@@ -107,6 +116,12 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
   useEffect(() => {
     setActive(defaultActiveFirstOption !== false ? getEnabledActiveIndex(0) : -1);
   }, [memoFlattenOptions.length, searchValue]);
+
+  // https://github.com/ant-design/ant-design/issues/34975
+  const isSelected = React.useCallback(
+    (value: RawValueType) => rawValues.has(value) && mode !== 'combobox',
+    [mode, [...rawValues].toString()],
+  );
 
   // Auto scroll to item position in single mode
   useEffect(() => {
@@ -246,7 +261,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
         key={index}
         role={group ? 'presentation' : 'option'}
         id={`${id}_list_${index}`}
-        aria-selected={rawValues.has(value)}
+        aria-selected={isSelected(value)}
       >
         {value}
       </div>
@@ -293,7 +308,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
           const passedProps = omit(otherProps, omitFieldNameList);
 
           // Option
-          const selected = rawValues.has(value);
+          const selected = isSelected(value);
 
           const optionPrefixCls = `${itemPrefixCls}-option`;
           const optionClassName = classNames(itemPrefixCls, optionPrefixCls, className, {
