@@ -2,10 +2,9 @@ import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { act } from 'react-dom/test-utils';
 import React from 'react';
-import type { OptionListProps, RefOptionListProps } from '../src/OptionList';
+import type { RefOptionListProps } from '../src/OptionList';
 import OptionList from '../src/OptionList';
 import { injectRunAllTimers } from './utils/common';
-import type { OptionsType } from '../src/interface';
 import { fillFieldNames, flattenOptions } from '../src/utils/valueUtil';
 import SelectContext from '../src/SelectContext';
 import { BaseSelectContext } from '../src/hooks/useBaseProps';
@@ -298,5 +297,24 @@ describe('OptionList', () => {
       }),
     );
     expect(wrapper.find('.rc-select-item-option').first().prop('title')).toBe(undefined);
+  });
+
+  it('params to scrollIntoView should be object when key is pressed', () => {
+    const listRef = React.createRef<RefOptionListProps>();
+    const options = Array.from({ length: 20 }).map((v, i) => ({ value: i, label: i }));
+    const mockScroll = jest.fn();
+    const wrapper = mount(
+      generateList({
+        options,
+        ref: listRef,
+      }),
+    );
+    const vList = wrapper.find('List').getElement() as any;
+    // override the ref to test the parameters passed to the scrollIntoView method
+    vList.ref.current = { scrollTo: mockScroll };
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.DOWN } as any);
+    });
+    expect(mockScroll.mock.calls[0][0]).toEqual({ index: 1 });
   });
 });
