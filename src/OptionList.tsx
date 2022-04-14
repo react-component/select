@@ -77,7 +77,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
 
   const scrollIntoView = (args: number | ScrollConfig) => {
     if (listRef.current) {
-      listRef.current.scrollTo(args);
+      listRef.current.scrollTo(typeof args === 'number' ? { index: args } : args);
     }
   };
 
