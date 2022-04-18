@@ -8,6 +8,7 @@ import List from 'rc-virtual-list';
 import type { ScrollConfig } from 'rc-virtual-list/lib/List';
 import * as React from 'react';
 import { useEffect } from 'react';
+import useBaseProps from './hooks/useBaseProps';
 import type { FlattenOptionData } from './interface';
 import type { BaseOptionType, RawValueType } from './Select';
 import SelectContext from './SelectContext';
@@ -40,19 +41,24 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
     id,
     open,
     multiple,
-    master,
     mode,
+    tabSelection,
     searchValue,
     toggleOpen,
     notFoundContent,
-    tabSelection,
+    onPopupScroll,
+  } = useBaseProps();
+  const {
+    flattenOptions,
+    onActiveValue,
+    defaultActiveFirstOption,
+    onSelect,
     menuItemSelectedIcon,
     rawValues,
     fieldNames,
     virtual,
     listHeight,
     listItemHeight,
-    tabSelection,
   } = React.useContext(SelectContext);
 
   const itemPrefixCls = `${prefixCls}-item`;
