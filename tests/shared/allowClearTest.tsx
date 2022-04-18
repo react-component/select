@@ -31,10 +31,7 @@ export default function allowClearTest(mode: any, value: any) {
 
       // enabled
       wrapper.setProps({ disabled: false });
-      wrapper
-        .find('.rc-select-clear')
-        .last()
-        .simulate('mousedown');
+      wrapper.find('.rc-select-clear').last().simulate('mousedown');
       if (useArrayValue) {
         expect(onChange).toHaveBeenCalledWith([], []);
       } else {

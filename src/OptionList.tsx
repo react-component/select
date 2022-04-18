@@ -1,19 +1,18 @@
-import * as React from 'react';
-import { useEffect } from 'react';
-import type { ScrollConfig } from 'rc-virtual-list/lib/List';
+import classNames from 'classnames';
+import useMemo from 'rc-util/lib/hooks/useMemo';
 import KeyCode from 'rc-util/lib/KeyCode';
 import omit from 'rc-util/lib/omit';
 import pickAttrs from 'rc-util/lib/pickAttrs';
-import useMemo from 'rc-util/lib/hooks/useMemo';
-import classNames from 'classnames';
 import type { ListRef } from 'rc-virtual-list';
 import List from 'rc-virtual-list';
+import type { ScrollConfig } from 'rc-virtual-list/lib/List';
+import * as React from 'react';
+import { useEffect } from 'react';
+import type { FlattenOptionData } from './interface';
+import type { BaseOptionType, RawValueType } from './Select';
+import SelectContext from './SelectContext';
 import TransBtn from './TransBtn';
 import { isPlatformMac } from './utils/platformUtil';
-import useBaseProps from './hooks/useBaseProps';
-import SelectContext from './SelectContext';
-import type { BaseOptionType, RawValueType } from './Select';
-import type { FlattenOptionData } from './interface';
 
 // export interface OptionListProps<OptionsType extends object[]> {
 export type OptionListProps = Record<string, never>;
@@ -46,13 +45,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
     searchValue,
     toggleOpen,
     notFoundContent,
-    onPopupScroll,
-  } = useBaseProps();
-  const {
-    flattenOptions,
-    onActiveValue,
-    defaultActiveFirstOption,
-    onSelect,
+    tabSelection,
     menuItemSelectedIcon,
     rawValues,
     fieldNames,
