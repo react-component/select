@@ -40,6 +40,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
     id,
     open,
     multiple,
+    master,
     mode,
     searchValue,
     toggleOpen,
@@ -51,6 +52,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
     virtual,
     listHeight,
     listItemHeight,
+    tabSelection,
   } = React.useContext(SelectContext);
 
   const itemPrefixCls = `${prefixCls}-item`;
@@ -199,8 +201,8 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
           }
           // value
           const item = memoFlattenOptions[activeIndex];
-          if (item && !(item.data as OptionData).disabled) {
-            onSelectValue((item.data as OptionData).value);
+          if (item && !item.data.disabled) {
+            onSelectValue(item.data.value);
           } else {
             onSelectValue(undefined);
           }
