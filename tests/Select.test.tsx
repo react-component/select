@@ -3,6 +3,7 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { resetWarned } from 'rc-util/lib/warning';
+import type { ScrollConfig } from 'rc-virtual-list/lib/List';
 import { spyElementPrototype } from 'rc-util/lib/test/domHook';
 import VirtualList from 'rc-virtual-list';
 import type { SelectProps } from '../src';
@@ -506,6 +507,25 @@ describe('Select.Basic', () => {
     jest.useRealTimers();
   });
 
+  it('should render 0 as text properly', () => {
+    const data = [
+      { text: 0, value: '=0' },
+      { text: 1, value: '=1' },
+    ];
+
+    const wrapper = mount(
+      <Select style={{ width: 120 }} open>
+        {data.map((d) => (
+          <Select.Option value={d.value} key={d.value}>
+            {d.text}
+          </Select.Option>
+        ))}
+      </Select>,
+    );
+
+    expect(wrapper.find('.rc-select-item-option-content').first().text()).toEqual('0');
+  });
+
   describe('focus', () => {
     let handleFocus;
     let wrapper;
@@ -808,55 +828,68 @@ describe('Select.Basic', () => {
     expect(focusSpy).toHaveBeenCalled();
   });
 
-  it('combobox could customize input element', () => {
-    const onKeyDown = jest.fn();
-    const onChange = jest.fn();
-    const onMouseDown = jest.fn();
-    const onCompositionStart = jest.fn();
-    const onCompositionEnd = jest.fn();
-    const textareaRef = jest.fn();
-    const mouseDownPreventDefault = jest.fn();
-    const wrapper = mount(
-      <Select
-        mode="combobox"
-        getInputElement={() => (
-          <textarea
-            onKeyDown={onKeyDown}
-            onChange={onChange}
-            onMouseDown={onMouseDown}
-            onCompositionStart={onCompositionStart}
-            onCompositionEnd={onCompositionEnd}
-            ref={textareaRef}
-            className="custom-input"
-          />
-        )}
-      >
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
-      </Select>,
-    );
+  describe('combobox could customize input element', () => {
+    it('work', () => {
+      const onKeyDown = jest.fn();
+      const onChange = jest.fn();
+      const onMouseDown = jest.fn();
+      const onCompositionStart = jest.fn();
+      const onCompositionEnd = jest.fn();
+      const textareaRef = jest.fn();
+      const mouseDownPreventDefault = jest.fn();
+      const wrapper = mount(
+        <Select
+          mode="combobox"
+          getInputElement={() => (
+            <textarea
+              onKeyDown={onKeyDown}
+              onChange={onChange}
+              onMouseDown={onMouseDown}
+              onCompositionStart={onCompositionStart}
+              onCompositionEnd={onCompositionEnd}
+              ref={textareaRef}
+              className="custom-input"
+            />
+          )}
+        >
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
 
-    expect(wrapper.find('textarea').length).toBe(1);
-    toggleOpen(wrapper);
-    wrapper
-      .find('.rc-select')
-      .find('textarea')
-      .simulate('mouseDown', { preventDefault: mouseDownPreventDefault })
-      .simulate('keyDown', { which: KeyCode.NUM_ONE })
-      .simulate('change', { target: { value: '1' } })
-      .simulate('compositionStart')
-      .simulate('compositionEnd');
+      expect(wrapper.find('textarea').length).toBe(1);
+      toggleOpen(wrapper);
+      wrapper
+        .find('.rc-select')
+        .find('textarea')
+        .simulate('mouseDown', { preventDefault: mouseDownPreventDefault })
+        .simulate('keyDown', { which: KeyCode.NUM_ONE })
+        .simulate('change', { target: { value: '1' } })
+        .simulate('compositionStart')
+        .simulate('compositionEnd');
 
-    selectItem(wrapper);
-    expect(wrapper.find('textarea').props().value).toEqual('1');
-    expect(wrapper.find('textarea').hasClass('custom-input')).toBe(true);
-    expect(mouseDownPreventDefault).not.toHaveBeenCalled();
-    expect(onKeyDown).toHaveBeenCalled();
-    expect(onChange).toHaveBeenCalled();
-    expect(onMouseDown).toHaveBeenCalled();
-    expect(textareaRef).toHaveBeenCalled();
-    expect(onCompositionStart).toHaveBeenCalled();
-    expect(onCompositionEnd).toHaveBeenCalled();
+      selectItem(wrapper);
+      expect(wrapper.find('textarea').props().value).toEqual('1');
+      expect(wrapper.find('textarea').hasClass('custom-input')).toBe(true);
+      expect(mouseDownPreventDefault).not.toHaveBeenCalled();
+      expect(onKeyDown).toHaveBeenCalled();
+      expect(onChange).toHaveBeenCalled();
+      expect(onMouseDown).toHaveBeenCalled();
+      expect(textareaRef).toHaveBeenCalled();
+      expect(onCompositionStart).toHaveBeenCalled();
+      expect(onCompositionEnd).toHaveBeenCalled();
+    });
+
+    it('not override customize props', () => {
+      const wrapper = mount(
+        <Select mode="combobox" getInputElement={() => <input type="email" />}>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
+
+      expect(wrapper.find('input').prop('type')).toEqual('email');
+    });
   });
 
   it('getRawInputElement for rc-cascader', () => {
@@ -1300,7 +1333,9 @@ describe('Select.Basic', () => {
         <Option value={1}>1</Option>
       </Select>,
     );
-    expect(wrapper.find('Trigger').props().builtinPlacements.bottomLeft.overflow.adjustX).toBe(1);
+    expect(
+      (wrapper.find('Trigger').prop('builtinPlacements') as any).bottomLeft.overflow.adjustX,
+    ).toBe(1);
   });
 
   it('dropdown should not auto-adjust horizontally when dropdownMatchSelectWidth is true', () => {
@@ -1310,7 +1345,9 @@ describe('Select.Basic', () => {
         <Option value={1}>1</Option>
       </Select>,
     );
-    expect(wrapper.find('Trigger').props().builtinPlacements.bottomLeft.overflow.adjustX).toBe(0);
+    expect(
+      (wrapper.find('Trigger').prop('builtinPlacements') as any).bottomLeft.overflow.adjustX,
+    ).toBe(0);
   });
 
   it('if loading, arrow should show loading icon', () => {
@@ -1347,7 +1384,6 @@ describe('Select.Basic', () => {
     );
 
     for (let i = 0; i < 10; i += 1) {
-      console.log('=>', i);
       onSelect.mockReset();
       wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
       expect(onSelect).toHaveBeenCalledWith('1', expect.anything());
@@ -1741,19 +1777,36 @@ describe('Select.Basic', () => {
     });
   });
 
-  it('scrollTo should work', () => {
+  it('scrollTo should work with number', () => {
     const ref = React.createRef<BaseSelectRef>();
     const wrapper = mount(<Select ref={ref} />);
 
     // Not crash
     ref.current.scrollTo(100);
-
     // Open to call again
     wrapper.setProps({
       open: true,
     });
     wrapper.update();
     ref.current.scrollTo(100);
+  });
+
+  it('scrollTo should work with scrollConfig object', () => {
+    const ref = React.createRef<BaseSelectRef>();
+    const wrapper = mount(<Select ref={ref} />);
+    const scrollParams: ScrollConfig = {
+      index: 30,
+      align: 'top',
+    };
+
+    // Not crash
+    ref.current.scrollTo(scrollParams);
+    // Open to call again
+    wrapper.setProps({
+      open: true,
+    });
+    wrapper.update();
+    ref.current.scrollTo(scrollParams);
   });
 
   it('pass props', () => {
@@ -1767,5 +1820,22 @@ describe('Select.Basic', () => {
     );
 
     expect(wrapper.find('div.rc-select').prop('count')).toEqual(10);
+  });
+
+  it('should support onClick', () => {
+    const onClick = jest.fn();
+    const wrapper = mount(<Select onClick={onClick} />);
+    wrapper.simulate('click');
+    expect(onClick).toHaveBeenCalled();
+  });
+
+  it('should hide placeholder if force closed and showSearch with searchValue', () => {
+    const wrapper = mount(
+      <Select showSearch searchValue="search" open={false} placeholder="placeholder" />,
+    );
+    expect(
+      (wrapper.find('.rc-select-selection-placeholder').getDOMNode() as HTMLSpanElement).style
+        .visibility,
+    ).toBe('hidden');
   });
 });

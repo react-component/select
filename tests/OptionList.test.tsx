@@ -2,10 +2,9 @@ import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { act } from 'react-dom/test-utils';
 import React from 'react';
-import type { OptionListProps, RefOptionListProps } from '../src/OptionList';
+import type { RefOptionListProps } from '../src/OptionList';
 import OptionList from '../src/OptionList';
 import { injectRunAllTimers } from './utils/common';
-import type { OptionsType } from '../src/interface';
 import { fillFieldNames, flattenOptions } from '../src/utils/valueUtil';
 import SelectContext from '../src/SelectContext';
 import { BaseSelectContext } from '../src/hooks/useBaseProps';
@@ -24,7 +23,7 @@ describe('OptionList', () => {
   });
 
   function generateList({ options, values, ref, ...props }: any) {
-    const fieldNames = fillFieldNames({}, false);
+    const fieldNames = fillFieldNames(props.fieldNames || {}, false);
     const flattenedOptions = flattenOptions(options, {
       fieldNames,
       childrenAsData: false,
@@ -119,6 +118,56 @@ describe('OptionList', () => {
       expect.anything(),
       expect.objectContaining({ source: 'keyboard' }),
     );
+  });
+
+  it('key operation with fieldNames', () => {
+    const onActiveValue = jest.fn();
+    const toggleOpen = jest.fn();
+    const onSelect = jest.fn();
+    const listRef = React.createRef<RefOptionListProps>();
+    mount(
+      generateList({
+        fieldNames: { value: 'foo', label: 'bar' },
+        options: [{ foo: '1' }, { foo: '2' }],
+        onActiveValue,
+        onSelect,
+        toggleOpen,
+        ref: listRef,
+      }),
+    );
+
+    onActiveValue.mockReset();
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.DOWN } as any);
+    });
+    expect(onActiveValue).toHaveBeenCalledWith(
+      '2',
+      expect.anything(),
+      expect.objectContaining({ source: 'keyboard' }),
+    );
+
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.ENTER } as any);
+    });
+    expect(onSelect).toHaveBeenCalledTimes(1);
+    expect(onSelect).toHaveBeenCalledWith('2', expect.objectContaining({ selected: true }));
+
+    onSelect.mockReset();
+    onActiveValue.mockReset();
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.UP } as any);
+    });
+    expect(onActiveValue).toHaveBeenCalledWith(
+      '1',
+      expect.anything(),
+      expect.objectContaining({ source: 'keyboard' }),
+    );
+
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.ENTER } as any);
+    });
+    expect(onSelect).toHaveBeenCalledTimes(1);
+    expect(onSelect).toHaveBeenCalledWith('1', expect.objectContaining({ selected: true }));
   });
 
   // mocked how we detect running platform in test environment
@@ -248,5 +297,24 @@ describe('OptionList', () => {
       }),
     );
     expect(wrapper.find('.rc-select-item-option').first().prop('title')).toBe(undefined);
+  });
+
+  it('params to scrollIntoView should be object when key is pressed', () => {
+    const listRef = React.createRef<RefOptionListProps>();
+    const options = Array.from({ length: 20 }).map((v, i) => ({ value: i, label: i }));
+    const mockScroll = jest.fn();
+    const wrapper = mount(
+      generateList({
+        options,
+        ref: listRef,
+      }),
+    );
+    const vList = wrapper.find('List').getElement() as any;
+    // override the ref to test the parameters passed to the scrollIntoView method
+    vList.ref.current = { scrollTo: mockScroll };
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.DOWN } as any);
+    });
+    expect(mockScroll.mock.calls[0][0]).toEqual({ index: 1 });
   });
 });

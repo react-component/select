@@ -475,31 +475,80 @@ describe('Select.Multiple', () => {
     expect(wrapper.exists('.rc-select-selection-item-remove')).toBeFalsy();
   });
 
-  it('optionLabelProp', () => {
+  it('do not crash if value not in options when removing option', () => {
     const wrapper = mount(
       <Select
-        mode="multiple"
-        value={['bamboo', 'little']}
-        open
-        optionLabelProp="selector"
-        options={[
+        defaultValue={[
           {
-            label: 'Bamboo',
-            value: 'bamboo',
-            selector: 'BAMBOO',
-          },
-          {
-            label: 'Little',
-            value: 'little',
-            selector: 'LITTLE',
+            label: 'value not in options',
+            value: 'value-not-in-options',
           },
         ]}
-      />,
+        mode="multiple"
+        labelInValue
+      >
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>,
     );
+    expect(findSelection(wrapper, 0).text()).toEqual('value not in options');
+    removeSelection(wrapper, 0);
+    expect(wrapper.find('Selector').props().values.length).toEqual(0);
+  });
 
-    expect(findSelection(wrapper, 0).text()).toBe('BAMBOO');
-    expect(findSelection(wrapper, 1).text()).toBe('LITTLE');
-    expect(wrapper.find('div.rc-select-item-option-content').at(0).text()).toBe('Bamboo');
-    expect(wrapper.find('div.rc-select-item-option-content').at(1).text()).toBe('Little');
+  describe('optionLabelProp', () => {
+    it('basic', () => {
+      const wrapper = mount(
+        <Select
+          mode="multiple"
+          value={['bamboo', 'little']}
+          open
+          optionLabelProp="selector"
+          options={[
+            {
+              label: 'Bamboo',
+              value: 'bamboo',
+              selector: 'BAMBOO',
+            },
+            {
+              label: 'Little',
+              value: 'little',
+              selector: 'LITTLE',
+            },
+          ]}
+        />,
+      );
+
+      expect(findSelection(wrapper, 0).text()).toBe('BAMBOO');
+      expect(findSelection(wrapper, 1).text()).toBe('LITTLE');
+      expect(wrapper.find('div.rc-select-item-option-content').at(0).text()).toBe('Bamboo');
+      expect(wrapper.find('div.rc-select-item-option-content').at(1).text()).toBe('Little');
+    });
+
+    it('select no warning', () => {
+      const wrapper = mount(
+        <Select
+          mode="multiple"
+          open
+          optionLabelProp="selector"
+          options={[
+            {
+              label: 'Bamboo',
+              value: 'bamboo',
+              selector: 'BAMBOO',
+            },
+          ]}
+        />,
+      );
+
+      // Select one
+      const errSpy = jest.spyOn(console, 'error');
+
+      toggleOpen(wrapper);
+      selectItem(wrapper);
+
+      expect(errSpy).not.toHaveBeenCalled();
+      errSpy.mockRestore();
+    });
   });
 });

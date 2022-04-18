@@ -91,6 +91,12 @@ export interface DefaultOptionType extends BaseOptionType {
   children?: Omit<DefaultOptionType, 'children'>[];
 }
 
+export type SelectHandler<ValueType = any, OptionType extends BaseOptionType = DefaultOptionType> =
+  | ((value: RawValueType | LabelInValueType, option: OptionType) => void)
+  | ((value: ValueType, option: OptionType) => void);
+
+type ArrayElementType<T> = T extends (infer E)[] ? E : T;
+
 export interface SelectProps<ValueType = any, OptionType extends BaseOptionType = DefaultOptionType>
   extends BaseSelectPropsWithoutPrivate {
   prefixCls?: string;
@@ -109,8 +115,8 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   autoClearSearchValue?: boolean;
 
   // >>> Select
-  onSelect?: (value: RawValueType | LabelInValueType, option: OptionType) => void;
-  onDeselect?: (value: RawValueType | LabelInValueType, option: OptionType) => void;
+  onSelect?: SelectHandler<ArrayElementType<ValueType>, OptionType>;
+  onDeselect?: SelectHandler<ArrayElementType<ValueType>, OptionType>;
 
   // >>> Options
   /**
@@ -162,7 +168,7 @@ const Select = React.forwardRef(
       // Select
       onSelect,
       onDeselect,
-      dropdownMatchSelectWidth,
+      dropdownMatchSelectWidth = true,
 
       // Options
       filterOption,
@@ -251,7 +257,7 @@ const Select = React.forwardRef(
             rawDisabled = option?.disabled;
 
             // Warning if label not same as provided
-            if (process.env.NODE_ENV !== 'production' && !isRawValue(val)) {
+            if (process.env.NODE_ENV !== 'production' && !optionLabelProp) {
               const optionLabel = option?.[mergedFieldNames.label];
               if (optionLabel !== undefined && optionLabel !== rawLabel) {
                 warning(false, '`label` of `value` is not same as `label` in Select options.');
@@ -448,7 +454,7 @@ const Select = React.forwardRef(
             ? {
                 label: option?.[mergedFieldNames.label],
                 value: val,
-                key: option.key ?? val,
+                key: option?.key ?? val,
               }
             : val,
           injectPropsWithOption(option),

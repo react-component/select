@@ -55,7 +55,7 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
   }, [combobox, activeValue]);
 
   // Not show text when closed expect combobox mode
-  const hasTextInput = mode !== 'combobox' && !open ? false : !!inputValue;
+  const hasTextInput = mode !== 'combobox' && !open && !showSearch ? false : !!inputValue;
 
   const title =
     item && (typeof item.label === 'string' || typeof item.label === 'number')
