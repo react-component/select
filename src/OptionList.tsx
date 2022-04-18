@@ -42,7 +42,6 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
     open,
     multiple,
     mode,
-    tabSelection,
     searchValue,
     toggleOpen,
     notFoundContent,
@@ -59,6 +58,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
     virtual,
     listHeight,
     listItemHeight,
+    tabSelection,
   } = React.useContext(SelectContext);
 
   const itemPrefixCls = `${prefixCls}-item`;
