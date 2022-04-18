@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import type { RenderNode } from './interface';
+import type { RenderNode } from './BaseSelect';
 
 export interface TransBtnProps {
   className: string;

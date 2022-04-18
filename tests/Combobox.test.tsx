@@ -485,4 +485,40 @@ describe('Select.Combobox', () => {
     wrapper.find('input').simulate('compositionEnd', { target: { value: '啊' } });
     expect(onChange).toHaveBeenCalledTimes(2);
   });
+
+  it('default filterOption is false', () => {
+    const wrapper = mount(
+      <Select
+        mode="combobox"
+        open
+        searchValue="not exist"
+        options={[
+          {
+            label: 'Light',
+            value: 'light',
+          },
+          {
+            label: 'Bamboo',
+            value: 'bamboo',
+          },
+        ]}
+      />,
+    );
+
+    expect(wrapper.find('List').prop('data')).toHaveLength(2);
+  });
+
+  // https://github.com/ant-design/ant-design/issues/34975
+  it('should not contain selected className in combobox mode', () => {
+    const onChange = jest.fn();
+    const wrapper = mount(
+      <Select mode="combobox" onChange={onChange}>
+        <Option value="One">One</Option>
+        <Option value="Two">Two</Option>
+      </Select>,
+    );
+    toggleOpen(wrapper);
+    selectItem(wrapper);
+    expect(wrapper.find('.rc-select-item-option-selected').length).toBe(0);
+  });
 });

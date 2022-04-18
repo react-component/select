@@ -34,4 +34,26 @@ describe('Select.Group', () => {
     wrapper.find('input').simulate('change', { target: { value: '1' } });
     expect(wrapper.find('List').props().data).toHaveLength(2);
   });
+
+  describe('group title', () => {
+    it('label as title', () => {
+      const wrapper = mount(
+        <Select open>
+          <OptGroup label="zombiej" />
+        </Select>,
+      );
+
+      expect(wrapper.find('.rc-select-item-group').prop('title')).toEqual('zombiej');
+    });
+
+    it('customize title', () => {
+      const wrapper = mount(
+        <Select open>
+          <OptGroup label="zombiej" title="bamboo" />
+        </Select>,
+      );
+
+      expect(wrapper.find('.rc-select-item-group').prop('title')).toEqual('bamboo');
+    });
+  });
 });

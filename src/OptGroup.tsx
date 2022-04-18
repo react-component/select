@@ -1,8 +1,8 @@
 /* istanbul ignore file */
 import type * as React from 'react';
-import type { OptionGroupData } from './interface';
+import type { DefaultOptionType } from './Select';
 
-export interface OptGroupProps extends Omit<OptionGroupData, 'options'> {
+export interface OptGroupProps extends Omit<DefaultOptionType, 'options'> {
   children?: React.ReactNode;
 }
 

@@ -238,7 +238,7 @@
 
       // ------- Active -------
       &-active {
-        background: green;
+        background: #ddd;
       }
 
       // ------ Disabled ------
@@ -301,12 +301,15 @@
   }
 
   &-slide-up-enter&-slide-up-enter-active&-placement-bottomLeft,
-  &-slide-up-appear&-slide-up-appear-active&-placement-bottomLeft {
+  &-slide-up-appear&-slide-up-appear-active&-placement-bottomLeft,
+  &-slide-up-enter&-slide-up-enter-active&-placement-bottomRight,
+  &-slide-up-appear&-slide-up-appear-active&-placement-bottomRight {
     animation-name: rcSelectDropdownSlideUpIn;
     animation-play-state: running;
   }
 
-  &-slide-up-leave&-slide-up-leave-active&-placement-bottomLeft {
+  &-slide-up-leave&-slide-up-leave-active&-placement-bottomLeft,
+  &-slide-up-leave&-slide-up-leave-active&-placement-bottomRight {
     animation-name: rcSelectDropdownSlideUpOut;
     animation-play-state: running;
   }

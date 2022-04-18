@@ -10,7 +10,7 @@ exports[`OptionList renders correctly 1`] = `
     <div
       aria-selected="false"
       id="undefined_list_0"
-      role="option"
+      role="presentation"
     />
     <div
       aria-label="value-1"
@@ -23,7 +23,7 @@ exports[`OptionList renders correctly 1`] = `
     <div
       aria-selected="false"
       id="undefined_list_2"
-      role="option"
+      role="presentation"
     />
   </div>
   <div

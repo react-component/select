@@ -6,7 +6,6 @@ import type { InnerSelectorProps } from '.';
 interface SelectorProps extends InnerSelectorProps {
   inputElement: React.ReactElement;
   activeValue: string;
-  backfill?: boolean;
 }
 
 const SingleSelector: React.FC<SelectorProps> = (props) => {
@@ -18,7 +17,7 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
     disabled,
     autoFocus,
     autoComplete,
-    accessibilityIndex,
+    activeDescendantId,
     mode,
     open,
     values,
@@ -56,7 +55,7 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
   }, [combobox, activeValue]);
 
   // Not show text when closed expect combobox mode
-  const hasTextInput = mode !== 'combobox' && !open ? false : !!inputValue;
+  const hasTextInput = mode !== 'combobox' && !open && !showSearch ? false : !!inputValue;
 
   const title =
     item && (typeof item.label === 'string' || typeof item.label === 'number')
@@ -88,7 +87,7 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
           autoFocus={autoFocus}
           autoComplete={autoComplete}
           editable={inputEditable}
-          accessibilityIndex={accessibilityIndex}
+          activeDescendantId={activeDescendantId}
           value={inputValue}
           onKeyDown={onInputKeyDown}
           onMouseDown={onInputMouseDown}

@@ -12,7 +12,7 @@ interface InputProps {
   autoFocus: boolean;
   autoComplete: string;
   editable: boolean;
-  accessibilityIndex: number;
+  activeDescendantId?: string;
   value: string;
   maxLength?: number;
   open: boolean;
@@ -42,7 +42,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     autoFocus,
     autoComplete,
     editable,
-    accessibilityIndex,
+    activeDescendantId,
     value,
     maxLength,
     onKeyDown,
@@ -58,40 +58,46 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
 ) => {
   let inputNode: React.ComponentElement<any, any> = inputElement || <input />;
 
+  const { ref: originRef, props: originProps } = inputNode;
+
   const {
-    ref: originRef,
-    props: {
-      onKeyDown: onOriginKeyDown,
-      onChange: onOriginChange,
-      onMouseDown: onOriginMouseDown,
-      onCompositionStart: onOriginCompositionStart,
-      onCompositionEnd: onOriginCompositionEnd,
-      style,
-    },
-  } = inputNode;
+    onKeyDown: onOriginKeyDown,
+    onChange: onOriginChange,
+    onMouseDown: onOriginMouseDown,
+    onCompositionStart: onOriginCompositionStart,
+    onCompositionEnd: onOriginCompositionEnd,
+    style,
+  } = originProps;
 
   inputNode = React.cloneElement(inputNode, {
+    type: 'search',
+    ...originProps,
+
+    // Override over origin props
     id,
     ref: composeRef(ref, originRef as any),
     disabled,
     tabIndex,
     autoComplete: autoComplete || 'off',
-    type: 'search',
+
     autoFocus,
     className: classNames(`${prefixCls}-selection-search-input`, inputNode?.props?.className),
-    style: { ...style, opacity: editable ? null : 0 },
+
     role: 'combobox',
     'aria-expanded': open,
     'aria-haspopup': 'listbox',
     'aria-owns': `${id}_list`,
     'aria-autocomplete': 'list',
     'aria-controls': `${id}_list`,
-    'aria-activedescendant': `${id}_list_${accessibilityIndex}`,
+    'aria-activedescendant': activeDescendantId,
     ...attrs,
     value: editable ? value : '',
     maxLength,
     readOnly: !editable,
     unselectable: !editable ? 'on' : null,
+
+    style: { ...style, opacity: editable ? null : 0 },
+
     onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
       onKeyDown(event);
       if (onOriginKeyDown) {

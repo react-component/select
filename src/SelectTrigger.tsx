@@ -1,13 +1,12 @@
 import * as React from 'react';
 import Trigger from 'rc-trigger';
+import type { AlignType } from 'rc-trigger/lib/interface';
 import classNames from 'classnames';
-import type { RenderDOMFunc } from './interface';
-import type { Placement } from './generate';
+import type { Placement, RenderDOMFunc } from './BaseSelect';
 
 const getBuiltInPlacements = (dropdownMatchSelectWidth: number | boolean) => {
   // Enable horizontal overflow auto-adjustment when a custom dropdown width is provided
-  const adjustX = typeof dropdownMatchSelectWidth !== 'number' ? 0 : 1;
-
+  const adjustX = dropdownMatchSelectWidth === true ? 0 : 1;
   return {
     bottomLeft: {
       points: ['tl', 'bl'],
@@ -65,11 +64,13 @@ export interface SelectTriggerProps {
   dropdownMatchSelectWidth?: boolean | number;
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
   getPopupContainer?: RenderDOMFunc;
-  dropdownAlign: object;
+  dropdownAlign: AlignType;
   empty: boolean;
 
   getTriggerDOMNode: () => HTMLElement;
   onPopupVisibleChange?: (visible: boolean) => void;
+
+  onPopupMouseEnter: () => void;
 }
 
 const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTriggerProps> = (
@@ -89,13 +90,14 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     dropdownClassName,
     direction = 'ltr',
     placement,
-    dropdownMatchSelectWidth = true,
+    dropdownMatchSelectWidth,
     dropdownRender,
     dropdownAlign,
     getPopupContainer,
     empty,
     getTriggerDOMNode,
     onPopupVisibleChange,
+    onPopupMouseEnter,
     ...restProps
   } = props;
 
@@ -141,7 +143,11 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
       builtinPlacements={builtInPlacements}
       prefixCls={dropdownPrefixCls}
       popupTransitionName={mergedTransitionName}
-      popup={<div ref={popupRef}>{popupNode}</div>}
+      popup={
+        <div ref={popupRef} onMouseEnter={onPopupMouseEnter}>
+          {popupNode}
+        </div>
+      }
       popupAlign={dropdownAlign}
       popupVisible={visible}
       getPopupContainer={getPopupContainer}

@@ -111,7 +111,7 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
             <div
               aria-selected="false"
               id="rc_select_TEST_OR_SSR_list_0"
-              role="option"
+              role="presentation"
             />
             <div
               aria-label="Jack"
@@ -124,7 +124,7 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
             <div
               aria-selected="false"
               id="rc_select_TEST_OR_SSR_list_2"
-              role="option"
+              role="presentation"
             />
           </div>
           <div
@@ -142,6 +142,7 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
                 >
                   <div
                     class="rc-select-item rc-select-item-group"
+                    title="Manager"
                   >
                     Manager
                   </div>
@@ -170,6 +171,7 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
                   </div>
                   <div
                     class="rc-select-item rc-select-item-group"
+                    title="Engineer"
                   >
                     Engineer
                   </div>

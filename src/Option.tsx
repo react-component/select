@@ -1,8 +1,8 @@
 /* istanbul ignore file */
 import type * as React from 'react';
-import type { OptionCoreData } from './interface';
+import type { DefaultOptionType } from './Select';
 
-export interface OptionProps extends Omit<OptionCoreData, 'label'> {
+export interface OptionProps extends Omit<DefaultOptionType, 'label'> {
   children: React.ReactNode;
 
   /** Save for customize data */

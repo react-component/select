@@ -4,17 +4,10 @@ import classNames from 'classnames';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import Overflow from 'rc-overflow';
 import TransBtn from '../TransBtn';
-import type {
-  LabelValueType,
-  DisplayLabelValueType,
-  RawValueType,
-  CustomTagProps,
-  DefaultValueType,
-} from '../interface/generator';
-import type { RenderNode } from '../interface';
 import type { InnerSelectorProps } from '.';
 import Input from './Input';
 import useLayoutEffect from '../hooks/useLayoutEffect';
+import type { DisplayValueType, RenderNode, CustomTagProps, RawValueType } from '../BaseSelect';
 
 interface SelectorProps extends InnerSelectorProps {
   // Icon
@@ -23,7 +16,7 @@ interface SelectorProps extends InnerSelectorProps {
   // Tags
   maxTagCount?: number | 'responsive';
   maxTagTextLength?: number;
-  maxTagPlaceholder?: React.ReactNode | ((omittedValues: LabelValueType[]) => React.ReactNode);
+  maxTagPlaceholder?: React.ReactNode | ((omittedValues: DisplayValueType[]) => React.ReactNode);
   tokenSeparators?: string[];
   tagRender?: (props: CustomTagProps) => React.ReactElement;
   onToggleOpen: (open?: boolean) => void;
@@ -32,7 +25,7 @@ interface SelectorProps extends InnerSelectorProps {
   choiceTransitionName?: string;
 
   // Event
-  onSelect: (value: RawValueType, option: { selected: boolean }) => void;
+  onRemove: (value: DisplayValueType) => void;
 }
 
 const onPreventMouseDown = (event: React.MouseEvent) => {
@@ -54,18 +47,18 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
     showSearch,
     autoFocus,
     autoComplete,
-    accessibilityIndex,
+    activeDescendantId,
     tabIndex,
 
     removeIcon,
 
     maxTagCount,
     maxTagTextLength,
-    maxTagPlaceholder = (omittedValues: LabelValueType[]) => `+ ${omittedValues.length} ...`,
+    maxTagPlaceholder = (omittedValues: DisplayValueType[]) => `+ ${omittedValues.length} ...`,
     tagRender,
     onToggleOpen,
 
-    onSelect,
+    onRemove,
     onInputChange,
     onInputPaste,
     onInputKeyDown,
@@ -123,7 +116,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
   }
 
   function customizeRenderSelector(
-    value: DefaultValueType,
+    value: RawValueType,
     content: React.ReactNode,
     itemDisabled: boolean,
     closable: boolean,
@@ -147,7 +140,8 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
     );
   }
 
-  function renderItem({ disabled: itemDisabled, label, value }: DisplayLabelValueType) {
+  function renderItem(valueItem: DisplayValueType) {
+    const { disabled: itemDisabled, label, value } = valueItem;
     const closable = !disabled && !itemDisabled;
 
     let displayLabel: React.ReactNode = label;
@@ -164,7 +158,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
 
     const onClose = (event?: React.MouseEvent) => {
       if (event) event.stopPropagation();
-      onSelect(value, { selected: false });
+      onRemove(valueItem);
     };
 
     return typeof tagRender === 'function'
@@ -172,7 +166,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
       : defaultRenderSelector(label, displayLabel, itemDisabled, closable, onClose);
   }
 
-  function renderRest(omittedValues: DisplayLabelValueType[]) {
+  function renderRest(omittedValues: DisplayValueType[]) {
     const content =
       typeof maxTagPlaceholder === 'function'
         ? maxTagPlaceholder(omittedValues)
@@ -203,7 +197,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
         autoFocus={autoFocus}
         autoComplete={autoComplete}
         editable={inputEditable}
-        accessibilityIndex={accessibilityIndex}
+        activeDescendantId={activeDescendantId}
         value={inputValue}
         onKeyDown={onInputKeyDown}
         onMouseDown={onInputMouseDown}
