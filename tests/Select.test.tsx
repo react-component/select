@@ -3,6 +3,7 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { resetWarned } from 'rc-util/lib/warning';
+import type { ScrollConfig } from 'rc-virtual-list/lib/List';
 import { spyElementPrototype } from 'rc-util/lib/test/domHook';
 import VirtualList from 'rc-virtual-list';
 import type { SelectProps } from '../src';
@@ -827,55 +828,68 @@ describe('Select.Basic', () => {
     expect(focusSpy).toHaveBeenCalled();
   });
 
-  it('combobox could customize input element', () => {
-    const onKeyDown = jest.fn();
-    const onChange = jest.fn();
-    const onMouseDown = jest.fn();
-    const onCompositionStart = jest.fn();
-    const onCompositionEnd = jest.fn();
-    const textareaRef = jest.fn();
-    const mouseDownPreventDefault = jest.fn();
-    const wrapper = mount(
-      <Select
-        mode="combobox"
-        getInputElement={() => (
-          <textarea
-            onKeyDown={onKeyDown}
-            onChange={onChange}
-            onMouseDown={onMouseDown}
-            onCompositionStart={onCompositionStart}
-            onCompositionEnd={onCompositionEnd}
-            ref={textareaRef}
-            className="custom-input"
-          />
-        )}
-      >
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
-      </Select>,
-    );
+  describe('combobox could customize input element', () => {
+    it('work', () => {
+      const onKeyDown = jest.fn();
+      const onChange = jest.fn();
+      const onMouseDown = jest.fn();
+      const onCompositionStart = jest.fn();
+      const onCompositionEnd = jest.fn();
+      const textareaRef = jest.fn();
+      const mouseDownPreventDefault = jest.fn();
+      const wrapper = mount(
+        <Select
+          mode="combobox"
+          getInputElement={() => (
+            <textarea
+              onKeyDown={onKeyDown}
+              onChange={onChange}
+              onMouseDown={onMouseDown}
+              onCompositionStart={onCompositionStart}
+              onCompositionEnd={onCompositionEnd}
+              ref={textareaRef}
+              className="custom-input"
+            />
+          )}
+        >
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
 
-    expect(wrapper.find('textarea').length).toBe(1);
-    toggleOpen(wrapper);
-    wrapper
-      .find('.rc-select')
-      .find('textarea')
-      .simulate('mouseDown', { preventDefault: mouseDownPreventDefault })
-      .simulate('keyDown', { which: KeyCode.NUM_ONE })
-      .simulate('change', { target: { value: '1' } })
-      .simulate('compositionStart')
-      .simulate('compositionEnd');
+      expect(wrapper.find('textarea').length).toBe(1);
+      toggleOpen(wrapper);
+      wrapper
+        .find('.rc-select')
+        .find('textarea')
+        .simulate('mouseDown', { preventDefault: mouseDownPreventDefault })
+        .simulate('keyDown', { which: KeyCode.NUM_ONE })
+        .simulate('change', { target: { value: '1' } })
+        .simulate('compositionStart')
+        .simulate('compositionEnd');
 
-    selectItem(wrapper);
-    expect(wrapper.find('textarea').props().value).toEqual('1');
-    expect(wrapper.find('textarea').hasClass('custom-input')).toBe(true);
-    expect(mouseDownPreventDefault).not.toHaveBeenCalled();
-    expect(onKeyDown).toHaveBeenCalled();
-    expect(onChange).toHaveBeenCalled();
-    expect(onMouseDown).toHaveBeenCalled();
-    expect(textareaRef).toHaveBeenCalled();
-    expect(onCompositionStart).toHaveBeenCalled();
-    expect(onCompositionEnd).toHaveBeenCalled();
+      selectItem(wrapper);
+      expect(wrapper.find('textarea').props().value).toEqual('1');
+      expect(wrapper.find('textarea').hasClass('custom-input')).toBe(true);
+      expect(mouseDownPreventDefault).not.toHaveBeenCalled();
+      expect(onKeyDown).toHaveBeenCalled();
+      expect(onChange).toHaveBeenCalled();
+      expect(onMouseDown).toHaveBeenCalled();
+      expect(textareaRef).toHaveBeenCalled();
+      expect(onCompositionStart).toHaveBeenCalled();
+      expect(onCompositionEnd).toHaveBeenCalled();
+    });
+
+    it('not override customize props', () => {
+      const wrapper = mount(
+        <Select mode="combobox" getInputElement={() => <input type="email" />}>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
+
+      expect(wrapper.find('input').prop('type')).toEqual('email');
+    });
   });
 
   it('getRawInputElement for rc-cascader', () => {
@@ -1370,7 +1384,6 @@ describe('Select.Basic', () => {
     );
 
     for (let i = 0; i < 10; i += 1) {
-      console.log('=>', i);
       onSelect.mockReset();
       wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
       expect(onSelect).toHaveBeenCalledWith('1', expect.anything());
@@ -1764,19 +1777,36 @@ describe('Select.Basic', () => {
     });
   });
 
-  it('scrollTo should work', () => {
+  it('scrollTo should work with number', () => {
     const ref = React.createRef<BaseSelectRef>();
     const wrapper = mount(<Select ref={ref} />);
 
     // Not crash
     ref.current.scrollTo(100);
-
     // Open to call again
     wrapper.setProps({
       open: true,
     });
     wrapper.update();
     ref.current.scrollTo(100);
+  });
+
+  it('scrollTo should work with scrollConfig object', () => {
+    const ref = React.createRef<BaseSelectRef>();
+    const wrapper = mount(<Select ref={ref} />);
+    const scrollParams: ScrollConfig = {
+      index: 30,
+      align: 'top',
+    };
+
+    // Not crash
+    ref.current.scrollTo(scrollParams);
+    // Open to call again
+    wrapper.setProps({
+      open: true,
+    });
+    wrapper.update();
+    ref.current.scrollTo(scrollParams);
   });
 
   it('pass props', () => {

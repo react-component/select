@@ -142,6 +142,7 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
                 >
                   <div
                     class="rc-select-item rc-select-item-group"
+                    title="Manager"
                   >
                     Manager
                   </div>
@@ -170,6 +171,7 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
                   </div>
                   <div
                     class="rc-select-item rc-select-item-group"
+                    title="Engineer"
                   >
                     Engineer
                   </div>

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useEffect } from 'react';
+import type { ScrollConfig } from 'rc-virtual-list/lib/List';
 import KeyCode from 'rc-util/lib/KeyCode';
 import omit from 'rc-util/lib/omit';
 import pickAttrs from 'rc-util/lib/pickAttrs';
@@ -20,7 +21,11 @@ export type OptionListProps = Record<string, never>;
 export interface RefOptionListProps {
   onKeyDown: React.KeyboardEventHandler;
   onKeyUp: React.KeyboardEventHandler;
-  scrollTo?: (index: number) => void;
+  scrollTo?: (args: number | ScrollConfig) => void;
+}
+
+function isTitleType(content: any) {
+  return typeof content === 'string' || typeof content === 'number';
 }
 
 /**
@@ -31,8 +36,17 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
   _,
   ref,
 ) => {
-  const { prefixCls, id, open, multiple, searchValue, toggleOpen, notFoundContent, onPopupScroll } =
-    useBaseProps();
+  const {
+    prefixCls,
+    id,
+    open,
+    multiple,
+    mode,
+    searchValue,
+    toggleOpen,
+    notFoundContent,
+    onPopupScroll,
+  } = useBaseProps();
   const {
     flattenOptions,
     onActiveValue,
@@ -61,9 +75,9 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
     event.preventDefault();
   };
 
-  const scrollIntoView = (index: number) => {
+  const scrollIntoView = (args: number | ScrollConfig) => {
     if (listRef.current) {
-      listRef.current.scrollTo({ index });
+      listRef.current.scrollTo(typeof args === 'number' ? { index: args } : args);
     }
   };
 
@@ -102,6 +116,12 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
   useEffect(() => {
     setActive(defaultActiveFirstOption !== false ? getEnabledActiveIndex(0) : -1);
   }, [memoFlattenOptions.length, searchValue]);
+
+  // https://github.com/ant-design/ant-design/issues/34975
+  const isSelected = React.useCallback(
+    (value: RawValueType) => rawValues.has(value) && mode !== 'combobox',
+    [mode, [...rawValues].toString()],
+  );
 
   // Auto scroll to item position in single mode
   useEffect(() => {
@@ -241,7 +261,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
         key={index}
         role={group ? 'presentation' : 'option'}
         id={`${id}_list_${index}`}
-        aria-selected={rawValues.has(value)}
+        aria-selected={isSelected(value)}
       >
         {value}
       </div>
@@ -272,8 +292,13 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
 
           // Group
           if (group) {
+            const groupTitle = data.title ?? (isTitleType(label) && label);
+
             return (
-              <div className={classNames(itemPrefixCls, `${itemPrefixCls}-group`)}>
+              <div
+                className={classNames(itemPrefixCls, `${itemPrefixCls}-group`)}
+                title={groupTitle}
+              >
                 {label !== undefined ? label : key}
               </div>
             );
@@ -283,7 +308,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
           const passedProps = omit(otherProps, omitFieldNameList);
 
           // Option
-          const selected = rawValues.has(value);
+          const selected = isSelected(value);
 
           const optionPrefixCls = `${itemPrefixCls}-option`;
           const optionClassName = classNames(itemPrefixCls, optionPrefixCls, className, {
@@ -301,10 +326,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
           // https://github.com/ant-design/ant-design/issues/34145
           const content = typeof mergedLabel === 'number' ? mergedLabel : mergedLabel || value;
           // https://github.com/ant-design/ant-design/issues/26717
-          let optionTitle =
-            typeof content === 'string' || typeof content === 'number'
-              ? content.toString()
-              : undefined;
+          let optionTitle = isTitleType(content) ? content.toString() : undefined;
           if (title !== undefined) {
             optionTitle = title;
           }
