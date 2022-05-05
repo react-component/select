@@ -10,13 +10,8 @@ export default function useOptions<OptionType>(
   options: OptionType[],
   children: React.ReactNode,
   fieldNames: FieldNames,
-  {
-    optionFilterProp,
-    optionLabelProp,
-  }: {
-    optionFilterProp: string;
-    optionLabelProp: string;
-  },
+  optionFilterProp: string,
+  optionLabelProp: string,
 ) {
   return React.useMemo(() => {
     let mergedOptions = options;
@@ -57,5 +52,5 @@ export default function useOptions<OptionType>(
       valueOptions,
       labelOptions,
     };
-  }, [options, children, fieldNames]);
+  }, [options, children, fieldNames, optionFilterProp, optionLabelProp]);
 }
