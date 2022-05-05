@@ -221,7 +221,13 @@ const Select = React.forwardRef(
     });
 
     // =========================== Option ===========================
-    const parsedOptions = useOptions(options, children, mergedFieldNames);
+    const parsedOptions = useOptions(
+      options,
+      children,
+      mergedFieldNames,
+      optionFilterProp,
+      optionLabelProp,
+    );
     const { valueOptions, labelOptions, options: mergedOptions } = parsedOptions;
 
     // ========================= Wrap Value =========================

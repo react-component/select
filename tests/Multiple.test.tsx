@@ -182,6 +182,56 @@ describe('Select.Multiple', () => {
     expectOpen(wrapper, false);
   });
 
+  it('should separate words when optionLabelProp is not children', () => {
+    const handleChange = jest.fn();
+    const wrapper = mount(
+      <Select
+        mode="multiple"
+        optionLabelProp="label"
+        tokenSeparators={[',']}
+        onChange={handleChange}
+      >
+        <Option value="1" label="One">
+          <div>One</div>
+        </Option>
+        <Option value="2" label="Two">
+          <div>Two</div>
+        </Option>
+      </Select>,
+    );
+    wrapper.find('input').simulate('change', {
+      target: {
+        value: 'One,Two',
+      },
+    });
+    expect(handleChange).toHaveBeenCalledWith(['1', '2'], expect.anything());
+  });
+
+  it('should separate words when optionFilterProp is not children', () => {
+    const handleChange = jest.fn();
+    const wrapper = mount(
+      <Select
+        mode="multiple"
+        optionFilterProp="label"
+        tokenSeparators={[',']}
+        onChange={handleChange}
+      >
+        <Option value="1" label="One">
+          <div>One</div>
+        </Option>
+        <Option value="2" label="Two">
+          <div>Two</div>
+        </Option>
+      </Select>,
+    );
+    wrapper.find('input').simulate('change', {
+      target: {
+        value: 'One,Two',
+      },
+    });
+    expect(handleChange).toHaveBeenCalledWith(['1', '2'], expect.anything());
+  });
+
   it('focus', () => {
     jest.useFakeTimers();
     const handleFocus = jest.fn();
