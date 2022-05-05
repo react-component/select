@@ -1838,4 +1838,30 @@ describe('Select.Basic', () => {
         .visibility,
     ).toBe('hidden');
   });
+
+  describe('alternative label', () => {
+    it('when single select alternative label', () => {
+      const wrapper = mount(
+        <Select
+          options={[{ value: 'yyy', label: 'test' }]}
+          alternativeLabel={<span className="alternative">error option</span>}
+          defaultValue={'xxx'}
+        />,
+      );
+      expect(wrapper.find('.alternative').length).toBeTruthy();
+    });
+
+    it('when multiple select alternative label', () => {
+      const wrapper = mount(
+        <Select
+          options={[{ value: 'yyy', label: 'test' }]}
+          alternativeLabel={<span className="alternative">error option</span>}
+          mode={'multiple'}
+          defaultValue={['xxx']}
+        />,
+      );
+      expect(wrapper.find('.rc-select-selection-item-alternative').length).toBeTruthy();
+      expect(wrapper.find('.alternative').length).toBeTruthy();
+    });
+  });
 });

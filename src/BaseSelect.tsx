@@ -53,6 +53,7 @@ export type CustomTagProps = {
   label: React.ReactNode;
   value: any;
   disabled: boolean;
+  isAlternative: boolean;
   onClose: (event?: React.MouseEvent<HTMLElement, MouseEvent>) => void;
   closable: boolean;
 };
@@ -62,6 +63,7 @@ export interface DisplayValueType {
   value?: RawValueType;
   label?: React.ReactNode;
   disabled?: boolean;
+  isAlternative?: boolean;
 }
 
 export interface BaseSelectRef {
