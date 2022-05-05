@@ -10,6 +10,13 @@ export default function useOptions<OptionType>(
   options: OptionType[],
   children: React.ReactNode,
   fieldNames: FieldNames,
+  {
+    optionFilterProp,
+    optionLabelProp,
+  }: {
+    optionFilterProp: string;
+    optionLabelProp: string;
+  },
 ) {
   return React.useMemo(() => {
     let mergedOptions = options;
@@ -28,7 +35,16 @@ export default function useOptions<OptionType>(
         const option = optionList[i];
         if (!option[fieldNames.options] || isChildren) {
           valueOptions.set(option[fieldNames.value], option);
-          labelOptions.set(option[fieldNames.label], option);
+          if (option[fieldNames.label] && typeof option[fieldNames.label] === 'string') {
+            labelOptions.set(option[fieldNames.label], option);
+          }
+          // https://github.com/ant-design/ant-design/issues/35304
+          if (optionFilterProp && typeof optionFilterProp === 'string') {
+            labelOptions.set(option[optionFilterProp], option);
+          }
+          if (optionLabelProp && typeof optionLabelProp === 'string') {
+            labelOptions.set(option[optionLabelProp], option);
+          }
         } else {
           dig(option[fieldNames.options], true);
         }
