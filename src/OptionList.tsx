@@ -333,7 +333,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
 
           return (
             <div
-              {...passedProps}
+              {...pickAttrs(passedProps)}
               aria-selected={selected}
               className={optionClassName}
               title={optionTitle}

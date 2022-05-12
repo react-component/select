@@ -1838,4 +1838,18 @@ describe('Select.Basic', () => {
         .visibility,
     ).toBe('hidden');
   });
+
+  it('no warning for non-dom attr', () => {
+    const wrapper = mount(
+      <Select open>
+        <Select.Option light="little" data-test="good" aria-label="well">
+          Bamboo
+        </Select.Option>
+      </Select>,
+    );
+
+    expect(wrapper.find('div.rc-select-item').prop('light')).toBeFalsy();
+    expect(wrapper.find('div.rc-select-item').prop('data-test')).toEqual('good');
+    expect(wrapper.find('div.rc-select-item').prop('aria-label')).toEqual('well');
+  });
 });
