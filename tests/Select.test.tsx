@@ -1852,4 +1852,17 @@ describe('Select.Basic', () => {
     expect(wrapper.find('div.rc-select-item').prop('data-test')).toEqual('good');
     expect(wrapper.find('div.rc-select-item').prop('aria-label')).toEqual('well');
   });
+
+  it('labelRender', () => {
+    const onLabelRender = jest.fn();
+    const labelRender = (props: any) => {
+      const { label, value } = props;
+      onLabelRender();
+      return `${label}-${value}`;
+    };
+    const wrapper = mount(<Select value="a" labelRender={labelRender} />);
+
+    expect(onLabelRender).toHaveBeenCalled();
+    expect(findSelection(wrapper).text()).toEqual('a-a');
+  });
 });

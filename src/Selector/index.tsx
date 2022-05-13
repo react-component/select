@@ -74,6 +74,7 @@ export interface SelectorProps {
   maxTagTextLength?: number;
   maxTagPlaceholder?: React.ReactNode | ((omittedValues: DisplayValueType[]) => React.ReactNode);
   tagRender?: (props: CustomTagProps) => React.ReactElement;
+  labelRender?: (props: DisplayValueType) => React.ReactNode;
 
   /** Check if `tokenSeparators` contains `\n` or `\r\n` */
   tokenWithEnter?: boolean;

@@ -125,6 +125,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   style?: React.CSSProperties;
   showSearch?: boolean;
   tagRender?: (props: CustomTagProps) => React.ReactElement;
+  labelRender?: (props: DisplayValueType) => React.ReactNode;
   direction?: 'ltr' | 'rtl';
 
   // MISC
@@ -209,6 +210,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     className,
     showSearch,
     tagRender,
+    labelRender,
     direction,
     omitDomProps,
 
@@ -761,6 +763,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
           mode={mode}
           activeDescendantId={activeDescendantId}
           tagRender={tagRender}
+          labelRender={labelRender}
           values={displayValues}
           open={mergedOpen}
           onToggleOpen={onToggleOpen}

@@ -2,10 +2,12 @@ import * as React from 'react';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import Input from './Input';
 import type { InnerSelectorProps } from '.';
+import type { DisplayValueType } from '../BaseSelect';
 
 interface SelectorProps extends InnerSelectorProps {
   inputElement: React.ReactElement;
   activeValue: string;
+  labelRender?: (props: DisplayValueType) => React.ReactNode;
 }
 
 const SingleSelector: React.FC<SelectorProps> = (props) => {
@@ -28,6 +30,7 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
     searchValue,
     activeValue,
     maxLength,
+    labelRender,
 
     onInputKeyDown,
     onInputMouseDown,
@@ -61,6 +64,10 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
     item && (typeof item.label === 'string' || typeof item.label === 'number')
       ? item.label.toString()
       : undefined;
+
+  const renderSelectionItem = () => {
+    return typeof labelRender === 'function' ? labelRender(item) : item.label;
+  };
 
   const renderPlaceholder = () => {
     if (item) {
@@ -107,7 +114,7 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
       {/* Display value */}
       {!combobox && item && !hasTextInput && (
         <span className={`${prefixCls}-selection-item`} title={title}>
-          {item.label}
+          {renderSelectionItem()}
         </span>
       )}
 
