@@ -1857,12 +1857,29 @@ describe('Select.Basic', () => {
     const onLabelRender = jest.fn();
     const labelRender = (props: any) => {
       const { label, value } = props;
+      console.log(props);
       onLabelRender();
       return `${label}-${value}`;
+    };
+    const wrapper = mount(
+      <Select options={[{ label: 'realLabel', value: 'a' }]} value="a" labelRender={labelRender} />,
+    );
+
+    expect(onLabelRender).toHaveBeenCalled();
+    expect(findSelection(wrapper).text()).toEqual('realLabel-a');
+  });
+
+  it('labelRender for fake label', () => {
+    const onLabelRender = jest.fn();
+    const labelRender = (props: any) => {
+      const { label, value } = props;
+      console.log(props);
+      onLabelRender();
+      return `${label || 'fakeLabel'}-${value}`;
     };
     const wrapper = mount(<Select value="a" labelRender={labelRender} />);
 
     expect(onLabelRender).toHaveBeenCalled();
-    expect(findSelection(wrapper).text()).toEqual('a-a');
+    expect(findSelection(wrapper).text()).toEqual('fakeLabel-a');
   });
 });
