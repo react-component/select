@@ -53,6 +53,7 @@
     "rc-virtual-list": "^3.2.0"
   },
   "devDependencies": {
+    "@testing-library/react": "12",
     "@types/enzyme": "^3.10.9",
     "@types/jest": "^26.0.24",
     "@types/react": "^17.0.15",
