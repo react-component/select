@@ -635,6 +635,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     () => [containerRef.current, triggerRef.current?.getPopupElement()],
     triggerOpen,
     onToggleOpen,
+    !!customizeRawInputElement,
   );
 
   // ============================ Context =============================
