@@ -292,7 +292,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
 
           // Group
           if (group) {
-            const groupTitle = data.title ?? (isTitleType(label) && label);
+            const groupTitle = data.title ?? (isTitleType(label) ? label.toString() : undefined);
 
             return (
               <div
