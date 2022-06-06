@@ -153,7 +153,9 @@ describe('Select.Combobox', () => {
 
         public render() {
           const options = this.state.data.map((item) => (
-            <Option value={item.key}>{item.label}</Option>
+            <Option key={item.key} value={item.key}>
+              {item.label}
+            </Option>
           ));
           return (
             <Select
@@ -200,7 +202,9 @@ describe('Select.Combobox', () => {
 
         public render() {
           const options = this.state.data.map((item) => (
-            <Option value={item.key}>{item.label}</Option>
+            <Option key={item.key} value={item.key}>
+              {item.label}
+            </Option>
           ));
           return (
             <Select
@@ -362,7 +366,9 @@ describe('Select.Combobox', () => {
         return (
           <Select mode="combobox" onChange={this.updateOptions}>
             {this.state.options.map((opt) => (
-              <Option value={opt}>{opt}</Option>
+              <Option key={opt} value={opt}>
+                {opt}
+              </Option>
             ))}
           </Select>
         );
@@ -531,11 +537,7 @@ describe('Select.Combobox', () => {
     rerender(<Select mode="combobox" maxLength={3} getInputElement={() => <input />} />);
     expect(container.querySelector('input').maxLength).toBe(3);
     rerender(
-      <Select
-        mode="combobox"
-        maxLength={3}
-        getInputElement={() => <input maxLength={2} />}
-       />,
+      <Select mode="combobox" maxLength={3} getInputElement={() => <input maxLength={2} />} />,
     );
     expect(container.querySelector('input').maxLength).toBe(2);
   });
