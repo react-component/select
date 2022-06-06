@@ -92,7 +92,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     'aria-activedescendant': activeDescendantId,
     ...attrs,
     value: editable ? value : '',
-    maxLength,
+    maxLength: inputNode.props.maxLength ?? maxLength,
     readOnly: !editable,
     unselectable: !editable ? 'on' : null,
 
