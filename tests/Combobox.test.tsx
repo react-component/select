@@ -530,20 +530,20 @@ describe('Select.Combobox', () => {
         <Option value="Two">Two</Option>
       </Select>,
     );
-    expect(container.querySelector('input').attributes).toHaveProperty('maxlength', '4');
+    expect(container.querySelector('input').maxLength).toBe(4);
     rerender(
       <Select mode="combobox" maxLength={3} getInputElement={() => <input />}>
         <Option value="One">One</Option>
         <Option value="Two">Two</Option>
       </Select>,
     );
-    expect(container.querySelector('input').attributes).toHaveProperty('maxlength', '3');
+    expect(container.querySelector('input').maxLength).toBe(3);
     rerender(
       <Select mode="combobox" maxLength={3} getInputElement={() => <input maxLength={2} />}>
         <Option value="One">One</Option>
         <Option value="Two">Two</Option>
       </Select>,
     );
-    expect(container.querySelector('input').attributes).toHaveProperty('maxlength', '2');
+    expect(container.querySelector('input').maxLength).toBe(2);
   });
 });
