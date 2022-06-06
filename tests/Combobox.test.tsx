@@ -525,24 +525,17 @@ describe('Select.Combobox', () => {
 
   it('maxLength should work in custom input', () => {
     const { container, rerender } = render(
-      <Select mode="combobox" getInputElement={() => <input maxLength={4} />}>
-        <Option value="One">One</Option>
-        <Option value="Two">Two</Option>
-      </Select>,
+      <Select mode="combobox" getInputElement={() => <input maxLength={4} />} />,
     );
     expect(container.querySelector('input').maxLength).toBe(4);
-    rerender(
-      <Select mode="combobox" maxLength={3} getInputElement={() => <input />}>
-        <Option value="One">One</Option>
-        <Option value="Two">Two</Option>
-      </Select>,
-    );
+    rerender(<Select mode="combobox" maxLength={3} getInputElement={() => <input />} />);
     expect(container.querySelector('input').maxLength).toBe(3);
     rerender(
-      <Select mode="combobox" maxLength={3} getInputElement={() => <input maxLength={2} />}>
-        <Option value="One">One</Option>
-        <Option value="Two">Two</Option>
-      </Select>,
+      <Select
+        mode="combobox"
+        maxLength={3}
+        getInputElement={() => <input maxLength={2} />}
+       />,
     );
     expect(container.querySelector('input').maxLength).toBe(2);
   });
