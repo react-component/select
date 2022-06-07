@@ -1,6 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { composeRef } from 'rc-util/lib/ref';
+import { warning } from 'rc-util/lib/warning';
 
 type InputRef = HTMLInputElement | HTMLTextAreaElement;
 
@@ -68,6 +69,11 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     onCompositionEnd: onOriginCompositionEnd,
     style,
   } = originProps;
+
+  warning(
+    !('maxLength' in inputNode.props),
+    `Passing 'maxLength' to input element directly may not work because input in BaseSelect is controlled.`,
+  );
 
   inputNode = React.cloneElement(inputNode, {
     type: 'search',

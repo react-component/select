@@ -61,6 +61,7 @@ export interface SelectorProps {
   searchValue: string;
   activeValue: string;
   inputElement: JSX.Element;
+  maxLength?: number;
 
   autoFocus?: boolean;
   activeDescendantId?: string;
