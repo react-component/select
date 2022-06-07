@@ -113,7 +113,7 @@ class Combobox extends React.Component {
             mode="combobox"
             style={{ width: 200 }}
             getInputElement={() => (
-              <textarea style={{ background: 'red' }} rows={3} ref={this.textareaRef} />
+              <textarea maxLength={2} style={{ background: 'red' }} rows={3} ref={this.textareaRef} />
             )}
             options={[{ value: 'light' }, { value: 'bamboo' }]}
             allowClear
