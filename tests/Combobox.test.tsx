@@ -12,7 +12,6 @@ import openControlledTest from './shared/openControlledTest';
 import { expectOpen, toggleOpen, selectItem, injectRunAllTimers } from './utils/common';
 import allowClearTest from './shared/allowClearTest';
 import throwOptionValue from './shared/throwOptionValue';
-import { render } from '@testing-library/react';
 
 async function delay(timeout = 0) {
   return new Promise((resolve) => {
@@ -527,18 +526,5 @@ describe('Select.Combobox', () => {
     toggleOpen(wrapper);
     selectItem(wrapper);
     expect(wrapper.find('.rc-select-item-option-selected').length).toBe(0);
-  });
-
-  it('maxLength should work in custom input', () => {
-    const { container, rerender } = render(
-      <Select mode="combobox" getInputElement={() => <input maxLength={4} />} />,
-    );
-    expect(container.querySelector('input').maxLength).toBe(4);
-    rerender(<Select mode="combobox" maxLength={3} getInputElement={() => <input />} />);
-    expect(container.querySelector('input').maxLength).toBe(3);
-    rerender(
-      <Select mode="combobox" maxLength={3} getInputElement={() => <input maxLength={2} />} />,
-    );
-    expect(container.querySelector('input').maxLength).toBe(2);
   });
 });
