@@ -292,12 +292,12 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
 
           // Group
           if (group) {
-            const groupTitle = data.title ?? (isTitleType(label) && label);
+            const groupTitle = data.title ?? label;
 
             return (
               <div
                 className={classNames(itemPrefixCls, `${itemPrefixCls}-group`)}
-                title={groupTitle}
+                title={isTitleType(groupTitle) ? groupTitle : undefined }
               >
                 {label !== undefined ? label : key}
               </div>
