@@ -55,5 +55,15 @@ describe('Select.Group', () => {
 
       expect(wrapper.find('.rc-select-item-group').prop('title')).toEqual('bamboo');
     });
+
+    it('title as undefined', () => {
+      const wrapper = mount(
+        <Select open>
+          <OptGroup label={<span>zombiej</span>} />
+        </Select>,
+      );
+
+      expect(wrapper.find('.rc-select-item-group').prop('title')).toBeUndefined();
+    });
   });
 });
