@@ -25,9 +25,19 @@ function warningProps(props: SelectProps) {
     optionLabelProp,
   } = props;
 
+  console.log('=========props==========')
+  console.log(props)
+  console.log('=========value==========')
+  console.log(value)
+  console.log('=========options==========')
+  console.log(options)
+
+
   const multiple = isMultiple(mode);
   const mergedShowSearch = showSearch !== undefined ? showSearch : multiple || mode === 'combobox';
   const mergedOptions = options || convertChildrenToData(children);
+  // console.log('=======mergedOptions========')
+  // console.log(mergedOptions)
 
   // `tags` should not set option as disabled
   warning(
@@ -147,6 +157,16 @@ function warningProps(props: SelectProps) {
       inputValue === undefined,
       '`inputValue` is deprecated, please use `searchValue` instead.',
     );
+  }
+
+  // value in option can not be null
+  if (options) {
+    for (let i = 0; i < options.length; i++) {
+      if (options[i]?.value === null) {
+        warning(false, '`value` in option can not be null, please use string | number instead.');
+        break;
+      }
+    }
   }
 }
 
