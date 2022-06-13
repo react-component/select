@@ -29,24 +29,29 @@
  * - `combobox` mode not support `optionLabelProp`
  */
 
-import * as React from 'react';
-import warning from 'rc-util/lib/warning';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
+import warning from 'rc-util/lib/warning';
+import * as React from 'react';
+import type {
+  BaseSelectProps,
+  BaseSelectPropsWithoutPrivate,
+  BaseSelectRef,
+  DisplayValueType,
+  RenderNode,
+} from './BaseSelect';
 import BaseSelect, { isMultiple } from './BaseSelect';
-import type { DisplayValueType, RenderNode } from './BaseSelect';
-import OptionList from './OptionList';
-import Option from './Option';
-import OptGroup from './OptGroup';
-import type { BaseSelectRef, BaseSelectPropsWithoutPrivate, BaseSelectProps } from './BaseSelect';
-import useOptions from './hooks/useOptions';
-import SelectContext from './SelectContext';
+import useCache from './hooks/useCache';
+import useFilterOptions from './hooks/useFilterOptions';
 import useId from './hooks/useId';
+import useOptions from './hooks/useOptions';
 import useRefFunc from './hooks/useRefFunc';
+import OptGroup from './OptGroup';
+import Option from './Option';
+import OptionList from './OptionList';
+import SelectContext from './SelectContext';
+import { toArray } from './utils/commonUtil';
 import { fillFieldNames, flattenOptions, injectPropsWithOption } from './utils/valueUtil';
 import warningProps from './utils/warningPropsUtil';
-import { toArray } from './utils/commonUtil';
-import useFilterOptions from './hooks/useFilterOptions';
-import useCache from './hooks/useCache';
 
 const OMIT_DOM_PROPS = ['inputValue'];
 
@@ -237,45 +242,48 @@ const Select = React.forwardRef(
         const valueList = toArray(draftValues);
 
         // Convert to labelInValue type
-        return valueList.map((val) => {
-          let rawValue: RawValueType;
-          let rawLabel: React.ReactNode;
-          let rawKey: React.Key;
-          let rawDisabled: boolean | undefined;
+        // We .filter() it with null value first
+        return valueList
+          .filter((val) => val !== null)
+          .map((val) => {
+            let rawValue: RawValueType;
+            let rawLabel: React.ReactNode;
+            let rawKey: React.Key;
+            let rawDisabled: boolean | undefined;
 
-          // Fill label & value
-          if (isRawValue(val)) {
-            rawValue = val;
-          } else {
-            rawKey = val.key;
-            rawLabel = val.label;
-            rawValue = val.value ?? rawKey;
-          }
+            // Fill label & value
+            if (isRawValue(val)) {
+              rawValue = val;
+            } else {
+              rawKey = val.key;
+              rawLabel = val.label;
+              rawValue = val.value ?? rawKey;
+            }
 
-          const option = valueOptions.get(rawValue);
-          if (option) {
-            // Fill missing props
-            if (rawLabel === undefined)
-              rawLabel = option?.[optionLabelProp || mergedFieldNames.label];
-            if (rawKey === undefined) rawKey = option?.key ?? rawValue;
-            rawDisabled = option?.disabled;
+            const option = valueOptions.get(rawValue);
+            if (option) {
+              // Fill missing props
+              if (rawLabel === undefined)
+                rawLabel = option?.[optionLabelProp || mergedFieldNames.label];
+              if (rawKey === undefined) rawKey = option?.key ?? rawValue;
+              rawDisabled = option?.disabled;
 
-            // Warning if label not same as provided
-            if (process.env.NODE_ENV !== 'production' && !optionLabelProp) {
-              const optionLabel = option?.[mergedFieldNames.label];
-              if (optionLabel !== undefined && optionLabel !== rawLabel) {
-                warning(false, '`label` of `value` is not same as `label` in Select options.');
+              // Warning if label not same as provided
+              if (process.env.NODE_ENV !== 'production' && !optionLabelProp) {
+                const optionLabel = option?.[mergedFieldNames.label];
+                if (optionLabel !== undefined && optionLabel !== rawLabel) {
+                  warning(false, '`label` of `value` is not same as `label` in Select options.');
+                }
               }
             }
-          }
 
-          return {
-            label: rawLabel,
-            value: rawValue,
-            key: rawKey,
-            disabled: rawDisabled,
-          };
-        });
+            return {
+              label: rawLabel,
+              value: rawValue,
+              key: rawKey,
+              disabled: rawDisabled,
+            };
+          });
       },
       [mergedFieldNames, optionLabelProp, valueOptions],
     );
@@ -294,6 +302,8 @@ const Select = React.forwardRef(
         return [];
       }
 
+      // if (values)
+
       return values;
     }, [internalValue, convert2LabelValues, mode]);
 
@@ -301,23 +311,11 @@ const Select = React.forwardRef(
     const [mergedValues, getMixedOption] = useCache(rawLabeledValues, valueOptions);
 
     const displayValues = React.useMemo(() => {
-      // `null` need show as placeholder instead
-      // https://github.com/ant-design/ant-design/issues/25057
-      if (!mode && mergedValues.length === 1) {
-        const firstValue = mergedValues[0];
-        if (
-          firstValue.value === null &&
-          (firstValue.label === null || firstValue.label === undefined)
-        ) {
-          return [];
-        }
-      }
-
       return mergedValues.map((item) => ({
         ...item,
         label: item.label ?? item.value,
       }));
-    }, [mode, mergedValues]);
+    }, [mergedValues]);
 
     /** Convert `displayValues` to raw value type set */
     const rawValues = React.useMemo(
@@ -333,7 +331,7 @@ const Select = React.forwardRef(
           setSearchValue(String(strValue));
         }
       }
-    }, [mergedValues]);
+    }, [mergedValues, mode, setSearchValue]);
 
     // ======================= Display Option =======================
     // Create a placeholder item if not exist in `options`
@@ -423,11 +421,13 @@ const Select = React.forwardRef(
           injectPropsWithOption(getMixedOption(v.value)),
         );
 
+        // Do not pass undefined to onChange function.
+        // Because it will cause the controlled components to be uncontrolled
         onChange(
           // Value
-          multiple ? returnValues : returnValues[0],
+          multiple ? returnValues : returnValues[0] ?? null,
           // Option
-          multiple ? returnOptions : returnOptions[0],
+          multiple ? returnOptions : returnOptions[0] ?? null,
         );
       }
     };
