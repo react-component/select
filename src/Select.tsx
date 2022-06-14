@@ -302,8 +302,6 @@ const Select = React.forwardRef(
         return [];
       }
 
-      // if (values)
-
       return values;
     }, [internalValue, convert2LabelValues, mode]);
 
