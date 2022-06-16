@@ -97,10 +97,28 @@ function warningProps(props: SelectProps) {
     );
   }
 
+  // value in select option can not be null
+  const nullValueWarning = () =>
+    warning(
+      false,
+      '`value` in select option can not be null, please use `string | number` instead.',
+    );
+
+  if (options) {
+    for (let i = 0; i < options.length; i++) {
+      if (options[i]?.value === null) {
+        nullValueWarning();
+        break;
+      }
+    }
+  }
+
   // Syntactic sugar should use correct children type
   if (children) {
     let invalidateChildType = null;
-    toNodeArray(children).some((node: React.ReactNode) => {
+    const childrenArray = toNodeArray(children);
+
+    childrenArray.some((node: React.ReactNode) => {
       if (!React.isValidElement(node) || !node.type) {
         return false;
       }
@@ -147,6 +165,13 @@ function warningProps(props: SelectProps) {
       inputValue === undefined,
       '`inputValue` is deprecated, please use `searchValue` instead.',
     );
+
+    for (let i = 0; i < childrenArray.length; i++) {
+      if (childrenArray[i]?.props?.value === null) {
+        nullValueWarning();
+        break;
+      }
+    }
   }
 }
 
