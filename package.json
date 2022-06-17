@@ -55,7 +55,7 @@
   "devDependencies": {
     "@testing-library/react": "12",
     "@types/enzyme": "^3.10.9",
-    "@types/jest": "^26.0.24",
+    "@types/jest": "^28.1.2",
     "@types/react": "^17.0.15",
     "@types/react-dom": "^17.0.3",
     "cross-env": "^7.0.0",
