@@ -9,6 +9,10 @@ import Input from './Input';
 import useLayoutEffect from '../hooks/useLayoutEffect';
 import type { DisplayValueType, RenderNode, CustomTagProps, RawValueType } from '../BaseSelect';
 
+function itemKey(value: DisplayValueType) {
+  return value.key ?? value.value;
+}
+
 interface SelectorProps extends InnerSelectorProps {
   // Icon
   removeIcon?: RenderNode;
@@ -224,7 +228,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
       renderItem={renderItem}
       renderRest={renderRest}
       suffix={inputNode}
-      itemKey="key"
+      itemKey={itemKey}
       maxCount={maxTagCount}
     />
   );

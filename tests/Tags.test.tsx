@@ -1,9 +1,8 @@
-/* eslint-disable import/no-named-as-default-member */
 import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
 import * as React from 'react';
-import Select, { OptGroup, Option } from '../src';
+import Select, { BaseSelect, OptGroup, Option } from '../src';
 import allowClearTest from './shared/allowClearTest';
 import blurTest from './shared/blurTest';
 import dynamicChildrenTest from './shared/dynamicChildrenTest';
@@ -328,6 +327,63 @@ describe('Select.Tags', () => {
       );
 
       expect(tagRender).toHaveBeenCalledWith(expect.objectContaining({ closable: false }));
+    });
+
+    it('should keep key', () => {
+      const MyTag = ({ onClose, label }: any) => {
+        const [closed, setClosed] = React.useState(false);
+
+        return (
+          <span
+            className="my-tag"
+            onClick={() => {
+              setClosed(true);
+              onClose();
+            }}
+          >
+            {label}
+            {String(closed)}
+          </span>
+        );
+      };
+
+      const onDisplayValuesChange = jest.fn();
+
+      const wrapper = mount(
+        <BaseSelect
+          mode="tags"
+          maxTagCount={99}
+          tagRender={(props) => <MyTag {...props} />}
+          onDisplayValuesChange={onDisplayValuesChange}
+          displayValues={[
+            {
+              label: '1',
+              value: 1,
+            },
+            {
+              label: '2',
+              value: 2,
+            },
+          ]}
+          {...({} as any)}
+        />,
+      );
+
+      wrapper.find('.my-tag').at(0).simulate('click');
+      expect(onDisplayValuesChange).toHaveBeenCalled();
+
+      // Update
+      wrapper.setProps({
+        displayValues: [
+          {
+            label: '2',
+            value: 2,
+          },
+        ],
+      });
+
+      expect(wrapper.find('span.my-tag')).toHaveLength(1);
+      expect(wrapper.find('span.my-tag').text()).toEqual('2false');
     });
   });
 
