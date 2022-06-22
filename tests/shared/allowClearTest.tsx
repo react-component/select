@@ -1,5 +1,4 @@
-import { render, mount } from 'enzyme';
-import * as React from 'react';
+import { mount, render } from 'enzyme';
 import Select, { Option } from '../../src';
 
 export default function allowClearTest(mode: any, value: any) {
@@ -31,14 +30,11 @@ export default function allowClearTest(mode: any, value: any) {
 
       // enabled
       wrapper.setProps({ disabled: false });
-      wrapper
-        .find('.rc-select-clear')
-        .last()
-        .simulate('mousedown');
+      wrapper.find('.rc-select-clear').last().simulate('mousedown');
       if (useArrayValue) {
         expect(onChange).toHaveBeenCalledWith([], []);
       } else {
-        expect(onChange).toHaveBeenCalledWith(undefined, undefined);
+        expect(onChange).toHaveBeenCalledWith(null, null);
       }
       expect(wrapper.find('input').props().value).toEqual('');
       expect(onClear).toHaveBeenCalled();

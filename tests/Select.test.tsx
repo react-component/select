@@ -1,27 +1,27 @@
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
+import { spyElementPrototype } from 'rc-util/lib/test/domHook';
+import { resetWarned } from 'rc-util/lib/warning';
+import VirtualList from 'rc-virtual-list';
+import type { ScrollConfig } from 'rc-virtual-list/lib/List';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
-import { resetWarned } from 'rc-util/lib/warning';
-import type { ScrollConfig } from 'rc-virtual-list/lib/List';
-import { spyElementPrototype } from 'rc-util/lib/test/domHook';
-import VirtualList from 'rc-virtual-list';
 import type { SelectProps } from '../src';
 import Select, { OptGroup, Option, useBaseProps } from '../src';
-import focusTest from './shared/focusTest';
-import blurTest from './shared/blurTest';
-import keyDownTest from './shared/keyDownTest';
-import inputFilterTest from './shared/inputFilterTest';
-import openControlledTest from './shared/openControlledTest';
+import type { BaseSelectRef } from '../src/BaseSelect';
 import allowClearTest from './shared/allowClearTest';
+import blurTest from './shared/blurTest';
+import focusTest from './shared/focusTest';
+import inputFilterTest from './shared/inputFilterTest';
+import keyDownTest from './shared/keyDownTest';
+import openControlledTest from './shared/openControlledTest';
 import {
   expectOpen,
-  toggleOpen,
-  selectItem,
   findSelection,
   injectRunAllTimers,
+  selectItem,
+  toggleOpen,
 } from './utils/common';
-import type { BaseSelectRef } from '../src/BaseSelect';
 
 describe('Select.Basic', () => {
   injectRunAllTimers(jest);
@@ -1646,7 +1646,7 @@ describe('Select.Basic', () => {
     });
   });
 
-  it('`null` is a value', () => {
+  it('`null` can not be a value', () => {
     const onChange = jest.fn();
 
     const wrapper = mount(
@@ -1666,8 +1666,12 @@ describe('Select.Basic', () => {
     ].forEach(([value, showValue], index) => {
       toggleOpen(wrapper);
       selectItem(wrapper, index);
-      expect(onChange).toHaveBeenCalledWith(value, expect.anything());
-      expect(wrapper.find('.rc-select-selection-item').text()).toEqual(showValue);
+      expect(onChange).toHaveBeenCalledWith(value, value === null ? null : expect.anything());
+      if (value === null) {
+        expect(wrapper.find('.rc-select-selection-item').length).toBeFalsy();
+      } else {
+        expect(wrapper.find('.rc-select-selection-item').text()).toEqual(showValue);
+      }
     });
   });
 
@@ -1693,7 +1697,7 @@ describe('Select.Basic', () => {
       const wrapper = mount(
         <Select value={null} placeholder="bamboo" options={[{ value: null, label: 'light' }]} />,
       );
-      expect(wrapper.find('.rc-select-selection-placeholder').length).toBeFalsy();
+      expect(wrapper.find('.rc-select-selection-placeholder').length).toBeTruthy();
     });
   });
 

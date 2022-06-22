@@ -1,10 +1,10 @@
-import * as React from 'react';
-import warning, { noteOnce } from 'rc-util/lib/warning';
 import toNodeArray from 'rc-util/lib/Children/toArray';
-import { convertChildrenToData } from './legacyUtil';
-import { toArray } from './commonUtil';
-import type { RawValueType, LabelInValueType, BaseOptionType, SelectProps } from '../Select';
+import warning, { noteOnce } from 'rc-util/lib/warning';
+import * as React from 'react';
 import { isMultiple } from '../BaseSelect';
+import type { BaseOptionType, LabelInValueType, RawValueType, SelectProps } from '../Select';
+import { toArray } from './commonUtil';
+import { convertChildrenToData } from './legacyUtil';
 
 function warningProps(props: SelectProps) {
   const {
@@ -29,7 +29,6 @@ function warningProps(props: SelectProps) {
   const mergedShowSearch = showSearch !== undefined ? showSearch : multiple || mode === 'combobox';
   const mergedOptions = options || convertChildrenToData(children);
 
-  // `tags` should not set option as disabled
   warning(
     mode !== 'tags' || mergedOptions.every((opt: { disabled?: boolean }) => !opt.disabled),
     'Please avoid setting option to disabled in tags mode since user can always type text as tag.',
@@ -97,10 +96,19 @@ function warningProps(props: SelectProps) {
     );
   }
 
+  // value in select option can not be null
+  const nullValueWarning = () =>
+    warning(
+      false,
+      '`value` in select option can not be null, please use `string | number` instead.',
+    );
+
   // Syntactic sugar should use correct children type
   if (children) {
     let invalidateChildType = null;
-    toNodeArray(children).some((node: React.ReactNode) => {
+    const childrenArray = toNodeArray(children);
+
+    childrenArray.some((node: React.ReactNode) => {
       if (!React.isValidElement(node) || !node.type) {
         return false;
       }
@@ -147,6 +155,23 @@ function warningProps(props: SelectProps) {
       inputValue === undefined,
       '`inputValue` is deprecated, please use `searchValue` instead.',
     );
+
+    for (let i = 0; i < childrenArray.length; i++) {
+      if (childrenArray[i]?.props?.value === null) {
+        nullValueWarning();
+        break;
+      }
+    }
+  }
+
+  // value in option can not be null
+  if (options) {
+    for (let i = 0; i < options.length; i++) {
+      if (options[i]?.value === null) {
+        nullValueWarning();
+        break;
+      }
+    }
   }
 }
 

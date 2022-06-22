@@ -66,6 +66,7 @@
     "father": "^2.13.2",
     "jsonp": "^0.2.1",
     "np": "^7.5.0",
+    "prettier": "^2.6.2",
     "rc-dialog": "^8.1.1",
     "typescript": "^4.2.3"
   }
