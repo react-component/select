@@ -230,8 +230,6 @@ const Select = React.forwardRef(
     );
     const { valueOptions, labelOptions, options: mergedOptions } = parsedOptions;
 
-    console.log('mergedOptions', mergedOptions);
-
     // value in Select option can not be null
     mergedOptions.forEach((item: DefaultOptionType, index: number) => {
       if (item.value === null) {
