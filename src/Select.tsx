@@ -230,6 +230,18 @@ const Select = React.forwardRef(
     );
     const { valueOptions, labelOptions, options: mergedOptions } = parsedOptions;
 
+    console.log('mergedOptions', mergedOptions);
+
+    // value in Select option can not be null
+    mergedOptions.forEach((item: DefaultOptionType, index: number) => {
+      if (item.value === null) {
+        warning(
+          false,
+          `\`value\` in Select options can not be \`null\`, please use \`string | number\` instead. Please check the index \`${index}\` of options.`,
+        );
+      }
+    });
+
     // ========================= Wrap Value =========================
     const convert2LabelValues = React.useCallback(
       (draftValues: DraftValueType) => {
