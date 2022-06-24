@@ -1,10 +1,16 @@
-import * as React from 'react';
-import warning, { noteOnce } from 'rc-util/lib/warning';
 import toNodeArray from 'rc-util/lib/Children/toArray';
-import { convertChildrenToData } from './legacyUtil';
-import { toArray } from './commonUtil';
-import type { RawValueType, LabelInValueType, BaseOptionType, SelectProps } from '../Select';
+import warning, { noteOnce } from 'rc-util/lib/warning';
+import * as React from 'react';
 import { isMultiple } from '../BaseSelect';
+import type {
+  BaseOptionType,
+  DefaultOptionType,
+  LabelInValueType,
+  RawValueType,
+  SelectProps,
+} from '../Select';
+import { toArray } from './commonUtil';
+import { convertChildrenToData } from './legacyUtil';
 
 function warningProps(props: SelectProps) {
   const {
@@ -148,6 +154,16 @@ function warningProps(props: SelectProps) {
       '`inputValue` is deprecated, please use `searchValue` instead.',
     );
   }
+}
+
+// value in Select option can not be null
+export function warningNullOptions(options: DefaultOptionType[]) {
+  options.forEach((option: DefaultOptionType, index: number) => {
+    warning(
+      option?.value !== null,
+      `\`value\` in Select options can not be \`null\`, please use \`string | number\` instead. Please check the index \`${index}\` of options.`,
+    );
+  });
 }
 
 export default warningProps;

@@ -29,24 +29,29 @@
  * - `combobox` mode not support `optionLabelProp`
  */
 
-import * as React from 'react';
-import warning from 'rc-util/lib/warning';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
+import warning from 'rc-util/lib/warning';
+import * as React from 'react';
+import type {
+  BaseSelectProps,
+  BaseSelectPropsWithoutPrivate,
+  BaseSelectRef,
+  DisplayValueType,
+  RenderNode,
+} from './BaseSelect';
 import BaseSelect, { isMultiple } from './BaseSelect';
-import type { DisplayValueType, RenderNode } from './BaseSelect';
-import OptionList from './OptionList';
-import Option from './Option';
-import OptGroup from './OptGroup';
-import type { BaseSelectRef, BaseSelectPropsWithoutPrivate, BaseSelectProps } from './BaseSelect';
-import useOptions from './hooks/useOptions';
-import SelectContext from './SelectContext';
-import useId from './hooks/useId';
-import useRefFunc from './hooks/useRefFunc';
-import { fillFieldNames, flattenOptions, injectPropsWithOption } from './utils/valueUtil';
-import warningProps from './utils/warningPropsUtil';
-import { toArray } from './utils/commonUtil';
-import useFilterOptions from './hooks/useFilterOptions';
 import useCache from './hooks/useCache';
+import useFilterOptions from './hooks/useFilterOptions';
+import useId from './hooks/useId';
+import useOptions from './hooks/useOptions';
+import useRefFunc from './hooks/useRefFunc';
+import OptGroup from './OptGroup';
+import Option from './Option';
+import OptionList from './OptionList';
+import SelectContext from './SelectContext';
+import { toArray } from './utils/commonUtil';
+import { fillFieldNames, flattenOptions, injectPropsWithOption } from './utils/valueUtil';
+import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
 
 const OMIT_DOM_PROPS = ['inputValue'];
 
@@ -229,18 +234,6 @@ const Select = React.forwardRef(
       optionLabelProp,
     );
     const { valueOptions, labelOptions, options: mergedOptions } = parsedOptions;
-
-    // value in Select option can not be null
-    if (process.env.NODE_ENV !== 'production') {
-      mergedOptions.forEach((item: DefaultOptionType, index: number) => {
-        if (item.value === null) {
-          warning(
-            false,
-            `\`value\` in Select options can not be \`null\`, please use \`string | number\` instead. Please check the index \`${index}\` of options.`,
-          );
-        }
-      });
-    }
 
     // ========================= Wrap Value =========================
     const convert2LabelValues = React.useCallback(
@@ -607,6 +600,7 @@ const Select = React.forwardRef(
     // ========================== Warning ===========================
     if (process.env.NODE_ENV !== 'production') {
       warningProps(props);
+      warningNullOptions(mergedOptions);
     }
 
     // ==============================================================
