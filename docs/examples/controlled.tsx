@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import Select, { OptGroup, Option } from 'rc-select';
+import Select, { Option } from 'rc-select';
 import React from 'react';
 import '../../assets/index.less';
 
@@ -70,11 +70,6 @@ class Controlled extends React.Component<{}, ControlledState> {
             onChange={this.onChange}
             onDropdownVisibleChange={this.onDropdownVisibleChange}
           >
-            <OptGroup>
-              <Option value={111}>111</Option>
-              <Option value={null}>null</Option>
-            </OptGroup>
-
             <Option value="01" text="jack" title="jack">
               <b
                 style={{
