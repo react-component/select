@@ -156,14 +156,30 @@ function warningProps(props: SelectProps) {
   }
 }
 
-// value in Select option can not be null
-export function warningNullOptions(options: DefaultOptionType[]) {
-  options.forEach((option: DefaultOptionType, index: number) => {
-    warning(
-      option?.value !== null,
-      `\`value\` in Select options can not be \`null\`, please use \`string | number\` instead. Please check the index \`${index}\` of options.`,
-    );
-  });
+// value in Select option should not be null
+// note: OptGroup has options too
+export function warningNullOptions(mergedOptions: DefaultOptionType[]) {
+  if (mergedOptions) {
+    for (let index = 0; index < mergedOptions.length; index++) {
+      const option = mergedOptions[index];
+
+      if (option?.value === null) {
+        warning(false, '`value` in Select options should not be `null`.');
+        break;
+      }
+
+      if (option?.options) {
+        const optOptions = option.options;
+
+        for (let subIndex = 0; subIndex < optOptions.length; subIndex++) {
+          if (optOptions[subIndex]?.value === null) {
+            warning(false, '`value` in Select OptGroup options should not be `null`.');
+            break;
+          }
+        }
+      }
+    }
+  }
 }
 
 export default warningProps;

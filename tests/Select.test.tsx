@@ -1646,35 +1646,65 @@ describe('Select.Basic', () => {
     });
   });
 
-  it('`null` is a value and need to throw warning', () => {
-    const onChange = jest.fn();
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  describe('`null` is a value', () => {
+    let errorSpy;
 
-    const wrapper = mount(
-      <Select onChange={onChange}>
-        <Option value={1}>1</Option>
-        <Option value={null}>No</Option>
-        <Option value={0}>0</Option>
-        <Option value="">Empty</Option>
-      </Select>,
-    );
-
-    [
-      [1, '1'],
-      [null, 'No'],
-      [0, '0'],
-      ['', 'Empty'],
-    ].forEach(([value, showValue], index) => {
-      toggleOpen(wrapper);
-      selectItem(wrapper, index);
-      expect(onChange).toHaveBeenCalledWith(value, expect.anything());
-      expect(wrapper.find('.rc-select-selection-item').text()).toEqual(showValue);
+    beforeAll(() => {
+      errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
     });
 
-    expect(errorSpy).toHaveBeenCalledWith(
-      'Warning: `value` in Select options can not be `null`, please use `string | number` instead. Please check the index `1` of options.',
-    );
-    errorSpy.mockRestore();
+    beforeEach(() => {
+      errorSpy.mockReset();
+      resetWarned();
+    });
+
+    afterAll(() => {
+      errorSpy.mockRestore();
+    });
+
+    it('`null` is a value and should throw a warning', () => {
+      const onChange = jest.fn();
+
+      const wrapper = mount(
+        <Select onChange={onChange}>
+          <Option value={1}>1</Option>
+          <Option value={null}>No</Option>
+          <Option value={0}>0</Option>
+          <Option value="">Empty</Option>
+        </Select>,
+      );
+
+      [
+        [1, '1'],
+        [null, 'No'],
+        [0, '0'],
+        ['', 'Empty'],
+      ].forEach(([value, showValue], index) => {
+        toggleOpen(wrapper);
+        selectItem(wrapper, index);
+        expect(onChange).toHaveBeenCalledWith(value, expect.anything());
+        expect(wrapper.find('.rc-select-selection-item').text()).toEqual(showValue);
+      });
+
+      expect(errorSpy).toHaveBeenCalledWith(
+        'Warning: `value` in Select options should not be `null`.',
+      );
+    });
+
+    it('`null` is a value in OptGroup should throw a warning', () => {
+      mount(
+        <Select>
+          <OptGroup>
+            <Option value="1">1</Option>
+            <Option value={null}>null</Option>
+          </OptGroup>
+        </Select>,
+      );
+
+      expect(errorSpy).toHaveBeenCalledWith(
+        'Warning: `value` in Select OptGroup options should not be `null`.',
+      );
+    });
   });
 
   describe('show placeholder', () => {

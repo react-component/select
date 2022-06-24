@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
+import Select, { OptGroup, Option } from 'rc-select';
 import React from 'react';
-import Select, { Option } from 'rc-select';
 import '../../assets/index.less';
 
 interface ControlledState {
@@ -16,7 +16,7 @@ class Controlled extends React.Component<{}, ControlledState> {
     open: true,
   };
 
-  onChange = e => {
+  onChange = (e) => {
     let value;
     if (e && e.target) {
       ({ value } = e.target);
@@ -35,7 +35,7 @@ class Controlled extends React.Component<{}, ControlledState> {
     });
   };
 
-  onBlur = v => {
+  onBlur = (v) => {
     console.log('onBlur', v);
   };
 
@@ -43,7 +43,7 @@ class Controlled extends React.Component<{}, ControlledState> {
     console.log('onFocus');
   };
 
-  onDropdownVisibleChange = open => {
+  onDropdownVisibleChange = (open) => {
     this.setState({ open });
   };
 
@@ -70,6 +70,11 @@ class Controlled extends React.Component<{}, ControlledState> {
             onChange={this.onChange}
             onDropdownVisibleChange={this.onDropdownVisibleChange}
           >
+            <OptGroup>
+              <Option value={111}>111</Option>
+              <Option value={null}>null</Option>
+            </OptGroup>
+
             <Option value="01" text="jack" title="jack">
               <b
                 style={{
@@ -88,7 +93,7 @@ class Controlled extends React.Component<{}, ControlledState> {
             <Option value="31" text="yiminghe">
               yiminghe
             </Option>
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
               <Option key={i} value={i} text={String(i)}>
                 {i}-text
               </Option>
