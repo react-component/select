@@ -160,25 +160,24 @@ function warningProps(props: SelectProps) {
 // note: OptGroup has options too
 export function warningNullOptions(mergedOptions: DefaultOptionType[]) {
   if (mergedOptions) {
-    for (let index = 0; index < mergedOptions.length; index++) {
-      const option = mergedOptions[index];
+    const recursiveOptions = (options: DefaultOptionType[]): boolean => {
+      for (let i = 0; i < options.length; i++) {
+        const option = options[i];
 
-      if (option?.value === null) {
-        warning(false, '`value` in Select options should not be `null`.');
-        break;
-      }
+        if (option?.value === null) {
+          warning(false, '`value` in Select options should not be `null`.');
+          return true;
+        }
 
-      if (option?.options) {
-        const optOptions = option.options;
-
-        for (let subIndex = 0; subIndex < optOptions.length; subIndex++) {
-          if (optOptions[subIndex]?.value === null) {
-            warning(false, '`value` in Select OptGroup options should not be `null`.');
-            break;
-          }
+        if (option?.options && recursiveOptions(option.options)) {
+          return true;
         }
       }
-    }
+
+      return false;
+    };
+
+    recursiveOptions(mergedOptions);
   }
 }
 

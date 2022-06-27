@@ -1648,6 +1648,7 @@ describe('Select.Basic', () => {
 
   describe('`null` is a value', () => {
     let errorSpy;
+    const warningMessage = 'Warning: `value` in Select options should not be `null`.';
 
     beforeAll(() => {
       errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
@@ -1686,9 +1687,7 @@ describe('Select.Basic', () => {
         expect(wrapper.find('.rc-select-selection-item').text()).toEqual(showValue);
       });
 
-      expect(errorSpy).toHaveBeenCalledWith(
-        'Warning: `value` in Select options should not be `null`.',
-      );
+      expect(errorSpy).toHaveBeenCalledWith(warningMessage);
     });
 
     it('`null` is a value in OptGroup should throw a warning', () => {
@@ -1701,9 +1700,7 @@ describe('Select.Basic', () => {
         </Select>,
       );
 
-      expect(errorSpy).toHaveBeenCalledWith(
-        'Warning: `value` in Select OptGroup options should not be `null`.',
-      );
+      expect(errorSpy).toHaveBeenCalledWith(warningMessage);
     });
   });
 
