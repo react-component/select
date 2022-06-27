@@ -5,6 +5,7 @@ import { isMultiple } from '../BaseSelect';
 import type {
   BaseOptionType,
   DefaultOptionType,
+  FieldNames,
   LabelInValueType,
   RawValueType,
   SelectProps,
@@ -158,19 +159,27 @@ function warningProps(props: SelectProps) {
 
 // value in Select option should not be null
 // note: OptGroup has options too
-export function warningNullOptions(mergedOptions: DefaultOptionType[]) {
+export function warningNullOptions(
+  mergedOptions: DefaultOptionType[],
+  mergedFieldNames: FieldNames,
+) {
   if (mergedOptions) {
+    let isRecursive = true;
     const recursiveOptions = (options: DefaultOptionType[]): boolean => {
       for (let i = 0; i < options.length; i++) {
         const option = options[i];
 
-        if (option?.value === null) {
+        if (option[mergedFieldNames?.value] === null) {
           warning(false, '`value` in Select options should not be `null`.');
           return true;
         }
 
-        if (option?.options && recursiveOptions(option.options)) {
-          return true;
+        if (option[mergedFieldNames?.options] && isRecursive) {
+          isRecursive = false;
+          if (recursiveOptions(option[mergedFieldNames?.options])) {
+            return true;
+          }
+          isRecursive = true;
         }
       }
 

@@ -1702,6 +1702,35 @@ describe('Select.Basic', () => {
 
       expect(errorSpy).toHaveBeenCalledWith(warningMessage);
     });
+
+    it('`null` is a value in fieldNames should throw a warning', () => {
+      mount(
+        <Select
+          fieldNames={{
+            label: 'fieldLabel',
+            value: 'fieldValue',
+            options: 'fieldOptions',
+          }}
+          options={[
+            {
+              fieldLabel: 'label',
+              fieldOptions: [
+                {
+                  fieldLabel: '1',
+                  fieldValue: '1',
+                },
+                {
+                  fieldLabel: '2',
+                  fieldValue: null,
+                },
+              ],
+            },
+          ]}
+        />,
+      );
+
+      expect(errorSpy).toHaveBeenCalledWith(warningMessage);
+    });
   });
 
   describe('show placeholder', () => {

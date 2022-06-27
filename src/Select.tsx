@@ -600,7 +600,7 @@ const Select = React.forwardRef(
     // ========================== Warning ===========================
     if (process.env.NODE_ENV !== 'production') {
       warningProps(props);
-      warningNullOptions(mergedOptions);
+      warningNullOptions(mergedOptions, mergedFieldNames);
     }
 
     // ==============================================================
