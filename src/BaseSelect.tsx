@@ -43,6 +43,8 @@ export type Placement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
 
 export type RawValueType = string | number;
 
+export type DisplayInfoType = 'add' | 'remove' | 'clear';
+
 export interface RefOptionListProps {
   onKeyDown: React.KeyboardEventHandler;
   onKeyUp: React.KeyboardEventHandler;
@@ -81,7 +83,7 @@ export interface BaseSelectPrivateProps {
   onDisplayValuesChange: (
     values: DisplayValueType[],
     info: {
-      type: 'add' | 'remove' | 'clear';
+      type: DisplayInfoType;
       values: DisplayValueType[];
     },
   ) => void;
