@@ -1,10 +1,17 @@
-import * as React from 'react';
-import warning, { noteOnce } from 'rc-util/lib/warning';
 import toNodeArray from 'rc-util/lib/Children/toArray';
-import { convertChildrenToData } from './legacyUtil';
-import { toArray } from './commonUtil';
-import type { RawValueType, LabelInValueType, BaseOptionType, SelectProps } from '../Select';
+import warning, { noteOnce } from 'rc-util/lib/warning';
+import * as React from 'react';
 import { isMultiple } from '../BaseSelect';
+import type {
+  BaseOptionType,
+  DefaultOptionType,
+  FieldNames,
+  LabelInValueType,
+  RawValueType,
+  SelectProps,
+} from '../Select';
+import { toArray } from './commonUtil';
+import { convertChildrenToData } from './legacyUtil';
 
 function warningProps(props: SelectProps) {
   const {
@@ -147,6 +154,33 @@ function warningProps(props: SelectProps) {
       inputValue === undefined,
       '`inputValue` is deprecated, please use `searchValue` instead.',
     );
+  }
+}
+
+// value in Select option should not be null
+// note: OptGroup has options too
+export function warningNullOptions(options: DefaultOptionType[], fieldNames: FieldNames) {
+  if (options) {
+    const recursiveOptions = (optionsList: DefaultOptionType[], inGroup: boolean = false) => {
+      for (let i = 0; i < optionsList.length; i++) {
+        const option = optionsList[i];
+
+        if (option[fieldNames?.value] === null) {
+          warning(false, '`value` in Select options should not be `null`.');
+          return true;
+        }
+
+        if (
+          !inGroup &&
+          Array.isArray(option[fieldNames?.options]) &&
+          recursiveOptions(option[fieldNames?.options], true)
+        ) {
+          break;
+        }
+      }
+    };
+
+    recursiveOptions(options);
   }
 }
 

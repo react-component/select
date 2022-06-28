@@ -1,27 +1,27 @@
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
+import { spyElementPrototype } from 'rc-util/lib/test/domHook';
+import { resetWarned } from 'rc-util/lib/warning';
+import VirtualList from 'rc-virtual-list';
+import type { ScrollConfig } from 'rc-virtual-list/lib/List';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
-import { resetWarned } from 'rc-util/lib/warning';
-import type { ScrollConfig } from 'rc-virtual-list/lib/List';
-import { spyElementPrototype } from 'rc-util/lib/test/domHook';
-import VirtualList from 'rc-virtual-list';
 import type { SelectProps } from '../src';
 import Select, { OptGroup, Option, useBaseProps } from '../src';
-import focusTest from './shared/focusTest';
-import blurTest from './shared/blurTest';
-import keyDownTest from './shared/keyDownTest';
-import inputFilterTest from './shared/inputFilterTest';
-import openControlledTest from './shared/openControlledTest';
+import type { BaseSelectRef } from '../src/BaseSelect';
 import allowClearTest from './shared/allowClearTest';
+import blurTest from './shared/blurTest';
+import focusTest from './shared/focusTest';
+import inputFilterTest from './shared/inputFilterTest';
+import keyDownTest from './shared/keyDownTest';
+import openControlledTest from './shared/openControlledTest';
 import {
   expectOpen,
-  toggleOpen,
-  selectItem,
   findSelection,
   injectRunAllTimers,
+  selectItem,
+  toggleOpen,
 } from './utils/common';
-import type { BaseSelectRef } from '../src/BaseSelect';
 
 describe('Select.Basic', () => {
   injectRunAllTimers(jest);
@@ -602,7 +602,7 @@ describe('Select.Basic', () => {
         </Select>,
       );
 
-      const inputSpy = jest.spyOn(wrapper2.find('input').instance(), 'focus');
+      const inputSpy = jest.spyOn(wrapper2.find('input').instance(), 'focus' as any);
 
       wrapper2.find('.rc-select-selection-placeholder').simulate('mousedown');
       wrapper2.find('.rc-select-selection-placeholder').simulate('click');
@@ -807,9 +807,9 @@ describe('Select.Basic', () => {
       }
     }
     const wrapper = mount(<Controlled />);
-    expect(wrapper.state().open).toBe(true);
+    expect((wrapper.state() as any).open).toBe(true);
     toggleOpen(wrapper);
-    expect(wrapper.state().open).toBe(false);
+    expect((wrapper.state() as any).open).toBe(false);
 
     selectItem(wrapper);
     expectOpen(wrapper, false);
@@ -822,7 +822,7 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    const focusSpy = jest.spyOn(wrapper.find('input').instance(), 'focus');
+    const focusSpy = jest.spyOn(wrapper.find('input').instance(), 'focus' as any);
     wrapper.find('.rc-select-selection-placeholder').simulate('mousedown');
     wrapper.find('.rc-select-selection-placeholder').simulate('click');
     expect(focusSpy).toHaveBeenCalled();
@@ -1646,28 +1646,90 @@ describe('Select.Basic', () => {
     });
   });
 
-  it('`null` is a value', () => {
-    const onChange = jest.fn();
+  describe('`null` is a value', () => {
+    let errorSpy;
+    const warningMessage = 'Warning: `value` in Select options should not be `null`.';
 
-    const wrapper = mount(
-      <Select onChange={onChange}>
-        <Option value={1}>1</Option>
-        <Option value={null}>No</Option>
-        <Option value={0}>0</Option>
-        <Option value="">Empty</Option>
-      </Select>,
-    );
+    beforeAll(() => {
+      errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
+    });
 
-    [
-      [1, '1'],
-      [null, 'No'],
-      [0, '0'],
-      ['', 'Empty'],
-    ].forEach(([value, showValue], index) => {
-      toggleOpen(wrapper);
-      selectItem(wrapper, index);
-      expect(onChange).toHaveBeenCalledWith(value, expect.anything());
-      expect(wrapper.find('.rc-select-selection-item').text()).toEqual(showValue);
+    beforeEach(() => {
+      errorSpy.mockReset();
+      resetWarned();
+    });
+
+    afterAll(() => {
+      errorSpy.mockRestore();
+    });
+
+    it('`null` is a value and should throw a warning', () => {
+      const onChange = jest.fn();
+
+      const wrapper = mount(
+        <Select onChange={onChange}>
+          <Option value={1}>1</Option>
+          <Option value={null}>No</Option>
+          <Option value={0}>0</Option>
+          <Option value="">Empty</Option>
+        </Select>,
+      );
+
+      [
+        [1, '1'],
+        [null, 'No'],
+        [0, '0'],
+        ['', 'Empty'],
+      ].forEach(([value, showValue], index) => {
+        toggleOpen(wrapper);
+        selectItem(wrapper, index);
+        expect(onChange).toHaveBeenCalledWith(value, expect.anything());
+        expect(wrapper.find('.rc-select-selection-item').text()).toEqual(showValue);
+      });
+
+      expect(errorSpy).toHaveBeenCalledWith(warningMessage);
+    });
+
+    it('`null` is a value in OptGroup should throw a warning', () => {
+      mount(
+        <Select>
+          <OptGroup>
+            <Option value="1">1</Option>
+            <Option value={null}>null</Option>
+          </OptGroup>
+        </Select>,
+      );
+
+      expect(errorSpy).toHaveBeenCalledWith(warningMessage);
+    });
+
+    it('`null` is a value in fieldNames should throw a warning', () => {
+      mount(
+        <Select
+          fieldNames={{
+            label: 'fieldLabel',
+            value: 'fieldValue',
+            options: 'fieldOptions',
+          }}
+          options={[
+            {
+              fieldLabel: 'label',
+              fieldOptions: [
+                {
+                  fieldLabel: '1',
+                  fieldValue: '1',
+                },
+                {
+                  fieldLabel: '2',
+                  fieldValue: null,
+                },
+              ],
+            },
+          ]}
+        />,
+      );
+
+      expect(errorSpy).toHaveBeenCalledWith(warningMessage);
     });
   });
 
