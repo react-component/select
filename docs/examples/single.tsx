@@ -41,6 +41,14 @@ class Test extends React.Component {
     console.log('Search:', val);
   };
 
+  labelRender = (props) => {
+    const { label, value } = props;
+
+    return (
+      <span>label:({label}) / value:({value})</span>
+    );
+  };
+
   render() {
     const { value, destroy } = this.state;
     if (destroy) {
@@ -77,6 +85,7 @@ class Test extends React.Component {
             onPopupScroll={() => {
               console.log('Scroll!');
             }}
+            labelRender={this.labelRender}
           >
             <Option value={null}>不选择</Option>
             <Option value="01" text="jack" title="jack">
