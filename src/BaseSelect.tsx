@@ -802,6 +802,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
               display: 'flex',
               overflow: 'hidden',
               opacity: 0,
+              position: 'absolute',
             }}
             aria-live="polite"
           >
