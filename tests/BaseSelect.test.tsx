@@ -34,4 +34,28 @@ describe('BaseSelect', () => {
     fireEvent.click(container.querySelector('a.trigger'));
     expect(container.querySelector('div.rc-select-dropdown-hidden')).toBeTruthy();
   });
+  it('customized inputElement style should includes position: absolute', () => {
+    jest.useFakeTimers();
+    const { container } = render(
+      <BaseSelect
+        prefixCls="rc-select"
+        OptionList={OptionList}
+        displayValues={[]}
+        emptyOptions
+        id="test"
+        onDisplayValuesChange={() => {}}
+        onSearch={() => {}}
+        searchValue=""
+      />,
+    );
+    expect(container.querySelector('div.rc-select')).toBeTruthy();
+    fireEvent.focus(container.querySelector('div.rc-select'));
+    jest.runAllTimers();
+    expect(
+      getComputedStyle(container.querySelector(`span[aria-live=polite]`)).getPropertyValue(
+        'position',
+      ),
+    ).toBe('absolute');
+    jest.useRealTimers();
+  });
 });
