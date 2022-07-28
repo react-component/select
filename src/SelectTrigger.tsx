@@ -59,7 +59,7 @@ export interface SelectTriggerProps {
   containerWidth: number;
   placement?: Placement;
   dropdownStyle: React.CSSProperties;
-  dropdownClassName: string;
+  popupClassName: string;
   direction: string;
   dropdownMatchSelectWidth?: boolean | number;
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
@@ -87,7 +87,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     animation,
     transitionName,
     dropdownStyle,
-    dropdownClassName,
+    popupClassName,
     direction = 'ltr',
     placement,
     dropdownMatchSelectWidth,
@@ -151,7 +151,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
       popupAlign={dropdownAlign}
       popupVisible={visible}
       getPopupContainer={getPopupContainer}
-      popupClassName={classNames(dropdownClassName, {
+      popupClassName={classNames(popupClassName, {
         [`${dropdownPrefixCls}-empty`]: empty,
       })}
       popupStyle={popupStyle}

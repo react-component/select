@@ -175,7 +175,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   animation?: string;
   transitionName?: string;
   dropdownStyle?: React.CSSProperties;
-  dropdownClassName?: string;
+  popupClassName?: string;
   dropdownMatchSelectWidth?: boolean | number;
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
   dropdownAlign?: AlignType;
@@ -257,7 +257,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     animation,
     transitionName,
     dropdownStyle,
-    dropdownClassName,
+    popupClassName,
     dropdownMatchSelectWidth,
     dropdownRender,
     dropdownAlign,
@@ -734,7 +734,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       animation={animation}
       transitionName={transitionName}
       dropdownStyle={dropdownStyle}
-      dropdownClassName={dropdownClassName}
+      popupClassName={popupClassName}
       direction={direction}
       dropdownMatchSelectWidth={dropdownMatchSelectWidth}
       dropdownRender={dropdownRender}

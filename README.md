@@ -78,7 +78,7 @@ export default () => (
 | transitionName | dropdown css animation name | String | '' |
 | choiceTransitionName | css animation name for selected items at multiple mode | String | '' |
 | dropdownMatchSelectWidth | whether dropdown's width is same with select | bool | true |
-| dropdownClassName | additional className applied to dropdown | String | - |
+| popupClassName | additional className applied to dropdown | String | - |
 | dropdownStyle | additional style applied to dropdown | Object | {} |
 | dropdownAlign | additional align applied to dropdown | Object | {} |
 | dropdownMenuStyle | additional style applied to dropdown menu | Object | {} |

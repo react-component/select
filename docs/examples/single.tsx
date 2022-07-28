@@ -66,6 +66,7 @@ class Test extends React.Component {
             id="my-select"
             value={value}
             placeholder="placeholder"
+            popupClassName={'customClassName'}
             showSearch
             style={{ width: 500 }}
             onBlur={this.onBlur}
