@@ -263,6 +263,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     dropdownAlign,
     placement,
     getPopupContainer,
+    forceRender,
 
     // Focus
     showAction = [],
@@ -745,6 +746,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       getTriggerDOMNode={() => selectorDomRef.current}
       onPopupVisibleChange={onTriggerVisibleChange}
       onPopupMouseEnter={onPopupMouseEnter}
+      forceRender={forceRender}
     >
       {customizeRawInputElement ? (
         React.cloneElement(customizeRawInputElement, {
