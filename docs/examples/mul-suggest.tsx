@@ -11,15 +11,15 @@ class Test extends React.Component {
     value: [],
   };
 
-  onChange = value => {
+  onChange = (value) => {
     console.log('onChange ', value);
     this.setState({
       value,
     });
   };
 
-  fetchData = value => {
-    fetch(value, data => {
+  fetchData = (value) => {
+    fetch(value, (data) => {
       this.setState({
         data,
       });
@@ -28,7 +28,7 @@ class Test extends React.Component {
 
   render() {
     const { data, value } = this.state;
-    const options = data.map(d => (
+    const options = data.map((d) => (
       <Option key={d.value}>
         <i>{d.text}</i>
       </Option>
@@ -39,6 +39,7 @@ class Test extends React.Component {
 
         <div>
           <Select
+            name="my-select"
             value={value}
             labelInValue
             style={{ width: 500 }}

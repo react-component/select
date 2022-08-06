@@ -1914,4 +1914,34 @@ describe('Select.Basic', () => {
     expect(wrapper.find('div.rc-select-item').prop('data-test')).toEqual('good');
     expect(wrapper.find('div.rc-select-item').prop('aria-label')).toEqual('well');
   });
+
+  describe('HTML5 Compatability', () => {
+    it('should be possible to submit a <form> with a value', () => {
+      const submits = jest.fn();
+
+      const wrapper = mount(
+        <form
+          name="my-form"
+          onSubmit={(event) => {
+            event.preventDefault();
+            submits([...new FormData(event.currentTarget).entries()]);
+          }}
+        >
+          <Select mode="combobox" open name="my-select">
+            <Option value="1">1</Option>
+            <Option value="2">2</Option>
+          </Select>
+          <button type="submit">Submit</button>
+        </form>,
+      );
+      console.log(wrapper.debug());
+      toggleOpen(wrapper);
+      selectItem(wrapper);
+      expect(wrapper.find('input').props().value).toEqual('1');
+
+      const form = wrapper.find('form').first();
+      form.simulate('submit');
+      expect(submits).lastCalledWith([['my-select', '1']]);
+    });
+  });
 });

@@ -90,6 +90,7 @@ class CustomIconComponent extends React.Component {
         </p>
         <div style={{ width: 300 }}>
           <Select
+            name="my-select"
             className="custom-select"
             disabled={disabled}
             style={{ width: 500 }}
@@ -178,6 +179,7 @@ class Test extends React.Component {
         </p>
         <div style={{ width: 300 }}>
           <Select
+            name="my-select2"
             className="custom-select"
             value={value}
             animation={useAnim ? 'slide-up' : null}

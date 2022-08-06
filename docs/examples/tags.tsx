@@ -37,6 +37,7 @@ const Test: React.FC = () => {
 
       <div>
         <Select
+          name="my-select1"
           placeholder="placeholder"
           mode="tags"
           style={{ width: 400 }}
@@ -86,6 +87,7 @@ const Test: React.FC = () => {
       <h2>tags select with open = false</h2>
       <div>
         <Select
+          name="my-select2"
           placeholder="placeholder"
           mode="tags"
           style={{ width: 500 }}

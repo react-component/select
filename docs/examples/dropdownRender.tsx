@@ -40,6 +40,7 @@ class Test extends React.Component {
 
         <div>
           <Select
+            name="my-select"
             placeholder="placeholder"
             mode="tags"
             style={{ width: 500 }}
@@ -50,7 +51,7 @@ class Test extends React.Component {
             tokenSeparators={[' ', ',']}
             onFocus={() => console.log('focus')}
             onBlur={() => console.log('blur')}
-            dropdownRender={menu => (
+            dropdownRender={(menu) => (
               <React.Fragment>
                 <div
                   onClick={() => {

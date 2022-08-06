@@ -12,6 +12,7 @@ const Test = () => (
     <h2>Select OptGroup</h2>
     <div style={{ width: 300 }}>
       <Select
+        name="my-select"
         placeholder="placeholder"
         defaultValue="lucy"
         style={{ width: 500 }}

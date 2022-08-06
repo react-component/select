@@ -75,6 +75,7 @@ export interface BaseSelectPrivateProps {
   id: string;
   prefixCls: string;
   omitDomProps?: string[];
+  // name?: string;
 
   // >>> Value
   displayValues: DisplayValueType[];
@@ -121,6 +122,7 @@ export type BaseSelectPropsWithoutPrivate = Omit<BaseSelectProps, keyof BaseSele
 
 export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttributes {
   className?: string;
+  name?: string;
   style?: React.CSSProperties;
   showSearch?: boolean;
   tagRender?: (props: CustomTagProps) => React.ReactElement;
@@ -205,6 +207,7 @@ export function isMultiple(mode: Mode) {
 const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<BaseSelectRef>) => {
   const {
     id,
+    name,
     prefixCls,
     className,
     showSearch,
@@ -753,6 +756,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       ) : (
         <Selector
           {...props}
+          name={name}
           domRef={selectorDomRef}
           prefixCls={prefixCls}
           inputElement={customizeInputElement}

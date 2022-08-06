@@ -11,9 +11,9 @@ class Test extends React.Component {
     destroy: false,
   };
 
-  getPopupContainer = node => node.parentNode;
+  getPopupContainer = (node) => node.parentNode;
 
-  setVisible = open => {
+  setVisible = (open) => {
     this.setState({
       open,
     });
@@ -50,6 +50,7 @@ class Test extends React.Component {
         <Dialog visible={open} onClose={this.close}>
           <div style={{ marginTop: 20, position: 'relative' }}>
             <Select
+              name="my-select"
               placeholder="placeholder"
               style={{ width: 200 }}
               getPopupContainer={this.getPopupContainer}
