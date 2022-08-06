@@ -16,7 +16,7 @@ class Controlled extends React.Component<{}, ControlledState> {
     open: true,
   };
 
-  onChange = e => {
+  onChange = (e) => {
     let value;
     if (e && e.target) {
       ({ value } = e.target);
@@ -35,7 +35,7 @@ class Controlled extends React.Component<{}, ControlledState> {
     });
   };
 
-  onBlur = v => {
+  onBlur = (v) => {
     console.log('onBlur', v);
   };
 
@@ -43,7 +43,7 @@ class Controlled extends React.Component<{}, ControlledState> {
     console.log('onFocus');
   };
 
-  onDropdownVisibleChange = open => {
+  onDropdownVisibleChange = (open) => {
     this.setState({ open });
   };
 
@@ -58,6 +58,7 @@ class Controlled extends React.Component<{}, ControlledState> {
         <div style={{ width: 300 }}>
           <Select
             id="my-select"
+            name="my-select"
             value={value}
             placeholder="placeholder"
             listHeight={200}
@@ -88,7 +89,7 @@ class Controlled extends React.Component<{}, ControlledState> {
             <Option value="31" text="yiminghe">
               yiminghe
             </Option>
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
               <Option key={i} value={i} text={String(i)}>
                 {i}-text
               </Option>

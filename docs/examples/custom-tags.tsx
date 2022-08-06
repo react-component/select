@@ -50,6 +50,8 @@ const Test: React.FC = () => {
 
       <div>
         <Select
+          id="my-select"
+          name="my-select"
           placeholder="placeholder"
           mode="tags"
           style={{ width: 500 }}
@@ -58,14 +60,14 @@ const Test: React.FC = () => {
           maxTagTextLength={10}
           value={value}
           onChange={(val: string[], option) => {
-            console.log('change:', val, option);
+            console.log('change---:', { val, option });
             setValue(val);
           }}
           onSelect={(val, option) => {
-            console.log('selected', val, option);
+            console.log('selected', { val, option });
           }}
           onDeselect={(val, option) => {
-            console.log('deselected', val, option);
+            console.log('deselected', { val, option });
           }}
           tokenSeparators={[',']}
           tagRender={tagRender}

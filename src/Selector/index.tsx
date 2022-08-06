@@ -22,7 +22,7 @@ export interface InnerSelectorProps {
   prefixCls: string;
   id: string;
   mode: Mode;
-
+  name?: string;
   inputRef: React.Ref<HTMLInputElement | HTMLTextAreaElement>;
   placeholder?: React.ReactNode;
   disabled?: boolean;
@@ -55,6 +55,7 @@ export interface SelectorProps {
   prefixCls: string;
   showSearch?: boolean;
   open: boolean;
+  name?: string;
   /** Display in the Selector value, it's not same as `value` prop */
   values: DisplayValueType[];
   mode: Mode;
@@ -106,6 +107,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     mode,
     showSearch,
     tokenWithEnter,
+    name,
 
     onSearch,
     onSearchSubmit,
@@ -238,6 +240,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
   // ================= Inner Selector ==================
   const sharedProps = {
     inputRef,
+    name,
     onInputKeyDown: onInternalInputKeyDown,
     onInputMouseDown: onInternalInputMouseDown,
     onInputChange,

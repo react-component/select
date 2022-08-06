@@ -16,6 +16,7 @@ function Test() {
     <div>
       <h2>Select optionLabelProp</h2>
       <Select
+        name="my-select"
         style={{ width: 500 }}
         optionLabelProp="displayLabel"
         mode="multiple"

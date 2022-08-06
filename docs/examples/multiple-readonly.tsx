@@ -18,7 +18,7 @@ class Test extends React.Component {
     value: ['b11'],
   };
 
-  onChange = value => {
+  onChange = (value) => {
     console.log('onChange', value);
     this.setState({ value });
   };
@@ -30,6 +30,7 @@ class Test extends React.Component {
         <h2>multiple readonly default selected item</h2>
         <div style={{ width: 300 }}>
           <Select
+            name="my-select"
             mode="multiple"
             value={value}
             animation="slide-up"

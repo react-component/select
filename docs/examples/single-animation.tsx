@@ -14,6 +14,7 @@ const Test = () => (
 
     <div style={{ width: 300 }}>
       <Select
+        name="my-select"
         allowClear
         placeholder="placeholder"
         defaultValue="lucy"

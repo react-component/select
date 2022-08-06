@@ -17,6 +17,7 @@ const Test = () => (
   <div>
     <h3> with filter sort </h3>
     <Select
+      name="my-select1"
       showSearch
       style={{ width: 500 }}
       filterSort={sorterByLabel}
@@ -25,6 +26,7 @@ const Test = () => (
     ></Select>
     <h3> without filter sort </h3>
     <Select
+      name="my-select2"
       showSearch
       style={{ width: 500 }}
       optionFilterProp="label"

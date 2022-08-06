@@ -8,6 +8,7 @@ type InputRef = HTMLInputElement | HTMLTextAreaElement;
 interface InputProps {
   prefixCls: string;
   id: string;
+  name?: string;
   inputElement: React.ReactElement;
   disabled: boolean;
   autoFocus: boolean;
@@ -36,6 +37,7 @@ interface InputProps {
 const Input: React.RefForwardingComponent<InputRef, InputProps> = (
   {
     prefixCls,
+    name,
     id,
     inputElement,
     disabled,
@@ -78,7 +80,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
   inputNode = React.cloneElement(inputNode, {
     type: 'search',
     ...originProps,
-
+    name,
     // Override over origin props
     id,
     ref: composeRef(ref, originRef as any),
@@ -117,6 +119,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
       }
     },
     onChange: (event: React.ChangeEvent<HTMLElement>) => {
+      console.log(`2222-----------`);
       onChange(event);
       if (onOriginChange) {
         onOriginChange(event);

@@ -12,6 +12,7 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
   const {
     inputElement,
     prefixCls,
+    name,
     id,
     inputRef,
     disabled,
@@ -78,6 +79,7 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
     <>
       <span className={`${prefixCls}-selection-search`}>
         <Input
+          name={name}
           ref={inputRef}
           prefixCls={prefixCls}
           id={id}

@@ -10,6 +10,7 @@ const Test = () => {
       <h2>Select optionFilterProp</h2>
       <div style={{ width: 300 }}>
         <Select
+          name="my-select"
           defaultValue="张三"
           style={{ width: 500 }}
           placeholder="placeholder"

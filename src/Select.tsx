@@ -50,6 +50,7 @@ import Option from './Option';
 import OptionList from './OptionList';
 import SelectContext from './SelectContext';
 import { toArray } from './utils/commonUtil';
+import { generateHiddenInputs } from './utils/generateHiddenInputs';
 import { fillFieldNames, flattenOptions, injectPropsWithOption } from './utils/valueUtil';
 import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
 
@@ -145,6 +146,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
 
   mode?: 'combobox' | 'multiple' | 'tags';
   labelInValue?: boolean;
+  name?: string;
   value?: ValueType | null;
   defaultValue?: ValueType | null;
   onChange?: (value: ValueType, option: OptionType | OptionType[]) => void;
@@ -159,6 +161,7 @@ const Select = React.forwardRef(
     const {
       id,
       mode,
+      name,
       prefixCls = 'rc-select',
       backfill,
       fieldNames,
@@ -195,7 +198,7 @@ const Select = React.forwardRef(
 
       ...restProps
     } = props;
-
+    const selectNameProp = name;
     const mergedId = useId(id);
     const multiple = isMultiple(mode);
     const childrenAsData = !!(!options && children);
@@ -417,6 +420,10 @@ const Select = React.forwardRef(
       const labeledValues = convert2LabelValues(values);
       setInternalValue(labeledValues);
 
+      if (selectNameProp) {
+        generateHiddenInputs(selectNameProp, values);
+      }
+
       if (
         onChange &&
         // Trigger event only when value changed
@@ -481,6 +488,12 @@ const Select = React.forwardRef(
 
     // Used for OptionList selection
     const onInternalSelect = useRefFunc<OnInternalSelect>((val, info) => {
+      console.log(`-----------calling onInternalSelect -------------`);
+      console.log(val);
+      if (selectNameProp) {
+        generateHiddenInputs(selectNameProp, val);
+      }
+
       let cloneValues: (RawValueType | DisplayValueType)[];
 
       // Single mode always trigger select only with option list
@@ -508,6 +521,10 @@ const Select = React.forwardRef(
     // ======================= Display Change =======================
     // BaseSelect display values change
     const onDisplayValuesChange: BaseSelectProps['onDisplayValuesChange'] = (nextValues, info) => {
+      console.log(`-------onDisplayValuesChange------`, nextValues);
+      if (selectNameProp) {
+        generateHiddenInputs(selectNameProp, nextValues);
+      }
       triggerChange(nextValues);
 
       if (info.type === 'remove' || info.type === 'clear') {
@@ -546,6 +563,7 @@ const Select = React.forwardRef(
     };
 
     const onInternalSearchSplit: BaseSelectProps['onSearchSplit'] = (words) => {
+      console.log(`---------onInternalSearchSplit--------`);
       let patchValues: RawValueType[] = words;
 
       if (mode !== 'tags') {
@@ -558,6 +576,7 @@ const Select = React.forwardRef(
       }
 
       const newRawValues = Array.from(new Set<RawValueType>([...rawValues, ...patchValues]));
+      console.log(`newRawValues`, newRawValues);
       triggerChange(newRawValues);
       newRawValues.forEach((newRawValue) => {
         triggerSelect(newRawValue, true);
@@ -612,6 +631,7 @@ const Select = React.forwardRef(
           {...restProps}
           // >>> MISC
           id={mergedId}
+          name={selectNameProp}
           prefixCls={prefixCls}
           ref={ref}
           omitDomProps={OMIT_DOM_PROPS}

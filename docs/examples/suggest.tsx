@@ -53,6 +53,7 @@ class Test extends React.Component {
 
         <div onKeyDown={this.onKeyDown}>
           <Select
+            name="my-select"
             style={{ width: 500 }}
             mode="combobox"
             value={value}

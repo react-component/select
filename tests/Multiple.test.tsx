@@ -601,4 +601,128 @@ describe('Select.Multiple', () => {
       errSpy.mockRestore();
     });
   });
+
+  // describe('HTML5 Compatability', () => {
+  //   it('should be possible to submit a <form> with a value', () => {
+  //     const submits = jest.fn();
+
+  //     const wrapper = mount(
+  //       <form
+  //         name="my-form"
+  //         onSubmit={(event) => {
+  //           event.preventDefault();
+  //           submits([...new FormData(event.currentTarget).entries()]);
+  //         }}
+  //       >
+  //         <Select name="my-select" mode="combobox" open>
+  //           <Select.Option value="bamboo">Bamboo</Select.Option>
+  //           <Select.Option value="little">Little</Select.Option>
+  //         </Select>
+  //         <button type="submit">Submit</button>
+  //       </form>,
+  //     );
+  //     console.log(wrapper.debug());
+  //     toggleOpen(wrapper);
+  //     selectItem(wrapper, 0);
+
+  //     const form = wrapper.find('form').first();
+  //     form.simulate('submit');
+  //     expect(submits).lastCalledWith([['my-select', 'bamboo']]);
+  //   });
+  //   it('should be possible to submit a <form> with a multiple values selected', () => {
+  //     const submits = jest.fn();
+
+  //     const wrapper = mount(
+  //       <form
+  //         name="my-form"
+  //         onSubmit={(event) => {
+  //           event.preventDefault();
+  //           submits([...new FormData(event.currentTarget).entries()]);
+  //         }}
+  //       >
+  //         <Select name="my-select" mode="combo" open>
+  //           <Select.Option value="bamboo">Bamboo</Select.Option>
+  //           <Select.Option value="little">Little</Select.Option>
+  //         </Select>
+  //         <button type="submit">Submit</button>
+  //       </form>,
+  //     );
+  //     console.log(wrapper.debug());
+  //     toggleOpen(wrapper);
+  //     selectItem(wrapper, 0);
+  //     selectItem(wrapper, 1);
+
+  //     const form = wrapper.find('form').first();
+  //     form.simulate('submit');
+  //     expect(submits).lastCalledWith([
+  //       ['my-select', 'bamboo'],
+  //       ['my-select', 'little'],
+  //     ]);
+  //   });
+  // });
+  describe('HTML5 Compatability', () => {
+    it(`should be possible to submit a <form> with a value (mode='multiple')`, () => {
+      const submits = jest.fn();
+
+      const wrapper = mount(
+        <form
+          name="my-form"
+          onSubmit={(event) => {
+            event.preventDefault();
+            console.log(`-caling submot------------------------`);
+            const value = [...new FormData(event.currentTarget).entries()];
+            console.log(`value???`, value);
+            submits([...new FormData(event.currentTarget).entries()]);
+          }}
+        >
+          <Select name="my-test-select" mode="tags" open>
+            <Option value="1">1</Option>
+            <Option value="2">2</Option>
+          </Select>
+          <button type="submit">Submit</button>
+        </form>,
+      );
+      toggleOpen(wrapper);
+      selectItem(wrapper, 0);
+      console.log(wrapper.debug());
+
+      const form = wrapper.find('form').first();
+      form.simulate('submit');
+      expect(submits).lastCalledWith([['my-test-select', '1']]);
+    });
+
+    // it('should be possible to submit a <form> with multiple values', () => {
+    //   const submits = jest.fn();
+
+    //   const wrapper = mount(
+    //     <form
+    //       name="my-form"
+    //       onSubmit={(event) => {
+    //         event.preventDefault();
+    //         console.log(`-caling submot------------------------`);
+    //         const value = [...new FormData(event.currentTarget).entries()];
+    //         console.log(`value???`, value);
+    //         submits([...new FormData(event.currentTarget).entries()]);
+    //       }}
+    //     >
+    //       <Select name="my-test-select" mode="multiple" open>
+    //         <Option value="1">1</Option>
+    //         <Option value="2">2</Option>
+    //       </Select>
+    //       <button type="submit">Submit</button>
+    //     </form>,
+    //   );
+    //   toggleOpen(wrapper);
+    //   selectItem(wrapper, 0);
+    //   selectItem(wrapper, 1);
+    //   console.log(wrapper.debug());
+
+    //   const form = wrapper.find('form').first();
+    //   form.simulate('submit');
+    //   expect(submits).lastCalledWith([
+    //     ['my-test-select', '1'],
+    //     ['my-test-select', '2'],
+    //   ]);
+    // });
+  });
 });

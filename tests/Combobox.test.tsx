@@ -527,4 +527,33 @@ describe('Select.Combobox', () => {
     selectItem(wrapper);
     expect(wrapper.find('.rc-select-item-option-selected').length).toBe(0);
   });
+
+  // describe('HTML5 Compatability', () => {
+  //   it('should be possible to submit a <form> with a value', () => {
+  //     const submits = jest.fn();
+
+  //     const wrapper = mount(
+  //       <form
+  //         name="my-form"
+  //         onSubmit={(event) => {
+  //           event.preventDefault();
+  //           submits([...new FormData(event.currentTarget).entries()]);
+  //         }}
+  //       >
+  //         <Select name="my-test-select" mode="combobox" open>
+  //           <Option value="1">1</Option>
+  //           <Option value="2">2</Option>
+  //         </Select>
+  //         <button type="submit">Submit</button>
+  //       </form>,
+  //     );
+  //     toggleOpen(wrapper);
+  //     selectItem(wrapper);
+  //     expect(wrapper.find('input').props().value).toEqual('1');
+
+  //     const form = wrapper.find('form').first();
+  //     form.simulate('submit');
+  //     expect(submits).lastCalledWith([['my-test-select', '1']]);
+  //   });
+  // });
 });

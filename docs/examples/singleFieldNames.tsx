@@ -7,6 +7,7 @@ import './single.less';
 export default () => {
   return (
     <Select
+      name="my-select"
       style={{ width: 500 }}
       onChange={console.log}
       fieldNames={{
