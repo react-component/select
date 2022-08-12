@@ -4,6 +4,7 @@ import type { AlignType } from 'rc-trigger/lib/interface';
 import KeyCode from 'rc-util/lib/KeyCode';
 import isMobile from 'rc-util/lib/isMobile';
 import { useComposeRef } from 'rc-util/lib/ref';
+import pickAttrs from 'rc-util/lib/pickAttrs';
 import type { ScrollTo, ScrollConfig } from 'rc-virtual-list/lib/List';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
@@ -786,7 +787,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     renderNode = (
       <div
         className={mergedClassName}
-        {...domProps}
+        {...pickAttrs(domProps, { aria: false, data: true, attr: true })}
         ref={containerRef}
         onMouseDown={onInternalMouseDown}
         onKeyDown={onInternalKeyDown}
