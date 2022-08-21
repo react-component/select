@@ -694,6 +694,10 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   const onClearMouseDown: React.MouseEventHandler<HTMLSpanElement> = () => {
     onClear?.();
 
+    selectorRef.current?.focus();
+    setMockFocused(true);
+    focusRef.current = true;
+
     onDisplayValuesChange([], {
       type: 'clear',
       values: displayValues,

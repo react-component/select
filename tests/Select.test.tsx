@@ -1949,4 +1949,26 @@ describe('Select.Basic', () => {
       expect(wrapper.find('span.rc-select-selection-item').at(2).prop('title')).toEqual('+ 1 ...');
     });
   });
+
+  it('should be focused when click clear button', () => {
+    jest.useFakeTimers();
+
+    const mouseDownPreventDefault = jest.fn();
+    const wrapper = mount(
+      <Select allowClear value={1}>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+
+    expect(wrapper.find('.rc-select-clear-icon').length).toBeTruthy();
+
+    wrapper
+      .find('.rc-select-clear-icon')
+      .simulate('mouseDown', { preventDefault: mouseDownPreventDefault });
+    jest.runAllTimers();
+
+    expect(wrapper.find('.rc-select').getDOMNode().className).toContain('-focused');
+    jest.useRealTimers();
+  });
 });
