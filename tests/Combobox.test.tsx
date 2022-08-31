@@ -382,7 +382,7 @@ describe('Select.Combobox', () => {
     expect(wrapper.find('input').prop('value')).toBe('abab');
   });
 
-  it.only("when value change to '', searchValue will change to '' ", () => {
+  it("when value change to '', searchValue will change to '' ", () => {
     class App extends React.Component {
       public state = {
         value: '2',
