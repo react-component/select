@@ -382,6 +382,45 @@ describe('Select.Combobox', () => {
     expect(wrapper.find('input').prop('value')).toBe('abab');
   });
 
+  it.only("when value change to '', searchValue will change to '' ", () => {
+    class App extends React.Component {
+      public state = {
+        value: '2',
+      };
+
+      public render() {
+        return (
+          <div>
+            <button onClick={() => this.setState({ value: '' })}>value to 0</button>
+            <Select
+              value={this.state.value}
+              open
+              mode="combobox"
+              onChange={(value) => this.setState({ value })}
+              filterOption={(inputValue, option) => {
+                if (!inputValue) {
+                  return true;
+                }
+                return (option.value as string).includes(inputValue);
+              }}
+            >
+              {['1'].map((i) => (
+                <Option value={i} key={i}>
+                  {i}
+                </Option>
+              ))}
+            </Select>
+          </div>
+        );
+      }
+    }
+
+    const wrapper = mount(<App />);
+    expect(wrapper.find('.rc-select-item-option').length).toBe(0);
+    wrapper.find('button').simulate('click');
+    expect(wrapper.find('.rc-select-item-option').length).toBe(1);
+  });
+
   // [Legacy] `optionLabelProp` should not work on `combobox`
   // https://github.com/ant-design/ant-design/issues/10367
   // origin test: https://github.com/react-component/select/blob/e5fa4959336f6a423b6e30652b9047510bb6f78f/tests/Select.combobox.spec.tsx#L362

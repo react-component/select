@@ -693,7 +693,12 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     onInternalSearch('', false, false);
   };
 
-  if (!disabled && allowClear && (displayValues.length || mergedSearchValue)) {
+  if (
+    !disabled &&
+    allowClear &&
+    (displayValues.length || mergedSearchValue) &&
+    !(mode === 'combobox' && mergedSearchValue === '')
+  ) {
     clearNode = (
       <TransBtn
         className={`${prefixCls}-clear`}
