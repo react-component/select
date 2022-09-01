@@ -49,7 +49,7 @@ import OptGroup from './OptGroup';
 import Option from './Option';
 import OptionList from './OptionList';
 import SelectContext from './SelectContext';
-import { toArray } from './utils/commonUtil';
+import { hasValue, toArray } from './utils/commonUtil';
 import { fillFieldNames, flattenOptions, injectPropsWithOption } from './utils/valueUtil';
 import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
 
@@ -333,12 +333,7 @@ const Select = React.forwardRef(
     React.useEffect(() => {
       if (mode === 'combobox') {
         const strValue = mergedValues[0]?.value;
-
-        if (strValue !== undefined && strValue !== null) {
-          setSearchValue(String(strValue));
-        } else {
-          setSearchValue('');
-        }
+        setSearchValue(hasValue(strValue) ? String(strValue) : '');
       }
     }, [mergedValues]);
 
