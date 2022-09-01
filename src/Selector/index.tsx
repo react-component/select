@@ -223,7 +223,10 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
 
   const onMouseDown: React.MouseEventHandler<HTMLElement> = (event) => {
     const inputMouseDown = getInputMouseDown();
-    if (event.target !== inputRef.current && !inputMouseDown) {
+
+    // when mode is combobox, don't prevent default behavior
+    // https://github.com/ant-design/ant-design/issues/37320
+    if (event.target !== inputRef.current && !inputMouseDown && mode !== 'combobox') {
       event.preventDefault();
     }
 
