@@ -39,6 +39,17 @@ describe('Select.Combobox', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
+  it('renders controlled correctly', () => {
+    const wrapper = mount(
+      <Select value="" mode="combobox" placeholder="Search">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+
+    expect(wrapper.render()).toMatchSnapshot();
+  });
+
   it('set inputValue based on value', () => {
     const wrapper = mount(
       <Select mode="combobox" value="1">

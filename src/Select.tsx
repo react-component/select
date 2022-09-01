@@ -49,7 +49,7 @@ import OptGroup from './OptGroup';
 import Option from './Option';
 import OptionList from './OptionList';
 import SelectContext from './SelectContext';
-import { toArray, hasValue } from './utils/commonUtil';
+import { hasValue, toArray } from './utils/commonUtil';
 import { fillFieldNames, flattenOptions, injectPropsWithOption } from './utils/valueUtil';
 import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
 
@@ -295,7 +295,7 @@ const Select = React.forwardRef(
       const values = convert2LabelValues(internalValue);
 
       // combobox no need save value when it's no value
-      if (mode === 'combobox' && !hasValue(values[0]?.value)) {
+      if (mode === 'combobox' && !values[0]?.value) {
         return [];
       }
 
@@ -333,10 +333,7 @@ const Select = React.forwardRef(
     React.useEffect(() => {
       if (mode === 'combobox') {
         const strValue = mergedValues[0]?.value;
-
-        if (strValue !== undefined && strValue !== null) {
-          setSearchValue(String(strValue));
-        }
+        setSearchValue(hasValue(strValue) ? String(strValue) : '');
       }
     }, [mergedValues]);
 
