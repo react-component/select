@@ -175,7 +175,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
         ? maxTagPlaceholder(omittedValues)
         : maxTagPlaceholder;
 
-    return defaultRenderSelector(content, content, false);
+    return defaultRenderSelector({ title: content }, content, false);
   }
 
   // >>> Input Node

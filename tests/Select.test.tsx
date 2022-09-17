@@ -1929,18 +1929,21 @@ describe('Select.Basic', () => {
       const wrapper = mount(
         <Select
           mode="multiple"
-          value={['b', 'l']}
+          value={['b', 'l', 'r']}
+          maxTagCount={2}
           options={[
             { label: 'bamboo', title: 'TitleBamboo', value: 'b' },
             { label: 'little', value: 'l' },
+            { label: 'Rest', value: 'r' },
           ]}
         />,
       );
 
-      expect(wrapper.find('.rc-select-selection-item').first().prop('title')).toEqual(
+      expect(wrapper.find('span.rc-select-selection-item').at(0).prop('title')).toEqual(
         'TitleBamboo',
       );
-      expect(wrapper.find('.rc-select-selection-item').last().prop('title')).toEqual('little');
+      expect(wrapper.find('span.rc-select-selection-item').at(1).prop('title')).toEqual('little');
+      expect(wrapper.find('span.rc-select-selection-item').at(2).prop('title')).toEqual('+ 1 ...');
     });
   });
 });
