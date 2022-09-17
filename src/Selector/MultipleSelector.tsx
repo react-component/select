@@ -8,6 +8,7 @@ import type { InnerSelectorProps } from '.';
 import Input from './Input';
 import useLayoutEffect from '../hooks/useLayoutEffect';
 import type { DisplayValueType, RenderNode, CustomTagProps, RawValueType } from '../BaseSelect';
+import { getTitle } from '../utils/commonUtil';
 
 function itemKey(value: DisplayValueType) {
   return value.key ?? value.value;
@@ -89,7 +90,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
   // ===================== Render ======================
   // >>> Render Selector Node. Includes Item & Rest
   function defaultRenderSelector(
-    title: React.ReactNode,
+    item: DisplayValueType,
     content: React.ReactNode,
     itemDisabled: boolean,
     closable?: boolean,
@@ -100,9 +101,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
         className={classNames(`${selectionPrefixCls}-item`, {
           [`${selectionPrefixCls}-item-disabled`]: itemDisabled,
         })}
-        title={
-          typeof title === 'string' || typeof title === 'number' ? title.toString() : undefined
-        }
+        title={getTitle(item)}
       >
         <span className={`${selectionPrefixCls}-item-content`}>{content}</span>
         {closable && (
@@ -167,7 +166,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
 
     return typeof tagRender === 'function'
       ? customizeRenderSelector(value, displayLabel, itemDisabled, closable, onClose)
-      : defaultRenderSelector(label, displayLabel, itemDisabled, closable, onClose);
+      : defaultRenderSelector(valueItem, displayLabel, itemDisabled, closable, onClose);
   }
 
   function renderRest(omittedValues: DisplayValueType[]) {

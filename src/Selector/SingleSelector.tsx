@@ -2,6 +2,7 @@ import * as React from 'react';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import Input from './Input';
 import type { InnerSelectorProps } from '.';
+import { getTitle } from '../utils/commonUtil';
 
 interface SelectorProps extends InnerSelectorProps {
   inputElement: React.ReactElement;
@@ -57,10 +58,8 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
   // Not show text when closed expect combobox mode
   const hasTextInput = mode !== 'combobox' && !open && !showSearch ? false : !!inputValue;
 
-  const title =
-    item && (typeof item.label === 'string' || typeof item.label === 'number')
-      ? item.label.toString()
-      : undefined;
+  // Get title
+  const title = getTitle(item);
 
   const renderPlaceholder = () => {
     if (item) {
