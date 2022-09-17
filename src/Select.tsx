@@ -247,6 +247,7 @@ const Select = React.forwardRef(
           let rawLabel: React.ReactNode;
           let rawKey: React.Key;
           let rawDisabled: boolean | undefined;
+          let rawTitle: string;
 
           // Fill label & value
           if (isRawValue(val)) {
@@ -264,6 +265,7 @@ const Select = React.forwardRef(
               rawLabel = option?.[optionLabelProp || mergedFieldNames.label];
             if (rawKey === undefined) rawKey = option?.key ?? rawValue;
             rawDisabled = option?.disabled;
+            rawTitle = option?.title;
 
             // Warning if label not same as provided
             if (process.env.NODE_ENV !== 'production' && !optionLabelProp) {
@@ -279,6 +281,7 @@ const Select = React.forwardRef(
             value: rawValue,
             key: rawKey,
             disabled: rawDisabled,
+            title: rawTitle,
           };
         });
       },

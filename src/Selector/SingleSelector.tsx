@@ -8,6 +8,10 @@ interface SelectorProps extends InnerSelectorProps {
   activeValue: string;
 }
 
+function isTitleType(title: any) {
+  return ['string', 'number'].includes(typeof title);
+}
+
 const SingleSelector: React.FC<SelectorProps> = (props) => {
   const {
     inputElement,
@@ -57,10 +61,15 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
   // Not show text when closed expect combobox mode
   const hasTextInput = mode !== 'combobox' && !open && !showSearch ? false : !!inputValue;
 
-  const title =
-    item && (typeof item.label === 'string' || typeof item.label === 'number')
-      ? item.label.toString()
-      : undefined;
+  // Get title
+  let title: string = undefined;
+  if (item) {
+    if (isTitleType(item.title)) {
+      title = item.title.toString();
+    } else if (isTitleType(item.label)) {
+      title = item.label.toString();
+    }
+  }
 
   const renderPlaceholder = () => {
     if (item) {

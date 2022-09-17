@@ -61,6 +61,7 @@ export interface DisplayValueType {
   key?: React.Key;
   value?: RawValueType;
   label?: React.ReactNode;
+  title?: string | number;
   disabled?: boolean;
 }
 
