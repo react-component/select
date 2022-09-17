@@ -2,14 +2,11 @@ import * as React from 'react';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import Input from './Input';
 import type { InnerSelectorProps } from '.';
+import { getTitle } from '../utils/commonUtil';
 
 interface SelectorProps extends InnerSelectorProps {
   inputElement: React.ReactElement;
   activeValue: string;
-}
-
-function isTitleType(title: any) {
-  return ['string', 'number'].includes(typeof title);
 }
 
 const SingleSelector: React.FC<SelectorProps> = (props) => {
@@ -62,14 +59,7 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
   const hasTextInput = mode !== 'combobox' && !open && !showSearch ? false : !!inputValue;
 
   // Get title
-  let title: string = undefined;
-  if (item) {
-    if (isTitleType(item.title)) {
-      title = item.title.toString();
-    } else if (isTitleType(item.label)) {
-      title = item.label.toString();
-    }
-  }
+  const title = getTitle(item);
 
   const renderPlaceholder = () => {
     if (item) {

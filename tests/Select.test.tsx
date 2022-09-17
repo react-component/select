@@ -1914,4 +1914,33 @@ describe('Select.Basic', () => {
     expect(wrapper.find('div.rc-select-item').prop('data-test')).toEqual('good');
     expect(wrapper.find('div.rc-select-item').prop('aria-label')).toEqual('well');
   });
+
+  // https://github.com/ant-design/ant-design/issues/37591
+  describe('title attr', () => {
+    it('single', () => {
+      const wrapper = mount(
+        <Select value="b" options={[{ label: 'bamboo', title: 'TitleBamboo', value: 'b' }]} />,
+      );
+
+      expect(wrapper.find('.rc-select-selection-item').prop('title')).toEqual('TitleBamboo');
+    });
+
+    it('multiple', () => {
+      const wrapper = mount(
+        <Select
+          mode="multiple"
+          value={['b', 'l']}
+          options={[
+            { label: 'bamboo', title: 'TitleBamboo', value: 'b' },
+            { label: 'little', value: 'l' },
+          ]}
+        />,
+      );
+
+      expect(wrapper.find('.rc-select-selection-item').first().prop('title')).toEqual(
+        'TitleBamboo',
+      );
+      expect(wrapper.find('.rc-select-selection-item').last().prop('title')).toEqual('little');
+    });
+  });
 });
