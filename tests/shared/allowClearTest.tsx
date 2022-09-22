@@ -11,6 +11,7 @@ export default function allowClearTest(mode: any, value: any) {
     it('clears value', () => {
       const onClear = jest.fn();
       const onChange = jest.fn();
+      const onDeselect = jest.fn();
       const useArrayValue = ['tags', 'multiple'].includes(mode);
       const wrapper = mount(
         <Select
@@ -19,6 +20,7 @@ export default function allowClearTest(mode: any, value: any) {
           mode={mode}
           onClear={onClear}
           onChange={onChange}
+          onDeselect={onDeselect}
         >
           <Option value="1">1</Option>
           <Option value="2">2</Option>
@@ -31,15 +33,13 @@ export default function allowClearTest(mode: any, value: any) {
 
       // enabled
       wrapper.setProps({ disabled: false });
-      wrapper
-        .find('.rc-select-clear')
-        .last()
-        .simulate('mousedown');
+      wrapper.find('.rc-select-clear').last().simulate('mousedown');
       if (useArrayValue) {
         expect(onChange).toHaveBeenCalledWith([], []);
       } else {
         expect(onChange).toHaveBeenCalledWith(undefined, undefined);
       }
+      expect(onDeselect).not.toBeCalled();
       expect(wrapper.find('input').props().value).toEqual('');
       expect(onClear).toHaveBeenCalled();
     });

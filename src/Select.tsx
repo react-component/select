@@ -36,6 +36,7 @@ import type {
   BaseSelectProps,
   BaseSelectPropsWithoutPrivate,
   BaseSelectRef,
+  DisplayInfoType,
   DisplayValueType,
   RenderNode,
 } from './BaseSelect';
@@ -455,7 +456,7 @@ const Select = React.forwardRef(
     );
 
     // ========================= OptionList =========================
-    const triggerSelect = (val: RawValueType, selected: boolean) => {
+    const triggerSelect = (val: RawValueType, selected: boolean, type?: DisplayInfoType) => {
       const getSelectEnt = (): [RawValueType | LabelInValueType, DefaultOptionType] => {
         const option = getMixedOption(val);
         return [
@@ -473,7 +474,7 @@ const Select = React.forwardRef(
       if (selected && onSelect) {
         const [wrappedValue, option] = getSelectEnt();
         onSelect(wrappedValue, option);
-      } else if (!selected && onDeselect) {
+      } else if (!selected && onDeselect && type !== 'clear') {
         const [wrappedValue, option] = getSelectEnt();
         onDeselect(wrappedValue, option);
       }
@@ -509,10 +510,11 @@ const Select = React.forwardRef(
     // BaseSelect display values change
     const onDisplayValuesChange: BaseSelectProps['onDisplayValuesChange'] = (nextValues, info) => {
       triggerChange(nextValues);
+      const { type, values } = info;
 
-      if (info.type === 'remove' || info.type === 'clear') {
-        info.values.forEach((item) => {
-          triggerSelect(item.value, false);
+      if (type === 'remove' || type === 'clear') {
+        values.forEach((item) => {
+          triggerSelect(item.value, false, type);
         });
       }
     };
