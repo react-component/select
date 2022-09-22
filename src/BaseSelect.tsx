@@ -272,7 +272,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
 
     // Rest Events
     onKeyUp,
-    onKeyDown,
+    onInputKeyDown,
     onMouseDown,
 
     // Rest Props
@@ -450,7 +450,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   const [getClearLock, setClearLock] = useLock();
 
   // KeyDown
-  const onInternalKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event, ...rest) => {
+  const onInputInternalKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event, ...rest) => {
     const clearLock = getClearLock();
     const { which } = event;
 
@@ -501,7 +501,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       listRef.current.onKeyDown(event, ...rest);
     }
 
-    onKeyDown?.(event, ...rest);
+    onInputKeyDown?.(event, ...rest);
   };
 
   // KeyUp
@@ -777,6 +777,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
           onSearchSubmit={onInternalSearchSubmit}
           onRemove={onSelectorRemove}
           tokenWithEnter={tokenWithEnter}
+          onInputKeyDown={onInputInternalKeyDown}
         />
       )}
     </SelectTrigger>
@@ -795,7 +796,6 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
         {...domProps}
         ref={containerRef}
         onMouseDown={onInternalMouseDown}
-        onKeyDown={onInternalKeyDown}
         onKeyUp={onInternalKeyUp}
         onFocus={onContainerFocus}
         onBlur={onContainerBlur}

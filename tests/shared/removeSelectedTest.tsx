@@ -82,7 +82,9 @@ export default function removeSelectedTest(mode: any) {
         </Select>,
       );
 
-      wrapper.find('input').simulate('keyDown', { which: KeyCode.BACKSPACE });
+      wrapper
+        .find('input.rc-select-selection-search-input')
+        .simulate('keyDown', { which: KeyCode.BACKSPACE });
       expect(onChange).toHaveBeenCalledWith(['1'], [expect.objectContaining({ value: '1' })]);
     });
 
