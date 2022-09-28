@@ -63,7 +63,7 @@
     "enzyme": "^3.3.0",
     "enzyme-to-json": "^3.4.0",
     "eslint": "^7.1.0",
-    "father": "^2.13.2",
+    "father": "^4.0.6",
     "jsonp": "^0.2.1",
     "np": "^7.5.0",
     "prettier": "^2.7.1",
