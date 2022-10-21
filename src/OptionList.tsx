@@ -120,7 +120,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListP
   // https://github.com/ant-design/ant-design/issues/34975
   const isSelected = React.useCallback(
     (value: RawValueType) => rawValues.has(value) && mode !== 'combobox',
-    [mode, [...rawValues].toString()],
+    [mode, [...rawValues].toString(), rawValues.size],
   );
 
   // Auto scroll to item position in single mode
