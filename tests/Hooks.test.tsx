@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import useLock from '../src/hooks/useLock';
 import { injectRunAllTimers } from './utils/common';
 
@@ -8,6 +8,7 @@ describe('Hooks', () => {
 
   it('useLock', () => {
     jest.useFakeTimers();
+    const clearTimeoutSpy = jest.spyOn(window, 'clearTimeout');
 
     let outSetLock: (newLock: boolean) => void;
 
@@ -17,12 +18,15 @@ describe('Hooks', () => {
       return null;
     };
 
-    const wrapper = mount(<Component />);
+    const { unmount } = render(<Component />);
 
+    clearTimeoutSpy.mockReset();
     outSetLock(true);
-    wrapper.unmount();
+    unmount();
 
-    expect(window.clearTimeout).toHaveBeenCalled();
+    expect(clearTimeoutSpy).toHaveBeenCalled();
+
+    clearTimeoutSpy.mockRestore();
 
     jest.runAllTimers();
     jest.useRealTimers();

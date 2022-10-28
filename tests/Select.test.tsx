@@ -1,4 +1,5 @@
 import { mount, render } from 'enzyme';
+import { render as testingRender, fireEvent } from '@testing-library/react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototype } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
@@ -1151,7 +1152,7 @@ describe('Select.Basic', () => {
 
     const onChildClick = jest.fn();
     const onMouseDown = jest.fn();
-    const wrapper = mount(
+    const { container } = testingRender(
       <Select
         onMouseDown={onMouseDown}
         dropdownRender={(menu) => (
@@ -1168,9 +1169,11 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    toggleOpen(wrapper);
-    wrapper.find('div#dropdown-custom-node').simulate('mousedown');
-    wrapper.find('div#dropdown-custom-node').simulate('click');
+    // Open
+    fireEvent.mouseDown(container.querySelector('.rc-select-selector'));
+
+    fireEvent.mouseDown(container.querySelector('div#dropdown-custom-node'));
+    fireEvent.click(container.querySelector('div#dropdown-custom-node'));
     expect(onMouseDown).toHaveBeenCalled();
     expect(onChildClick).toHaveBeenCalled();
 
@@ -1178,7 +1181,7 @@ describe('Select.Basic', () => {
 
     jest.runAllTimers();
 
-    expect(wrapper.find('input').instance()).toBe(document.activeElement);
+    expect(container.querySelector('input')).toBe(document.activeElement);
 
     jest.useRealTimers();
   });

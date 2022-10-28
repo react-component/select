@@ -600,5 +600,25 @@ describe('Select.Multiple', () => {
       expect(errSpy).not.toHaveBeenCalled();
       errSpy.mockRestore();
     });
+
+    it('selected icon should show when value is empty', () => {
+      const wrapper = mount(
+        <Select
+          mode="multiple"
+          open
+          options={[
+            {
+              label: 'Bamboo',
+              value: '',
+            },
+          ]}
+        />,
+      );
+      toggleOpen(wrapper);
+      selectItem(wrapper, 0);
+      expect(wrapper.find('.rc-select-item-option-state-icon').at(0).text()).toBe('✓');
+      selectItem(wrapper, 0);
+      expect(wrapper.find('.rc-select-item-option-state-icon').at(0).text()).toBe('');
+    });
   });
 });
