@@ -32,7 +32,7 @@ function isTitleType(content: any) {
  * Using virtual list of option display.
  * Will fallback to dom if use customize render.
  */
-const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, OptionListProps> = (
+const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (
   _,
   ref,
 ) => {
