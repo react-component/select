@@ -98,6 +98,7 @@ export interface BaseSelectPrivateProps {
 
   // >>> Search
   searchValue: string;
+  autoClearSearchValue: boolean;
   /** Trigger onSearch, return false to prevent trigger open event */
   onSearch: (
     searchValue: string,
@@ -245,6 +246,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
 
     // Search
     searchValue,
+    autoClearSearchValue,
     onSearch,
     onSearchSplit,
     tokenSeparators,
@@ -767,6 +769,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
           ref={selectorRef}
           id={id}
           showSearch={mergedShowSearch}
+          autoClearSearchValue={autoClearSearchValue}
           mode={mode}
           activeDescendantId={activeDescendantId}
           tagRender={tagRender}

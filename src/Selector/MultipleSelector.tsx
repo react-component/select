@@ -18,9 +18,6 @@ interface SelectorProps extends InnerSelectorProps {
   // Icon
   removeIcon?: RenderNode;
 
-  // Search
-  autoClearSearchValue?: boolean;
-
   // Tags
   maxTagCount?: number | 'responsive';
   maxTagTextLength?: number;
@@ -83,8 +80,8 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
   const selectionPrefixCls = `${prefixCls}-selection`;
 
   // ===================== Search ======================
-  const inputValue = open || (mode === "multiple" && !autoClearSearchValue) || mode === 'tags' ? searchValue : '';
-  const inputEditable: boolean = mode === 'tags' || (mode === "multiple" && !autoClearSearchValue) || (showSearch && (open || focused));
+  const inputValue = open || (mode === "multiple" && autoClearSearchValue === false) || mode === 'tags' ? searchValue : '';
+  const inputEditable: boolean = mode === 'tags' || (mode === "multiple" && autoClearSearchValue === false) || (showSearch && (open || focused));
 
   // We measure width and set to the input immediately
   useLayoutEffect(() => {
