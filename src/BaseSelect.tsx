@@ -98,7 +98,7 @@ export interface BaseSelectPrivateProps {
 
   // >>> Search
   searchValue: string;
-  autoClearSearchValue: boolean;
+  autoClearSearchValue?: boolean;
   /** Trigger onSearch, return false to prevent trigger open event */
   onSearch: (
     searchValue: string,
