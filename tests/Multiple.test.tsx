@@ -621,4 +621,30 @@ describe('Select.Multiple', () => {
       expect(wrapper.find('.rc-select-item-option-state-icon').at(0).text()).toBe('');
     });
   });
+
+  describe("autoClearSearchValue", () => {
+    it('search value should not show when autoClearSearchValue is undefined', () => {
+      const wrapper = mount(
+        <Select
+          mode="multiple"
+          open={false}
+          showSearch={true}
+          searchValue="test"
+        />,
+      );
+      expect(wrapper.find('input').props().value).toBe('');
+    });
+    it('search value should show when autoClearSearchValue is true', () => {
+      const wrapper = mount(
+        <Select
+          mode="multiple"
+          open={false}
+          autoClearSearchValue={false}
+          showSearch={true}
+          searchValue="test"
+        />,
+      );
+      expect(wrapper.find('input').props().value).toBe('test');
+    });
+  });
 });

@@ -624,6 +624,7 @@ const Select = React.forwardRef(
           // >>> Search
           searchValue={mergedSearchValue}
           onSearch={onInternalSearch}
+          autoClearSearchValue={autoClearSearchValue}
           onSearchSplit={onInternalSearchSplit}
           dropdownMatchSelectWidth={dropdownMatchSelectWidth}
           // >>> OptionList
