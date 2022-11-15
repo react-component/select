@@ -625,12 +625,12 @@ describe('Select.Multiple', () => {
   describe("autoClearSearchValue", () => {
     it('search value should not show when autoClearSearchValue is undefined', () => {
       const wrapper = mount(
-          <Select
-              mode="multiple"
-              open={false}
-              showSearch={true}
-              searchValue="test"
-          />,
+        <Select
+          mode="multiple"
+          open={false}
+          showSearch={true}
+          searchValue="test"
+        />,
       );
       expect(wrapper.find('input').props().value).toBe('');
     });
