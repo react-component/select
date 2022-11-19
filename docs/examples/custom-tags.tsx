@@ -2,7 +2,8 @@
 import React from 'react';
 import Select, { Option } from 'rc-select';
 import '../../assets/index.less';
-import type { CustomTagProps } from 'rc-select/src/BaseSelect';
+import type { CustomTagProps } from '@/BaseSelect';
+
 
 const children = [];
 for (let i = 10; i < 36; i += 1) {
