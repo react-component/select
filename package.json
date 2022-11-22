@@ -34,8 +34,7 @@
     "build": "dumi build",
     "compile": "father build",
     "prepublishOnly": "npm run compile && np --yolo --no-publish",
-    "lint":"npm run tsc && npm run lint:script",
-    "lint:script": "eslint src/ docs/examples/ --ext .tsx,.ts,.jsx,.js",
+    "lint": "eslint src/ docs/examples/ --ext .tsx,.ts,.jsx,.js",
     "test": "rc-test",
     "tsc": "tsc --noEmit",
     "now-build": "npm run build"
