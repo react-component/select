@@ -1,17 +1,19 @@
 /* eslint-disable max-classes-per-file */
 
+import '@testing-library/jest-dom';
+import { act, fireEvent, render } from '@testing-library/react';
 import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
-import React from 'react';
 import { resetWarned } from 'rc-util/lib/warning';
+import React from 'react';
 import type { SelectProps } from '../src';
 import Select, { Option } from '../src';
+import allowClearTest from './shared/allowClearTest';
 import focusTest from './shared/focusTest';
 import keyDownTest from './shared/keyDownTest';
 import openControlledTest from './shared/openControlledTest';
-import { expectOpen, toggleOpen, selectItem, injectRunAllTimers } from './utils/common';
-import allowClearTest from './shared/allowClearTest';
 import throwOptionValue from './shared/throwOptionValue';
+import { expectOpen, injectRunAllTimers, selectItem, toggleOpen } from './utils/common';
 
 async function delay(timeout = 0) {
   return new Promise((resolve) => {
@@ -576,5 +578,25 @@ describe('Select.Combobox', () => {
     toggleOpen(wrapper);
     selectItem(wrapper);
     expect(wrapper.find('.rc-select-item-option-selected').length).toBe(0);
+  });
+
+  it('not show dropdown when options changed', () => {
+    jest.useFakeTimers();
+    const { container, rerender } = render(<Select mode="combobox" options={[]} />);
+
+    fireEvent.mouseDown(container.querySelector('input'));
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    fireEvent.blur(container.querySelector('input'));
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    rerender(<Select mode="combobox" options={[{ value: 'shouldHide' }]} />);
+    expect(document.body.querySelector('.rc-select-dropdown-hidden')).toBeTruthy();
+
+    jest.useRealTimers();
   });
 });
