@@ -580,6 +580,7 @@ describe('Select.Combobox', () => {
     expect(wrapper.find('.rc-select-item-option-selected').length).toBe(0);
   });
 
+  // https://github.com/ant-design/ant-design/issues/38844
   it('not show dropdown when options changed', () => {
     jest.useFakeTimers();
     const { container, rerender } = render(<Select mode="combobox" options={[]} />);
