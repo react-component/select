@@ -58,6 +58,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (
     virtual,
     listHeight,
     listItemHeight,
+    renderFullOptionList,
   } = React.useContext(SelectContext);
 
   const itemPrefixCls = `${prefixCls}-item`;
@@ -271,9 +272,9 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (
   return (
     <>
       <div role="listbox" id={`${id}_list`} style={{ height: 0, width: 0, overflow: 'hidden' }}>
-        {renderItem(activeIndex - 1)}
-        {renderItem(activeIndex)}
-        {renderItem(activeIndex + 1)}
+        {renderFullOptionList
+          ? [...Array(flattenOptions.length).keys()].map((index) => renderItem(index))
+          : [activeIndex - 1, activeIndex, activeIndex + 1].map((index) => renderItem(index))}
       </div>
       <List<FlattenOptionData<BaseOptionType>>
         itemKey="key"

@@ -141,6 +141,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   virtual?: boolean;
   listHeight?: number;
   listItemHeight?: number;
+  renderFullOptionList?: boolean;
 
   // >>> Icon
   menuItemSelectedIcon?: RenderNode;
@@ -188,6 +189,7 @@ const Select = React.forwardRef(
       virtual,
       listHeight = 200,
       listItemHeight = 20,
+      renderFullOptionList,
 
       // Value
       value,
@@ -583,6 +585,7 @@ const Select = React.forwardRef(
         listHeight,
         listItemHeight,
         childrenAsData,
+        renderFullOptionList,
       };
     }, [
       parsedOptions,
@@ -598,6 +601,7 @@ const Select = React.forwardRef(
       listHeight,
       listItemHeight,
       childrenAsData,
+      renderFullOptionList,
     ]);
 
     // ========================== Warning ===========================
