@@ -634,7 +634,7 @@ describe('Select.Multiple', () => {
       );
       expect(wrapper.find('input').props().value).toBe('');
     });
-    it('search value should show when autoClearSearchValue is true', () => {
+    it('search value should show when autoClearSearchValue is false', () => {
       const wrapper = mount(
         <Select
           mode="multiple"
@@ -645,6 +645,33 @@ describe('Select.Multiple', () => {
         />,
       );
       expect(wrapper.find('input').props().value).toBe('test');
+    });
+    it('search value should no clear when autoClearSearchValue is false', () => {
+      const wrapper = mount(
+          <Select
+              mode="multiple"
+              autoClearSearchValue={false}
+              showSearch={true}
+              searchValue="test"
+          />,
+      );
+
+      toggleOpen(wrapper);
+      toggleOpen(wrapper);
+      expect(wrapper.find('input').props().value).toBe('test');
+    });
+    it('search value should clear when autoClearSearchValue is true', () => {
+      const wrapper = mount(
+          <Select
+              mode="multiple"
+              autoClearSearchValue={true}
+              showSearch={true}
+              searchValue="test"
+          />,
+      );
+      toggleOpen(wrapper);
+      toggleOpen(wrapper);
+      expect(wrapper.find('input').props().value).toBe('');
     });
   });
 });
