@@ -18,6 +18,7 @@ class Test extends React.Component {
     showArrow: false,
     loading: false,
     value: ['a10'],
+    searchValue: "",
   };
 
   onChange = (value, options) => {
@@ -52,6 +53,12 @@ class Test extends React.Component {
       loading: e.target.checked,
     });
   };
+
+  setSearchValue = val => {
+    this.setState({
+      searchValue: val,
+    })
+  }
 
   render() {
     const { useAnim, showArrow, loading, value } = this.state;
@@ -97,6 +104,31 @@ class Test extends React.Component {
             onFocus={() => console.log('focus')}
             onBlur={v => console.log('blur', v)}
             tokenSeparators={[' ', ',']}
+          >
+            {children}
+          </Select>
+        </div>
+
+
+        <h2>multiple select with autoClearSearchValue = false</h2>
+        <div style={{ width: 300 }}>
+          <Select
+              value={value}
+              style={{ width: 500 }}
+              mode="multiple"
+              autoClearSearchValue={false}
+              showSearch={true}
+              searchValue={this.state.searchValue}
+              onSearch={this.setSearchValue}
+              optionFilterProp="children"
+              optionLabelProp="children"
+              onSelect={this.onSelect}
+              onDeselect={this.onDeselect}
+              placeholder="please select"
+              onChange={this.onChange}
+              onFocus={() => console.log('focus')}
+              onBlur={v => console.log('blur', v)}
+              tokenSeparators={[' ', ',']}
           >
             {children}
           </Select>
