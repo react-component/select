@@ -8,8 +8,6 @@ React Select
 [![npm download][download-image]][download-url]
 [![build status][github-actions-image]][github-actions-url]
 [![Test coverage][coveralls-image]][coveralls-url]
-[![Dependencies][david-image]](david-url)
-[![DevDependencies][david-dev-image]][david-dev-url]
 [![bundle size][bundlephobia-image]][bundlephobia-url]
 
 [npm-image]: http://img.shields.io/npm/v/rc-select.svg?style=flat-square

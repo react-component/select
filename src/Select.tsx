@@ -97,9 +97,10 @@ export interface DefaultOptionType extends BaseOptionType {
   children?: Omit<DefaultOptionType, 'children'>[];
 }
 
-export type SelectHandler<ValueType = any, OptionType extends BaseOptionType = DefaultOptionType> =
-  | ((value: RawValueType | LabelInValueType, option: OptionType) => void)
-  | ((value: ValueType, option: OptionType) => void);
+export type SelectHandler<ValueType, OptionType extends BaseOptionType = DefaultOptionType> = (
+  value: ValueType,
+  option: OptionType,
+) => void;
 
 type ArrayElementType<T> = T extends (infer E)[] ? E : T;
 
@@ -624,6 +625,7 @@ const Select = React.forwardRef(
           // >>> Search
           searchValue={mergedSearchValue}
           onSearch={onInternalSearch}
+          autoClearSearchValue={autoClearSearchValue}
           onSearchSplit={onInternalSearchSplit}
           dropdownMatchSelectWidth={dropdownMatchSelectWidth}
           // >>> OptionList

@@ -1,6 +1,6 @@
 {
   "name": "rc-select",
-  "version": "14.1.13",
+  "version": "14.1.14",
   "description": "React Select",
   "engines": {
     "node": ">=8.x"
@@ -53,7 +53,8 @@
     "rc-virtual-list": "^3.2.0"
   },
   "devDependencies": {
-    "@testing-library/react": "12",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^12.1.5",
     "@types/enzyme": "^3.10.9",
     "@types/jest": "^26.0.24",
     "@types/react": "^17.0.15",
@@ -61,6 +62,7 @@
     "cross-env": "^7.0.0",
     "dumi": "^1.1.32",
     "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.15.7",
     "enzyme-to-json": "^3.4.0",
     "eslint": "^7.1.0",
     "father": "^4.0.0",

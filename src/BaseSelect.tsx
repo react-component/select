@@ -1,22 +1,22 @@
-import * as React from 'react';
 import classNames from 'classnames';
 import type { AlignType } from 'rc-trigger/lib/interface';
-import KeyCode from 'rc-util/lib/KeyCode';
-import isMobile from 'rc-util/lib/isMobile';
-import { useComposeRef } from 'rc-util/lib/ref';
-import type { ScrollTo, ScrollConfig } from 'rc-virtual-list/lib/List';
-import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
-import { getSeparatedContent } from './utils/valueUtil';
-import type { RefTriggerProps } from './SelectTrigger';
-import SelectTrigger from './SelectTrigger';
+import useMergedState from 'rc-util/lib/hooks/useMergedState';
+import isMobile from 'rc-util/lib/isMobile';
+import KeyCode from 'rc-util/lib/KeyCode';
+import { useComposeRef } from 'rc-util/lib/ref';
+import type { ScrollConfig, ScrollTo } from 'rc-virtual-list/lib/List';
+import * as React from 'react';
+import { BaseSelectContext } from './hooks/useBaseProps';
+import useDelayReset from './hooks/useDelayReset';
+import useLock from './hooks/useLock';
+import useSelectTriggerControl from './hooks/useSelectTriggerControl';
 import type { RefSelectorProps } from './Selector';
 import Selector from './Selector';
-import useSelectTriggerControl from './hooks/useSelectTriggerControl';
-import useDelayReset from './hooks/useDelayReset';
+import type { RefTriggerProps } from './SelectTrigger';
+import SelectTrigger from './SelectTrigger';
 import TransBtn from './TransBtn';
-import useLock from './hooks/useLock';
-import { BaseSelectContext } from './hooks/useBaseProps';
+import { getSeparatedContent } from './utils/valueUtil';
 
 const DEFAULT_OMIT_PROPS = [
   'value',
@@ -98,6 +98,7 @@ export interface BaseSelectPrivateProps {
 
   // >>> Search
   searchValue: string;
+  autoClearSearchValue?: boolean;
   /** Trigger onSearch, return false to prevent trigger open event */
   onSearch: (
     searchValue: string,
@@ -245,6 +246,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
 
     // Search
     searchValue,
+    autoClearSearchValue,
     onSearch,
     onSearchSplit,
     tokenSeparators,
@@ -366,9 +368,12 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     (newOpen?: boolean) => {
       const nextOpen = newOpen !== undefined ? newOpen : !mergedOpen;
 
-      if (mergedOpen !== nextOpen && !disabled) {
+      if (!disabled) {
         setInnerOpen(nextOpen);
-        onDropdownVisibleChange?.(nextOpen);
+
+        if (mergedOpen !== nextOpen) {
+          onDropdownVisibleChange?.(nextOpen);
+        }
       }
     },
     [disabled, mergedOpen, setInnerOpen, onDropdownVisibleChange],
@@ -767,6 +772,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
           ref={selectorRef}
           id={id}
           showSearch={mergedShowSearch}
+          autoClearSearchValue={autoClearSearchValue}
           mode={mode}
           activeDescendantId={activeDescendantId}
           tagRender={tagRender}

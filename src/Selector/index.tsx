@@ -31,6 +31,7 @@ export interface InnerSelectorProps {
   values: DisplayValueType[];
   showSearch?: boolean;
   searchValue: string;
+  autoClearSearchValue?: boolean;
   activeDescendantId?: string;
   open: boolean;
   tabIndex?: number;
@@ -60,6 +61,7 @@ export interface SelectorProps {
   mode: Mode;
   searchValue: string;
   activeValue: string;
+  autoClearSearchValue: boolean;
   inputElement: JSX.Element;
   maxLength?: number;
 
