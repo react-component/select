@@ -109,6 +109,8 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     showSearch,
     tokenWithEnter,
 
+    autoClearSearchValue,
+
     onSearch,
     onSearchSubmit,
     onToggleOpen,
@@ -233,7 +235,7 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     }
 
     if ((mode !== 'combobox' && (!showSearch || !inputMouseDown)) || !open) {
-      if (open) {
+      if (open && autoClearSearchValue !== false) {
         onSearch('', true, false);
       }
       onToggleOpen();
