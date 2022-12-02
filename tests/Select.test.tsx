@@ -1955,10 +1955,13 @@ describe('Select.Basic', () => {
 
     const mouseDownPreventDefault = jest.fn();
     const wrapper = mount(
-      <Select allowClear value={1}>
+      <Select allowClear value="1">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
+      {
+        attachTo: document.body,
+      },
     );
 
     expect(wrapper.find('.rc-select-clear-icon').length).toBeTruthy();
