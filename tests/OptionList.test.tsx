@@ -1,13 +1,13 @@
 import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
-import { act } from 'react-dom/test-utils';
 import React from 'react';
+import { act } from 'react-dom/test-utils';
+import { BaseSelectContext } from '../src/hooks/useBaseProps';
 import type { RefOptionListProps } from '../src/OptionList';
 import OptionList from '../src/OptionList';
-import { injectRunAllTimers } from './utils/common';
-import { fillFieldNames, flattenOptions } from '../src/utils/valueUtil';
 import SelectContext from '../src/SelectContext';
-import { BaseSelectContext } from '../src/hooks/useBaseProps';
+import { fillFieldNames, flattenOptions } from '../src/utils/valueUtil';
+import { injectRunAllTimers } from './utils/common';
 
 jest.mock('../src/utils/platformUtil');
 
@@ -44,6 +44,7 @@ describe('OptionList', () => {
             onActiveValue: () => {},
             onSelect: () => {},
             rawValues: values || new Set(),
+            virtual: true,
             ...props,
           }}
         >
@@ -55,23 +56,35 @@ describe('OptionList', () => {
     );
   }
 
-  it('renders correctly', () => {
-    const wrapper = mount(
-      generateList({
-        options: [
-          {
-            key: 'group1',
-            options: [{ value: '1', 'aria-label': 'value-1' }],
-          },
-          {
-            key: 'group2',
-            options: [{ value: '2' }],
-          },
-        ],
-        values: new Set(['1']),
-      }),
-    );
-    expect(wrapper.render()).toMatchSnapshot();
+  describe('renders correctly', () => {
+    const sharedConfig = {
+      options: [
+        {
+          key: 'group1',
+          options: [{ value: '1', 'aria-label': 'value-1' }],
+        },
+        {
+          key: 'group2',
+          options: [{ value: '2' }],
+        },
+      ],
+      values: new Set(['1']),
+    };
+
+    it('virtual', () => {
+      const wrapper = mount(generateList(sharedConfig));
+      expect(wrapper.render()).toMatchSnapshot();
+    });
+
+    it('without virtual', () => {
+      const wrapper = mount(
+        generateList({
+          ...sharedConfig,
+          virtual: false,
+        }),
+      );
+      expect(wrapper.render()).toMatchSnapshot();
+    });
   });
 
   it('save first active item', () => {

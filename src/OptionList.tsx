@@ -1,19 +1,19 @@
-import * as React from 'react';
-import { useEffect } from 'react';
-import type { ScrollConfig } from 'rc-virtual-list/lib/List';
+import classNames from 'classnames';
+import useMemo from 'rc-util/lib/hooks/useMemo';
 import KeyCode from 'rc-util/lib/KeyCode';
 import omit from 'rc-util/lib/omit';
 import pickAttrs from 'rc-util/lib/pickAttrs';
-import useMemo from 'rc-util/lib/hooks/useMemo';
-import classNames from 'classnames';
 import type { ListRef } from 'rc-virtual-list';
 import List from 'rc-virtual-list';
+import type { ScrollConfig } from 'rc-virtual-list/lib/List';
+import * as React from 'react';
+import { useEffect } from 'react';
+import useBaseProps from './hooks/useBaseProps';
+import type { FlattenOptionData } from './interface';
+import type { BaseOptionType, RawValueType } from './Select';
+import SelectContext from './SelectContext';
 import TransBtn from './TransBtn';
 import { isPlatformMac } from './utils/platformUtil';
-import useBaseProps from './hooks/useBaseProps';
-import SelectContext from './SelectContext';
-import type { BaseOptionType, RawValueType } from './Select';
-import type { FlattenOptionData } from './interface';
 
 // export interface OptionListProps<OptionsType extends object[]> {
 export type OptionListProps = Record<string, never>;
@@ -32,10 +32,7 @@ function isTitleType(content: any) {
  * Using virtual list of option display.
  * Will fallback to dom if use customize render.
  */
-const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (
-  _,
-  ref,
-) => {
+const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, ref) => {
   const {
     prefixCls,
     id,
@@ -245,6 +242,15 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (
 
   const getLabel = (item: Record<string, any>) => item.label;
 
+  function getItemAriaProps(item: FlattenOptionData<BaseOptionType>, index: number) {
+    const { group } = item;
+
+    return {
+      role: group ? 'presentation' : 'option',
+      id: `${id}_list_${index}`,
+    };
+  }
+
   const renderItem = (index: number) => {
     const item = memoFlattenOptions[index];
     if (!item) return null;
@@ -259,8 +265,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (
         aria-label={typeof mergedLabel === 'string' && !group ? mergedLabel : null}
         {...attrs}
         key={index}
-        role={group ? 'presentation' : 'option'}
-        id={`${id}_list_${index}`}
+        {...getItemAriaProps(item, index)}
         aria-selected={isSelected(value)}
       >
         {value}
@@ -268,13 +273,20 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (
     ) : null;
   };
 
+  const a11yProps = {
+    role: 'listbox',
+    id: `${id}_list`,
+  };
+
   return (
     <>
-      <div role="listbox" id={`${id}_list`} style={{ height: 0, width: 0, overflow: 'hidden' }}>
-        {renderItem(activeIndex - 1)}
-        {renderItem(activeIndex)}
-        {renderItem(activeIndex + 1)}
-      </div>
+      {virtual && (
+        <div {...a11yProps} style={{ height: 0, width: 0, overflow: 'hidden' }}>
+          {renderItem(activeIndex - 1)}
+          {renderItem(activeIndex)}
+          {renderItem(activeIndex + 1)}
+        </div>
+      )}
       <List<FlattenOptionData<BaseOptionType>>
         itemKey="key"
         ref={listRef}
@@ -285,6 +297,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (
         onMouseDown={onListMouseDown}
         onScroll={onPopupScroll}
         virtual={virtual}
+        innerProps={virtual ? null : a11yProps}
       >
         {(item, itemIndex) => {
           const { group, groupOption, data, label, value } = item;
@@ -334,6 +347,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (
           return (
             <div
               {...pickAttrs(passedProps)}
+              {...(!virtual ? getItemAriaProps(item, itemIndex) : {})}
               aria-selected={selected}
               className={optionClassName}
               title={optionTitle}
