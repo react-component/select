@@ -16,10 +16,8 @@ React Select
 [travis-url]: https://travis-ci.com/react-component/select
 [github-actions-image]: https://github.com/react-component/select/workflows/CI/badge.svg
 [github-actions-url]: https://github.com/react-component/select/actions
-[coveralls-image]: https://img.shields.io/coveralls/react-component/select.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/react-component/select?branch=master
 [codecov-image]: https://img.shields.io/codecov/c/github/react-component/select/master.svg?style=flat-square
-[codecov-url]: https://codecov.io/gh/react-component/select/branch/master
+[codecov-url]: https://app.codecov.io/gh/react-component/select
 [david-url]: https://david-dm.org/react-component/select
 [david-image]: https://david-dm.org/react-component/select/status.svg?style=flat-square
 [david-dev-url]: https://david-dm.org/react-component/select?type=dev
