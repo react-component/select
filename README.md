@@ -24,7 +24,7 @@ React Select
 [david-dev-image]: https://david-dm.org/react-component/select/dev-status.svg?style=flat-square
 [download-image]: https://img.shields.io/npm/dm/rc-select.svg?style=flat-square
 [download-url]: https://npmjs.org/package/rc-select
-[bundlephobia-url]: https://bundlephobia.com/result?p=rc-select
+[bundlephobia-url]: https://bundlephobia.com/package/rc-select
 [bundlephobia-image]: https://badgen.net/bundlephobia/minzip/rc-select
 
 ## Screenshots
