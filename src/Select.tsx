@@ -141,6 +141,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   virtual?: boolean;
   listHeight?: number;
   listItemHeight?: number;
+  forceDropdownRender?: boolean;
 
   // >>> Icon
   menuItemSelectedIcon?: RenderNode;
@@ -188,6 +189,7 @@ const Select = React.forwardRef(
       virtual,
       listHeight = 200,
       listItemHeight = 20,
+      forceDropdownRender,
 
       // Value
       value,
@@ -631,6 +633,7 @@ const Select = React.forwardRef(
           // >>> OptionList
           OptionList={OptionList}
           emptyOptions={!displayOptions.length}
+          forceDropdownRender={forceDropdownRender}
           // >>> Accessibility
           activeValue={activeValue}
           activeDescendantId={`${mergedId}_list_${accessibilityIndex}`}
