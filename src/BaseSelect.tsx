@@ -185,6 +185,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   dropdownAlign?: AlignType;
   placement?: Placement;
   getPopupContainer?: RenderDOMFunc;
+  forceDropdownRender?: boolean;
 
   // >>> Focus
   showAction?: ('focus' | 'click')[];
@@ -264,6 +265,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     dropdownStyle,
     dropdownClassName,
     dropdownMatchSelectWidth,
+    forceDropdownRender,
     dropdownRender,
     dropdownAlign,
     placement,
@@ -760,6 +762,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       getTriggerDOMNode={() => selectorDomRef.current}
       onPopupVisibleChange={onTriggerVisibleChange}
       onPopupMouseEnter={onPopupMouseEnter}
+      forceDropdownRender={forceDropdownRender}
     >
       {customizeRawInputElement ? (
         React.cloneElement(customizeRawInputElement, {

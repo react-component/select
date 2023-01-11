@@ -60,6 +60,7 @@ export interface SelectTriggerProps {
   placement?: Placement;
   dropdownStyle: React.CSSProperties;
   dropdownClassName: string;
+  forceDropdownRender: boolean;
   direction: string;
   dropdownMatchSelectWidth?: boolean | number;
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
@@ -92,6 +93,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     placement,
     dropdownMatchSelectWidth,
     dropdownRender,
+    forceDropdownRender,
     dropdownAlign,
     getPopupContainer,
     empty,
@@ -157,6 +159,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
       popupStyle={popupStyle}
       getTriggerDOMNode={getTriggerDOMNode}
       onPopupVisibleChange={onPopupVisibleChange}
+      forceRender={forceDropdownRender}
     >
       {children}
     </Trigger>
