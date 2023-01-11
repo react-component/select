@@ -1974,4 +1974,20 @@ describe('Select.Basic', () => {
     expect(wrapper.find('.rc-select').getDOMNode().className).toContain('-focused');
     jest.useRealTimers();
   });
+
+  it('should pass forceDropdownRender prop to Trigger component', () => {
+    const wrapper = mount(
+      <Select forceDropdownRender={true} />
+    );
+
+    expect(wrapper.find('Trigger').prop('forceRender')).toBe(true);
+  })
+
+  it('Trigger prop forceRender should not be defined when forceDropdownRender is not defined on Select', () => {
+    const wrapper = mount(
+      <Select />
+    );
+
+    expect(wrapper.find('Trigger').prop('forceRender')).toBeUndefined();
+  })
 });
