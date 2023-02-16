@@ -340,7 +340,7 @@ const Select = React.forwardRef(
         const strValue = mergedValues[0]?.value;
         setSearchValue(hasValue(strValue) ? String(strValue) : '');
       }
-    }, [mergedValues]);
+    }, [mergedValues, mode, setSearchValue]);
 
     // ======================= Display Option =======================
     // Create a placeholder item if not exist in `options`
