@@ -54,7 +54,7 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^12.1.5",
+    "@testing-library/react": "^14.0.0",
     "@types/enzyme": "^3.10.9",
     "@types/jest": "^26.0.24",
     "@types/react": "^17.0.15",
