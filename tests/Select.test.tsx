@@ -66,8 +66,8 @@ describe('Select.Basic', () => {
     });
 
     it('renders dropdown correctly', () => {
-      const wrapper = render(genSelect({ open: true }));
-      expect(wrapper).toMatchSnapshot();
+      const { container } = testingRender(genSelect({ open: true }));
+      expect(container.querySelector('.rc-select-dropdown')).toMatchSnapshot();
     });
 
     it('renders disabled select correctly', () => {
