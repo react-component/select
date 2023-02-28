@@ -1,4 +1,5 @@
 import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
 import * as React from 'react';
@@ -406,9 +407,8 @@ describe('Select.Tags', () => {
     );
 
     it('renders correctly', () => {
-      const wrapper = mount(createSelect({ value: ['jack', 'foo'] }));
-      toggleOpen(wrapper);
-      expect(wrapper.render()).toMatchSnapshot();
+      const { container } = render(createSelect({ value: ['jack', 'foo'], open: true }));
+      expect(container.firstChild).toMatchSnapshot();
     });
 
     it('renders inputValue correctly', () => {

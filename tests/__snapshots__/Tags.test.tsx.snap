@@ -6,6 +6,133 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
     class="rc-select rc-select-multiple rc-select-open rc-select-show-search"
   >
     <div
+      class="rc-select-dropdown rc-select-dropdown-placement-bottomLeft"
+      style="left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
+    >
+      <div>
+        <div
+          id="rc_select_TEST_OR_SSR_list"
+          role="listbox"
+          style="height: 0px; width: 0px; overflow: hidden;"
+        >
+          <div
+            aria-selected="false"
+            id="rc_select_TEST_OR_SSR_list_0"
+            role="presentation"
+          />
+          <div
+            aria-label="Jack"
+            aria-selected="true"
+            id="rc_select_TEST_OR_SSR_list_1"
+            role="option"
+          >
+            jack
+          </div>
+          <div
+            aria-selected="false"
+            id="rc_select_TEST_OR_SSR_list_2"
+            role="presentation"
+          />
+        </div>
+        <div
+          class="rc-virtual-list"
+          style="position: relative;"
+        >
+          <div
+            class="rc-virtual-list-holder"
+            style="max-height: 200px; overflow-y: auto;"
+          >
+            <div>
+              <div
+                class="rc-virtual-list-holder-inner"
+                style="display: flex; flex-direction: column;"
+              >
+                <div
+                  class="rc-select-item rc-select-item-group"
+                  title="Manager"
+                >
+                  Manager
+                </div>
+                <div
+                  aria-selected="true"
+                  class="rc-select-item rc-select-item-option rc-select-item-option-grouped rc-select-item-option-active rc-select-item-option-selected"
+                  title="Jack"
+                >
+                  <div
+                    class="rc-select-item-option-content"
+                  >
+                    Jack
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    class="rc-select-item-option-state"
+                    style="user-select: none;"
+                    unselectable="on"
+                  >
+                    <span
+                      class="rc-select-item-option-state-icon"
+                    >
+                      ✓
+                    </span>
+                  </span>
+                </div>
+                <div
+                  class="rc-select-item rc-select-item-group"
+                  title="Engineer"
+                >
+                  Engineer
+                </div>
+                <div
+                  aria-selected="false"
+                  class="rc-select-item rc-select-item-option rc-select-item-option-grouped"
+                  title="yiminghe"
+                >
+                  <div
+                    class="rc-select-item-option-content"
+                  >
+                    yiminghe
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    class="rc-select-item-option-state"
+                    style="user-select: none;"
+                    unselectable="on"
+                  >
+                    <span
+                      class="rc-select-item-option-state-icon"
+                    />
+                  </span>
+                </div>
+                <div
+                  aria-selected="true"
+                  class="rc-select-item rc-select-item-option rc-select-item-option-selected"
+                  title="foo"
+                >
+                  <div
+                    class="rc-select-item-option-content"
+                  >
+                    foo
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    class="rc-select-item-option-state"
+                    style="user-select: none;"
+                    unselectable="on"
+                  >
+                    <span
+                      class="rc-select-item-option-state-icon"
+                    >
+                      ✓
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
       class="rc-select-selector"
     >
       <div
@@ -91,137 +218,9 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
               aria-hidden="true"
               class="rc-select-selection-search-mirror"
             >
+              
                
             </span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div>
-      <div
-        class="rc-select-dropdown"
-        style="opacity: 0; min-width: 0; width: 0px;"
-      >
-        <div>
-          <div
-            id="rc_select_TEST_OR_SSR_list"
-            role="listbox"
-            style="height: 0px; width: 0px; overflow: hidden;"
-          >
-            <div
-              aria-selected="false"
-              id="rc_select_TEST_OR_SSR_list_0"
-              role="presentation"
-            />
-            <div
-              aria-label="Jack"
-              aria-selected="true"
-              id="rc_select_TEST_OR_SSR_list_1"
-              role="option"
-            >
-              jack
-            </div>
-            <div
-              aria-selected="false"
-              id="rc_select_TEST_OR_SSR_list_2"
-              role="presentation"
-            />
-          </div>
-          <div
-            class="rc-virtual-list"
-            style="position: relative;"
-          >
-            <div
-              class="rc-virtual-list-holder"
-              style="max-height: 200px; overflow-y: auto;"
-            >
-              <div>
-                <div
-                  class="rc-virtual-list-holder-inner"
-                  style="display: flex; flex-direction: column;"
-                >
-                  <div
-                    class="rc-select-item rc-select-item-group"
-                    title="Manager"
-                  >
-                    Manager
-                  </div>
-                  <div
-                    aria-selected="true"
-                    class="rc-select-item rc-select-item-option rc-select-item-option-grouped rc-select-item-option-active rc-select-item-option-selected"
-                    title="Jack"
-                  >
-                    <div
-                      class="rc-select-item-option-content"
-                    >
-                      Jack
-                    </div>
-                    <span
-                      aria-hidden="true"
-                      class="rc-select-item-option-state"
-                      style="user-select: none;"
-                      unselectable="on"
-                    >
-                      <span
-                        class="rc-select-item-option-state-icon"
-                      >
-                        ✓
-                      </span>
-                    </span>
-                  </div>
-                  <div
-                    class="rc-select-item rc-select-item-group"
-                    title="Engineer"
-                  >
-                    Engineer
-                  </div>
-                  <div
-                    aria-selected="false"
-                    class="rc-select-item rc-select-item-option rc-select-item-option-grouped"
-                    title="yiminghe"
-                  >
-                    <div
-                      class="rc-select-item-option-content"
-                    >
-                      yiminghe
-                    </div>
-                    <span
-                      aria-hidden="true"
-                      class="rc-select-item-option-state"
-                      style="user-select: none;"
-                      unselectable="on"
-                    >
-                      <span
-                        class="rc-select-item-option-state-icon"
-                      />
-                    </span>
-                  </div>
-                  <div
-                    aria-selected="true"
-                    class="rc-select-item rc-select-item-option rc-select-item-option-selected"
-                    title="foo"
-                  >
-                    <div
-                      class="rc-select-item-option-content"
-                    >
-                      foo
-                    </div>
-                    <span
-                      aria-hidden="true"
-                      class="rc-select-item-option-state"
-                      style="user-select: none;"
-                      unselectable="on"
-                    >
-                      <span
-                        class="rc-select-item-option-state-icon"
-                      >
-                        ✓
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
