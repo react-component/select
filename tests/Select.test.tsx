@@ -1,5 +1,5 @@
+import { fireEvent, render as testingRender } from '@testing-library/react';
 import { mount, render } from 'enzyme';
-import { render as testingRender, fireEvent } from '@testing-library/react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototype } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
@@ -353,7 +353,7 @@ describe('Select.Basic', () => {
   });
 
   it('should contain falsy children', () => {
-    const wrapper = render(
+    const { container } = testingRender(
       <Select value="1" open>
         <Option value="1">1</Option>
         {null}
@@ -362,7 +362,7 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    expect(wrapper).toMatchSnapshot();
+    expect(container.querySelector('.rc-select-dropdown')).toMatchSnapshot();
   });
 
   it('open dropdown on down key press', () => {
@@ -1130,7 +1130,7 @@ describe('Select.Basic', () => {
   });
 
   it('should render custom dropdown correctly', () => {
-    const wrapper = mount(
+    const { container } = testingRender(
       <Select
         open
         dropdownRender={(menu) => (
@@ -1144,7 +1144,7 @@ describe('Select.Basic', () => {
         <Option value="2">2</Option>
       </Select>,
     );
-    expect(wrapper.render()).toMatchSnapshot();
+    expect(container.querySelector('.rc-select-dropdown')).toMatchSnapshot();
   });
 
   it('should trigger click event in custom node', () => {

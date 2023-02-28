@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import type { AlignType } from 'rc-trigger/lib/interface';
+import type { AlignType } from '@rc-component/trigger/lib/interface';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import isMobile from 'rc-util/lib/isMobile';
