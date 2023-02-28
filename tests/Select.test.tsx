@@ -1038,25 +1038,25 @@ describe('Select.Basic', () => {
   });
 
   it('filterOption could be true as described in default value', () => {
-    const wrapper = mount(
+    const { container } = testingRender(
       <Select searchValue="3" showSearch filterOption open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
 
-    expect(wrapper.render()).toMatchSnapshot();
+    expect(container.querySelector('.rc-select-dropdown')).toMatchSnapshot();
   });
 
   it('does not filter when filterOption value is false', () => {
-    const wrapper = render(
+    const { container } = testingRender(
       <Select inputValue="1" filterOption={false} open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
 
-    expect(wrapper).toMatchSnapshot();
+    expect(container.querySelector('.rc-select-dropdown')).toMatchSnapshot();
   });
 
   it('backfill', () => {
