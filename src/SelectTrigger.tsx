@@ -1,10 +1,12 @@
-import * as React from 'react';
-import Trigger from 'rc-trigger';
-import type { AlignType } from 'rc-trigger/lib/interface';
+import Trigger from '@rc-component/trigger';
+import type { AlignType } from '@rc-component/trigger/lib/interface';
 import classNames from 'classnames';
+import * as React from 'react';
 import type { Placement, RenderDOMFunc } from './BaseSelect';
 
-const getBuiltInPlacements = (dropdownMatchSelectWidth: number | boolean) => {
+const getBuiltInPlacements = (
+  dropdownMatchSelectWidth: number | boolean,
+): Record<string, AlignType> => {
   // Enable horizontal overflow auto-adjustment when a custom dropdown width is provided
   const adjustX = dropdownMatchSelectWidth === true ? 0 : 1;
   return {
@@ -15,6 +17,7 @@ const getBuiltInPlacements = (dropdownMatchSelectWidth: number | boolean) => {
         adjustX,
         adjustY: 1,
       },
+      htmlRegion: 'scroll',
     },
     bottomRight: {
       points: ['tr', 'br'],
@@ -23,6 +26,7 @@ const getBuiltInPlacements = (dropdownMatchSelectWidth: number | boolean) => {
         adjustX,
         adjustY: 1,
       },
+      htmlRegion: 'scroll',
     },
     topLeft: {
       points: ['bl', 'tl'],
@@ -31,6 +35,7 @@ const getBuiltInPlacements = (dropdownMatchSelectWidth: number | boolean) => {
         adjustX,
         adjustY: 1,
       },
+      htmlRegion: 'scroll',
     },
     topRight: {
       points: ['br', 'tr'],
@@ -39,6 +44,7 @@ const getBuiltInPlacements = (dropdownMatchSelectWidth: number | boolean) => {
         adjustX,
         adjustY: 1,
       },
+      htmlRegion: 'scroll',
     },
   };
 };
