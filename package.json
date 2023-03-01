@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.10.1",
-    "@rc-component/trigger": "^1.3.6",
+    "@rc-component/trigger": "^1.4.0",
     "classnames": "2.x",
     "rc-motion": "^2.0.1",
     "rc-overflow": "^1.0.0",
