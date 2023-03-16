@@ -1974,4 +1974,33 @@ describe('Select.Basic', () => {
     expect(wrapper.find('.rc-select').getDOMNode().className).toContain('-focused');
     jest.useRealTimers();
   });
+
+  it('should support title', () => {
+    const wrapper1 = mount(
+      <Select
+        defaultValue="lucy"
+        options={[]}
+      />,
+    );
+    expect(wrapper1.find('.rc-select').prop('title')).toBe(undefined);
+    expect(wrapper1.find('.rc-select-selection-item').prop('title')).toBe('lucy');
+    const wrapper2 = mount(
+      <Select
+        defaultValue="lucy"
+        options={[]}
+        title=""
+      />,
+    );
+    expect(wrapper2.find('.rc-select').prop('title')).toBe('');
+    expect(wrapper2.find('.rc-select-selection-item').prop('title')).toBe('');
+    const wrapper3 = mount(
+      <Select
+        defaultValue="lucy"
+        options={[]}
+        title="title"
+      />,
+    );
+    expect(wrapper3.find('.rc-select').prop('title')).toBe('title');
+    expect(wrapper3.find('.rc-select-selection-item').prop('title')).toBe('title');
+  });
 });

@@ -36,6 +36,7 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
     onInputPaste,
     onInputCompositionStart,
     onInputCompositionEnd,
+    title,
   } = props;
 
   const [inputChanged, setInputChanged] = React.useState(false);
@@ -58,8 +59,8 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
   // Not show text when closed expect combobox mode
   const hasTextInput = mode !== 'combobox' && !open && !showSearch ? false : !!inputValue;
 
-  // Get title
-  const title = getTitle(item);
+  // Get title of selection item
+  const selectionTitle = title === undefined ? getTitle(item) : title;
 
   const renderPlaceholder = () => {
     if (item) {
@@ -105,7 +106,7 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
 
       {/* Display value */}
       {!combobox && item && !hasTextInput && (
-        <span className={`${prefixCls}-selection-item`} title={title}>
+        <span className={`${prefixCls}-selection-item`} title={selectionTitle}>
           {item.label}
         </span>
       )}
