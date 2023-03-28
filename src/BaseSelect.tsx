@@ -1,5 +1,5 @@
-import classNames from 'classnames';
 import type { AlignType } from '@rc-component/trigger/lib/interface';
+import classNames from 'classnames';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import isMobile from 'rc-util/lib/isMobile';
@@ -291,7 +291,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
 
   const domProps = {
     ...restProps,
-  } as Omit<keyof typeof restProps, typeof DEFAULT_OMIT_PROPS[number]>;
+  } as Omit<keyof typeof restProps, (typeof DEFAULT_OMIT_PROPS)[number]>;
 
   DEFAULT_OMIT_PROPS.forEach((propName) => {
     delete domProps[propName];
@@ -351,12 +351,18 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   );
 
   // ============================== Open ==============================
+  // SSR not support Portal which means we need delay `open` for the first time render
+  const [rendered, setRendered] = React.useState(false);
+  useLayoutEffect(() => {
+    setRendered(true);
+  }, []);
+
   const [innerOpen, setInnerOpen] = useMergedState<boolean>(undefined, {
     defaultValue: defaultOpen,
     value: open,
   });
 
-  let mergedOpen = innerOpen;
+  let mergedOpen = rendered ? innerOpen : false;
 
   // Not trigger `open` in `combobox` when `notFoundContent` is empty
   const emptyListContent = !notFoundContent && emptyOptions;

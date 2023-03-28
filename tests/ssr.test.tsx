@@ -20,6 +20,8 @@ describe('Select.SSR', () => {
   });
 
   it('should work', () => {
+    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
     global.canUseDom = false;
 
     const Demo = () => <Select open />;
@@ -33,6 +35,7 @@ describe('Select.SSR', () => {
     document.body.appendChild(container);
     render(<Demo />, { container, hydrate: true });
 
-    console.log(document.body.innerHTML);
+    expect(errSpy).not.toHaveBeenCalled();
+    errSpy.mockRestore();
   });
 });
