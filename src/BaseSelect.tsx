@@ -357,7 +357,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     setRendered(true);
   }, []);
 
-  const [innerOpen, setInnerOpen] = useMergedState<boolean>(undefined, {
+  const [innerOpen, setInnerOpen] = useMergedState<boolean>(false, {
     defaultValue: defaultOpen,
     value: open,
   });
