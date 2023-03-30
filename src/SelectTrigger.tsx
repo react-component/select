@@ -1,5 +1,5 @@
 import Trigger from '@rc-component/trigger';
-import type { AlignType } from '@rc-component/trigger/lib/interface';
+import type { AlignType, BuildInPlacements } from '@rc-component/trigger/lib/interface';
 import classNames from 'classnames';
 import * as React from 'react';
 import type { Placement, RenderDOMFunc } from './BaseSelect';
@@ -64,6 +64,7 @@ export interface SelectTriggerProps {
   transitionName?: string;
   containerWidth: number;
   placement?: Placement;
+  builtinPlacements?: BuildInPlacements;
   dropdownStyle: React.CSSProperties;
   dropdownClassName: string;
   direction: string;
@@ -96,6 +97,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     dropdownClassName,
     direction = 'ltr',
     placement,
+    builtinPlacements,
     dropdownMatchSelectWidth,
     dropdownRender,
     dropdownAlign,
@@ -114,9 +116,9 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     popupNode = dropdownRender(popupElement);
   }
 
-  const builtInPlacements = React.useMemo(
-    () => getBuiltInPlacements(dropdownMatchSelectWidth),
-    [dropdownMatchSelectWidth],
+  const mergedBuiltinPlacements = React.useMemo(
+    () => builtinPlacements || getBuiltInPlacements(dropdownMatchSelectWidth),
+    [builtinPlacements, dropdownMatchSelectWidth],
   );
 
   // ===================== Motion ======================
@@ -146,7 +148,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
       showAction={onPopupVisibleChange ? ['click'] : []}
       hideAction={onPopupVisibleChange ? ['click'] : []}
       popupPlacement={placement || (direction === 'rtl' ? 'bottomRight' : 'bottomLeft')}
-      builtinPlacements={builtInPlacements}
+      builtinPlacements={mergedBuiltinPlacements}
       prefixCls={dropdownPrefixCls}
       popupTransitionName={mergedTransitionName}
       popup={

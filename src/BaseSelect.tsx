@@ -1,4 +1,4 @@
-import type { AlignType } from '@rc-component/trigger/lib/interface';
+import type { AlignType, BuildInPlacements } from '@rc-component/trigger/lib/interface';
 import classNames from 'classnames';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
@@ -185,6 +185,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
   dropdownAlign?: AlignType;
   placement?: Placement;
+  builtinPlacements?: BuildInPlacements;
   getPopupContainer?: RenderDOMFunc;
 
   // >>> Focus
@@ -268,6 +269,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     dropdownRender,
     dropdownAlign,
     placement,
+    builtinPlacements,
     getPopupContainer,
 
     // Focus
@@ -762,6 +764,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       dropdownRender={dropdownRender}
       dropdownAlign={dropdownAlign}
       placement={placement}
+      builtinPlacements={builtinPlacements}
       getPopupContainer={getPopupContainer}
       empty={emptyOptions}
       getTriggerDOMNode={() => selectorDomRef.current}
