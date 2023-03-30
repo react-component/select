@@ -1,7 +1,7 @@
-import { fireEvent, render } from '@testing-library/react';
-import BaseSelect from '../src/BaseSelect';
-import { forwardRef } from 'react';
 import type { OptionListProps, RefOptionListProps } from '@/OptionList';
+import { fireEvent, render } from '@testing-library/react';
+import { forwardRef } from 'react';
+import BaseSelect from '../src/BaseSelect';
 
 const OptionList = forwardRef<RefOptionListProps, OptionListProps>(() => (
   <div className="popup">Popup</div>
@@ -57,5 +57,30 @@ describe('BaseSelect', () => {
       ),
     ).toBe('absolute');
     jest.useRealTimers();
+  });
+
+  it('customize builtinPlacements should override default one', () => {
+    const { container } = render(
+      <BaseSelect
+        prefixCls="rc-select"
+        id="test"
+        displayValues={[]}
+        onDisplayValuesChange={() => {}}
+        searchValue=""
+        onSearch={() => {}}
+        OptionList={OptionList}
+        emptyOptions
+        open
+        // Test content
+        builtinPlacements={{
+          // placement not exist in `builtinPlacements`,
+          // which means this will be same as empty one.
+          // It's safe to test in other way if refactor
+          fallback: {},
+        }}
+      />,
+    );
+
+    expect(container.querySelector('.rc-select-dropdown-placement-fallback')).toBeTruthy();
   });
 });
