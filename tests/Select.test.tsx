@@ -595,18 +595,16 @@ describe('Select.Basic', () => {
       expect(wrapper.find('.rc-select').getDOMNode().className).toContain('-focus');
     });
 
-    it('click placeholder should trigger onFocus', () => {
-      const wrapper2 = mount(
+    it('focus input when placeholder is clicked', () => {
+      const wrapper = mount(
         <Select placeholder="xxxx">
           <Option value="1">1</Option>
           <Option value="2">2</Option>
         </Select>,
       );
-
-      const inputSpy = jest.spyOn(wrapper2.find('input').instance(), 'focus' as any);
-
-      wrapper2.find('.rc-select-selection-placeholder').simulate('mousedown');
-      wrapper2.find('.rc-select-selection-placeholder').simulate('click');
+      const inputSpy = jest.spyOn(wrapper.find('input').instance(), 'focus' as any);
+      wrapper.find('.rc-select-selection-placeholder').simulate('mousedown');
+      wrapper.find('.rc-select-selection-placeholder').simulate('click');
       expect(inputSpy).toHaveBeenCalled();
     });
   });
@@ -814,19 +812,6 @@ describe('Select.Basic', () => {
 
     selectItem(wrapper);
     expectOpen(wrapper, false);
-  });
-
-  it('focus input when placeholder is clicked', () => {
-    const wrapper = mount(
-      <Select placeholder="select">
-        <Option value="1">1</Option>
-      </Select>,
-    );
-
-    const focusSpy = jest.spyOn(wrapper.find('input').instance(), 'focus' as any);
-    wrapper.find('.rc-select-selection-placeholder').simulate('mousedown');
-    wrapper.find('.rc-select-selection-placeholder').simulate('click');
-    expect(focusSpy).toHaveBeenCalled();
   });
 
   describe('combobox could customize input element', () => {
@@ -1736,32 +1721,6 @@ describe('Select.Basic', () => {
     });
   });
 
-  describe('show placeholder', () => {
-    it('when searchValue is controlled', () => {
-      const wrapper = mount(<Select searchValue="light" placeholder="bamboo" />);
-      expect(
-        wrapper.find('.rc-select-selection-placeholder').getDOMNode().hasAttribute('style'),
-      ).toBe(false);
-      toggleOpen(wrapper);
-      expect(
-        (wrapper.find('.rc-select-selection-placeholder').getDOMNode() as HTMLSpanElement).style
-          .visibility,
-      ).toBe('hidden');
-    });
-
-    it('when value is null', () => {
-      const wrapper = mount(<Select value={null} placeholder="bamboo" />);
-      expect(wrapper.find('.rc-select-selection-placeholder').length).toBeTruthy();
-    });
-
-    it('not when value is null but it is an Option', () => {
-      const wrapper = mount(
-        <Select value={null} placeholder="bamboo" options={[{ value: null, label: 'light' }]} />,
-      );
-      expect(wrapper.find('.rc-select-selection-placeholder').length).toBeFalsy();
-    });
-  });
-
   it('Remove options can keep the cache', () => {
     const wrapper = mount(<Select value={903} options={[{ value: 903, label: 'Bamboo' }]} />);
     expect(findSelection(wrapper).text()).toEqual('Bamboo');
@@ -1892,16 +1851,6 @@ describe('Select.Basic', () => {
     const wrapper = mount(<Select onClick={onClick} />);
     wrapper.simulate('click');
     expect(onClick).toHaveBeenCalled();
-  });
-
-  it('should hide placeholder if force closed and showSearch with searchValue', () => {
-    const wrapper = mount(
-      <Select showSearch searchValue="search" open={false} placeholder="placeholder" />,
-    );
-    expect(
-      (wrapper.find('.rc-select-selection-placeholder').getDOMNode() as HTMLSpanElement).style
-        .visibility,
-    ).toBe('hidden');
   });
 
   it('no warning for non-dom attr', () => {

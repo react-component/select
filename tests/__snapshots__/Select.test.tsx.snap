@@ -226,6 +226,12 @@ exports[`Select.Basic no search 1`] = `
     >
       1
     </span>
+    <span
+      class="rc-select-selection-placeholder"
+      style="visibility:hidden"
+    >
+      1
+    </span>
   </div>
   <span
     aria-hidden="true"
@@ -270,6 +276,12 @@ exports[`Select.Basic render renders aria-attributes correctly 1`] = `
     <span
       class="antd-selection-item"
       title="2"
+    >
+      2
+    </span>
+    <span
+      class="antd-selection-placeholder"
+      style="visibility:hidden"
     >
       2
     </span>
@@ -325,6 +337,12 @@ exports[`Select.Basic render renders correctly 1`] = `
     <span
       class="antd-selection-item"
       title="2"
+    >
+      2
+    </span>
+    <span
+      class="antd-selection-placeholder"
+      style="visibility:hidden"
     >
       2
     </span>
@@ -385,6 +403,12 @@ exports[`Select.Basic render renders data-attributes correctly 1`] = `
     >
       2
     </span>
+    <span
+      class="antd-selection-placeholder"
+      style="visibility:hidden"
+    >
+      2
+    </span>
   </div>
   <span
     aria-hidden="true"
@@ -442,6 +466,12 @@ exports[`Select.Basic render renders disabled select correctly 1`] = `
     >
       2
     </span>
+    <span
+      class="antd-selection-placeholder"
+      style="visibility:hidden"
+    >
+      2
+    </span>
   </div>
   <span
     aria-hidden="true"
@@ -483,6 +513,12 @@ exports[`Select.Basic render renders dropdown correctly 1`] = `
     <span
       class="antd-selection-item"
       title="2"
+    >
+      2
+    </span>
+    <span
+      class="antd-selection-placeholder"
+      style="visibility:hidden"
     >
       2
     </span>
@@ -672,6 +708,12 @@ exports[`Select.Basic render renders role prop correctly 1`] = `
     >
       2
     </span>
+    <span
+      class="antd-selection-placeholder"
+      style="visibility:hidden"
+    >
+      2
+    </span>
   </div>
   <span
     aria-hidden="true"
@@ -728,6 +770,12 @@ exports[`Select.Basic should contain falsy children 1`] = `
     <span
       class="rc-select-selection-item"
       title="1"
+    >
+      1
+    </span>
+    <span
+      class="rc-select-selection-placeholder"
+      style="visibility:hidden"
     >
       1
     </span>
