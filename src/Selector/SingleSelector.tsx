@@ -61,14 +61,18 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
   // Get title
   const title = getTitle(item);
 
+  // 当 Select 已经选中了选型时，placeholder 隐藏，但留在原地占位，内容是选中项文本，这样宽度不会缩减为 0px
+  // https://github.com/ant-design/ant-design/issues/27688
+  // https://github.com/ant-design/ant-design/issues/41530
   const renderPlaceholder = () => {
-    if (item) {
-      return null;
-    }
-    const hiddenStyle = hasTextInput ? { visibility: 'hidden' as const } : undefined;
+    const hiddenStyle = (hasTextInput || item)
+      ? { visibility: 'hidden' } as React.CSSProperties : undefined;
     return (
-      <span className={`${prefixCls}-selection-placeholder`} style={hiddenStyle}>
-        {placeholder}
+      <span
+        className={`${prefixCls}-selection-placeholder`}
+        style={hiddenStyle}
+      >
+        {item ? item.label : placeholder}
       </span>
     );
   };

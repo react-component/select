@@ -74,7 +74,7 @@ describe('Select.Combobox', () => {
     expect(wrapper.find('input').props().value).toBe('');
     expect(wrapper.find('.rc-select-selection-placeholder').text()).toEqual('placeholder');
     wrapper.find('input').simulate('change', { target: { value: '1' } });
-    expect(wrapper.find('.rc-select-selection-placeholder').length).toBeFalsy();
+    expect(wrapper.find('.rc-select-selection-placeholder').length).toBe(1);
     expect(wrapper.find('input').props().value).toBe('1');
   });
 
