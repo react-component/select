@@ -26,8 +26,10 @@ describe('Select placeholder', () => {
     const wrapper = mount(
       <Select value={null} placeholder="bamboo" options={[{ value: null, label: 'light' }]} />,
     );
-    expect(wrapper.find('.rc-select-selection-placeholder').length).toBe(1);
-    expect(wrapper.find('.rc-select-selection-placeholder').text()).toBe('light');
+    expect(wrapper.find('.rc-select-selection-placeholder').length).toBe(0);
+    expect(wrapper.find('.rc-select-selection-item').text()).toBe('light');
+    toggleOpen(wrapper);
+    expect(wrapper.find('.rc-select-selection-item').text()).toBe('light');
   });
 
   it('should hide placeholder if force closed and showSearch with searchValue', () => {
