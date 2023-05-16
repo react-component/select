@@ -113,6 +113,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
 
   // >>> Field Names
   fieldNames?: FieldNames;
+  groupLabel?: string;
 
   // >>> Search
   /** @deprecated Use `searchValue` instead */
@@ -164,7 +165,7 @@ const Select = React.forwardRef(
       prefixCls = 'rc-select',
       backfill,
       fieldNames,
-
+      groupLabel,
       // Search
       inputValue,
       searchValue,
@@ -211,7 +212,7 @@ const Select = React.forwardRef(
 
     // ========================= FieldNames =========================
     const mergedFieldNames = React.useMemo(
-      () => fillFieldNames(fieldNames, childrenAsData),
+      () => fillFieldNames(fieldNames, groupLabel, childrenAsData),
       /* eslint-disable react-hooks/exhaustive-deps */
       [
         // We stringify fieldNames to avoid unnecessary re-renders.
@@ -410,7 +411,11 @@ const Select = React.forwardRef(
 
     const displayOptions = React.useMemo(
       () =>
-        flattenOptions(orderedFilteredOptions, { fieldNames: mergedFieldNames, childrenAsData }),
+        flattenOptions(orderedFilteredOptions, {
+          fieldNames: mergedFieldNames,
+          groupLabel,
+          childrenAsData,
+        }),
       [orderedFilteredOptions, mergedFieldNames, childrenAsData],
     );
 

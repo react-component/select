@@ -3,7 +3,7 @@
 exports[`Select.Basic does not filter when filterOption value is false 1`] = `
 <div
   class="rc-select-dropdown rc-select-dropdown-placement-bottomLeft"
-  style="left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
+  style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
 >
   <div>
     <div
@@ -94,7 +94,7 @@ exports[`Select.Basic does not filter when filterOption value is false 1`] = `
 exports[`Select.Basic filterOption could be true as described in default value 1`] = `
 <div
   class="rc-select-dropdown rc-select-dropdown-empty rc-select-dropdown-placement-bottomLeft"
-  style="left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
+  style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
 >
   <div>
     <div
@@ -436,7 +436,7 @@ exports[`Select.Basic render renders role prop correctly 1`] = `
 exports[`Select.Basic should contain falsy children 1`] = `
 <div
   class="rc-select-dropdown rc-select-dropdown-placement-bottomLeft"
-  style="left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
+  style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
 >
   <div>
     <div
@@ -529,7 +529,7 @@ exports[`Select.Basic should contain falsy children 1`] = `
 exports[`Select.Basic should render custom dropdown correctly 1`] = `
 <div
   class="rc-select-dropdown rc-select-dropdown-placement-bottomLeft"
-  style="left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
+  style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
 >
   <div>
     <div>

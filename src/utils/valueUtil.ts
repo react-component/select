@@ -20,11 +20,11 @@ function getKey(data: BaseOptionType, index: number) {
   return `rc-index-key-${index}`;
 }
 
-export function fillFieldNames(fieldNames: FieldNames | undefined, childrenAsData: boolean) {
+export function fillFieldNames(fieldNames: FieldNames | undefined, groupLabel: string, childrenAsData: boolean) {
   const { label, value, options } = fieldNames || {};
 
   return {
-    label: label || (childrenAsData ? 'children' : 'label'),
+    label: groupLabel || label || (childrenAsData ? 'children' : 'label'),
     value: value || 'value',
     options: options || 'options',
   };
@@ -37,7 +37,7 @@ export function fillFieldNames(fieldNames: FieldNames | undefined, childrenAsDat
  */
 export function flattenOptions<OptionType extends BaseOptionType = DefaultOptionType>(
   options: OptionType[],
-  { fieldNames, childrenAsData }: { fieldNames?: FieldNames; childrenAsData?: boolean } = {},
+  { fieldNames, groupLabel, childrenAsData }: { fieldNames?: FieldNames; groupLabel?: string; childrenAsData?: boolean } = {},
 ): FlattenOptionData<OptionType>[] {
   const flattenList: FlattenOptionData<OptionType>[] = [];
 
@@ -45,7 +45,7 @@ export function flattenOptions<OptionType extends BaseOptionType = DefaultOption
     label: fieldLabel,
     value: fieldValue,
     options: fieldOptions,
-  } = fillFieldNames(fieldNames, false);
+  } = fillFieldNames(fieldNames, groupLabel, false);
 
   function dig(list: OptionType[], isGroupOption: boolean) {
     list.forEach((data) => {
