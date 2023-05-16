@@ -83,6 +83,7 @@ export type FilterFunc<OptionType> = (inputValue: string, option?: OptionType) =
 export interface FieldNames {
   value?: string;
   label?: string;
+  groupLabel?: string;
   options?: string;
 }
 
@@ -113,7 +114,6 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
 
   // >>> Field Names
   fieldNames?: FieldNames;
-  groupLabel?: string;
 
   // >>> Search
   /** @deprecated Use `searchValue` instead */
@@ -165,8 +165,7 @@ const Select = React.forwardRef(
       prefixCls = 'rc-select',
       backfill,
       fieldNames,
-      groupLabel,
-      
+
       // Search
       inputValue,
       searchValue,
@@ -213,7 +212,7 @@ const Select = React.forwardRef(
 
     // ========================= FieldNames =========================
     const mergedFieldNames = React.useMemo(
-      () => fillFieldNames(fieldNames, groupLabel, childrenAsData),
+      () => fillFieldNames(fieldNames, childrenAsData),
       /* eslint-disable react-hooks/exhaustive-deps */
       [
         // We stringify fieldNames to avoid unnecessary re-renders.
@@ -414,7 +413,6 @@ const Select = React.forwardRef(
       () =>
         flattenOptions(orderedFilteredOptions, {
           fieldNames: mergedFieldNames,
-          groupLabel,
           childrenAsData,
         }),
       [orderedFilteredOptions, mergedFieldNames, childrenAsData],

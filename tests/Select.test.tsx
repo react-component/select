@@ -124,8 +124,11 @@ describe('Select.Basic', () => {
       const { container: containerFirst } = testingRender(
         <Select
           options={genOpts('test')}
-          fieldNames={{ value: 'data', label: 'test' }}
-          groupLabel="groupLabel"
+          fieldNames={{
+            value: 'data',
+            label: 'test',
+            groupLabel: 'groupLabel',
+          }}
         />,
       );
       const { container: containerSecond } = testingRender(
