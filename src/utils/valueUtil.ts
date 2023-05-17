@@ -24,9 +24,10 @@ export function fillFieldNames(fieldNames: FieldNames | undefined, childrenAsDat
   const { label, value, options, groupLabel } = fieldNames || {};
 
   return {
-    label: groupLabel || label || (childrenAsData ? 'children' : 'label'),
+    label: label || (childrenAsData ? 'children' : 'label'),
     value: value || 'value',
     options: options || 'options',
+    groupLabel: groupLabel || label || (childrenAsData ? 'children' : 'label')
   };
 }
 
@@ -45,11 +46,18 @@ export function flattenOptions<OptionType extends BaseOptionType = DefaultOption
     label: fieldLabel,
     value: fieldValue,
     options: fieldOptions,
+    groupLabel
   } = fillFieldNames(fieldNames, false);
 
   function dig(list: OptionType[], isGroupOption: boolean) {
     list.forEach((data) => {
-      const label = data[fieldLabel] ?? data['label'];
+
+      let label;
+      if (isGroupOption) {
+        label = data[groupLabel]
+      } else {
+        label = data[fieldLabel]
+      }
 
       if (isGroupOption || !(fieldOptions in data)) {
         const value = data[fieldValue];
