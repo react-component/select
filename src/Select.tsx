@@ -83,6 +83,7 @@ export type FilterFunc<OptionType> = (inputValue: string, option?: OptionType) =
 export interface FieldNames {
   value?: string;
   label?: string;
+  groupLabel?: string;
   options?: string;
 }
 
@@ -410,7 +411,10 @@ const Select = React.forwardRef(
 
     const displayOptions = React.useMemo(
       () =>
-        flattenOptions(orderedFilteredOptions, { fieldNames: mergedFieldNames, childrenAsData }),
+        flattenOptions(orderedFilteredOptions, {
+          fieldNames: mergedFieldNames,
+          childrenAsData,
+        }),
       [orderedFilteredOptions, mergedFieldNames, childrenAsData],
     );
 

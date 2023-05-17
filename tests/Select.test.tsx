@@ -104,6 +104,51 @@ describe('Select.Basic', () => {
       );
       expect(wrapper).toMatchSnapshot();
     });
+
+    it('should support fieldName', () => {
+      // groupLabel > fieldNames > self-label
+      function genOpts(OptLabelName) {
+        return [
+          {
+            groupLabel: 'Manager',
+            options: [
+              {
+                data: 'value',
+                [OptLabelName]: 'label',
+              },
+            ],
+          },
+        ];
+      }
+
+      const { container: containerFirst } = testingRender(
+        <Select
+          options={genOpts('test')}
+          fieldNames={{
+            value: 'data',
+            label: 'test',
+            groupLabel: 'groupLabel',
+          }}
+        />,
+      );
+      const { container: containerSecond } = testingRender(
+        <Select
+          options={genOpts('groupLabel')}
+          fieldNames={{ value: 'data', label: 'groupLabel' }}
+        />,
+      );
+      const { container: containerThird } = testingRender(
+        <Select
+          options={genOpts('noGroupLabel')}
+          fieldNames={{ value: 'data', label: 'noGroupLabel' }}
+        />,
+      );
+
+      // these generate the same snapshots
+      expect(containerFirst).toMatchSnapshot();
+      expect(containerSecond).toMatchSnapshot();
+      expect(containerThird).toMatchSnapshot();
+    });
   });
 
   it('convert value to array', () => {
@@ -1925,30 +1970,13 @@ describe('Select.Basic', () => {
   });
 
   it('should support title', () => {
-    const wrapper1 = mount(
-      <Select
-        defaultValue="lucy"
-        options={[]}
-      />,
-    );
+    const wrapper1 = mount(<Select defaultValue="lucy" options={[]} />);
     expect(wrapper1.find('.rc-select').prop('title')).toBe(undefined);
     expect(wrapper1.find('.rc-select-selection-item').prop('title')).toBe('lucy');
-    const wrapper2 = mount(
-      <Select
-        defaultValue="lucy"
-        options={[]}
-        title=""
-      />,
-    );
+    const wrapper2 = mount(<Select defaultValue="lucy" options={[]} title="" />);
     expect(wrapper2.find('.rc-select').prop('title')).toBe('');
     expect(wrapper2.find('.rc-select-selection-item').prop('title')).toBe('');
-    const wrapper3 = mount(
-      <Select
-        defaultValue="lucy"
-        options={[]}
-        title="title"
-      />,
-    );
+    const wrapper3 = mount(<Select defaultValue="lucy" options={[]} title="title" />);
     expect(wrapper3.find('.rc-select').prop('title')).toBe('title');
     expect(wrapper3.find('.rc-select-selection-item').prop('title')).toBe('title');
   });
