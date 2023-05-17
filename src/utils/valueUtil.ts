@@ -52,7 +52,7 @@ export function flattenOptions<OptionType extends BaseOptionType = DefaultOption
   function dig(list: OptionType[], isGroupOption: boolean) {
     list.forEach((data) => {
 
-      const label = isGroupOption ? data[groupLabel] : data[fieldLabel]
+      const label = data[isGroupOption ? groupLabel : fieldLabel];
 
       if (isGroupOption || !(fieldOptions in data)) {
         const value = data[fieldValue];
