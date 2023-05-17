@@ -22,12 +22,13 @@ function getKey(data: BaseOptionType, index: number) {
 
 export function fillFieldNames(fieldNames: FieldNames | undefined, childrenAsData: boolean) {
   const { label, value, options, groupLabel } = fieldNames || {};
+  const mergedLabel = label || (childrenAsData ? 'children' : 'label');
 
   return {
-    label: label || (childrenAsData ? 'children' : 'label'),
+    label: mergedLabel,
     value: value || 'value',
     options: options || 'options',
-    groupLabel: groupLabel || label || (childrenAsData ? 'children' : 'label')
+    groupLabel: groupLabel || mergedLabel,
   };
 }
 
