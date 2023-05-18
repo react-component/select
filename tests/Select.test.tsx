@@ -1937,6 +1937,9 @@ describe('Select.Basic', () => {
   });
 
   it('scrollbar should be left position with rtl direction', () => {
-    
+    const options = new Array(10).fill(null).map((_, value) => ({ value }));
+
+    const { container } = testingRender(<Select open direction="rtl" options={options} />);
+    expect(container.querySelector('.rc-virtual-list-rtl')).toBeTruthy();
   });
 });
