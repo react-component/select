@@ -140,6 +140,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   options?: OptionType[];
   defaultActiveFirstOption?: boolean;
   virtual?: boolean;
+  direction?: "ltr" | "rtl";
   listHeight?: number;
   listItemHeight?: number;
 
@@ -187,6 +188,7 @@ const Select = React.forwardRef(
       defaultActiveFirstOption,
       menuItemSelectedIcon,
       virtual,
+      direction,
       listHeight = 200,
       listItemHeight = 20,
 
@@ -584,6 +586,7 @@ const Select = React.forwardRef(
         rawValues,
         fieldNames: mergedFieldNames,
         virtual: realVirtual,
+        direction,
         listHeight,
         listItemHeight,
         childrenAsData,
@@ -626,6 +629,8 @@ const Select = React.forwardRef(
           // >>> Values
           displayValues={displayValues}
           onDisplayValuesChange={onDisplayValuesChange}
+          // >>> Trigger
+          direction={direction}
           // >>> Search
           searchValue={mergedSearchValue}
           onSearch={onInternalSearch}

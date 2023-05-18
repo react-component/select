@@ -1980,4 +1980,11 @@ describe('Select.Basic', () => {
     expect(wrapper3.find('.rc-select').prop('title')).toBe('title');
     expect(wrapper3.find('.rc-select-selection-item').prop('title')).toBe('title');
   });
+
+  it('scrollbar should be left position with rtl direction', () => {
+    const options = new Array(10).fill(null).map((_, value) => ({ value }));
+
+    const { container } = testingRender(<Select open direction="rtl" options={options} />);
+    expect(container.querySelector('.rc-virtual-list-rtl')).toBeTruthy();
+  });
 });
