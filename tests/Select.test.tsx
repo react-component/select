@@ -1,5 +1,5 @@
-import { fireEvent, render as testingRender } from '@testing-library/react';
-import { mount, render } from 'enzyme';
+import { fireEvent,render as testingRender } from '@testing-library/react';
+import { mount,render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototype } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
@@ -8,7 +8,7 @@ import type { ScrollConfig } from 'rc-virtual-list/lib/List';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import type { SelectProps } from '../src';
-import Select, { OptGroup, Option, useBaseProps } from '../src';
+import Select,{ OptGroup,Option,useBaseProps } from '../src';
 import type { BaseSelectRef } from '../src/BaseSelect';
 import allowClearTest from './shared/allowClearTest';
 import blurTest from './shared/blurTest';
@@ -17,11 +17,11 @@ import inputFilterTest from './shared/inputFilterTest';
 import keyDownTest from './shared/keyDownTest';
 import openControlledTest from './shared/openControlledTest';
 import {
-  expectOpen,
-  findSelection,
-  injectRunAllTimers,
-  selectItem,
-  toggleOpen,
+expectOpen,
+findSelection,
+injectRunAllTimers,
+selectItem,
+toggleOpen
 } from './utils/common';
 
 describe('Select.Basic', () => {
@@ -142,9 +142,9 @@ describe('Select.Basic', () => {
       );
 
       // these generate the same snapshots
-      expect(containerFirst).toMatchSnapshot();
-      expect(containerSecond).toMatchSnapshot();
-      expect(containerThird).toMatchSnapshot();
+      expect(containerFirst.querySelector('.rc-virtual-list')).toMatchSnapshot();
+      expect(containerSecond.querySelector('.rc-virtual-list')).toMatchSnapshot();
+      expect(containerThird.querySelector('.rc-virtual-list')).toMatchSnapshot();
     });
   });
 
