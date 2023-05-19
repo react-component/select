@@ -52,9 +52,6 @@ export function flattenOptions<OptionType extends BaseOptionType = DefaultOption
 
   function dig(list: OptionType[], isGroupOption: boolean) {
     list.forEach((data) => {
-
-      const label = data[isGroupOption ? groupLabel : fieldLabel];
-
       if (isGroupOption || !(fieldOptions in data)) {
         const value = data[fieldValue];
 
@@ -63,11 +60,11 @@ export function flattenOptions<OptionType extends BaseOptionType = DefaultOption
           key: getKey(data, flattenList.length),
           groupOption: isGroupOption,
           data,
-          label,
+          label: data[fieldLabel],
           value,
         });
       } else {
-        let grpLabel = label;
+        let grpLabel = data[groupLabel];
         if (grpLabel === undefined && childrenAsData) {
           grpLabel = data.label;
         }
