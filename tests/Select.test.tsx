@@ -107,13 +107,13 @@ describe('Select.Basic', () => {
 
     it('should support fieldName', () => {
       // groupLabel > fieldNames > self-label
-      function genOpts(OptLabelName) {
+      function genOpts(OptLabelName, groupLabel) {
         return [
           {
-            groupLabel: 'Manager',
+            [groupLabel]: 'groupLabel',
             options: [
               {
-                data: 'value',
+                value: 'value',
                 [OptLabelName]: 'label',
               },
             ],
@@ -123,25 +123,22 @@ describe('Select.Basic', () => {
 
       const { container: containerFirst } = testingRender(
         <Select
-          options={genOpts('test')}
+          options={genOpts('label', 'groupLabel')}
           fieldNames={{
-            value: 'data',
-            label: 'test',
             groupLabel: 'groupLabel',
           }}
+          open
         />,
       );
       const { container: containerSecond } = testingRender(
         <Select
-          options={genOpts('groupLabel')}
-          fieldNames={{ value: 'data', label: 'groupLabel' }}
+          options={genOpts('groupLabel', 'groupLabel')}
+          fieldNames={{ label: 'groupLabel' }}
+          open
         />,
       );
       const { container: containerThird } = testingRender(
-        <Select
-          options={genOpts('noGroupLabel')}
-          fieldNames={{ value: 'data', label: 'noGroupLabel' }}
-        />,
+        <Select options={genOpts('label', 'label')} open />,
       );
 
       // these generate the same snapshots

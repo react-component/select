@@ -436,7 +436,7 @@ exports[`Select.Basic render renders role prop correctly 1`] = `
 exports[`Select.Basic render should support fieldName 1`] = `
 <div>
   <div
-    class="rc-select rc-select-single rc-select-show-arrow"
+    class="rc-select rc-select-single rc-select-show-arrow rc-select-open"
   >
     <div
       class="rc-select-selector"
@@ -445,10 +445,10 @@ exports[`Select.Basic render should support fieldName 1`] = `
         class="rc-select-selection-search"
       >
         <input
-          aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
+          aria-activedescendant="rc_select_TEST_OR_SSR_list_1"
           aria-autocomplete="list"
           aria-controls="rc_select_TEST_OR_SSR_list"
-          aria-expanded="false"
+          aria-expanded="true"
           aria-haspopup="listbox"
           aria-owns="rc_select_TEST_OR_SSR_list"
           autocomplete="off"
@@ -465,6 +465,76 @@ exports[`Select.Basic render should support fieldName 1`] = `
       <span
         class="rc-select-selection-placeholder"
       />
+    </div>
+    <div
+      class="rc-select-dropdown rc-select-dropdown-placement-bottomLeft"
+      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
+    >
+      <div>
+        <div
+          id="rc_select_TEST_OR_SSR_list"
+          role="listbox"
+          style="height: 0px; width: 0px; overflow: hidden;"
+        >
+          <div
+            aria-selected="false"
+            id="rc_select_TEST_OR_SSR_list_0"
+            role="presentation"
+          />
+          <div
+            aria-label="label"
+            aria-selected="false"
+            id="rc_select_TEST_OR_SSR_list_1"
+            role="option"
+          >
+            value
+          </div>
+        </div>
+        <div
+          class="rc-virtual-list"
+          style="position: relative;"
+        >
+          <div
+            class="rc-virtual-list-holder"
+            style="max-height: 200px; overflow-y: auto;"
+          >
+            <div>
+              <div
+                class="rc-virtual-list-holder-inner"
+                style="display: flex; flex-direction: column;"
+              >
+                <div
+                  class="rc-select-item rc-select-item-group"
+                  title="groupLabel"
+                >
+                  groupLabel
+                </div>
+                <div
+                  aria-selected="false"
+                  class="rc-select-item rc-select-item-option rc-select-item-option-grouped rc-select-item-option-active"
+                  title="label"
+                >
+                  <div
+                    class="rc-select-item-option-content"
+                  >
+                    label
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    class="rc-select-item-option-state"
+                    style="user-select: none;"
+                    unselectable="on"
+                  >
+                    <span
+                      class="rc-select-item-option-state-icon"
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <span
       aria-hidden="true"
@@ -483,7 +553,7 @@ exports[`Select.Basic render should support fieldName 1`] = `
 exports[`Select.Basic render should support fieldName 2`] = `
 <div>
   <div
-    class="rc-select rc-select-single rc-select-show-arrow"
+    class="rc-select rc-select-single rc-select-show-arrow rc-select-open"
   >
     <div
       class="rc-select-selector"
@@ -492,10 +562,10 @@ exports[`Select.Basic render should support fieldName 2`] = `
         class="rc-select-selection-search"
       >
         <input
-          aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
+          aria-activedescendant="rc_select_TEST_OR_SSR_list_1"
           aria-autocomplete="list"
           aria-controls="rc_select_TEST_OR_SSR_list"
-          aria-expanded="false"
+          aria-expanded="true"
           aria-haspopup="listbox"
           aria-owns="rc_select_TEST_OR_SSR_list"
           autocomplete="off"
@@ -512,6 +582,76 @@ exports[`Select.Basic render should support fieldName 2`] = `
       <span
         class="rc-select-selection-placeholder"
       />
+    </div>
+    <div
+      class="rc-select-dropdown rc-select-dropdown-placement-bottomLeft"
+      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
+    >
+      <div>
+        <div
+          id="rc_select_TEST_OR_SSR_list"
+          role="listbox"
+          style="height: 0px; width: 0px; overflow: hidden;"
+        >
+          <div
+            aria-selected="false"
+            id="rc_select_TEST_OR_SSR_list_0"
+            role="presentation"
+          />
+          <div
+            aria-label="label"
+            aria-selected="false"
+            id="rc_select_TEST_OR_SSR_list_1"
+            role="option"
+          >
+            value
+          </div>
+        </div>
+        <div
+          class="rc-virtual-list"
+          style="position: relative;"
+        >
+          <div
+            class="rc-virtual-list-holder"
+            style="max-height: 200px; overflow-y: auto;"
+          >
+            <div>
+              <div
+                class="rc-virtual-list-holder-inner"
+                style="display: flex; flex-direction: column;"
+              >
+                <div
+                  class="rc-select-item rc-select-item-group"
+                  title="groupLabel"
+                >
+                  groupLabel
+                </div>
+                <div
+                  aria-selected="false"
+                  class="rc-select-item rc-select-item-option rc-select-item-option-grouped rc-select-item-option-active"
+                  title="label"
+                >
+                  <div
+                    class="rc-select-item-option-content"
+                  >
+                    label
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    class="rc-select-item-option-state"
+                    style="user-select: none;"
+                    unselectable="on"
+                  >
+                    <span
+                      class="rc-select-item-option-state-icon"
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <span
       aria-hidden="true"
@@ -530,7 +670,7 @@ exports[`Select.Basic render should support fieldName 2`] = `
 exports[`Select.Basic render should support fieldName 3`] = `
 <div>
   <div
-    class="rc-select rc-select-single rc-select-show-arrow"
+    class="rc-select rc-select-single rc-select-show-arrow rc-select-open"
   >
     <div
       class="rc-select-selector"
@@ -539,10 +679,10 @@ exports[`Select.Basic render should support fieldName 3`] = `
         class="rc-select-selection-search"
       >
         <input
-          aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
+          aria-activedescendant="rc_select_TEST_OR_SSR_list_1"
           aria-autocomplete="list"
           aria-controls="rc_select_TEST_OR_SSR_list"
-          aria-expanded="false"
+          aria-expanded="true"
           aria-haspopup="listbox"
           aria-owns="rc_select_TEST_OR_SSR_list"
           autocomplete="off"
@@ -559,6 +699,76 @@ exports[`Select.Basic render should support fieldName 3`] = `
       <span
         class="rc-select-selection-placeholder"
       />
+    </div>
+    <div
+      class="rc-select-dropdown rc-select-dropdown-placement-bottomLeft"
+      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
+    >
+      <div>
+        <div
+          id="rc_select_TEST_OR_SSR_list"
+          role="listbox"
+          style="height: 0px; width: 0px; overflow: hidden;"
+        >
+          <div
+            aria-selected="false"
+            id="rc_select_TEST_OR_SSR_list_0"
+            role="presentation"
+          />
+          <div
+            aria-label="label"
+            aria-selected="false"
+            id="rc_select_TEST_OR_SSR_list_1"
+            role="option"
+          >
+            value
+          </div>
+        </div>
+        <div
+          class="rc-virtual-list"
+          style="position: relative;"
+        >
+          <div
+            class="rc-virtual-list-holder"
+            style="max-height: 200px; overflow-y: auto;"
+          >
+            <div>
+              <div
+                class="rc-virtual-list-holder-inner"
+                style="display: flex; flex-direction: column;"
+              >
+                <div
+                  class="rc-select-item rc-select-item-group"
+                  title="groupLabel"
+                >
+                  groupLabel
+                </div>
+                <div
+                  aria-selected="false"
+                  class="rc-select-item rc-select-item-option rc-select-item-option-grouped rc-select-item-option-active"
+                  title="label"
+                >
+                  <div
+                    class="rc-select-item-option-content"
+                  >
+                    label
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    class="rc-select-item-option-state"
+                    style="user-select: none;"
+                    unselectable="on"
+                  >
+                    <span
+                      class="rc-select-item-option-state-icon"
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <span
       aria-hidden="true"
