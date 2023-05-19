@@ -1,5 +1,5 @@
-import { fireEvent,render as testingRender } from '@testing-library/react';
-import { mount,render } from 'enzyme';
+import { fireEvent, render as testingRender } from '@testing-library/react';
+import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototype } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
@@ -8,7 +8,7 @@ import type { ScrollConfig } from 'rc-virtual-list/lib/List';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import type { SelectProps } from '../src';
-import Select,{ OptGroup,Option,useBaseProps } from '../src';
+import Select, { OptGroup, Option, useBaseProps } from '../src';
 import type { BaseSelectRef } from '../src/BaseSelect';
 import allowClearTest from './shared/allowClearTest';
 import blurTest from './shared/blurTest';
@@ -17,11 +17,11 @@ import inputFilterTest from './shared/inputFilterTest';
 import keyDownTest from './shared/keyDownTest';
 import openControlledTest from './shared/openControlledTest';
 import {
-expectOpen,
-findSelection,
-injectRunAllTimers,
-selectItem,
-toggleOpen
+  expectOpen,
+  findSelection,
+  injectRunAllTimers,
+  selectItem,
+  toggleOpen,
 } from './utils/common';
 
 describe('Select.Basic', () => {
@@ -146,6 +146,24 @@ describe('Select.Basic', () => {
       expect(containerSecond.querySelector('.rc-virtual-list')).toMatchSnapshot();
       expect(containerThird.querySelector('.rc-virtual-list')).toMatchSnapshot();
     });
+  });
+
+  it('item label should be the same as user enter when set groupLabel', () => {
+    const { container } = testingRender(
+      <Select
+        options={[
+          {
+            label: 'itemLabel',
+            value: 'itemValue',
+          },
+        ]}
+        fieldNames={{
+          groupLabel: 'groupLabel',
+        }}
+        open
+      />,
+    );
+    expect(container.querySelector('.rc-select-item-option-content').innerHTML).toBe('itemLabel');
   });
 
   it('convert value to array', () => {
