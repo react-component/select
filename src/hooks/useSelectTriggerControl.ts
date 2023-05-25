@@ -37,7 +37,7 @@ export default function useSelectTriggerControl(
       }
     }
 
-    window.addEventListener('mousedown', onGlobalMouseDown);
+    window.addEventListener('mousedown', onGlobalMouseDown, true);
     return () => window.removeEventListener('mousedown', onGlobalMouseDown);
   }, []);
 }
