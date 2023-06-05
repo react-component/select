@@ -140,7 +140,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   options?: OptionType[];
   defaultActiveFirstOption?: boolean;
   virtual?: boolean;
-  direction?: "ltr" | "rtl";
+  direction?: 'ltr' | 'rtl';
   listHeight?: number;
   listItemHeight?: number;
 
@@ -245,11 +245,11 @@ const Select = React.forwardRef(
       (draftValues: DraftValueType) => {
         // Convert to array
         const valueList = toArray(draftValues);
-
         // Convert to labelInValue type
         return valueList.map((val) => {
           let rawValue: RawValueType;
-          let rawLabel: React.ReactNode;
+          //  React.ReactNode
+          let rawLabel: any;
           let rawKey: React.Key;
           let rawDisabled: boolean | undefined;
           let rawTitle: string;
@@ -275,7 +275,10 @@ const Select = React.forwardRef(
             // Warning if label not same as provided
             if (process.env.NODE_ENV !== 'production' && !optionLabelProp) {
               const optionLabel = option?.[mergedFieldNames.label];
-              if (optionLabel !== undefined && optionLabel !== rawLabel) {
+              if (
+                optionLabel !== undefined &&
+                (optionLabel !== rawLabel || optionLabel?._owner !== rawLabel?._owner)
+              ) {
                 warning(false, '`label` of `value` is not same as `label` in Select options.');
               }
             }
