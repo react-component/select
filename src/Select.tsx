@@ -245,6 +245,7 @@ const Select = React.forwardRef(
       (draftValues: DraftValueType) => {
         // Convert to array
         const valueList = toArray(draftValues);
+
         // Convert to labelInValue type
         return valueList.map((val) => {
           let rawValue: RawValueType;
