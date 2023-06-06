@@ -248,8 +248,7 @@ const Select = React.forwardRef(
         // Convert to labelInValue type
         return valueList.map((val) => {
           let rawValue: RawValueType;
-          //  React.ReactNode
-          let rawLabel: any;
+          let rawLabel: React.ReactNode;
           let rawKey: React.Key;
           let rawDisabled: boolean | undefined;
           let rawTitle: string;
