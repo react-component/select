@@ -277,7 +277,9 @@ const Select = React.forwardRef(
               const optionLabel = option?.[mergedFieldNames.label];
               if (
                 optionLabel !== undefined &&
-                (optionLabel !== rawLabel )
+                !React.isValidElement(optionLabel) &&
+                !React.isValidElement(rawLabel) &&
+                optionLabel !== rawLabel
               ) {
                 warning(false, '`label` of `value` is not same as `label` in Select options.');
               }
