@@ -2040,4 +2040,40 @@ describe('Select.Basic', () => {
     const { container } = testingRender(<Select open direction="rtl" options={options} />);
     expect(container.querySelector('.rc-virtual-list-rtl')).toBeTruthy();
   });
+
+  
+  it('autoClearSearchValue false', () => {
+    const wrapper = mount(
+      <Select
+        mode="tags"
+        options={[
+          { label: 'bamboo', title: 'TitleBamboo', value: 'b' },
+          { label: 'little', value: 'l' },
+          { label: 'Rest', value: 'r' },
+        ]}
+      />,
+    );
+    wrapper.setProps({autoClearSearchValue:false})
+    wrapper.find('input').simulate('change', { target: { value: 'Two2' } });
+    selectItem(wrapper, );
+    expect(wrapper.find('input').prop('value')).toBe('Two2');
+  });
+
+  it('autoClearSearchValue true', () => {
+    const wrapper = mount(
+      <Select
+        mode="tags"
+        options={[
+          { label: 'bamboo', title: 'TitleBamboo', value: 'b' },
+          { label: 'little', value: 'l' },
+          { label: 'Rest', value: 'r' },
+        ]}
+      />,
+    );
+    wrapper.setProps({autoClearSearchValue:true})
+    wrapper.find('input').simulate('change', { target: { value: 'Two2' } });
+    selectItem(wrapper, );
+    expect(wrapper.find('input').prop('value')).toBe('');
+  });
+
 });
