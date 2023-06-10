@@ -544,7 +544,7 @@ const Select = React.forwardRef(
           const newRawValues = Array.from(new Set<RawValueType>([...rawValues, formatted]));
           triggerChange(newRawValues);
           triggerSelect(formatted, true);
-          setSearchValue('');
+          if(autoClearSearchValue) setSearchValue('');
         }
 
         return;
