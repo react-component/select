@@ -563,23 +563,10 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   const onContainerBlur: React.FocusEventHandler<HTMLElement> = (...args) => {
     setMockFocused(false, () => {
       focusRef.current = false;
-      onToggleOpen(false);
     });
 
     if (disabled) {
       return;
-    }
-
-    if (mergedSearchValue) {
-      // `tags` mode should move `searchValue` into values
-      if (mode === 'tags') {
-        onSearch(mergedSearchValue, { source: 'submit' });
-      } else if (mode === 'multiple') {
-        // `multiple` mode only clean the search value but not trigger event
-        onSearch('', {
-          source: 'blur',
-        });
-      }
     }
 
     if (onBlur) {
