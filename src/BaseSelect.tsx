@@ -381,11 +381,14 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
         setInnerOpen(nextOpen);
 
         if (mergedOpen !== nextOpen) {
+          if (!nextOpen) {
+            onSearch('', { source: 'blur' });
+          }
           onDropdownVisibleChange?.(nextOpen);
         }
       }
     },
-    [disabled, mergedOpen, setInnerOpen, onDropdownVisibleChange],
+    [mergedOpen, disabled, setInnerOpen, onDropdownVisibleChange, onSearch],
   );
 
   // ============================= Search =============================
