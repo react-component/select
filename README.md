@@ -4,12 +4,7 @@
 
 React Select
 
-[![NPM version][npm-image]][npm-url]
-[![npm download][download-image]][download-url]
-[![build status][github-actions-image]][github-actions-url]
-[![Codecov][codecov-image]][codecov-url]
-[![bundle size][bundlephobia-image]][bundlephobia-url]
-[![dumi][dumi-image]][dumi-url]
+[![NPM version][npm-image]][npm-url] [![npm download][download-image]][download-url] [![build status][github-actions-image]][github-actions-url] [![Codecov][codecov-image]][codecov-url] [![bundle size][bundlephobia-image]][bundlephobia-url] [![dumi][dumi-image]][dumi-url]
 
 [npm-image]: http://img.shields.io/npm/v/rc-select.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/rc-select
@@ -87,7 +82,6 @@ export default () => (
 | defaultOpen | control select default open | bool |  |
 | placeholder | select placeholder | React Node |  |
 | showSearch | whether show search input in single mode | bool | true |
-| showArrow | whether show arrow | bool | true (single mode), false (multiple mode) |
 | allowClear | whether allowClear | bool | false |
 | tags | when tagging is enabled the user can select from pre-existing options or create a new tag by picking the first choice, which is what the user has typed into the search box so far. | bool | false |
 | tagRender | render custom tags. | (props: CustomTagProps) => ReactNode | - |
@@ -119,7 +113,7 @@ export default () => (
 | showAction | actions trigger the dropdown to show | String[]? | - |
 | autoFocus | focus select after mount | Bool | - |
 | autoClearSearchValue | auto clear search input value when multiple select is selected/deselected | boolean | true |
-| inputIcon | specify the select arrow icon | ReactNode | - |
+| inputIcon | specify the select arrow icon | ReactNode | show arrow icon when multiple mode |
 | clearIcon | specify the clear icon | ReactNode | - |
 | removeIcon | specify the remove icon | ReactNode | - |
 | menuItemSelectedIcon | specify the item selected icon | ReactNode \| (props: MenuItemProps) => ReactNode | - |

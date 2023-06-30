@@ -42,7 +42,6 @@ describe('Select.Basic', () => {
           className="select-test"
           value="2"
           placeholder="Select a number"
-          showArrow
           allowClear
           showSearch
           {...props}

@@ -169,7 +169,6 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
 
   // >>> Icons
   allowClear?: boolean;
-  showArrow?: boolean;
   inputIcon?: RenderNode;
   /** Clear all icon */
   clearIcon?: RenderNode;
@@ -255,7 +254,6 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
 
     // Icons
     allowClear,
-    showArrow,
     inputIcon,
     clearIcon,
 
@@ -676,11 +674,10 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   // ==================================================================
 
   // ============================= Arrow ==============================
-  const mergedShowArrow =
-    showArrow !== undefined ? showArrow : loading || (!multiple && mode !== 'combobox');
+  const showInputIcon = !!inputIcon || loading || (!multiple && mode !== 'combobox');
   let arrowNode: React.ReactNode;
 
-  if (mergedShowArrow) {
+  if (showInputIcon) {
     arrowNode = (
       <TransBtn
         className={classNames(`${prefixCls}-arrow`, {
@@ -738,7 +735,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     [`${prefixCls}-multiple`]: multiple,
     [`${prefixCls}-single`]: !multiple,
     [`${prefixCls}-allow-clear`]: allowClear,
-    [`${prefixCls}-show-arrow`]: mergedShowArrow,
+    [`${prefixCls}-show-arrow`]: showInputIcon,
     [`${prefixCls}-disabled`]: disabled,
     [`${prefixCls}-loading`]: loading,
     [`${prefixCls}-open`]: mergedOpen,
