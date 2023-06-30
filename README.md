@@ -113,7 +113,7 @@ export default () => (
 | showAction | actions trigger the dropdown to show | String[]? | - |
 | autoFocus | focus select after mount | Bool | - |
 | autoClearSearchValue | auto clear search input value when multiple select is selected/deselected | boolean | true |
-| inputIcon | specify the select arrow icon | ReactNode | show arrow icon when multiple mode |
+| inputIcon | specify the select arrow icon | ReactNode | - |
 | clearIcon | specify the clear icon | ReactNode | - |
 | removeIcon | specify the remove icon | ReactNode | - |
 | menuItemSelectedIcon | specify the item selected icon | ReactNode \| (props: MenuItemProps) => ReactNode | - |
