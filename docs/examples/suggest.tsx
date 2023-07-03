@@ -59,7 +59,7 @@ class Test extends React.Component {
             placeholder="placeholder"
             defaultActiveFirstOption={false}
             getInputElement={() => <Input className="custom-input" />}
-            inputIcon={null}
+            suffixIcon={null}
             notFoundContent=""
             onChange={this.fetchData}
             onSelect={this.onSelect}

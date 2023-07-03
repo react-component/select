@@ -379,7 +379,7 @@ describe('Select.Multiple', () => {
     expect(wrapper.find('.rc-select-arrow').length).toBeFalsy();
 
     wrapper.setProps({
-      inputIcon: <div>arrow</div>,
+      suffixIcon: <div>arrow</div>,
     });
     expect(wrapper.find('.rc-select-arrow').length).toBeTruthy();
   });
