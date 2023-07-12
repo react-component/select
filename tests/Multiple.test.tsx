@@ -376,12 +376,12 @@ describe('Select.Multiple', () => {
       </Select>,
     );
 
-    expect(wrapper.find('.rc-select-arrow').length).toBeFalsy();
+    expect(wrapper.find('.rc-select-arrow-icon').length).toBeFalsy();
 
     wrapper.setProps({
-      suffixIcon: <div>arrow</div>,
+      showSuffixIcon: true,
     });
-    expect(wrapper.find('.rc-select-arrow').length).toBeTruthy();
+    expect(wrapper.find('.rc-select-arrow-icon').length).toBeTruthy();
   });
 
   it('block input when fast backspace', () => {

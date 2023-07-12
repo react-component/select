@@ -1,6 +1,6 @@
 /* eslint-disable no-console, max-classes-per-file */
-import Select, { Option } from 'rc-select';
 import React from 'react';
+import Select, { Option } from 'rc-select';
 import '../../assets/index.less';
 
 const arrowPath =
@@ -98,6 +98,7 @@ class CustomIconComponent extends React.Component {
             onInputKeyDown={this.onKeyDown}
             notFoundContent=""
             allowClear
+            showSuffixIcon
             placeholder="please select"
             value={value}
             mode="combobox"

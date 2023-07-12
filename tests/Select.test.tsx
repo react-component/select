@@ -42,6 +42,7 @@ describe('Select.Basic', () => {
           className="select-test"
           value="2"
           placeholder="Select a number"
+          showSuffixIcon
           allowClear
           showSearch
           {...props}

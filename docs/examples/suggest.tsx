@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-import Select, { Option } from 'rc-select';
 import React from 'react';
+import Select, { Option } from 'rc-select';
 import '../../assets/index.less';
 
 import { fetch } from './common/tbFetchSuggest';
@@ -59,7 +59,7 @@ class Test extends React.Component {
             placeholder="placeholder"
             defaultActiveFirstOption={false}
             getInputElement={() => <Input className="custom-input" />}
-            suffixIcon={null}
+            showSuffixIcon={false}
             notFoundContent=""
             onChange={this.fetchData}
             onSelect={this.onSelect}

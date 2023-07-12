@@ -169,6 +169,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
 
   // >>> Icons
   allowClear?: boolean;
+  showSuffixIcon?: boolean;
   suffixIcon?: RenderNode;
   /** Clear all icon */
   clearIcon?: RenderNode;
@@ -254,6 +255,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
 
     // Icons
     allowClear,
+    showSuffixIcon,
     suffixIcon,
     clearIcon,
 
@@ -674,10 +676,11 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   // ==================================================================
 
   // ============================= Arrow ==============================
-  const showSuffixIcon = !!suffixIcon || loading;
+  const mergedWShowSuffixIcon =
+    showSuffixIcon !== undefined ? showSuffixIcon : loading || (!multiple && mode !== 'combobox');
   let arrowNode: React.ReactNode;
 
-  if (showSuffixIcon) {
+  if (mergedWShowSuffixIcon) {
     arrowNode = (
       <TransBtn
         className={classNames(`${prefixCls}-arrow`, {
@@ -735,7 +738,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     [`${prefixCls}-multiple`]: multiple,
     [`${prefixCls}-single`]: !multiple,
     [`${prefixCls}-allow-clear`]: allowClear,
-    [`${prefixCls}-show-arrow`]: showSuffixIcon,
+    [`${prefixCls}-show-arrow`]: mergedWShowSuffixIcon,
     [`${prefixCls}-disabled`]: disabled,
     [`${prefixCls}-loading`]: loading,
     [`${prefixCls}-open`]: mergedOpen,
