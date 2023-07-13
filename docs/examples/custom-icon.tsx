@@ -1,6 +1,6 @@
 /* eslint-disable no-console, max-classes-per-file */
-import React from 'react';
 import Select, { Option } from 'rc-select';
+import React from 'react';
 import '../../assets/index.less';
 
 const arrowPath =
@@ -98,12 +98,11 @@ class CustomIconComponent extends React.Component {
             onInputKeyDown={this.onKeyDown}
             notFoundContent=""
             allowClear
-            showArrow
             placeholder="please select"
             value={value}
             mode="combobox"
             backfill
-            inputIcon={({ searchValue }) => {
+            suffixIcon={({ searchValue }) => {
               if (searchValue) {
                 return '😺';
               }
@@ -193,7 +192,7 @@ class Test extends React.Component {
             onChange={this.onChange}
             onFocus={() => console.log('focus')}
             tokenSeparators={[' ', ',']}
-            inputIcon={getSvg(arrowPath)}
+            suffixIcon={getSvg(arrowPath)}
             clearIcon={getSvg(clearPath)}
             removeIcon={getSvg(clearPath)}
             menuItemSelectedIcon={menuItemSelectedIcon}
