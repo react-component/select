@@ -631,7 +631,8 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
 
   useLayoutEffect(() => {
     if (triggerOpen) {
-      const newWidth = Math.ceil(containerRef.current?.offsetWidth);
+      // Guaranteed width accuracy 
+      const newWidth = Math.ceil(containerRef.current?.getBoundingClientRect().width);
       if (containerWidth !== newWidth && !Number.isNaN(newWidth)) {
         setContainerWidth(newWidth);
       }
