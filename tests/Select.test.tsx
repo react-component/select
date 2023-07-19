@@ -1,7 +1,7 @@
 import { fireEvent, render as testingRender } from '@testing-library/react';
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
-import { spyElementPrototype } from 'rc-util/lib/test/domHook';
+import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import VirtualList from 'rc-virtual-list';
 import type { ScrollConfig } from 'rc-virtual-list/lib/List';
@@ -1323,8 +1323,10 @@ describe('Select.Basic', () => {
     let domHook;
 
     beforeAll(() => {
-      domHook = spyElementPrototype(HTMLElement, 'offsetWidth', {
-        get: () => 1000,
+      domHook = spyElementPrototypes(HTMLElement, {
+        getBoundingClientRect: () => ({
+          width: 1000
+        }),
       });
     });
 
