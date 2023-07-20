@@ -137,7 +137,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   autoFocus?: boolean;
   notFoundContent?: React.ReactNode;
   placeholder?: React.ReactNode;
-  onClear?: () => void;
+  onClear?: (e: React.MouseEvent) => void;
 
   choiceTransitionName?: string;
 
@@ -698,8 +698,8 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
 
   // ============================= Clear ==============================
   let clearNode: React.ReactNode;
-  const onClearMouseDown: React.MouseEventHandler<HTMLSpanElement> = () => {
-    onClear?.();
+  const onClearMouseDown: React.MouseEventHandler<HTMLSpanElement> = (e: React.MouseEvent) => {
+    onClear?.(e);
 
     selectorRef.current?.focus();
 
