@@ -17,6 +17,10 @@ import type { RefTriggerProps } from './SelectTrigger';
 import SelectTrigger from './SelectTrigger';
 import TransBtn from './TransBtn';
 import { getSeparatedContent } from './utils/valueUtil';
+import type { DisplayInfoType, DisplayValueType, Mode, Placement, RenderDOMFunc, RenderNode, RawValueType } from './interface';
+import { useAllowClear } from './hooks/useAllowClear';
+
+export type { DisplayInfoType, DisplayValueType, Mode, Placement, RenderDOMFunc, RenderNode, RawValueType };
 
 const DEFAULT_OMIT_PROPS = [
   'value',
@@ -32,19 +36,6 @@ const DEFAULT_OMIT_PROPS = [
   'onPopupScroll',
   'tabIndex',
 ] as const;
-
-export type RenderNode = React.ReactNode | ((props: any) => React.ReactNode);
-
-export type RenderDOMFunc = (props: any) => HTMLElement;
-
-export type Mode = 'multiple' | 'tags' | 'combobox';
-
-export type Placement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
-
-export type RawValueType = string | number;
-
-export type DisplayInfoType = 'add' | 'remove' | 'clear';
-
 export interface RefOptionListProps {
   onKeyDown: React.KeyboardEventHandler;
   onKeyUp: React.KeyboardEventHandler;
@@ -58,14 +49,6 @@ export type CustomTagProps = {
   onClose: (event?: React.MouseEvent<HTMLElement, MouseEvent>) => void;
   closable: boolean;
 };
-
-export interface DisplayValueType {
-  key?: React.Key;
-  value?: RawValueType;
-  label?: React.ReactNode;
-  title?: string | number;
-  disabled?: boolean;
-}
 
 export interface BaseSelectRef {
   focus: () => void;
@@ -104,10 +87,10 @@ export interface BaseSelectPrivateProps {
     searchValue: string,
     info: {
       source:
-        | 'typing' //User typing
-        | 'effect' // Code logic trigger
-        | 'submit' // tag mode only
-        | 'blur'; // Not trigger event
+      | 'typing' //User typing
+      | 'effect' // Code logic trigger
+      | 'submit' // tag mode only
+      | 'blur'; // Not trigger event
     },
   ) => void;
   /** Trigger when search text match the `tokenSeparators`. Will provide split content */
@@ -168,10 +151,13 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   tokenSeparators?: string[];
 
   // >>> Icons
-  allowClear?: boolean;
+  allowClear?: boolean | { clearIcon?: RenderNode };
   showArrow?: boolean;
   inputIcon?: RenderNode;
-  /** Clear all icon */
+  /** 
+   * Clear all icon 
+   * @deprecated Please use `allowClear` instead
+   **/
   clearIcon?: RenderNode;
   /** Selector remove icon */
   removeIcon?: RenderNode;
@@ -699,7 +685,6 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   }
 
   // ============================= Clear ==============================
-  let clearNode: React.ReactNode;
   const onClearMouseDown: React.MouseEventHandler<HTMLSpanElement> = () => {
     onClear?.();
 
@@ -712,22 +697,19 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     onInternalSearch('', false, false);
   };
 
-  if (
-    !disabled &&
-    allowClear &&
-    (displayValues.length || mergedSearchValue) &&
-    !(mode === 'combobox' && mergedSearchValue === '')
-  ) {
-    clearNode = (
-      <TransBtn
-        className={`${prefixCls}-clear`}
-        onMouseDown={onClearMouseDown}
-        customizeIcon={clearIcon}
-      >
-        ×
-      </TransBtn>
-    );
-  }
+  const {
+    clearIcon: clearNode
+  } = useAllowClear(
+    prefixCls,
+    onClearMouseDown,
+    allowClear,
+    clearIcon,
+    disabled,
+    displayValues,
+    mergedSearchValue,
+    mode,
+  )
+
 
   // =========================== OptionList ===========================
   const optionList = <OptionList ref={listRef} />;
