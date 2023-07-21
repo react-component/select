@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ 14.1.x ] # antd@4-stable
   pull_request:
-    branches: [ master ]
+    branches: [ 14.1.x ]
 
 jobs:
   setup:
