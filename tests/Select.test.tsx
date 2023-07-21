@@ -1417,17 +1417,55 @@ describe('Select.Basic', () => {
     expect(onKeyUp).toHaveBeenCalled();
   });
 
-  it('warning if label not same as option', () => {
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    mount(
-      <Select value={{ value: '2', label: 'One' }} labelInValue>
-        <Option value="2">Two</Option>
-      </Select>,
-    );
-    expect(errorSpy).toHaveBeenCalledWith(
-      'Warning: `label` of `value` is not same as `label` in Select options.',
-    );
-    errorSpy.mockRestore();
+  describe('warning if label not same as option', () => {
+    it('should work', () => {
+      resetWarned();
+
+      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      mount(
+        <Select value={{ value: '2', label: 'One' }} labelInValue>
+          <Option value="2">Two</Option>
+        </Select>,
+      );
+      expect(errorSpy).toHaveBeenCalledWith(
+        'Warning: `label` of `value` is not same as `label` in Select options.',
+      );
+      errorSpy.mockRestore();
+    });
+
+    it('not warning for react node', () => {
+      resetWarned();
+      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      const Demo = () => {
+        const [, setVal] = React.useState(0);
+
+        return (
+          <Select
+            onChange={setVal}
+            defaultValue={0}
+            options={[
+              {
+                value: 0,
+                label: <div />,
+              },
+              {
+                value: 1,
+                label: <div />,
+              },
+            ]}
+          />
+        );
+      };
+
+      const wrapper = mount(<Demo />);
+
+      toggleOpen(wrapper);
+      selectItem(wrapper, 1);
+
+      expect(errorSpy).not.toHaveBeenCalled();
+      errorSpy.mockRestore();
+    });
   });
 
   describe('warning if use `props` to read data', () => {
