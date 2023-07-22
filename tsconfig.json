@@ -9,7 +9,7 @@
     "esModuleInterop": true,
     "paths": {
       "@/*": ["src/*"],
-      "@@/*": ["src/.umi/*"],
+      "@@/*": [".dumi/tmp/*"],
       "rc-select": ["src/index.ts"]
     }
   }
