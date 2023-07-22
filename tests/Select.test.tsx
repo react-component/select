@@ -1,7 +1,7 @@
 import { fireEvent, render as testingRender } from '@testing-library/react';
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
-import { spyElementPrototype } from 'rc-util/lib/test/domHook';
+import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import VirtualList from 'rc-virtual-list';
 import type { ScrollConfig } from 'rc-virtual-list/lib/List';
@@ -42,7 +42,6 @@ describe('Select.Basic', () => {
           className="select-test"
           value="2"
           placeholder="Select a number"
-          showArrow
           allowClear
           showSearch
           {...props}
@@ -104,6 +103,66 @@ describe('Select.Basic', () => {
       );
       expect(wrapper).toMatchSnapshot();
     });
+
+    it('should support fieldName', () => {
+      // groupLabel > fieldNames > self-label
+      function genOpts(OptLabelName, groupLabel) {
+        return [
+          {
+            [groupLabel]: 'groupLabel',
+            options: [
+              {
+                value: 'value',
+                [OptLabelName]: 'label',
+              },
+            ],
+          },
+        ];
+      }
+
+      const { container: containerFirst } = testingRender(
+        <Select
+          options={genOpts('label', 'groupLabel')}
+          fieldNames={{
+            groupLabel: 'groupLabel',
+          }}
+          open
+        />,
+      );
+      const { container: containerSecond } = testingRender(
+        <Select
+          options={genOpts('groupLabel', 'groupLabel')}
+          fieldNames={{ label: 'groupLabel' }}
+          open
+        />,
+      );
+      const { container: containerThird } = testingRender(
+        <Select options={genOpts('label', 'label')} open />,
+      );
+
+      // these generate the same snapshots
+      expect(containerFirst.querySelector('.rc-virtual-list')).toMatchSnapshot();
+      expect(containerSecond.querySelector('.rc-virtual-list')).toMatchSnapshot();
+      expect(containerThird.querySelector('.rc-virtual-list')).toMatchSnapshot();
+    });
+  });
+
+  it('item label should be the same as user enter when set groupLabel', () => {
+    const { container } = testingRender(
+      <Select
+        options={[
+          {
+            label: 'itemLabel',
+            value: 'itemValue',
+          },
+        ]}
+        fieldNames={{
+          groupLabel: 'groupLabel',
+        }}
+        open
+      />,
+    );
+    expect(container.querySelector('.rc-select-item-option-content').innerHTML).toBe('itemLabel');
   });
 
   it('convert value to array', () => {
@@ -1304,8 +1363,10 @@ describe('Select.Basic', () => {
     let domHook;
 
     beforeAll(() => {
-      domHook = spyElementPrototype(HTMLElement, 'offsetWidth', {
-        get: () => 1000,
+      domHook = spyElementPrototypes(HTMLElement, {
+        getBoundingClientRect: () => ({
+          width: 1000
+        }),
       });
     });
 
@@ -1457,17 +1518,55 @@ describe('Select.Basic', () => {
     expect(onKeyUp).toHaveBeenCalled();
   });
 
-  it('warning if label not same as option', () => {
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    mount(
-      <Select value={{ value: '2', label: 'One' }} labelInValue>
-        <Option value="2">Two</Option>
-      </Select>,
-    );
-    expect(errorSpy).toHaveBeenCalledWith(
-      'Warning: `label` of `value` is not same as `label` in Select options.',
-    );
-    errorSpy.mockRestore();
+  describe('warning if label not same as option', () => {
+    it('should work', () => {
+      resetWarned();
+
+      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      mount(
+        <Select value={{ value: '2', label: 'One' }} labelInValue>
+          <Option value="2">Two</Option>
+        </Select>,
+      );
+      expect(errorSpy).toHaveBeenCalledWith(
+        'Warning: `label` of `value` is not same as `label` in Select options.',
+      );
+      errorSpy.mockRestore();
+    });
+
+    it('not warning for react node', () => {
+      resetWarned();
+      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      const Demo = () => {
+        const [, setVal] = React.useState(0);
+
+        return (
+          <Select
+            onChange={setVal}
+            defaultValue={0}
+            options={[
+              {
+                value: 0,
+                label: <div />,
+              },
+              {
+                value: 1,
+                label: <div />,
+              },
+            ]}
+          />
+        );
+      };
+
+      const wrapper = mount(<Demo />);
+
+      toggleOpen(wrapper);
+      selectItem(wrapper, 1);
+
+      expect(errorSpy).not.toHaveBeenCalled();
+      errorSpy.mockRestore();
+    });
   });
 
   describe('warning if use `props` to read data', () => {
@@ -1965,31 +2064,21 @@ describe('Select.Basic', () => {
   });
 
   it('should support title', () => {
-    const wrapper1 = mount(
-      <Select
-        defaultValue="lucy"
-        options={[]}
-      />,
-    );
+    const wrapper1 = mount(<Select defaultValue="lucy" options={[]} />);
     expect(wrapper1.find('.rc-select').prop('title')).toBe(undefined);
     expect(wrapper1.find('.rc-select-selection-item').prop('title')).toBe('lucy');
-    const wrapper2 = mount(
-      <Select
-        defaultValue="lucy"
-        options={[]}
-        title=""
-      />,
-    );
+    const wrapper2 = mount(<Select defaultValue="lucy" options={[]} title="" />);
     expect(wrapper2.find('.rc-select').prop('title')).toBe('');
     expect(wrapper2.find('.rc-select-selection-item').prop('title')).toBe('');
-    const wrapper3 = mount(
-      <Select
-        defaultValue="lucy"
-        options={[]}
-        title="title"
-      />,
-    );
+    const wrapper3 = mount(<Select defaultValue="lucy" options={[]} title="title" />);
     expect(wrapper3.find('.rc-select').prop('title')).toBe('title');
     expect(wrapper3.find('.rc-select-selection-item').prop('title')).toBe('title');
+  });
+
+  it('scrollbar should be left position with rtl direction', () => {
+    const options = new Array(10).fill(null).map((_, value) => ({ value }));
+
+    const { container } = testingRender(<Select open direction="rtl" options={options} />);
+    expect(container.querySelector('.rc-virtual-list-rtl')).toBeTruthy();
   });
 });

@@ -21,12 +21,14 @@ function getKey(data: BaseOptionType, index: number) {
 }
 
 export function fillFieldNames(fieldNames: FieldNames | undefined, childrenAsData: boolean) {
-  const { label, value, options } = fieldNames || {};
+  const { label, value, options, groupLabel } = fieldNames || {};
+  const mergedLabel = label || (childrenAsData ? 'children' : 'label');
 
   return {
-    label: label || (childrenAsData ? 'children' : 'label'),
+    label: mergedLabel,
     value: value || 'value',
     options: options || 'options',
+    groupLabel: groupLabel || mergedLabel,
   };
 }
 
@@ -45,12 +47,11 @@ export function flattenOptions<OptionType extends BaseOptionType = DefaultOption
     label: fieldLabel,
     value: fieldValue,
     options: fieldOptions,
+    groupLabel
   } = fillFieldNames(fieldNames, false);
 
   function dig(list: OptionType[], isGroupOption: boolean) {
     list.forEach((data) => {
-      const label = data[fieldLabel];
-
       if (isGroupOption || !(fieldOptions in data)) {
         const value = data[fieldValue];
 
@@ -59,11 +60,11 @@ export function flattenOptions<OptionType extends BaseOptionType = DefaultOption
           key: getKey(data, flattenList.length),
           groupOption: isGroupOption,
           data,
-          label,
+          label: data[fieldLabel],
           value,
         });
       } else {
-        let grpLabel = label;
+        let grpLabel = data[groupLabel];
         if (grpLabel === undefined && childrenAsData) {
           grpLabel = data.label;
         }

@@ -153,8 +153,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
 
   // >>> Icons
   allowClear?: boolean | { clearIcon?: RenderNode };
-  showArrow?: boolean;
-  inputIcon?: RenderNode;
+  suffixIcon?: RenderNode;
   /** 
    * Clear all icon 
    * @deprecated Please use `allowClear` instead
@@ -242,8 +241,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
 
     // Icons
     allowClear,
-    showArrow,
-    inputIcon,
+    suffixIcon,
     clearIcon,
 
     // Dropdown
@@ -620,7 +618,8 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
 
   useLayoutEffect(() => {
     if (triggerOpen) {
-      const newWidth = Math.ceil(containerRef.current?.offsetWidth);
+      // Guaranteed width accuracy 
+      const newWidth = Math.ceil(containerRef.current?.getBoundingClientRect().width);
       if (containerWidth !== newWidth && !Number.isNaN(newWidth)) {
         setContainerWidth(newWidth);
       }
@@ -663,17 +662,16 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   // ==================================================================
 
   // ============================= Arrow ==============================
-  const mergedShowArrow =
-    showArrow !== undefined ? showArrow : loading || (!multiple && mode !== 'combobox');
+  const showSuffixIcon = !!suffixIcon || loading;
   let arrowNode: React.ReactNode;
 
-  if (mergedShowArrow) {
+  if (showSuffixIcon) {
     arrowNode = (
       <TransBtn
         className={classNames(`${prefixCls}-arrow`, {
           [`${prefixCls}-arrow-loading`]: loading,
         })}
-        customizeIcon={inputIcon}
+        customizeIcon={suffixIcon}
         customizeIconProps={{
           loading,
           searchValue: mergedSearchValue,
@@ -728,7 +726,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     [`${prefixCls}-multiple`]: multiple,
     [`${prefixCls}-single`]: !multiple,
     [`${prefixCls}-allow-clear`]: allowClear,
-    [`${prefixCls}-show-arrow`]: mergedShowArrow,
+    [`${prefixCls}-show-arrow`]: showSuffixIcon,
     [`${prefixCls}-disabled`]: disabled,
     [`${prefixCls}-loading`]: loading,
     [`${prefixCls}-open`]: mergedOpen,

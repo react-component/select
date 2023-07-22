@@ -83,6 +83,7 @@ export type FilterFunc<OptionType> = (inputValue: string, option?: OptionType) =
 export interface FieldNames {
   value?: string;
   label?: string;
+  groupLabel?: string;
   options?: string;
 }
 
@@ -139,6 +140,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   options?: OptionType[];
   defaultActiveFirstOption?: boolean;
   virtual?: boolean;
+  direction?: 'ltr' | 'rtl';
   listHeight?: number;
   listItemHeight?: number;
 
@@ -186,6 +188,7 @@ const Select = React.forwardRef(
       defaultActiveFirstOption,
       menuItemSelectedIcon,
       virtual,
+      direction,
       listHeight = 200,
       listItemHeight = 20,
 
@@ -272,7 +275,12 @@ const Select = React.forwardRef(
             // Warning if label not same as provided
             if (process.env.NODE_ENV !== 'production' && !optionLabelProp) {
               const optionLabel = option?.[mergedFieldNames.label];
-              if (optionLabel !== undefined && optionLabel !== rawLabel) {
+              if (
+                optionLabel !== undefined &&
+                !React.isValidElement(optionLabel) &&
+                !React.isValidElement(rawLabel) &&
+                optionLabel !== rawLabel
+              ) {
                 warning(false, '`label` of `value` is not same as `label` in Select options.');
               }
             }
@@ -410,7 +418,10 @@ const Select = React.forwardRef(
 
     const displayOptions = React.useMemo(
       () =>
-        flattenOptions(orderedFilteredOptions, { fieldNames: mergedFieldNames, childrenAsData }),
+        flattenOptions(orderedFilteredOptions, {
+          fieldNames: mergedFieldNames,
+          childrenAsData,
+        }),
       [orderedFilteredOptions, mergedFieldNames, childrenAsData],
     );
 
@@ -580,6 +591,7 @@ const Select = React.forwardRef(
         rawValues,
         fieldNames: mergedFieldNames,
         virtual: realVirtual,
+        direction,
         listHeight,
         listItemHeight,
         childrenAsData,
@@ -622,6 +634,8 @@ const Select = React.forwardRef(
           // >>> Values
           displayValues={displayValues}
           onDisplayValuesChange={onDisplayValuesChange}
+          // >>> Trigger
+          direction={direction}
           // >>> Search
           searchValue={mergedSearchValue}
           onSearch={onInternalSearch}

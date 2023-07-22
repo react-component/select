@@ -53,6 +53,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     rawValues,
     fieldNames,
     virtual,
+    direction,
     listHeight,
     listItemHeight,
   } = React.useContext(SelectContext);
@@ -297,6 +298,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
         onMouseDown={onListMouseDown}
         onScroll={onPopupScroll}
         virtual={virtual}
+        direction={direction}
         innerProps={virtual ? null : a11yProps}
       >
         {(item, itemIndex) => {

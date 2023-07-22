@@ -110,7 +110,7 @@ exports[`Select.Basic filterOption could be true as described in default value 1
 
 exports[`Select.Basic no search 1`] = `
 <div
-  class="rc-select rc-select-single rc-select-show-arrow"
+  class="rc-select rc-select-single"
 >
   <div
     class="rc-select-selector"
@@ -142,16 +142,6 @@ exports[`Select.Basic no search 1`] = `
       1
     </span>
   </div>
-  <span
-    aria-hidden="true"
-    class="rc-select-arrow"
-    style="user-select:none;-webkit-user-select:none"
-    unselectable="on"
-  >
-    <span
-      class="rc-select-arrow-icon"
-    />
-  </span>
 </div>
 `;
 
@@ -159,7 +149,7 @@ exports[`Select.Basic render renders aria-attributes correctly 1`] = `
 <div
   aria-label="some-label"
   aria-labelledby="test-id"
-  class="antd select-test antd-single antd-allow-clear antd-show-arrow antd-show-search"
+  class="antd select-test antd-single antd-allow-clear antd-show-search"
 >
   <div
     class="antd-selector"
@@ -192,16 +182,6 @@ exports[`Select.Basic render renders aria-attributes correctly 1`] = `
   </div>
   <span
     aria-hidden="true"
-    class="antd-arrow"
-    style="user-select:none;-webkit-user-select:none"
-    unselectable="on"
-  >
-    <span
-      class="antd-arrow-icon"
-    />
-  </span>
-  <span
-    aria-hidden="true"
     class="antd-clear"
     style="user-select:none;-webkit-user-select:none"
     unselectable="on"
@@ -217,7 +197,7 @@ exports[`Select.Basic render renders aria-attributes correctly 1`] = `
 
 exports[`Select.Basic render renders correctly 1`] = `
 <div
-  class="antd select-test antd-single antd-allow-clear antd-show-arrow antd-show-search"
+  class="antd select-test antd-single antd-allow-clear antd-show-search"
 >
   <div
     class="antd-selector"
@@ -248,16 +228,6 @@ exports[`Select.Basic render renders correctly 1`] = `
   </div>
   <span
     aria-hidden="true"
-    class="antd-arrow"
-    style="user-select:none;-webkit-user-select:none"
-    unselectable="on"
-  >
-    <span
-      class="antd-arrow-icon"
-    />
-  </span>
-  <span
-    aria-hidden="true"
     class="antd-clear"
     style="user-select:none;-webkit-user-select:none"
     unselectable="on"
@@ -273,7 +243,7 @@ exports[`Select.Basic render renders correctly 1`] = `
 
 exports[`Select.Basic render renders data-attributes correctly 1`] = `
 <div
-  class="antd select-test antd-single antd-allow-clear antd-show-arrow antd-show-search"
+  class="antd select-test antd-single antd-allow-clear antd-show-search"
   data-id="12345"
   data-test="test-id"
 >
@@ -306,16 +276,6 @@ exports[`Select.Basic render renders data-attributes correctly 1`] = `
   </div>
   <span
     aria-hidden="true"
-    class="antd-arrow"
-    style="user-select:none;-webkit-user-select:none"
-    unselectable="on"
-  >
-    <span
-      class="antd-arrow-icon"
-    />
-  </span>
-  <span
-    aria-hidden="true"
     class="antd-clear"
     style="user-select:none;-webkit-user-select:none"
     unselectable="on"
@@ -331,7 +291,7 @@ exports[`Select.Basic render renders data-attributes correctly 1`] = `
 
 exports[`Select.Basic render renders disabled select correctly 1`] = `
 <div
-  class="antd select-test antd-single antd-allow-clear antd-show-arrow antd-disabled antd-show-search"
+  class="antd select-test antd-single antd-allow-clear antd-disabled antd-show-search"
 >
   <div
     class="antd-selector"
@@ -361,16 +321,6 @@ exports[`Select.Basic render renders disabled select correctly 1`] = `
       2
     </span>
   </div>
-  <span
-    aria-hidden="true"
-    class="antd-arrow"
-    style="user-select:none;-webkit-user-select:none"
-    unselectable="on"
-  >
-    <span
-      class="antd-arrow-icon"
-    />
-  </span>
 </div>
 `;
 
@@ -378,7 +328,7 @@ exports[`Select.Basic render renders dropdown correctly 1`] = `null`;
 
 exports[`Select.Basic render renders role prop correctly 1`] = `
 <div
-  class="antd select-test antd-single antd-allow-clear antd-show-arrow antd-show-search"
+  class="antd select-test antd-single antd-allow-clear antd-show-search"
   role="button"
 >
   <div
@@ -410,16 +360,6 @@ exports[`Select.Basic render renders role prop correctly 1`] = `
   </div>
   <span
     aria-hidden="true"
-    class="antd-arrow"
-    style="user-select:none;-webkit-user-select:none"
-    unselectable="on"
-  >
-    <span
-      class="antd-arrow-icon"
-    />
-  </span>
-  <span
-    aria-hidden="true"
     class="antd-clear"
     style="user-select:none;-webkit-user-select:none"
     unselectable="on"
@@ -430,6 +370,147 @@ exports[`Select.Basic render renders role prop correctly 1`] = `
       ×
     </span>
   </span>
+</div>
+`;
+
+exports[`Select.Basic render should support fieldName 1`] = `
+<div
+  class="rc-virtual-list"
+  style="position: relative;"
+>
+  <div
+    class="rc-virtual-list-holder"
+    style="max-height: 200px; overflow-y: auto;"
+  >
+    <div>
+      <div
+        class="rc-virtual-list-holder-inner"
+        style="display: flex; flex-direction: column;"
+      >
+        <div
+          class="rc-select-item rc-select-item-group"
+          title="groupLabel"
+        >
+          groupLabel
+        </div>
+        <div
+          aria-selected="false"
+          class="rc-select-item rc-select-item-option rc-select-item-option-grouped rc-select-item-option-active"
+          title="label"
+        >
+          <div
+            class="rc-select-item-option-content"
+          >
+            label
+          </div>
+          <span
+            aria-hidden="true"
+            class="rc-select-item-option-state"
+            style="user-select: none;"
+            unselectable="on"
+          >
+            <span
+              class="rc-select-item-option-state-icon"
+            />
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Select.Basic render should support fieldName 2`] = `
+<div
+  class="rc-virtual-list"
+  style="position: relative;"
+>
+  <div
+    class="rc-virtual-list-holder"
+    style="max-height: 200px; overflow-y: auto;"
+  >
+    <div>
+      <div
+        class="rc-virtual-list-holder-inner"
+        style="display: flex; flex-direction: column;"
+      >
+        <div
+          class="rc-select-item rc-select-item-group"
+          title="groupLabel"
+        >
+          groupLabel
+        </div>
+        <div
+          aria-selected="false"
+          class="rc-select-item rc-select-item-option rc-select-item-option-grouped rc-select-item-option-active"
+          title="label"
+        >
+          <div
+            class="rc-select-item-option-content"
+          >
+            label
+          </div>
+          <span
+            aria-hidden="true"
+            class="rc-select-item-option-state"
+            style="user-select: none;"
+            unselectable="on"
+          >
+            <span
+              class="rc-select-item-option-state-icon"
+            />
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Select.Basic render should support fieldName 3`] = `
+<div
+  class="rc-virtual-list"
+  style="position: relative;"
+>
+  <div
+    class="rc-virtual-list-holder"
+    style="max-height: 200px; overflow-y: auto;"
+  >
+    <div>
+      <div
+        class="rc-virtual-list-holder-inner"
+        style="display: flex; flex-direction: column;"
+      >
+        <div
+          class="rc-select-item rc-select-item-group"
+          title="groupLabel"
+        >
+          groupLabel
+        </div>
+        <div
+          aria-selected="false"
+          class="rc-select-item rc-select-item-option rc-select-item-option-grouped rc-select-item-option-active"
+          title="label"
+        >
+          <div
+            class="rc-select-item-option-content"
+          >
+            label
+          </div>
+          <span
+            aria-hidden="true"
+            class="rc-select-item-option-state"
+            style="user-select: none;"
+            unselectable="on"
+          >
+            <span
+              class="rc-select-item-option-state-icon"
+            />
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 

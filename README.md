@@ -7,8 +7,9 @@ React Select
 [![NPM version][npm-image]][npm-url]
 [![npm download][download-image]][download-url]
 [![build status][github-actions-image]][github-actions-url]
-[![Test coverage][codecov-image]][codecov-url]
+[![Codecov][codecov-image]][codecov-url]
 [![bundle size][bundlephobia-image]][bundlephobia-url]
+[![dumi][dumi-image]][dumi-url]
 
 [npm-image]: http://img.shields.io/npm/v/rc-select.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/rc-select
@@ -26,6 +27,8 @@ React Select
 [download-url]: https://npmjs.org/package/rc-select
 [bundlephobia-url]: https://bundlephobia.com/package/rc-select
 [bundlephobia-image]: https://badgen.net/bundlephobia/minzip/rc-select
+[dumi-url]: https://github.com/umijs/dumi
+[dumi-image]: https://img.shields.io/badge/docs%20by-dumi-blue?style=flat-square
 
 ## Screenshots
 
@@ -75,16 +78,15 @@ export default () => (
 | choiceTransitionName | css animation name for selected items at multiple mode | String | '' |
 | dropdownMatchSelectWidth | whether dropdown's width is same with select | boolean | true |
 | dropdownClassName | additional className applied to dropdown | String | - |
-| dropdownStyle | additional style applied to dropdown | Object | {} |
-| dropdownAlign | additional align applied to dropdown | Object | {} |
-| dropdownMenuStyle | additional style applied to dropdown menu | Object | {} |
+| dropdownStyle | additional style applied to dropdown | React.CSSProperties | {} |
+| dropdownAlign | additional align applied to dropdown | [AlignType](https://github.com/react-component/trigger/blob/728d7e92394aa4b3214650f743fc47e1382dfa68/src/interface.ts#L25-L80) | {} |
+| dropdownMenuStyle | additional style applied to dropdown menu | Object | React.CSSProperties |
 | notFoundContent | specify content to show when no result matches. | ReactNode | 'Not Found' |
 | tokenSeparators | separator used to tokenize on tag/multiple mode | string[]? |  |
 | open | control select open | boolean |  |
 | defaultOpen | control select default open | boolean |  |
 | placeholder | select placeholder | React Node |  |
 | showSearch | whether show search input in single mode | boolean | true |
-| showArrow | whether show arrow | boolean | true (single mode), false (multiple mode) |
 | allowClear | whether allowClear | boolean | { clearIcon?: ReactNode } | false |
 | tags | when tagging is enabled the user can select from pre-existing options or create a new tag by picking the first choice, which is what the user has typed into the search box so far. | boolean | false |
 | tagRender | render custom tags. | (props: CustomTagProps) => ReactNode | - |
@@ -116,7 +118,7 @@ export default () => (
 | showAction | actions trigger the dropdown to show | String[]? | - |
 | autoFocus | focus select after mount | boolean | - |
 | autoClearSearchValue | auto clear search input value when multiple select is selected/deselected | boolean | true |
-| inputIcon | specify the select arrow icon | ReactNode | - |
+| suffixIcon | specify the select arrow icon | ReactNode | - |
 | clearIcon | specify the clear icon | ReactNode | - |
 | removeIcon | specify the remove icon | ReactNode | - |
 | menuItemSelectedIcon | specify the item selected icon | ReactNode \| (props: MenuItemProps) => ReactNode | - |

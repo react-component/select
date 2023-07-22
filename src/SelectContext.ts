@@ -14,6 +14,7 @@ export interface SelectContextProps {
   rawValues: Set<RawValueType>;
   fieldNames?: FieldNames;
   virtual?: boolean;
+  direction?: "ltr" | "rtl";
   listHeight?: number;
   listItemHeight?: number;
   childrenAsData?: boolean;
