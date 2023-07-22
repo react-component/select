@@ -19,6 +19,7 @@ import TransBtn from './TransBtn';
 import { getSeparatedContent } from './utils/valueUtil';
 import type { DisplayInfoType, DisplayValueType, Mode, Placement, RenderDOMFunc, RenderNode, RawValueType } from './interface';
 import { useAllowClear } from './hooks/useAllowClear';
+import { warning } from 'rc-util';
 
 export type { DisplayInfoType, DisplayValueType, Mode, Placement, RenderDOMFunc, RenderNode, RawValueType };
 
@@ -685,6 +686,12 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   }
 
   // ============================= Clear ==============================
+  if (process.env.NODE_ENV !== 'production') {
+    warning(
+      !props.clearIcon,
+      '`clearIcon` will be removed in future. Please use `allowClear` instead.',
+    );
+  }
   const onClearMouseDown: React.MouseEventHandler<HTMLSpanElement> = () => {
     onClear?.();
 
@@ -698,6 +705,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   };
 
   const {
+    allowClear: mergedAllowClear,
     clearIcon: clearNode
   } = useAllowClear(
     prefixCls,
@@ -823,7 +831,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
         )}
         {selectorNode}
         {arrowNode}
-        {clearNode}
+        {mergedAllowClear && clearNode}
       </div>
     );
   }

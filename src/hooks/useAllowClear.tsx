@@ -1,5 +1,5 @@
-import TransBtn from '@/TransBtn';
-import type { DisplayValueType, Mode } from '@/interface';
+import TransBtn from '../TransBtn';
+import type { DisplayValueType, Mode } from '../interface';
 import type { ReactNode } from 'react';
 import React from 'react';
 
@@ -20,19 +20,18 @@ export function useAllowClear(
         if (!!clearIcon) return clearIcon;
     }, [allowClear, clearIcon]);
 
-    const mergedSampleAllowClear = allowClear !== undefined ? !!allowClear : !!clearIcon;
 
     const mergedAllowClear = React.useMemo(() => {
         if (
             !disabled &&
-            mergedSampleAllowClear &&
+            !!allowClear &&
             (displayValues.length || mergedSearchValue) &&
             !(mode === 'combobox' && mergedSearchValue === '')
         ) {
             return true;
         }
         return false;
-    }, [mergedSampleAllowClear, disabled, displayValues.length, mergedSearchValue, mode]);
+    }, [allowClear, disabled, displayValues.length, mergedSearchValue, mode]);
 
     return {
         allowClear: mergedAllowClear,
