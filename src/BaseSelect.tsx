@@ -708,10 +708,11 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   } = useAllowClear(
     prefixCls,
     onClearMouseDown,
+    displayValues,
     allowClear,
     clearIcon,
     disabled,
-    displayValues,
+    
     mergedSearchValue,
     mode,
   );

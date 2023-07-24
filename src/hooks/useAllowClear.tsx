@@ -6,10 +6,10 @@ import React from 'react';
 export function useAllowClear(
     prefixCls,
     onClearMouseDown,
+    displayValues: DisplayValueType[],
     allowClear?: boolean | { clearIcon?: ReactNode },
     clearIcon?: ReactNode,
     disabled = false,
-    displayValues: DisplayValueType[] = [],
     mergedSearchValue?: string,
     mode?: Mode
 ) {
