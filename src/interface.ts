@@ -1,6 +1,6 @@
 import type * as React from 'react';
-import type { RawValueType } from './BaseSelect';
 
+export type RawValueType = string | number;
 export interface FlattenOptionData<OptionType> {
   label?: React.ReactNode;
   data: OptionType;
@@ -9,3 +9,22 @@ export interface FlattenOptionData<OptionType> {
   groupOption?: boolean;
   group?: boolean;
 }
+
+export interface DisplayValueType {
+  key?: React.Key;
+  value?: RawValueType;
+  label?: React.ReactNode;
+  title?: string | number;
+  disabled?: boolean;
+}
+
+export type RenderNode = React.ReactNode | ((props: any) => React.ReactNode);
+
+export type RenderDOMFunc = (props: any) => HTMLElement;
+
+export type Mode = 'multiple' | 'tags' | 'combobox';
+
+export type Placement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
+
+export type DisplayInfoType = 'add' | 'remove' | 'clear';
+

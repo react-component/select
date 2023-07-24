@@ -266,6 +266,46 @@ describe('Select.Basic', () => {
       </Select>,
     );
     expect(wrapper2.find('.rc-select-clear-icon').length).toBeFalsy();
+
+    const wrapper3 = mount(
+      <Select allowClear={{ clearIcon: <div className='custom-clear-icon'>x</div> }} value="1">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    expect(wrapper3.find('.custom-clear-icon').length).toBeTruthy();
+    expect(wrapper3.find('.custom-clear-icon').text()).toBe('x');
+
+    const wrapper4 = mount(
+      <Select allowClear={{ clearIcon: <div className='custom-clear-icon'>x</div> }}>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    expect(wrapper4.find('.custom-clear-icon').length).toBeFalsy();
+
+
+    resetWarned();
+    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const wrapper5 = mount(
+      <Select allowClear clearIcon={<div className='custom-clear-icon'>x</div>} value="1">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    expect(wrapper5.find('.custom-clear-icon').length).toBeTruthy();
+    expect(wrapper5.find('.custom-clear-icon').text()).toBe('x');
+    expect(errSpy).toHaveBeenCalledWith(
+      'Warning: `clearIcon` will be removed in future. Please use `allowClear` instead.'
+    );
+
+    const wrapper6 = mount(
+      <Select allowClear clearIcon={<div className='custom-clear-icon'>x</div>}>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    expect(wrapper6.find('.custom-clear-icon').length).toBeFalsy();
   });
 
   it('should direction rtl', () => {
