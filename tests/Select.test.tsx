@@ -297,7 +297,7 @@ describe('Select.Basic', () => {
     expect(wrapper5.find('.custom-clear-icon').text()).toBe('x');
     expect(errSpy).toHaveBeenCalledWith(
       'Warning: `clearIcon` will be removed in future. Please use `allowClear` instead.'
-    )
+    );
 
     const wrapper6 = mount(
       <Select allowClear clearIcon={<div className='custom-clear-icon'>x</div>}>

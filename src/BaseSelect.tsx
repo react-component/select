@@ -714,7 +714,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     displayValues,
     mergedSearchValue,
     mode,
-  )
+  );
 
 
   // =========================== OptionList ===========================
