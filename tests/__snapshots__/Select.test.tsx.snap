@@ -119,7 +119,6 @@ exports[`Select.Basic no search 1`] = `
       class="rc-select-selection-search"
     >
       <input
-        aria-activedescendant="undefined_list_0"
         aria-autocomplete="list"
         aria-controls="undefined_list"
         aria-expanded="false"
@@ -158,7 +157,6 @@ exports[`Select.Basic render renders aria-attributes correctly 1`] = `
       class="antd-selection-search"
     >
       <input
-        aria-activedescendant="undefined_list_0"
         aria-autocomplete="list"
         aria-controls="undefined_list"
         aria-expanded="false"
@@ -206,7 +204,6 @@ exports[`Select.Basic render renders correctly 1`] = `
       class="antd-selection-search"
     >
       <input
-        aria-activedescendant="undefined_list_0"
         aria-autocomplete="list"
         aria-controls="undefined_list"
         aria-expanded="false"
@@ -254,7 +251,6 @@ exports[`Select.Basic render renders data-attributes correctly 1`] = `
       class="antd-selection-search"
     >
       <input
-        aria-activedescendant="undefined_list_0"
         aria-autocomplete="list"
         aria-controls="undefined_list"
         aria-expanded="false"
@@ -300,7 +296,6 @@ exports[`Select.Basic render renders disabled select correctly 1`] = `
       class="antd-selection-search"
     >
       <input
-        aria-activedescendant="undefined_list_0"
         aria-autocomplete="list"
         aria-controls="undefined_list"
         aria-expanded="false"
@@ -338,7 +333,6 @@ exports[`Select.Basic render renders role prop correctly 1`] = `
       class="antd-selection-search"
     >
       <input
-        aria-activedescendant="undefined_list_0"
         aria-autocomplete="list"
         aria-controls="undefined_list"
         aria-expanded="false"

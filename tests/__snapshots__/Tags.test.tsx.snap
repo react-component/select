@@ -248,7 +248,6 @@ exports[`Select.Tags render not display maxTagPlaceholder if maxTagCount not rea
           style="width: 0px;"
         >
           <input
-            aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
             aria-autocomplete="list"
             aria-controls="rc_select_TEST_OR_SSR_list"
             aria-expanded="false"
@@ -366,7 +365,6 @@ exports[`Select.Tags render truncates tags by maxTagCount and show maxTagPlaceho
           style="width: 0px;"
         >
           <input
-            aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
             aria-autocomplete="list"
             aria-controls="rc_select_TEST_OR_SSR_list"
             aria-expanded="false"
@@ -481,7 +479,6 @@ exports[`Select.Tags render truncates tags by maxTagCount and show maxTagPlaceho
           style="width: 0px;"
         >
           <input
-            aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
             aria-autocomplete="list"
             aria-controls="rc_select_TEST_OR_SSR_list"
             aria-expanded="false"
@@ -580,7 +577,6 @@ exports[`Select.Tags render truncates values by maxTagTextLength 1`] = `
           style="width: 0px;"
         >
           <input
-            aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
             aria-autocomplete="list"
             aria-controls="rc_select_TEST_OR_SSR_list"
             aria-expanded="false"

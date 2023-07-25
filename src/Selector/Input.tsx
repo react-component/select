@@ -95,7 +95,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     'aria-owns': `${id}_list`,
     'aria-autocomplete': 'list',
     'aria-controls': `${id}_list`,
-    'aria-activedescendant': activeDescendantId,
+    'aria-activedescendant': open ? activeDescendantId : undefined,
     ...attrs,
     value: editable ? value : '',
     maxLength,
