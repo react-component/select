@@ -17,6 +17,11 @@ export function hasValue(value) {
   return value !== undefined && value !== null;
 }
 
+export function isComboNoValue(value) {
+  if(value === 0) return false;
+  return !value;
+}
+
 function isTitleType(title: any) {
   return ['string', 'number'].includes(typeof title);
 }
