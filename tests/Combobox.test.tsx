@@ -603,9 +603,7 @@ describe('Select.Combobox', () => {
 
   // https://github.com/ant-design/ant-design/issues/43936
   it('combobox mode not show 0 value', () => {
-    const wrapper = mount(
-      <Select mode="combobox" value={0} />
-    );
-    expect(wrapper.find('input').props().value).toBe("0");
-  })
+    const wrapper = mount(<Select mode="combobox" value={0} />);
+    expect(wrapper.find('input').props().value).toBe('0');
+  });
 });

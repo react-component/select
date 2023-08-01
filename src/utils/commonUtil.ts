@@ -18,7 +18,7 @@ export function hasValue(value) {
 }
 
 export function isComboNoValue(value) {
-  if(value === 0) return false;
+  if (value === 0) return false;
   return !value;
 }
 
