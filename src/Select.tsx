@@ -308,7 +308,7 @@ const Select = React.forwardRef(
       const values = convert2LabelValues(internalValue);
 
       // combobox no need save value when it's no value
-      if (mode === 'combobox' && !values[0]?.value) {
+      if (mode === 'combobox' && !hasValue(values[0]?.value)) {
         return [];
       }
 
