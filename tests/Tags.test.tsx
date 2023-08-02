@@ -483,4 +483,26 @@ describe('Select.Tags', () => {
 
     expect(preventDefault).toHaveBeenCalled();
   });
+
+  // https://github.com/ant-design/ant-design/issues/43954
+  it('when insert a same input is one of options value, should not create a tag option', () => {
+    const errSpy = jest.spyOn(console, 'error');
+
+    const wrapper = mount(
+      <Select
+        mode="tags"
+        options={[
+          { label: 'US-美国', value: 'US' },
+          { label: 'CN-中国', value: 'CN' },
+        ]}
+        optionFilterProp="label"
+      />,
+    );
+    toggleOpen(wrapper);
+    expect(wrapper.find('.rc-select-item-option').length).toBe(2);
+    wrapper.find('input').simulate('change', { target: { value: 'US' } });
+
+    expect(wrapper.find('.rc-select-item-option').length).toBe(1);
+    expect(errSpy).not.toHaveBeenCalled();
+  });
 });

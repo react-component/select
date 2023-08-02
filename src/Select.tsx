@@ -403,10 +403,20 @@ const Select = React.forwardRef(
       ) {
         return filteredOptions;
       }
-
+      // ignore when search value equal select input value
+      if (filteredOptions.some((item) => item[mergedFieldNames.value] === mergedSearchValue)) {
+        return filteredOptions;
+      }
       // Fill search value as option
       return [createTagOption(mergedSearchValue), ...filteredOptions];
-    }, [createTagOption, optionFilterProp, mode, filteredOptions, mergedSearchValue]);
+    }, [
+      createTagOption,
+      optionFilterProp,
+      mode,
+      filteredOptions,
+      mergedSearchValue,
+      mergedFieldNames,
+    ]);
 
     const orderedFilteredOptions = React.useMemo(() => {
       if (!filterSort) {
