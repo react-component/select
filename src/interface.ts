@@ -18,7 +18,7 @@ export interface DisplayValueType {
   disabled?: boolean;
 }
 
-export type RenderNode = React.ReactNode | ((props: any) => React.ReactNode);
+export type RenderNode = React.ReactNode;
 
 export type RenderDOMFunc = (props: any) => HTMLElement;
 
