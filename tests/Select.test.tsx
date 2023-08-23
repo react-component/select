@@ -1359,11 +1359,11 @@ describe('Select.Basic', () => {
     let domHook;
 
     beforeAll(() => {
-      domHook = spyElementPrototypes(HTMLElement, {
-        getBoundingClientRect: () => ({
-          width: 1000
-        }),
-      });
+      window.getComputedStyle = () => {
+        return {
+          width: '1000px',
+        } as CSSStyleDeclaration;
+      };
     });
 
     afterAll(() => {
