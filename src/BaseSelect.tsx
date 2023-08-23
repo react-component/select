@@ -7,20 +7,36 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import { useComposeRef } from 'rc-util/lib/ref';
 import type { ScrollConfig, ScrollTo } from 'rc-virtual-list/lib/List';
 import * as React from 'react';
+import { useAllowClear } from './hooks/useAllowClear';
 import { BaseSelectContext } from './hooks/useBaseProps';
 import useDelayReset from './hooks/useDelayReset';
 import useLock from './hooks/useLock';
 import useSelectTriggerControl from './hooks/useSelectTriggerControl';
+import type {
+  DisplayInfoType,
+  DisplayValueType,
+  Mode,
+  Placement,
+  RawValueType,
+  RenderDOMFunc,
+  RenderNode,
+} from './interface';
 import type { RefSelectorProps } from './Selector';
 import Selector from './Selector';
 import type { RefTriggerProps } from './SelectTrigger';
 import SelectTrigger from './SelectTrigger';
 import TransBtn from './TransBtn';
 import { getSeparatedContent } from './utils/valueUtil';
-import type { DisplayInfoType, DisplayValueType, Mode, Placement, RenderDOMFunc, RenderNode, RawValueType } from './interface';
-import { useAllowClear } from './hooks/useAllowClear';
 
-export type { DisplayInfoType, DisplayValueType, Mode, Placement, RenderDOMFunc, RenderNode, RawValueType };
+export type {
+  DisplayInfoType,
+  DisplayValueType,
+  Mode,
+  Placement,
+  RenderDOMFunc,
+  RenderNode,
+  RawValueType,
+};
 
 const DEFAULT_OMIT_PROPS = [
   'value',
@@ -87,10 +103,10 @@ export interface BaseSelectPrivateProps {
     searchValue: string,
     info: {
       source:
-      | 'typing' //User typing
-      | 'effect' // Code logic trigger
-      | 'submit' // tag mode only
-      | 'blur'; // Not trigger event
+        | 'typing' //User typing
+        | 'effect' // Code logic trigger
+        | 'submit' // tag mode only
+        | 'blur'; // Not trigger event
     },
   ) => void;
   /** Trigger when search text match the `tokenSeparators`. Will provide split content */
@@ -153,8 +169,8 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   // >>> Icons
   allowClear?: boolean | { clearIcon?: RenderNode };
   suffixIcon?: RenderNode;
-  /** 
-   * Clear all icon 
+  /**
+   * Clear all icon
    * @deprecated Please use `allowClear` instead
    **/
   clearIcon?: RenderNode;
@@ -607,23 +623,11 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   };
 
   // ============================ Dropdown ============================
-  const [containerWidth, setContainerWidth] = React.useState(null);
-
   const [, forceUpdate] = React.useState({});
   // We need force update here since popup dom is render async
   function onPopupMouseEnter() {
     forceUpdate({});
   }
-
-  useLayoutEffect(() => {
-    if (triggerOpen) {
-      // Guaranteed width accuracy 
-      const newWidth = Math.ceil(containerRef.current?.getBoundingClientRect().width);
-      if (containerWidth !== newWidth && !Number.isNaN(newWidth)) {
-        setContainerWidth(newWidth);
-      }
-    }
-  }, [triggerOpen]);
 
   // Used for raw custom input trigger
   let onTriggerVisibleChange: null | ((newOpen: boolean) => void);
@@ -695,21 +699,17 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     onInternalSearch('', false, false);
   };
 
-  const {
-    allowClear: mergedAllowClear,
-    clearIcon: clearNode
-  } = useAllowClear(
+  const { allowClear: mergedAllowClear, clearIcon: clearNode } = useAllowClear(
     prefixCls,
     onClearMouseDown,
     displayValues,
     allowClear,
     clearIcon,
     disabled,
-    
+
     mergedSearchValue,
     mode,
   );
-
 
   // =========================== OptionList ===========================
   const optionList = <OptionList ref={listRef} />;
@@ -736,7 +736,6 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       prefixCls={prefixCls}
       visible={triggerOpen}
       popupElement={optionList}
-      containerWidth={containerWidth}
       animation={animation}
       transitionName={transitionName}
       dropdownStyle={dropdownStyle}

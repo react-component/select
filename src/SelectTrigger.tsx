@@ -62,7 +62,6 @@ export interface SelectTriggerProps {
 
   animation?: string;
   transitionName?: string;
-  containerWidth: number;
   placement?: Placement;
   builtinPlacements?: BuildInPlacements;
   dropdownStyle: React.CSSProperties;
@@ -90,7 +89,6 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     visible,
     children,
     popupElement,
-    containerWidth,
     animation,
     transitionName,
     dropdownStyle,
@@ -121,8 +119,30 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     [builtinPlacements, dropdownMatchSelectWidth],
   );
 
+  console.log('>>>>>', dropdownMatchSelectWidth);
+
   // ===================== Motion ======================
   const mergedTransitionName = animation ? `${dropdownPrefixCls}-${animation}` : transitionName;
+
+  // =================== Popup Width ===================
+  const isNumberPopupWidth = typeof dropdownMatchSelectWidth === 'number';
+
+  const stretch = React.useMemo(() => {
+    if (isNumberPopupWidth) {
+      return null;
+    }
+
+    return dropdownMatchSelectWidth === false ? 'minWidth' : 'width';
+  }, [dropdownMatchSelectWidth, isNumberPopupWidth]);
+
+  let popupStyle = dropdownStyle;
+
+  if (isNumberPopupWidth) {
+    popupStyle = {
+      ...popupStyle,
+      width: dropdownMatchSelectWidth,
+    };
+  }
 
   // ======================= Ref =======================
   const popupRef = React.useRef<HTMLDivElement>(null);
@@ -130,17 +150,6 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
   React.useImperativeHandle(ref, () => ({
     getPopupElement: () => popupRef.current,
   }));
-
-  const popupStyle: React.CSSProperties = {
-    minWidth: containerWidth,
-    ...dropdownStyle,
-  };
-
-  if (typeof dropdownMatchSelectWidth === 'number') {
-    popupStyle.width = dropdownMatchSelectWidth;
-  } else if (dropdownMatchSelectWidth) {
-    popupStyle.width = containerWidth;
-  }
 
   return (
     <Trigger
@@ -156,6 +165,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
           {popupNode}
         </div>
       }
+      stretch={stretch}
       popupAlign={dropdownAlign}
       popupVisible={visible}
       getPopupContainer={getPopupContainer}
