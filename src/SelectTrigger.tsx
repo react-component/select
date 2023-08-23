@@ -119,8 +119,6 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     [builtinPlacements, dropdownMatchSelectWidth],
   );
 
-  console.log('>>>>>', dropdownMatchSelectWidth);
-
   // ===================== Motion ======================
   const mergedTransitionName = animation ? `${dropdownPrefixCls}-${animation}` : transitionName;
 
