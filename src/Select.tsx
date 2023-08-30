@@ -143,6 +143,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   direction?: 'ltr' | 'rtl';
   listHeight?: number;
   listItemHeight?: number;
+  tabSelection?: boolean;
 
   // >>> Icon
   menuItemSelectedIcon?: RenderNode;
@@ -191,6 +192,7 @@ const Select = React.forwardRef(
       direction,
       listHeight = 200,
       listItemHeight = 20,
+      tabSelection,
 
       // Value
       value,
@@ -605,6 +607,7 @@ const Select = React.forwardRef(
         listHeight,
         listItemHeight,
         childrenAsData,
+        tabSelection
       };
     }, [
       parsedOptions,
@@ -620,6 +623,7 @@ const Select = React.forwardRef(
       listHeight,
       listItemHeight,
       childrenAsData,
+      tabSelection
     ]);
 
     // ========================== Warning ===========================

@@ -56,6 +56,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     direction,
     listHeight,
     listItemHeight,
+    tabSelection,
   } = React.useContext(SelectContext);
 
   const itemPrefixCls = `${prefixCls}-item`;
@@ -187,6 +188,31 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
             const nextActiveIndex = getEnabledActiveIndex(activeIndex + offset, offset);
             scrollIntoView(nextActiveIndex);
             setActive(nextActiveIndex, true);
+          }
+
+          break;
+        }
+
+        // >>> Select on Tab
+        case KeyCode.TAB: {
+          // preventing tab selection based in props value
+          if (!tabSelection) {
+            if (open) {
+              return event.preventDefault();
+            }
+
+            break;
+          }
+          // value
+          const item = memoFlattenOptions[activeIndex];
+          if (item && !item.data.disabled) {
+            onSelectValue(item.data.value);
+          } else {
+            onSelectValue(undefined);
+          }
+
+          if (open) {
+            event.preventDefault();
           }
 
           break;

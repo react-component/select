@@ -188,6 +188,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   placement?: Placement;
   builtinPlacements?: BuildInPlacements;
   getPopupContainer?: RenderDOMFunc;
+  tabSelection?: boolean;
 
   // >>> Focus
   showAction?: ('focus' | 'click')[];
@@ -271,6 +272,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     placement,
     builtinPlacements,
     getPopupContainer,
+    tabSelection,
 
     // Focus
     showAction = [],
@@ -712,7 +714,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   );
 
   // =========================== OptionList ===========================
-  const optionList = <OptionList ref={listRef} />;
+  const optionList = <OptionList ref={listRef} tabSelection={tabSelection} />;
 
   // ============================= Select =============================
   const mergedClassName = classNames(prefixCls, className, {

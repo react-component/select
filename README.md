@@ -126,6 +126,7 @@ export default () => (
 | loading | show loading icon in arrow | boolean | false |
 | virtual | Disable virtual scroll | boolean | true |
 | direction | direction of dropdown | 'ltr' \| 'rtl' | 'ltr' |
+| tabSelection | to enable selection via tab | boolean | false |
 
 ### Methods
 
