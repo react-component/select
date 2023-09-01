@@ -91,7 +91,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
 
     role: 'combobox',
     'aria-label': 'Search',
-    'aria-expanded': open,
+    'aria-expanded': open || false,
     'aria-haspopup': 'listbox',
     'aria-owns': `${id}_list`,
     'aria-autocomplete': 'list',
