@@ -363,7 +363,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     defaultValue: defaultOpen,
     value: open,
   });
-
+  
   let mergedOpen = rendered ? innerOpen : false;
 
   // Not trigger `open` in `combobox` when `notFoundContent` is empty
@@ -563,7 +563,6 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   const onContainerBlur: React.FocusEventHandler<HTMLElement> = (...args) => {
     setMockFocused(false, () => {
       focusRef.current = false;
-      onToggleOpen(false);
     });
 
     if (disabled) {
@@ -630,12 +629,11 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   }
 
   // Used for raw custom input trigger
-  let onTriggerVisibleChange: null | ((newOpen: boolean) => void);
-  if (customizeRawInputElement) {
-    onTriggerVisibleChange = (newOpen: boolean) => {
+
+   const onTriggerVisibleChange = (newOpen: boolean) => {
       onToggleOpen(newOpen);
     };
-  }
+  
 
   // Close when click on non-select element
   useSelectTriggerControl(
