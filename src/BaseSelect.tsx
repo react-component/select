@@ -316,6 +316,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   const triggerRef = React.useRef<RefTriggerProps>(null);
   const selectorRef = React.useRef<RefSelectorProps>(null);
   const listRef = React.useRef<RefOptionListProps>(null);
+  const blurRef = React.useRef<boolean>(false);
 
   /** Used for component focused management */
   const [mockFocused, setMockFocused, cancelSetMockFocused] = useDelayReset();
@@ -451,7 +452,8 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       setInnerOpen(false);
     }
 
-    if (disabled) {
+    // After onBlur is triggered, the focused does not need to be reset
+    if (disabled && !blurRef.current) {
       setMockFocused(false);
     }
   }, [disabled]);
@@ -561,8 +563,11 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   };
 
   const onContainerBlur: React.FocusEventHandler<HTMLElement> = (...args) => {
+    blurRef.current = true;
+
     setMockFocused(false, () => {
       focusRef.current = false;
+      blurRef.current = false;
       onToggleOpen(false);
     });
 
