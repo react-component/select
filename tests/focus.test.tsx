@@ -35,7 +35,7 @@ describe('Select.Focus', () => {
   it('after onBlur is triggered the focused does not need to be reset', () => {
     jest.useFakeTimers();
 
-    const onFocus = jest.fn()
+    const onFocus = jest.fn();
 
     const Demo: React.FC = () => {
       const [disabled, setDisabled] = useState(false);
