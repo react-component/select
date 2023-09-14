@@ -35,11 +35,13 @@ describe('Select.Focus', () => {
   it('after onBlur is triggered the focused does not need to be reset', () => {
     jest.useFakeTimers();
 
+    const onFocus = jest.fn()
+
     const Demo: React.FC = () => {
       const [disabled, setDisabled] = useState(false);
       return (
         <>
-          <Select disabled={disabled} onBlur={() => setDisabled(true)} />
+          <Select disabled={disabled} onFocus={onFocus} onBlur={() => setDisabled(true)} />
           <button onClick={() => setDisabled(false)} />
         </>
       );
@@ -54,13 +56,18 @@ describe('Select.Focus', () => {
     fireEvent.blur(container.querySelector('input'));
     jest.runAllTimers();
 
+    // reset focused
+    onFocus.mockReset();
+
+    expect(container.querySelector('.rc-select-disabled')).toBeTruthy();
+
     // reset disabled
     fireEvent.click(container.querySelector('button'));
-
     fireEvent.focus(container.querySelector('input'));
     jest.runAllTimers();
 
-    expect(container.querySelector('.rc-select-focused')).toBeTruthy();
+    expect(onFocus).toHaveBeenCalled();
+
     jest.useRealTimers();
   });
 
