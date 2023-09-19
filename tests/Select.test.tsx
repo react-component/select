@@ -1489,6 +1489,7 @@ describe('Select.Basic', () => {
 
   it('dropdown selection item customize icon', () => {
     const menuItemSelectedIcon = jest.fn();
+
     mount(
       <Select
         value="1"
@@ -1497,8 +1498,25 @@ describe('Select.Basic', () => {
         menuItemSelectedIcon={menuItemSelectedIcon}
       />,
     );
+    expect(menuItemSelectedIcon).toHaveBeenCalledWith({
+      value: '1',
+      disabled: undefined,
+      isSelected: true,
+    });
 
-    expect(menuItemSelectedIcon).toHaveBeenCalledWith({ isSelected: true });
+    mount(
+      <Select
+        value="1"
+        options={[{ value: '2', disabled: true } as any]}
+        open
+        menuItemSelectedIcon={menuItemSelectedIcon}
+      />,
+    );
+    expect(menuItemSelectedIcon).toHaveBeenCalledWith({
+      value: '2',
+      disabled: true,
+      isSelected: false,
+    });
   });
 
   it('keyDown & KeyUp event', () => {

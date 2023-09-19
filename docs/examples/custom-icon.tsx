@@ -22,10 +22,11 @@ const clearPath =
   ' 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h618c35.3 0 64-' +
   '28.7 64-64V306c0-35.3-28.7-64-64-64z';
 
-const menuItemSelectedIcon = (props) => {
-  const { ...p } = props;
-  return <span style={{ position: 'absolute', right: 0 }}>{p.isSelected ? '🌹' : '☑️'}</span>;
-};
+const menuItemSelectedIcon = (props) => (
+  <span style={{ position: 'absolute', right: 0, opacity: props.disabled ? 0.5 : 1 }}>
+    {props.isSelected ? '🌹' : '☑️'}
+  </span>
+);
 
 const singleItemIcon = (
   <span style={{ position: 'absolute', right: '0px' }} role="img" aria-label="rose">
