@@ -372,7 +372,11 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
                 <TransBtn
                   className={`${itemPrefixCls}-option-state`}
                   customizeIcon={menuItemSelectedIcon}
-                  customizeIconProps={{ isSelected: selected }}
+                  customizeIconProps={{
+                    value,
+                    disabled,
+                    isSelected: selected,
+                  }}
                 >
                   {selected ? '✓' : null}
                 </TransBtn>
