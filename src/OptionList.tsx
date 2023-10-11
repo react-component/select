@@ -146,7 +146,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     }
 
     return () => clearTimeout(timeoutId);
-  }, [open, searchValue, flattenOptions.length]);
+  }, [open, searchValue]);
 
   // ========================== Values ==========================
   const onSelectValue = (value: RawValueType) => {
