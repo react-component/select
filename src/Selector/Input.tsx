@@ -90,7 +90,6 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     className: classNames(`${prefixCls}-selection-search-input`, inputNode?.props?.className),
 
     role: 'combobox',
-    'aria-label': 'Search',
     'aria-expanded': open || false,
     'aria-haspopup': 'listbox',
     'aria-owns': `${id}_list`,
