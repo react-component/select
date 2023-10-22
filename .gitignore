@@ -40,3 +40,7 @@ tsconfig.test.json
 storybook/index.js
 .doc
 .umi
+
+# dumi
+.dumi/tmp
+.dumi/tmp-production
