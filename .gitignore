@@ -41,4 +41,5 @@ storybook/index.js
 .doc
 .umi
 .dumi/tmp
+.dumi/tmp-test
 .dumi/tmp-production
