@@ -18,13 +18,5 @@
         "src/index.ts"
       ]
     },
-  },
-  "include": [
-    ".dumi/**/*",
-    ".dumirc.ts",
-    "./src/**/*.ts",
-    "./src/**/*.tsx",
-    "./docs/**/*.tsx",
-    "./tests/**/*.tsx"
-  ]
+  }
 }
