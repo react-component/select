@@ -346,7 +346,6 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
           if (title !== undefined) {
             optionTitle = title;
           }
-          console.log(memoFlattenOptions, 'memoFlattenOptions');
 
           return (
             <div
