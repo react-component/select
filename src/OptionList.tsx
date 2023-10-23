@@ -56,6 +56,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     direction,
     listHeight,
     listItemHeight,
+    optionRender,
   } = React.useContext(SelectContext);
 
   const itemPrefixCls = `${prefixCls}-item`;
@@ -345,6 +346,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
           if (title !== undefined) {
             optionTitle = title;
           }
+          console.log(memoFlattenOptions, 'memoFlattenOptions');
 
           return (
             <div
@@ -366,7 +368,18 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
               }}
               style={style}
             >
-              <div className={`${optionPrefixCls}-content`}>{content}</div>
+              <div className={`${optionPrefixCls}-content`}>
+                {typeof optionRender === 'function'
+                  ? optionRender({
+                      option: { ...item.data, label: item.label },
+                      index: itemIndex,
+                      options: memoFlattenOptions.map((flattenItem) => ({
+                        ...flattenItem.data,
+                        label: flattenItem.label,
+                      })),
+                    })
+                  : content}
+              </div>
               {React.isValidElement(menuItemSelectedIcon) || selected}
               {iconVisible && (
                 <TransBtn

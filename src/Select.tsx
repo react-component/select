@@ -103,6 +103,12 @@ export type SelectHandler<ValueType, OptionType extends BaseOptionType = Default
   option: OptionType,
 ) => void;
 
+export type OptionRenderParams = {
+  option: DefaultOptionType;
+  index: number;
+  options: DefaultOptionType[];
+};
+
 type ArrayElementType<T> = T extends (infer E)[] ? E : T;
 
 export interface SelectProps<ValueType = any, OptionType extends BaseOptionType = DefaultOptionType>
@@ -138,6 +144,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   optionLabelProp?: string;
   children?: React.ReactNode;
   options?: OptionType[];
+  optionRender?: (params: OptionRenderParams) => React.ReactNode;
   defaultActiveFirstOption?: boolean;
   virtual?: boolean;
   direction?: 'ltr' | 'rtl';
@@ -184,6 +191,7 @@ const Select = React.forwardRef(
       optionFilterProp,
       optionLabelProp,
       options,
+      optionRender,
       children,
       defaultActiveFirstOption,
       menuItemSelectedIcon,
@@ -605,6 +613,7 @@ const Select = React.forwardRef(
         listHeight,
         listItemHeight,
         childrenAsData,
+        optionRender,
       };
     }, [
       parsedOptions,
@@ -620,6 +629,7 @@ const Select = React.forwardRef(
       listHeight,
       listItemHeight,
       childrenAsData,
+      optionRender,
     ]);
 
     // ========================== Warning ===========================
