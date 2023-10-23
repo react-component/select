@@ -36,8 +36,6 @@ src/*.map
 tslint.json
 tsconfig.test.json
 .prettierignore
-.storybook
-storybook/index.js
 .doc
 .umi
 .dumi/tmp
