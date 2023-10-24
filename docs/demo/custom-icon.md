@@ -1,2 +1,8 @@
-## custom-icon
-<code src="../examples/custom-icon.tsx">
+---
+title: custom-icon
+nav:
+  title: Demo
+  path: /demo
+---
+
+<code src="../examples/custom-icon.tsx"></code>
