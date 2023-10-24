@@ -2105,8 +2105,8 @@ describe('Select.Basic', () => {
       <Select
         open
         options={options}
-        optionRender={({ option, index }) => {
-          return `${option.label} - ${index}`
+        optionRender={(option, {index}) => {
+          return `${option.label} - ${index}`;
         }}
       />,
     );

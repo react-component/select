@@ -369,14 +369,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
             >
               <div className={`${optionPrefixCls}-content`}>
                 {typeof optionRender === 'function'
-                  ? optionRender({
-                      option: { ...item.data, label: item.label },
-                      index: itemIndex,
-                      options: memoFlattenOptions.map((flattenItem) => ({
-                        ...flattenItem.data,
-                        label: flattenItem.label,
-                      })),
-                    })
+                  ? optionRender({ ...item.data, label: item.label }, { index: itemIndex })
                   : content}
               </div>
               {React.isValidElement(menuItemSelectedIcon) || selected}

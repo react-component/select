@@ -9,8 +9,8 @@ export default () => {
         { label: 'test1', value: '1' },
         { label: 'test2', value: '2' },
       ]}
-      optionRender={({ option, index }) => {
-        return <div>{`${option.label} - ${index}`}</div>;
+      optionRender={(option, { index }) => {
+        return `${option.label} - ${index}`;
       }}
     />
   );

@@ -103,12 +103,6 @@ export type SelectHandler<ValueType, OptionType extends BaseOptionType = Default
   option: OptionType,
 ) => void;
 
-export type OptionRenderParams = {
-  option: DefaultOptionType;
-  index: number;
-  options: DefaultOptionType[];
-};
-
 type ArrayElementType<T> = T extends (infer E)[] ? E : T;
 
 export interface SelectProps<ValueType = any, OptionType extends BaseOptionType = DefaultOptionType>
@@ -144,7 +138,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   optionLabelProp?: string;
   children?: React.ReactNode;
   options?: OptionType[];
-  optionRender?: (params: OptionRenderParams) => React.ReactNode;
+  optionRender?: (oriOption: OptionType, info: { index: number }) => React.ReactNode;
   defaultActiveFirstOption?: boolean;
   virtual?: boolean;
   direction?: 'ltr' | 'rtl';
