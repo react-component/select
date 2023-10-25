@@ -128,7 +128,7 @@ export default () => (
 | loading | show loading icon in arrow | boolean | false |
 | virtual | Disable virtual scroll | boolean | true |
 | direction | direction of dropdown | 'ltr' \| 'rtl' | 'ltr' |
-| optionRender | Custom rendering options | (oriOption: OptionType, info: { index: number }) => React.ReactNode | - |
+| optionRender | Custom rendering options | (oriOption: FlattenOptionData\<BaseOptionType\> , info: { index: number }) => React.ReactNode | - |
 
 ### Methods
 

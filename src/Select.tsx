@@ -41,15 +41,16 @@ import type {
   RenderNode,
 } from './BaseSelect';
 import BaseSelect, { isMultiple } from './BaseSelect';
+import OptGroup from './OptGroup';
+import Option from './Option';
+import OptionList from './OptionList';
+import SelectContext from './SelectContext';
 import useCache from './hooks/useCache';
 import useFilterOptions from './hooks/useFilterOptions';
 import useId from './hooks/useId';
 import useOptions from './hooks/useOptions';
 import useRefFunc from './hooks/useRefFunc';
-import OptGroup from './OptGroup';
-import Option from './Option';
-import OptionList from './OptionList';
-import SelectContext from './SelectContext';
+import type { FlattenOptionData } from './interface';
 import { hasValue, isComboNoValue, toArray } from './utils/commonUtil';
 import { fillFieldNames, flattenOptions, injectPropsWithOption } from './utils/valueUtil';
 import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
@@ -138,7 +139,10 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   optionLabelProp?: string;
   children?: React.ReactNode;
   options?: OptionType[];
-  optionRender?: (oriOption: OptionType, info: { index: number }) => React.ReactNode;
+  optionRender?: (
+    oriOption: FlattenOptionData<BaseOptionType>,
+    info: { index: number },
+  ) => React.ReactNode;
   defaultActiveFirstOption?: boolean;
   virtual?: boolean;
   direction?: 'ltr' | 'rtl';

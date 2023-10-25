@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import useMemo from 'rc-util/lib/hooks/useMemo';
 import KeyCode from 'rc-util/lib/KeyCode';
+import useMemo from 'rc-util/lib/hooks/useMemo';
 import omit from 'rc-util/lib/omit';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import type { ListRef } from 'rc-virtual-list';
@@ -8,11 +8,11 @@ import List from 'rc-virtual-list';
 import type { ScrollConfig } from 'rc-virtual-list/lib/List';
 import * as React from 'react';
 import { useEffect } from 'react';
-import useBaseProps from './hooks/useBaseProps';
-import type { FlattenOptionData } from './interface';
 import type { BaseOptionType, RawValueType } from './Select';
 import SelectContext from './SelectContext';
 import TransBtn from './TransBtn';
+import useBaseProps from './hooks/useBaseProps';
+import type { FlattenOptionData } from './interface';
 import { isPlatformMac } from './utils/platformUtil';
 
 // export interface OptionListProps<OptionsType extends object[]> {
@@ -369,7 +369,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
             >
               <div className={`${optionPrefixCls}-content`}>
                 {typeof optionRender === 'function'
-                  ? optionRender({ ...item.data, label: item.label }, { index: itemIndex })
+                  ? optionRender(item, { index: itemIndex })
                   : content}
               </div>
               {React.isValidElement(menuItemSelectedIcon) || selected}
