@@ -4,6 +4,7 @@
 
 React Select
 
+<!-- prettier-ignore -->
 [![NPM version][npm-image]][npm-url]
 [![npm download][download-image]][download-url]
 [![build status][github-actions-image]][github-actions-url]
@@ -67,6 +68,7 @@ export default () => (
 
 ### Select props
 
+<!-- prettier-ignore -->
 | name | description | type | default |
 | --- | --- | --- | --- |
 | id | html id to set on the component wrapper | String | '' |
@@ -126,6 +128,7 @@ export default () => (
 | loading | show loading icon in arrow | boolean | false |
 | virtual | Disable virtual scroll | boolean | true |
 | direction | direction of dropdown | 'ltr' \| 'rtl' | 'ltr' |
+| optionRender | Custom rendering options | (oriOption: FlattenOptionData\<BaseOptionType\> , info: { index: number }) => React.ReactNode | - |
 
 ### Methods
 

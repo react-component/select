@@ -268,7 +268,7 @@ describe('Select.Basic', () => {
     expect(wrapper2.find('.rc-select-clear-icon').length).toBeFalsy();
 
     const wrapper3 = mount(
-      <Select allowClear={{ clearIcon: <div className='custom-clear-icon'>x</div> }} value="1">
+      <Select allowClear={{ clearIcon: <div className="custom-clear-icon">x</div> }} value="1">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -277,17 +277,16 @@ describe('Select.Basic', () => {
     expect(wrapper3.find('.custom-clear-icon').text()).toBe('x');
 
     const wrapper4 = mount(
-      <Select allowClear={{ clearIcon: <div className='custom-clear-icon'>x</div> }}>
+      <Select allowClear={{ clearIcon: <div className="custom-clear-icon">x</div> }}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
     expect(wrapper4.find('.custom-clear-icon').length).toBeFalsy();
 
-
     resetWarned();
     const wrapper5 = mount(
-      <Select allowClear clearIcon={<div className='custom-clear-icon'>x</div>} value="1">
+      <Select allowClear clearIcon={<div className="custom-clear-icon">x</div>} value="1">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -296,7 +295,7 @@ describe('Select.Basic', () => {
     expect(wrapper5.find('.custom-clear-icon').text()).toBe('x');
 
     const wrapper6 = mount(
-      <Select allowClear clearIcon={<div className='custom-clear-icon'>x</div>}>
+      <Select allowClear clearIcon={<div className="custom-clear-icon">x</div>}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -1361,7 +1360,7 @@ describe('Select.Basic', () => {
     beforeAll(() => {
       domHook = spyElementPrototypes(HTMLElement, {
         getBoundingClientRect: () => ({
-          width: 1000
+          width: 1000,
         }),
       });
     });
@@ -2094,5 +2093,25 @@ describe('Select.Basic', () => {
 
     const { container } = testingRender(<Select open direction="rtl" options={options} />);
     expect(container.querySelector('.rc-virtual-list-rtl')).toBeTruthy();
+  });
+
+  it('Should optionRender work', () => {
+    const options = [
+      { label: 'test1', value: '1' },
+      { label: 'test2', value: '2' },
+    ];
+
+    const { container } = testingRender(
+      <Select
+        open
+        options={options}
+        optionRender={(option, {index}) => {
+          return `${option.label} - ${index}`;
+        }}
+      />,
+    );
+    expect(container.querySelector('.rc-select-item-option-content').innerHTML).toEqual(
+      'test1 - 0',
+    );
   });
 });
