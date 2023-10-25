@@ -1,6 +1,6 @@
 {
   "name": "rc-select",
-  "version": "14.9.2",
+  "version": "14.10.0",
   "description": "React Select",
   "engines": {
     "node": ">=8.x"
