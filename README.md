@@ -124,7 +124,7 @@ export default () => (
 | clearIcon | specify the clear icon | ReactNode | - |
 | removeIcon | specify the remove icon | ReactNode | - |
 | menuItemSelectedIcon | specify the item selected icon | ReactNode \| (props: MenuItemProps) => ReactNode | - |
-| dropdownRender | render custom dropdown menu | (menu: React.Node, props: MenuProps) => ReactNode | - |
+| dropdownRender | render custom dropdown menu | (menu: React.Node) => ReactNode | - |
 | loading | show loading icon in arrow | boolean | false |
 | virtual | Disable virtual scroll | boolean | true |
 | direction | direction of dropdown | 'ltr' \| 'rtl' | 'ltr' |
