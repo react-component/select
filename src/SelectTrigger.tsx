@@ -77,6 +77,8 @@ export interface SelectTriggerProps {
   onPopupVisibleChange?: (visible: boolean) => void;
 
   onPopupMouseEnter: () => void;
+
+  forceRender?: boolean;
 }
 
 const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTriggerProps> = (

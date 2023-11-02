@@ -188,6 +188,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   placement?: Placement;
   builtinPlacements?: BuildInPlacements;
   getPopupContainer?: RenderDOMFunc;
+  preRenderOptionList?: boolean;
 
   // >>> Focus
   showAction?: ('focus' | 'click')[];
@@ -271,6 +272,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     placement,
     builtinPlacements,
     getPopupContainer,
+    preRenderOptionList,
 
     // Focus
     showAction = [],
@@ -756,6 +758,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       getTriggerDOMNode={() => selectorDomRef.current}
       onPopupVisibleChange={onTriggerVisibleChange}
       onPopupMouseEnter={onPopupMouseEnter}
+      forceRender={preRenderOptionList}
     >
       {customizeRawInputElement ? (
         React.cloneElement(customizeRawInputElement, {

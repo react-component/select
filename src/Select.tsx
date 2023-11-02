@@ -148,6 +148,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   direction?: 'ltr' | 'rtl';
   listHeight?: number;
   listItemHeight?: number;
+  preRenderOptionList?: boolean;
 
   // >>> Icon
   menuItemSelectedIcon?: RenderNode;
@@ -197,6 +198,7 @@ const Select = React.forwardRef(
       direction,
       listHeight = 200,
       listItemHeight = 20,
+      preRenderOptionList = false,
 
       // Value
       value,
@@ -663,6 +665,7 @@ const Select = React.forwardRef(
           // >>> OptionList
           OptionList={OptionList}
           emptyOptions={!displayOptions.length}
+          preRenderOptionList={preRenderOptionList}
           // >>> Accessibility
           activeValue={activeValue}
           activeDescendantId={`${mergedId}_list_${accessibilityIndex}`}
