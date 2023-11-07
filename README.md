@@ -54,6 +54,7 @@ React Select
 
 ```jsx | pure
 import Select, { Option } from 'rc-select';
+import 'rc-select/assets/index.css';
 
 export default () => (
   <Select>
