@@ -148,6 +148,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   direction?: 'ltr' | 'rtl';
   listHeight?: number;
   listItemHeight?: number;
+  labelRender?: (props: LabelInValueType) => React.ReactNode;
 
   // >>> Icon
   menuItemSelectedIcon?: RenderNode;
@@ -197,6 +198,7 @@ const Select = React.forwardRef(
       direction,
       listHeight = 200,
       listItemHeight = 20,
+      labelRender,
 
       // Value
       value,
@@ -323,7 +325,7 @@ const Select = React.forwardRef(
 
     // Fill label with cache to avoid option remove
     const [mergedValues, getMixedOption] = useCache(rawLabeledValues, valueOptions);
-
+    
     const displayValues = React.useMemo(() => {
       // `null` need show as placeholder instead
       // https://github.com/ant-design/ant-design/issues/25057
@@ -339,7 +341,7 @@ const Select = React.forwardRef(
 
       return mergedValues.map((item) => ({
         ...item,
-        label: item.label ?? item.value,
+        label: labelRender ? labelRender(item) : item.label ?? item.value,
       }));
     }, [mode, mergedValues]);
 
