@@ -2114,4 +2114,32 @@ describe('Select.Basic', () => {
       'test1 - 0',
     );
   });
+
+  it('labelRender', () => {
+    const onLabelRender = jest.fn();
+    const labelRender = (props: any) => {
+      const { label, value } = props;
+      onLabelRender();
+      return `${label}-${value}`;
+    };
+    const wrapper = mount(
+        <Select options={[{ label: 'realLabel', value: 'a' }]} value="a" labelRender={labelRender} />,
+    );
+
+    expect(onLabelRender).toHaveBeenCalled();
+    expect(findSelection(wrapper).text()).toEqual('realLabel-a');
+  });
+
+  it('labelRender when value is not in options', () => {
+    const onLabelRender = jest.fn();
+    const labelRender = (props: any) => {
+      const { label, value } = props;
+      onLabelRender();
+      return `${label || 'fakeLabel'}-${value}`;
+    };
+    const wrapper = mount(<Select value="a" labelRender={labelRender} options={[{ label: 'realLabel', value: 'b' }]} />);
+
+    expect(onLabelRender).toHaveBeenCalled();
+    expect(findSelection(wrapper).text()).toEqual('fakeLabel-a');
+  });
 });
