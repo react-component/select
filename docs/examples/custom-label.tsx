@@ -14,7 +14,6 @@ for (let i = 10; i < 36; i += 1) {
 }
 
 const Test: React.FC = () => {
-    const [disabled, setDisabled] = React.useState(false);
     const [value, setValue] = React.useState<string>('test');
 
     return (
@@ -25,7 +24,6 @@ const Test: React.FC = () => {
                 <Select
                     placeholder="placeholder"
                     style={{ width: 500 }}
-                    disabled={disabled}
                     value={value}
                     onChange={(val: string, option) => {
                         setValue(val);
