@@ -341,7 +341,7 @@ const Select = React.forwardRef(
 
       return mergedValues.map((item) => ({
         ...item,
-        label: labelRender ? labelRender(item) : item.label ?? item.value,
+        label: (typeof labelRender === 'function' ? labelRender(item) : item.label) ?? item.value,
       }));
     }, [mode, mergedValues]);
 
