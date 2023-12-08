@@ -343,7 +343,7 @@ const Select = React.forwardRef(
         ...item,
         label: (typeof labelRender === 'function' ? labelRender(item) : item.label) ?? item.value,
       }));
-    }, [mode, mergedValues]);
+    }, [mode, mergedValues, labelRender]);
 
     /** Convert `displayValues` to raw value type set */
     const rawValues = React.useMemo(
