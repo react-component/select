@@ -25,7 +25,7 @@ const Test: React.FC = () => {
                     placeholder="placeholder"
                     style={{ width: 500 }}
                     value={value}
-                    onChange={(val: string, option) => {
+                    onChange={(val: string) => {
                         setValue(val);
                     }}
                     onSelect={(val, option) => {
@@ -36,10 +36,10 @@ const Test: React.FC = () => {
                     }}
                     tokenSeparators={[',']}
                     labelRender={(props) => {
-                        const { label, value } = props;
+                        const { label, value: _value } = props;
                         const style: React.CSSProperties = { backgroundColor: 'red' };
                         if (label) {
-                            return value
+                            return _value
                         } else return (
                             <span style={style}>
                         no this value in options
@@ -59,7 +59,7 @@ const Test: React.FC = () => {
                         setValue('test');
                     }}
                 >
-                    set value as 'test'
+                    set value as test
                 </button>
             </p>
         </div>
