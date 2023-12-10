@@ -15,7 +15,7 @@ for (let i = 10; i < 36; i += 1) {
 class Test extends React.Component {
   state = {
     useAnim: false,
-    showArrow: false,
+    suffixIcon: null,
     loading: false,
     value: ['a10'],
     searchValue: "",
@@ -44,7 +44,7 @@ class Test extends React.Component {
 
   showArrow = e => {
     this.setState({
-      showArrow: e.target.checked,
+      suffixIcon: e.target.checked ? <div>arrow</div> : null,
     });
   };
 
@@ -61,7 +61,7 @@ class Test extends React.Component {
   }
 
   render() {
-    const { useAnim, showArrow, loading, value } = this.state;
+    const { useAnim, loading, value, suffixIcon } = this.state;
     return (
       <div>
         <h2>multiple select（scroll the menu）</h2>
@@ -74,7 +74,7 @@ class Test extends React.Component {
           <p />
           <label htmlFor="showArrow">
             showArrow
-            <input id="showArrow" checked={showArrow} type="checkbox" onChange={this.showArrow} />
+            <input id="showArrow" checked={!!suffixIcon} type="checkbox" onChange={this.showArrow} />
           </label>
         </p>
         <p>
@@ -93,7 +93,7 @@ class Test extends React.Component {
             style={{ width: 500 }}
             mode="multiple"
             loading={loading}
-            showArrow={showArrow}
+            suffixIcon={suffixIcon}
             allowClear
             optionFilterProp="children"
             optionLabelProp="children"

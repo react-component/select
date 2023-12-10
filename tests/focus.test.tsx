@@ -1,7 +1,8 @@
 import { mount } from 'enzyme';
-import React from 'react';
+import React, { useState } from 'react';
 import { act } from 'react-dom/test-utils';
 import Select from '../src';
+import { fireEvent, render } from '@testing-library/react';
 
 describe('Select.Focus', () => {
   it('disabled should reset focused', () => {
@@ -27,6 +28,45 @@ describe('Select.Focus', () => {
       wrapper.update();
     });
     expect(wrapper.exists('.rc-select-focused')).toBeFalsy();
+
+    jest.useRealTimers();
+  });
+
+  it('after onBlur is triggered the focused does not need to be reset', () => {
+    jest.useFakeTimers();
+
+    const onFocus = jest.fn();
+
+    const Demo: React.FC = () => {
+      const [disabled, setDisabled] = useState(false);
+      return (
+        <>
+          <Select disabled={disabled} onFocus={onFocus} onBlur={() => setDisabled(true)} />
+          <button onClick={() => setDisabled(false)} />
+        </>
+      );
+    };
+
+    const { container } = render(<Demo />);
+
+    fireEvent.focus(container.querySelector('input'));
+    jest.runAllTimers();
+
+    // trigger disabled
+    fireEvent.blur(container.querySelector('input'));
+    jest.runAllTimers();
+
+    // reset focused
+    onFocus.mockReset();
+
+    expect(container.querySelector('.rc-select-disabled')).toBeTruthy();
+
+    // reset disabled
+    fireEvent.click(container.querySelector('button'));
+    fireEvent.focus(container.querySelector('input'));
+    jest.runAllTimers();
+
+    expect(onFocus).toHaveBeenCalled();
 
     jest.useRealTimers();
   });

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import useMemo from 'rc-util/lib/hooks/useMemo';
 import KeyCode from 'rc-util/lib/KeyCode';
+import useMemo from 'rc-util/lib/hooks/useMemo';
 import omit from 'rc-util/lib/omit';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import type { ListRef } from 'rc-virtual-list';
@@ -8,11 +8,11 @@ import List from 'rc-virtual-list';
 import type { ScrollConfig } from 'rc-virtual-list/lib/List';
 import * as React from 'react';
 import { useEffect } from 'react';
-import useBaseProps from './hooks/useBaseProps';
-import type { FlattenOptionData } from './interface';
 import type { BaseOptionType, RawValueType } from './Select';
 import SelectContext from './SelectContext';
 import TransBtn from './TransBtn';
+import useBaseProps from './hooks/useBaseProps';
+import type { FlattenOptionData } from './interface';
 import { isPlatformMac } from './utils/platformUtil';
 
 // export interface OptionListProps<OptionsType extends object[]> {
@@ -53,8 +53,10 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     rawValues,
     fieldNames,
     virtual,
+    direction,
     listHeight,
     listItemHeight,
+    optionRender,
   } = React.useContext(SelectContext);
 
   const itemPrefixCls = `${prefixCls}-item`;
@@ -297,6 +299,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
         onMouseDown={onListMouseDown}
         onScroll={onPopupScroll}
         virtual={virtual}
+        direction={direction}
         innerProps={virtual ? null : a11yProps}
       >
         {(item, itemIndex) => {
@@ -364,13 +367,21 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
               }}
               style={style}
             >
-              <div className={`${optionPrefixCls}-content`}>{content}</div>
+              <div className={`${optionPrefixCls}-content`}>
+                {typeof optionRender === 'function'
+                  ? optionRender(item, { index: itemIndex })
+                  : content}
+              </div>
               {React.isValidElement(menuItemSelectedIcon) || selected}
               {iconVisible && (
                 <TransBtn
                   className={`${itemPrefixCls}-option-state`}
                   customizeIcon={menuItemSelectedIcon}
-                  customizeIconProps={{ isSelected: selected }}
+                  customizeIconProps={{
+                    value,
+                    disabled,
+                    isSelected: selected,
+                  }}
                 >
                   {selected ? '✓' : null}
                 </TransBtn>

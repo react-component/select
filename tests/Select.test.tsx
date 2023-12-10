@@ -1,7 +1,7 @@
+import { fireEvent, render as testingRender } from '@testing-library/react';
 import { mount, render } from 'enzyme';
-import { render as testingRender, fireEvent } from '@testing-library/react';
 import KeyCode from 'rc-util/lib/KeyCode';
-import { spyElementPrototype } from 'rc-util/lib/test/domHook';
+import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import VirtualList from 'rc-virtual-list';
 import type { ScrollConfig } from 'rc-virtual-list/lib/List';
@@ -42,7 +42,6 @@ describe('Select.Basic', () => {
           className="select-test"
           value="2"
           placeholder="Select a number"
-          showArrow
           allowClear
           showSearch
           {...props}
@@ -66,8 +65,8 @@ describe('Select.Basic', () => {
     });
 
     it('renders dropdown correctly', () => {
-      const wrapper = render(genSelect({ open: true }));
-      expect(wrapper).toMatchSnapshot();
+      const { container } = testingRender(genSelect({ open: true }));
+      expect(container.querySelector('.rc-select-dropdown')).toMatchSnapshot();
     });
 
     it('renders disabled select correctly', () => {
@@ -104,6 +103,66 @@ describe('Select.Basic', () => {
       );
       expect(wrapper).toMatchSnapshot();
     });
+
+    it('should support fieldName', () => {
+      // groupLabel > fieldNames > self-label
+      function genOpts(OptLabelName, groupLabel) {
+        return [
+          {
+            [groupLabel]: 'groupLabel',
+            options: [
+              {
+                value: 'value',
+                [OptLabelName]: 'label',
+              },
+            ],
+          },
+        ];
+      }
+
+      const { container: containerFirst } = testingRender(
+        <Select
+          options={genOpts('label', 'groupLabel')}
+          fieldNames={{
+            groupLabel: 'groupLabel',
+          }}
+          open
+        />,
+      );
+      const { container: containerSecond } = testingRender(
+        <Select
+          options={genOpts('groupLabel', 'groupLabel')}
+          fieldNames={{ label: 'groupLabel' }}
+          open
+        />,
+      );
+      const { container: containerThird } = testingRender(
+        <Select options={genOpts('label', 'label')} open />,
+      );
+
+      // these generate the same snapshots
+      expect(containerFirst.querySelector('.rc-virtual-list')).toMatchSnapshot();
+      expect(containerSecond.querySelector('.rc-virtual-list')).toMatchSnapshot();
+      expect(containerThird.querySelector('.rc-virtual-list')).toMatchSnapshot();
+    });
+  });
+
+  it('item label should be the same as user enter when set groupLabel', () => {
+    const { container } = testingRender(
+      <Select
+        options={[
+          {
+            label: 'itemLabel',
+            value: 'itemValue',
+          },
+        ]}
+        fieldNames={{
+          groupLabel: 'groupLabel',
+        }}
+        open
+      />,
+    );
+    expect(container.querySelector('.rc-select-item-option-content').innerHTML).toBe('itemLabel');
   });
 
   it('convert value to array', () => {
@@ -207,6 +266,41 @@ describe('Select.Basic', () => {
       </Select>,
     );
     expect(wrapper2.find('.rc-select-clear-icon').length).toBeFalsy();
+
+    const wrapper3 = mount(
+      <Select allowClear={{ clearIcon: <div className="custom-clear-icon">x</div> }} value="1">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    expect(wrapper3.find('.custom-clear-icon').length).toBeTruthy();
+    expect(wrapper3.find('.custom-clear-icon').text()).toBe('x');
+
+    const wrapper4 = mount(
+      <Select allowClear={{ clearIcon: <div className="custom-clear-icon">x</div> }}>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    expect(wrapper4.find('.custom-clear-icon').length).toBeFalsy();
+
+    resetWarned();
+    const wrapper5 = mount(
+      <Select allowClear clearIcon={<div className="custom-clear-icon">x</div>} value="1">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    expect(wrapper5.find('.custom-clear-icon').length).toBeTruthy();
+    expect(wrapper5.find('.custom-clear-icon').text()).toBe('x');
+
+    const wrapper6 = mount(
+      <Select allowClear clearIcon={<div className="custom-clear-icon">x</div>}>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    expect(wrapper6.find('.custom-clear-icon').length).toBeFalsy();
   });
 
   it('should direction rtl', () => {
@@ -353,7 +447,7 @@ describe('Select.Basic', () => {
   });
 
   it('should contain falsy children', () => {
-    const wrapper = render(
+    const { container } = testingRender(
       <Select value="1" open>
         <Option value="1">1</Option>
         {null}
@@ -362,7 +456,7 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    expect(wrapper).toMatchSnapshot();
+    expect(container.querySelector('.rc-select-dropdown')).toMatchSnapshot();
   });
 
   it('open dropdown on down key press', () => {
@@ -595,18 +689,16 @@ describe('Select.Basic', () => {
       expect(wrapper.find('.rc-select').getDOMNode().className).toContain('-focus');
     });
 
-    it('click placeholder should trigger onFocus', () => {
-      const wrapper2 = mount(
+    it('focus input when placeholder is clicked', () => {
+      const wrapper = mount(
         <Select placeholder="xxxx">
           <Option value="1">1</Option>
           <Option value="2">2</Option>
         </Select>,
       );
-
-      const inputSpy = jest.spyOn(wrapper2.find('input').instance(), 'focus' as any);
-
-      wrapper2.find('.rc-select-selection-placeholder').simulate('mousedown');
-      wrapper2.find('.rc-select-selection-placeholder').simulate('click');
+      const inputSpy = jest.spyOn(wrapper.find('input').instance(), 'focus' as any);
+      wrapper.find('.rc-select-selection-placeholder').simulate('mousedown');
+      wrapper.find('.rc-select-selection-placeholder').simulate('click');
       expect(inputSpy).toHaveBeenCalled();
     });
   });
@@ -814,19 +906,6 @@ describe('Select.Basic', () => {
 
     selectItem(wrapper);
     expectOpen(wrapper, false);
-  });
-
-  it('focus input when placeholder is clicked', () => {
-    const wrapper = mount(
-      <Select placeholder="select">
-        <Option value="1">1</Option>
-      </Select>,
-    );
-
-    const focusSpy = jest.spyOn(wrapper.find('input').instance(), 'focus' as any);
-    wrapper.find('.rc-select-selection-placeholder').simulate('mousedown');
-    wrapper.find('.rc-select-selection-placeholder').simulate('click');
-    expect(focusSpy).toHaveBeenCalled();
   });
 
   describe('combobox could customize input element', () => {
@@ -1038,25 +1117,25 @@ describe('Select.Basic', () => {
   });
 
   it('filterOption could be true as described in default value', () => {
-    const wrapper = mount(
+    const { container } = testingRender(
       <Select searchValue="3" showSearch filterOption open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
 
-    expect(wrapper.render()).toMatchSnapshot();
+    expect(container.querySelector('.rc-select-dropdown')).toMatchSnapshot();
   });
 
   it('does not filter when filterOption value is false', () => {
-    const wrapper = render(
+    const { container } = testingRender(
       <Select inputValue="1" filterOption={false} open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
 
-    expect(wrapper).toMatchSnapshot();
+    expect(container.querySelector('.rc-select-dropdown')).toMatchSnapshot();
   });
 
   it('backfill', () => {
@@ -1130,7 +1209,7 @@ describe('Select.Basic', () => {
   });
 
   it('should render custom dropdown correctly', () => {
-    const wrapper = mount(
+    const { container } = testingRender(
       <Select
         open
         dropdownRender={(menu) => (
@@ -1144,7 +1223,7 @@ describe('Select.Basic', () => {
         <Option value="2">2</Option>
       </Select>,
     );
-    expect(wrapper.render()).toMatchSnapshot();
+    expect(container.querySelector('.rc-select-dropdown')).toMatchSnapshot();
   });
 
   it('should trigger click event in custom node', () => {
@@ -1279,8 +1358,10 @@ describe('Select.Basic', () => {
     let domHook;
 
     beforeAll(() => {
-      domHook = spyElementPrototype(HTMLElement, 'offsetWidth', {
-        get: () => 1000,
+      domHook = spyElementPrototypes(HTMLElement, {
+        getBoundingClientRect: () => ({
+          width: 1000,
+        }),
       });
     });
 
@@ -1407,6 +1488,7 @@ describe('Select.Basic', () => {
 
   it('dropdown selection item customize icon', () => {
     const menuItemSelectedIcon = jest.fn();
+
     mount(
       <Select
         value="1"
@@ -1415,8 +1497,25 @@ describe('Select.Basic', () => {
         menuItemSelectedIcon={menuItemSelectedIcon}
       />,
     );
+    expect(menuItemSelectedIcon).toHaveBeenCalledWith({
+      value: '1',
+      disabled: undefined,
+      isSelected: true,
+    });
 
-    expect(menuItemSelectedIcon).toHaveBeenCalledWith({ isSelected: true });
+    mount(
+      <Select
+        value="1"
+        options={[{ value: '2', disabled: true } as any]}
+        open
+        menuItemSelectedIcon={menuItemSelectedIcon}
+      />,
+    );
+    expect(menuItemSelectedIcon).toHaveBeenCalledWith({
+      value: '2',
+      disabled: true,
+      isSelected: false,
+    });
   });
 
   it('keyDown & KeyUp event', () => {
@@ -1432,17 +1531,55 @@ describe('Select.Basic', () => {
     expect(onKeyUp).toHaveBeenCalled();
   });
 
-  it('warning if label not same as option', () => {
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    mount(
-      <Select value={{ value: '2', label: 'One' }} labelInValue>
-        <Option value="2">Two</Option>
-      </Select>,
-    );
-    expect(errorSpy).toHaveBeenCalledWith(
-      'Warning: `label` of `value` is not same as `label` in Select options.',
-    );
-    errorSpy.mockRestore();
+  describe('warning if label not same as option', () => {
+    it('should work', () => {
+      resetWarned();
+
+      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      mount(
+        <Select value={{ value: '2', label: 'One' }} labelInValue>
+          <Option value="2">Two</Option>
+        </Select>,
+      );
+      expect(errorSpy).toHaveBeenCalledWith(
+        'Warning: `label` of `value` is not same as `label` in Select options.',
+      );
+      errorSpy.mockRestore();
+    });
+
+    it('not warning for react node', () => {
+      resetWarned();
+      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      const Demo = () => {
+        const [, setVal] = React.useState(0);
+
+        return (
+          <Select
+            onChange={setVal}
+            defaultValue={0}
+            options={[
+              {
+                value: 0,
+                label: <div />,
+              },
+              {
+                value: 1,
+                label: <div />,
+              },
+            ]}
+          />
+        );
+      };
+
+      const wrapper = mount(<Demo />);
+
+      toggleOpen(wrapper);
+      selectItem(wrapper, 1);
+
+      expect(errorSpy).not.toHaveBeenCalled();
+      errorSpy.mockRestore();
+    });
   });
 
   describe('warning if use `props` to read data', () => {
@@ -1736,32 +1873,6 @@ describe('Select.Basic', () => {
     });
   });
 
-  describe('show placeholder', () => {
-    it('when searchValue is controlled', () => {
-      const wrapper = mount(<Select searchValue="light" placeholder="bamboo" />);
-      expect(
-        wrapper.find('.rc-select-selection-placeholder').getDOMNode().hasAttribute('style'),
-      ).toBe(false);
-      toggleOpen(wrapper);
-      expect(
-        (wrapper.find('.rc-select-selection-placeholder').getDOMNode() as HTMLSpanElement).style
-          .visibility,
-      ).toBe('hidden');
-    });
-
-    it('when value is null', () => {
-      const wrapper = mount(<Select value={null} placeholder="bamboo" />);
-      expect(wrapper.find('.rc-select-selection-placeholder').length).toBeTruthy();
-    });
-
-    it('not when value is null but it is an Option', () => {
-      const wrapper = mount(
-        <Select value={null} placeholder="bamboo" options={[{ value: null, label: 'light' }]} />,
-      );
-      expect(wrapper.find('.rc-select-selection-placeholder').length).toBeFalsy();
-    });
-  });
-
   it('Remove options can keep the cache', () => {
     const wrapper = mount(<Select value={903} options={[{ value: 903, label: 'Bamboo' }]} />);
     expect(findSelection(wrapper).text()).toEqual('Bamboo');
@@ -1894,16 +2005,6 @@ describe('Select.Basic', () => {
     expect(onClick).toHaveBeenCalled();
   });
 
-  it('should hide placeholder if force closed and showSearch with searchValue', () => {
-    const wrapper = mount(
-      <Select showSearch searchValue="search" open={false} placeholder="placeholder" />,
-    );
-    expect(
-      (wrapper.find('.rc-select-selection-placeholder').getDOMNode() as HTMLSpanElement).style
-        .visibility,
-    ).toBe('hidden');
-  });
-
   it('no warning for non-dom attr', () => {
     const wrapper = mount(
       <Select open>
@@ -1973,5 +2074,44 @@ describe('Select.Basic', () => {
 
     expect(wrapper.find('.rc-select').getDOMNode().className).toContain('-focused');
     jest.useRealTimers();
+  });
+
+  it('should support title', () => {
+    const wrapper1 = mount(<Select defaultValue="lucy" options={[]} />);
+    expect(wrapper1.find('.rc-select').prop('title')).toBe(undefined);
+    expect(wrapper1.find('.rc-select-selection-item').prop('title')).toBe('lucy');
+    const wrapper2 = mount(<Select defaultValue="lucy" options={[]} title="" />);
+    expect(wrapper2.find('.rc-select').prop('title')).toBe('');
+    expect(wrapper2.find('.rc-select-selection-item').prop('title')).toBe('');
+    const wrapper3 = mount(<Select defaultValue="lucy" options={[]} title="title" />);
+    expect(wrapper3.find('.rc-select').prop('title')).toBe('title');
+    expect(wrapper3.find('.rc-select-selection-item').prop('title')).toBe('title');
+  });
+
+  it('scrollbar should be left position with rtl direction', () => {
+    const options = new Array(10).fill(null).map((_, value) => ({ value }));
+
+    const { container } = testingRender(<Select open direction="rtl" options={options} />);
+    expect(container.querySelector('.rc-virtual-list-rtl')).toBeTruthy();
+  });
+
+  it('Should optionRender work', () => {
+    const options = [
+      { label: 'test1', value: '1' },
+      { label: 'test2', value: '2' },
+    ];
+
+    const { container } = testingRender(
+      <Select
+        open
+        options={options}
+        optionRender={(option, {index}) => {
+          return `${option.label} - ${index}`;
+        }}
+      />,
+    );
+    expect(container.querySelector('.rc-select-item-option-content').innerHTML).toEqual(
+      'test1 - 0',
+    );
   });
 });

@@ -22,6 +22,7 @@ export interface InnerSelectorProps {
   prefixCls: string;
   id: string;
   mode: Mode;
+  title?: string;
 
   inputRef: React.Ref<HTMLInputElement | HTMLTextAreaElement>;
   placeholder?: React.ReactNode;

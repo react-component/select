@@ -1,10 +1,12 @@
-import * as React from 'react';
-import Trigger from 'rc-trigger';
-import type { AlignType } from 'rc-trigger/lib/interface';
+import Trigger from '@rc-component/trigger';
+import type { AlignType, BuildInPlacements } from '@rc-component/trigger/lib/interface';
 import classNames from 'classnames';
+import * as React from 'react';
 import type { Placement, RenderDOMFunc } from './BaseSelect';
 
-const getBuiltInPlacements = (dropdownMatchSelectWidth: number | boolean) => {
+const getBuiltInPlacements = (
+  dropdownMatchSelectWidth: number | boolean,
+): Record<string, AlignType> => {
   // Enable horizontal overflow auto-adjustment when a custom dropdown width is provided
   const adjustX = dropdownMatchSelectWidth === true ? 0 : 1;
   return {
@@ -15,6 +17,7 @@ const getBuiltInPlacements = (dropdownMatchSelectWidth: number | boolean) => {
         adjustX,
         adjustY: 1,
       },
+      htmlRegion: 'scroll',
     },
     bottomRight: {
       points: ['tr', 'br'],
@@ -23,6 +26,7 @@ const getBuiltInPlacements = (dropdownMatchSelectWidth: number | boolean) => {
         adjustX,
         adjustY: 1,
       },
+      htmlRegion: 'scroll',
     },
     topLeft: {
       points: ['bl', 'tl'],
@@ -31,6 +35,7 @@ const getBuiltInPlacements = (dropdownMatchSelectWidth: number | boolean) => {
         adjustX,
         adjustY: 1,
       },
+      htmlRegion: 'scroll',
     },
     topRight: {
       points: ['br', 'tr'],
@@ -39,6 +44,7 @@ const getBuiltInPlacements = (dropdownMatchSelectWidth: number | boolean) => {
         adjustX,
         adjustY: 1,
       },
+      htmlRegion: 'scroll',
     },
   };
 };
@@ -56,8 +62,8 @@ export interface SelectTriggerProps {
 
   animation?: string;
   transitionName?: string;
-  containerWidth: number;
   placement?: Placement;
+  builtinPlacements?: BuildInPlacements;
   dropdownStyle: React.CSSProperties;
   dropdownClassName: string;
   direction: string;
@@ -83,13 +89,13 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     visible,
     children,
     popupElement,
-    containerWidth,
     animation,
     transitionName,
     dropdownStyle,
     dropdownClassName,
     direction = 'ltr',
     placement,
+    builtinPlacements,
     dropdownMatchSelectWidth,
     dropdownRender,
     dropdownAlign,
@@ -108,13 +114,33 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     popupNode = dropdownRender(popupElement);
   }
 
-  const builtInPlacements = React.useMemo(
-    () => getBuiltInPlacements(dropdownMatchSelectWidth),
-    [dropdownMatchSelectWidth],
+  const mergedBuiltinPlacements = React.useMemo(
+    () => builtinPlacements || getBuiltInPlacements(dropdownMatchSelectWidth),
+    [builtinPlacements, dropdownMatchSelectWidth],
   );
 
   // ===================== Motion ======================
   const mergedTransitionName = animation ? `${dropdownPrefixCls}-${animation}` : transitionName;
+
+  // =================== Popup Width ===================
+  const isNumberPopupWidth = typeof dropdownMatchSelectWidth === 'number';
+
+  const stretch = React.useMemo(() => {
+    if (isNumberPopupWidth) {
+      return null;
+    }
+
+    return dropdownMatchSelectWidth === false ? 'minWidth' : 'width';
+  }, [dropdownMatchSelectWidth, isNumberPopupWidth]);
+
+  let popupStyle = dropdownStyle;
+
+  if (isNumberPopupWidth) {
+    popupStyle = {
+      ...popupStyle,
+      width: dropdownMatchSelectWidth,
+    };
+  }
 
   // ======================= Ref =======================
   const popupRef = React.useRef<HTMLDivElement>(null);
@@ -123,24 +149,13 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     getPopupElement: () => popupRef.current,
   }));
 
-  const popupStyle: React.CSSProperties = {
-    minWidth: containerWidth,
-    ...dropdownStyle,
-  };
-
-  if (typeof dropdownMatchSelectWidth === 'number') {
-    popupStyle.width = dropdownMatchSelectWidth;
-  } else if (dropdownMatchSelectWidth) {
-    popupStyle.width = containerWidth;
-  }
-
   return (
     <Trigger
       {...restProps}
       showAction={onPopupVisibleChange ? ['click'] : []}
       hideAction={onPopupVisibleChange ? ['click'] : []}
       popupPlacement={placement || (direction === 'rtl' ? 'bottomRight' : 'bottomLeft')}
-      builtinPlacements={builtInPlacements}
+      builtinPlacements={mergedBuiltinPlacements}
       prefixCls={dropdownPrefixCls}
       popupTransitionName={mergedTransitionName}
       popup={
@@ -148,6 +163,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
           {popupNode}
         </div>
       }
+      stretch={stretch}
       popupAlign={dropdownAlign}
       popupVisible={visible}
       getPopupContainer={getPopupContainer}
