@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   setup:
@@ -15,7 +15,7 @@ jobs:
 
       - uses: actions/setup-node@v1
         with:
-          node-version: '12'
+          node-version: '18'
 
       - name: cache package-lock.json
         uses: actions/cache@v2
@@ -24,7 +24,7 @@ jobs:
           key: lock-${{ github.sha }}
 
       - name: create package-lock.json
-        run: npm i --package-lock-only
+        run: npm i --package-lock-only --ignore-scripts
 
       - name: hack for singe file
         run: |
@@ -43,7 +43,7 @@ jobs:
       - name: install
         if: steps.node_modules_cache_id.outputs.cache-hit != 'true'
         run: npm ci
-  
+
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -69,7 +69,7 @@ jobs:
         run: npm run tsc
 
     needs: setup
-  
+
   compile:
     runs-on: ubuntu-latest
     steps:
@@ -92,7 +92,7 @@ jobs:
         run: npm run compile
 
     needs: setup
-  
+
   coverage:
     runs-on: ubuntu-latest
     steps:

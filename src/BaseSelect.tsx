@@ -1,5 +1,5 @@
+import type { AlignType, BuildInPlacements } from '@rc-component/trigger/lib/interface';
 import classNames from 'classnames';
-import type { AlignType } from 'rc-trigger/lib/interface';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import isMobile from 'rc-util/lib/isMobile';
@@ -7,16 +7,36 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import { useComposeRef } from 'rc-util/lib/ref';
 import type { ScrollConfig, ScrollTo } from 'rc-virtual-list/lib/List';
 import * as React from 'react';
+import { useAllowClear } from './hooks/useAllowClear';
 import { BaseSelectContext } from './hooks/useBaseProps';
 import useDelayReset from './hooks/useDelayReset';
 import useLock from './hooks/useLock';
 import useSelectTriggerControl from './hooks/useSelectTriggerControl';
+import type {
+  DisplayInfoType,
+  DisplayValueType,
+  Mode,
+  Placement,
+  RawValueType,
+  RenderDOMFunc,
+  RenderNode,
+} from './interface';
 import type { RefSelectorProps } from './Selector';
 import Selector from './Selector';
 import type { RefTriggerProps } from './SelectTrigger';
 import SelectTrigger from './SelectTrigger';
 import TransBtn from './TransBtn';
 import { getSeparatedContent } from './utils/valueUtil';
+
+export type {
+  DisplayInfoType,
+  DisplayValueType,
+  Mode,
+  Placement,
+  RenderDOMFunc,
+  RenderNode,
+  RawValueType,
+};
 
 const DEFAULT_OMIT_PROPS = [
   'value',
@@ -32,19 +52,6 @@ const DEFAULT_OMIT_PROPS = [
   'onPopupScroll',
   'tabIndex',
 ] as const;
-
-export type RenderNode = React.ReactNode | ((props: any) => React.ReactNode);
-
-export type RenderDOMFunc = (props: any) => HTMLElement;
-
-export type Mode = 'multiple' | 'tags' | 'combobox';
-
-export type Placement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
-
-export type RawValueType = string | number;
-
-export type DisplayInfoType = 'add' | 'remove' | 'clear';
-
 export interface RefOptionListProps {
   onKeyDown: React.KeyboardEventHandler;
   onKeyUp: React.KeyboardEventHandler;
@@ -58,14 +65,6 @@ export type CustomTagProps = {
   onClose: (event?: React.MouseEvent<HTMLElement, MouseEvent>) => void;
   closable: boolean;
 };
-
-export interface DisplayValueType {
-  key?: React.Key;
-  value?: RawValueType;
-  label?: React.ReactNode;
-  title?: string | number;
-  disabled?: boolean;
-}
 
 export interface BaseSelectRef {
   focus: () => void;
@@ -126,6 +125,7 @@ export type BaseSelectPropsWithoutPrivate = Omit<BaseSelectProps, keyof BaseSele
 export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttributes {
   className?: string;
   style?: React.CSSProperties;
+  title?: string;
   showSearch?: boolean;
   tagRender?: (props: CustomTagProps) => React.ReactElement;
   direction?: 'ltr' | 'rtl';
@@ -167,10 +167,12 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   tokenSeparators?: string[];
 
   // >>> Icons
-  allowClear?: boolean;
-  showArrow?: boolean;
-  inputIcon?: RenderNode;
-  /** Clear all icon */
+  allowClear?: boolean | { clearIcon?: RenderNode };
+  suffixIcon?: RenderNode;
+  /**
+   * Clear all icon
+   * @deprecated Please use `allowClear` instead
+   **/
   clearIcon?: RenderNode;
   /** Selector remove icon */
   removeIcon?: RenderNode;
@@ -184,6 +186,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
   dropdownAlign?: AlignType;
   placement?: Placement;
+  builtinPlacements?: BuildInPlacements;
   getPopupContainer?: RenderDOMFunc;
 
   // >>> Focus
@@ -253,8 +256,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
 
     // Icons
     allowClear,
-    showArrow,
-    inputIcon,
+    suffixIcon,
     clearIcon,
 
     // Dropdown
@@ -267,6 +269,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     dropdownRender,
     dropdownAlign,
     placement,
+    builtinPlacements,
     getPopupContainer,
 
     // Focus
@@ -290,7 +293,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
 
   const domProps = {
     ...restProps,
-  } as Omit<keyof typeof restProps, typeof DEFAULT_OMIT_PROPS[number]>;
+  } as Omit<keyof typeof restProps, (typeof DEFAULT_OMIT_PROPS)[number]>;
 
   DEFAULT_OMIT_PROPS.forEach((propName) => {
     delete domProps[propName];
@@ -313,6 +316,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   const triggerRef = React.useRef<RefTriggerProps>(null);
   const selectorRef = React.useRef<RefSelectorProps>(null);
   const listRef = React.useRef<RefOptionListProps>(null);
+  const blurRef = React.useRef<boolean>(false);
 
   /** Used for component focused management */
   const [mockFocused, setMockFocused, cancelSetMockFocused] = useDelayReset();
@@ -350,12 +354,18 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   );
 
   // ============================== Open ==============================
-  const [innerOpen, setInnerOpen] = useMergedState<boolean>(undefined, {
+  // SSR not support Portal which means we need delay `open` for the first time render
+  const [rendered, setRendered] = React.useState(false);
+  useLayoutEffect(() => {
+    setRendered(true);
+  }, []);
+
+  const [innerOpen, setInnerOpen] = useMergedState<boolean>(false, {
     defaultValue: defaultOpen,
     value: open,
   });
 
-  let mergedOpen = innerOpen;
+  let mergedOpen = rendered ? innerOpen : false;
 
   // Not trigger `open` in `combobox` when `notFoundContent` is empty
   const emptyListContent = !notFoundContent && emptyOptions;
@@ -442,7 +452,8 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       setInnerOpen(false);
     }
 
-    if (disabled) {
+    // After onBlur is triggered, the focused does not need to be reset
+    if (disabled && !blurRef.current) {
       setMockFocused(false);
     }
   }, [disabled]);
@@ -552,8 +563,11 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   };
 
   const onContainerBlur: React.FocusEventHandler<HTMLElement> = (...args) => {
+    blurRef.current = true;
+
     setMockFocused(false, () => {
       focusRef.current = false;
+      blurRef.current = false;
       onToggleOpen(false);
     });
 
@@ -614,22 +628,11 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   };
 
   // ============================ Dropdown ============================
-  const [containerWidth, setContainerWidth] = React.useState(null);
-
   const [, forceUpdate] = React.useState({});
   // We need force update here since popup dom is render async
   function onPopupMouseEnter() {
     forceUpdate({});
   }
-
-  useLayoutEffect(() => {
-    if (triggerOpen) {
-      const newWidth = Math.ceil(containerRef.current?.offsetWidth);
-      if (containerWidth !== newWidth && !Number.isNaN(newWidth)) {
-        setContainerWidth(newWidth);
-      }
-    }
-  }, [triggerOpen]);
 
   // Used for raw custom input trigger
   let onTriggerVisibleChange: null | ((newOpen: boolean) => void);
@@ -667,17 +670,16 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   // ==================================================================
 
   // ============================= Arrow ==============================
-  const mergedShowArrow =
-    showArrow !== undefined ? showArrow : loading || (!multiple && mode !== 'combobox');
+  const showSuffixIcon = !!suffixIcon || loading;
   let arrowNode: React.ReactNode;
 
-  if (mergedShowArrow) {
+  if (showSuffixIcon) {
     arrowNode = (
       <TransBtn
         className={classNames(`${prefixCls}-arrow`, {
           [`${prefixCls}-arrow-loading`]: loading,
         })}
-        customizeIcon={inputIcon}
+        customizeIcon={suffixIcon}
         customizeIconProps={{
           loading,
           searchValue: mergedSearchValue,
@@ -690,7 +692,6 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   }
 
   // ============================= Clear ==============================
-  let clearNode: React.ReactNode;
   const onClearMouseDown: React.MouseEventHandler<HTMLSpanElement> = () => {
     onClear?.();
 
@@ -703,22 +704,17 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     onInternalSearch('', false, false);
   };
 
-  if (
-    !disabled &&
-    allowClear &&
-    (displayValues.length || mergedSearchValue) &&
-    !(mode === 'combobox' && mergedSearchValue === '')
-  ) {
-    clearNode = (
-      <TransBtn
-        className={`${prefixCls}-clear`}
-        onMouseDown={onClearMouseDown}
-        customizeIcon={clearIcon}
-      >
-        ×
-      </TransBtn>
-    );
-  }
+  const { allowClear: mergedAllowClear, clearIcon: clearNode } = useAllowClear(
+    prefixCls,
+    onClearMouseDown,
+    displayValues,
+    allowClear,
+    clearIcon,
+    disabled,
+
+    mergedSearchValue,
+    mode,
+  );
 
   // =========================== OptionList ===========================
   const optionList = <OptionList ref={listRef} />;
@@ -729,7 +725,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     [`${prefixCls}-multiple`]: multiple,
     [`${prefixCls}-single`]: !multiple,
     [`${prefixCls}-allow-clear`]: allowClear,
-    [`${prefixCls}-show-arrow`]: mergedShowArrow,
+    [`${prefixCls}-show-arrow`]: showSuffixIcon,
     [`${prefixCls}-disabled`]: disabled,
     [`${prefixCls}-loading`]: loading,
     [`${prefixCls}-open`]: mergedOpen,
@@ -745,7 +741,6 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       prefixCls={prefixCls}
       visible={triggerOpen}
       popupElement={optionList}
-      containerWidth={containerWidth}
       animation={animation}
       transitionName={transitionName}
       dropdownStyle={dropdownStyle}
@@ -755,6 +750,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       dropdownRender={dropdownRender}
       dropdownAlign={dropdownAlign}
       placement={placement}
+      builtinPlacements={builtinPlacements}
       getPopupContainer={getPopupContainer}
       empty={emptyOptions}
       getTriggerDOMNode={() => selectorDomRef.current}
@@ -830,9 +826,8 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
           </span>
         )}
         {selectorNode}
-
         {arrowNode}
-        {clearNode}
+        {mergedAllowClear && clearNode}
       </div>
     );
   }

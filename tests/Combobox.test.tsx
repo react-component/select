@@ -74,7 +74,7 @@ describe('Select.Combobox', () => {
     expect(wrapper.find('input').props().value).toBe('');
     expect(wrapper.find('.rc-select-selection-placeholder').text()).toEqual('placeholder');
     wrapper.find('input').simulate('change', { target: { value: '1' } });
-    expect(wrapper.find('.rc-select-selection-placeholder').length).toBeFalsy();
+    expect(wrapper.find('.rc-select-selection-placeholder').length).toBe(0);
     expect(wrapper.find('input').props().value).toBe('1');
   });
 
@@ -599,5 +599,11 @@ describe('Select.Combobox', () => {
     expect(document.body.querySelector('.rc-select-dropdown-hidden')).toBeTruthy();
 
     jest.useRealTimers();
+  });
+
+  // https://github.com/ant-design/ant-design/issues/43936
+  it('combobox mode not show 0 value', () => {
+    const wrapper = mount(<Select mode="combobox" value={0} />);
+    expect(wrapper.find('input').props().value).toBe('0');
   });
 });

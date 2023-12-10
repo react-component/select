@@ -60,14 +60,13 @@ class Test extends React.Component {
 
         <h2>Single Select</h2>
 
-        <div style={{ width: 300 }}>
+        <div>
           <Select
             autoFocus
             id="my-select"
             value={value}
             placeholder="placeholder"
             showSearch
-            style={{ width: 500 }}
             onBlur={this.onBlur}
             onFocus={this.onFocus}
             onSearch={this.onSearch}

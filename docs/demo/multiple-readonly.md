@@ -1,2 +1,8 @@
-## multiple-readonly
-<code src="../examples/multiple-readonly.tsx">
+---
+title: multiple-readonly
+nav:
+  title: Demo
+  path: /demo
+---
+
+<code src="../examples/multiple-readonly.tsx"></code>

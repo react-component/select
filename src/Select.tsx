@@ -41,16 +41,17 @@ import type {
   RenderNode,
 } from './BaseSelect';
 import BaseSelect, { isMultiple } from './BaseSelect';
+import OptGroup from './OptGroup';
+import Option from './Option';
+import OptionList from './OptionList';
+import SelectContext from './SelectContext';
 import useCache from './hooks/useCache';
 import useFilterOptions from './hooks/useFilterOptions';
 import useId from './hooks/useId';
 import useOptions from './hooks/useOptions';
 import useRefFunc from './hooks/useRefFunc';
-import OptGroup from './OptGroup';
-import Option from './Option';
-import OptionList from './OptionList';
-import SelectContext from './SelectContext';
-import { hasValue, toArray } from './utils/commonUtil';
+import type { FlattenOptionData } from './interface';
+import { hasValue, isComboNoValue, toArray } from './utils/commonUtil';
 import { fillFieldNames, flattenOptions, injectPropsWithOption } from './utils/valueUtil';
 import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
 
@@ -83,6 +84,7 @@ export type FilterFunc<OptionType> = (inputValue: string, option?: OptionType) =
 export interface FieldNames {
   value?: string;
   label?: string;
+  groupLabel?: string;
   options?: string;
 }
 
@@ -137,8 +139,13 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   optionLabelProp?: string;
   children?: React.ReactNode;
   options?: OptionType[];
+  optionRender?: (
+    oriOption: FlattenOptionData<BaseOptionType>,
+    info: { index: number },
+  ) => React.ReactNode;
   defaultActiveFirstOption?: boolean;
   virtual?: boolean;
+  direction?: 'ltr' | 'rtl';
   listHeight?: number;
   listItemHeight?: number;
 
@@ -182,10 +189,12 @@ const Select = React.forwardRef(
       optionFilterProp,
       optionLabelProp,
       options,
+      optionRender,
       children,
       defaultActiveFirstOption,
       menuItemSelectedIcon,
       virtual,
+      direction,
       listHeight = 200,
       listItemHeight = 20,
 
@@ -272,7 +281,12 @@ const Select = React.forwardRef(
             // Warning if label not same as provided
             if (process.env.NODE_ENV !== 'production' && !optionLabelProp) {
               const optionLabel = option?.[mergedFieldNames.label];
-              if (optionLabel !== undefined && optionLabel !== rawLabel) {
+              if (
+                optionLabel !== undefined &&
+                !React.isValidElement(optionLabel) &&
+                !React.isValidElement(rawLabel) &&
+                optionLabel !== rawLabel
+              ) {
                 warning(false, '`label` of `value` is not same as `label` in Select options.');
               }
             }
@@ -299,8 +313,8 @@ const Select = React.forwardRef(
     const rawLabeledValues = React.useMemo(() => {
       const values = convert2LabelValues(internalValue);
 
-      // combobox no need save value when it's no value
-      if (mode === 'combobox' && !values[0]?.value) {
+      // combobox no need save value when it's no value (exclude value equal 0)
+      if (mode === 'combobox' && isComboNoValue(values[0]?.value)) {
         return [];
       }
 
@@ -395,10 +409,20 @@ const Select = React.forwardRef(
       ) {
         return filteredOptions;
       }
-
+      // ignore when search value equal select input value
+      if (filteredOptions.some((item) => item[mergedFieldNames.value] === mergedSearchValue)) {
+        return filteredOptions;
+      }
       // Fill search value as option
       return [createTagOption(mergedSearchValue), ...filteredOptions];
-    }, [createTagOption, optionFilterProp, mode, filteredOptions, mergedSearchValue]);
+    }, [
+      createTagOption,
+      optionFilterProp,
+      mode,
+      filteredOptions,
+      mergedSearchValue,
+      mergedFieldNames,
+    ]);
 
     const orderedFilteredOptions = React.useMemo(() => {
       if (!filterSort) {
@@ -410,7 +434,10 @@ const Select = React.forwardRef(
 
     const displayOptions = React.useMemo(
       () =>
-        flattenOptions(orderedFilteredOptions, { fieldNames: mergedFieldNames, childrenAsData }),
+        flattenOptions(orderedFilteredOptions, {
+          fieldNames: mergedFieldNames,
+          childrenAsData,
+        }),
       [orderedFilteredOptions, mergedFieldNames, childrenAsData],
     );
 
@@ -580,9 +607,11 @@ const Select = React.forwardRef(
         rawValues,
         fieldNames: mergedFieldNames,
         virtual: realVirtual,
+        direction,
         listHeight,
         listItemHeight,
         childrenAsData,
+        optionRender,
       };
     }, [
       parsedOptions,
@@ -598,6 +627,7 @@ const Select = React.forwardRef(
       listHeight,
       listItemHeight,
       childrenAsData,
+      optionRender,
     ]);
 
     // ========================== Warning ===========================
@@ -622,6 +652,8 @@ const Select = React.forwardRef(
           // >>> Values
           displayValues={displayValues}
           onDisplayValuesChange={onDisplayValuesChange}
+          // >>> Trigger
+          direction={direction}
           // >>> Search
           searchValue={mergedSearchValue}
           onSearch={onInternalSearch}
