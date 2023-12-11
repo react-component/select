@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React from 'react';
-import Select, { Option, OptGroup } from 'rc-select';
+import Select from 'rc-select';
 import '../../assets/index.less';
 
 function onChange(value, option) {
@@ -16,27 +16,26 @@ const Test = () => (
         defaultValue="lucy"
         style={{ width: 500 }}
         onChange={onChange}
-      >
-        <OptGroup label="manager">
-          <Option value="jack" test-prop="jack-prop">
-            <b
-              style={{
-                color: 'red',
-              }}
-            >
-              jack
-            </b>
-          </Option>
-          <Option value="lucy" test-prop="lucy-prop">
-            lucy
-          </Option>
-        </OptGroup>
-        <OptGroup label="engineer">
-          <Option value="yiminghe" test-prop="yiminghe-prop">
-            yiminghe
-          </Option>
-        </OptGroup>
-      </Select>
+        options={[{
+          label: 'manager',
+          options: [{
+            label: 'jack',
+            value: 'jack',
+          }, {
+            label: 'lucy',
+            value: 'lucy',
+          }],
+        }, {
+          label: 'engineer',
+          options: [{
+            label: 'yiminghe',
+            value: 'yiminghe',
+          }],
+        }, {
+          label: 'empty options group',
+          options: undefined
+        }]}
+      />
     </div>
   </div>
 );
