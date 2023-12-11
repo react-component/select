@@ -51,7 +51,9 @@ export function flattenOptions<OptionType extends BaseOptionType = DefaultOption
   } = fillFieldNames(fieldNames, false);
 
   function dig(list: OptionType[], isGroupOption: boolean) {
-    if (!Array.isArray(list)) return;
+    if (!Array.isArray(list)) {
+      return;
+    }
 
     list.forEach((data) => {
       if (isGroupOption || !(fieldOptions in data)) {
