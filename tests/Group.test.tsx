@@ -66,4 +66,34 @@ describe('Select.Group', () => {
       expect(wrapper.find('.rc-select-item-group').prop('title')).toBeUndefined();
     });
   });
+
+  it('group options exist undefined/null', () => {
+    const wrapper = mount(
+      <Select
+          open
+          options={[
+            {
+              label: 'zombiej',
+              options: [
+                { label: 'jackson', value: 'jackson' },
+              ],
+            },
+            {
+              label: 'bamboo',
+              options: undefined,
+            },
+            {
+              label: 'mocha',
+              options: null,
+            }
+        ]}
+      />
+    );
+
+    expect(wrapper.find('.rc-select-item-group').length).toEqual(3);
+    expect(wrapper.find('.rc-select-item-option').length).toEqual(1);
+
+    expect(wrapper.find('.rc-select-item').at(2).prop('title')).toEqual('bamboo');
+    expect(wrapper.find('.rc-select-item').at(3).prop('title')).toEqual('mocha');
+  })
 });
