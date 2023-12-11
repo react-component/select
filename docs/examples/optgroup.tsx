@@ -18,22 +18,19 @@ const Test = () => (
         onChange={onChange}
         options={[{
           label: 'manager',
-          options: [{
-            label: 'jack',
-            value: 'jack',
-          }, {
-            label: 'lucy',
-            value: 'lucy',
-          }],
+          options: [
+            { label: 'jack', value: 'jack' },
+            { label: 'lucy', value: 'lucy' }
+          ],
         }, {
           label: 'engineer',
-          options: [{
-            label: 'yiminghe',
-            value: 'yiminghe',
-          }],
+          options: [{ label: 'yiminghe', value: 'yiminghe' }]
         }, {
-          label: 'empty options group',
-          options: undefined
+          label: 'bamboo',
+          options: undefined,
+        }, {
+          label: 'mocha',
+          options: null,
         }]}
       />
     </div>
