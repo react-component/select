@@ -23,6 +23,7 @@ import {
   selectItem,
   toggleOpen,
 } from './utils/common';
+import { LabelInValueType } from '@/Select';
 
 describe('Select.Basic', () => {
   injectRunAllTimers(jest);
@@ -2105,7 +2106,7 @@ describe('Select.Basic', () => {
       <Select
         open
         options={options}
-        optionRender={(option, {index}) => {
+        optionRender={(option, { index }) => {
           return `${option.label} - ${index}`;
         }}
       />,
@@ -2117,13 +2118,13 @@ describe('Select.Basic', () => {
 
   it('labelRender', () => {
     const onLabelRender = jest.fn();
-    const labelRender = (props: any) => {
+    const labelRender = (props: LabelInValueType) => {
       const { label, value } = props;
       onLabelRender();
       return `${label}-${value}`;
     };
     const wrapper = mount(
-        <Select options={[{ label: 'realLabel', value: 'a' }]} value="a" labelRender={labelRender} />,
+      <Select options={[{ label: 'realLabel', value: 'a' }]} value="a" labelRender={labelRender} />,
     );
 
     expect(onLabelRender).toHaveBeenCalled();
@@ -2132,12 +2133,19 @@ describe('Select.Basic', () => {
 
   it('labelRender when value is not in options', () => {
     const onLabelRender = jest.fn();
-    const labelRender = (props: any) => {
+    const options = [{ label: 'realLabel', value: 'b' }];
+    const labelRender = (props: LabelInValueType) => {
       const { label, value } = props;
-      onLabelRender();
-      return `${label || 'fakeLabel'}-${value}`;
+      // current value is in options
+      if (options.find((item) => item.value === value)) {
+        return label;
+      } else {
+        // current value is not in options
+        onLabelRender();
+        return `${label || 'fakeLabel'}-${value}`;
+      }
     };
-    const wrapper = mount(<Select value="a" labelRender={labelRender} options={[{ label: 'realLabel', value: 'b' }]} />);
+    const wrapper = mount(<Select value="a" labelRender={labelRender} options={options} />);
 
     expect(onLabelRender).toHaveBeenCalled();
     expect(findSelection(wrapper).text()).toEqual('fakeLabel-a');
