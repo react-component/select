@@ -466,6 +466,24 @@ const Select = React.forwardRef(
       }
     };
 
+    // ================ Options change ============
+
+    React.useEffect(() => {
+      // When it's a non-controllable component and options change, update values to match the new label.
+      if (defaultValue === undefined && value === undefined && rawLabeledValues.length && valueOptions.size && rawLabeledValues.find(item => {
+        const findedOption = valueOptions.get(item.value);
+        if (findedOption) {
+          return findedOption.label !== item.label
+        }
+        return false
+      })) {
+        // should not use triggerChange directly to cause `onChange` event
+        const values = rawLabeledValues.map(item => valueOptions.get(item.value));
+        const labeledValues = convert2LabelValues(values);
+        setInternalValue(labeledValues);
+      }
+    }, [valueOptions])
+
     // ======================= Accessibility ========================
     const [activeValue, setActiveValue] = React.useState<string>(null);
     const [accessibilityIndex, setAccessibilityIndex] = React.useState(0);
