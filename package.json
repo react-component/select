@@ -73,7 +73,7 @@
     "jsonp": "^0.2.1",
     "less": "^4.2.0",
     "np": "^9.2.0",
-    "prettier": "^2.7.1",
+    "prettier": "^3.1.1",
     "querystring": "^0.2.1",
     "rc-dialog": "^9.0.0",
     "rc-test": "^7.0.9",
