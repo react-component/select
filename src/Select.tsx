@@ -325,7 +325,7 @@ const Select = React.forwardRef(
 
     // Fill label with cache to avoid option remove
     const [mergedValues, getMixedOption] = useCache(rawLabeledValues, valueOptions);
-    
+
     const displayValues = React.useMemo(() => {
       // `null` need show as placeholder instead
       // https://github.com/ant-design/ant-design/issues/25057
