@@ -1,3 +1,4 @@
+import type { LabelInValueType } from '@/Select';
 import { fireEvent, render as testingRender } from '@testing-library/react';
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
@@ -23,7 +24,6 @@ import {
   selectItem,
   toggleOpen,
 } from './utils/common';
-import { LabelInValueType } from '@/Select';
 
 describe('Select.Basic', () => {
   injectRunAllTimers(jest);
@@ -2149,5 +2149,36 @@ describe('Select.Basic', () => {
 
     expect(onLabelRender).toHaveBeenCalled();
     expect(findSelection(wrapper).text()).toEqual('fakeLabel-a');
+  });
+
+  it('labelRender when labelInValue and useCache', () => {
+    const onLabelRender = jest.fn();
+    const labelRender = (props: LabelInValueType) => {
+      const { label, value } = props;
+      onLabelRender({ label, value });
+      return `custom label`;
+    };
+
+    const wrapper = mount(
+      <Select
+        labelInValue
+        value={{ key: 1, label: 'One' }}
+        labelRender={labelRender}
+        options={[
+          {
+            value: 2,
+            label: 'Two',
+          },
+        ]}
+      />,
+    );
+
+    expect(onLabelRender).toHaveBeenCalledWith({ label: 'One', value: 1 });
+    expect(findSelection(wrapper).text()).toEqual('custom label');
+
+    wrapper.setProps({ options: [] });
+
+    expect(findSelection(wrapper).text()).toEqual('custom label');
+
   });
 });
