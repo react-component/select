@@ -467,17 +467,13 @@ const Select = React.forwardRef(
     };
 
     // ================ Options change ============
-
     React.useEffect(() => {
       // When it's a non-controllable component and options change.
       if (defaultValue === undefined && value === undefined && rawLabeledValues.length && valueOptions.size) {
         // check whether if match new label.
         const findNotMatchLabel = rawLabeledValues.find(item => {
           const findedOption = valueOptions.get(item.value);
-          if (findedOption) {
-            return findedOption.label !== item.label
-          }
-          return false
+          return findedOption ? findedOption.label !== item.label : false;
         })
 
         // update values to match the new label.
@@ -488,7 +484,7 @@ const Select = React.forwardRef(
           setInternalValue(labeledValues);
         }
       }
-    }, [valueOptions])
+    }, [valueOptions]);
 
     // ======================= Accessibility ========================
     const [activeValue, setActiveValue] = React.useState<string>(null);
