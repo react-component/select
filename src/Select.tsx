@@ -469,17 +469,21 @@ const Select = React.forwardRef(
     // ================ Options change ============
     React.useEffect(() => {
       // When it's a non-controllable component and options change.
-      if (defaultValue === undefined && value === undefined && rawLabeledValues.length && valueOptions.size) {
+      if (
+        defaultValue === undefined &&
+        value === undefined &&
+        rawLabeledValues.length &&
+        valueOptions.size
+      ) {
         // check whether if match new label.
-        const findNotMatchLabel = rawLabeledValues.find(item => {
+        const findNotMatchLabel = rawLabeledValues.find((item) => {
           const findedOption = valueOptions.get(item.value);
           return findedOption ? findedOption.label !== item.label : false;
-        })
-
+        });
         // update values to match the new label.
         if (findNotMatchLabel) {
           // should not use triggerChange directly to cause `onChange` event
-          const values = rawLabeledValues.map(item => valueOptions.get(item.value));
+          const values = rawLabeledValues.map((item) => valueOptions.get(item.value));
           const labeledValues = convert2LabelValues(values);
           setInternalValue(labeledValues);
         }
