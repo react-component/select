@@ -62,19 +62,19 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
   // Get title of selection item
   const selectionTitle = title === undefined ? getTitle(item) : title;
 
-  const renderPlaceholder = () => {
+  const placeholderNode = React.useMemo<React.ReactNode>(() => {
     if (item) {
       return null;
     }
-    const hiddenStyle = hasTextInput
-      ? ({ visibility: 'hidden' } as React.CSSProperties)
-      : undefined;
     return (
-      <span className={`${prefixCls}-selection-placeholder`} style={hiddenStyle}>
+      <span
+        className={`${prefixCls}-selection-placeholder`}
+        style={hasTextInput ? { visibility: 'hidden' } : undefined}
+      >
         {placeholder}
       </span>
     );
-  };
+  }, [item, hasTextInput, placeholder, prefixCls]);
 
   return (
     <>
@@ -114,14 +114,13 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
           // 当 Select 已经选中选项时，还需 selection 隐藏但留在原地占位
           // https://github.com/ant-design/ant-design/issues/27688
           // https://github.com/ant-design/ant-design/issues/41530
-          style={hasTextInput ? ({ visibility: 'hidden' } as React.CSSProperties) : undefined}
+          style={hasTextInput ? { visibility: 'hidden' } : undefined}
         >
           {item.label}
         </span>
       ) : null}
-
       {/* Display placeholder */}
-      {renderPlaceholder()}
+      {placeholderNode}
     </>
   );
 };

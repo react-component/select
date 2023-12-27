@@ -33,8 +33,8 @@ interface InputProps {
   >;
 }
 
-const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (
-  {
+const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (props, ref) => {
+  const {
     prefixCls,
     id,
     inputElement,
@@ -54,9 +54,8 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (
     onCompositionEnd,
     open,
     attrs,
-  },
-  ref,
-) => {
+  } = props;
+
   let inputNode: React.ComponentElement<any, any> = inputElement || <input />;
 
   const { ref: originRef, props: originProps } = inputNode;
