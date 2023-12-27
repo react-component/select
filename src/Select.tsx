@@ -163,8 +163,8 @@ function isRawValue(value: DraftValueType): value is RawValueType {
   return !value || typeof value !== 'object';
 }
 
-const Select = React.forwardRef(
-  (props: SelectProps<any, DefaultOptionType>, ref: React.Ref<BaseSelectRef>) => {
+const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionType>>(
+  (props, ref) => {
     const {
       id,
       mode,
