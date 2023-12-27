@@ -395,6 +395,9 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
 };
 
 const RefOptionList = React.forwardRef(OptionList);
-RefOptionList.displayName = 'OptionList';
+
+if (process.env.NODE_ENV !== 'production') {
+  RefOptionList.displayName = 'OptionList';
+}
 
 export default RefOptionList;

@@ -79,7 +79,7 @@ export interface SelectTriggerProps {
   onPopupMouseEnter: () => void;
 }
 
-const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTriggerProps> = (
+const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTriggerProps> = (
   props,
   ref,
 ) => {
@@ -180,6 +180,9 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
 };
 
 const RefSelectTrigger = React.forwardRef<RefTriggerProps, SelectTriggerProps>(SelectTrigger);
-RefSelectTrigger.displayName = 'SelectTrigger';
+
+if (process.env.NODE_ENV !== 'production') {
+  RefSelectTrigger.displayName = 'SelectTrigger';
+}
 
 export default RefSelectTrigger;
