@@ -209,7 +209,7 @@ export function isMultiple(mode: Mode) {
   return mode === 'tags' || mode === 'multiple';
 }
 
-const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<BaseSelectRef>) => {
+const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref) => {
   const {
     id,
     prefixCls,
@@ -711,7 +711,6 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     allowClear,
     clearIcon,
     disabled,
-
     mergedSearchValue,
     mode,
   );
@@ -808,14 +807,8 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       >
         {mockFocused && !mergedOpen && (
           <span
-            style={{
-              width: 0,
-              height: 0,
-              position: 'absolute',
-              overflow: 'hidden',
-              opacity: 0,
-            }}
             aria-live="polite"
+            style={{ width: 0, height: 0, position: 'absolute', overflow: 'hidden', opacity: 0 }}
           >
             {/* Merge into one string to make screen reader work as expect */}
             {`${displayValues
