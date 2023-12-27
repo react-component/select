@@ -266,7 +266,7 @@ const Select = React.forwardRef(
           } else {
             rawKey = val.key;
             rawLabel = val.label;
-            rawValue = val.value ?? rawKey;
+            rawValue = val.value ?? (rawKey as RawValueType);
           }
 
           const option = valueOptions.get(rawValue);
@@ -680,9 +680,8 @@ const TypedSelect = Select as unknown as (<
   ValueType = any,
   OptionType extends BaseOptionType | DefaultOptionType = DefaultOptionType,
 >(
-  props: React.PropsWithChildren<SelectProps<ValueType, OptionType>> & {
-    ref?: React.Ref<BaseSelectRef>;
-  },
+  props: React.PropsWithChildren<SelectProps<ValueType, OptionType>> &
+    React.RefAttributes<BaseSelectRef>,
 ) => React.ReactElement) & {
   Option: typeof Option;
   OptGroup: typeof OptGroup;
