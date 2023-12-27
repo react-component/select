@@ -560,8 +560,8 @@ describe('Select.Multiple', () => {
       </Select>,
     );
 
-    expect(wrapper1.find('Selector').props().values.length).toEqual(0);
-    expect(wrapper2.find('Selector').props().values.length).toEqual(0);
+    expect(wrapper1.find('.rc-select-selection-item').length).toBe(0);
+    expect(wrapper2.find('.rc-select-selection-item').length).toBe(0);
   });
 
   describe('optionLabelProp', () => {
