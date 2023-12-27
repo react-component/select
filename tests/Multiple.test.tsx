@@ -546,6 +546,24 @@ describe('Select.Multiple', () => {
     expect(wrapper.find('Selector').props().values.length).toEqual(0);
   });
 
+  it('display correctly when value is undefined or null', () => {
+    const wrapper1 = mount(
+      <Select mode="multiple" value={undefined}>
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>,
+    );
+    const wrapper2 = mount(
+      <Select mode="multiple" value={null}>
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>,
+    );
+
+    expect(wrapper1.find('Selector').props().values.length).toEqual(0);
+    expect(wrapper2.find('Selector').props().values.length).toEqual(0);
+  });
+
   describe('optionLabelProp', () => {
     it('basic', () => {
       const wrapper = mount(
