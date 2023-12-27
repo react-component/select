@@ -653,7 +653,7 @@ describe('Select.Basic', () => {
   });
 
   describe('click input will trigger focus', () => {
-    let handleFocus;
+    let handleFocus: jest.Mock;
     let wrapper;
     beforeEach(() => {
       jest.useFakeTimers();
@@ -690,15 +690,15 @@ describe('Select.Basic', () => {
     });
 
     it('focus input when placeholder is clicked', () => {
-      const wrapper = mount(
+      const selectWrapper = mount(
         <Select placeholder="xxxx">
           <Option value="1">1</Option>
           <Option value="2">2</Option>
         </Select>,
       );
-      const inputSpy = jest.spyOn(wrapper.find('input').instance(), 'focus' as any);
-      wrapper.find('.rc-select-selection-placeholder').simulate('mousedown');
-      wrapper.find('.rc-select-selection-placeholder').simulate('click');
+      const inputSpy = jest.spyOn(selectWrapper.find('input').instance(), 'focus' as any);
+      selectWrapper.find('.rc-select-selection-placeholder').simulate('mousedown');
+      selectWrapper.find('.rc-select-selection-placeholder').simulate('click');
       expect(inputSpy).toHaveBeenCalled();
     });
   });
@@ -1499,7 +1499,7 @@ describe('Select.Basic', () => {
     );
     expect(menuItemSelectedIcon).toHaveBeenCalledWith({
       value: '1',
-      disabled: undefined,
+      disabled: false,
       isSelected: true,
     });
 
@@ -2105,7 +2105,7 @@ describe('Select.Basic', () => {
       <Select
         open
         options={options}
-        optionRender={(option, {index}) => {
+        optionRender={(option, { index }) => {
           return `${option.label} - ${index}`;
         }}
       />,
