@@ -311,7 +311,8 @@ const Select = React.forwardRef(
 
     // Merged value with LabelValueType
     const rawLabeledValues = React.useMemo(() => {
-      const values = convert2LabelValues(internalValue);
+      const newInternalValue = multiple && internalValue === null ? [] : internalValue;
+      const values = convert2LabelValues(newInternalValue);
 
       // combobox no need save value when it's no value (exclude value equal 0)
       if (mode === 'combobox' && isComboNoValue(values[0]?.value)) {
@@ -319,7 +320,7 @@ const Select = React.forwardRef(
       }
 
       return values;
-    }, [internalValue, convert2LabelValues, mode]);
+    }, [internalValue, convert2LabelValues, mode, multiple]);
 
     // Fill label with cache to avoid option remove
     const [mergedValues, getMixedOption] = useCache(rawLabeledValues, valueOptions);
