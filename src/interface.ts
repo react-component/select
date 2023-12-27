@@ -14,7 +14,7 @@ export interface DisplayValueType {
   key?: React.Key;
   value?: RawValueType;
   label?: React.ReactNode;
-  title?: string | number;
+  title?: React.ReactNode;
   disabled?: boolean;
 }
 
@@ -27,4 +27,3 @@ export type Mode = 'multiple' | 'tags' | 'combobox';
 export type Placement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
 
 export type DisplayInfoType = 'add' | 'remove' | 'clear';
-

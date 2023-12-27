@@ -711,7 +711,6 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     allowClear,
     clearIcon,
     disabled,
-
     mergedSearchValue,
     mode,
   );
