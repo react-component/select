@@ -620,8 +620,6 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       };
     }, [
       maxCount,
-      virtual,
-      dropdownMatchSelectWidth,
       parsedOptions,
       displayOptions,
       onActiveValue,
@@ -630,6 +628,8 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       menuItemSelectedIcon,
       rawValues,
       mergedFieldNames,
+      virtual,
+      dropdownMatchSelectWidth,
       direction,
       listHeight,
       listItemHeight,
