@@ -506,7 +506,7 @@ describe('Select.Tags', () => {
     expect(errSpy).not.toHaveBeenCalled();
   });
 
-  it(`paste content to split`, () => {
+  it(`paste content to split when count >= maxCount`, () => {
     const onChange = jest.fn();
     const { container } = render(
       <Select
@@ -517,17 +517,34 @@ describe('Select.Tags', () => {
         value={['1', '2', '3']}
       />,
     );
-
     const input = container.querySelector<HTMLInputElement>('input');
-
     fireEvent.paste(input, {
       clipboardData: { getData: () => 'test' },
     });
-
     fireEvent.change(input, {
       target: { value: 'test' },
     });
+    expect(onChange).not.toBeCalled();
+  });
 
+  it(`paste content to split when count < maxCount`, () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <Select
+        mode="tags"
+        maxCount={3}
+        onChange={onChange}
+        tokenSeparators={[',']}
+        value={['1', '2']}
+      />,
+    );
+    const input = container.querySelector<HTMLInputElement>('input');
+    fireEvent.paste(input, {
+      clipboardData: { getData: () => 'test' },
+    });
+    fireEvent.change(input, {
+      target: { value: 'test' },
+    });
     expect(onChange).not.toBeCalled();
   });
 });
