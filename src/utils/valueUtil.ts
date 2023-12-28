@@ -111,7 +111,7 @@ export function injectPropsWithOption<T extends object>(option: T): T {
   return newOption;
 }
 
-export const getSeparatedContent = (text: string, tokens: string[]): string[] | null => {
+export const getSeparatedContent = (text: string, tokens: string[], end?: number): string[] => {
   if (!tokens || !tokens.length) {
     return null;
   }
@@ -127,5 +127,9 @@ export const getSeparatedContent = (text: string, tokens: string[]): string[] | 
       .filter(Boolean);
   };
   const list = separate(text, tokens);
-  return match ? list : null;
+  if (match) {
+    return typeof end !== 'undefined' ? list.slice(0, end) : list;
+  } else {
+    return null;
+  }
 };
