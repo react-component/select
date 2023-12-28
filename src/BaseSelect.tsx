@@ -27,8 +27,6 @@ import type { RefTriggerProps } from './SelectTrigger';
 import SelectTrigger from './SelectTrigger';
 import TransBtn from './TransBtn';
 import { getSeparatedContent } from './utils/valueUtil';
-import SelectContext from './SelectContext';
-import type { SelectContextProps } from './SelectContext';
 
 export type {
   DisplayInfoType,
@@ -288,8 +286,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     ...restProps
   } = props;
 
-  const { maxCount, rawValues } = React.useContext<SelectContextProps>(SelectContext);
-
   // ============================== MISC ==============================
   const multiple = isMultiple(mode);
   const mergedShowSearch =
@@ -413,13 +409,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     if (mode !== 'combobox' && patchLabels) {
       newSearchText = '';
 
-      if (typeof maxCount !== 'undefined') {
-        if (rawValues.size < maxCount) {
-          onSearchSplit?.(patchLabels.slice(0, maxCount - rawValues.size));
-        }
-      } else {
-        onSearchSplit?.(patchLabels);
-      }
+      onSearchSplit?.(patchLabels);
 
       // Should close when paste finish
       onToggleOpen(false);
