@@ -3,7 +3,8 @@ import React from 'react';
 import Select, { Option } from 'rc-select';
 import '../../assets/index.less';
 
-const children = [];
+const children: React.ReactNode[] = [];
+
 for (let i = 10; i < 36; i += 1) {
   children.push(
     <Option key={i.toString(36) + i} disabled={i === 10} title={`中文${i}`}>
@@ -18,7 +19,7 @@ class Test extends React.Component {
     suffixIcon: null,
     loading: false,
     value: ['a10'],
-    searchValue: "",
+    searchValue: '',
   };
 
   onChange = (value, options) => {
@@ -36,29 +37,29 @@ class Test extends React.Component {
     console.log(args);
   };
 
-  useAnim = e => {
+  useAnim = (e) => {
     this.setState({
       useAnim: e.target.checked,
     });
   };
 
-  showArrow = e => {
+  showArrow = (e) => {
     this.setState({
       suffixIcon: e.target.checked ? <div>arrow</div> : null,
     });
   };
 
-  loading = e => {
+  loading = (e) => {
     this.setState({
       loading: e.target.checked,
     });
   };
 
-  setSearchValue = val => {
+  setSearchValue = (val) => {
     this.setState({
       searchValue: val,
-    })
-  }
+    });
+  };
 
   render() {
     const { useAnim, loading, value, suffixIcon } = this.state;
@@ -74,7 +75,12 @@ class Test extends React.Component {
           <p />
           <label htmlFor="showArrow">
             showArrow
-            <input id="showArrow" checked={!!suffixIcon} type="checkbox" onChange={this.showArrow} />
+            <input
+              id="showArrow"
+              checked={!!suffixIcon}
+              type="checkbox"
+              onChange={this.showArrow}
+            />
           </label>
         </p>
         <p>
@@ -102,33 +108,32 @@ class Test extends React.Component {
             placeholder="please select"
             onChange={this.onChange}
             onFocus={() => console.log('focus')}
-            onBlur={v => console.log('blur', v)}
+            onBlur={(v) => console.log('blur', v)}
             tokenSeparators={[' ', ',']}
           >
             {children}
           </Select>
         </div>
 
-
         <h2>multiple select with autoClearSearchValue = false</h2>
         <div style={{ width: 300 }}>
           <Select
-              value={value}
-              style={{ width: 500 }}
-              mode="multiple"
-              autoClearSearchValue={false}
-              showSearch={true}
-              searchValue={this.state.searchValue}
-              onSearch={this.setSearchValue}
-              optionFilterProp="children"
-              optionLabelProp="children"
-              onSelect={this.onSelect}
-              onDeselect={this.onDeselect}
-              placeholder="please select"
-              onChange={this.onChange}
-              onFocus={() => console.log('focus')}
-              onBlur={v => console.log('blur', v)}
-              tokenSeparators={[' ', ',']}
+            value={value}
+            style={{ width: 500 }}
+            mode="multiple"
+            autoClearSearchValue={false}
+            showSearch={true}
+            searchValue={this.state.searchValue}
+            onSearch={this.setSearchValue}
+            optionFilterProp="children"
+            optionLabelProp="children"
+            onSelect={this.onSelect}
+            onDeselect={this.onDeselect}
+            placeholder="please select"
+            onChange={this.onChange}
+            onFocus={() => console.log('focus')}
+            onBlur={(v) => console.log('blur', v)}
+            tokenSeparators={[' ', ',']}
           >
             {children}
           </Select>

@@ -25,6 +25,7 @@ export interface SelectContextProps {
   listHeight?: number;
   listItemHeight?: number;
   childrenAsData?: boolean;
+  maxCount?: number;
 }
 
 const SelectContext = React.createContext<SelectContextProps>(null);
