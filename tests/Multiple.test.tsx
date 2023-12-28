@@ -681,20 +681,5 @@ describe('Select.Multiple', () => {
       toggleOpen(wrapper);
       expect(wrapper.find('input').props().value).toBe('');
     });
-
-    it('items should not disabled', () => {
-      const wrapper = mount(
-        <Select
-          open
-          maxCount={1}
-          mode="multiple"
-          value={['bamboo']}
-          options={[{ value: 'bamboo' }, { value: 'light' }]}
-        />,
-      );
-      const items = wrapper.find('div.rc-virtual-list-holder-inner .rc-select-item');
-      expect(items.at(0).props().className.includes('rc-select-item-option-disabled')).toBeFalsy();
-      expect(items.at(1).props().className.includes('rc-select-item-option-disabled')).toBeTruthy();
-    });
   });
 });

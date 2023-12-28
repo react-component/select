@@ -2114,4 +2114,21 @@ describe('Select.Basic', () => {
       'test1 - 0',
     );
   });
+
+  it('multiple items should not disabled', () => {
+    const { container } = testingRender(
+      <Select
+        open
+        maxCount={1}
+        mode="multiple"
+        value={['bamboo']}
+        options={[{ value: 'bamboo' }, { value: 'light' }]}
+      />,
+    );
+    const element = container.querySelectorAll<HTMLDivElement>(
+      'div.rc-virtual-list-holder-inner .rc-select-item',
+    );
+    expect(element[0]).not.toHaveClass('rc-select-item-option-disabled');
+    expect(element[1]).toHaveClass('rc-select-item-option-disabled');
+  });
 });
