@@ -47,7 +47,7 @@ export function flattenOptions<OptionType extends BaseOptionType = DefaultOption
     label: fieldLabel,
     value: fieldValue,
     options: fieldOptions,
-    groupLabel
+    groupLabel,
   } = fillFieldNames(fieldNames, false);
 
   function dig(list: OptionType[], isGroupOption: boolean) {
@@ -111,26 +111,21 @@ export function injectPropsWithOption<T extends object>(option: T): T {
   return newOption;
 }
 
-export function getSeparatedContent(text: string, tokens: string[]): string[] {
+export const getSeparatedContent = (text: string, tokens: string[]): string[] | null => {
   if (!tokens || !tokens.length) {
     return null;
   }
-
   let match = false;
-
-  function separate(str: string, [token, ...restTokens]: string[]) {
+  const separate = (str: string, [token, ...restTokens]: string[]): string[] => {
     if (!token) {
       return [str];
     }
-
     const list = str.split(token);
     match = match || list.length > 1;
-
     return list
       .reduce((prevList, unitStr) => [...prevList, ...separate(unitStr, restTokens)], [])
-      .filter((unit) => unit);
-  }
-
+      .filter(Boolean);
+  };
   const list = separate(text, tokens);
   return match ? list : null;
-}
+};
