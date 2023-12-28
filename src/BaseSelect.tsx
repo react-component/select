@@ -205,9 +205,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
-export function isMultiple(mode: Mode) {
-  return mode === 'tags' || mode === 'multiple';
-}
+export const isMultiple = (mode: Mode) => mode === 'tags' || mode === 'multiple';
 
 const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref) => {
   const {
@@ -293,7 +291,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
   const domProps = {
     ...restProps,
-  } as Omit<keyof typeof restProps, (typeof DEFAULT_OMIT_PROPS)[number]>;
+  };
 
   DEFAULT_OMIT_PROPS.forEach((propName) => {
     delete domProps[propName];
@@ -400,10 +398,10 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     let newSearchText = searchText;
     onActiveValueChange?.(null);
 
+    const separatedList = getSeparatedContent(searchText, tokenSeparators);
+
     // Check if match the `tokenSeparators`
-    const patchLabels: string[] = isCompositing
-      ? null
-      : getSeparatedContent(searchText, tokenSeparators);
+    const patchLabels: string[] = isCompositing ? null : separatedList;
 
     // Ignore combobox since it's not split-able
     if (mode !== 'combobox' && patchLabels) {
