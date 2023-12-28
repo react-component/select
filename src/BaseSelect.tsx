@@ -9,6 +9,7 @@ import type { ScrollConfig, ScrollTo } from 'rc-virtual-list/lib/List';
 import * as React from 'react';
 import { useAllowClear } from './hooks/useAllowClear';
 import { BaseSelectContext } from './hooks/useBaseProps';
+import type { BaseSelectContextProps } from './hooks/useBaseProps';
 import useDelayReset from './hooks/useDelayReset';
 import useLock from './hooks/useLock';
 import useSelectTriggerControl from './hooks/useSelectTriggerControl';
@@ -390,7 +391,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   );
 
   // ============================= Search =============================
-  const tokenWithEnter = React.useMemo(
+  const tokenWithEnter = React.useMemo<boolean>(
     () => (tokenSeparators || []).some((tokenSeparator) => ['\n', '\r\n'].includes(tokenSeparator)),
     [tokenSeparators],
   );
@@ -527,8 +528,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       }
     }
 
-    if (mergedOpen && listRef.current) {
-      listRef.current.onKeyDown(event, ...rest);
+    if (mergedOpen) {
+      listRef.current?.onKeyDown(event, ...rest);
     }
 
     onKeyDown?.(event, ...rest);
@@ -536,8 +537,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
   // KeyUp
   const onInternalKeyUp: React.KeyboardEventHandler<HTMLDivElement> = (event, ...rest) => {
-    if (mergedOpen && listRef.current) {
-      listRef.current.onKeyUp(event, ...rest);
+    if (mergedOpen) {
+      listRef.current?.onKeyUp(event, ...rest);
     }
 
     onKeyUp?.(event, ...rest);
@@ -663,7 +664,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   );
 
   // ============================ Context =============================
-  const baseSelectContext = React.useMemo(
+  const baseSelectContext = React.useMemo<BaseSelectContextProps>(
     () => ({
       ...props,
       notFoundContent,
