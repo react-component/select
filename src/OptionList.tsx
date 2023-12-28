@@ -71,7 +71,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
   // =========================== List ===========================
   const listRef = React.useRef<ListRef>(null);
 
-  const shouldDisabled = React.useMemo<boolean>(
+  const overMaxCount = React.useMemo<boolean>(
     () => multiple && typeof maxCount !== 'undefined' && rawValues.size >= maxCount,
     [multiple, maxCount, rawValues.size],
   );
@@ -95,7 +95,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
 
       const { group, data } = memoFlattenOptions[current] || {};
 
-      if (!group && !data?.disabled && !shouldDisabled) {
+      if (!group && !data?.disabled && !overMaxCount) {
         return current;
       }
     }
@@ -204,7 +204,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
         case KeyCode.ENTER: {
           // value
           const item = memoFlattenOptions[activeIndex];
-          if (item && !item?.data?.disabled && !shouldDisabled) {
+          if (item && !item?.data?.disabled && !overMaxCount) {
             onSelectValue(item.value);
           } else {
             onSelectValue(undefined);
@@ -262,8 +262,9 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
 
   const renderItem = (index: number) => {
     const item = memoFlattenOptions[index];
-    if (!item) return null;
-
+    if (!item) {
+      return null;
+    }
     const itemData = item.data || {};
     const { value } = itemData;
     const { group } = item;
@@ -330,10 +331,10 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
           const { disabled, title, children, style, className, ...otherProps } = data;
           const passedProps = omit(otherProps, omitFieldNameList);
 
-          const mergedDisabled = disabled || shouldDisabled;
-
           // Option
           const selected = isSelected(value);
+
+          const mergedDisabled = disabled || (!selected && overMaxCount);
 
           const optionPrefixCls = `${itemPrefixCls}-option`;
           const optionClassName = classNames(itemPrefixCls, optionPrefixCls, className, {
