@@ -640,15 +640,10 @@ describe('Select.Multiple', () => {
     });
   });
 
-  describe("autoClearSearchValue", () => {
+  describe('autoClearSearchValue', () => {
     it('search value should not show when autoClearSearchValue is undefined', () => {
       const wrapper = mount(
-        <Select
-          mode="multiple"
-          open={false}
-          showSearch={true}
-          searchValue="test"
-        />,
+        <Select mode="multiple" open={false} showSearch={true} searchValue="test" />,
       );
       expect(wrapper.find('input').props().value).toBe('');
     });
@@ -666,12 +661,12 @@ describe('Select.Multiple', () => {
     });
     it('search value should no clear when autoClearSearchValue is false', () => {
       const wrapper = mount(
-          <Select
-              mode="multiple"
-              autoClearSearchValue={false}
-              showSearch={true}
-              searchValue="test"
-          />,
+        <Select
+          mode="multiple"
+          autoClearSearchValue={false}
+          showSearch={true}
+          searchValue="test"
+        />,
       );
 
       toggleOpen(wrapper);
@@ -680,12 +675,7 @@ describe('Select.Multiple', () => {
     });
     it('search value should clear when autoClearSearchValue is true', () => {
       const wrapper = mount(
-          <Select
-              mode="multiple"
-              autoClearSearchValue={true}
-              showSearch={true}
-              searchValue="test"
-          />,
+        <Select mode="multiple" autoClearSearchValue={true} showSearch={true} searchValue="test" />,
       );
       toggleOpen(wrapper);
       toggleOpen(wrapper);

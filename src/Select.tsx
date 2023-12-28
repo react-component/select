@@ -45,6 +45,7 @@ import OptGroup from './OptGroup';
 import Option from './Option';
 import OptionList from './OptionList';
 import SelectContext from './SelectContext';
+import type { SelectContextProps } from './SelectContext';
 import useCache from './hooks/useCache';
 import useFilterOptions from './hooks/useFilterOptions';
 import useId from './hooks/useId';
@@ -156,6 +157,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   labelInValue?: boolean;
   value?: ValueType | null;
   defaultValue?: ValueType | null;
+  maxCount?: number;
   onChange?: (value: ValueType, option: OptionType | OptionType[]) => void;
 }
 
@@ -203,6 +205,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       defaultValue,
       labelInValue,
       onChange,
+      maxCount,
 
       ...restProps
     } = props;
@@ -596,7 +599,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
     };
 
     // ========================== Context ===========================
-    const selectContext = React.useMemo(() => {
+    const selectContext = React.useMemo<SelectContextProps>(() => {
       const realVirtual = virtual !== false && dropdownMatchSelectWidth !== false;
       return {
         ...parsedOptions,
@@ -612,9 +615,11 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
         listHeight,
         listItemHeight,
         childrenAsData,
+        maxCount,
         optionRender,
       };
     }, [
+      maxCount,
       parsedOptions,
       displayOptions,
       onActiveValue,
@@ -625,6 +630,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       mergedFieldNames,
       virtual,
       dropdownMatchSelectWidth,
+      direction,
       listHeight,
       listItemHeight,
       childrenAsData,

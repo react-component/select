@@ -130,6 +130,7 @@ export default () => (
 | virtual | Disable virtual scroll | boolean | true |
 | direction | direction of dropdown | 'ltr' \| 'rtl' | 'ltr' |
 | optionRender | Custom rendering options | (oriOption: FlattenOptionData\<BaseOptionType\> , info: { index: number }) => React.ReactNode | - |
+| maxCount | The max number of items can be selected | number | - |
 
 ### Methods
 
