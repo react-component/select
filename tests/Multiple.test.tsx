@@ -640,15 +640,10 @@ describe('Select.Multiple', () => {
     });
   });
 
-  describe("autoClearSearchValue", () => {
+  describe('autoClearSearchValue', () => {
     it('search value should not show when autoClearSearchValue is undefined', () => {
       const wrapper = mount(
-        <Select
-          mode="multiple"
-          open={false}
-          showSearch={true}
-          searchValue="test"
-        />,
+        <Select mode="multiple" open={false} showSearch={true} searchValue="test" />,
       );
       expect(wrapper.find('input').props().value).toBe('');
     });
@@ -666,12 +661,12 @@ describe('Select.Multiple', () => {
     });
     it('search value should no clear when autoClearSearchValue is false', () => {
       const wrapper = mount(
-          <Select
-              mode="multiple"
-              autoClearSearchValue={false}
-              showSearch={true}
-              searchValue="test"
-          />,
+        <Select
+          mode="multiple"
+          autoClearSearchValue={false}
+          showSearch={true}
+          searchValue="test"
+        />,
       );
 
       toggleOpen(wrapper);
@@ -680,16 +675,26 @@ describe('Select.Multiple', () => {
     });
     it('search value should clear when autoClearSearchValue is true', () => {
       const wrapper = mount(
-          <Select
-              mode="multiple"
-              autoClearSearchValue={true}
-              showSearch={true}
-              searchValue="test"
-          />,
+        <Select mode="multiple" autoClearSearchValue={true} showSearch={true} searchValue="test" />,
       );
       toggleOpen(wrapper);
       toggleOpen(wrapper);
       expect(wrapper.find('input').props().value).toBe('');
+    });
+
+    it('items should not disabled', () => {
+      const wrapper = mount(
+        <Select
+          open
+          maxCount={1}
+          mode="multiple"
+          value={['bamboo']}
+          options={[{ value: 'bamboo' }, { value: 'light' }]}
+        />,
+      );
+      const items = wrapper.find('div.rc-virtual-list-holder-inner .rc-select-item');
+      expect(items.at(0).props().className.includes('rc-select-item-option-disabled')).toBeFalsy();
+      expect(items.at(1).props().className.includes('rc-select-item-option-disabled')).toBeTruthy();
     });
   });
 });
