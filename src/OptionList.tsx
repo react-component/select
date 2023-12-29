@@ -71,7 +71,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
   // =========================== List ===========================
   const listRef = React.useRef<ListRef>(null);
 
-  const { isValidMaxCount, overMaxCount } = useOverMaxCount();
+  const { isValidMaxCount, overMaxCount } = useOverMaxCount(multiple);
 
   const mergedOverMaxCount = isValidMaxCount && overMaxCount;
 

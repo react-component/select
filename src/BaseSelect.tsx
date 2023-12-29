@@ -395,7 +395,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     [tokenSeparators],
   );
 
-  const { isValidMaxCount, overMaxCount, diff } = useOverMaxCount();
+  const { isValidMaxCount, overMaxCount, diff } = useOverMaxCount(multiple);
 
   const onInternalSearch = (searchText: string, fromTyping: boolean, isCompositing: boolean) => {
     if (isValidMaxCount && overMaxCount) {
