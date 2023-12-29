@@ -3,7 +3,6 @@ import SelectContext from '../SelectContext';
 import type { SelectContextProps } from '../SelectContext';
 
 const useMaxCount = (multiple: boolean) => {
-
   const { maxCount, rawValues } = React.useContext<SelectContextProps>(SelectContext) || {};
   return React.useMemo(
     () => ({
@@ -15,4 +14,4 @@ const useMaxCount = (multiple: boolean) => {
   );
 };
 
-export default useOverMaxCount;
+export default useMaxCount;

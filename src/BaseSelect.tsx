@@ -28,7 +28,7 @@ import type { RefTriggerProps } from './SelectTrigger';
 import SelectTrigger from './SelectTrigger';
 import TransBtn from './TransBtn';
 import { getSeparatedContent } from './utils/valueUtil';
-import useOverMaxCount from './hooks/useOverMaxCount';
+import useMaxCount from './hooks/useMaxCount';
 
 export type {
   DisplayInfoType,
@@ -395,7 +395,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     [tokenSeparators],
   );
 
-  const { isValidMaxCount, overMaxCount, diff } = useOverMaxCount(multiple);
+  const { isValidMaxCount, overMaxCount, diff } = useMaxCount(multiple);
 
   const onInternalSearch = (searchText: string, fromTyping: boolean, isCompositing: boolean) => {
     if (isValidMaxCount && overMaxCount) {

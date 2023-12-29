@@ -14,7 +14,7 @@ import TransBtn from './TransBtn';
 import useBaseProps from './hooks/useBaseProps';
 import type { FlattenOptionData } from './interface';
 import { isPlatformMac } from './utils/platformUtil';
-import useOverMaxCount from './hooks/useOverMaxCount';
+import useMaxCount from './hooks/useMaxCount';
 
 // export interface OptionListProps<OptionsType extends object[]> {
 export type OptionListProps = Record<string, never>;
@@ -71,7 +71,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
   // =========================== List ===========================
   const listRef = React.useRef<ListRef>(null);
 
-  const { isValidMaxCount, overMaxCount } = useOverMaxCount(multiple);
+  const { isValidMaxCount, overMaxCount } = useMaxCount(multiple);
 
   const mergedOverMaxCount = isValidMaxCount && overMaxCount;
 
