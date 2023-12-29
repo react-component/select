@@ -4,7 +4,7 @@ import SelectContext from '../SelectContext';
 import type { SelectContextProps } from '../SelectContext';
 
 const useOverMaxCount = () => {
-  const { multiple } = useBaseProps();
+  const { multiple } = useBaseProps() || {};
   const { maxCount, rawValues } = React.useContext<SelectContextProps>(SelectContext) || {};
   return React.useMemo(
     () => ({
