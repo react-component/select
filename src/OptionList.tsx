@@ -14,6 +14,7 @@ import TransBtn from './TransBtn';
 import useBaseProps from './hooks/useBaseProps';
 import type { FlattenOptionData } from './interface';
 import { isPlatformMac } from './utils/platformUtil';
+import useOverMaxCount from './hooks/useOverMaxCount';
 
 // export interface OptionListProps<OptionsType extends object[]> {
 export type OptionListProps = Record<string, never>;
@@ -45,7 +46,6 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     onPopupScroll,
   } = useBaseProps();
   const {
-    maxCount,
     flattenOptions,
     onActiveValue,
     defaultActiveFirstOption,
@@ -71,10 +71,9 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
   // =========================== List ===========================
   const listRef = React.useRef<ListRef>(null);
 
-  const overMaxCount = React.useMemo<boolean>(
-    () => multiple && typeof maxCount !== 'undefined' && rawValues?.size >= maxCount,
-    [multiple, maxCount, rawValues?.size],
-  );
+  const { isValidMaxCount, overMaxCount } = useOverMaxCount();
+
+  const mergedOverMaxCount = isValidMaxCount && overMaxCount;
 
   const onListMouseDown: React.MouseEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
@@ -95,7 +94,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
 
       const { group, data } = memoFlattenOptions[current] || {};
 
-      if (!group && !data?.disabled && !overMaxCount) {
+      if (!group && !data?.disabled && !mergedOverMaxCount) {
         return current;
       }
     }
@@ -204,7 +203,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
         case KeyCode.ENTER: {
           // value
           const item = memoFlattenOptions[activeIndex];
-          if (item && !item?.data?.disabled && !overMaxCount) {
+          if (item && !item?.data?.disabled && !mergedOverMaxCount) {
             onSelectValue(item.value);
           } else {
             onSelectValue(undefined);
@@ -334,7 +333,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
           // Option
           const selected = isSelected(value);
 
-          const mergedDisabled = disabled || (!selected && overMaxCount);
+          const mergedDisabled = disabled || (!selected && mergedOverMaxCount);
 
           const optionPrefixCls = `${itemPrefixCls}-option`;
           const optionClassName = classNames(itemPrefixCls, optionPrefixCls, className, {
