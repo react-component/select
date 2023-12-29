@@ -111,7 +111,7 @@ export function injectPropsWithOption<T extends object>(option: T): T {
   return newOption;
 }
 
-export const getSeparatedContent = (text: string, tokens: string[]): string[] | null => {
+export const getSeparatedContent = (text: string, tokens: string[]): string[] => {
   if (!tokens || !tokens.length) {
     return null;
   }
