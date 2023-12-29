@@ -410,10 +410,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     let newSearchText = searchText;
     onActiveValueChange?.(null);
 
-    const separatedList =
-      isValidMaxCount && !overMaxCount
-        ? getSeparatedContent(searchText, tokenSeparators, maxCount - rawValues.size)
-        : getSeparatedContent(searchText, tokenSeparators);
+    const separatedList = getSeparatedContent(searchText, tokenSeparators, isValidMaxCount && !overMaxCount ? maxCount - rawValues.size : undefined);
 
     // Check if match the `tokenSeparators`
     const patchLabels: string[] = isCompositing ? null : separatedList;
