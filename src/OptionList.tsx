@@ -72,8 +72,8 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
   const listRef = React.useRef<ListRef>(null);
 
   const overMaxCount = React.useMemo<boolean>(
-    () => multiple && typeof maxCount !== 'undefined' && rawValues.size >= maxCount,
-    [multiple, maxCount, rawValues.size],
+    () => multiple && typeof maxCount !== 'undefined' && rawValues?.size >= maxCount,
+    [multiple, maxCount, rawValues?.size],
   );
 
   const onListMouseDown: React.MouseEventHandler<HTMLDivElement> = (event) => {

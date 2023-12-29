@@ -208,9 +208,7 @@ const Selector: React.ForwardRefRenderFunction<RefSelectorProps, SelectorProps> 
   const onInputPaste: React.ClipboardEventHandler = (e) => {
     const { clipboardData } = e;
     const value = clipboardData?.getData('text');
-    if (value) {
-      pastedTextRef.current = value;
-    }
+    pastedTextRef.current = value || '';
   };
 
   const onClick = ({ target }) => {
