@@ -13,7 +13,7 @@ const useMaxCount = (multiple: boolean) => {
       if (!multiple || typeof maxCount === 'undefined') {
         return false;
       }
-      return overCount ? truncateLength < 0 : truncateLength >= 0;
+      return overCount ? truncateLength <= 0 : truncateLength > 0;
     },
     [multiple, maxCount, truncateLength],
   );
