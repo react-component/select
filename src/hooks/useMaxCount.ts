@@ -17,7 +17,7 @@ const useMaxCount = (multiple: boolean) => {
     },
     [multiple, maxCount, truncateLength],
   );
-  return { shouldTruncate, truncateLength };
+  return { truncateLength, shouldTruncate };
 };
 
 export default useMaxCount;
