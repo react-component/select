@@ -28,8 +28,7 @@ import type { RefTriggerProps } from './SelectTrigger';
 import SelectTrigger from './SelectTrigger';
 import TransBtn from './TransBtn';
 import { getSeparatedContent } from './utils/valueUtil';
-import SelectContext from './SelectContext';
-import type { SelectContextProps } from './SelectContext';
+import useMaxCount from './hooks/useMaxCount';
 
 export type {
   DisplayInfoType,
@@ -396,14 +395,10 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     [tokenSeparators],
   );
 
-  const { maxCount, rawValues } = React.useContext<SelectContextProps>(SelectContext) || {};
-
-  const isValidMaxCount = multiple && typeof maxCount !== 'undefined';
-
-  const overMaxCount = rawValues?.size >= maxCount;
+  const { truncateLength, shouldTruncate } = useMaxCount(multiple);
 
   const onInternalSearch = (searchText: string, fromTyping: boolean, isCompositing: boolean) => {
-    if (isValidMaxCount && overMaxCount) {
+    if (shouldTruncate()) {
       return;
     }
     let ret = true;
@@ -413,7 +408,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     const separatedList = getSeparatedContent(
       searchText,
       tokenSeparators,
-      isValidMaxCount && !overMaxCount ? maxCount - rawValues?.size : undefined,
+      shouldTruncate(false) ? truncateLength : undefined,
     );
 
     // Check if match the `tokenSeparators`
