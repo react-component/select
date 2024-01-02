@@ -1,5 +1,5 @@
 import { mount } from 'enzyme';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
 import * as React from 'react';
@@ -504,5 +504,26 @@ describe('Select.Tags', () => {
 
     expect(wrapper.find('.rc-select-item-option').length).toBe(1);
     expect(errSpy).not.toHaveBeenCalled();
+  });
+
+  it(`paste content to split when count >= maxCount`, () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <Select
+        mode="tags"
+        maxCount={3}
+        onChange={onChange}
+        tokenSeparators={[',']}
+        value={['1', '2', '3']}
+      />,
+    );
+    const input = container.querySelector<HTMLInputElement>('input');
+    fireEvent.paste(input, {
+      clipboardData: { getData: () => 'test' },
+    });
+    fireEvent.change(input, {
+      target: { value: 'test' },
+    });
+    expect(onChange).not.toBeCalled();
   });
 });

@@ -1,3 +1,4 @@
+import type { LabelInValueType } from '@/Select';
 import { fireEvent, render as testingRender } from '@testing-library/react';
 import { mount, render } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
@@ -2113,6 +2114,70 @@ describe('Select.Basic', () => {
     expect(container.querySelector('.rc-select-item-option-content').innerHTML).toEqual(
       'test1 - 0',
     );
+  });
+
+  it('labelRender', () => {
+    const onLabelRender = jest.fn();
+    const labelRender = (props: LabelInValueType) => {
+      const { label, value } = props;
+      onLabelRender();
+      return `${label}-${value}`;
+    };
+    const wrapper = mount(
+      <Select options={[{ label: 'realLabel', value: 'a' }]} value="a" labelRender={labelRender} />,
+    );
+
+    expect(onLabelRender).toHaveBeenCalled();
+    expect(findSelection(wrapper).text()).toEqual('realLabel-a');
+  });
+
+  it('labelRender when value is not in options', () => {
+    const onLabelRender = jest.fn();
+    const options = [{ label: 'realLabel', value: 'b' }];
+    const labelRender = (props: LabelInValueType) => {
+      const { label, value } = props;
+      // current value is in options
+      if (options.find((item) => item.value === value)) {
+        return label;
+      } else {
+        // current value is not in options
+        onLabelRender();
+        return `${label || 'fakeLabel'}-${value}`;
+      }
+    };
+    const wrapper = mount(<Select value="a" labelRender={labelRender} options={options} />);
+
+    expect(onLabelRender).toHaveBeenCalled();
+    expect(findSelection(wrapper).text()).toEqual('fakeLabel-a');
+  });
+
+  it('labelRender when labelInValue and useCache', () => {
+    const onLabelRender = jest.fn();
+    const labelRender = (props: LabelInValueType) => {
+      const { label, value } = props;
+      onLabelRender({ label, value });
+      return `custom label`;
+    };
+
+    const wrapper = mount(
+      <Select
+        labelInValue
+        value={{ key: 1, label: 'One' }}
+        labelRender={labelRender}
+        options={[
+          {
+            value: 2,
+            label: 'Two',
+          },
+        ]}
+      />,
+    );
+
+    expect(onLabelRender).toHaveBeenCalledWith({ label: 'One', value: 1 });
+    expect(findSelection(wrapper).text()).toEqual('custom label');
+
+    wrapper.setProps({ options: [] });
+    expect(findSelection(wrapper).text()).toEqual('custom label');
   });
 
   it('multiple items should not disabled', () => {
