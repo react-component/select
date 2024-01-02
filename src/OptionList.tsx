@@ -14,7 +14,6 @@ import TransBtn from './TransBtn';
 import useBaseProps from './hooks/useBaseProps';
 import type { FlattenOptionData } from './interface';
 import { isPlatformMac } from './utils/platformUtil';
-import useMaxCount from './hooks/useMaxCount';
 
 // export interface OptionListProps<OptionsType extends object[]> {
 export type OptionListProps = Record<string, never>;
@@ -46,6 +45,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     onPopupScroll,
   } = useBaseProps();
   const {
+    maxCount,
     flattenOptions,
     onActiveValue,
     defaultActiveFirstOption,
@@ -71,9 +71,10 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
   // =========================== List ===========================
   const listRef = React.useRef<ListRef>(null);
 
-  const { shouldTruncate } = useMaxCount(multiple);
-
-  const overMaxCount = shouldTruncate();
+  const overMaxCount = React.useMemo<boolean>(
+    () => multiple && typeof maxCount !== 'undefined' && rawValues?.size >= maxCount,
+    [multiple, maxCount, rawValues?.size],
+  );
 
   const onListMouseDown: React.MouseEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();

@@ -28,7 +28,8 @@ import type { RefTriggerProps } from './SelectTrigger';
 import SelectTrigger from './SelectTrigger';
 import TransBtn from './TransBtn';
 import { getSeparatedContent } from './utils/valueUtil';
-import useMaxCount from './hooks/useMaxCount';
+import SelectContext from './SelectContext';
+import type { SelectContextProps } from './SelectContext';
 
 export type {
   DisplayInfoType,
@@ -395,10 +396,10 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     [tokenSeparators],
   );
 
-  const { truncateLength, shouldTruncate } = useMaxCount(multiple);
+  const { maxCount, rawValues } = React.useContext<SelectContextProps>(SelectContext) || {};
 
   const onInternalSearch = (searchText: string, fromTyping: boolean, isCompositing: boolean) => {
-    if (shouldTruncate()) {
+    if (rawValues?.size >= maxCount) {
       return;
     }
     let ret = true;
