@@ -45,6 +45,7 @@ import OptGroup from './OptGroup';
 import Option from './Option';
 import OptionList from './OptionList';
 import SelectContext from './SelectContext';
+import type { SelectContextProps } from './SelectContext';
 import useCache from './hooks/useCache';
 import useFilterOptions from './hooks/useFilterOptions';
 import useId from './hooks/useId';
@@ -157,6 +158,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   labelInValue?: boolean;
   value?: ValueType | null;
   defaultValue?: ValueType | null;
+  maxCount?: number;
   onChange?: (value: ValueType, option: OptionType | OptionType[]) => void;
 }
 
@@ -164,8 +166,8 @@ function isRawValue(value: DraftValueType): value is RawValueType {
   return !value || typeof value !== 'object';
 }
 
-const Select = React.forwardRef(
-  (props: SelectProps<any, DefaultOptionType>, ref: React.Ref<BaseSelectRef>) => {
+const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionType>>(
+  (props, ref) => {
     const {
       id,
       mode,
@@ -205,6 +207,7 @@ const Select = React.forwardRef(
       defaultValue,
       labelInValue,
       onChange,
+      maxCount,
 
       ...restProps
     } = props;
@@ -268,7 +271,7 @@ const Select = React.forwardRef(
           } else {
             rawKey = val.key;
             rawLabel = val.label;
-            rawValue = val.value ?? rawKey;
+            rawValue = val.value ?? (rawKey as RawValueType);
           }
 
           const option = valueOptions.get(rawValue);
@@ -313,7 +316,8 @@ const Select = React.forwardRef(
 
     // Merged value with LabelValueType
     const rawLabeledValues = React.useMemo(() => {
-      const values = convert2LabelValues(internalValue);
+      const newInternalValue = multiple && internalValue === null ? [] : internalValue;
+      const values = convert2LabelValues(newInternalValue);
 
       // combobox no need save value when it's no value (exclude value equal 0)
       if (mode === 'combobox' && isComboNoValue(values[0]?.value)) {
@@ -321,7 +325,7 @@ const Select = React.forwardRef(
       }
 
       return values;
-    }, [internalValue, convert2LabelValues, mode]);
+    }, [internalValue, convert2LabelValues, mode, multiple]);
 
     // Fill label with cache to avoid option remove
     const [mergedValues, getMixedOption] = useCache(rawLabeledValues, valueOptions);
@@ -597,7 +601,7 @@ const Select = React.forwardRef(
     };
 
     // ========================== Context ===========================
-    const selectContext = React.useMemo(() => {
+    const selectContext = React.useMemo<SelectContextProps>(() => {
       const realVirtual = virtual !== false && dropdownMatchSelectWidth !== false;
       return {
         ...parsedOptions,
@@ -613,9 +617,11 @@ const Select = React.forwardRef(
         listHeight,
         listItemHeight,
         childrenAsData,
+        maxCount,
         optionRender,
       };
     }, [
+      maxCount,
       parsedOptions,
       displayOptions,
       onActiveValue,
@@ -626,6 +632,7 @@ const Select = React.forwardRef(
       mergedFieldNames,
       virtual,
       dropdownMatchSelectWidth,
+      direction,
       listHeight,
       listItemHeight,
       childrenAsData,
@@ -682,9 +689,8 @@ const TypedSelect = Select as unknown as (<
   ValueType = any,
   OptionType extends BaseOptionType | DefaultOptionType = DefaultOptionType,
 >(
-  props: React.PropsWithChildren<SelectProps<ValueType, OptionType>> & {
-    ref?: React.Ref<BaseSelectRef>;
-  },
+  props: React.PropsWithChildren<SelectProps<ValueType, OptionType>> &
+    React.RefAttributes<BaseSelectRef>,
 ) => React.ReactElement) & {
   Option: typeof Option;
   OptGroup: typeof OptGroup;

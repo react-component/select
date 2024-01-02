@@ -47,10 +47,14 @@ export function flattenOptions<OptionType extends BaseOptionType = DefaultOption
     label: fieldLabel,
     value: fieldValue,
     options: fieldOptions,
-    groupLabel
+    groupLabel,
   } = fillFieldNames(fieldNames, false);
 
   function dig(list: OptionType[], isGroupOption: boolean) {
+    if (!Array.isArray(list)) {
+      return;
+    }
+
     list.forEach((data) => {
       if (isGroupOption || !(fieldOptions in data)) {
         const value = data[fieldValue];
@@ -107,26 +111,25 @@ export function injectPropsWithOption<T extends object>(option: T): T {
   return newOption;
 }
 
-export function getSeparatedContent(text: string, tokens: string[]): string[] {
+export const getSeparatedContent = (text: string, tokens: string[], end?: number): string[] => {
   if (!tokens || !tokens.length) {
     return null;
   }
-
   let match = false;
-
-  function separate(str: string, [token, ...restTokens]: string[]) {
+  const separate = (str: string, [token, ...restTokens]: string[]): string[] => {
     if (!token) {
       return [str];
     }
-
     const list = str.split(token);
     match = match || list.length > 1;
-
     return list
       .reduce((prevList, unitStr) => [...prevList, ...separate(unitStr, restTokens)], [])
-      .filter((unit) => unit);
-  }
-
+      .filter(Boolean);
+  };
   const list = separate(text, tokens);
-  return match ? list : null;
-}
+  if (match) {
+    return typeof end !== 'undefined' ? list.slice(0, end) : list;
+  } else {
+    return null;
+  }
+};

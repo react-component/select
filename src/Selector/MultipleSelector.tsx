@@ -37,6 +37,7 @@ const onPreventMouseDown = (event: React.MouseEvent) => {
   event.preventDefault();
   event.stopPropagation();
 };
+
 const SelectSelector: React.FC<SelectorProps> = (props) => {
   const {
     id,
@@ -80,8 +81,14 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
   const selectionPrefixCls = `${prefixCls}-selection`;
 
   // ===================== Search ======================
-  const inputValue = open || (mode === "multiple" && autoClearSearchValue === false) || mode === 'tags' ? searchValue : '';
-  const inputEditable: boolean = mode === 'tags' || (mode === "multiple" && autoClearSearchValue === false) || (showSearch && (open || focused));
+  const inputValue =
+    open || (mode === 'multiple' && autoClearSearchValue === false) || mode === 'tags'
+      ? searchValue
+      : '';
+  const inputEditable: boolean =
+    mode === 'tags' ||
+    (mode === 'multiple' && autoClearSearchValue === false) ||
+    (showSearch && (open || focused));
 
   // We measure width and set to the input immediately
   useLayoutEffect(() => {
@@ -90,61 +97,52 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
 
   // ===================== Render ======================
   // >>> Render Selector Node. Includes Item & Rest
-  function defaultRenderSelector(
+  const defaultRenderSelector = (
     item: DisplayValueType,
     content: React.ReactNode,
     itemDisabled: boolean,
     closable?: boolean,
     onClose?: React.MouseEventHandler,
-  ) {
-    return (
-      <span
-        className={classNames(`${selectionPrefixCls}-item`, {
-          [`${selectionPrefixCls}-item-disabled`]: itemDisabled,
-        })}
-        title={getTitle(item)}
-      >
-        <span className={`${selectionPrefixCls}-item-content`}>{content}</span>
-        {closable && (
-          <TransBtn
-            className={`${selectionPrefixCls}-item-remove`}
-            onMouseDown={onPreventMouseDown}
-            onClick={onClose}
-            customizeIcon={removeIcon}
-          >
-            ×
-          </TransBtn>
-        )}
-      </span>
-    );
-  }
+  ) => (
+    <span
+      title={getTitle(item)}
+      className={classNames(`${selectionPrefixCls}-item`, {
+        [`${selectionPrefixCls}-item-disabled`]: itemDisabled,
+      })}
+    >
+      <span className={`${selectionPrefixCls}-item-content`}>{content}</span>
+      {closable && (
+        <TransBtn
+          className={`${selectionPrefixCls}-item-remove`}
+          onMouseDown={onPreventMouseDown}
+          onClick={onClose}
+          customizeIcon={removeIcon}
+        >
+          ×
+        </TransBtn>
+      )}
+    </span>
+  );
 
-  function customizeRenderSelector(
+  const customizeRenderSelector = (
     value: RawValueType,
     content: React.ReactNode,
     itemDisabled: boolean,
     closable: boolean,
     onClose: React.MouseEventHandler,
-  ) {
+  ) => {
     const onMouseDown = (e: React.MouseEvent) => {
       onPreventMouseDown(e);
       onToggleOpen(!open);
     };
-
     return (
       <span onMouseDown={onMouseDown}>
-        {tagRender({
-          label: content,
-          value,
-          disabled: itemDisabled,
-          closable,
-          onClose,
-        })}
+        {tagRender({ label: content, value, disabled: itemDisabled, closable, onClose })}
       </span>
     );
-  }
+  };
 
-  function renderItem(valueItem: DisplayValueType) {
+  const renderItem = (valueItem: DisplayValueType) => {
     const { disabled: itemDisabled, label, value } = valueItem;
     const closable = !disabled && !itemDisabled;
 
@@ -153,7 +151,6 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
     if (typeof maxTagTextLength === 'number') {
       if (typeof label === 'string' || typeof label === 'number') {
         const strLabel = String(displayLabel);
-
         if (strLabel.length > maxTagTextLength) {
           displayLabel = `${strLabel.slice(0, maxTagTextLength)}...`;
         }
@@ -161,23 +158,25 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
     }
 
     const onClose = (event?: React.MouseEvent) => {
-      if (event) event.stopPropagation();
+      if (event) {
+        event.stopPropagation();
+      }
       onRemove(valueItem);
     };
 
     return typeof tagRender === 'function'
       ? customizeRenderSelector(value, displayLabel, itemDisabled, closable, onClose)
       : defaultRenderSelector(valueItem, displayLabel, itemDisabled, closable, onClose);
-  }
+  };
 
-  function renderRest(omittedValues: DisplayValueType[]) {
+  const renderRest = (omittedValues: DisplayValueType[]) => {
     const content =
       typeof maxTagPlaceholder === 'function'
         ? maxTagPlaceholder(omittedValues)
         : maxTagPlaceholder;
 
     return defaultRenderSelector({ title: content }, content, false);
-  }
+  };
 
   // >>> Input Node
   const inputNode = (
@@ -236,7 +235,6 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
   return (
     <>
       {selectionNode}
-
       {!values.length && !inputValue && (
         <span className={`${selectionPrefixCls}-placeholder`}>{placeholder}</span>
       )}

@@ -11,35 +11,20 @@ export interface TransBtnProps {
   children?: React.ReactNode;
 }
 
-const TransBtn: React.FC<TransBtnProps> = ({
-  className,
-  customizeIcon,
-  customizeIconProps,
-  onMouseDown,
-  onClick,
-  children,
-}) => {
-  let icon: React.ReactNode;
+const TransBtn: React.FC<TransBtnProps> = (props) => {
+  const { className, customizeIcon, customizeIconProps, children, onMouseDown, onClick } = props;
 
-  if (typeof customizeIcon === 'function') {
-    icon = customizeIcon(customizeIconProps);
-  } else {
-    icon = customizeIcon;
-  }
+  const icon =
+    typeof customizeIcon === 'function' ? customizeIcon(customizeIconProps) : customizeIcon;
 
   return (
     <span
       className={className}
       onMouseDown={(event) => {
         event.preventDefault();
-        if (onMouseDown) {
-          onMouseDown(event);
-        }
+        onMouseDown?.(event);
       }}
-      style={{
-        userSelect: 'none',
-        WebkitUserSelect: 'none',
-      }}
+      style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
       unselectable="on"
       onClick={onClick}
       aria-hidden

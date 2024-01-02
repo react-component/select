@@ -9,6 +9,7 @@ import type { ScrollConfig, ScrollTo } from 'rc-virtual-list/lib/List';
 import * as React from 'react';
 import { useAllowClear } from './hooks/useAllowClear';
 import { BaseSelectContext } from './hooks/useBaseProps';
+import type { BaseSelectContextProps } from './hooks/useBaseProps';
 import useDelayReset from './hooks/useDelayReset';
 import useLock from './hooks/useLock';
 import useSelectTriggerControl from './hooks/useSelectTriggerControl';
@@ -27,6 +28,8 @@ import type { RefTriggerProps } from './SelectTrigger';
 import SelectTrigger from './SelectTrigger';
 import TransBtn from './TransBtn';
 import { getSeparatedContent } from './utils/valueUtil';
+import SelectContext from './SelectContext';
+import type { SelectContextProps } from './SelectContext';
 
 export type {
   DisplayInfoType,
@@ -205,11 +208,9 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
-export function isMultiple(mode: Mode) {
-  return mode === 'tags' || mode === 'multiple';
-}
+export const isMultiple = (mode: Mode) => mode === 'tags' || mode === 'multiple';
 
-const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<BaseSelectRef>) => {
+const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref) => {
   const {
     id,
     prefixCls,
@@ -293,7 +294,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
 
   const domProps = {
     ...restProps,
-  } as Omit<keyof typeof restProps, (typeof DEFAULT_OMIT_PROPS)[number]>;
+  };
 
   DEFAULT_OMIT_PROPS.forEach((propName) => {
     delete domProps[propName];
@@ -390,20 +391,29 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   );
 
   // ============================= Search =============================
-  const tokenWithEnter = React.useMemo(
+  const tokenWithEnter = React.useMemo<boolean>(
     () => (tokenSeparators || []).some((tokenSeparator) => ['\n', '\r\n'].includes(tokenSeparator)),
     [tokenSeparators],
   );
 
+  const { maxCount, rawValues } = React.useContext<SelectContextProps>(SelectContext) || {};
+
   const onInternalSearch = (searchText: string, fromTyping: boolean, isCompositing: boolean) => {
+    if (rawValues?.size >= maxCount) {
+      return;
+    }
     let ret = true;
     let newSearchText = searchText;
     onActiveValueChange?.(null);
 
+    const separatedList = getSeparatedContent(
+      searchText,
+      tokenSeparators,
+      maxCount && maxCount - rawValues.size,
+    );
+
     // Check if match the `tokenSeparators`
-    const patchLabels: string[] = isCompositing
-      ? null
-      : getSeparatedContent(searchText, tokenSeparators);
+    const patchLabels: string[] = isCompositing ? null : separatedList;
 
     // Ignore combobox since it's not split-able
     if (mode !== 'combobox' && patchLabels) {
@@ -515,8 +525,8 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       }
     }
 
-    if (mergedOpen && listRef.current) {
-      listRef.current.onKeyDown(event, ...rest);
+    if (mergedOpen) {
+      listRef.current?.onKeyDown(event, ...rest);
     }
 
     onKeyDown?.(event, ...rest);
@@ -524,8 +534,8 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
 
   // KeyUp
   const onInternalKeyUp: React.KeyboardEventHandler<HTMLDivElement> = (event, ...rest) => {
-    if (mergedOpen && listRef.current) {
-      listRef.current.onKeyUp(event, ...rest);
+    if (mergedOpen) {
+      listRef.current?.onKeyUp(event, ...rest);
     }
 
     onKeyUp?.(event, ...rest);
@@ -651,7 +661,7 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
   );
 
   // ============================ Context =============================
-  const baseSelectContext = React.useMemo(
+  const baseSelectContext = React.useMemo<BaseSelectContextProps>(
     () => ({
       ...props,
       notFoundContent,
@@ -711,7 +721,6 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
     allowClear,
     clearIcon,
     disabled,
-
     mergedSearchValue,
     mode,
   );
@@ -808,14 +817,8 @@ const BaseSelect = React.forwardRef((props: BaseSelectProps, ref: React.Ref<Base
       >
         {mockFocused && !mergedOpen && (
           <span
-            style={{
-              width: 0,
-              height: 0,
-              position: 'absolute',
-              overflow: 'hidden',
-              opacity: 0,
-            }}
             aria-live="polite"
+            style={{ width: 0, height: 0, position: 'absolute', overflow: 'hidden', opacity: 0 }}
           >
             {/* Merge into one string to make screen reader work as expect */}
             {`${displayValues

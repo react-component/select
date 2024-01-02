@@ -33,8 +33,8 @@ interface InputProps {
   >;
 }
 
-const Input: React.RefForwardingComponent<InputRef, InputProps> = (
-  {
+const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (props, ref) => {
+  const {
     prefixCls,
     id,
     inputElement,
@@ -54,9 +54,8 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     onCompositionEnd,
     open,
     attrs,
-  },
-  ref,
-) => {
+  } = props;
+
   let inputNode: React.ComponentElement<any, any> = inputElement || <input />;
 
   const { ref: originRef, props: originProps } = inputNode;
@@ -141,6 +140,9 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
 };
 
 const RefInput = React.forwardRef<InputRef, InputProps>(Input);
-RefInput.displayName = 'Input';
+
+if (process.env.NODE_ENV !== 'production') {
+  RefInput.displayName = 'Input';
+}
 
 export default RefInput;

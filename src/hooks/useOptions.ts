@@ -6,13 +6,13 @@ import { convertChildrenToData } from '../utils/legacyUtil';
  * Parse `children` to `options` if `options` is not provided.
  * Then flatten the `options`.
  */
-export default function useOptions<OptionType>(
+const useOptions = <OptionType>(
   options: OptionType[],
   children: React.ReactNode,
   fieldNames: FieldNames,
   optionFilterProp: string,
   optionLabelProp: string,
-) {
+) => {
   return React.useMemo(() => {
     let mergedOptions = options;
     const childrenAsData = !options;
@@ -24,13 +24,17 @@ export default function useOptions<OptionType>(
     const valueOptions = new Map<RawValueType, OptionType>();
     const labelOptions = new Map<React.ReactNode, OptionType>();
 
-    const setLabelOptions = (labelOptionsMap, option, key) => {
+    const setLabelOptions = (
+      labelOptionsMap: Map<React.ReactNode, OptionType>,
+      option: OptionType,
+      key: string | number,
+    ) => {
       if (key && typeof key === 'string') {
         labelOptionsMap.set(option[key], option);
       }
     };
 
-    function dig(optionList: OptionType[], isChildren = false) {
+    const dig = (optionList: OptionType[], isChildren = false) => {
       // for loop to speed up collection speed
       for (let i = 0; i < optionList.length; i += 1) {
         const option = optionList[i];
@@ -44,7 +48,8 @@ export default function useOptions<OptionType>(
           dig(option[fieldNames.options], true);
         }
       }
-    }
+    };
+
     dig(mergedOptions);
 
     return {
@@ -53,4 +58,6 @@ export default function useOptions<OptionType>(
       labelOptions,
     };
   }, [options, children, fieldNames, optionFilterProp, optionLabelProp]);
-}
+};
+
+export default useOptions;

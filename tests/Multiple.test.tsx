@@ -546,6 +546,24 @@ describe('Select.Multiple', () => {
     expect(wrapper.find('Selector').props().values.length).toEqual(0);
   });
 
+  it('display correctly when value is undefined or null', () => {
+    const wrapper1 = mount(
+      <Select mode="multiple" value={undefined}>
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>,
+    );
+    const wrapper2 = mount(
+      <Select mode="multiple" value={null}>
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>,
+    );
+
+    expect(wrapper1.find('.rc-select-selection-item').length).toBe(0);
+    expect(wrapper2.find('.rc-select-selection-item').length).toBe(0);
+  });
+
   describe('optionLabelProp', () => {
     it('basic', () => {
       const wrapper = mount(
@@ -622,15 +640,10 @@ describe('Select.Multiple', () => {
     });
   });
 
-  describe("autoClearSearchValue", () => {
+  describe('autoClearSearchValue', () => {
     it('search value should not show when autoClearSearchValue is undefined', () => {
       const wrapper = mount(
-        <Select
-          mode="multiple"
-          open={false}
-          showSearch={true}
-          searchValue="test"
-        />,
+        <Select mode="multiple" open={false} showSearch={true} searchValue="test" />,
       );
       expect(wrapper.find('input').props().value).toBe('');
     });
@@ -648,12 +661,12 @@ describe('Select.Multiple', () => {
     });
     it('search value should no clear when autoClearSearchValue is false', () => {
       const wrapper = mount(
-          <Select
-              mode="multiple"
-              autoClearSearchValue={false}
-              showSearch={true}
-              searchValue="test"
-          />,
+        <Select
+          mode="multiple"
+          autoClearSearchValue={false}
+          showSearch={true}
+          searchValue="test"
+        />,
       );
 
       toggleOpen(wrapper);
@@ -662,12 +675,7 @@ describe('Select.Multiple', () => {
     });
     it('search value should clear when autoClearSearchValue is true', () => {
       const wrapper = mount(
-          <Select
-              mode="multiple"
-              autoClearSearchValue={true}
-              showSearch={true}
-              searchValue="test"
-          />,
+        <Select mode="multiple" autoClearSearchValue={true} showSearch={true} searchValue="test" />,
       );
       toggleOpen(wrapper);
       toggleOpen(wrapper);

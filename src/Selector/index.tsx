@@ -99,7 +99,7 @@ export interface SelectorProps {
   domRef: React.Ref<HTMLDivElement>;
 }
 
-const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = (props, ref) => {
+const Selector: React.ForwardRefRenderFunction<RefSelectorProps, SelectorProps> = (props, ref) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const compositionStatusRef = useRef<boolean>(false);
 
@@ -207,9 +207,8 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
 
   const onInputPaste: React.ClipboardEventHandler = (e) => {
     const { clipboardData } = e;
-    const value = clipboardData.getData('text');
-
-    pastedTextRef.current = value;
+    const value = clipboardData?.getData('text');
+    pastedTextRef.current = value || '';
   };
 
   const onClick = ({ target }) => {
@@ -274,6 +273,9 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
 };
 
 const ForwardSelector = React.forwardRef<RefSelectorProps, SelectorProps>(Selector);
-ForwardSelector.displayName = 'Selector';
+
+if (process.env.NODE_ENV !== 'production') {
+  ForwardSelector.displayName = 'Selector';
+}
 
 export default ForwardSelector;
