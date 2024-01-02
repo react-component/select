@@ -149,6 +149,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   direction?: 'ltr' | 'rtl';
   listHeight?: number;
   listItemHeight?: number;
+  labelRender?: (props: LabelInValueType) => React.ReactNode;
 
   // >>> Icon
   menuItemSelectedIcon?: RenderNode;
@@ -199,6 +200,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       direction,
       listHeight = 200,
       listItemHeight = 20,
+      labelRender,
 
       // Value
       value,
@@ -343,9 +345,9 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
 
       return mergedValues.map((item) => ({
         ...item,
-        label: item.label ?? item.value,
+        label: (typeof labelRender === 'function' ? labelRender(item) : item.label) ?? item.value,
       }));
-    }, [mode, mergedValues]);
+    }, [mode, mergedValues, labelRender]);
 
     /** Convert `displayValues` to raw value type set */
     const rawValues = React.useMemo(
