@@ -27,7 +27,7 @@ import Selector from './Selector';
 import type { RefTriggerProps } from './SelectTrigger';
 import SelectTrigger from './SelectTrigger';
 import TransBtn from './TransBtn';
-import { getSeparatedContent } from './utils/valueUtil';
+import { getSeparatedContent, isValidCount } from './utils/valueUtil';
 import SelectContext from './SelectContext';
 import type { SelectContextProps } from './SelectContext';
 
@@ -399,7 +399,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   const { maxCount, rawValues } = React.useContext<SelectContextProps>(SelectContext) || {};
 
   const onInternalSearch = (searchText: string, fromTyping: boolean, isCompositing: boolean) => {
-    if (rawValues?.size >= maxCount) {
+    if (isValidCount(maxCount) && rawValues?.size >= maxCount) {
       return;
     }
     let ret = true;
@@ -409,7 +409,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     const separatedList = getSeparatedContent(
       searchText,
       tokenSeparators,
-      maxCount && maxCount - rawValues.size,
+      isValidCount(maxCount) ? maxCount - rawValues.size : undefined,
     );
 
     // Check if match the `tokenSeparators`

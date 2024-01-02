@@ -20,6 +20,10 @@ function getKey(data: BaseOptionType, index: number) {
   return `rc-index-key-${index}`;
 }
 
+export function isValidCount(value?: number) {
+  return typeof value !== 'undefined' && !Number.isNaN(value);
+}
+
 export function fillFieldNames(fieldNames: FieldNames | undefined, childrenAsData: boolean) {
   const { label, value, options, groupLabel } = fieldNames || {};
   const mergedLabel = label || (childrenAsData ? 'children' : 'label');
