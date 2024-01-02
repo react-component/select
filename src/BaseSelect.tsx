@@ -408,7 +408,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     const separatedList = getSeparatedContent(
       searchText,
       tokenSeparators,
-      shouldTruncate(false) ? truncateLength : undefined,
+      maxCount && maxCount - rawValues.size,
     );
 
     // Check if match the `tokenSeparators`
