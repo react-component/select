@@ -24,6 +24,14 @@ exports[`Select.Combobox renders controlled correctly 1`] = `
         value=""
       />
     </span>
+    <input
+      aria-hidden="true"
+      class="rc-select-native-input"
+      readonly=""
+      tabindex="-1"
+      type="hidden"
+      value=""
+    />
     <span
       class="rc-select-selection-placeholder"
     >
@@ -57,6 +65,14 @@ exports[`Select.Combobox renders correctly 1`] = `
         value=""
       />
     </span>
+    <input
+      aria-hidden="true"
+      class="rc-select-native-input"
+      readonly=""
+      tabindex="-1"
+      type="hidden"
+      value=""
+    />
     <span
       class="rc-select-selection-placeholder"
     >

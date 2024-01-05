@@ -51,7 +51,7 @@ describe('Select.Multiple', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', {
+    wrapper.find('.rc-select-selection-search-input').simulate('change', {
       target: {
         value: 'One',
       },
@@ -59,7 +59,7 @@ describe('Select.Multiple', () => {
     expect(handleChange).not.toHaveBeenCalled();
 
     handleChange.mockReset();
-    wrapper.find('input').simulate('change', {
+    wrapper.find('.rc-select-selection-search-input').simulate('change', {
       target: {
         value: 'One,Two,Three',
       },
@@ -68,14 +68,14 @@ describe('Select.Multiple', () => {
 
     // Seems this is should not fire event? Commented for now.
     // handleChange.mockReset();
-    // wrapper.find('input').simulate('change', {
+    // wrapper.find('.rc-select-selection-search-input').simulate('change', {
     //   target: {
     //     value: 'One,Two',
     //   },
     // });
     // expect(handleChange).toHaveBeenCalledWith(['1', '2'], expect.anything());
 
-    expect(wrapper.find('input').props().value).toBe('');
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('');
     wrapper.update();
     expectOpen(wrapper, false);
   });
@@ -96,7 +96,7 @@ describe('Select.Multiple', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', {
+    wrapper.find('.rc-select-selection-search-input').simulate('change', {
       target: {
         value: 'One',
       },
@@ -104,7 +104,7 @@ describe('Select.Multiple', () => {
     expect(handleChange).not.toHaveBeenCalled();
 
     handleChange.mockReset();
-    wrapper.find('input').simulate('change', {
+    wrapper.find('.rc-select-selection-search-input').simulate('change', {
       target: {
         value: 'One,Two,Three,',
       },
@@ -113,14 +113,14 @@ describe('Select.Multiple', () => {
 
     // Seems this is should not fire event? Commented for now.
     // handleChange.mockReset();
-    // wrapper.find('input').simulate('change', {
+    // wrapper.find('.rc-select-selection-search-input').simulate('change', {
     //   target: {
     //     value: 'One,Two,',
     //   },
     // });
     // expect(handleChange).toHaveBeenCalledWith(['One', 'Two', 'Three'], expect.anything());
 
-    expect(wrapper.find('input').props().value).toBe('');
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('');
   });
 
   it("shouldn't separate words when compositing", () => {
@@ -143,7 +143,7 @@ describe('Select.Multiple', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', {
+    wrapper.find('.rc-select-selection-search-input').simulate('change', {
       target: {
         value: 'One',
       },
@@ -151,8 +151,8 @@ describe('Select.Multiple', () => {
     expect(handleChange).not.toHaveBeenCalled();
 
     handleChange.mockReset();
-    wrapper.find('input').simulate('compositionstart');
-    wrapper.find('input').simulate('change', {
+    wrapper.find('.rc-select-selection-search-input').simulate('compositionstart');
+    wrapper.find('.rc-select-selection-search-input').simulate('change', {
       target: {
         value: 'One,Two,Three',
       },
@@ -160,8 +160,8 @@ describe('Select.Multiple', () => {
     expect(handleChange).not.toHaveBeenCalled();
 
     handleChange.mockReset();
-    wrapper.find('input').simulate('compositionend');
-    wrapper.find('input').simulate('change', {
+    wrapper.find('.rc-select-selection-search-input').simulate('compositionend');
+    wrapper.find('.rc-select-selection-search-input').simulate('change', {
       target: {
         value: 'One,Two,Three',
       },
@@ -170,14 +170,14 @@ describe('Select.Multiple', () => {
 
     // Seems this is should not fire event? Commented for now.
     // handleChange.mockReset();
-    // wrapper.find('input').simulate('change', {
+    // wrapper.find('.rc-select-selection-search-input').simulate('change', {
     //   target: {
     //     value: 'One,Two',
     //   },
     // });
     // expect(handleChange).toHaveBeenCalledWith(['1', '2'], expect.anything());
 
-    expect(wrapper.find('input').props().value).toBe('');
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('');
     wrapper.update();
     expectOpen(wrapper, false);
   });
@@ -199,7 +199,7 @@ describe('Select.Multiple', () => {
         </Option>
       </Select>,
     );
-    wrapper.find('input').simulate('change', {
+    wrapper.find('.rc-select-selection-search-input').simulate('change', {
       target: {
         value: 'One,Two',
       },
@@ -224,7 +224,7 @@ describe('Select.Multiple', () => {
         </Option>
       </Select>,
     );
-    wrapper.find('input').simulate('change', {
+    wrapper.find('.rc-select-selection-search-input').simulate('change', {
       target: {
         value: 'One,Two',
       },
@@ -241,7 +241,7 @@ describe('Select.Multiple', () => {
         <Option value="2">Two</Option>
       </Select>,
     );
-    wrapper.find('input').simulate('focus');
+    wrapper.find('.rc-select-selection-search-input').simulate('focus');
     jest.runAllTimers();
     expect(handleFocus).toHaveBeenCalled();
     jest.useRealTimers();
@@ -317,7 +317,7 @@ describe('Select.Multiple', () => {
     toggleOpen(wrapper);
     wrapper.find('div.rc-select-item-option').at(1).simulate('mouseMove');
 
-    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+    wrapper.find('.rc-select-selection-search-input').simulate('keyDown', { which: KeyCode.ENTER });
     expectOpen(wrapper);
     expect(wrapper.find('Selector').props().values).toEqual([
       expect.objectContaining({ value: 2 }),
@@ -334,10 +334,10 @@ describe('Select.Multiple', () => {
 
     toggleOpen(wrapper);
     wrapper.find('div.rc-select-item-option').first().simulate('mousemove');
-    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+    wrapper.find('.rc-select-selection-search-input').simulate('keyDown', { which: KeyCode.ENTER });
 
     wrapper.find('div.rc-select-item-option').first().simulate('mousemove');
-    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+    wrapper.find('.rc-select-selection-search-input').simulate('keyDown', { which: KeyCode.ENTER });
 
     expect(wrapper.find('Selector').props().values).toEqual([]);
   });
@@ -398,20 +398,20 @@ describe('Select.Multiple', () => {
     );
 
     // First type
-    wrapper.find('input').simulate('keydown', { which: KeyCode.L });
-    wrapper.find('input').simulate('change', { target: { value: 'l' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('keydown', { which: KeyCode.L });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'l' } });
 
     // Backspace
-    wrapper.find('input').simulate('keydown', { which: KeyCode.BACKSPACE });
-    wrapper.find('input').simulate('change', { target: { value: '' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('keydown', { which: KeyCode.BACKSPACE });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '' } });
 
     onChange.mockReset();
 
-    wrapper.find('input').simulate('keydown', { which: KeyCode.BACKSPACE });
+    wrapper.find('.rc-select-selection-search-input').simulate('keydown', { which: KeyCode.BACKSPACE });
     expect(onChange).not.toHaveBeenCalled();
 
     jest.runAllTimers();
-    wrapper.find('input').simulate('keydown', { which: KeyCode.BACKSPACE });
+    wrapper.find('.rc-select-selection-search-input').simulate('keydown', { which: KeyCode.BACKSPACE });
     expect(onChange).toHaveBeenCalledWith([], expect.anything());
 
     jest.useRealTimers();
@@ -427,13 +427,13 @@ describe('Select.Multiple', () => {
   it('clear input when popup closed', () => {
     const wrapper = mount(<Select mode="multiple" options={[{ value: 'light' }]} showSearch />);
     toggleOpen(wrapper);
-    wrapper.find('input').simulate('change', { target: { value: 'bamboo' } });
-    expect(wrapper.find('input').props().value).toEqual('bamboo');
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'bamboo' } });
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toEqual('bamboo');
 
     // Close and open again
     toggleOpen(wrapper);
     toggleOpen(wrapper);
-    expect(wrapper.find('input').props().value).toEqual('');
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toEqual('');
   });
 
   it('ajax update should keep options', () => {
@@ -483,7 +483,7 @@ describe('Select.Multiple', () => {
       />,
     );
 
-    wrapper.find('input').simulate('focus');
+    wrapper.find('.rc-select-selection-search-input').simulate('focus');
 
     expect(wrapper.find('Input').prop('editable')).toBeTruthy();
   });
@@ -645,7 +645,7 @@ describe('Select.Multiple', () => {
       const wrapper = mount(
         <Select mode="multiple" open={false} showSearch={true} searchValue="test" />,
       );
-      expect(wrapper.find('input').props().value).toBe('');
+      expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('');
     });
     it('search value should show when autoClearSearchValue is false', () => {
       const wrapper = mount(
@@ -657,7 +657,7 @@ describe('Select.Multiple', () => {
           searchValue="test"
         />,
       );
-      expect(wrapper.find('input').props().value).toBe('test');
+      expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('test');
     });
     it('search value should no clear when autoClearSearchValue is false', () => {
       const wrapper = mount(
@@ -671,7 +671,7 @@ describe('Select.Multiple', () => {
 
       toggleOpen(wrapper);
       toggleOpen(wrapper);
-      expect(wrapper.find('input').props().value).toBe('test');
+      expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('test');
     });
     it('search value should clear when autoClearSearchValue is true', () => {
       const wrapper = mount(
@@ -679,7 +679,7 @@ describe('Select.Multiple', () => {
       );
       toggleOpen(wrapper);
       toggleOpen(wrapper);
-      expect(wrapper.find('input').props().value).toBe('');
+      expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('');
     });
   });
 });

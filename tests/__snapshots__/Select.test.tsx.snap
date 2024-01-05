@@ -134,6 +134,14 @@ exports[`Select.Basic no search 1`] = `
         value=""
       />
     </span>
+    <input
+      aria-hidden="true"
+      class="rc-select-native-input"
+      readonly=""
+      tabindex="-1"
+      type="hidden"
+      value="1"
+    />
     <span
       class="rc-select-selection-item"
       title="1"
@@ -171,6 +179,14 @@ exports[`Select.Basic render renders aria-attributes correctly 1`] = `
         value=""
       />
     </span>
+    <input
+      aria-hidden="true"
+      class="antd-native-input"
+      readonly=""
+      tabindex="-1"
+      type="hidden"
+      value="2"
+    />
     <span
       class="antd-selection-item"
       title="2"
@@ -216,6 +232,14 @@ exports[`Select.Basic render renders correctly 1`] = `
         value=""
       />
     </span>
+    <input
+      aria-hidden="true"
+      class="antd-native-input"
+      readonly=""
+      tabindex="-1"
+      type="hidden"
+      value="2"
+    />
     <span
       class="antd-selection-item"
       title="2"
@@ -263,6 +287,14 @@ exports[`Select.Basic render renders data-attributes correctly 1`] = `
         value=""
       />
     </span>
+    <input
+      aria-hidden="true"
+      class="antd-native-input"
+      readonly=""
+      tabindex="-1"
+      type="hidden"
+      value="2"
+    />
     <span
       class="antd-selection-item"
       title="2"
@@ -309,6 +341,14 @@ exports[`Select.Basic render renders disabled select correctly 1`] = `
         value=""
       />
     </span>
+    <input
+      aria-hidden="true"
+      class="antd-native-input"
+      readonly=""
+      tabindex="-1"
+      type="hidden"
+      value="2"
+    />
     <span
       class="antd-selection-item"
       title="2"
@@ -345,6 +385,14 @@ exports[`Select.Basic render renders role prop correctly 1`] = `
         value=""
       />
     </span>
+    <input
+      aria-hidden="true"
+      class="antd-native-input"
+      readonly=""
+      tabindex="-1"
+      type="hidden"
+      value="2"
+    />
     <span
       class="antd-selection-item"
       title="2"

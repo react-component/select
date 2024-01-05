@@ -18,7 +18,7 @@ describe('Select.Accessibility', () => {
   it('pass aria info to internal input', () => {
     const MySelect = Select as any;
     const wrapper = mount(<MySelect aria-label="light" data-attr="bamboo" useless="2333" />);
-    expect(wrapper.find('input').props()).toEqual(
+    expect(wrapper.find('.rc-select-selection-search-input').props()).toEqual(
       expect.objectContaining({
         'aria-label': 'light',
       }),
@@ -48,7 +48,7 @@ describe('Select.Accessibility', () => {
     );
 
     // First Match
-    wrapper.find('input').simulate('change', { target: { value: 'b' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'b' } });
     jest.runAllTimers();
 
     expectOpen(wrapper);
@@ -56,12 +56,12 @@ describe('Select.Accessibility', () => {
       wrapper.find('.rc-select-item-option-active .rc-select-item-option-content').text(),
     ).toEqual('Bamboo');
 
-    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+    wrapper.find('.rc-select-selection-search-input').simulate('keyDown', { which: KeyCode.ENTER });
     expectOpen(wrapper, false);
 
     // Next Match
-    wrapper.find('input').simulate('change', { target: { value: '' } });
-    wrapper.find('input').simulate('change', { target: { value: 'g' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'g' } });
     jest.runAllTimers();
 
     expectOpen(wrapper);

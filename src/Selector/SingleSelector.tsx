@@ -3,6 +3,7 @@ import pickAttrs from 'rc-util/lib/pickAttrs';
 import Input from './Input';
 import type { InnerSelectorProps } from '.';
 import { getTitle } from '../utils/commonUtil';
+import SelectNativeInput from '../SelectNativeInput';
 
 interface SelectorProps extends InnerSelectorProps {
   inputElement: React.ReactElement;
@@ -24,6 +25,7 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
     values,
     placeholder,
     tabIndex,
+    nativeInputProps,
 
     showSearch,
     searchValue,
@@ -105,6 +107,12 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
           maxLength={combobox ? maxLength : undefined}
         />
       </span>
+
+      <SelectNativeInput
+        value={item?.value}
+        prefixCls={prefixCls}
+        {...nativeInputProps}
+      />
 
       {/* Display value */}
       {!combobox && item ? (

@@ -82,7 +82,7 @@ export default function removeSelectedTest(mode: any) {
         </Select>,
       );
 
-      wrapper.find('input').simulate('keyDown', { which: KeyCode.BACKSPACE });
+      wrapper.find('.rc-select-selection-search-input').simulate('keyDown', { which: KeyCode.BACKSPACE });
       expect(onChange).toHaveBeenCalledWith(['1'], [expect.objectContaining({ value: '1' })]);
     });
 
@@ -97,7 +97,7 @@ export default function removeSelectedTest(mode: any) {
       toggleOpen(wrapper);
       selectItem(wrapper);
 
-      expect(wrapper.find('input').props().value).toBe('');
+      expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('');
       expect(onChange).toHaveBeenCalledWith([], []);
     });
   });

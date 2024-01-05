@@ -33,10 +33,10 @@ export default function blurTest(mode: any) {
     });
 
     it('clears inputValue', () => {
-      wrapper.find('input').simulate('change', { target: { value: '1' } });
-      wrapper.find('input').simulate('blur');
+      wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '1' } });
+      wrapper.find('.rc-select-selection-search-input').simulate('blur');
 
-      expect(wrapper.find('input').getDOMNode().value).toBe('');
+      expect(wrapper.find('.rc-select-selection-search-input').getDOMNode().value).toBe('');
     });
 
     it('blur()', () => {
@@ -53,17 +53,17 @@ export default function blurTest(mode: any) {
         const handleBlur = jest.fn();
         wrapper.setProps({ onBlur: handleBlur });
         wrapper
-          .find('input')
+          .find('.rc-select-selection-search-input')
           .instance()
           .focus();
         expect(handleBlur).not.toHaveBeenCalled();
 
-        wrapper.find('input').simulate('blur');
+        wrapper.find('.rc-select-selection-search-input').simulate('blur');
         expect(handleBlur).toHaveBeenCalled();
 
         wrapper.update();
         wrapper
-          .find('input')
+          .find('.rc-select-selection-search-input')
           .instance()
           .blur();
         jest.runAllTimers();

@@ -359,7 +359,7 @@ describe('Select.Basic', () => {
         <Option value="2">Two</Option>
       </Select>,
     );
-    expect(wrapper.find('input').getDOMNode().getAttribute('readonly')).toBeFalsy();
+    expect(wrapper.find('.rc-select-selection-search-input').getDOMNode().getAttribute('readonly')).toBeFalsy();
   });
 
   it('filter options by "value" prop by default', () => {
@@ -370,7 +370,7 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '1' } });
     expect(wrapper.find('List').props().data.length).toBe(1);
     expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('One');
   });
@@ -383,7 +383,7 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: '2' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '2' } });
     expect(wrapper.find('List').props().data.length).toBe(1);
     expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('Two');
   });
@@ -396,7 +396,7 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '1' } });
     expect(wrapper.find('List').props().data.length).toBe(2);
   });
 
@@ -412,7 +412,7 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: 'Two' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'Two' } });
 
     expect(wrapper.find('List').props().data.length).toBe(1);
     expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('2');
@@ -430,7 +430,7 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: 'Two2' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'Two2' } });
 
     expect(wrapper.find('List').props().data.length).toBe(1);
     expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('Two2');
@@ -468,7 +468,7 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('keyDown', { keyCode: 40 });
+    wrapper.find('.rc-select-selection-search-input').simulate('keyDown', { keyCode: 40 });
     expectOpen(wrapper);
   });
 
@@ -539,10 +539,10 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '1' } });
     expect(handleSearch).toHaveBeenCalledWith('1');
 
-    wrapper.find('input').simulate('change', { target: { value: '' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '' } });
   });
 
   it('not fires search event when user select', () => {
@@ -567,7 +567,7 @@ describe('Select.Basic', () => {
     );
 
     for (let i = 0; i < 10; i += 1) {
-      wrapper.find('input').simulate('mousedown');
+      wrapper.find('.rc-select-selection-search-input').simulate('mousedown');
       expectOpen(wrapper);
     }
   });
@@ -585,7 +585,7 @@ describe('Select.Basic', () => {
         <Option value="2">2</Option>
       </Select>,
     );
-    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '1' } });
     expect(handleSearch).toHaveBeenCalledTimes(1);
 
     // Not fire onSearch when value selected
@@ -594,9 +594,9 @@ describe('Select.Basic', () => {
     expect(handleSearch).toHaveBeenCalledTimes(1);
 
     // Should trigger onBlur
-    wrapper.find('input').simulate('change', { target: { value: '3' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '3' } });
     expect(handleSearch).toHaveBeenCalledTimes(2);
-    wrapper.find('input').simulate('blur');
+    wrapper.find('.rc-select-selection-search-input').simulate('blur');
     jest.runAllTimers();
     expect(handleSearch).toHaveBeenCalledTimes(3);
 
@@ -635,7 +635,7 @@ describe('Select.Basic', () => {
         </Select>,
       );
 
-      wrapper.find('input').simulate('focus');
+      wrapper.find('.rc-select-selection-search-input').simulate('focus');
       jest.runAllTimers();
     });
 
@@ -666,14 +666,14 @@ describe('Select.Basic', () => {
         </Select>,
       );
 
-      const focusSpy = jest.spyOn(wrapper.find('input').instance(), 'focus');
+      const focusSpy = jest.spyOn(wrapper.find('.rc-select-selection-search-input').instance(), 'focus');
 
       wrapper.find('.rc-select-selector').simulate('mousedown');
       wrapper.find('.rc-select-selector').simulate('click');
       expect(focusSpy).toHaveBeenCalled();
 
       // We should mock trigger focus event since it not work in jsdom
-      wrapper.find('input').simulate('focus');
+      wrapper.find('.rc-select-selection-search-input').simulate('focus');
       jest.runAllTimers();
     });
 
@@ -697,7 +697,7 @@ describe('Select.Basic', () => {
           <Option value="2">2</Option>
         </Select>,
       );
-      const inputSpy = jest.spyOn(selectWrapper.find('input').instance(), 'focus' as any);
+      const inputSpy = jest.spyOn(selectWrapper.find('.rc-select-selection-search-input').instance(), 'focus' as any);
       selectWrapper.find('.rc-select-selection-placeholder').simulate('mousedown');
       selectWrapper.find('.rc-select-selection-placeholder').simulate('click');
       expect(inputSpy).toHaveBeenCalled();
@@ -725,9 +725,9 @@ describe('Select.Basic', () => {
         </Select>,
       );
 
-      wrapper.find('input').simulate('focus');
-      wrapper.find('input').simulate('change', { target: { value: '1' } });
-      wrapper.find('input').simulate('blur');
+      wrapper.find('.rc-select-selection-search-input').simulate('focus');
+      wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '1' } });
+      wrapper.find('.rc-select-selection-search-input').simulate('blur');
 
       jest.runAllTimers();
     });
@@ -753,7 +753,7 @@ describe('Select.Basic', () => {
         </Select>,
       );
       toggleOpen(wrapper);
-      wrapper.find('input').simulate('blur');
+      wrapper.find('.rc-select-selection-search-input').simulate('blur');
       jest.runAllTimers();
       wrapper.update();
       expectOpen(wrapper, false);
@@ -770,8 +770,8 @@ describe('Select.Basic', () => {
         </Select>,
       );
       jest.useFakeTimers();
-      wrapper.find('input').simulate('focus');
-      wrapper.find('input').simulate('blur');
+      wrapper.find('.rc-select-selection-search-input').simulate('focus');
+      wrapper.find('.rc-select-selection-search-input').simulate('blur');
       jest.runAllTimers();
       expect(onFocus).not.toHaveBeenCalled();
       expect(onBlur).not.toHaveBeenCalled();
@@ -781,7 +781,7 @@ describe('Select.Basic', () => {
   [KeyCode.ENTER, KeyCode.DOWN].forEach((keyCode) => {
     it('open on key press', () => {
       const wrapper = mount(<Select />);
-      wrapper.find('input').simulate('keyDown', { keyCode });
+      wrapper.find('.rc-select-selection-search-input').simulate('keyDown', { keyCode });
       expectOpen(wrapper);
     });
   });
@@ -795,13 +795,13 @@ describe('Select.Basic', () => {
     );
     toggleOpen(wrapper);
     wrapper
-      .find('input')
+      .find('.rc-select-selection-search-input')
       .simulate('change', { target: { value: 'foo' } })
       .simulate('keyDown', { which: KeyCode.ESC });
 
     wrapper.update();
 
-    expect(wrapper.find('input').props().value).toBe('');
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('');
     expectOpen(wrapper, false);
     expect(onKeyDown).toHaveBeenCalledTimes(0);
 
@@ -820,7 +820,7 @@ describe('Select.Basic', () => {
     );
 
     wrapper
-      .find('input')
+      .find('.rc-select-selection-search-input')
       .simulate('keyDown', { which: KeyCode.ESC })
       .simulate('keyDown', { which: KeyCode.SHIFT })
       .simulate('keyDown', { which: KeyCode.BACKSPACE })
@@ -848,7 +848,7 @@ describe('Select.Basic', () => {
       .simulate('keyDown', { which: KeyCode.F12 });
     expectOpen(wrapper, false);
 
-    wrapper.find('input').simulate('keyDown', { which: KeyCode.NUM_ONE });
+    wrapper.find('.rc-select-selection-search-input').simulate('keyDown', { which: KeyCode.NUM_ONE });
     expectOpen(wrapper, true);
   });
 
@@ -969,7 +969,7 @@ describe('Select.Basic', () => {
         </Select>,
       );
 
-      expect(wrapper.find('input').prop('type')).toEqual('email');
+      expect(wrapper.find('.rc-select-selection-search-input').prop('type')).toEqual('email');
     });
   });
 
@@ -1047,7 +1047,7 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '1' } });
     expect(wrapper.find('List').props().data).toHaveLength(3);
   });
 
@@ -1073,7 +1073,7 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: '3' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '3' } });
     expect(wrapper.find('.rc-select-item')).toHaveLength(0);
     expect(wrapper.find('.rc-select-item-empty').text()).toEqual('Not Found');
   });
@@ -1085,7 +1085,7 @@ describe('Select.Basic', () => {
         <Option value="2">2</Option>
       </Select>,
     );
-    expect(wrapper.find('input').prop('type')).toBe('search');
+    expect(wrapper.find('.rc-select-selection-search-input').prop('type')).toBe('search');
   });
 
   it('warns on invalid children', () => {
@@ -1161,16 +1161,16 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
-    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
+    wrapper.find('.rc-select-selection-search-input').simulate('keyDown', { which: KeyCode.DOWN });
+    wrapper.find('.rc-select-selection-search-input').simulate('keyDown', { which: KeyCode.DOWN });
 
-    expect(wrapper.find('input').props().value).toEqual('2');
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toEqual('2');
     expect(handleChange).not.toHaveBeenCalled();
     expect(handleSelect).not.toHaveBeenCalled();
 
-    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+    wrapper.find('.rc-select-selection-search-input').simulate('keyDown', { which: KeyCode.ENTER });
 
-    expect(wrapper.find('input').props().value).toEqual('2');
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toEqual('2');
     expect(handleChange).toHaveBeenCalledWith('2', expect.anything());
     expect(handleSelect).toHaveBeenCalledWith('2', expect.anything());
 
@@ -1204,7 +1204,7 @@ describe('Select.Basic', () => {
         </Select>,
       );
 
-      wrapper.find('input').simulate('change', { target: { value: '1' } });
+      wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '1' } });
       expect(wrapper.find('List').props().data.length).toEqual(1);
     });
   });
@@ -1261,7 +1261,7 @@ describe('Select.Basic', () => {
 
     jest.runAllTimers();
 
-    expect(container.querySelector('input')).toBe(document.activeElement);
+    expect(container.querySelector('.rc-select-selection-search-input')).toBe(document.activeElement);
 
     jest.useRealTimers();
   });
@@ -1287,7 +1287,7 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: 'b' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'b' } });
     expect(wrapper.find('List').props().data).toHaveLength(1);
     expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('ABC');
   });
@@ -1319,18 +1319,18 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: 'b' } });
-    expect(wrapper.find('input').props().value).toBe('b');
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'b' } });
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('b');
     expect(wrapper.find('List').props().data).toHaveLength(1);
     expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('Burns Bay Road');
 
-    wrapper.find('input').simulate('change', { target: { value: 'c' } });
-    expect(wrapper.find('input').props().value).toBe('c');
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'c' } });
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('c');
     expect(wrapper.find('.rc-select-item')).toHaveLength(0);
     expect(wrapper.find('.rc-select-item-empty').text()).toEqual('Not Found');
 
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ENTER });
-    expect(wrapper.find('input').props().value).toBe('c');
+    wrapper.find('.rc-select-selection-search-input').simulate('keyDown', { keyCode: KeyCode.ENTER });
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('c');
     expect(handleSelect).not.toHaveBeenCalled();
   });
 
@@ -1470,7 +1470,7 @@ describe('Select.Basic', () => {
 
     for (let i = 0; i < 10; i += 1) {
       onSelect.mockReset();
-      wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+      wrapper.find('.rc-select-selection-search-input').simulate('keyDown', { which: KeyCode.ENTER });
       expect(onSelect).toHaveBeenCalledWith('1', expect.anything());
     }
   });
@@ -1524,11 +1524,11 @@ describe('Select.Basic', () => {
     const onKeyUp = jest.fn();
     const wrapper = mount(<Select onKeyDown={onKeyDown} onKeyUp={onKeyUp} />);
 
-    wrapper.find('input').simulate('keydown', { which: KeyCode.ENTER });
+    wrapper.find('.rc-select-selection-search-input').simulate('keydown', { which: KeyCode.ENTER });
     expectOpen(wrapper);
     expect(onKeyDown).toHaveBeenCalled();
 
-    wrapper.find('input').simulate('keyup', { which: KeyCode.ENTER });
+    wrapper.find('.rc-select-selection-search-input').simulate('keyup', { which: KeyCode.ENTER });
     expect(onKeyUp).toHaveBeenCalled();
   });
 
@@ -1600,7 +1600,7 @@ describe('Select.Basic', () => {
         </Select>,
       );
 
-      wrapper.find('input').simulate('change', { target: { value: 'l' } });
+      wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'l' } });
       expect(wrapper.find('List').props().data).toHaveLength(1);
       expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('Light');
 
@@ -1710,7 +1710,7 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', 'Z');
+    wrapper.find('.rc-select-selection-search-input').simulate('change', 'Z');
     expect(wrapper.find('List').props().data).toHaveLength(1);
   });
 
@@ -1924,7 +1924,7 @@ describe('Select.Basic', () => {
       />,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: 'i' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'i' } });
     expect(wrapper.find('.rc-select-item-option-content').first().text()).toBe('Communicated');
   });
 
@@ -2196,4 +2196,88 @@ describe('Select.Basic', () => {
     expect(element[0]).not.toHaveClass('rc-select-item-option-disabled');
     expect(element[1]).toHaveClass('rc-select-item-option-disabled');
   });
+
+  it('should render nativeInputProps when combobox', () => {
+    const { container } = testingRender(
+      <Select
+        open
+        mode="combobox"
+        options={[
+          {
+            label: 'test 1',
+            value: 'test 1',
+          },
+          {
+            label: 'test 2',
+            value: 'test 2',
+          },
+        ]}
+        value="test 2"
+        nativeInputProps={{
+          id: 'test',
+          name: 'test',
+        }}
+      />,
+    );
+
+    expect(container.querySelector('input.rc-select-native-input').getAttribute('id')).toEqual('test');
+    expect(container.querySelector('input.rc-select-native-input').getAttribute('name')).toEqual('test');
+    expect(container.querySelector('input.rc-select-native-input').getAttribute('value')).toEqual('test 2');
+  })
+
+  it('should render nativeInputProps when multiple', () => {
+    const { container } = testingRender(
+      <Select
+        open
+        mode="multiple"
+        options={[
+          {
+            label: 'test 1',
+            value: 'test 1',
+          },
+          {
+            label: 'test 2',
+            value: 'test 2',
+          },
+        ]}
+        value={['test 1', 'test 2']}
+        nativeInputProps={{
+          id: 'test',
+          name: 'test',
+        }}
+      />,
+    );
+
+    expect(container.querySelector('input.rc-select-native-input').getAttribute('id')).toEqual('test');
+    expect(container.querySelector('input.rc-select-native-input').getAttribute('name')).toEqual('test');
+    expect(container.querySelector('input.rc-select-native-input').getAttribute('value')).toEqual('test 1,test 2');
+  })
+
+  it('should render nativeInputProps when tags', () => {
+    const { container } = testingRender(
+      <Select
+        open
+        mode="tags"
+        options={[
+          {
+            label: 'test 1',
+            value: 'test 1',
+          },
+          {
+            label: 'test 2',
+            value: 'test 2',
+          },
+        ]}
+        value={['test 1', 'test 2']}
+        nativeInputProps={{
+          id: 'test',
+          name: 'test',
+        }}
+      />,
+    );
+
+    expect(container.querySelector('input.rc-select-native-input').getAttribute('id')).toEqual('test');
+    expect(container.querySelector('input.rc-select-native-input').getAttribute('name')).toEqual('test');
+    expect(container.querySelector('input.rc-select-native-input').getAttribute('value')).toEqual('test 1,test 2');
+  })
 });

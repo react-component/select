@@ -97,6 +97,14 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
           </div>
         </div>
       </div>
+      <input
+        aria-hidden="true"
+        class="rc-select-native-input"
+        readonly=""
+        tabindex="-1"
+        type="hidden"
+        value="jack,foo"
+      />
     </div>
     <div
       class="rc-select-dropdown rc-select-dropdown-placement-bottomLeft"
@@ -269,6 +277,14 @@ exports[`Select.Tags render not display maxTagPlaceholder if maxTagCount not rea
         </div>
       </div>
     </div>
+    <input
+      aria-hidden="true"
+      class="rc-select-native-input"
+      readonly=""
+      tabindex="-1"
+      type="hidden"
+      value=""
+    />
     <span
       class="rc-select-selection-placeholder"
     />
@@ -386,6 +402,14 @@ exports[`Select.Tags render truncates tags by maxTagCount and show maxTagPlaceho
         </div>
       </div>
     </div>
+    <input
+      aria-hidden="true"
+      class="rc-select-native-input"
+      readonly=""
+      tabindex="-1"
+      type="hidden"
+      value="one,two,three"
+    />
   </div>
 </div>
 `;
@@ -500,6 +524,14 @@ exports[`Select.Tags render truncates tags by maxTagCount and show maxTagPlaceho
         </div>
       </div>
     </div>
+    <input
+      aria-hidden="true"
+      class="rc-select-native-input"
+      readonly=""
+      tabindex="-1"
+      type="hidden"
+      value="one,two,three"
+    />
   </div>
 </div>
 `;
@@ -598,6 +630,14 @@ exports[`Select.Tags render truncates values by maxTagTextLength 1`] = `
         </div>
       </div>
     </div>
+    <input
+      aria-hidden="true"
+      class="rc-select-native-input"
+      readonly=""
+      tabindex="-1"
+      type="hidden"
+      value="one,two"
+    />
   </div>
 </div>
 `;

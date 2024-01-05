@@ -15,7 +15,7 @@ import type { ScrollTo } from 'rc-virtual-list/lib/List';
 import MultipleSelector from './MultipleSelector';
 import SingleSelector from './SingleSelector';
 import useLock from '../hooks/useLock';
-import type { CustomTagProps, DisplayValueType, Mode, RenderNode } from '../BaseSelect';
+import type { BaseSelectProps, CustomTagProps, DisplayValueType, Mode, RenderNode } from '../BaseSelect';
 import { isValidateOpenKey } from '../utils/keyUtil';
 
 export interface InnerSelectorProps {
@@ -23,6 +23,7 @@ export interface InnerSelectorProps {
   id: string;
   mode: Mode;
   title?: string;
+  nativeInputProps?: BaseSelectProps['nativeInputProps']
 
   inputRef: React.Ref<HTMLInputElement | HTMLTextAreaElement>;
   placeholder?: React.ReactNode;
@@ -65,6 +66,7 @@ export interface SelectorProps {
   autoClearSearchValue: boolean;
   inputElement: JSX.Element;
   maxLength?: number;
+  nativeInputProps?: BaseSelectProps['nativeInputProps']
 
   autoFocus?: boolean;
   activeDescendantId?: string;

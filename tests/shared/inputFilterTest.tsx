@@ -12,7 +12,7 @@ export default function inputFilterTest(mode: any) {
         <Option value="22">22</Option>
       </Select>,
     );
-    const input = wrapper.find('input');
+    const input = wrapper.find('.rc-select-selection-search-input');
     input.simulate('change', {
       target: {
         value: '1',
@@ -20,12 +20,12 @@ export default function inputFilterTest(mode: any) {
     });
 
     expect(wrapper.find('.rc-select').hasClass('rc-select-open')).toBeTruthy();
-    expect(wrapper.find('input').props().value).toBe('1');
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('1');
     wrapper
       .find('.rc-select-item-option')
       .first()
       .simulate('click');
-    expect(wrapper.find('input').props().value).toBe(mode === 'single' ? '' : '1');
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe(mode === 'single' ? '' : '1');
   });
 
   it('should clear input filter after select', () => {
@@ -36,7 +36,7 @@ export default function inputFilterTest(mode: any) {
         <Option value="22">22</Option>
       </Select>,
     );
-    const input = wrapper.find('input');
+    const input = wrapper.find('.rc-select-selection-search-input');
     input.simulate('change', {
       target: {
         value: '1',
@@ -44,11 +44,11 @@ export default function inputFilterTest(mode: any) {
     });
 
     expect(wrapper.find('.rc-select').hasClass('rc-select-open')).toBeTruthy();
-    expect(wrapper.find('input').props().value).toBe('1');
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('1');
     wrapper
       .find('.rc-select-item-option')
       .first()
       .simulate('click');
-    expect(wrapper.find('input').props().value).toBe('');
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('');
   });
 }

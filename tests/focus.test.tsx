@@ -14,7 +14,7 @@ describe('Select.Focus', () => {
     const wrapper = mount(<Select />);
 
     // Focus
-    wrapper.find('input').simulate('focus');
+    wrapper.find('.rc-select-selection-search-input').simulate('focus');
     act(() => {
       jest.runAllTimers();
       wrapper.update();
@@ -49,11 +49,11 @@ describe('Select.Focus', () => {
 
     const { container } = render(<Demo />);
 
-    fireEvent.focus(container.querySelector('input'));
+    fireEvent.focus(container.querySelector('.rc-select-selection-search-input'));
     jest.runAllTimers();
 
     // trigger disabled
-    fireEvent.blur(container.querySelector('input'));
+    fireEvent.blur(container.querySelector('.rc-select-selection-search-input'));
     jest.runAllTimers();
 
     // reset focused
@@ -63,7 +63,7 @@ describe('Select.Focus', () => {
 
     // reset disabled
     fireEvent.click(container.querySelector('button'));
-    fireEvent.focus(container.querySelector('input'));
+    fireEvent.focus(container.querySelector('.rc-select-selection-search-input'));
     jest.runAllTimers();
 
     expect(onFocus).toHaveBeenCalled();
@@ -80,7 +80,7 @@ describe('Select.Focus', () => {
     (document.body.style as any).msTouchAction = true;
     const wrapper = mount(<Select mode="tags" value="bamboo" />);
 
-    const focusFn = jest.spyOn(wrapper.find('input').instance(), 'focus' as any);
+    const focusFn = jest.spyOn(wrapper.find('.rc-select-selection-search-input').instance(), 'focus' as any);
 
     wrapper.find('.rc-select-selector').simulate('click');
     jest.runAllTimers();

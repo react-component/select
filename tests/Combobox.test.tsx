@@ -60,7 +60,7 @@ describe('Select.Combobox', () => {
       </Select>,
     );
 
-    expect(wrapper.find('input').props().value).toEqual('1');
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toEqual('1');
   });
 
   it('placeholder', () => {
@@ -71,11 +71,11 @@ describe('Select.Combobox', () => {
       </Select>,
     );
 
-    expect(wrapper.find('input').props().value).toBe('');
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('');
     expect(wrapper.find('.rc-select-selection-placeholder').text()).toEqual('placeholder');
-    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '1' } });
     expect(wrapper.find('.rc-select-selection-placeholder').length).toBe(0);
-    expect(wrapper.find('input').props().value).toBe('1');
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('1');
   });
 
   it('fire change event immediately when user inputing', () => {
@@ -87,10 +87,10 @@ describe('Select.Combobox', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '1' } });
     expect(handleChange).toHaveBeenCalledWith('1', {});
 
-    wrapper.find('input').simulate('change', { target: { value: '22' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '22' } });
     expect(handleChange).toHaveBeenCalledWith(
       '22',
       expect.objectContaining({
@@ -110,7 +110,7 @@ describe('Select.Combobox', () => {
 
     toggleOpen(wrapper);
     selectItem(wrapper);
-    expect(wrapper.find('input').props().value).toEqual('1');
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toEqual('1');
   });
 
   describe('input value', () => {
@@ -126,20 +126,20 @@ describe('Select.Combobox', () => {
       const wrapper = createSelect({
         defaultValue: '1',
       });
-      expect(wrapper.find('input').props().value).toBe('1');
+      expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('1');
     });
 
     it('displays correct input value for value', () => {
       const wrapper = createSelect({
         value: '1',
       });
-      expect(wrapper.find('input').props().value).toBe('1');
+      expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('1');
     });
 
     it('displays correct input value when value changes', () => {
       const wrapper = createSelect();
       wrapper.setProps({ value: '1' });
-      expect(wrapper.find('input').props().value).toBe('1');
+      expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('1');
     });
   });
 
@@ -182,8 +182,8 @@ describe('Select.Combobox', () => {
         }
       }
       const wrapper = mount(<AsyncCombobox />);
-      wrapper.find('input').simulate('focus');
-      wrapper.find('input').simulate('change', { target: { value: '0' } });
+      wrapper.find('.rc-select-selection-search-input').simulate('focus');
+      wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '0' } });
       jest.runAllTimers();
       wrapper.update();
       expectOpen(wrapper);
@@ -231,8 +231,8 @@ describe('Select.Combobox', () => {
         }
       }
       const wrapper = mount(<AsyncCombobox />);
-      wrapper.find('input').simulate('focus');
-      wrapper.find('input').simulate('change', { target: { value: '0' } });
+      wrapper.find('.rc-select-selection-search-input').simulate('focus');
+      wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '0' } });
       expectOpen(wrapper);
 
       selectItem(wrapper);
@@ -252,14 +252,14 @@ describe('Select.Combobox', () => {
           <Option value="Two">Two</Option>
         </Select>,
       );
-      const input = wrapper.find('input');
+      const input = wrapper.find('.rc-select-selection-search-input');
       input.simulate('keyDown', { which: KeyCode.DOWN });
-      expect(wrapper.find('input').props().value).toEqual('One');
+      expect(wrapper.find('.rc-select-selection-search-input').props().value).toEqual('One');
       expect(handleChange).not.toHaveBeenCalled();
       expect(handleSelect).not.toHaveBeenCalled();
 
       input.simulate('keyDown', { which: KeyCode.ENTER });
-      expect(wrapper.find('input').props().value).toEqual('One');
+      expect(wrapper.find('.rc-select-selection-search-input').props().value).toEqual('One');
       expect(handleChange).toHaveBeenCalledWith('One', expect.objectContaining({ value: 'One' }));
       expect(handleSelect).toHaveBeenCalledWith('One', expect.objectContaining({ value: 'One' }));
     });
@@ -274,7 +274,7 @@ describe('Select.Combobox', () => {
 
       wrapper.find('.rc-select-item-option').first().simulate('mouseMove');
 
-      expect(wrapper.find('input').props().value).toBeFalsy();
+      expect(wrapper.find('.rc-select-selection-search-input').props().value).toBeFalsy();
     });
 
     // https://github.com/ant-design/ant-design/issues/25345
@@ -308,7 +308,7 @@ describe('Select.Combobox', () => {
       const wrapper = mount(<Test />);
 
       function input() {
-        return wrapper.find('input');
+        return wrapper.find('.rc-select-selection-search-input');
       }
 
       input().simulate('change', { target: { value: 'light' } });
@@ -355,9 +355,9 @@ describe('Select.Combobox', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '1' } });
     expect(wrapper.find('.rc-select-clear-icon').length).toBeTruthy();
-    wrapper.find('input').simulate('change', { target: { value: '' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '' } });
     expect(wrapper.find('.rc-select-clear-icon').length).toBeFalsy();
   });
 
@@ -388,11 +388,11 @@ describe('Select.Combobox', () => {
     }
 
     const wrapper = mount(<App />);
-    wrapper.find('input').simulate('change', { target: { value: 'a' } });
-    wrapper.find('input').simulate('change', { target: { value: 'ab' } });
-    expect(wrapper.find('input').props().value).toBe('ab');
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'a' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'ab' } });
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('ab');
     selectItem(wrapper, 1);
-    expect(wrapper.find('input').prop('value')).toBe('abab');
+    expect(wrapper.find('.rc-select-selection-search-input').prop('value')).toBe('abab');
   });
 
   it("when value change to '', searchValue will change to '' ", () => {
@@ -458,7 +458,7 @@ describe('Select.Combobox', () => {
         <Option value="Two">Two</Option>
       </Select>,
     );
-    wrapper.find('input').simulate('keyDown', {
+    wrapper.find('.rc-select-selection-search-input').simulate('keyDown', {
       which: KeyCode.ENTER,
     });
     jest.runAllTimers();
@@ -482,7 +482,7 @@ describe('Select.Combobox', () => {
     wrapper.update();
     expectOpen(wrapper, false);
 
-    expect(wrapper.find('input').props().value).toEqual('');
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toEqual('');
   });
 
   it('should keep close after blur', async () => {
@@ -497,12 +497,12 @@ describe('Select.Combobox', () => {
 
     // Click again should not close popup
     for (let i = 0; i < 10; i += 1) {
-      wrapper.find('input').simulate('mouseDown');
+      wrapper.find('.rc-select-selection-search-input').simulate('mouseDown');
       wrapper.update();
       expectOpen(wrapper);
     }
 
-    wrapper.find('input').simulate('blur');
+    wrapper.find('.rc-select-selection-search-input').simulate('blur');
     await delay(100);
 
     wrapper.update();
@@ -512,18 +512,18 @@ describe('Select.Combobox', () => {
   it('expect null value display empty string', () => {
     const wrapper = mount(<Select mode="combobox" value={null} />);
 
-    expect(wrapper.find('input').props().value).toBe('');
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('');
   });
 
   describe('maxLength', () => {
     it('should support', () => {
       const wrapper = mount(<Select maxLength={6} />);
-      expect(wrapper.find('input').props().maxLength).toBeFalsy();
+      expect(wrapper.find('.rc-select-selection-search-input').props().maxLength).toBeFalsy();
     });
 
     it('normal should not support', () => {
       const wrapper = mount(<Select mode="combobox" maxLength={6} />);
-      expect(wrapper.find('input').props().maxLength).toBe(6);
+      expect(wrapper.find('.rc-select-selection-search-input').props().maxLength).toBe(6);
     });
   });
 
@@ -531,16 +531,16 @@ describe('Select.Combobox', () => {
     const onChange = jest.fn();
     const wrapper = mount(<Select mode="combobox" onChange={onChange} />);
 
-    wrapper.find('input').simulate('compositionStart', { target: { value: '' } });
-    wrapper.find('input').simulate('change', { target: { value: 'a' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('compositionStart', { target: { value: '' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'a' } });
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange).toHaveBeenLastCalledWith('a', expect.anything());
 
-    wrapper.find('input').simulate('change', { target: { value: '啊' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '啊' } });
     expect(onChange).toHaveBeenCalledTimes(2);
     expect(onChange).toHaveBeenLastCalledWith('啊', expect.anything());
 
-    wrapper.find('input').simulate('compositionEnd', { target: { value: '啊' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('compositionEnd', { target: { value: '啊' } });
     expect(onChange).toHaveBeenCalledTimes(2);
   });
 
@@ -585,12 +585,12 @@ describe('Select.Combobox', () => {
     jest.useFakeTimers();
     const { container, rerender } = render(<Select mode="combobox" options={[]} />);
 
-    fireEvent.mouseDown(container.querySelector('input'));
+    fireEvent.mouseDown(container.querySelector('.rc-select-selection-search-input'));
     act(() => {
       jest.runAllTimers();
     });
 
-    fireEvent.blur(container.querySelector('input'));
+    fireEvent.blur(container.querySelector('.rc-select-selection-search-input'));
     act(() => {
       jest.runAllTimers();
     });
@@ -604,6 +604,6 @@ describe('Select.Combobox', () => {
   // https://github.com/ant-design/ant-design/issues/43936
   it('combobox mode not show 0 value', () => {
     const wrapper = mount(<Select mode="combobox" value={0} />);
-    expect(wrapper.find('input').props().value).toBe('0');
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('0');
   });
 });
