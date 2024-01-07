@@ -399,7 +399,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   const { maxCount, rawValues } = React.useContext<SelectContextProps>(SelectContext) || {};
 
   const onInternalSearch = (searchText: string, fromTyping: boolean, isCompositing: boolean) => {
-    if (isValidCount(maxCount) && rawValues?.size >= maxCount) {
+    if (multiple && isValidCount(maxCount) && rawValues?.size >= maxCount) {
       return;
     }
     let ret = true;
