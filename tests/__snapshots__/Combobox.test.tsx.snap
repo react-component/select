@@ -25,11 +25,8 @@ exports[`Select.Combobox renders controlled correctly 1`] = `
       />
     </span>
     <input
-      aria-hidden="true"
       class="rc-select-native-input"
-      readonly=""
-      tabindex="-1"
-      type="hidden"
+      style="position: absolute; overflow: hidden; width: 1px; height: 1px; border: 0px; margin: -1px; padding: 0px; white-space: nowrap;"
       value=""
     />
     <span
@@ -66,11 +63,8 @@ exports[`Select.Combobox renders correctly 1`] = `
       />
     </span>
     <input
-      aria-hidden="true"
       class="rc-select-native-input"
-      readonly=""
-      tabindex="-1"
-      type="hidden"
+      style="position: absolute; overflow: hidden; width: 1px; height: 1px; border: 0px; margin: -1px; padding: 0px; white-space: nowrap;"
       value=""
     />
     <span

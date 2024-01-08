@@ -135,11 +135,8 @@ exports[`Select.Basic no search 1`] = `
       />
     </span>
     <input
-      aria-hidden="true"
       class="rc-select-native-input"
-      readonly=""
-      tabindex="-1"
-      type="hidden"
+      style="position:absolute;overflow:hidden;width:1px;height:1px;border:0;margin:-1px;padding:0;clip:rect(0 0 0 0);white-space:nowrap"
       value="1"
     />
     <span
@@ -180,11 +177,8 @@ exports[`Select.Basic render renders aria-attributes correctly 1`] = `
       />
     </span>
     <input
-      aria-hidden="true"
       class="antd-native-input"
-      readonly=""
-      tabindex="-1"
-      type="hidden"
+      style="position:absolute;overflow:hidden;width:1px;height:1px;border:0;margin:-1px;padding:0;clip:rect(0 0 0 0);white-space:nowrap"
       value="2"
     />
     <span
@@ -233,11 +227,8 @@ exports[`Select.Basic render renders correctly 1`] = `
       />
     </span>
     <input
-      aria-hidden="true"
       class="antd-native-input"
-      readonly=""
-      tabindex="-1"
-      type="hidden"
+      style="position:absolute;overflow:hidden;width:1px;height:1px;border:0;margin:-1px;padding:0;clip:rect(0 0 0 0);white-space:nowrap"
       value="2"
     />
     <span
@@ -288,11 +279,8 @@ exports[`Select.Basic render renders data-attributes correctly 1`] = `
       />
     </span>
     <input
-      aria-hidden="true"
       class="antd-native-input"
-      readonly=""
-      tabindex="-1"
-      type="hidden"
+      style="position:absolute;overflow:hidden;width:1px;height:1px;border:0;margin:-1px;padding:0;clip:rect(0 0 0 0);white-space:nowrap"
       value="2"
     />
     <span
@@ -342,11 +330,8 @@ exports[`Select.Basic render renders disabled select correctly 1`] = `
       />
     </span>
     <input
-      aria-hidden="true"
       class="antd-native-input"
-      readonly=""
-      tabindex="-1"
-      type="hidden"
+      style="position:absolute;overflow:hidden;width:1px;height:1px;border:0;margin:-1px;padding:0;clip:rect(0 0 0 0);white-space:nowrap"
       value="2"
     />
     <span
@@ -386,11 +371,8 @@ exports[`Select.Basic render renders role prop correctly 1`] = `
       />
     </span>
     <input
-      aria-hidden="true"
       class="antd-native-input"
-      readonly=""
-      tabindex="-1"
-      type="hidden"
+      style="position:absolute;overflow:hidden;width:1px;height:1px;border:0;margin:-1px;padding:0;clip:rect(0 0 0 0);white-space:nowrap"
       value="2"
     />
     <span

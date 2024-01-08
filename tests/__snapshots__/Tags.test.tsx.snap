@@ -98,11 +98,8 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
         </div>
       </div>
       <input
-        aria-hidden="true"
         class="rc-select-native-input"
-        readonly=""
-        tabindex="-1"
-        type="hidden"
+        style="position: absolute; overflow: hidden; width: 1px; height: 1px; border: 0px; margin: -1px; padding: 0px; white-space: nowrap;"
         value="jack,foo"
       />
     </div>
@@ -278,11 +275,8 @@ exports[`Select.Tags render not display maxTagPlaceholder if maxTagCount not rea
       </div>
     </div>
     <input
-      aria-hidden="true"
       class="rc-select-native-input"
-      readonly=""
-      tabindex="-1"
-      type="hidden"
+      style="position: absolute; overflow: hidden; width: 1px; height: 1px; border: 0px; margin: -1px; padding: 0px; white-space: nowrap;"
       value=""
     />
     <span
@@ -403,11 +397,8 @@ exports[`Select.Tags render truncates tags by maxTagCount and show maxTagPlaceho
       </div>
     </div>
     <input
-      aria-hidden="true"
       class="rc-select-native-input"
-      readonly=""
-      tabindex="-1"
-      type="hidden"
+      style="position: absolute; overflow: hidden; width: 1px; height: 1px; border: 0px; margin: -1px; padding: 0px; white-space: nowrap;"
       value="one,two,three"
     />
   </div>
@@ -525,11 +516,8 @@ exports[`Select.Tags render truncates tags by maxTagCount and show maxTagPlaceho
       </div>
     </div>
     <input
-      aria-hidden="true"
       class="rc-select-native-input"
-      readonly=""
-      tabindex="-1"
-      type="hidden"
+      style="position: absolute; overflow: hidden; width: 1px; height: 1px; border: 0px; margin: -1px; padding: 0px; white-space: nowrap;"
       value="one,two,three"
     />
   </div>
@@ -631,11 +619,8 @@ exports[`Select.Tags render truncates values by maxTagTextLength 1`] = `
       </div>
     </div>
     <input
-      aria-hidden="true"
       class="rc-select-native-input"
-      readonly=""
-      tabindex="-1"
-      type="hidden"
+      style="position: absolute; overflow: hidden; width: 1px; height: 1px; border: 0px; margin: -1px; padding: 0px; white-space: nowrap;"
       value="one,two"
     />
   </div>

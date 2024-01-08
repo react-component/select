@@ -44,11 +44,8 @@ exports[`Select.Multiple render not display maxTagPlaceholder if maxTagCount not
       </div>
     </div>
     <input
-      aria-hidden="true"
       class="rc-select-native-input"
-      readonly=""
-      tabindex="-1"
-      type="hidden"
+      style="position: absolute; overflow: hidden; width: 1px; height: 1px; border: 0px; margin: -1px; padding: 0px; white-space: nowrap;"
       value=""
     />
     <span
@@ -172,11 +169,8 @@ exports[`Select.Multiple render truncates tags by maxTagCount and show maxTagPla
       </div>
     </div>
     <input
-      aria-hidden="true"
       class="rc-select-native-input"
-      readonly=""
-      tabindex="-1"
-      type="hidden"
+      style="position: absolute; overflow: hidden; width: 1px; height: 1px; border: 0px; margin: -1px; padding: 0px; white-space: nowrap;"
       value="one,two,three"
     />
   </div>
@@ -297,11 +291,8 @@ exports[`Select.Multiple render truncates tags by maxTagCount and show maxTagPla
       </div>
     </div>
     <input
-      aria-hidden="true"
       class="rc-select-native-input"
-      readonly=""
-      tabindex="-1"
-      type="hidden"
+      style="position: absolute; overflow: hidden; width: 1px; height: 1px; border: 0px; margin: -1px; padding: 0px; white-space: nowrap;"
       value="one,two,three"
     />
   </div>
@@ -406,11 +397,8 @@ exports[`Select.Multiple render truncates values by maxTagTextLength 1`] = `
       </div>
     </div>
     <input
-      aria-hidden="true"
       class="rc-select-native-input"
-      readonly=""
-      tabindex="-1"
-      type="hidden"
+      style="position: absolute; overflow: hidden; width: 1px; height: 1px; border: 0px; margin: -1px; padding: 0px; white-space: nowrap;"
       value="one,two"
     />
   </div>
