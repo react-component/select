@@ -157,6 +157,8 @@ export default () => (
 | label | group label | String/React.Element | - |
 | key | - | String | - |
 | value | default filter by this attribute. if react want you to set key, then key is same as value, you can omit value | String | - |
+| className | same as `Option props` | String | '' |
+| title | same as `Option props`| String | - |
 
 ## Development
 
