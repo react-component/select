@@ -18,8 +18,10 @@ const Test = () => (
         onChange={onChange}
         options={[{
           label: 'manager',
+          className: 'group-custom-className',
+          title:'group-custom-class',
           options: [
-            { label: 'jack', value: 'jack' },
+            { label: 'jack', value: 'jack', className:'jackClass1 jackClass2' , title:'jack-custom-Title' },
             { label: 'lucy', value: 'lucy' }
           ],
         }, {

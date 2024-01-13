@@ -319,7 +319,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
 
             return (
               <div
-                className={classNames(itemPrefixCls, `${itemPrefixCls}-group`)}
+                className={classNames(itemPrefixCls, `${itemPrefixCls}-group`, data.className)}
                 title={groupTitle}
               >
                 {label !== undefined ? label : key}
