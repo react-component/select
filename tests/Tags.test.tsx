@@ -63,6 +63,20 @@ describe('Select.Tags', () => {
     expect(onChange).toHaveBeenCalledWith(['foo'], [{}]);
   });
 
+  it('should not call on blur when set attribute tagsModeCommitOnBlur equals false', () => {
+    const onChange = jest.fn();
+    const wrapper = mount(<Select mode="tags" onChange={onChange} preventCommitOnBlur={true} />);
+
+    wrapper
+      .find('input')
+      .simulate('change', { target: { value: 'foo' } })
+      .simulate('blur');
+
+    jest.runAllTimers();
+    expect(findSelection(wrapper).text()).toBe("");
+    expect(onChange).toHaveBeenCalledWith([''], [{}]);
+  });
+
   it('tokenize input', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
