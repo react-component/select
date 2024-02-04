@@ -681,5 +681,16 @@ describe('Select.Multiple', () => {
       toggleOpen(wrapper);
       expect(wrapper.find('input').props().value).toBe('');
     });
+    it('input should be readonly when autoClearSearchValue and showSearch are both false', () => {
+      const wrapper = mount(
+        <Select
+          mode="multiple"
+          autoClearSearchValue={false}
+          showSearch={false}
+          searchValue="test"
+        />,
+      );
+      expect(wrapper.find('input').props().readOnly).toBe(true);
+    });
   });
 });
