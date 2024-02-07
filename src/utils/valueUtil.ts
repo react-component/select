@@ -107,7 +107,7 @@ export function injectPropsWithOption<T extends object>(option: T): T {
           false,
           'Return type is option instead of Option instance. Please read value directly instead of reading from `props`.',
         );
-        return newOption;
+        return option;
       },
     });
   }
