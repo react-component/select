@@ -13,7 +13,7 @@ describe('Select.Group', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: 'zombiej' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'zombiej' } });
     expect(wrapper.find('List').props().data).toEqual([
       expect.objectContaining({ group: true, data: expect.objectContaining({ label: 'zombiej' }) }),
       expect.objectContaining({ data: expect.objectContaining({ value: '1' }) }),
@@ -31,7 +31,7 @@ describe('Select.Group', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '1' } });
     expect(wrapper.find('List').props().data).toHaveLength(2);
   });
 

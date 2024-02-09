@@ -13,7 +13,7 @@ export default function keyDownTest(mode: any) {
       </Select>,
     );
 
-    wrapper.find('input').simulate('keydown');
+    wrapper.find('.rc-select-selection-search-input').simulate('keydown');
     expect(onInputKeyDown).toHaveBeenCalled();
   });
 }

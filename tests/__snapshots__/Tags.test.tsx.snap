@@ -97,6 +97,11 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
           </div>
         </div>
       </div>
+      <input
+        class="rc-select-native-input"
+        style="position: absolute; overflow: hidden; width: 1px; height: 1px; border: 0px; margin: -1px; padding: 0px; white-space: nowrap;"
+        value="jack,foo"
+      />
     </div>
     <div
       class="rc-select-dropdown rc-select-dropdown-placement-bottomLeft"
@@ -269,6 +274,11 @@ exports[`Select.Tags render not display maxTagPlaceholder if maxTagCount not rea
         </div>
       </div>
     </div>
+    <input
+      class="rc-select-native-input"
+      style="position: absolute; overflow: hidden; width: 1px; height: 1px; border: 0px; margin: -1px; padding: 0px; white-space: nowrap;"
+      value=""
+    />
     <span
       class="rc-select-selection-placeholder"
     />
@@ -386,6 +396,11 @@ exports[`Select.Tags render truncates tags by maxTagCount and show maxTagPlaceho
         </div>
       </div>
     </div>
+    <input
+      class="rc-select-native-input"
+      style="position: absolute; overflow: hidden; width: 1px; height: 1px; border: 0px; margin: -1px; padding: 0px; white-space: nowrap;"
+      value="one,two,three"
+    />
   </div>
 </div>
 `;
@@ -500,6 +515,11 @@ exports[`Select.Tags render truncates tags by maxTagCount and show maxTagPlaceho
         </div>
       </div>
     </div>
+    <input
+      class="rc-select-native-input"
+      style="position: absolute; overflow: hidden; width: 1px; height: 1px; border: 0px; margin: -1px; padding: 0px; white-space: nowrap;"
+      value="one,two,three"
+    />
   </div>
 </div>
 `;
@@ -598,6 +618,11 @@ exports[`Select.Tags render truncates values by maxTagTextLength 1`] = `
         </div>
       </div>
     </div>
+    <input
+      class="rc-select-native-input"
+      style="position: absolute; overflow: hidden; width: 1px; height: 1px; border: 0px; margin: -1px; padding: 0px; white-space: nowrap;"
+      value="one,two"
+    />
   </div>
 </div>
 `;

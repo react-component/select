@@ -42,7 +42,7 @@ describe('Select.Tags', () => {
     const wrapper = mount(<Select mode="tags" />);
 
     wrapper
-      .find('input')
+      .find('.rc-select-selection-search-input')
       .simulate('change', { target: { value: 'foo' } })
       .simulate('keyDown', { which: KeyCode.ENTER });
 
@@ -54,7 +54,7 @@ describe('Select.Tags', () => {
     const wrapper = mount(<Select mode="tags" onChange={onChange} />);
 
     wrapper
-      .find('input')
+      .find('.rc-select-selection-search-input')
       .simulate('change', { target: { value: 'foo' } })
       .simulate('blur');
 
@@ -74,7 +74,7 @@ describe('Select.Tags', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: '2,3,4' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '2,3,4' } });
 
     expect(handleChange).toHaveBeenCalledWith(['2', '3', '4'], expect.anything());
     expect(handleSelect).toHaveBeenCalledTimes(3);
@@ -82,7 +82,7 @@ describe('Select.Tags', () => {
     expect(findSelection(wrapper).text()).toEqual('2');
     expect(findSelection(wrapper, 1).text()).toEqual('3');
     expect(findSelection(wrapper, 2).text()).toEqual('4');
-    expect(wrapper.find('input').props().value).toBe('');
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('');
     expectOpen(wrapper, false);
   });
 
@@ -97,13 +97,13 @@ describe('Select.Tags', () => {
     );
 
     // composition start
-    wrapper.find('input').simulate('compositionStart');
-    wrapper.find('input').simulate('change', { target: { value: '2,3,4' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('compositionStart');
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '2,3,4' } });
     expect(handleChange).not.toHaveBeenCalled();
     handleChange.mockReset();
 
     // composition end
-    wrapper.find('input').simulate('compositionEnd');
+    wrapper.find('.rc-select-selection-search-input').simulate('compositionEnd');
     expect(handleChange).toHaveBeenCalledWith(['2', '3', '4'], expect.anything());
 
     expect(handleSelect).toHaveBeenCalledTimes(3);
@@ -111,7 +111,7 @@ describe('Select.Tags', () => {
     expect(findSelection(wrapper).text()).toEqual('2');
     expect(findSelection(wrapper, 1).text()).toEqual('3');
     expect(findSelection(wrapper, 2).text()).toEqual('4');
-    expect(wrapper.find('input').props().value).toBe('');
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('');
     expectOpen(wrapper, false);
   });
 
@@ -130,17 +130,17 @@ describe('Select.Tags', () => {
         <Option value="2">2</Option>
       </Select>,
     );
-    wrapper.find('input').simulate('compositionstart');
-    wrapper.find('input').simulate('change', { target: { value: 'Star Kirby' } });
-    wrapper.find('input').simulate('keydown', { which: KeyCode.ENTER });
+    wrapper.find('.rc-select-selection-search-input').simulate('compositionstart');
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'Star Kirby' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('keydown', { which: KeyCode.ENTER });
     expect(handleChange).not.toHaveBeenCalled();
     handleChange.mockReset();
-    wrapper.find('input').simulate('compositionend');
-    wrapper.find('input').simulate('keydown', { which: KeyCode.ENTER });
+    wrapper.find('.rc-select-selection-search-input').simulate('compositionend');
+    wrapper.find('.rc-select-selection-search-input').simulate('keydown', { which: KeyCode.ENTER });
     expect(handleChange).toHaveBeenCalledWith(['Star Kirby'], expect.anything());
     expect(handleSelect).toHaveBeenCalledTimes(1);
     expect(findSelection(wrapper).text()).toEqual('Star Kirby');
-    expect(wrapper.find('input').props().value).toBe('');
+    expect(wrapper.find('.rc-select-selection-search-input').props().value).toBe('');
     expectOpen(wrapper, false);
   });
 
@@ -175,12 +175,12 @@ describe('Select.Tags', () => {
         </Select>,
       );
 
-      wrapper.find('input').simulate('paste', {
+      wrapper.find('.rc-select-selection-search-input').simulate('paste', {
         clipboardData: {
           getData: () => clipboardText,
         },
       });
-      wrapper.find('input').simulate('change', {
+      wrapper.find('.rc-select-selection-search-input').simulate('change', {
         target: { value: inputValue },
       });
 
@@ -203,7 +203,7 @@ describe('Select.Tags', () => {
   it('dropdown keeps order', () => {
     const wrapper = mount(<Select mode="tags" open value={['aaaaa', 'aaa']} />);
 
-    wrapper.find('input').simulate('change', { target: { value: 'aaa' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'aaa' } });
     expectOpen(wrapper);
     expect(wrapper.find('List').props().data).toEqual([
       expect.objectContaining({ key: 'aaa' }),
@@ -265,10 +265,10 @@ describe('Select.Tags', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: 'a' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'a' } });
     expect(wrapper.find('List').props().data).toHaveLength(3);
 
-    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+    wrapper.find('.rc-select-selection-search-input').simulate('keyDown', { which: KeyCode.ENTER });
     expect(onChange).toHaveBeenCalledWith(['a'], expect.anything());
   });
 
@@ -287,7 +287,7 @@ describe('Select.Tags', () => {
       };
       const wrapper = mount(<Select mode="tags" tokenSeparators={[',']} tagRender={tagRender} />);
 
-      wrapper.find('input').simulate('change', { target: { value: '1,A,42' } });
+      wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '1,A,42' } });
       wrapper.find('span.A').simulate('mousedown');
 
       expectOpen(wrapper, true);
@@ -415,10 +415,10 @@ describe('Select.Tags', () => {
       const wrapper = mount(createSelect({}));
       toggleOpen(wrapper);
 
-      wrapper.find('input').simulate('change', { target: { value: 'foo' } });
+      wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'foo' } });
       expect(wrapper.find('List').props().data).toHaveLength(1);
 
-      wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+      wrapper.find('.rc-select-selection-search-input').simulate('keyDown', { which: KeyCode.ENTER });
       expect(wrapper.find('List').props().data).toHaveLength(5);
     });
 
@@ -444,9 +444,9 @@ describe('Select.Tags', () => {
         </Select>,
       );
       toggleOpen(wrapper);
-      wrapper.find('input').simulate('change', { target: { value: 'f' } });
+      wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'f' } });
       expect(wrapper.find('List').props().data).toHaveLength(2);
-      wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+      wrapper.find('.rc-select-selection-search-input').simulate('keyDown', { which: KeyCode.ENTER });
       expect(findSelection(wrapper).text()).toEqual('f');
     });
   });
@@ -455,10 +455,10 @@ describe('Select.Tags', () => {
     const errSpy = jest.spyOn(console, 'error');
     const wrapper = mount(<Select mode="tags" filterOption={false} options={[]} />);
     toggleOpen(wrapper);
-    wrapper.find('input').simulate('change', { target: { value: 'a' } });
-    wrapper.find('input').simulate('change', { target: { value: 'ab' } });
-    wrapper.find('input').simulate('change', { target: { value: 'a' } });
-    wrapper.find('input').simulate('change', { target: { value: '' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'a' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'ab' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'a' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: '' } });
 
     expect(errSpy).not.toHaveBeenCalled();
     errSpy.mockRestore();
@@ -476,7 +476,7 @@ describe('Select.Tags', () => {
   it('press enter should not submit form', () => {
     const wrapper = mount(<Select mode="tags" open={false} />);
     const preventDefault = jest.fn();
-    wrapper.find('input').simulate('keyDown', {
+    wrapper.find('.rc-select-selection-search-input').simulate('keyDown', {
       which: KeyCode.ENTER,
       preventDefault,
     });
@@ -500,7 +500,7 @@ describe('Select.Tags', () => {
     );
     toggleOpen(wrapper);
     expect(wrapper.find('.rc-select-item-option').length).toBe(2);
-    wrapper.find('input').simulate('change', { target: { value: 'US' } });
+    wrapper.find('.rc-select-selection-search-input').simulate('change', { target: { value: 'US' } });
 
     expect(wrapper.find('.rc-select-item-option').length).toBe(1);
     expect(errSpy).not.toHaveBeenCalled();
@@ -517,7 +517,7 @@ describe('Select.Tags', () => {
         value={['1', '2', '3']}
       />,
     );
-    const input = container.querySelector<HTMLInputElement>('input');
+    const input = container.querySelector<HTMLInputElement>('.rc-select-selection-search-input');
     fireEvent.paste(input, {
       clipboardData: { getData: () => 'test' },
     });

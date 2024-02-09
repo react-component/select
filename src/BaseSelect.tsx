@@ -133,6 +133,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   tagRender?: (props: CustomTagProps) => React.ReactElement;
   direction?: 'ltr' | 'rtl';
   maxLength?: number;
+  nativeInputProps?: React.InputHTMLAttributes<HTMLInputElement>;
 
   // MISC
   tabIndex?: number;
@@ -219,6 +220,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     tagRender,
     direction,
     omitDomProps,
+    nativeInputProps,
 
     // Value
     displayValues,
@@ -792,6 +794,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
           onSearchSubmit={onInternalSearchSubmit}
           onRemove={onSelectorRemove}
           tokenWithEnter={tokenWithEnter}
+          nativeInputProps={nativeInputProps}
         />
       )}
     </SelectTrigger>

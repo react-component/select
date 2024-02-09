@@ -43,6 +43,11 @@ exports[`Select.Multiple render not display maxTagPlaceholder if maxTagCount not
         </div>
       </div>
     </div>
+    <input
+      class="rc-select-native-input"
+      style="position: absolute; overflow: hidden; width: 1px; height: 1px; border: 0px; margin: -1px; padding: 0px; white-space: nowrap;"
+      value=""
+    />
     <span
       class="rc-select-selection-placeholder"
     />
@@ -163,6 +168,11 @@ exports[`Select.Multiple render truncates tags by maxTagCount and show maxTagPla
         </div>
       </div>
     </div>
+    <input
+      class="rc-select-native-input"
+      style="position: absolute; overflow: hidden; width: 1px; height: 1px; border: 0px; margin: -1px; padding: 0px; white-space: nowrap;"
+      value="one,two,three"
+    />
   </div>
 </div>
 `;
@@ -280,6 +290,11 @@ exports[`Select.Multiple render truncates tags by maxTagCount and show maxTagPla
         </div>
       </div>
     </div>
+    <input
+      class="rc-select-native-input"
+      style="position: absolute; overflow: hidden; width: 1px; height: 1px; border: 0px; margin: -1px; padding: 0px; white-space: nowrap;"
+      value="one,two,three"
+    />
   </div>
 </div>
 `;
@@ -381,6 +396,11 @@ exports[`Select.Multiple render truncates values by maxTagTextLength 1`] = `
         </div>
       </div>
     </div>
+    <input
+      class="rc-select-native-input"
+      style="position: absolute; overflow: hidden; width: 1px; height: 1px; border: 0px; margin: -1px; padding: 0px; white-space: nowrap;"
+      value="one,two"
+    />
   </div>
 </div>
 `;

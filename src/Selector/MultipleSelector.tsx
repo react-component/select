@@ -9,6 +9,7 @@ import Input from './Input';
 import useLayoutEffect from '../hooks/useLayoutEffect';
 import type { DisplayValueType, RenderNode, CustomTagProps, RawValueType } from '../BaseSelect';
 import { getTitle } from '../utils/commonUtil';
+import SelectNativeInput from '../SelectNativeInput';
 
 function itemKey(value: DisplayValueType) {
   return value.key ?? value.value;
@@ -42,6 +43,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
   const {
     id,
     prefixCls,
+    nativeInputProps,
 
     values,
     open,
@@ -232,9 +234,19 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
     />
   );
 
+  const selectNativeInputValue = values
+    .filter((item) => item.value !== null || item.value !== undefined)
+    .map((item) => String(item.value))
+    .join(',');
+
   return (
     <>
       {selectionNode}
+      <SelectNativeInput
+        value={selectNativeInputValue}
+        prefixCls={prefixCls}
+        {...nativeInputProps}
+      />
       {!values.length && !inputValue && (
         <span className={`${selectionPrefixCls}-placeholder`}>{placeholder}</span>
       )}

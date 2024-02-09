@@ -40,7 +40,7 @@ export default function allowClearTest(mode: any, value: any) {
         expect(onChange).toHaveBeenCalledWith(undefined, undefined);
       }
       expect(onDeselect).not.toBeCalled();
-      expect(wrapper.find('input').props().value).toEqual('');
+      expect(wrapper.find('.rc-select-selection-search-input').props().value).toEqual('');
       expect(onClear).toHaveBeenCalled();
     });
   });

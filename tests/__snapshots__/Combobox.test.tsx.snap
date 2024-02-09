@@ -24,6 +24,11 @@ exports[`Select.Combobox renders controlled correctly 1`] = `
         value=""
       />
     </span>
+    <input
+      class="rc-select-native-input"
+      style="position: absolute; overflow: hidden; width: 1px; height: 1px; border: 0px; margin: -1px; padding: 0px; white-space: nowrap;"
+      value=""
+    />
     <span
       class="rc-select-selection-placeholder"
     >
@@ -57,6 +62,11 @@ exports[`Select.Combobox renders correctly 1`] = `
         value=""
       />
     </span>
+    <input
+      class="rc-select-native-input"
+      style="position: absolute; overflow: hidden; width: 1px; height: 1px; border: 0px; margin: -1px; padding: 0px; white-space: nowrap;"
+      value=""
+    />
     <span
       class="rc-select-selection-placeholder"
     >
