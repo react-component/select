@@ -8,15 +8,15 @@
  * - https://www.w3.org/TR/wai-aria-practices/examples/combobox/aria1.1pattern/listbox-combo.html
  */
 
-import * as React from 'react';
-import { useRef } from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import type { ScrollTo } from 'rc-virtual-list/lib/List';
+import * as React from 'react';
+import { useRef } from 'react';
+import type { CustomTagProps, DisplayValueType, Mode, RenderNode } from '../BaseSelect';
+import useLock from '../hooks/useLock';
+import { isValidateOpenKey } from '../utils/keyUtil';
 import MultipleSelector from './MultipleSelector';
 import SingleSelector from './SingleSelector';
-import useLock from '../hooks/useLock';
-import type { CustomTagProps, DisplayValueType, Mode, RenderNode } from '../BaseSelect';
-import { isValidateOpenKey } from '../utils/keyUtil';
 
 export interface InnerSelectorProps {
   prefixCls: string;
@@ -47,7 +47,7 @@ export interface InnerSelectorProps {
 }
 
 export interface RefSelectorProps {
-  focus: () => void;
+  focus: (options?: FocusOptions) => void;
   blur: () => void;
   scrollTo?: ScrollTo;
 }
@@ -122,8 +122,8 @@ const Selector: React.ForwardRefRenderFunction<RefSelectorProps, SelectorProps> 
 
   // ======================= Ref =======================
   React.useImperativeHandle(ref, () => ({
-    focus: () => {
-      inputRef.current.focus();
+    focus: (options) => {
+      inputRef.current.focus(options);
     },
     blur: () => {
       inputRef.current.blur();
