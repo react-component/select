@@ -70,7 +70,7 @@ export type CustomTagProps = {
 };
 
 export interface BaseSelectRef {
-  focus: () => void;
+  focus: (options?: FocusOptions) => void;
   blur: () => void;
   scrollTo: ScrollTo;
 }

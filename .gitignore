@@ -35,7 +35,6 @@ src/*.js
 src/*.map
 tslint.json
 tsconfig.test.json
-.prettierignore
 .doc
 .umi
 .dumi/tmp
