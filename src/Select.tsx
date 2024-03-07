@@ -97,7 +97,7 @@ export interface BaseOptionType {
 }
 
 export interface DefaultOptionType extends BaseOptionType {
-  label: React.ReactNode;
+  label?: React.ReactNode;
   value?: string | number | null;
   children?: Omit<DefaultOptionType, 'children'>[];
 }
