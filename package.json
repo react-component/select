@@ -54,10 +54,10 @@
     "rc-virtual-list": "^3.5.2"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^12.1.5",
+    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^14.1.0",
     "@types/enzyme": "^3.10.9",
-    "@types/jest": "^26.0.24",
+    "@types/jest": "^29.5.0",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
     "babel-jest": "^29.6.1",
