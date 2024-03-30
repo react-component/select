@@ -68,7 +68,7 @@ export type OnInternalSelect = (value: RawValueType, info: { selected: boolean }
 
 export type RawValueType = string | number;
 export interface LabelInValueType {
-  label: React.ReactNode;
+  label?: React.ReactNode;
   value: RawValueType;
   /** @deprecated `key` is useless since it should always same as `value` */
   key?: React.Key;
