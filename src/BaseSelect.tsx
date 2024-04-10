@@ -488,6 +488,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
         event.preventDefault();
       }
 
+     
       // We only manage open state here, close logic should handle by list component
       if (!mergedOpen) {
         onToggleOpen(true);
