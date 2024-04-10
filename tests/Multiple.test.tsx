@@ -17,6 +17,7 @@ import {
   removeSelection,
 } from './utils/common';
 import allowClearTest from './shared/allowClearTest';
+import { fireEvent, render } from '@testing-library/react';
 
 describe('Select.Multiple', () => {
   injectRunAllTimers(jest);
@@ -30,11 +31,10 @@ describe('Select.Multiple', () => {
   dynamicChildrenTest('multiple');
   inputFilterTest('multiple');
 
-  return;
   it('tokenize input', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <Select
         mode="multiple"
         optionLabelProp="children"
@@ -51,7 +51,7 @@ describe('Select.Multiple', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', {
+    fireEvent.change(container.querySelector('input'), {
       target: {
         value: 'One',
       },
@@ -59,31 +59,21 @@ describe('Select.Multiple', () => {
     expect(handleChange).not.toHaveBeenCalled();
 
     handleChange.mockReset();
-    wrapper.find('input').simulate('change', {
+    fireEvent.change(container.querySelector('input'), {
       target: {
         value: 'One,Two,Three',
       },
     });
     expect(handleChange).toHaveBeenCalledWith(['1', '2'], expect.anything());
 
-    // Seems this is should not fire event? Commented for now.
-    // handleChange.mockReset();
-    // wrapper.find('input').simulate('change', {
-    //   target: {
-    //     value: 'One,Two',
-    //   },
-    // });
-    // expect(handleChange).toHaveBeenCalledWith(['1', '2'], expect.anything());
-
-    expect(wrapper.find('input').props().value).toBe('');
-    wrapper.update();
-    expectOpen(wrapper, false);
+    expect(container.querySelector('input').value).toBe('');
+    expectOpen(container, false);
   });
 
   it('tokenize input when mode=tags and open=false', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <Select
         mode="tags"
         optionLabelProp="children"
@@ -96,7 +86,7 @@ describe('Select.Multiple', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', {
+    fireEvent.change(container.querySelector('input'), {
       target: {
         value: 'One',
       },
@@ -104,29 +94,20 @@ describe('Select.Multiple', () => {
     expect(handleChange).not.toHaveBeenCalled();
 
     handleChange.mockReset();
-    wrapper.find('input').simulate('change', {
+    fireEvent.change(container.querySelector('input'), {
       target: {
         value: 'One,Two,Three,',
       },
     });
     expect(handleChange).toHaveBeenCalledWith(['One', 'Two', 'Three'], expect.anything());
 
-    // Seems this is should not fire event? Commented for now.
-    // handleChange.mockReset();
-    // wrapper.find('input').simulate('change', {
-    //   target: {
-    //     value: 'One,Two,',
-    //   },
-    // });
-    // expect(handleChange).toHaveBeenCalledWith(['One', 'Two', 'Three'], expect.anything());
-
-    expect(wrapper.find('input').props().value).toBe('');
+    expect(container.querySelector('input').value).toBe('');
   });
 
   it("shouldn't separate words when compositing", () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <Select
         mode="multiple"
         optionLabelProp="children"
@@ -143,7 +124,7 @@ describe('Select.Multiple', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', {
+    fireEvent.change(container.querySelector('input'), {
       target: {
         value: 'One',
       },
@@ -151,8 +132,8 @@ describe('Select.Multiple', () => {
     expect(handleChange).not.toHaveBeenCalled();
 
     handleChange.mockReset();
-    wrapper.find('input').simulate('compositionstart');
-    wrapper.find('input').simulate('change', {
+    fireEvent.compositionStart(container.querySelector('input'));
+    fireEvent.change(container.querySelector('input'), {
       target: {
         value: 'One,Two,Three',
       },
@@ -160,31 +141,21 @@ describe('Select.Multiple', () => {
     expect(handleChange).not.toHaveBeenCalled();
 
     handleChange.mockReset();
-    wrapper.find('input').simulate('compositionend');
-    wrapper.find('input').simulate('change', {
+    fireEvent.compositionEnd(container.querySelector('input'));
+    fireEvent.change(container.querySelector('input'), {
       target: {
         value: 'One,Two,Three',
       },
     });
     expect(handleChange).toHaveBeenCalledWith(['1', '2'], expect.anything());
 
-    // Seems this is should not fire event? Commented for now.
-    // handleChange.mockReset();
-    // wrapper.find('input').simulate('change', {
-    //   target: {
-    //     value: 'One,Two',
-    //   },
-    // });
-    // expect(handleChange).toHaveBeenCalledWith(['1', '2'], expect.anything());
-
-    expect(wrapper.find('input').props().value).toBe('');
-    wrapper.update();
-    expectOpen(wrapper, false);
+    expect(container.querySelector('input').value).toBe('');
+    expectOpen(container, false);
   });
 
   it('should separate words when optionLabelProp is not children', () => {
     const handleChange = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <Select
         mode="multiple"
         optionLabelProp="label"
@@ -199,7 +170,7 @@ describe('Select.Multiple', () => {
         </Option>
       </Select>,
     );
-    wrapper.find('input').simulate('change', {
+    fireEvent.change(container.querySelector('input'), {
       target: {
         value: 'One,Two',
       },
@@ -209,7 +180,7 @@ describe('Select.Multiple', () => {
 
   it('should separate words when optionFilterProp is not children', () => {
     const handleChange = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <Select
         mode="multiple"
         optionFilterProp="label"
@@ -224,7 +195,7 @@ describe('Select.Multiple', () => {
         </Option>
       </Select>,
     );
-    wrapper.find('input').simulate('change', {
+    fireEvent.change(container.querySelector('input'), {
       target: {
         value: 'One,Two',
       },
@@ -235,13 +206,13 @@ describe('Select.Multiple', () => {
   it('focus', () => {
     jest.useFakeTimers();
     const handleFocus = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <Select mode="multiple" onFocus={handleFocus}>
         <Option value="1">One</Option>
         <Option value="2">Two</Option>
       </Select>,
     );
-    wrapper.find('input').simulate('focus');
+    fireEvent.focus(container.querySelector('input'));
     jest.runAllTimers();
     expect(handleFocus).toHaveBeenCalled();
     jest.useRealTimers();
@@ -249,7 +220,7 @@ describe('Select.Multiple', () => {
 
   it('OptGroup without key', () => {
     expect(() => {
-      mount(
+      render(
         <Select mode="multiple" defaultValue={['1']}>
           <OptGroup label="group1">
             <Option value="1">One</Option>
@@ -262,10 +233,12 @@ describe('Select.Multiple', () => {
     }).not.toThrow();
   });
 
+  return;
+
   it('allow number value', () => {
     const handleChange = jest.fn();
 
-    const wrapper = mount(
+    const { container } = render(
       <Select mode="multiple" defaultValue={[1]} onChange={handleChange}>
         <Option value={1}>1</Option>
         <Option value={2} testprop={2}>
@@ -286,7 +259,7 @@ describe('Select.Multiple', () => {
   });
 
   it('do not open when close button click', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select mode="multiple">
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
@@ -298,16 +271,16 @@ describe('Select.Multiple', () => {
     selectItem(wrapper, 1);
 
     toggleOpen(wrapper);
-    expectOpen(wrapper, false);
+    expectOpen(container, false);
     removeSelection(wrapper);
-    expectOpen(wrapper, false);
+    expectOpen(container, false);
     expect(wrapper.find('Selector').props().values).toEqual([
       expect.objectContaining({ value: 2 }),
     ]);
   });
 
   it('select when item enter', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select mode="multiple">
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
@@ -318,14 +291,14 @@ describe('Select.Multiple', () => {
     wrapper.find('div.rc-select-item-option').at(1).simulate('mouseMove');
 
     wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
-    expectOpen(wrapper);
+    expectOpen(container);
     expect(wrapper.find('Selector').props().values).toEqual([
       expect.objectContaining({ value: 2 }),
     ]);
   });
 
   it('enter twice to cancel the selection', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select mode="multiple">
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
@@ -343,7 +316,7 @@ describe('Select.Multiple', () => {
   });
 
   it('do not crash when children has empty', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select mode="multiple">
         {null}
         <Option value={1}>1</Option>
@@ -358,7 +331,7 @@ describe('Select.Multiple', () => {
   });
 
   it('do not crash when value has empty string', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select mode="multiple" value={['']}>
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
@@ -369,7 +342,7 @@ describe('Select.Multiple', () => {
   });
 
   it('show arrow on multiple mode when explicitly set', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select mode="multiple" value={['']}>
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
@@ -388,7 +361,7 @@ describe('Select.Multiple', () => {
     jest.useFakeTimers();
     const onChange = jest.fn();
 
-    const wrapper = mount(
+    const { container } = render(
       <Select
         mode="multiple"
         value={['bamboo']}
@@ -418,14 +391,18 @@ describe('Select.Multiple', () => {
   });
 
   it('show placeholder when searchValue is controlled', () => {
-    const wrapper = mount(<Select mode="multiple" searchValue="light" placeholder="bamboo" />);
+    const { container } = render(
+      <Select mode="multiple" searchValue="light" placeholder="bamboo" />,
+    );
     expect(wrapper.find('.rc-select-selection-placeholder').length).toBeTruthy();
     toggleOpen(wrapper);
     expect(wrapper.find('.rc-select-selection-placeholder').length).toBeFalsy();
   });
 
   it('clear input when popup closed', () => {
-    const wrapper = mount(<Select mode="multiple" options={[{ value: 'light' }]} showSearch />);
+    const { container } = render(
+      <Select mode="multiple" options={[{ value: 'light' }]} showSearch />,
+    );
     toggleOpen(wrapper);
     wrapper.find('input').simulate('change', { target: { value: 'bamboo' } });
     expect(wrapper.find('input').props().value).toEqual('bamboo');
@@ -439,7 +416,7 @@ describe('Select.Multiple', () => {
   it('ajax update should keep options', () => {
     const onChange = jest.fn();
 
-    const wrapper = mount(
+    const { container } = render(
       <Select
         labelInValue
         mode="multiple"
@@ -475,7 +452,7 @@ describe('Select.Multiple', () => {
   });
 
   it('focus should enable showSearch input', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select
         mode="multiple"
         options={[{ value: 'light', label: 'Light', option: 2333 }]}
@@ -489,7 +466,7 @@ describe('Select.Multiple', () => {
   });
 
   it('correctly handles the `tabIndex` prop', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select mode="multiple" options={[{ value: 'bamboo' }, { value: 'light' }]} tabIndex={0} />,
     );
     expect(wrapper.find('.rc-select').getDOMNode().getAttribute('tabindex')).toBeNull();
@@ -500,21 +477,21 @@ describe('Select.Multiple', () => {
   });
 
   it('should render title defaultly', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select mode="multiple" options={[{ value: 'title' }]} value={['title']} />,
     );
     expect(wrapper.find('.rc-select-selection-item').first().prop('title')).toBe('title');
   });
 
   it('should not render title defaultly when label is ReactNode', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select mode="multiple" options={[{ value: '1', label: <div>label</div> }]} value={['1']} />,
     );
     expect(wrapper.find('.rc-select-selection-item').first().prop('title')).toBe(undefined);
   });
 
   it('disabled should not show remove icon', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select mode="multiple" value={[1]}>
         <Option value={1} disabled>
           1
@@ -526,7 +503,7 @@ describe('Select.Multiple', () => {
   });
 
   it('do not crash if value not in options when removing option', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select
         defaultValue={[
           {
@@ -547,13 +524,13 @@ describe('Select.Multiple', () => {
   });
 
   it('display correctly when value is undefined or null', () => {
-    const wrapper1 = mount(
+    const wrapper1 = render(
       <Select mode="multiple" value={undefined}>
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
       </Select>,
     );
-    const wrapper2 = mount(
+    const wrapper2 = render(
       <Select mode="multiple" value={null}>
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
@@ -566,7 +543,7 @@ describe('Select.Multiple', () => {
 
   describe('optionLabelProp', () => {
     it('basic', () => {
-      const wrapper = mount(
+      const { container } = render(
         <Select
           mode="multiple"
           value={['bamboo', 'little']}
@@ -594,7 +571,7 @@ describe('Select.Multiple', () => {
     });
 
     it('select no warning', () => {
-      const wrapper = mount(
+      const { container } = render(
         <Select
           mode="multiple"
           open
@@ -620,7 +597,7 @@ describe('Select.Multiple', () => {
     });
 
     it('selected icon should show when value is empty', () => {
-      const wrapper = mount(
+      const { container } = render(
         <Select
           mode="multiple"
           open
@@ -642,13 +619,13 @@ describe('Select.Multiple', () => {
 
   describe('autoClearSearchValue', () => {
     it('search value should not show when autoClearSearchValue is undefined', () => {
-      const wrapper = mount(
+      const { container } = render(
         <Select mode="multiple" open={false} showSearch={true} searchValue="test" />,
       );
       expect(wrapper.find('input').props().value).toBe('');
     });
     it('search value should show when autoClearSearchValue is false', () => {
-      const wrapper = mount(
+      const { container } = render(
         <Select
           mode="multiple"
           open={false}
@@ -660,7 +637,7 @@ describe('Select.Multiple', () => {
       expect(wrapper.find('input').props().value).toBe('test');
     });
     it('search value should no clear when autoClearSearchValue is false', () => {
-      const wrapper = mount(
+      const { container } = render(
         <Select
           mode="multiple"
           autoClearSearchValue={false}
@@ -674,7 +651,7 @@ describe('Select.Multiple', () => {
       expect(wrapper.find('input').props().value).toBe('test');
     });
     it('search value should clear when autoClearSearchValue is true', () => {
-      const wrapper = mount(
+      const { container } = render(
         <Select mode="multiple" autoClearSearchValue={true} showSearch={true} searchValue="test" />,
       );
       toggleOpen(wrapper);

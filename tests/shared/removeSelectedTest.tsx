@@ -42,7 +42,6 @@ export default function removeSelectedTest(mode: any) {
         </Select>,
       );
 
-      // expect(wrapper.find('.rc-select-selection-item-remove')).toHaveLength(0);
       expect(container.querySelector('.rc-select-selection-item-remove')).toBeFalsy();
     });
 
@@ -83,7 +82,6 @@ export default function removeSelectedTest(mode: any) {
         </Select>,
       );
 
-      // wrapper.find('input').simulate('keyDown', { which: KeyCode.BACKSPACE });
       keyDown(container.querySelector('input'), KeyCode.BACKSPACE);
       expect(onChange).toHaveBeenCalledWith(['1'], [expect.objectContaining({ value: '1' })]);
     });
@@ -99,7 +97,6 @@ export default function removeSelectedTest(mode: any) {
       toggleOpen(container);
       selectItem(container);
 
-      // expect(wrapper.find('input').props().value).toBe('');
       expect(container.querySelector('input').value).toBe('');
       expect(onChange).toHaveBeenCalledWith([], []);
     });

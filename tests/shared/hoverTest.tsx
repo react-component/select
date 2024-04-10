@@ -13,10 +13,8 @@ export default function hoverTest(mode: any) {
       </Select>,
     );
 
-    // wrapper.find('.rc-select').first().simulate('mouseenter');
     fireEvent.mouseEnter(container.querySelector('.rc-select'));
     expect(onMouseEnter).toBeCalled();
-    // wrapper.find('.rc-select').first().simulate('mouseleave');
     fireEvent.mouseLeave(container.querySelector('.rc-select'));
     expect(onMouseLeave).toBeCalled();
   });

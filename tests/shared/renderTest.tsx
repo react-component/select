@@ -26,7 +26,6 @@ export default function maxTagTextLengthTest(mode: any) {
         </Select>,
       );
 
-      // expect(wrapper.find('.rc-select-selection-item')).toHaveLength(3);
       expect(container.querySelectorAll('.rc-select-selection-item')).toHaveLength(3);
     });
 
@@ -39,9 +38,7 @@ export default function maxTagTextLengthTest(mode: any) {
         </Select>,
       );
 
-      // expect(wrapper.find('.rc-select-selection-item')).toHaveLength(1);
       expect(container.querySelectorAll('.rc-select-selection-item')).toHaveLength(1);
-      // expect(findSelection(wrapper).text()).toEqual('+ 3 ...');
       expect(findSelection(container).textContent).toEqual('+ 3 ...');
     });
 

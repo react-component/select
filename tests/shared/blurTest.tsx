@@ -1,4 +1,4 @@
-import React, { createElement } from 'react';
+import React from 'react';
 import Option from '../../src/Option';
 import Select from '../../src/Select';
 import { injectRunAllTimers } from '../utils/common';
@@ -32,18 +32,14 @@ export default function blurTest(mode: any) {
     });
 
     it('clears inputValue', () => {
-      // wrapper.find('input').simulate('change', { target: { value: '1' } });
       fireEvent.change(wrapper.container.querySelector('input'), { target: { value: '1' } });
-      // wrapper.find('input').simulate('blur');
       fireEvent.blur(wrapper.container.querySelector('input'));
 
-      // expect(wrapper.find('input').getDOMNode().value).toBe('');
       expect(wrapper.container.querySelector('input').value).toBe('');
     });
 
     it('blur()', () => {
       const handleBlur = jest.fn();
-      // wrapper.setProps({ onBlur: handleBlur });
       wrapper.rerender(renderDemo({ onBlur: handleBlur }));
       selectRef.current.focus();
       selectRef.current.blur();
@@ -54,18 +50,13 @@ export default function blurTest(mode: any) {
       it('wont blur when click input box', () => {
         jest.useFakeTimers();
         const handleBlur = jest.fn();
-        // wrapper.setProps({ onBlur: handleBlur });
         wrapper.rerender(renderDemo({ onBlur: handleBlur }));
-        // wrapper.find('input').instance().focus();
         fireEvent.focus(wrapper.container.querySelector('input'));
         expect(handleBlur).not.toHaveBeenCalled();
 
-        // wrapper.find('input').simulate('blur');
         fireEvent.blur(wrapper.container.querySelector('input'));
         expect(handleBlur).toHaveBeenCalled();
 
-        // wrapper.update();
-        // wrapper.find('input').instance().blur();
         fireEvent.blur(wrapper.container.querySelector('input'));
         jest.runAllTimers();
         handleBlur.mockReset();
@@ -75,9 +66,6 @@ export default function blurTest(mode: any) {
           wrapper.container.querySelector('.rc-select-selector'),
         );
         mouseDownEvent.preventDefault = preventDefault;
-        // wrapper.find('.rc-select-selector').simulate('mousedown', {
-        //   preventDefault,
-        // });
         fireEvent(wrapper.container.querySelector('.rc-select-selector'), mouseDownEvent);
         expect(preventDefault).toHaveBeenCalled();
         expect(handleBlur).not.toHaveBeenCalled();
