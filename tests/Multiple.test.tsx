@@ -15,6 +15,7 @@ import {
   injectRunAllTimers,
   findSelection,
   removeSelection,
+  keyDown,
 } from './utils/common';
 import allowClearTest from './shared/allowClearTest';
 import { fireEvent, render } from '@testing-library/react';
@@ -233,8 +234,6 @@ describe('Select.Multiple', () => {
     }).not.toThrow();
   });
 
-  return;
-
   it('allow number value', () => {
     const handleChange = jest.fn();
 
@@ -247,10 +246,10 @@ describe('Select.Multiple', () => {
       </Select>,
     );
 
-    expect(findSelection(wrapper).text()).toEqual('1');
+    expect(findSelection(container).textContent).toEqual('1');
 
-    toggleOpen(wrapper);
-    selectItem(wrapper, 1);
+    toggleOpen(container);
+    selectItem(container, 1);
 
     expect(handleChange).toHaveBeenCalledWith(
       [1, 2],
@@ -259,61 +258,62 @@ describe('Select.Multiple', () => {
   });
 
   it('do not open when close button click', () => {
+    const onChange = jest.fn();
     const { container } = render(
-      <Select mode="multiple">
+      <Select mode="multiple" onChange={onChange}>
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
       </Select>,
     );
 
-    toggleOpen(wrapper);
-    selectItem(wrapper, 0);
-    selectItem(wrapper, 1);
+    toggleOpen(container);
+    selectItem(container, 0);
+    selectItem(container, 1);
 
-    toggleOpen(wrapper);
+    toggleOpen(container);
     expectOpen(container, false);
-    removeSelection(wrapper);
+    removeSelection(container);
     expectOpen(container, false);
-    expect(wrapper.find('Selector').props().values).toEqual([
-      expect.objectContaining({ value: 2 }),
-    ]);
+    expect(onChange).toHaveBeenCalledWith([2], expect.anything());
   });
 
   it('select when item enter', () => {
+    const onChange = jest.fn();
     const { container } = render(
-      <Select mode="multiple">
+      <Select mode="multiple" onChange={onChange}>
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
       </Select>,
     );
 
-    toggleOpen(wrapper);
-    wrapper.find('div.rc-select-item-option').at(1).simulate('mouseMove');
+    toggleOpen(container);
+    fireEvent.mouseMove(container.querySelectorAll('.rc-select-item-option')[1]);
 
-    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+    keyDown(container.querySelector('input'), KeyCode.ENTER);
     expectOpen(container);
-    expect(wrapper.find('Selector').props().values).toEqual([
-      expect.objectContaining({ value: 2 }),
-    ]);
+    expect(onChange).toHaveBeenCalledWith([2], expect.anything());
   });
 
   it('enter twice to cancel the selection', () => {
+    const onChange = jest.fn();
     const { container } = render(
-      <Select mode="multiple">
+      <Select mode="multiple" onChange={onChange}>
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
       </Select>,
     );
 
-    toggleOpen(wrapper);
-    wrapper.find('div.rc-select-item-option').first().simulate('mousemove');
-    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+    toggleOpen(container);
+    fireEvent.mouseMove(container.querySelectorAll('.rc-select-item-option')[0]);
+    keyDown(container.querySelector('input'), KeyCode.ENTER);
 
-    wrapper.find('div.rc-select-item-option').first().simulate('mousemove');
-    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+    fireEvent.mouseMove(container.querySelectorAll('.rc-select-item-option')[0]);
+    keyDown(container.querySelector('input'), KeyCode.ENTER);
 
-    expect(wrapper.find('Selector').props().values).toEqual([]);
+    expect(onChange).toHaveBeenCalledWith([], expect.anything());
   });
+
+  return;
 
   it('do not crash when children has empty', () => {
     const { container } = render(
@@ -324,8 +324,8 @@ describe('Select.Multiple', () => {
       </Select>,
     );
 
-    toggleOpen(wrapper);
-    selectItem(wrapper);
+    toggleOpen(container);
+    selectItem(container);
 
     // Do not crash
   });
@@ -338,7 +338,7 @@ describe('Select.Multiple', () => {
       </Select>,
     );
 
-    expect(findSelection(wrapper).text()).toEqual('');
+    expect(findSelection(container).textContent).toEqual('');
   });
 
   it('show arrow on multiple mode when explicitly set', () => {
@@ -395,7 +395,7 @@ describe('Select.Multiple', () => {
       <Select mode="multiple" searchValue="light" placeholder="bamboo" />,
     );
     expect(wrapper.find('.rc-select-selection-placeholder').length).toBeTruthy();
-    toggleOpen(wrapper);
+    toggleOpen(container);
     expect(wrapper.find('.rc-select-selection-placeholder').length).toBeFalsy();
   });
 
@@ -403,13 +403,13 @@ describe('Select.Multiple', () => {
     const { container } = render(
       <Select mode="multiple" options={[{ value: 'light' }]} showSearch />,
     );
-    toggleOpen(wrapper);
+    toggleOpen(container);
     wrapper.find('input').simulate('change', { target: { value: 'bamboo' } });
     expect(wrapper.find('input').props().value).toEqual('bamboo');
 
     // Close and open again
-    toggleOpen(wrapper);
-    toggleOpen(wrapper);
+    toggleOpen(container);
+    toggleOpen(container);
     expect(wrapper.find('input').props().value).toEqual('');
   });
 
@@ -427,8 +427,8 @@ describe('Select.Multiple', () => {
     );
 
     // First select
-    toggleOpen(wrapper);
-    selectItem(wrapper, 0);
+    toggleOpen(container);
+    selectItem(container, 0);
     expect(onChange).toHaveBeenCalledWith(
       [{ label: 'Light', value: 'light', key: 'light' }],
       [{ label: 'Light', value: 'light', option: 2333 }],
@@ -437,8 +437,8 @@ describe('Select.Multiple', () => {
 
     // Next select
     wrapper.setProps({ options: [{ value: 'bamboo', label: 'Bamboo', option: 444 }] });
-    toggleOpen(wrapper);
-    selectItem(wrapper, 0);
+    toggleOpen(container);
+    selectItem(container, 0);
     expect(onChange).toHaveBeenCalledWith(
       [
         { label: 'Light', value: 'light', key: 'light' },
@@ -518,8 +518,8 @@ describe('Select.Multiple', () => {
         <Option value={2}>2</Option>
       </Select>,
     );
-    expect(findSelection(wrapper, 0).text()).toEqual('value not in options');
-    removeSelection(wrapper, 0);
+    expect(findSelection(wrapper, 0).textContent).toEqual('value not in options');
+    removeSelection(container, 0);
     expect(wrapper.find('Selector').props().values.length).toEqual(0);
   });
 
@@ -564,10 +564,10 @@ describe('Select.Multiple', () => {
         />,
       );
 
-      expect(findSelection(wrapper, 0).text()).toBe('BAMBOO');
-      expect(findSelection(wrapper, 1).text()).toBe('LITTLE');
-      expect(wrapper.find('div.rc-select-item-option-content').at(0).text()).toBe('Bamboo');
-      expect(wrapper.find('div.rc-select-item-option-content').at(1).text()).toBe('Little');
+      expect(findSelection(wrapper, 0).textContent).toBe('BAMBOO');
+      expect(findSelection(wrapper, 1).textContent).toBe('LITTLE');
+      expect(wrapper.find('div.rc-select-item-option-content').at(0).textContent).toBe('Bamboo');
+      expect(wrapper.find('div.rc-select-item-option-content').at(1).textContent).toBe('Little');
     });
 
     it('select no warning', () => {
@@ -589,8 +589,8 @@ describe('Select.Multiple', () => {
       // Select one
       const errSpy = jest.spyOn(console, 'error');
 
-      toggleOpen(wrapper);
-      selectItem(wrapper);
+      toggleOpen(container);
+      selectItem(container);
 
       expect(errSpy).not.toHaveBeenCalled();
       errSpy.mockRestore();
@@ -609,11 +609,11 @@ describe('Select.Multiple', () => {
           ]}
         />,
       );
-      toggleOpen(wrapper);
-      selectItem(wrapper, 0);
-      expect(wrapper.find('.rc-select-item-option-state-icon').at(0).text()).toBe('✓');
-      selectItem(wrapper, 0);
-      expect(wrapper.find('.rc-select-item-option-state-icon').at(0).text()).toBe('');
+      toggleOpen(container);
+      selectItem(container, 0);
+      expect(wrapper.find('.rc-select-item-option-state-icon').at(0).textContent).toBe('✓');
+      selectItem(container, 0);
+      expect(wrapper.find('.rc-select-item-option-state-icon').at(0).textContent).toBe('');
     });
   });
 
@@ -646,16 +646,16 @@ describe('Select.Multiple', () => {
         />,
       );
 
-      toggleOpen(wrapper);
-      toggleOpen(wrapper);
+      toggleOpen(container);
+      toggleOpen(container);
       expect(wrapper.find('input').props().value).toBe('test');
     });
     it('search value should clear when autoClearSearchValue is true', () => {
       const { container } = render(
         <Select mode="multiple" autoClearSearchValue={true} showSearch={true} searchValue="test" />,
       );
-      toggleOpen(wrapper);
-      toggleOpen(wrapper);
+      toggleOpen(container);
+      toggleOpen(container);
       expect(wrapper.find('input').props().value).toBe('');
     });
   });
