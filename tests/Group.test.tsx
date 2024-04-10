@@ -1,10 +1,10 @@
-import { mount } from 'enzyme';
 import * as React from 'react';
 import Select, { OptGroup, Option } from '../src';
+import { fireEvent, render } from '@testing-library/react';
 
 describe('Select.Group', () => {
   it('group name support search', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select showSearch>
         <OptGroup label="zombiej">
           <Option value="1">1</Option>
@@ -13,16 +13,15 @@ describe('Select.Group', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: 'zombiej' } });
-    expect(wrapper.find('List').props().data).toEqual([
-      expect.objectContaining({ group: true, data: expect.objectContaining({ label: 'zombiej' }) }),
-      expect.objectContaining({ data: expect.objectContaining({ value: '1' }) }),
-      expect.objectContaining({ data: expect.objectContaining({ value: '2' }) }),
-    ]);
+    fireEvent.change(container.querySelector('input'), { target: { value: 'zombiej' } });
+
+    expect(document.querySelector('.rc-select-item-group').textContent).toEqual('zombiej');
+    expect(document.querySelectorAll('.rc-select-item-option-content')[0].textContent).toEqual('1');
+    expect(document.querySelectorAll('.rc-select-item-option-content')[1].textContent).toEqual('2');
   });
 
   it('group child option support search', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select showSearch>
         <OptGroup label="zombiej">
           <Option value="1">1</Option>
@@ -31,69 +30,74 @@ describe('Select.Group', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: '1' } });
-    expect(wrapper.find('List').props().data).toHaveLength(2);
+    fireEvent.change(container.querySelector('input'), { target: { value: '1' } });
+    expect(document.querySelector('.rc-select-item-group')).toBeTruthy();
+    expect(document.querySelectorAll('.rc-select-item-option-content')).toHaveLength(1);
   });
 
   describe('group title', () => {
     it('label as title', () => {
-      const wrapper = mount(
+      const { container } = render(
         <Select open>
           <OptGroup label="zombiej" />
         </Select>,
       );
 
-      expect(wrapper.find('.rc-select-item-group').prop('title')).toEqual('zombiej');
+      expect(container.querySelector('.rc-select-item-group').getAttribute('title')).toEqual(
+        'zombiej',
+      );
     });
 
     it('customize title', () => {
-      const wrapper = mount(
+      const { container } = render(
         <Select open>
           <OptGroup label="zombiej" title="bamboo" />
         </Select>,
       );
 
-      expect(wrapper.find('.rc-select-item-group').prop('title')).toEqual('bamboo');
+      expect(container.querySelector('.rc-select-item-group').getAttribute('title')).toEqual(
+        'bamboo',
+      );
     });
 
     it('title as undefined', () => {
-      const wrapper = mount(
+      const { container } = render(
         <Select open>
           <OptGroup label={<span>zombiej</span>} />
         </Select>,
       );
 
-      expect(wrapper.find('.rc-select-item-group').prop('title')).toBeUndefined();
+      expect(container.querySelector('.rc-select-item-group').getAttribute('title')).toBeNull();
     });
   });
 
   it('group options exist undefined/null', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select
-          open
-          options={[
-            {
-              label: 'zombiej',
-              options: [
-                { label: 'jackson', value: 'jackson' },
-              ],
-            },
-            {
-              label: 'bamboo',
-              options: undefined,
-            },
-            {
-              label: 'mocha',
-              options: null,
-            }
+        open
+        options={[
+          {
+            label: 'zombiej',
+            options: [{ label: 'jackson', value: 'jackson' }],
+          },
+          {
+            label: 'bamboo',
+            options: undefined,
+          },
+          {
+            label: 'mocha',
+            options: null,
+          },
         ]}
-      />
+      />,
     );
 
-    expect(wrapper.find('.rc-select-item-group').length).toEqual(3);
-    expect(wrapper.find('.rc-select-item-option').length).toEqual(1);
+    expect(container.querySelectorAll('.rc-select-item-group')).toHaveLength(3);
+    expect(container.querySelectorAll('.rc-select-item-option')).toHaveLength(1);
 
-    expect(wrapper.find('.rc-select-item').at(2).prop('title')).toEqual('bamboo');
-    expect(wrapper.find('.rc-select-item').at(3).prop('title')).toEqual('mocha');
-  })
+    expect(container.querySelectorAll('.rc-select-item')[2].getAttribute('title')).toEqual(
+      'bamboo',
+    );
+    expect(container.querySelectorAll('.rc-select-item')[3].getAttribute('title')).toEqual('mocha');
+  });
 });
