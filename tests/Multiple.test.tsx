@@ -348,14 +348,9 @@ describe('Select.Multiple', () => {
     );
     const { container, rerender } = render(renderDemo());
 
-    // expect(wrapper.find('.rc-select-arrow').length).toBeFalsy();
     expect(container.querySelector('.rc-select-arrow')).toBeFalsy();
 
-    // wrapper.setProps({
-    //   suffixIcon: <div>arrow</div>,
-    // });
     rerender(renderDemo(<div>arrow</div>));
-    // expect(wrapper.find('.rc-select-arrow').length).toBeTruthy();
     expect(container.querySelector('.rc-select-arrow')).toBeTruthy();
   });
 
@@ -373,40 +368,32 @@ describe('Select.Multiple', () => {
     );
 
     // First type
-    // wrapper.find('input').simulate('keydown', { which: KeyCode.L });
     keyDown(container.querySelector('input'), KeyCode.L);
-    // wrapper.find('input').simulate('change', { target: { value: 'l' } });
     fireEvent.change(container.querySelector('input'), { target: { value: 'l' } });
 
     // Backspace
-    // wrapper.find('input').simulate('keydown', { which: KeyCode.BACKSPACE });
     keyDown(container.querySelector('input'), KeyCode.BACKSPACE);
-    // wrapper.find('input').simulate('change', { target: { value: '' } });
     fireEvent.change(container.querySelector('input'), { target: { value: '' } });
 
     onChange.mockReset();
 
-    // wrapper.find('input').simulate('keydown', { which: KeyCode.BACKSPACE });
     keyDown(container.querySelector('input'), KeyCode.BACKSPACE);
     expect(onChange).not.toHaveBeenCalled();
 
     jest.runAllTimers();
-    // wrapper.find('input').simulate('keydown', { which: KeyCode.BACKSPACE });
     keyDown(container.querySelector('input'), KeyCode.BACKSPACE);
     expect(onChange).toHaveBeenCalledWith([], expect.anything());
 
     jest.useRealTimers();
   });
 
-  return;
-
   it('show placeholder when searchValue is controlled', () => {
     const { container } = render(
       <Select mode="multiple" searchValue="light" placeholder="bamboo" />,
     );
-    expect(wrapper.find('.rc-select-selection-placeholder').length).toBeTruthy();
+    expect(container.querySelector('.rc-select-selection-placeholder')).toBeTruthy();
     toggleOpen(container);
-    expect(wrapper.find('.rc-select-selection-placeholder').length).toBeFalsy();
+    expect(container.querySelector('.rc-select-selection-placeholder')).toBeFalsy();
   });
 
   it('clear input when popup closed', () => {
@@ -414,27 +401,30 @@ describe('Select.Multiple', () => {
       <Select mode="multiple" options={[{ value: 'light' }]} showSearch />,
     );
     toggleOpen(container);
-    wrapper.find('input').simulate('change', { target: { value: 'bamboo' } });
-    expect(wrapper.find('input').props().value).toEqual('bamboo');
+    fireEvent.change(container.querySelector('input'), { target: { value: 'bamboo' } });
+    expect(container.querySelector('input').value).toEqual('bamboo');
 
     // Close and open again
     toggleOpen(container);
     toggleOpen(container);
-    expect(wrapper.find('input').props().value).toEqual('');
+    expect(container.querySelector('input').value).toEqual('');
   });
 
   it('ajax update should keep options', () => {
     const onChange = jest.fn();
 
-    const { container } = render(
+    const renderDemo = (props?: any) => (
       <Select
         labelInValue
         mode="multiple"
         options={[{ value: 'light', label: 'Light', option: 2333 }]}
         onChange={onChange}
         showSearch
-      />,
+        {...props}
+      />
     );
+
+    const { container, rerender } = render(renderDemo());
 
     // First select
     toggleOpen(container);
@@ -446,7 +436,7 @@ describe('Select.Multiple', () => {
     onChange.mockReset();
 
     // Next select
-    wrapper.setProps({ options: [{ value: 'bamboo', label: 'Bamboo', option: 444 }] });
+    rerender(renderDemo({ options: [{ value: 'bamboo', label: 'Bamboo', option: 444 }] }));
     toggleOpen(container);
     selectItem(container, 0);
     expect(onChange).toHaveBeenCalledWith(
@@ -469,20 +459,21 @@ describe('Select.Multiple', () => {
         showSearch
       />,
     );
+    expect(container.querySelector('input')).toHaveAttribute('readOnly');
 
-    wrapper.find('input').simulate('focus');
+    fireEvent.focus(container.querySelector('input'));
 
-    expect(wrapper.find('Input').prop('editable')).toBeTruthy();
+    expect(container.querySelector('input')).not.toHaveAttribute('readOnly');
   });
 
   it('correctly handles the `tabIndex` prop', () => {
     const { container } = render(
       <Select mode="multiple" options={[{ value: 'bamboo' }, { value: 'light' }]} tabIndex={0} />,
     );
-    expect(wrapper.find('.rc-select').getDOMNode().getAttribute('tabindex')).toBeNull();
+    expect(container.querySelector('.rc-select').getAttribute('tabindex')).toBeFalsy();
 
     expect(
-      wrapper.find('input.rc-select-selection-search-input').getDOMNode().getAttribute('tabindex'),
+      container.querySelector('input.rc-select-selection-search-input').getAttribute('tabindex'),
     ).toBe('0');
   });
 
@@ -490,14 +481,16 @@ describe('Select.Multiple', () => {
     const { container } = render(
       <Select mode="multiple" options={[{ value: 'title' }]} value={['title']} />,
     );
-    expect(wrapper.find('.rc-select-selection-item').first().prop('title')).toBe('title');
+    expect(container.querySelector('.rc-select-selection-item').getAttribute('title')).toBe(
+      'title',
+    );
   });
 
   it('should not render title defaultly when label is ReactNode', () => {
     const { container } = render(
       <Select mode="multiple" options={[{ value: '1', label: <div>label</div> }]} value={['1']} />,
     );
-    expect(wrapper.find('.rc-select-selection-item').first().prop('title')).toBe(undefined);
+    expect(container.querySelector('.rc-select-selection-item').getAttribute('title')).toBeFalsy();
   });
 
   it('disabled should not show remove icon', () => {
@@ -509,10 +502,11 @@ describe('Select.Multiple', () => {
       </Select>,
     );
 
-    expect(wrapper.exists('.rc-select-selection-item-remove')).toBeFalsy();
+    expect(container.querySelector('.rc-select-selection-item-remove')).toBeFalsy();
   });
 
   it('do not crash if value not in options when removing option', () => {
+    const onChange = jest.fn();
     const { container } = render(
       <Select
         defaultValue={[
@@ -523,14 +517,15 @@ describe('Select.Multiple', () => {
         ]}
         mode="multiple"
         labelInValue
+        onChange={onChange}
       >
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
       </Select>,
     );
-    expect(findSelection(wrapper, 0).textContent).toEqual('value not in options');
+    expect(findSelection(container, 0).textContent).toEqual('value not in options');
     removeSelection(container, 0);
-    expect(wrapper.find('Selector').props().values.length).toEqual(0);
+    expect(onChange).toHaveBeenCalledWith([], expect.anything());
   });
 
   it('display correctly when value is undefined or null', () => {
@@ -547,8 +542,8 @@ describe('Select.Multiple', () => {
       </Select>,
     );
 
-    expect(wrapper1.find('.rc-select-selection-item').length).toBe(0);
-    expect(wrapper2.find('.rc-select-selection-item').length).toBe(0);
+    expect(wrapper1.container.querySelector('.rc-select-selection-item')).toBeFalsy();
+    expect(wrapper2.container.querySelector('.rc-select-selection-item')).toBeFalsy();
   });
 
   describe('optionLabelProp', () => {
@@ -574,10 +569,14 @@ describe('Select.Multiple', () => {
         />,
       );
 
-      expect(findSelection(wrapper, 0).textContent).toBe('BAMBOO');
-      expect(findSelection(wrapper, 1).textContent).toBe('LITTLE');
-      expect(wrapper.find('div.rc-select-item-option-content').at(0).textContent).toBe('Bamboo');
-      expect(wrapper.find('div.rc-select-item-option-content').at(1).textContent).toBe('Little');
+      expect(findSelection(container, 0).textContent).toBe('BAMBOO');
+      expect(findSelection(container, 1).textContent).toBe('LITTLE');
+      expect(container.querySelectorAll('.rc-select-item-option-content')[0].textContent).toBe(
+        'Bamboo',
+      );
+      expect(container.querySelectorAll('.rc-select-item-option-content')[1].textContent).toBe(
+        'Little',
+      );
     });
 
     it('select no warning', () => {
@@ -621,11 +620,17 @@ describe('Select.Multiple', () => {
       );
       toggleOpen(container);
       selectItem(container, 0);
-      expect(wrapper.find('.rc-select-item-option-state-icon').at(0).textContent).toBe('✓');
+      expect(container.querySelectorAll('.rc-select-item-option-state-icon')[0].textContent).toBe(
+        '✓',
+      );
       selectItem(container, 0);
-      expect(wrapper.find('.rc-select-item-option-state-icon').at(0).textContent).toBe('');
+      expect(container.querySelectorAll('.rc-select-item-option-state-icon')[0].textContent).toBe(
+        '',
+      );
     });
   });
+
+  return;
 
   describe('autoClearSearchValue', () => {
     it('search value should not show when autoClearSearchValue is undefined', () => {
