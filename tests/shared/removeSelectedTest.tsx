@@ -1,15 +1,15 @@
-import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import React from 'react';
 import Select, { Option } from '../../src';
-import { removeSelection, toggleOpen, selectItem } from '../utils/common';
+import { removeSelection, toggleOpen, selectItem, keyDown } from '../utils/common';
+import { render } from '@testing-library/react';
 
 export default function removeSelectedTest(mode: any) {
   describe('remove selected options', () => {
     it('fires deselect and change', () => {
       const handleDeselect = jest.fn();
       const handleChange = jest.fn();
-      const wrapper = mount(
+      const { container } = render(
         <Select value={['1', '2']} onChange={handleChange} onDeselect={handleDeselect} mode={mode}>
           <Option value="1" testprop="deselect">
             1
@@ -17,7 +17,7 @@ export default function removeSelectedTest(mode: any) {
           <Option value="2">2</Option>
         </Select>,
       );
-      removeSelection(wrapper);
+      removeSelection(container);
 
       expect(handleDeselect).toBeCalledWith(
         '1',
@@ -29,7 +29,7 @@ export default function removeSelectedTest(mode: any) {
     it('noop if select is disabled', () => {
       const handleDeselect = jest.fn();
       const handleChange = jest.fn();
-      const wrapper = mount(
+      const { container } = render(
         <Select
           value={['1']}
           onChange={handleChange}
@@ -42,13 +42,14 @@ export default function removeSelectedTest(mode: any) {
         </Select>,
       );
 
-      expect(wrapper.find('.rc-select-selection-item-remove')).toHaveLength(0);
+      // expect(wrapper.find('.rc-select-selection-item-remove')).toHaveLength(0);
+      expect(container.querySelector('.rc-select-selection-item-remove')).toBeFalsy();
     });
 
     it('wrap value when labelInValue', () => {
       const handleDeselect = jest.fn();
       const handleChange = jest.fn();
-      const wrapper = mount(
+      const { container } = render(
         <Select
           value={[{ key: '1' }, { key: '2' }]}
           onChange={handleChange}
@@ -60,7 +61,7 @@ export default function removeSelectedTest(mode: any) {
           <Option value="2">2</Option>
         </Select>,
       );
-      removeSelection(wrapper);
+      removeSelection(container);
 
       expect(handleDeselect).toHaveBeenCalledWith(
         expect.objectContaining({ key: '1', label: '1' }),
@@ -75,29 +76,31 @@ export default function removeSelectedTest(mode: any) {
 
     it('remove by backspace key', () => {
       const onChange = jest.fn();
-      const wrapper = mount(
+      const { container } = render(
         <Select defaultValue={['1', '2']} mode={mode} onChange={onChange}>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
         </Select>,
       );
 
-      wrapper.find('input').simulate('keyDown', { which: KeyCode.BACKSPACE });
+      // wrapper.find('input').simulate('keyDown', { which: KeyCode.BACKSPACE });
+      keyDown(container.querySelector('input'), KeyCode.BACKSPACE);
       expect(onChange).toHaveBeenCalledWith(['1'], [expect.objectContaining({ value: '1' })]);
     });
 
     it('remove by menu deselect', () => {
       const onChange = jest.fn();
-      const wrapper = mount(
+      const { container } = render(
         <Select defaultValue={['1']} mode={mode} onChange={onChange}>
           <Option value="1">1</Option>
         </Select>,
       );
 
-      toggleOpen(wrapper);
-      selectItem(wrapper);
+      toggleOpen(container);
+      selectItem(container);
 
-      expect(wrapper.find('input').props().value).toBe('');
+      // expect(wrapper.find('input').props().value).toBe('');
+      expect(container.querySelector('input').value).toBe('');
       expect(onChange).toHaveBeenCalledWith([], []);
     });
   });

@@ -33,26 +33,46 @@ export function selectItem(wrapper: any, index: number = 0) {
 }
 
 export function findSelection(wrapper: any, index: number = 0) {
-  const itemNode = wrapper.find('.rc-select-selection-item').at(index);
-  const contentNode = itemNode.find('.rc-select-selection-item-content');
+  if (wrapper instanceof HTMLElement) {
+    const itemNode = wrapper.querySelectorAll('.rc-select-selection-item')[index];
+    const contentNode = itemNode.querySelector('.rc-select-selection-item-content');
 
-  if (contentNode.length) {
-    return contentNode;
+    if (contentNode) {
+      return contentNode;
+    }
+
+    return itemNode;
+  } else {
+    const itemNode = wrapper.find('.rc-select-selection-item').at(index);
+    const contentNode = itemNode.find('.rc-select-selection-item-content');
+
+    if (contentNode.length) {
+      return contentNode;
+    }
+
+    return itemNode;
   }
-
-  return itemNode;
 }
 
 export function removeSelection(wrapper: any, index: number = 0) {
   const preventDefault = jest.fn();
 
-  wrapper
-    .find('.rc-select-selection-item')
-    .at(index)
-    .find('.rc-select-selection-item-remove')
-    .last()
-    .simulate('mousedown', { preventDefault })
-    .simulate('click');
+  if (wrapper instanceof HTMLElement) {
+    const ele = wrapper.querySelectorAll('.rc-select-selection-item-remove')[index];
+    const mouseDownEvent = createEvent.mouseDown(ele);
+    mouseDownEvent.preventDefault = preventDefault;
+
+    fireEvent(ele, mouseDownEvent);
+    fireEvent.click(wrapper.querySelectorAll('.rc-select-selection-item-remove')[index]);
+  } else {
+    wrapper
+      .find('.rc-select-selection-item')
+      .at(index)
+      .find('.rc-select-selection-item-remove')
+      .last()
+      .simulate('mousedown', { preventDefault })
+      .simulate('click');
+  }
 
   expect(preventDefault).toHaveBeenCalled();
 }
