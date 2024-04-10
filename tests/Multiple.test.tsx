@@ -313,8 +313,6 @@ describe('Select.Multiple', () => {
     expect(onChange).toHaveBeenCalledWith([], expect.anything());
   });
 
-  return;
-
   it('do not crash when children has empty', () => {
     const { container } = render(
       <Select mode="multiple">
@@ -342,19 +340,23 @@ describe('Select.Multiple', () => {
   });
 
   it('show arrow on multiple mode when explicitly set', () => {
-    const { container } = render(
-      <Select mode="multiple" value={['']}>
+    const renderDemo = (suffixIcon?: React.ReactNode) => (
+      <Select mode="multiple" value={['']} suffixIcon={suffixIcon}>
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
-      </Select>,
+      </Select>
     );
+    const { container, rerender } = render(renderDemo());
 
-    expect(wrapper.find('.rc-select-arrow').length).toBeFalsy();
+    // expect(wrapper.find('.rc-select-arrow').length).toBeFalsy();
+    expect(container.querySelector('.rc-select-arrow')).toBeFalsy();
 
-    wrapper.setProps({
-      suffixIcon: <div>arrow</div>,
-    });
-    expect(wrapper.find('.rc-select-arrow').length).toBeTruthy();
+    // wrapper.setProps({
+    //   suffixIcon: <div>arrow</div>,
+    // });
+    rerender(renderDemo(<div>arrow</div>));
+    // expect(wrapper.find('.rc-select-arrow').length).toBeTruthy();
+    expect(container.querySelector('.rc-select-arrow')).toBeTruthy();
   });
 
   it('block input when fast backspace', () => {
@@ -371,24 +373,32 @@ describe('Select.Multiple', () => {
     );
 
     // First type
-    wrapper.find('input').simulate('keydown', { which: KeyCode.L });
-    wrapper.find('input').simulate('change', { target: { value: 'l' } });
+    // wrapper.find('input').simulate('keydown', { which: KeyCode.L });
+    keyDown(container.querySelector('input'), KeyCode.L);
+    // wrapper.find('input').simulate('change', { target: { value: 'l' } });
+    fireEvent.change(container.querySelector('input'), { target: { value: 'l' } });
 
     // Backspace
-    wrapper.find('input').simulate('keydown', { which: KeyCode.BACKSPACE });
-    wrapper.find('input').simulate('change', { target: { value: '' } });
+    // wrapper.find('input').simulate('keydown', { which: KeyCode.BACKSPACE });
+    keyDown(container.querySelector('input'), KeyCode.BACKSPACE);
+    // wrapper.find('input').simulate('change', { target: { value: '' } });
+    fireEvent.change(container.querySelector('input'), { target: { value: '' } });
 
     onChange.mockReset();
 
-    wrapper.find('input').simulate('keydown', { which: KeyCode.BACKSPACE });
+    // wrapper.find('input').simulate('keydown', { which: KeyCode.BACKSPACE });
+    keyDown(container.querySelector('input'), KeyCode.BACKSPACE);
     expect(onChange).not.toHaveBeenCalled();
 
     jest.runAllTimers();
-    wrapper.find('input').simulate('keydown', { which: KeyCode.BACKSPACE });
+    // wrapper.find('input').simulate('keydown', { which: KeyCode.BACKSPACE });
+    keyDown(container.querySelector('input'), KeyCode.BACKSPACE);
     expect(onChange).toHaveBeenCalledWith([], expect.anything());
 
     jest.useRealTimers();
   });
+
+  return;
 
   it('show placeholder when searchValue is controlled', () => {
     const { container } = render(
