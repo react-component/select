@@ -1,8 +1,8 @@
-import { mount } from 'enzyme';
 import React from 'react';
 import { resetWarned } from 'rc-util/lib/warning';
 import Option from '../../src/Option';
 import Select from '../../src/Select';
+import { render } from '@testing-library/react';
 
 export default function focusTest(mode: any, props?: any) {
   describe(`focus of ${mode}`, () => {
@@ -23,14 +23,13 @@ export default function focusTest(mode: any, props?: any) {
       const handleFocus = jest.fn();
       const selectRef = React.createRef<any>();
 
-      mount(
+      render(
         <div>
           <Select ref={selectRef} mode={mode} {...props} onFocus={handleFocus}>
             <Option value="1">1</Option>
             <Option value="2">2</Option>
           </Select>
         </div>,
-        { attachTo: container },
       );
 
       selectRef.current.focus();
@@ -41,12 +40,11 @@ export default function focusTest(mode: any, props?: any) {
     it('autoFocus', () => {
       const handleFocus = jest.fn();
 
-      mount(
+      render(
         <Select mode={mode} {...props} autoFocus onFocus={handleFocus}>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
         </Select>,
-        { attachTo: container },
       );
 
       expect(handleFocus).toHaveBeenCalled();
@@ -57,12 +55,11 @@ export default function focusTest(mode: any, props?: any) {
       const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
       const handleFocus = jest.fn();
 
-      mount(
+      render(
         <Select mode={mode} {...props} defaultOpen onFocus={handleFocus}>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
         </Select>,
-        { attachTo: container },
       );
 
       expect(warnSpy).toHaveBeenCalledWith(
