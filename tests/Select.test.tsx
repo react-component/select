@@ -3,7 +3,6 @@ import { createEvent, fireEvent, render, render as testingRender } from '@testin
 import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
-import VirtualList from 'rc-virtual-list';
 import type { ScrollConfig } from 'rc-virtual-list/lib/List';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
@@ -582,7 +581,6 @@ describe('Select.Basic', () => {
         <Option value="2">2</Option>
       </Select>,
     );
-    // container.find('input').simulate('change', { target: { value: '1' } });
     fireEvent.change(container.querySelector('input'), { target: { value: '1' } });
     expect(handleSearch).toHaveBeenCalledTimes(1);
 
@@ -1405,29 +1403,30 @@ describe('Select.Basic', () => {
     });
   });
 
-  // it('dropdown should auto-adjust horizontally when dropdownMatchSelectWidth is false', () => {
-  //   const{container} = render(
-  //     <Select dropdownMatchSelectWidth={233}>
-  //       <Option value={0}>0</Option>
-  //       <Option value={1}>1</Option>
-  //     </Select>,
-  //   );
-  //   expect(
-  //     (container.find('Trigger').prop('builtinPlacements') as any).bottomLeft.overflow.adjustX,
-  //   ).toBe(1);
-  // });
+  it('dropdown should auto-adjust horizontally when dropdownMatchSelectWidth is false', () => {
+    render(
+      <Select dropdownMatchSelectWidth={233}>
+        <Option value={0}>0</Option>
+        <Option value={1}>1</Option>
+      </Select>,
+    );
 
-  // it('dropdown should not auto-adjust horizontally when dropdownMatchSelectWidth is true', () => {
-  //   const{container} = render(
-  //     <Select>
-  //       <Option value={0}>0</Option>
-  //       <Option value={1}>1</Option>
-  //     </Select>,
-  //   );
-  //   expect(
-  //     (container.find('Trigger').prop('builtinPlacements') as any).bottomLeft.overflow.adjustX,
-  //   ).toBe(0);
-  // });
+    expect(global.triggerProps.builtinPlacements.bottomLeft.overflow.adjustX).toBe(1);
+  });
+
+  it('dropdown should not auto-adjust horizontally when dropdownMatchSelectWidth is true', () => {
+    render(
+      <Select>
+        <Option value={0}>0</Option>
+        <Option value={1}>1</Option>
+      </Select>,
+    );
+    // expect(
+    //   (container.find('Trigger').prop('builtinPlacements') as any).bottomLeft.overflow.adjustX,
+    // ).toBe(0);
+
+    expect(global.triggerProps.builtinPlacements.bottomLeft.overflow.adjustX).toBe(0);
+  });
 
   it('if loading, arrow should show loading icon', () => {
     const { container } = render(
@@ -1922,22 +1921,22 @@ describe('Select.Basic', () => {
     ).toBe('0');
   });
 
-  // describe('placement', () => {
-  //   it('default', () => {
-  //     const{container} = render(<Select open />);
-  //     expect(container.find('Trigger').prop('popupPlacement')).toEqual('bottomLeft');
-  //   });
+  describe('placement', () => {
+    it('default', () => {
+      render(<Select open />);
+      expect(global.triggerProps.popupPlacement).toEqual('bottomLeft');
+    });
 
-  //   it('rtl', () => {
-  //     const{container} = render(<Select direction="rtl" open />);
-  //     expect(container.find('Trigger').prop('popupPlacement')).toEqual('bottomRight');
-  //   });
+    it('rtl', () => {
+      render(<Select direction="rtl" open />);
+      expect(global.triggerProps.popupPlacement).toEqual('bottomRight');
+    });
 
-  //   it('customize', () => {
-  //     const{container} = render(<Select placement="topRight" open />);
-  //     expect(container.find('Trigger').prop('popupPlacement')).toEqual('topRight');
-  //   });
-  // });
+    it('customize', () => {
+      render(<Select placement="topRight" open />);
+      expect(global.triggerProps.popupPlacement).toEqual('topRight');
+    });
+  });
 
   it('scrollTo should work with number', () => {
     const ref = React.createRef<BaseSelectRef>();
