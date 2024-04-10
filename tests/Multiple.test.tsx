@@ -630,14 +630,12 @@ describe('Select.Multiple', () => {
     });
   });
 
-  return;
-
   describe('autoClearSearchValue', () => {
     it('search value should not show when autoClearSearchValue is undefined', () => {
       const { container } = render(
         <Select mode="multiple" open={false} showSearch={true} searchValue="test" />,
       );
-      expect(wrapper.find('input').props().value).toBe('');
+      expect(container.querySelector('input').value).toBe('');
     });
     it('search value should show when autoClearSearchValue is false', () => {
       const { container } = render(
@@ -649,7 +647,7 @@ describe('Select.Multiple', () => {
           searchValue="test"
         />,
       );
-      expect(wrapper.find('input').props().value).toBe('test');
+      expect(container.querySelector('input').value).toBe('test');
     });
     it('search value should no clear when autoClearSearchValue is false', () => {
       const { container } = render(
@@ -663,7 +661,7 @@ describe('Select.Multiple', () => {
 
       toggleOpen(container);
       toggleOpen(container);
-      expect(wrapper.find('input').props().value).toBe('test');
+      expect(container.querySelector('input').value).toBe('test');
     });
     it('search value should clear when autoClearSearchValue is true', () => {
       const { container } = render(
@@ -671,7 +669,7 @@ describe('Select.Multiple', () => {
       );
       toggleOpen(container);
       toggleOpen(container);
-      expect(wrapper.find('input').props().value).toBe('');
+      expect(container.querySelector('input').value).toBe('');
     });
   });
 });
