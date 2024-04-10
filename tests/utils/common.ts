@@ -25,6 +25,10 @@ export function toggleOpen(wrapper: any) {
 }
 
 export function selectItem(wrapper: any, index: number = 0) {
+  if (wrapper instanceof HTMLElement) {
+    fireEvent.click(wrapper.querySelectorAll('.rc-select-item-option-content')[index]);
+    return;
+  }
   wrapper.find('div.rc-select-item-option-content').at(index).simulate('click');
 }
 
