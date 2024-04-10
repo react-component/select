@@ -147,7 +147,7 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
   const triggerRef = React.useRef<TriggerRef>(null);
 
   React.useImperativeHandle(ref, () => ({
-    getPopupElement: () => triggerRef.current.popupElement,
+    getPopupElement: () => triggerRef.current?.popupElement,
   }));
 
   return (

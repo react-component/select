@@ -17,6 +17,10 @@ export function expectOpen(wrapper: any, open: boolean = true) {
 }
 
 export function toggleOpen(wrapper: any) {
+  if (wrapper instanceof HTMLElement) {
+    fireEvent.mouseDown(wrapper.querySelector('.rc-select-selector'));
+    return;
+  }
   wrapper.find('.rc-select-selector').simulate('mousedown');
 }
 
