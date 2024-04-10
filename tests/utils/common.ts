@@ -1,6 +1,12 @@
+import { createEvent, fireEvent } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 
 export function expectOpen(wrapper: any, open: boolean = true) {
+  if (wrapper instanceof HTMLElement) {
+    expect(!!wrapper.querySelector('.rc-select-open')).toBe(open);
+    return;
+  }
+
   const expectWrapper = expect(wrapper.find('.rc-select').hasClass('rc-select-open'));
 
   if (open) {
@@ -15,10 +21,7 @@ export function toggleOpen(wrapper: any) {
 }
 
 export function selectItem(wrapper: any, index: number = 0) {
-  wrapper
-    .find('div.rc-select-item-option-content')
-    .at(index)
-    .simulate('click');
+  wrapper.find('div.rc-select-item-option-content').at(index).simulate('click');
 }
 
 export function findSelection(wrapper: any, index: number = 0) {
@@ -66,4 +69,10 @@ export function injectRunAllTimers(jest: Jest) {
   afterAll(() => {
     jest.runAllTimers = originRunAllTimers;
   });
+}
+
+export function keyDown(element: HTMLElement, keyCode: number) {
+  const event = createEvent.keyDown(element, { keyCode });
+  console.log('event:', event);
+  fireEvent(element, event);
 }
