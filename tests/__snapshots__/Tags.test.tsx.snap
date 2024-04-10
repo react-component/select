@@ -91,7 +91,6 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
               aria-hidden="true"
               class="rc-select-selection-search-mirror"
             >
-              
                
             </span>
           </div>
