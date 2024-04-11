@@ -1,4 +1,4 @@
-import Trigger from '@rc-component/trigger';
+import Trigger, { type TriggerRef } from '@rc-component/trigger';
 import type { AlignType, BuildInPlacements } from '@rc-component/trigger/lib/interface';
 import classNames from 'classnames';
 import * as React from 'react';
@@ -143,10 +143,10 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
   }
 
   // ======================= Ref =======================
-  const popupRef = React.useRef<HTMLDivElement>(null);
+  const triggerPopupRef = React.useRef<TriggerRef>(null);
 
   React.useImperativeHandle(ref, () => ({
-    getPopupElement: () => popupRef.current,
+    getPopupElement: () => triggerPopupRef.current?.popupElement,
   }));
 
   return (
@@ -158,11 +158,8 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
       builtinPlacements={mergedBuiltinPlacements}
       prefixCls={dropdownPrefixCls}
       popupTransitionName={mergedTransitionName}
-      popup={
-        <div ref={popupRef} onMouseEnter={onPopupMouseEnter}>
-          {popupNode}
-        </div>
-      }
+      popup={<div onMouseEnter={onPopupMouseEnter}>{popupNode}</div>}
+      ref={triggerPopupRef}
       stretch={stretch}
       popupAlign={dropdownAlign}
       popupVisible={visible}

@@ -424,7 +424,6 @@ describe('Select.Tags', () => {
       expect(container.querySelectorAll('.rc-select-item-option-content')).toHaveLength(1);
 
       keyDown(container.querySelector('input'), KeyCode.ENTER);
-      console.log(container.innerHTML);
       expect(container.querySelectorAll('.rc-select-item')).toHaveLength(5);
     });
 
