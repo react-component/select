@@ -1,5 +1,5 @@
 import type { OptionListProps, RefOptionListProps } from '@/OptionList';
-import { fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 import { forwardRef } from 'react';
 import BaseSelect from '../src/BaseSelect';
 
@@ -34,6 +34,7 @@ describe('BaseSelect', () => {
     fireEvent.click(container.querySelector('a.trigger'));
     expect(container.querySelector('div.rc-select-dropdown-hidden')).toBeTruthy();
   });
+
   it('customized inputElement style should includes position: absolute', () => {
     jest.useFakeTimers();
     const { container } = render(
@@ -50,7 +51,9 @@ describe('BaseSelect', () => {
     );
     expect(container.querySelector('div.rc-select')).toBeTruthy();
     fireEvent.focus(container.querySelector('div.rc-select'));
-    jest.runAllTimers();
+    act(() => {
+      jest.runAllTimers();
+    });
     expect(
       getComputedStyle(container.querySelector(`span[aria-live=polite]`)).getPropertyValue(
         'position',

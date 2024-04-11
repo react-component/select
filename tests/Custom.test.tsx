@@ -1,7 +1,7 @@
-import { mount } from 'enzyme';
 import * as React from 'react';
 import Select from '../src';
 import { injectRunAllTimers } from './utils/common';
+import { fireEvent, render } from '@testing-library/react';
 
 describe('Select.Custom', () => {
   injectRunAllTimers(jest);
@@ -16,13 +16,13 @@ describe('Select.Custom', () => {
 
   it('getRawInputElement', () => {
     const onDropdownVisibleChange = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <Select
         getRawInputElement={() => <span className="custom" />}
         onDropdownVisibleChange={onDropdownVisibleChange}
       />,
     );
-    wrapper.find('.custom').simulate('click');
+    fireEvent.click(container.querySelector('.custom'));
 
     expect(onDropdownVisibleChange).toHaveBeenCalledWith(true);
   });

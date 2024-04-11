@@ -242,7 +242,8 @@ exports[`Select.Multiple render truncates tags by maxTagCount and show maxTagPla
             class="rc-select-selection-item-content"
           >
             <span>
-              1 values omitted
+              1
+               values omitted
             </span>
           </span>
         </span>
