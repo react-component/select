@@ -726,7 +726,16 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   );
 
   // =========================== OptionList ===========================
-  const optionList = <OptionList ref={listRef} />;
+  const optionList = (
+    <div style={{ display: 'flex' }}>
+      <div style={{ flex: 1 }}>
+        <OptionList ref={listRef} />
+      </div>
+      <div style={{ flex: 1 }}>
+        <OptionList ref={listRef} />
+      </div>
+    </div>
+  );
 
   // ============================= Select =============================
   const mergedClassName = classNames(prefixCls, className, {
