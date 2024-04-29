@@ -55,7 +55,6 @@ import type { FlattenOptionData } from './interface';
 import { hasValue, isComboNoValue, toArray } from './utils/commonUtil';
 import { fillFieldNames, flattenOptions, injectPropsWithOption } from './utils/valueUtil';
 import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
-import SelectPanel from './SelectPanel';
 
 const OMIT_DOM_PROPS = ['inputValue'];
 
@@ -698,11 +697,9 @@ const TypedSelect = Select as unknown as (<
 ) => React.ReactElement) & {
   Option: typeof Option;
   OptGroup: typeof OptGroup;
-  SelectPanel: typeof SelectPanel;
 };
 
 TypedSelect.Option = Option;
 TypedSelect.OptGroup = OptGroup;
-TypedSelect.SelectPanel = SelectPanel;
 
 export default TypedSelect;
