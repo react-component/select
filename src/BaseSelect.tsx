@@ -206,6 +206,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
+  panel?: boolean;
 }
 
 export const isMultiple = (mode: Mode) => mode === 'tags' || mode === 'multiple';
@@ -282,6 +283,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     onKeyUp,
     onKeyDown,
     onMouseDown,
+
+    panel,
 
     // Rest Props
     ...restProps
@@ -765,6 +768,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       getTriggerDOMNode={() => selectorDomRef.current}
       onPopupVisibleChange={onTriggerVisibleChange}
       onPopupMouseEnter={onPopupMouseEnter}
+      panel={panel}
     >
       {customizeRawInputElement ? (
         React.cloneElement(customizeRawInputElement, {

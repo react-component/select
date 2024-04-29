@@ -18,6 +18,7 @@ export default () => {
         ]}
       /> */}
       <Select
+        panel
         options={[
           { label: 'test1', value: '1' },
           { label: 'test2', value: '2' },

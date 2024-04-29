@@ -142,6 +142,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   optionFilterProp?: string;
   optionLabelProp?: string;
   children?: React.ReactNode;
+  panel?: boolean;
   options?: OptionType[];
   optionRender?: (
     oriOption: FlattenOptionData<BaseOptionType>,

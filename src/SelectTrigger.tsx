@@ -77,6 +77,7 @@ export interface SelectTriggerProps {
   onPopupVisibleChange?: (visible: boolean) => void;
 
   onPopupMouseEnter: () => void;
+  panel?: boolean;
 }
 
 const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTriggerProps> = (
@@ -104,6 +105,7 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
     getTriggerDOMNode,
     onPopupVisibleChange,
     onPopupMouseEnter,
+    panel,
     ...restProps
   } = props;
 
@@ -148,6 +150,14 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
   React.useImperativeHandle(ref, () => ({
     getPopupElement: () => triggerPopupRef.current?.popupElement,
   }));
+  if (panel) {
+    return (
+      <>
+        {children}
+        <div onMouseEnter={onPopupMouseEnter}>{popupNode}</div>
+      </>
+    );
+  }
 
   return (
     <Trigger
