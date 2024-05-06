@@ -5,7 +5,7 @@ import { findSelection } from '../utils/common';
 import { render } from '@testing-library/react';
 
 export default function maxTagTextLengthTest(mode: any) {
-  describe('render', () => {
+  describe('max tag render', () => {
     it('truncates values by maxTagTextLength', () => {
       const { container } = render(
         <Select mode={mode} value={['one', 'two']} maxTagTextLength={2}>
@@ -89,6 +89,38 @@ export default function maxTagTextLengthTest(mode: any) {
       );
 
       expect(container.firstChild).toMatchSnapshot();
+    });
+
+    it('tagRender should work on maxTagPlaceholder', () => {
+      const tagRender = jest.fn();
+      const maxTagPlaceholder = (omittedValues) => (
+        `${omittedValues.length} values omitted`
+      );
+      render(
+        <Select
+          mode={mode}
+          value={['one', 'two', 'three']}
+          maxTagCount={2}
+          tagRender={tagRender}
+          maxTagPlaceholder={maxTagPlaceholder}
+        >
+          <Option value="one">One</Option>
+          <Option value="two">Two</Option>
+          <Option value="three">Three</Option>
+        </Select>,
+      );
+      expect(tagRender).toHaveBeenCalledWith(expect.objectContaining({
+        isMaxTag: false,
+        label: 'One',
+      }));
+      expect(tagRender).toHaveBeenCalledWith(expect.objectContaining({
+        isMaxTag: false,
+        label: 'Two',
+      }));
+      expect(tagRender).toHaveBeenCalledWith(expect.objectContaining({
+        isMaxTag: true,
+        label: '1 values omitted',
+      }));
     });
   });
 }

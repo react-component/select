@@ -1,6 +1,5 @@
 import KeyCode from 'rc-util/lib/KeyCode';
-import React from 'react';
-import { act } from 'react-dom/test-utils';
+import React, { act } from 'react';
 import { BaseSelectContext } from '../src/hooks/useBaseProps';
 import type { RefOptionListProps } from '../src/OptionList';
 import OptionList from '../src/OptionList';

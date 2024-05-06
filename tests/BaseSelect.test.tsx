@@ -1,6 +1,6 @@
 import type { OptionListProps, RefOptionListProps } from '@/OptionList';
-import { act, fireEvent, render } from '@testing-library/react';
-import { forwardRef } from 'react';
+import { fireEvent, render } from '@testing-library/react';
+import { forwardRef, act } from 'react';
 import BaseSelect from '../src/BaseSelect';
 
 const OptionList = forwardRef<RefOptionListProps, OptionListProps>(() => (

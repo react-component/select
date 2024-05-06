@@ -1,5 +1,5 @@
+import { act } from 'react';
 import { createEvent, fireEvent } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
 
 export function expectOpen(wrapper: any, open: boolean = true) {
   if (wrapper instanceof HTMLElement) {
@@ -86,7 +86,7 @@ export function injectRunAllTimers(jest: Jest) {
     originRunAllTimers = jest.runAllTimers;
 
     jest.runAllTimers = () => {
-      let result: typeof jest;
+      let result;
       act(() => {
         result = originRunAllTimers();
       });

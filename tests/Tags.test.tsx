@@ -11,7 +11,7 @@ import hoverTest from './shared/hoverTest';
 import inputFilterTest from './shared/inputFilterTest';
 import openControlledTest from './shared/openControlledTest';
 import removeSelectedTest from './shared/removeSelectedTest';
-import renderTest from './shared/renderTest';
+import maxTagRenderTest from './shared/maxTagRenderTest';
 import throwOptionValue from './shared/throwOptionValue';
 import { injectRunAllTimers, findSelection, expectOpen, toggleOpen, keyDown } from './utils/common';
 
@@ -22,7 +22,7 @@ describe('Select.Tags', () => {
   focusTest('tags', {});
   blurTest('tags');
   hoverTest('tags');
-  renderTest('tags');
+  maxTagRenderTest('tags');
   removeSelectedTest('tags');
   throwOptionValue('tags');
   dynamicChildrenTest('tags', {});

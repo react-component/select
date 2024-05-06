@@ -128,8 +128,9 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
     value: RawValueType,
     content: React.ReactNode,
     itemDisabled: boolean,
-    closable: boolean,
-    onClose: React.MouseEventHandler,
+    closable?: boolean,
+    onClose?: React.MouseEventHandler,
+    isMaxTag?: boolean,
   ) => {
     const onMouseDown = (e: React.MouseEvent) => {
       onPreventMouseDown(e);
@@ -137,7 +138,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
     };
     return (
       <span onMouseDown={onMouseDown}>
-        {tagRender({ label: content, value, disabled: itemDisabled, closable, onClose })}
+        {tagRender({ label: content, value, disabled: itemDisabled, closable, onClose, isMaxTag: !!isMaxTag })}
       </span>
     );
   };
@@ -174,8 +175,9 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
       typeof maxTagPlaceholder === 'function'
         ? maxTagPlaceholder(omittedValues)
         : maxTagPlaceholder;
-
-    return defaultRenderSelector({ title: content }, content, false);
+    return typeof tagRender === 'function'
+      ? customizeRenderSelector(undefined, content, false, false, undefined, true)
+      : defaultRenderSelector({ title: content }, content, false);
   };
 
   // >>> Input Node

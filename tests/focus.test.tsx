@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { act } from 'react-dom/test-utils';
+import React, { useState, act } from 'react';
 import Select from '../src';
 import { fireEvent, render } from '@testing-library/react';
 
