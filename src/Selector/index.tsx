@@ -109,6 +109,7 @@ const Selector: React.ForwardRefRenderFunction<RefSelectorProps, SelectorProps> 
     mode,
     showSearch,
     tokenWithEnter,
+    disabled,
 
     autoClearSearchValue,
 
@@ -228,9 +229,10 @@ const Selector: React.ForwardRefRenderFunction<RefSelectorProps, SelectorProps> 
   const onMouseDown: React.MouseEventHandler<HTMLElement> = (event) => {
     const inputMouseDown = getInputMouseDown();
 
-    // when mode is combobox, don't prevent default behavior
+    // when mode is combobox and it is disabled, don't prevent default behavior
     // https://github.com/ant-design/ant-design/issues/37320
-    if (event.target !== inputRef.current && !inputMouseDown && mode !== 'combobox') {
+    // https://github.com/ant-design/ant-design/issues/48281
+    if (event.target !== inputRef.current && !inputMouseDown && !(mode === 'combobox' && disabled)) {
       event.preventDefault();
     }
 

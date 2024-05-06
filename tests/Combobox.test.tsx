@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
 
 import '@testing-library/jest-dom';
-import { fireEvent, render } from '@testing-library/react';
+import { createEvent, fireEvent, render } from '@testing-library/react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { resetWarned } from 'rc-util/lib/warning';
 import React, { act } from 'react';
@@ -604,4 +604,42 @@ describe('Select.Combobox', () => {
     const { container } = render(<Select mode="combobox" value={0} />);
     expect(container.querySelector('input')!.value).toBe('0');
   });
+
+  // https://github.com/ant-design/ant-design/issues/48281
+  describe('combobox mode onMouseDown event default behavior', () => {
+    it('should prevent default behavior when mode is combobox', () => {
+      const preventDefault = jest.fn();
+      const { container } = render(
+        <Select mode="combobox" value="1">
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
+      
+      const selectorEle = container.querySelector('.rc-select-selector');
+  
+      const mouseDownEvent = createEvent.mouseDown(selectorEle);
+      mouseDownEvent.preventDefault = preventDefault;
+      fireEvent(selectorEle, mouseDownEvent);
+      expect(preventDefault).toHaveBeenCalled();
+    })
+
+    it('should not prevent default behavior when mode is combobox and it is disabled', () => {
+      const preventDefault = jest.fn();
+      const { container } = render(
+        <Select mode="combobox" value="1" disabled>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
+      
+      const selectorEle = container.querySelector('.rc-select-selector');
+  
+      const mouseDownEvent = createEvent.mouseDown(selectorEle);
+      mouseDownEvent.preventDefault = preventDefault;
+      fireEvent(selectorEle, mouseDownEvent);
+      expect(preventDefault).not.toHaveBeenCalled();
+    })
+  });
+  
 });
