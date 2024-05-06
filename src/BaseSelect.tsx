@@ -67,6 +67,7 @@ export type CustomTagProps = {
   disabled: boolean;
   onClose: (event?: React.MouseEvent<HTMLElement, MouseEvent>) => void;
   closable: boolean;
+  isMaxTag: boolean;
 };
 
 export interface BaseSelectRef {

@@ -4,7 +4,7 @@ import Select, { Option, OptGroup } from '../src';
 import focusTest from './shared/focusTest';
 import blurTest from './shared/blurTest';
 import hoverTest from './shared/hoverTest';
-import renderTest from './shared/renderTest';
+import maxTagRenderTest from './shared/maxTagRenderTest';
 import removeSelectedTest from './shared/removeSelectedTest';
 import dynamicChildrenTest from './shared/dynamicChildrenTest';
 import inputFilterTest from './shared/inputFilterTest';
@@ -27,7 +27,7 @@ describe('Select.Multiple', () => {
   focusTest('multiple');
   blurTest('multiple');
   hoverTest('multiple');
-  renderTest('multiple');
+  maxTagRenderTest('multiple');
   removeSelectedTest('multiple');
   dynamicChildrenTest('multiple');
   inputFilterTest('multiple');

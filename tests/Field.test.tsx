@@ -1,5 +1,4 @@
-import { act } from 'react-dom/test-utils';
-import * as React from 'react';
+import React, { act } from 'react';
 import Select from '../src';
 import type { SelectProps } from '../src';
 import { injectRunAllTimers } from './utils/common';

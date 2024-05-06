@@ -1,10 +1,10 @@
 /* eslint-disable max-classes-per-file */
 
 import '@testing-library/jest-dom';
-import { act, fireEvent, render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { resetWarned } from 'rc-util/lib/warning';
-import React from 'react';
+import React, { act } from 'react';
 import type { SelectProps } from '../src';
 import Select, { Option } from '../src';
 import allowClearTest from './shared/allowClearTest';
