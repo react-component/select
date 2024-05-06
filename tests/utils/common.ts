@@ -86,7 +86,7 @@ export function injectRunAllTimers(jest: Jest) {
     originRunAllTimers = jest.runAllTimers;
 
     jest.runAllTimers = () => {
-      let result: typeof jest;
+      let result;
       act(() => {
         result = originRunAllTimers();
       });
