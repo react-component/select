@@ -62,6 +62,43 @@ describe('BaseSelect', () => {
     jest.useRealTimers();
   });
 
+  // https://github.com/ant-design/ant-design/issues/48833
+  it('a11y not block of Chrome render', () => {
+    jest.useFakeTimers();
+
+    const { container } = render(
+      <BaseSelect
+        displayValues={Array.from({ length: 100 }).map((_, index) => ({
+          key: index,
+          value: index,
+          label: index,
+        }))}
+        id="test"
+        prefixCls="rc-select"
+        onDisplayValuesChange={() => {}}
+        searchValue=""
+        onSearch={() => {}}
+        OptionList={OptionList}
+        emptyOptions
+      />,
+    );
+
+    fireEvent.focus(container.querySelector('div.rc-select'));
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    // We cut 50 count as hard code, its safe to adjust if refactor
+    const contentTxt = container.querySelector('span[aria-live=polite]')?.textContent;
+    expect(contentTxt).toBe(
+      `${Array.from({ length: 50 })
+        .map((_, index) => index)
+        .join(', ')}, ...`,
+    );
+
+    jest.useRealTimers();
+  });
+
   it('customize builtinPlacements should override default one', () => {
     const { container } = render(
       <BaseSelect

@@ -7,12 +7,12 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import { useComposeRef } from 'rc-util/lib/ref';
 import type { ScrollConfig, ScrollTo } from 'rc-virtual-list/lib/List';
 import * as React from 'react';
-import { useAllowClear } from './hooks/useAllowClear';
-import { BaseSelectContext } from './hooks/useBaseProps';
-import type { BaseSelectContextProps } from './hooks/useBaseProps';
-import useDelayReset from './hooks/useDelayReset';
-import useLock from './hooks/useLock';
-import useSelectTriggerControl from './hooks/useSelectTriggerControl';
+import { useAllowClear } from '../hooks/useAllowClear';
+import { BaseSelectContext } from '../hooks/useBaseProps';
+import type { BaseSelectContextProps } from '../hooks/useBaseProps';
+import useDelayReset from '../hooks/useDelayReset';
+import useLock from '../hooks/useLock';
+import useSelectTriggerControl from '../hooks/useSelectTriggerControl';
 import type {
   DisplayInfoType,
   DisplayValueType,
@@ -21,15 +21,16 @@ import type {
   RawValueType,
   RenderDOMFunc,
   RenderNode,
-} from './interface';
-import type { RefSelectorProps } from './Selector';
-import Selector from './Selector';
-import type { RefTriggerProps } from './SelectTrigger';
-import SelectTrigger from './SelectTrigger';
-import TransBtn from './TransBtn';
-import { getSeparatedContent, isValidCount } from './utils/valueUtil';
-import SelectContext from './SelectContext';
-import type { SelectContextProps } from './SelectContext';
+} from '../interface';
+import type { RefSelectorProps } from '../Selector';
+import Selector from '../Selector';
+import type { RefTriggerProps } from '../SelectTrigger';
+import SelectTrigger from '../SelectTrigger';
+import TransBtn from '../TransBtn';
+import { getSeparatedContent, isValidCount } from '../utils/valueUtil';
+import SelectContext from '../SelectContext';
+import type { SelectContextProps } from '../SelectContext';
+import Polite from './Polite';
 
 export type {
   DisplayInfoType,
@@ -816,19 +817,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
         onFocus={onContainerFocus}
         onBlur={onContainerBlur}
       >
-        {mockFocused && !mergedOpen && (
-          <span
-            aria-live="polite"
-            style={{ width: 0, height: 0, position: 'absolute', overflow: 'hidden', opacity: 0 }}
-          >
-            {/* Merge into one string to make screen reader work as expect */}
-            {`${displayValues
-              .map(({ label, value }) =>
-                ['number', 'string'].includes(typeof label) ? label : value,
-              )
-              .join(', ')}`}
-          </span>
-        )}
+        <Polite visible={mockFocused && !mergedOpen} values={displayValues} />
         {selectorNode}
         {arrowNode}
         {mergedAllowClear && clearNode}
