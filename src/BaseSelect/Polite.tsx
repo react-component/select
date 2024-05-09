@@ -14,7 +14,7 @@ export default function Polite(props: PoliteProps) {
   }
 
   // Only cut part of values since it's a screen reader
-  const MAX_COUNT = 10;
+  const MAX_COUNT = 50;
 
   return (
     <span
