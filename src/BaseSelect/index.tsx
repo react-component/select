@@ -764,7 +764,12 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       builtinPlacements={builtinPlacements}
       getPopupContainer={getPopupContainer}
       empty={emptyOptions}
-      getTriggerDOMNode={() => selectorDomRef.current}
+      getTriggerDOMNode={(node) =>
+        // TODO: This is workaround and should be removed in `rc-select`
+        // And use new standard `nativeElement` for ref.
+        // But we should update `rc-resize-observer` first.
+        selectorDomRef.current || node
+      }
       onPopupVisibleChange={onTriggerVisibleChange}
       onPopupMouseEnter={onPopupMouseEnter}
     >

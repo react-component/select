@@ -73,7 +73,7 @@ export interface SelectTriggerProps {
   dropdownAlign: AlignType;
   empty: boolean;
 
-  getTriggerDOMNode: () => HTMLElement;
+  getTriggerDOMNode: (node: HTMLElement) => HTMLElement;
   onPopupVisibleChange?: (visible: boolean) => void;
 
   onPopupMouseEnter: () => void;
