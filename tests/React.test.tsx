@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Select from '../src';
+import Select, { type BaseSelectRef } from '../src';
 import { injectRunAllTimers } from './utils/common';
 import { render } from '@testing-library/react';
 
@@ -21,5 +21,23 @@ describe('React', () => {
 
     expect(errSpy).not.toHaveBeenCalled();
     errSpy.mockRestore();
+  });
+
+  describe('nativeElement', () => {
+    it('work', () => {
+      const selectRef = React.createRef<BaseSelectRef>();
+      const { container } = render(<Select ref={selectRef} />);
+
+      expect(selectRef.current?.nativeElement).toBe(container.querySelector('.rc-select'));
+    });
+
+    it('getRawInputElement', () => {
+      const selectRef = React.createRef<BaseSelectRef>();
+      const { container } = render(
+        <Select ref={selectRef} getRawInputElement={() => <a className="bamboo" />} />,
+      );
+
+      expect(selectRef.current?.nativeElement).toBe(container.querySelector('a.bamboo'));
+    });
   });
 });
