@@ -75,6 +75,7 @@ export interface BaseSelectRef {
   focus: (options?: FocusOptions) => void;
   blur: () => void;
   scrollTo: ScrollTo;
+  nativeElement: HTMLElement;
 }
 
 export interface BaseSelectPrivateProps {
@@ -329,6 +330,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     focus: selectorRef.current?.focus,
     blur: selectorRef.current?.blur,
     scrollTo: (arg) => listRef.current?.scrollTo(arg),
+    nativeElement: containerRef.current || selectorDomRef.current,
   }));
 
   // ========================== Search Value ==========================
