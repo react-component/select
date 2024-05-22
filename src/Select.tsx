@@ -143,7 +143,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   children?: React.ReactNode;
   options?: OptionType[];
   optionRender?: (
-    oriOption: FlattenOptionData<BaseOptionType>,
+    oriOption: FlattenOptionData<OptionType>,
     info: { index: number },
   ) => React.ReactNode;
   defaultActiveFirstOption?: boolean;
