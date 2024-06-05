@@ -1917,6 +1917,35 @@ describe('Select.Basic', () => {
     );
   });
 
+  it('filterSort should work with search value', () => {
+    const { container } = render(
+      <Select
+        showSearch
+        filterSort={(optionA, optionB, { searchValue }) => {
+          const i =
+            (optionA.label as string).indexOf(searchValue) -
+            (optionB.label as string).indexOf(searchValue);
+          if (i == 0) {
+            return (optionA.label as string).localeCompare(optionB.label as string);
+          }
+          return i;
+        }}
+        optionFilterProp="label"
+        options={[
+          { value: 4, label: 'Not Identified' },
+          { value: 3, label: 'Closed' },
+          { value: 2, label: 'Communicated' },
+          { value: 5, label: 'Cancelled' },
+        ]}
+      />,
+    );
+
+    fireEvent.change(container.querySelector('input'), { target: { value: 'o' } });
+    expect(container.querySelector('.rc-select-item-option-content').textContent).toBe(
+      'Communicated',
+    );
+  });
+
   it('correctly handles the `tabIndex` prop', () => {
     const { container } = render(<Select tabIndex={0} />);
     expect(container.querySelector('.rc-select').getAttribute('tabindex')).toBeFalsy();

@@ -137,7 +137,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
    * It's by design.
    */
   filterOption?: boolean | FilterFunc<OptionType>;
-  filterSort?: (optionA: OptionType, optionB: OptionType) => number;
+  filterSort?: (optionA: OptionType, optionB: OptionType, info: { searchValue: string }) => number;
   optionFilterProp?: string;
   optionLabelProp?: string;
   children?: React.ReactNode;
@@ -437,8 +437,10 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
         return filledSearchOptions;
       }
 
-      return [...filledSearchOptions].sort((a, b) => filterSort(a, b));
-    }, [filledSearchOptions, filterSort]);
+      return [...filledSearchOptions].sort((a, b) =>
+        filterSort(a, b, { searchValue: mergedSearchValue }),
+      );
+    }, [filledSearchOptions, filterSort, mergedSearchValue]);
 
     const displayOptions = React.useMemo(
       () =>
