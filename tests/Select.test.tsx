@@ -25,6 +25,7 @@ import {
   findSelection,
   injectRunAllTimers,
   keyDown,
+  keyUp,
   selectItem,
   toggleOpen,
 } from './utils/common';
@@ -1469,6 +1470,7 @@ describe('Select.Basic', () => {
     for (let i = 0; i < 10; i += 1) {
       onSelect.mockReset();
       keyDown(container.querySelector('input'), KeyCode.ENTER);
+      keyUp(container.querySelector('input'), KeyCode.ENTER);
       expect(onSelect).toHaveBeenCalledWith('1', expect.anything());
     }
   });
