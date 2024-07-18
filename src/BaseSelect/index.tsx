@@ -529,7 +529,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       }
     }
 
-    if (mergedOpen && key === 'Enter' ? !keyLockRef.current : true) {
+    if (mergedOpen && (key !== 'Enter' || (key === 'Enter' && !keyLockRef.current))) {
       listRef.current?.onKeyDown(event, ...rest);
     }
 
@@ -842,10 +842,5 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     <BaseSelectContext.Provider value={baseSelectContext}>{renderNode}</BaseSelectContext.Provider>
   );
 });
-
-// Set display name for dev
-if (process.env.NODE_ENV !== 'production') {
-  BaseSelect.displayName = 'BaseSelect';
-}
 
 export default BaseSelect;
