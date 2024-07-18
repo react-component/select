@@ -486,9 +486,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     const clearLock = getClearLock();
     const { key } = event;
 
-    if (key === 'Enter') {
-      if (keyLockRef.current) return;
-      keyLockRef.current = true;
+    if (key === 'Enter' && !keyLockRef.current) {
       // Do not submit form when type in the input
       if (mode !== 'combobox') {
         event.preventDefault();
@@ -531,8 +529,12 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       }
     }
 
-    if (mergedOpen) {
+    if (mergedOpen && !keyLockRef.current) {
       listRef.current?.onKeyDown(event, ...rest);
+    }
+
+    if (key === 'Enter' && !keyLockRef.current) {
+      keyLockRef.current = true;
     }
 
     onKeyDown?.(event, ...rest);
@@ -840,10 +842,5 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     <BaseSelectContext.Provider value={baseSelectContext}>{renderNode}</BaseSelectContext.Provider>
   );
 });
-
-// Set display name for dev
-if (process.env.NODE_ENV !== 'production') {
-  BaseSelect.displayName = 'BaseSelect';
-}
 
 export default BaseSelect;
