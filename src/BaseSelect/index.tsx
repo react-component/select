@@ -486,7 +486,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     const clearLock = getClearLock();
     const { key } = event;
 
-    if (key === 'Enter' && !keyLockRef.current) {
+    if (key === 'Enter') {
       // Do not submit form when type in the input
       if (mode !== 'combobox') {
         event.preventDefault();
