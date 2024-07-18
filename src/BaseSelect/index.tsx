@@ -483,8 +483,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
   // KeyDown
   const onInternalKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event, ...rest) => {
-    onKeyDown?.(event, ...rest);
-
     const clearLock = getClearLock();
     const { key } = event;
 
@@ -536,6 +534,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     if (mergedOpen) {
       listRef.current?.onKeyDown(event, ...rest);
     }
+
+    onKeyDown?.(event, ...rest);
   };
 
   // KeyUp
