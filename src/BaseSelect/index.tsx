@@ -480,13 +480,18 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
    * - false: Search text is not empty when first time backspace down
    */
   const [getClearLock, setClearLock] = useLock();
+  const keyLockRef = React.useRef(false);
 
   // KeyDown
   const onInternalKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event, ...rest) => {
-    const clearLock = getClearLock();
-    const { which } = event;
+    onKeyDown?.(event, ...rest);
 
-    if (which === KeyCode.ENTER) {
+    const clearLock = getClearLock();
+    const { key } = event;
+
+    if (key === 'Enter') {
+      if (keyLockRef.current) return;
+      keyLockRef.current = true;
       // Do not submit form when type in the input
       if (mode !== 'combobox') {
         event.preventDefault();
@@ -502,7 +507,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
     // Remove value by `backspace`
     if (
-      which === KeyCode.BACKSPACE &&
+      key === 'Backspace' &&
       !clearLock &&
       multiple &&
       !mergedSearchValue &&
@@ -532,8 +537,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     if (mergedOpen) {
       listRef.current?.onKeyDown(event, ...rest);
     }
-
-    onKeyDown?.(event, ...rest);
   };
 
   // KeyUp
@@ -541,7 +544,9 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     if (mergedOpen) {
       listRef.current?.onKeyUp(event, ...rest);
     }
-
+    if (event.key === 'Enter') {
+      keyLockRef.current = false;
+    }
     onKeyUp?.(event, ...rest);
   };
 

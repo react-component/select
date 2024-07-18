@@ -106,3 +106,11 @@ export function keyDown(element: HTMLElement, keyCode: number) {
     fireEvent(element, event);
   });
 }
+
+export function keyUp(element: HTMLElement, keyCode: number) {
+  const event = createEvent.keyUp(element, { keyCode });
+
+  act(() => {
+    fireEvent(element, event);
+  });
+}
