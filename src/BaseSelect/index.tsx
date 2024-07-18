@@ -533,7 +533,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       listRef.current?.onKeyDown(event, ...rest);
     }
 
-    if (key === 'Enter' && !keyLockRef.current) {
+    if (key === 'Enter') {
       keyLockRef.current = true;
     }
 
