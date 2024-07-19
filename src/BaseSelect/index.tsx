@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import isMobile from 'rc-util/lib/isMobile';
-import KeyCode from 'rc-util/lib/KeyCode';
 import { useComposeRef } from 'rc-util/lib/ref';
 import type { ScrollConfig, ScrollTo } from 'rc-virtual-list/lib/List';
 import * as React from 'react';
@@ -480,13 +479,16 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
    * - false: Search text is not empty when first time backspace down
    */
   const [getClearLock, setClearLock] = useLock();
+  const keyLockRef = React.useRef(false);
 
   // KeyDown
   const onInternalKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event, ...rest) => {
     const clearLock = getClearLock();
-    const { which } = event;
+    const { key } = event;
 
-    if (which === KeyCode.ENTER) {
+    const isEnterKey = key === 'Enter';
+
+    if (isEnterKey) {
       // Do not submit form when type in the input
       if (mode !== 'combobox') {
         event.preventDefault();
@@ -502,7 +504,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
     // Remove value by `backspace`
     if (
-      which === KeyCode.BACKSPACE &&
+      key === 'Backspace' &&
       !clearLock &&
       multiple &&
       !mergedSearchValue &&
@@ -529,8 +531,12 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       }
     }
 
-    if (mergedOpen) {
+    if (mergedOpen && (!isEnterKey || !keyLockRef.current)) {
       listRef.current?.onKeyDown(event, ...rest);
+    }
+
+    if (isEnterKey) {
+      keyLockRef.current = true;
     }
 
     onKeyDown?.(event, ...rest);
@@ -541,7 +547,9 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     if (mergedOpen) {
       listRef.current?.onKeyUp(event, ...rest);
     }
-
+    if (event.key === 'Enter') {
+      keyLockRef.current = false;
+    }
     onKeyUp?.(event, ...rest);
   };
 

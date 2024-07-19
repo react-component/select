@@ -16,6 +16,7 @@ import {
   findSelection,
   removeSelection,
   keyDown,
+  keyUp,
 } from './utils/common';
 import allowClearTest from './shared/allowClearTest';
 import { fireEvent, render } from '@testing-library/react';
@@ -294,6 +295,25 @@ describe('Select.Multiple', () => {
     expect(onChange).toHaveBeenCalledWith([2], expect.anything());
   });
 
+  it('should prevent long press of enter', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <Select mode="multiple" onChange={onChange}>
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>,
+    );
+
+    toggleOpen(container);
+    fireEvent.mouseMove(container.querySelectorAll('.rc-select-item-option')[1]);
+
+    keyDown(container.querySelector('input'), KeyCode.ENTER);
+    keyDown(container.querySelector('input'), KeyCode.ENTER);
+    keyUp(container.querySelector('input'), KeyCode.ENTER);
+    expectOpen(container);
+    expect(onChange).toHaveBeenCalledTimes(1);
+  });
+
   it('enter twice to cancel the selection', () => {
     const onChange = jest.fn();
     const { container } = render(
@@ -306,7 +326,7 @@ describe('Select.Multiple', () => {
     toggleOpen(container);
     fireEvent.mouseMove(container.querySelectorAll('.rc-select-item-option')[0]);
     keyDown(container.querySelector('input'), KeyCode.ENTER);
-
+    keyUp(container.querySelector('input'), KeyCode.ENTER);
     fireEvent.mouseMove(container.querySelectorAll('.rc-select-item-option')[0]);
     keyDown(container.querySelector('input'), KeyCode.ENTER);
 
