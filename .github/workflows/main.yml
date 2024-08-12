@@ -2,23 +2,23 @@ name: CI
 
 on:
   push:
-    branches: [master]
+    branches: [ master ]
   pull_request:
-    branches: [master]
+    branches: [ master ]
 
 jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: 20
 
       - name: cache package-lock.json
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: package-temp-dir
           key: lock-${{ github.sha }}
@@ -35,7 +35,7 @@ jobs:
 
       - name: cache node_modules
         id: node_modules_cache_id
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: node_modules
           key: node_modules-${{ hashFiles('**/package-temp-dir/package-lock.json') }}
@@ -48,16 +48,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
 
       - name: restore cache from package-lock.json
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: package-temp-dir
           key: lock-${{ github.sha }}
 
       - name: restore cache from node_modules
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: node_modules
           key: node_modules-${{ hashFiles('**/package-temp-dir/package-lock.json') }}
@@ -67,23 +67,22 @@ jobs:
 
       - name: ts check
         run: npm run tsc
-
     needs: setup
-
+  
   compile:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
 
       - name: restore cache from package-lock.json
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: package-temp-dir
           key: lock-${{ github.sha }}
 
       - name: restore cache from node_modules
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: node_modules
           key: node_modules-${{ hashFiles('**/package-temp-dir/package-lock.json') }}
@@ -92,26 +91,31 @@ jobs:
         run: npm run compile
 
     needs: setup
-
+  
   coverage:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
 
       - name: restore cache from package-lock.json
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: package-temp-dir
           key: lock-${{ github.sha }}
 
       - name: restore cache from node_modules
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: node_modules
           key: node_modules-${{ hashFiles('**/package-temp-dir/package-lock.json') }}
 
       - name: coverage
-        run: npm test -- --coverage && bash <(curl -s https://codecov.io/bash)
+        run: npm test -- --coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
     needs: setup
