@@ -111,7 +111,7 @@ jobs:
           key: node_modules-${{ hashFiles('**/package-temp-dir/package-lock.json') }}
 
       - name: coverage
-        run: npm run coverage
+        run: npm test -- --coverage
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
