@@ -2,4 +2,4 @@ name: CI
 on: [push, pull_request]
 jobs:
   CI:
-    uses: react-component/footer/.github/workflows/test.yml@main
+    uses: react-component/rc-test/.github/workflows/test.yml@main
