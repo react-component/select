@@ -10,7 +10,7 @@ class Test extends React.Component {
     value: '9',
   };
 
-  onChange = e => {
+  onChange = (e) => {
     let value;
     if (e && e.target) {
       ({ value } = e.target);
@@ -29,7 +29,7 @@ class Test extends React.Component {
     });
   };
 
-  onBlur = v => {
+  onBlur = (v) => {
     console.log('onBlur', v);
   };
 
@@ -37,7 +37,7 @@ class Test extends React.Component {
     console.log('onFocus');
   };
 
-  onSearch = val => {
+  onSearch = (val) => {
     console.log('Search:', val);
   };
 
@@ -51,7 +51,7 @@ class Test extends React.Component {
       <div style={{ margin: 20 }}>
         <div
           style={{ height: 150, background: 'rgba(0, 255, 0, 0.1)' }}
-          onMouseDown={e => {
+          onMouseDown={(e) => {
             e.preventDefault();
           }}
         >
@@ -60,14 +60,13 @@ class Test extends React.Component {
 
         <h2>Single Select</h2>
 
-        <div style={{ width: 300 }}>
+        <div>
           <Select
             autoFocus
             id="my-select"
             value={value}
             placeholder="placeholder"
             showSearch
-            style={{ width: 500 }}
             onBlur={this.onBlur}
             onFocus={this.onFocus}
             onSearch={this.onSearch}
@@ -102,7 +101,7 @@ class Test extends React.Component {
             >
               yiminghe
             </Option>
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
               <Option key={i} value={String(i)} text={String(i)}>
                 {i}-text
               </Option>
@@ -117,7 +116,7 @@ class Test extends React.Component {
             disabled
           </option>
           <option value="31">yiminghe</option>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
             <option value={i} key={i}>
               {i}
             </option>

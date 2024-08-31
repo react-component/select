@@ -25,7 +25,7 @@ class Combobox extends React.Component {
     });
   };
 
-  onKeyDown = e => {
+  onKeyDown = (e) => {
     const { value } = this.state;
     if (e.keyCode === 13) {
       console.log('onEnter', value);
@@ -40,7 +40,7 @@ class Combobox extends React.Component {
     console.log('onSearch:', text);
   };
 
-  onAsyncChange = value => {
+  onAsyncChange = (value) => {
     window.clearTimeout(this.timeoutId);
 
     this.setState({
@@ -79,6 +79,23 @@ class Combobox extends React.Component {
             reset
           </button>
         </p>
+        <Select
+          value={value}
+          mode="combobox"
+          onChange={this.onChange}
+          filterOption={(inputValue, option) => {
+            if (!inputValue) {
+              return true;
+            }
+            return (option.value as string).includes(inputValue);
+          }}
+        >
+          {['1', '2', '3'].map((i) => (
+            <Option value={i} key={i}>
+              {i}
+            </Option>
+          ))}
+        </Select>
         <div>
           <Select
             disabled={disabled}

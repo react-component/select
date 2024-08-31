@@ -8,20 +8,21 @@
  * - https://www.w3.org/TR/wai-aria-practices/examples/combobox/aria1.1pattern/listbox-combo.html
  */
 
-import * as React from 'react';
-import { useRef } from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import type { ScrollTo } from 'rc-virtual-list/lib/List';
+import * as React from 'react';
+import { useRef } from 'react';
+import type { CustomTagProps, DisplayValueType, Mode, RenderNode } from '../BaseSelect';
+import useLock from '../hooks/useLock';
+import { isValidateOpenKey } from '../utils/keyUtil';
 import MultipleSelector from './MultipleSelector';
 import SingleSelector from './SingleSelector';
-import useLock from '../hooks/useLock';
-import type { CustomTagProps, DisplayValueType, Mode, RenderNode } from '../BaseSelect';
-import { isValidateOpenKey } from '../utils/keyUtil';
 
 export interface InnerSelectorProps {
   prefixCls: string;
   id: string;
   mode: Mode;
+  title?: string;
 
   inputRef: React.Ref<HTMLInputElement | HTMLTextAreaElement>;
   placeholder?: React.ReactNode;
@@ -31,6 +32,7 @@ export interface InnerSelectorProps {
   values: DisplayValueType[];
   showSearch?: boolean;
   searchValue: string;
+  autoClearSearchValue?: boolean;
   activeDescendantId?: string;
   open: boolean;
   tabIndex?: number;
@@ -45,7 +47,7 @@ export interface InnerSelectorProps {
 }
 
 export interface RefSelectorProps {
-  focus: () => void;
+  focus: (options?: FocusOptions) => void;
   blur: () => void;
   scrollTo?: ScrollTo;
 }
@@ -60,7 +62,9 @@ export interface SelectorProps {
   mode: Mode;
   searchValue: string;
   activeValue: string;
+  autoClearSearchValue: boolean;
   inputElement: JSX.Element;
+  maxLength?: number;
 
   autoFocus?: boolean;
   activeDescendantId?: string;
@@ -95,7 +99,7 @@ export interface SelectorProps {
   domRef: React.Ref<HTMLDivElement>;
 }
 
-const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = (props, ref) => {
+const Selector: React.ForwardRefRenderFunction<RefSelectorProps, SelectorProps> = (props, ref) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const compositionStatusRef = useRef<boolean>(false);
 
@@ -105,6 +109,9 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
     mode,
     showSearch,
     tokenWithEnter,
+    disabled,
+
+    autoClearSearchValue,
 
     onSearch,
     onSearchSubmit,
@@ -116,8 +123,8 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
 
   // ======================= Ref =======================
   React.useImperativeHandle(ref, () => ({
-    focus: () => {
-      inputRef.current.focus();
+    focus: (options) => {
+      inputRef.current.focus(options);
     },
     blur: () => {
       inputRef.current.blur();
@@ -201,9 +208,8 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
 
   const onInputPaste: React.ClipboardEventHandler = (e) => {
     const { clipboardData } = e;
-    const value = clipboardData.getData('text');
-
-    pastedTextRef.current = value;
+    const value = clipboardData?.getData('text');
+    pastedTextRef.current = value || '';
   };
 
   const onClick = ({ target }) => {
@@ -222,12 +228,20 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
 
   const onMouseDown: React.MouseEventHandler<HTMLElement> = (event) => {
     const inputMouseDown = getInputMouseDown();
-    if (event.target !== inputRef.current && !inputMouseDown) {
+
+    // when mode is combobox and it is disabled, don't prevent default behavior
+    // https://github.com/ant-design/ant-design/issues/37320
+    // https://github.com/ant-design/ant-design/issues/48281
+    if (
+      event.target !== inputRef.current &&
+      !inputMouseDown &&
+      !(mode === 'combobox' && disabled)
+    ) {
       event.preventDefault();
     }
 
     if ((mode !== 'combobox' && (!showSearch || !inputMouseDown)) || !open) {
-      if (open) {
+      if (open && autoClearSearchValue !== false) {
         onSearch('', true, false);
       }
       onToggleOpen();
@@ -265,6 +279,9 @@ const Selector: React.RefForwardingComponent<RefSelectorProps, SelectorProps> = 
 };
 
 const ForwardSelector = React.forwardRef<RefSelectorProps, SelectorProps>(Selector);
-ForwardSelector.displayName = 'Selector';
+
+if (process.env.NODE_ENV !== 'production') {
+  ForwardSelector.displayName = 'Selector';
+}
 
 export default ForwardSelector;

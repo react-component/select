@@ -1,26 +1,34 @@
-import { mount, render } from 'enzyme';
+import type { LabelInValueType } from '@/Select';
+import {
+  createEvent,
+  fireEvent,
+  render,
+  render as testingRender,
+  act,
+} from '@testing-library/react';
 import KeyCode from 'rc-util/lib/KeyCode';
-import React from 'react';
-import { act } from 'react-dom/test-utils';
+import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
-import { spyElementPrototype } from 'rc-util/lib/test/domHook';
-import VirtualList from 'rc-virtual-list';
+import type { ScrollConfig } from 'rc-virtual-list/lib/List';
+import React from 'react';
 import type { SelectProps } from '../src';
 import Select, { OptGroup, Option, useBaseProps } from '../src';
-import focusTest from './shared/focusTest';
-import blurTest from './shared/blurTest';
-import keyDownTest from './shared/keyDownTest';
-import inputFilterTest from './shared/inputFilterTest';
-import openControlledTest from './shared/openControlledTest';
+import type { BaseSelectRef } from '../src/BaseSelect';
 import allowClearTest from './shared/allowClearTest';
+import blurTest from './shared/blurTest';
+import focusTest from './shared/focusTest';
+import inputFilterTest from './shared/inputFilterTest';
+import keyDownTest from './shared/keyDownTest';
+import openControlledTest from './shared/openControlledTest';
 import {
   expectOpen,
-  toggleOpen,
-  selectItem,
   findSelection,
   injectRunAllTimers,
+  keyDown,
+  keyUp,
+  selectItem,
+  toggleOpen,
 } from './utils/common';
-import type { BaseSelectRef } from '../src/BaseSelect';
 
 describe('Select.Basic', () => {
   injectRunAllTimers(jest);
@@ -40,7 +48,6 @@ describe('Select.Basic', () => {
           className="select-test"
           value="2"
           placeholder="Select a number"
-          showArrow
           allowClear
           showSearch
           {...props}
@@ -59,53 +66,113 @@ describe('Select.Basic', () => {
     }
 
     it('renders correctly', () => {
-      const wrapper = render(genSelect());
-      expect(wrapper).toMatchSnapshot();
+      const { container } = render(genSelect());
+      expect(container.firstChild).toMatchSnapshot();
     });
 
     it('renders dropdown correctly', () => {
-      const wrapper = render(genSelect({ open: true }));
-      expect(wrapper).toMatchSnapshot();
+      const { container } = testingRender(genSelect({ open: true }));
+      expect(container.querySelector('.rc-select-dropdown')).toMatchSnapshot();
     });
 
     it('renders disabled select correctly', () => {
-      const wrapper = render(genSelect({ disabled: true }));
-      expect(wrapper).toMatchSnapshot();
+      const { container } = render(genSelect({ disabled: true }));
+      expect(container.firstChild).toMatchSnapshot();
     });
 
     it('renders data-attributes correctly', () => {
-      const wrapper = render(
+      const { container } = render(
         genSelect({
           'data-test': 'test-id',
           'data-id': '12345',
         } as any),
       );
-      expect(wrapper).toMatchSnapshot();
+      expect(container.firstChild).toMatchSnapshot();
     });
 
     it('renders aria-attributes correctly', () => {
-      const wrapper = render(
+      const { container } = render(
         genSelect({
           'aria-labelledby': 'test-id',
           'aria-label': 'some-label',
         }),
       );
-      expect(wrapper).toMatchSnapshot();
+      expect(container.firstChild).toMatchSnapshot();
     });
 
     // [Legacy] Should not use `role` since it's meaningless
     it('renders role prop correctly', () => {
-      const wrapper = render(
+      const { container } = render(
         genSelect({
           role: 'button',
         } as any),
       );
-      expect(wrapper).toMatchSnapshot();
+      expect(container.firstChild).toMatchSnapshot();
+    });
+
+    it('should support fieldName', () => {
+      // groupLabel > fieldNames > self-label
+      function genOpts(OptLabelName, groupLabel) {
+        return [
+          {
+            [groupLabel]: 'groupLabel',
+            options: [
+              {
+                value: 'value',
+                [OptLabelName]: 'label',
+              },
+            ],
+          },
+        ];
+      }
+
+      const { container: containerFirst } = testingRender(
+        <Select
+          options={genOpts('label', 'groupLabel')}
+          fieldNames={{
+            groupLabel: 'groupLabel',
+          }}
+          open
+        />,
+      );
+      const { container: containerSecond } = testingRender(
+        <Select
+          options={genOpts('groupLabel', 'groupLabel')}
+          fieldNames={{ label: 'groupLabel' }}
+          open
+        />,
+      );
+      const { container: containerThird } = testingRender(
+        <Select options={genOpts('label', 'label')} open />,
+      );
+
+      // these generate the same snapshots
+      expect(containerFirst.querySelector('.rc-virtual-list')).toMatchSnapshot();
+      expect(containerSecond.querySelector('.rc-virtual-list')).toMatchSnapshot();
+      expect(containerThird.querySelector('.rc-virtual-list')).toMatchSnapshot();
     });
   });
 
+  it('item label should be the same as user enter when set groupLabel', () => {
+    const { container } = testingRender(
+      <Select
+        options={[
+          {
+            label: 'itemLabel',
+            value: 'itemValue',
+          },
+        ]}
+        fieldNames={{
+          groupLabel: 'groupLabel',
+        }}
+        open
+      />,
+    );
+    expect(container.querySelector('.rc-select-item-option-content').innerHTML).toBe('itemLabel');
+  });
+
   it('convert value to array', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select value="1" optionLabelProp="children">
         <OptGroup>
           <Option value="1" title="一">
@@ -115,14 +182,11 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    expect(wrapper.find('Selector').props().values).toEqual([
-      expect.objectContaining({ label: '1-label', value: '1' }),
-    ]);
-    expect(findSelection(wrapper).text()).toEqual('1-label');
+    expect(findSelection(container).textContent).toEqual('1-label');
   });
 
   it('convert defaultValue to array', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select defaultValue="1">
         <OptGroup>
           <Option value="1" title="一">
@@ -131,80 +195,115 @@ describe('Select.Basic', () => {
         </OptGroup>
       </Select>,
     );
-    expect(wrapper.find('Selector').props().values).toEqual([
-      expect.objectContaining({ value: '1' }),
-    ]);
-    expect(findSelection(wrapper).text()).toEqual('1');
+    expect(findSelection(container).textContent).toEqual('1');
   });
 
   it('not add open className when result is empty and no notFoundContent given', () => {
-    const wrapper = mount(<Select mode="combobox" notFoundContent={false} />);
-    toggleOpen(wrapper);
-    expectOpen(wrapper, false);
+    const { container } = render(<Select mode="combobox" notFoundContent={false} />);
+    toggleOpen(container);
+    expectOpen(container, false);
   });
 
   it('should show empty class', () => {
-    const wrapper1 = mount(
+    const wrapper1 = render(
       <Select open>
         <Select.Option value="bamboo">Bamboo</Select.Option>
       </Select>,
     );
-    expect(
-      wrapper1.find('.rc-select-dropdown').first().hasClass('rc-select-dropdown-empty'),
-    ).toBeFalsy();
+    expect(wrapper1.container.querySelector('.rc-select-dropdown')).not.toHaveClass(
+      'rc-select-dropdown-empty',
+    );
 
-    const wrapper2 = mount(<Select open />);
-    expect(
-      wrapper2.find('.rc-select-dropdown').first().hasClass('rc-select-dropdown-empty'),
-    ).toBeTruthy();
+    const wrapper2 = render(<Select open />);
+    expect(wrapper2.container.querySelector('.rc-select-dropdown')).toHaveClass(
+      'rc-select-dropdown-empty',
+    );
   });
 
   it('should default select the right option', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select defaultValue="2">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
 
-    toggleOpen(wrapper);
+    toggleOpen(container);
     expect(
-      wrapper.find('.rc-select-item-option-selected div.rc-select-item-option-content').text(),
+      container.querySelector('.rc-select-item-option-selected div.rc-select-item-option-content')
+        .textContent,
     ).toBe('2');
   });
 
   it('should can select multiple items', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select mode="multiple" value={['1', '2']}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
         <Option value="3">2</Option>
       </Select>,
     );
-    toggleOpen(wrapper);
+    toggleOpen(container);
     expect(
-      wrapper
-        .find('.rc-select-item-option-selected div.rc-select-item-option-content')
-        .map((node) => node.text()),
+      Array.from(
+        container.querySelectorAll(
+          '.rc-select-item-option-selected div.rc-select-item-option-content',
+        ),
+      ).map((node) => node.textContent),
     ).toEqual(['1', '2']);
   });
 
   it('should hide clear button', () => {
-    const wrapper1 = mount(
+    const { container: container1 } = render(
       <Select allowClear value="1">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
-    expect(wrapper1.find('.rc-select-clear-icon').length).toBeTruthy();
+    expect(container1.querySelector('.rc-select-clear-icon')).toBeTruthy();
 
-    const wrapper2 = mount(
+    const { container: container2 } = render(
       <Select allowClear>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
-    expect(wrapper2.find('.rc-select-clear-icon').length).toBeFalsy();
+    expect(container2.querySelector('.rc-select-clear-icon')).toBeFalsy();
+
+    const { container: container3 } = render(
+      <Select allowClear={{ clearIcon: <div className="custom-clear-icon">x</div> }} value="1">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    expect(container3.querySelector('.custom-clear-icon')).toBeTruthy();
+    expect(container3.querySelector('.custom-clear-icon').textContent).toBe('x');
+
+    const { container: container4 } = render(
+      <Select allowClear={{ clearIcon: <div className="custom-clear-icon">x</div> }}>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    expect(container4.querySelector('.custom-clear-icon')).toBeFalsy();
+
+    resetWarned();
+    const { container: container5 } = render(
+      <Select allowClear clearIcon={<div className="custom-clear-icon">x</div>} value="1">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    expect(container5.querySelector('.custom-clear-icon')).toBeTruthy();
+    expect(container5.querySelector('.custom-clear-icon').textContent).toBe('x');
+
+    const { container: container6 } = render(
+      <Select allowClear clearIcon={<div className="custom-clear-icon">x</div>}>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+    expect(container6.querySelector('.custom-clear-icon')).toBeFalsy();
   });
 
   it('should direction rtl', () => {
@@ -213,7 +312,7 @@ describe('Select.Basic', () => {
       return <span className="direction">{direction}</span>;
     };
 
-    const wrapper = mount(
+    const { container } = render(
       <Select
         direction="rtl"
         dropdownRender={(origin) => (
@@ -228,83 +327,82 @@ describe('Select.Basic', () => {
         <Option value="2">2</Option>
       </Select>,
     );
-    expect(wrapper.find('Trigger').prop('popupPlacement')).toBe('bottomRight');
 
-    expect(wrapper.find('.direction').last().text()).toEqual('rtl');
+    expect(container.querySelector('.direction').textContent).toEqual('rtl');
   });
 
   it('should not response click event when select is disabled', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select disabled defaultValue="2">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
-    toggleOpen(wrapper);
-    expectOpen(wrapper, false);
+    toggleOpen(container);
+    expectOpen(container, false);
   });
 
   it('should show selected value in singleMode when close', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select value="1">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
 
-    expect(findSelection(wrapper).text()).toBe('1');
+    expect(findSelection(container).textContent).toBe('1');
   });
 
   it('search input should be editable initially', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select showSearch>
         <Option value="1">One</Option>
         <Option value="2">Two</Option>
       </Select>,
     );
-    expect(wrapper.find('input').getDOMNode().getAttribute('readonly')).toBeFalsy();
+    expect(container.querySelector('input').getAttribute('readonly')).toBeFalsy();
   });
 
   it('filter options by "value" prop by default', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select showSearch>
         <Option value="1">One</Option>
         <Option value="2">Two</Option>
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: '1' } });
-    expect(wrapper.find('List').props().data.length).toBe(1);
-    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('One');
+    fireEvent.change(container.querySelector('input'), { target: { value: '1' } });
+    expect(container.querySelectorAll('.rc-select-item-option-content')).toHaveLength(1);
+    expect(container.querySelector('.rc-select-item-option-content').textContent).toBe('One');
   });
 
   it('should filter options when filterOption is true', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select showSearch filterOption>
         <Option value="1">One</Option>
         <Option value="2">Two</Option>
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: '2' } });
-    expect(wrapper.find('List').props().data.length).toBe(1);
-    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('Two');
+    fireEvent.change(container.querySelector('input'), { target: { value: '2' } });
+    expect(container.querySelectorAll('.rc-select-item-option-content')).toHaveLength(1);
+    expect(container.querySelector('.rc-select-item-option-content').textContent).toBe('Two');
   });
 
   it('should not filter options when filterOption is false', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select filterOption={false}>
         <Option value="1">One</Option>
         <Option value="2">Two</Option>
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: '1' } });
-    expect(wrapper.find('List').props().data.length).toBe(2);
+    fireEvent.change(container.querySelector('input'), { target: { value: '1' } });
+    expect(container.querySelectorAll('.rc-select-item-option-content')).toHaveLength(2);
   });
 
   it('specify which prop to filter', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select optionFilterProp="label" showSearch>
         <Option value="1" label="One">
           1
@@ -315,14 +413,14 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: 'Two' } });
+    fireEvent.change(container.querySelector('input'), { target: { value: 'Two' } });
 
-    expect(wrapper.find('List').props().data.length).toBe(1);
-    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('2');
+    expect(container.querySelectorAll('.rc-select-item-option-content')).toHaveLength(1);
+    expect(container.querySelector('.rc-select-item-option-content').textContent).toBe('2');
   });
 
   it('filter array children', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select optionFilterProp="children" showSearch>
         <Option value="1" label="One">
           One{1}
@@ -333,25 +431,25 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: 'Two2' } });
+    fireEvent.change(container.querySelector('input'), { target: { value: 'Two2' } });
 
-    expect(wrapper.find('List').props().data.length).toBe(1);
-    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('Two2');
+    expect(container.querySelectorAll('.rc-select-item-option-content')).toHaveLength(1);
+    expect(container.querySelector('.rc-select-item-option-content').textContent).toBe('Two2');
   });
 
   it('no search', () => {
-    const wrapper = render(
+    const { container } = render(
       <Select showSearch={false} value="1">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
 
-    expect(wrapper).toMatchSnapshot();
+    expect(container.firstChild).toMatchSnapshot();
   });
 
   it('should contain falsy children', () => {
-    const wrapper = render(
+    const { container } = testingRender(
       <Select value="1" open>
         <Option value="1">1</Option>
         {null}
@@ -360,24 +458,24 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    expect(wrapper).toMatchSnapshot();
+    expect(container.querySelector('.rc-select-dropdown')).toMatchSnapshot();
   });
 
   it('open dropdown on down key press', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select value="1">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
 
-    wrapper.find('input').simulate('keyDown', { keyCode: 40 });
-    expectOpen(wrapper);
+    keyDown(container.querySelector('input'), 40);
+    expectOpen(container);
   });
 
   it('adds label to value', () => {
     const handleChange = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <Select onChange={handleChange} labelInValue optionLabelProp="children">
         <Option value="1" testprop="test">
           One
@@ -386,8 +484,8 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    toggleOpen(wrapper);
-    selectItem(wrapper);
+    toggleOpen(container);
+    selectItem(container);
     expect(handleChange).toHaveBeenCalledWith(
       { key: '1', value: '1', label: 'One' },
       { children: 'One', key: null, testprop: 'test', value: '1' },
@@ -396,7 +494,7 @@ describe('Select.Basic', () => {
 
   it('give right option when use OptGroup', () => {
     const handleChange = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <Select onChange={handleChange} labelInValue optionLabelProp="children">
         <OptGroup label="grouplabel">
           <Option value="1" testprop="test">
@@ -407,8 +505,8 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    toggleOpen(wrapper);
-    selectItem(wrapper);
+    toggleOpen(container);
+    selectItem(container);
     expect(handleChange).toHaveBeenCalledWith(
       { key: '1', label: 'One', value: '1' },
       { children: 'One', key: null, testprop: 'test', value: '1' },
@@ -416,53 +514,54 @@ describe('Select.Basic', () => {
   });
 
   it('use label in props.value', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select labelInValue value={{ key: 1, label: 'One' }}>
         <Option value="2">Two</Option>
       </Select>,
     );
-    expect(findSelection(wrapper).text()).toEqual('One');
+    expect(findSelection(container).textContent).toEqual('One');
   });
 
   it('use label in props.defaultValue', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select labelInValue defaultValue={{ key: 1, label: 'One' }}>
         <Option value="2">Two</Option>
       </Select>,
     );
-    expect(findSelection(wrapper).text()).toEqual('One');
+    expect(findSelection(container).textContent).toEqual('One');
   });
 
   it('fires search event when user input', () => {
     const handleSearch = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <Select showSearch onSearch={handleSearch}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    fireEvent.change(container.querySelector('input'), { target: { value: '1' } });
     expect(handleSearch).toHaveBeenCalledWith('1');
 
-    wrapper.find('input').simulate('change', { target: { value: '' } });
+    fireEvent.change(container.querySelector('input'), { target: { value: '' } });
+    expect(handleSearch).toHaveBeenCalledWith('');
   });
 
   it('not fires search event when user select', () => {
     const handleSearch = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <Select showSearch onSearch={handleSearch}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
-    toggleOpen(wrapper);
-    selectItem(wrapper);
+    toggleOpen(container);
+    selectItem(container);
     expect(handleSearch).not.toHaveBeenCalled();
   });
 
   it('not close when click on the input', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select showSearch>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
@@ -470,8 +569,8 @@ describe('Select.Basic', () => {
     );
 
     for (let i = 0; i < 10; i += 1) {
-      wrapper.find('input').simulate('mousedown');
-      expectOpen(wrapper);
+      fireEvent.mouseDown(container.querySelector('input'));
+      expectOpen(container);
     }
   });
 
@@ -482,44 +581,63 @@ describe('Select.Basic', () => {
     jest.useFakeTimers();
 
     const handleSearch = jest.fn(() => console.trace());
-    const wrapper = mount(
+    const { container } = render(
       <Select showSearch onSearch={handleSearch}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
-    wrapper.find('input').simulate('change', { target: { value: '1' } });
+    fireEvent.change(container.querySelector('input'), { target: { value: '1' } });
     expect(handleSearch).toHaveBeenCalledTimes(1);
 
     // Not fire onSearch when value selected
     // https://github.com/ant-design/ant-design/pull/16235#issuecomment-487506523
-    selectItem(wrapper);
+    selectItem(container);
     expect(handleSearch).toHaveBeenCalledTimes(1);
 
     // Should trigger onBlur
-    wrapper.find('input').simulate('change', { target: { value: '3' } });
+    fireEvent.change(container.querySelector('input'), { target: { value: '3' } });
     expect(handleSearch).toHaveBeenCalledTimes(2);
-    wrapper.find('input').simulate('blur');
+    fireEvent.blur(container.querySelector('input'));
     jest.runAllTimers();
     expect(handleSearch).toHaveBeenCalledTimes(3);
 
     jest.useRealTimers();
   });
 
+  it('should render 0 as text properly', () => {
+    const data = [
+      { text: 0, value: '=0' },
+      { text: 1, value: '=1' },
+    ];
+
+    const { container } = render(
+      <Select style={{ width: 120 }} open>
+        {data.map((d) => (
+          <Select.Option value={d.value} key={d.value}>
+            {d.text}
+          </Select.Option>
+        ))}
+      </Select>,
+    );
+
+    expect(container.querySelector('.rc-select-item-option-content').textContent).toEqual('0');
+  });
+
   describe('focus', () => {
     let handleFocus;
-    let wrapper;
+    let container: HTMLElement;
     beforeEach(() => {
       jest.useFakeTimers();
       handleFocus = jest.fn();
-      wrapper = mount(
+      ({ container } = render(
         <Select onFocus={handleFocus} showSearch={false}>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
         </Select>,
-      );
+      ));
 
-      wrapper.find('input').simulate('focus');
+      fireEvent.focus(container.querySelector('input'));
       jest.runAllTimers();
     });
 
@@ -533,31 +651,31 @@ describe('Select.Basic', () => {
     });
 
     it('set className', () => {
-      expect(wrapper.find('.rc-select').getDOMNode().className).toContain('-focus');
+      expect(container.querySelector('.rc-select').className).toContain('-focus');
     });
   });
 
   describe('click input will trigger focus', () => {
-    let handleFocus;
-    let wrapper;
+    let handleFocus: jest.Mock;
+    let container: HTMLElement;
     beforeEach(() => {
       jest.useFakeTimers();
       handleFocus = jest.fn();
-      wrapper = mount(
+      ({ container } = render(
         <Select onFocus={handleFocus}>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
         </Select>,
-      );
+      ));
 
-      const focusSpy = jest.spyOn(wrapper.find('input').instance(), 'focus');
+      const focusSpy = jest.spyOn(container.querySelector('input'), 'focus');
 
-      wrapper.find('.rc-select-selector').simulate('mousedown');
-      wrapper.find('.rc-select-selector').simulate('click');
+      fireEvent.mouseDown(container.querySelector('.rc-select-selector'));
+      fireEvent.click(container.querySelector('.rc-select-selector'));
       expect(focusSpy).toHaveBeenCalled();
 
       // We should mock trigger focus event since it not work in jsdom
-      wrapper.find('input').simulate('focus');
+      fireEvent.focus(container.querySelector('input'));
       jest.runAllTimers();
     });
 
@@ -571,21 +689,19 @@ describe('Select.Basic', () => {
     });
 
     it('set className', () => {
-      expect(wrapper.find('.rc-select').getDOMNode().className).toContain('-focus');
+      expect(container.querySelector('.rc-select').className).toContain('-focus');
     });
 
-    it('click placeholder should trigger onFocus', () => {
-      const wrapper2 = mount(
+    it('focus input when placeholder is clicked', () => {
+      const { container: container1 } = render(
         <Select placeholder="xxxx">
           <Option value="1">1</Option>
           <Option value="2">2</Option>
         </Select>,
       );
-
-      const inputSpy = jest.spyOn(wrapper2.find('input').instance(), 'focus');
-
-      wrapper2.find('.rc-select-selection-placeholder').simulate('mousedown');
-      wrapper2.find('.rc-select-selection-placeholder').simulate('click');
+      const inputSpy = jest.spyOn(container1.querySelector('input'), 'focus');
+      fireEvent.mouseDown(container1.querySelector('.rc-select-selection-placeholder'));
+      fireEvent.click(container1.querySelector('.rc-select-selection-placeholder'));
       expect(inputSpy).toHaveBeenCalled();
     });
   });
@@ -593,14 +709,14 @@ describe('Select.Basic', () => {
   describe('blur', () => {
     let handleChange;
     let handleBlur;
-    let wrapper;
+    let container: HTMLElement;
 
     beforeEach(() => {
       jest.useFakeTimers();
 
       handleChange = jest.fn();
       handleBlur = jest.fn();
-      wrapper = mount(
+      ({ container } = render(
         <Select onChange={handleChange} onBlur={handleBlur} showSearch optionLabelProp="children">
           <Option value={1} key={1}>
             1-text
@@ -609,11 +725,11 @@ describe('Select.Basic', () => {
             2-text
           </Option>
         </Select>,
-      );
+      ));
 
-      wrapper.find('input').simulate('focus');
-      wrapper.find('input').simulate('change', { target: { value: '1' } });
-      wrapper.find('input').simulate('blur');
+      fireEvent.focus(container.querySelector('input'));
+      fireEvent.change(container.querySelector('input'), { target: { value: '1' } });
+      fireEvent.blur(container.querySelector('input'));
 
       jest.runAllTimers();
     });
@@ -627,38 +743,41 @@ describe('Select.Basic', () => {
     });
 
     it('set className', () => {
-      expect(wrapper.find('.rc-select').getDOMNode().className).not.toContain('-focus');
+      expect(container.querySelector('.rc-select').className).not.toContain('-focus');
     });
 
     // Fix https://github.com/ant-design/ant-design/issues/6342
     it('should be close when blur Select[showSearch=false]', () => {
-      wrapper = mount(
+      ({ container } = render(
         <Select showSearch={false}>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
         </Select>,
-      );
-      toggleOpen(wrapper);
-      wrapper.find('input').simulate('blur');
-      jest.runAllTimers();
-      wrapper.update();
-      expectOpen(wrapper, false);
+      ));
+      toggleOpen(container);
+      fireEvent.blur(container.querySelector('input'));
+      act(() => {
+        jest.runAllTimers();
+      });
+      expectOpen(container, false);
     });
 
     // Fix https://github.com/ant-design/ant-design/issues/7720
     it('should not trigger onFocus/onBlur when select is disabled', () => {
       const onFocus = jest.fn();
       const onBlur = jest.fn();
-      wrapper = mount(
+      ({ container } = render(
         <Select onFocus={onFocus} onBlur={onBlur} disabled>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
         </Select>,
-      );
+      ));
       jest.useFakeTimers();
-      wrapper.find('input').simulate('focus');
-      wrapper.find('input').simulate('blur');
-      jest.runAllTimers();
+      fireEvent.focus(container.querySelector('input'));
+      fireEvent.blur(container.querySelector('input'));
+      act(() => {
+        jest.runAllTimers();
+      });
       expect(onFocus).not.toHaveBeenCalled();
       expect(onBlur).not.toHaveBeenCalled();
     });
@@ -666,106 +785,105 @@ describe('Select.Basic', () => {
 
   [KeyCode.ENTER, KeyCode.DOWN].forEach((keyCode) => {
     it('open on key press', () => {
-      const wrapper = mount(<Select />);
-      wrapper.find('input').simulate('keyDown', { keyCode });
-      expectOpen(wrapper);
+      const { container } = render(<Select />);
+      keyDown(container.querySelector('input'), keyCode);
+      expectOpen(container);
     });
   });
 
   it('close on ESC', () => {
     const onKeyDown = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <div onKeyDown={onKeyDown}>
         <Select />
       </div>,
     );
-    toggleOpen(wrapper);
-    wrapper
-      .find('input')
-      .simulate('change', { target: { value: 'foo' } })
-      .simulate('keyDown', { which: KeyCode.ESC });
+    toggleOpen(container);
 
-    wrapper.update();
+    const inputEle = container.querySelector('input');
+    fireEvent.change(inputEle, { target: { value: 'foo' } });
+    keyDown(inputEle, KeyCode.ESC);
 
-    expect(wrapper.find('input').props().value).toBe('');
-    expectOpen(wrapper, false);
+    expect(inputEle.value).toBe('');
+    expectOpen(container, false);
     expect(onKeyDown).toHaveBeenCalledTimes(0);
 
     // should keep propagation when optionList is closed
-    wrapper.simulate('keyDown', { which: KeyCode.ESC });
-    wrapper.update();
+    keyDown(inputEle, KeyCode.ESC);
     expect(onKeyDown).toHaveBeenCalledTimes(1);
   });
 
   it('not open when system key down', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
 
-    wrapper
-      .find('input')
-      .simulate('keyDown', { which: KeyCode.ESC })
-      .simulate('keyDown', { which: KeyCode.SHIFT })
-      .simulate('keyDown', { which: KeyCode.BACKSPACE })
-      .simulate('keyDown', { which: KeyCode.TAB })
-      .simulate('keyDown', { which: KeyCode.WIN_KEY })
-      .simulate('keyDown', { which: KeyCode.ALT })
-      .simulate('keyDown', { which: KeyCode.META })
-      .simulate('keyDown', { which: KeyCode.WIN_KEY_RIGHT })
-      .simulate('keyDown', { which: KeyCode.CTRL })
-      .simulate('keyDown', { which: KeyCode.SEMICOLON })
-      .simulate('keyDown', { which: KeyCode.EQUALS })
-      .simulate('keyDown', { which: KeyCode.CAPS_LOCK })
-      .simulate('keyDown', { which: KeyCode.CONTEXT_MENU })
-      .simulate('keyDown', { which: KeyCode.F1 })
-      .simulate('keyDown', { which: KeyCode.F2 })
-      .simulate('keyDown', { which: KeyCode.F3 })
-      .simulate('keyDown', { which: KeyCode.F4 })
-      .simulate('keyDown', { which: KeyCode.F5 })
-      .simulate('keyDown', { which: KeyCode.F6 })
-      .simulate('keyDown', { which: KeyCode.F7 })
-      .simulate('keyDown', { which: KeyCode.F8 })
-      .simulate('keyDown', { which: KeyCode.F9 })
-      .simulate('keyDown', { which: KeyCode.F10 })
-      .simulate('keyDown', { which: KeyCode.F11 })
-      .simulate('keyDown', { which: KeyCode.F12 });
-    expectOpen(wrapper, false);
+    const inputEle = container.querySelector('input');
 
-    wrapper.find('input').simulate('keyDown', { which: KeyCode.NUM_ONE });
-    expectOpen(wrapper, true);
+    keyDown(inputEle, KeyCode.ESC);
+    keyDown(inputEle, KeyCode.SHIFT);
+    keyDown(inputEle, KeyCode.BACKSPACE);
+    keyDown(inputEle, KeyCode.TAB);
+    keyDown(inputEle, KeyCode.WIN_KEY);
+    keyDown(inputEle, KeyCode.ALT);
+    keyDown(inputEle, KeyCode.META);
+    keyDown(inputEle, KeyCode.WIN_KEY_RIGHT);
+    keyDown(inputEle, KeyCode.CTRL);
+    keyDown(inputEle, KeyCode.SEMICOLON);
+    keyDown(inputEle, KeyCode.EQUALS);
+    keyDown(inputEle, KeyCode.CAPS_LOCK);
+    keyDown(inputEle, KeyCode.CONTEXT_MENU);
+    keyDown(inputEle, KeyCode.F1);
+    keyDown(inputEle, KeyCode.F2);
+    keyDown(inputEle, KeyCode.F3);
+    keyDown(inputEle, KeyCode.F4);
+    keyDown(inputEle, KeyCode.F5);
+    keyDown(inputEle, KeyCode.F6);
+    keyDown(inputEle, KeyCode.F7);
+    keyDown(inputEle, KeyCode.F8);
+    keyDown(inputEle, KeyCode.F9);
+    keyDown(inputEle, KeyCode.F10);
+    keyDown(inputEle, KeyCode.F11);
+    keyDown(inputEle, KeyCode.F12);
+    expectOpen(container, false);
+
+    keyDown(inputEle, KeyCode.NUM_ONE);
+    expectOpen(container, true);
   });
 
   it('close after select', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select>
         <Option value="1">1</Option>
       </Select>,
     );
 
-    toggleOpen(wrapper);
-    expectOpen(wrapper);
+    toggleOpen(container);
+    expectOpen(container);
 
-    selectItem(wrapper);
-    expectOpen(wrapper, false);
+    selectItem(container);
+    expectOpen(container, false);
   });
 
   it('Controlled opening', () => {
-    const wrapper = mount(
-      <Select open>
+    const renderDemo = (open: boolean) => (
+      <Select open={open}>
         <Option value="1">1</Option>
-      </Select>,
+      </Select>
     );
-    expectOpen(wrapper);
-    selectItem(wrapper);
-    expectOpen(wrapper);
 
-    wrapper.setProps({ open: false });
-    expectOpen(wrapper, false);
-    selectItem(wrapper);
-    expectOpen(wrapper, false);
+    const { container, rerender } = render(renderDemo(true));
+    expectOpen(container);
+    selectItem(container);
+    expectOpen(container);
+
+    rerender(renderDemo(false));
+    expectOpen(container, false);
+    selectItem(container);
+    expectOpen(container, false);
   });
 
   it('Controlled onDropdownVisibleChange', () => {
@@ -786,81 +904,81 @@ describe('Select.Basic', () => {
         );
       }
     }
-    const wrapper = mount(<Controlled />);
-    expect(wrapper.state().open).toBe(true);
-    toggleOpen(wrapper);
-    expect(wrapper.state().open).toBe(false);
+    const { container } = render(<Controlled />);
+    expectOpen(container);
+    toggleOpen(container);
+    expectOpen(container, false);
 
-    selectItem(wrapper);
-    expectOpen(wrapper, false);
+    selectItem(container);
+    expectOpen(container, false);
   });
 
-  it('focus input when placeholder is clicked', () => {
-    const wrapper = mount(
-      <Select placeholder="select">
-        <Option value="1">1</Option>
-      </Select>,
-    );
+  describe('combobox could customize input element', () => {
+    it('work', () => {
+      const onKeyDown = jest.fn();
+      const onChange = jest.fn();
+      const onMouseDown = jest.fn();
+      const onCompositionStart = jest.fn();
+      const onCompositionEnd = jest.fn();
+      const textareaRef = jest.fn();
+      const mouseDownPreventDefault = jest.fn();
+      const { container } = render(
+        <Select
+          mode="combobox"
+          getInputElement={() => (
+            <textarea
+              onKeyDown={onKeyDown}
+              onChange={onChange}
+              onMouseDown={onMouseDown}
+              onCompositionStart={onCompositionStart}
+              onCompositionEnd={onCompositionEnd}
+              ref={textareaRef}
+              className="custom-input"
+            />
+          )}
+        >
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
 
-    const focusSpy = jest.spyOn(wrapper.find('input').instance(), 'focus');
-    wrapper.find('.rc-select-selection-placeholder').simulate('mousedown');
-    wrapper.find('.rc-select-selection-placeholder').simulate('click');
-    expect(focusSpy).toHaveBeenCalled();
-  });
+      const textareaEle = container.querySelector('textarea');
+      toggleOpen(container);
 
-  it('combobox could customize input element', () => {
-    const onKeyDown = jest.fn();
-    const onChange = jest.fn();
-    const onMouseDown = jest.fn();
-    const onCompositionStart = jest.fn();
-    const onCompositionEnd = jest.fn();
-    const textareaRef = jest.fn();
-    const mouseDownPreventDefault = jest.fn();
-    const wrapper = mount(
-      <Select
-        mode="combobox"
-        getInputElement={() => (
-          <textarea
-            onKeyDown={onKeyDown}
-            onChange={onChange}
-            onMouseDown={onMouseDown}
-            onCompositionStart={onCompositionStart}
-            onCompositionEnd={onCompositionEnd}
-            ref={textareaRef}
-            className="custom-input"
-          />
-        )}
-      >
-        <Option value="1">1</Option>
-        <Option value="2">2</Option>
-      </Select>,
-    );
+      const mouseDownEvent = createEvent.mouseDown(textareaEle);
+      mouseDownEvent.preventDefault = mouseDownPreventDefault;
+      fireEvent(textareaEle, mouseDownEvent);
+      keyDown(textareaEle, KeyCode.NUM_ONE);
+      fireEvent.change(textareaEle, { target: { value: '1' } });
+      fireEvent.compositionStart(textareaEle);
+      fireEvent.compositionEnd(textareaEle);
 
-    expect(wrapper.find('textarea').length).toBe(1);
-    toggleOpen(wrapper);
-    wrapper
-      .find('.rc-select')
-      .find('textarea')
-      .simulate('mouseDown', { preventDefault: mouseDownPreventDefault })
-      .simulate('keyDown', { which: KeyCode.NUM_ONE })
-      .simulate('change', { target: { value: '1' } })
-      .simulate('compositionStart')
-      .simulate('compositionEnd');
+      selectItem(container);
+      expect(textareaEle.value).toEqual('1');
+      expect(textareaEle.className).toContain('custom-input');
+      expect(mouseDownPreventDefault).not.toHaveBeenCalled();
+      expect(onKeyDown).toHaveBeenCalled();
+      expect(onChange).toHaveBeenCalled();
+      expect(onMouseDown).toHaveBeenCalled();
+      expect(textareaRef).toHaveBeenCalled();
+      expect(onCompositionStart).toHaveBeenCalled();
+      expect(onCompositionEnd).toHaveBeenCalled();
+    });
 
-    selectItem(wrapper);
-    expect(wrapper.find('textarea').props().value).toEqual('1');
-    expect(wrapper.find('textarea').hasClass('custom-input')).toBe(true);
-    expect(mouseDownPreventDefault).not.toHaveBeenCalled();
-    expect(onKeyDown).toHaveBeenCalled();
-    expect(onChange).toHaveBeenCalled();
-    expect(onMouseDown).toHaveBeenCalled();
-    expect(textareaRef).toHaveBeenCalled();
-    expect(onCompositionStart).toHaveBeenCalled();
-    expect(onCompositionEnd).toHaveBeenCalled();
+    it('not override customize props', () => {
+      const { container } = render(
+        <Select mode="combobox" getInputElement={() => <input type="email" />}>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
+
+      expect(container.querySelector('input').getAttribute('type')).toEqual('email');
+    });
   });
 
   it('getRawInputElement for rc-cascader', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select
         getRawInputElement={() => <span className="bamboo" />}
         options={[
@@ -873,8 +991,8 @@ describe('Select.Basic', () => {
       />,
     );
 
-    expect(wrapper.exists('.bamboo')).toBeTruthy();
-    expect(wrapper.exists('.little')).toBeTruthy();
+    expect(container.querySelector('.bamboo')).toBeTruthy();
+    expect(container.querySelector('.little')).toBeTruthy();
   });
 
   describe('propTypes', () => {
@@ -894,14 +1012,14 @@ describe('Select.Basic', () => {
     });
 
     it('warns on invalid value when labelInValue', () => {
-      mount(<Select labelInValue value="foo" />);
+      render(<Select labelInValue value="foo" />);
       expect(errorSpy).toHaveBeenCalledWith(
         'Warning: `value` should in shape of `{ value: string | number, label?: ReactNode }` when you set `labelInValue` to `true`',
       );
     });
 
     it('warns on invalid value when multiple', () => {
-      mount(<Select mode="multiple" value="" />);
+      render(<Select mode="multiple" value="" />);
       expect(errorSpy).toHaveBeenCalledWith(
         'Warning: `value` should be array when `mode` is `multiple` or `tags`',
       );
@@ -909,7 +1027,7 @@ describe('Select.Basic', () => {
   });
 
   it('set label as key for OptGroup', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select open>
         <OptGroup key="group1">
           <Option value="1">1</Option>
@@ -918,11 +1036,11 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    expect(wrapper.find('.rc-select-item-group').text()).toBe('group1');
+    expect(container.querySelector('.rc-select-item-group').textContent).toBe('group1');
   });
 
   it('filters options by inputValue', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select showSearch open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
@@ -933,12 +1051,12 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: '1' } });
-    expect(wrapper.find('List').props().data).toHaveLength(3);
+    fireEvent.change(container.querySelector('input'), { target: { value: '1' } });
+    expect(container.querySelectorAll('.rc-select-item-option-content')).toHaveLength(3);
   });
 
   it('should include disabled item in options', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select mode="tags" open value={['name1']}>
         <Option key="name1" value="name1" disabled>
           name1
@@ -948,36 +1066,36 @@ describe('Select.Basic', () => {
         </Option>
       </Select>,
     );
-    expect(wrapper.find('List').props().data).toHaveLength(2);
+    expect(container.querySelectorAll('.rc-select-item-option-content')).toHaveLength(2);
   });
 
   it('renders not found when search result is empty', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select showSearch open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: '3' } });
-    expect(wrapper.find('.rc-select-item')).toHaveLength(0);
-    expect(wrapper.find('.rc-select-item-empty').text()).toEqual('Not Found');
+    fireEvent.change(container.querySelector('input'), { target: { value: '3' } });
+    expect(container.querySelector('.rc-select-item')).toBeFalsy();
+    expect(container.querySelector('.rc-select-item-empty').textContent).toEqual('Not Found');
   });
 
   it('search input type', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select showSearch open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
-    expect(wrapper.find('input').prop('type')).toBe('search');
+    expect(container.querySelector('input').getAttribute('type')).toBe('search');
   });
 
   it('warns on invalid children', () => {
     const Foo = (value) => <div>foo{value}</div>;
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
-    mount(
+    render(
       <Select open>
         <Foo value="1" />
       </Select>,
@@ -989,7 +1107,7 @@ describe('Select.Basic', () => {
     // Children in option group
     resetWarned();
     errorSpy.mockReset();
-    mount(
+    render(
       <Select>
         <OptGroup label="bamboo">
           <span key="light" />
@@ -1004,25 +1122,25 @@ describe('Select.Basic', () => {
   });
 
   it('filterOption could be true as described in default value', () => {
-    const wrapper = mount(
+    const { container } = testingRender(
       <Select searchValue="3" showSearch filterOption open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
 
-    expect(wrapper.render()).toMatchSnapshot();
+    expect(container.querySelector('.rc-select-dropdown')).toMatchSnapshot();
   });
 
   it('does not filter when filterOption value is false', () => {
-    const wrapper = render(
+    const { container } = testingRender(
       <Select inputValue="1" filterOption={false} open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
 
-    expect(wrapper).toMatchSnapshot();
+    expect(container.querySelector('.rc-select-dropdown')).toMatchSnapshot();
   });
 
   it('backfill', () => {
@@ -1033,7 +1151,7 @@ describe('Select.Basic', () => {
     const handleSelect = jest.fn(() => {
       triggerQueue.push('select');
     });
-    const wrapper = mount(
+    const { container } = render(
       <Select
         backfill
         open
@@ -1047,16 +1165,16 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
-    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
+    keyDown(container.querySelector('input'), KeyCode.DOWN);
+    keyDown(container.querySelector('input'), KeyCode.DOWN);
 
-    expect(wrapper.find('input').props().value).toEqual('2');
+    expect(container.querySelector('input').value).toEqual('2');
     expect(handleChange).not.toHaveBeenCalled();
     expect(handleSelect).not.toHaveBeenCalled();
 
-    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+    keyDown(container.querySelector('input'), KeyCode.ENTER);
 
-    expect(wrapper.find('input').props().value).toEqual('2');
+    expect(container.querySelector('input').value).toEqual('2');
     expect(handleChange).toHaveBeenCalledWith('2', expect.anything());
     expect(handleSelect).toHaveBeenCalledWith('2', expect.anything());
 
@@ -1067,36 +1185,36 @@ describe('Select.Basic', () => {
     it('support number value', () => {
       const handleChange = jest.fn();
 
-      const wrapper = mount(
+      const { container } = render(
         <Select defaultValue={1} onChange={handleChange}>
           <Option value={1}>1</Option>
           <Option value={2}>2</Option>
         </Select>,
       );
 
-      expect(findSelection(wrapper).text()).toEqual('1');
+      expect(findSelection(container).textContent).toEqual('1');
 
-      toggleOpen(wrapper);
-      selectItem(wrapper, 1);
+      toggleOpen(container);
+      selectItem(container, 1);
       expect(handleChange).toHaveBeenCalledWith(2, expect.anything());
-      expect(findSelection(wrapper).text()).toEqual('2');
+      expect(findSelection(container).textContent).toEqual('2');
     });
 
     it('search number value', () => {
-      const wrapper = mount(
+      const { container } = render(
         <Select showSearch>
           <Option value={1}>1</Option>
           <Option value={2}>2</Option>
         </Select>,
       );
 
-      wrapper.find('input').simulate('change', { target: { value: '1' } });
-      expect(wrapper.find('List').props().data.length).toEqual(1);
+      fireEvent.change(container.querySelector('input'), { target: { value: '1' } });
+      expect(container.querySelectorAll('.rc-select-item-option-content')).toHaveLength(1);
     });
   });
 
   it('should render custom dropdown correctly', () => {
-    const wrapper = mount(
+    const { container } = testingRender(
       <Select
         open
         dropdownRender={(menu) => (
@@ -1110,7 +1228,7 @@ describe('Select.Basic', () => {
         <Option value="2">2</Option>
       </Select>,
     );
-    expect(wrapper.render()).toMatchSnapshot();
+    expect(container.querySelector('.rc-select-dropdown')).toMatchSnapshot();
   });
 
   it('should trigger click event in custom node', () => {
@@ -1118,7 +1236,7 @@ describe('Select.Basic', () => {
 
     const onChildClick = jest.fn();
     const onMouseDown = jest.fn();
-    const wrapper = mount(
+    const { container } = testingRender(
       <Select
         onMouseDown={onMouseDown}
         dropdownRender={(menu) => (
@@ -1135,60 +1253,54 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    toggleOpen(wrapper);
-    wrapper.find('div#dropdown-custom-node').simulate('mousedown');
-    wrapper.find('div#dropdown-custom-node').simulate('click');
+    // Open
+    fireEvent.mouseDown(container.querySelector('.rc-select-selector'));
+
+    fireEvent.mouseDown(container.querySelector('div#dropdown-custom-node'));
+    fireEvent.click(container.querySelector('div#dropdown-custom-node'));
     expect(onMouseDown).toHaveBeenCalled();
     expect(onChildClick).toHaveBeenCalled();
-
-    document.body.focus();
-
-    jest.runAllTimers();
-
-    expect(wrapper.find('input').instance()).toBe(document.activeElement);
-
-    jest.useRealTimers();
   });
 
   it('set showAction', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select showAction={['focus']}>
         <Option value="1">1</Option>
       </Select>,
     );
 
-    expectOpen(wrapper, false);
-    wrapper.find('.rc-select').simulate('focus');
+    expectOpen(container, false);
+    fireEvent.focus(container.querySelector('input'));
 
-    expectOpen(wrapper);
+    expectOpen(container);
   });
 
   it('default filterOption is case insensitive', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select showSearch>
         <Option value="ABC">ABC</Option>
         <Option value="DEF">DEF</Option>
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: 'b' } });
-    expect(wrapper.find('List').props().data).toHaveLength(1);
-    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('ABC');
+    fireEvent.change(container.querySelector('input'), { target: { value: 'b' } });
+    expect(container.querySelectorAll('.rc-select-item-option-content')).toHaveLength(1);
+    expect(container.querySelector('div.rc-select-item-option-content').textContent).toBe('ABC');
   });
 
   it('accepts prop id', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select id="my-select">
         <Option value="1">One</Option>
       </Select>,
     );
 
-    expect(wrapper.find('input#my-select').length).toBeTruthy();
+    expect(container.querySelector('input#my-select')).toBeTruthy();
   });
 
   it('not select first option when no result', () => {
     const handleSelect = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <Select
         defaultActiveFirstOption
         filterOption={(inputValue, option) =>
@@ -1203,38 +1315,39 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: 'b' } });
-    expect(wrapper.find('input').props().value).toBe('b');
-    expect(wrapper.find('List').props().data).toHaveLength(1);
-    expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('Burns Bay Road');
+    fireEvent.change(container.querySelector('input'), { target: { value: 'b' } });
+    expect(container.querySelector('input').value).toBe('b');
+    expect(container.querySelectorAll('.rc-select-item-option-content')).toHaveLength(1);
+    expect(container.querySelector('div.rc-select-item-option-content').textContent).toBe(
+      'Burns Bay Road',
+    );
 
-    wrapper.find('input').simulate('change', { target: { value: 'c' } });
-    expect(wrapper.find('input').props().value).toBe('c');
-    expect(wrapper.find('.rc-select-item')).toHaveLength(0);
-    expect(wrapper.find('.rc-select-item-empty').text()).toEqual('Not Found');
+    fireEvent.change(container.querySelector('input'), { target: { value: 'c' } });
+    expect(container.querySelector('input').value).toBe('c');
+    expect(container.querySelectorAll('.rc-select-item')).toHaveLength(0);
+    expect(container.querySelector('.rc-select-item-empty').textContent).toEqual('Not Found');
 
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ENTER });
-    expect(wrapper.find('input').props().value).toBe('c');
+    keyDown(container.querySelector('input'), KeyCode.ENTER);
     expect(handleSelect).not.toHaveBeenCalled();
   });
 
   // https://github.com/ant-design/ant-design/issues/12172
   it('onChange trigger only once when value is 0', () => {
     const onChange = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <Select onChange={onChange}>
         <Option value={0}>0</Option>
       </Select>,
     );
 
-    toggleOpen(wrapper);
-    selectItem(wrapper);
+    toggleOpen(container);
+    selectItem(container);
     expect(onChange).toHaveBeenCalled();
 
     onChange.mockReset();
 
-    toggleOpen(wrapper);
-    selectItem(wrapper);
+    toggleOpen(container);
+    selectItem(container);
     expect(onChange).not.toHaveBeenCalled();
   });
 
@@ -1243,8 +1356,10 @@ describe('Select.Basic', () => {
     let domHook;
 
     beforeAll(() => {
-      domHook = spyElementPrototype(HTMLElement, 'offsetWidth', {
-        get: () => 1000,
+      domHook = spyElementPrototypes(HTMLElement, {
+        getBoundingClientRect: () => ({
+          width: 1000,
+        }),
       });
     });
 
@@ -1260,7 +1375,7 @@ describe('Select.Basic', () => {
         });
       }
 
-      const wrapper = mount(
+      const { container } = render(
         <Select
           listItemHeight={10}
           listHeight={100}
@@ -1269,12 +1384,13 @@ describe('Select.Basic', () => {
           options={options}
         />,
       );
-      toggleOpen(wrapper);
-      expect(wrapper.find('.rc-select-dropdown').last().props().style.minWidth).toBe(1000);
+      toggleOpen(container);
+      expect(container.querySelector('.rc-select-dropdown')).toHaveStyle({
+        minWidth: '1000px',
+      });
 
       // dropdownMatchSelectWidth is false means close virtual scroll
-      expect(wrapper.find('.rc-select-item')).toHaveLength(options.length);
-      expect((wrapper.find(VirtualList).props() as any).virtual).toBe(false);
+      expect(container.querySelectorAll('.rc-select-item')).toHaveLength(options.length);
     });
 
     it('virtual false also no render virtual list', () => {
@@ -1285,75 +1401,76 @@ describe('Select.Basic', () => {
         });
       }
 
-      const wrapper = mount(
+      const { container } = render(
         <Select listItemHeight={10} listHeight={100} virtual={false} options={options} />,
       );
-      toggleOpen(wrapper);
-      expect(wrapper.find('.rc-select-item')).toHaveLength(options.length);
+      toggleOpen(container);
+      expect(container.querySelectorAll('.rc-select-item')).toHaveLength(options.length);
     });
   });
 
   it('dropdown should auto-adjust horizontally when dropdownMatchSelectWidth is false', () => {
-    const wrapper = mount(
+    render(
       <Select dropdownMatchSelectWidth={233}>
         <Option value={0}>0</Option>
         <Option value={1}>1</Option>
       </Select>,
     );
-    expect(
-      (wrapper.find('Trigger').prop('builtinPlacements') as any).bottomLeft.overflow.adjustX,
-    ).toBe(1);
+
+    expect(global.triggerProps.builtinPlacements.bottomLeft.overflow.adjustX).toBe(1);
   });
 
   it('dropdown should not auto-adjust horizontally when dropdownMatchSelectWidth is true', () => {
-    const wrapper = mount(
+    render(
       <Select>
         <Option value={0}>0</Option>
         <Option value={1}>1</Option>
       </Select>,
     );
-    expect(
-      (wrapper.find('Trigger').prop('builtinPlacements') as any).bottomLeft.overflow.adjustX,
-    ).toBe(0);
+    // expect(
+    //   (container.find('Trigger').prop('builtinPlacements') as any).bottomLeft.overflow.adjustX,
+    // ).toBe(0);
+
+    expect(global.triggerProps.builtinPlacements.bottomLeft.overflow.adjustX).toBe(0);
   });
 
   it('if loading, arrow should show loading icon', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select style={{ width: 1000 }} loading>
         <Option value={0}>0</Option>
         <Option value={1}>1</Option>
       </Select>,
     );
-    expect(wrapper.find('.rc-select-arrow-loading').length).toBeTruthy();
+    expect(container.querySelector('.rc-select-arrow-loading')).toBeTruthy();
   });
   it('if loading and multiple which has not arrow, but have loading icon', () => {
-    const wrapper = mount(
-      <Select style={{ width: 1000 }} mode="multiple">
+    const renderDemo = (loading?: boolean) => (
+      <Select style={{ width: 1000 }} mode="multiple" loading={loading}>
         <Option value={0}>0</Option>
         <Option value={1}>1</Option>
-      </Select>,
+      </Select>
     );
-    expect(wrapper.find('.rc-select-arrow-icon').length).toBeFalsy();
-    expect(wrapper.find('.rc-select-arrow-loading').length).toBeFalsy();
 
-    wrapper.setProps({
-      loading: true,
-    });
-    expect(wrapper.find('.rc-select-arrow-loading').length).toBeTruthy();
+    const { container, rerender } = render(renderDemo());
+    expect(container.querySelector('.rc-select-arrow-icon')).toBeFalsy();
+    expect(container.querySelector('.rc-select-arrow-loading')).toBeFalsy();
+
+    rerender(renderDemo(true));
+    expect(container.querySelector('.rc-select-arrow-loading')).toBeTruthy();
   });
 
   it('should keep trigger onSelect by select', () => {
     const onSelect = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <Select open onSelect={onSelect} optionLabelProp="children">
         <Option value="1">One</Option>
       </Select>,
     );
 
     for (let i = 0; i < 10; i += 1) {
-      console.log('=>', i);
       onSelect.mockReset();
-      wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+      keyDown(container.querySelector('input'), KeyCode.ENTER);
+      keyUp(container.querySelector('input'), KeyCode.ENTER);
       expect(onSelect).toHaveBeenCalledWith('1', expect.anything());
     }
   });
@@ -1362,7 +1479,7 @@ describe('Select.Basic', () => {
     resetWarned();
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
 
-    mount(<Select onSearch={jest.fn()} />);
+    render(<Select onSearch={jest.fn()} />);
     expect(errorSpy).toHaveBeenCalledWith(
       'Warning: `onSearch` should work with `showSearch` instead of use alone.',
     );
@@ -1372,7 +1489,8 @@ describe('Select.Basic', () => {
 
   it('dropdown selection item customize icon', () => {
     const menuItemSelectedIcon = jest.fn();
-    mount(
+
+    render(
       <Select
         value="1"
         options={[{ value: '1' } as any]}
@@ -1380,34 +1498,89 @@ describe('Select.Basic', () => {
         menuItemSelectedIcon={menuItemSelectedIcon}
       />,
     );
+    expect(menuItemSelectedIcon).toHaveBeenCalledWith({
+      value: '1',
+      disabled: false,
+      isSelected: true,
+    });
 
-    expect(menuItemSelectedIcon).toHaveBeenCalledWith({ isSelected: true });
+    render(
+      <Select
+        value="1"
+        options={[{ value: '2', disabled: true } as any]}
+        open
+        menuItemSelectedIcon={menuItemSelectedIcon}
+      />,
+    );
+    expect(menuItemSelectedIcon).toHaveBeenCalledWith({
+      value: '2',
+      disabled: true,
+      isSelected: false,
+    });
   });
 
   it('keyDown & KeyUp event', () => {
     const onKeyDown = jest.fn();
     const onKeyUp = jest.fn();
-    const wrapper = mount(<Select onKeyDown={onKeyDown} onKeyUp={onKeyUp} />);
+    const { container } = render(<Select onKeyDown={onKeyDown} onKeyUp={onKeyUp} />);
 
-    wrapper.find('input').simulate('keydown', { which: KeyCode.ENTER });
-    expectOpen(wrapper);
+    keyDown(container.querySelector('input'), KeyCode.ENTER);
+    expectOpen(container);
     expect(onKeyDown).toHaveBeenCalled();
 
-    wrapper.find('input').simulate('keyup', { which: KeyCode.ENTER });
+    fireEvent.keyUp(container.querySelector('input'), { which: KeyCode.ENTER });
     expect(onKeyUp).toHaveBeenCalled();
   });
 
-  it('warning if label not same as option', () => {
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    mount(
-      <Select value={{ value: '2', label: 'One' }} labelInValue>
-        <Option value="2">Two</Option>
-      </Select>,
-    );
-    expect(errorSpy).toHaveBeenCalledWith(
-      'Warning: `label` of `value` is not same as `label` in Select options.',
-    );
-    errorSpy.mockRestore();
+  describe('warning if label not same as option', () => {
+    it('should work', () => {
+      resetWarned();
+
+      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      render(
+        <Select value={{ value: '2', label: 'One' }} labelInValue>
+          <Option value="2">Two</Option>
+        </Select>,
+      );
+      expect(errorSpy).toHaveBeenCalledWith(
+        'Warning: `label` of `value` is not same as `label` in Select options.',
+      );
+      errorSpy.mockRestore();
+    });
+
+    it('not warning for react node', () => {
+      resetWarned();
+      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      const Demo = () => {
+        const [, setVal] = React.useState(0);
+
+        return (
+          <Select
+            onChange={setVal}
+            defaultValue={0}
+            options={[
+              {
+                value: 0,
+                label: <div />,
+              },
+              {
+                value: 1,
+                label: <div />,
+              },
+            ]}
+          />
+        );
+      };
+
+      const { container } = render(<Demo />);
+
+      toggleOpen(container);
+      selectItem(container, 1);
+
+      expect(errorSpy).not.toHaveBeenCalled();
+      errorSpy.mockRestore();
+    });
   });
 
   describe('warning if use `props` to read data', () => {
@@ -1415,7 +1588,7 @@ describe('Select.Basic', () => {
       resetWarned();
       const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-      const wrapper = mount(
+      const { container } = render(
         <Select
           filterOption={(input, option) =>
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -1427,9 +1600,11 @@ describe('Select.Basic', () => {
         </Select>,
       );
 
-      wrapper.find('input').simulate('change', { target: { value: 'l' } });
-      expect(wrapper.find('List').props().data).toHaveLength(1);
-      expect(wrapper.find('div.rc-select-item-option-content').text()).toBe('Light');
+      fireEvent.change(container.querySelector('input'), { target: { value: 'l' } });
+      expect(container.querySelectorAll('.rc-select-item-option-content')).toHaveLength(1);
+      expect(container.querySelector('div.rc-select-item-option-content').textContent).toBe(
+        'Light',
+      );
 
       expect(errorSpy).toHaveBeenCalledWith(
         'Warning: Return type is option instead of Option instance. Please read value directly instead of reading from `props`.',
@@ -1445,22 +1620,22 @@ describe('Select.Basic', () => {
         expect(opt.props).toBeTruthy();
       };
 
-      const wrapper = mount(
+      const { container } = render(
         <Select mode="multiple" onSelect={readPropsFunc} onDeselect={readPropsFunc}>
           <Option value="light">Light</Option>
           <Option value="bamboo">Bamboo</Option>
         </Select>,
       );
 
-      toggleOpen(wrapper);
-      selectItem(wrapper);
+      toggleOpen(container);
+      selectItem(container);
       expect(errorSpy).toHaveBeenCalledWith(
         'Warning: Return type is option instead of Option instance. Please read value directly instead of reading from `props`.',
       );
 
       errorSpy.mockReset();
       resetWarned();
-      selectItem(wrapper);
+      selectItem(container);
       expect(errorSpy).toHaveBeenCalledWith(
         'Warning: Return type is option instead of Option instance. Please read value directly instead of reading from `props`.',
       );
@@ -1476,15 +1651,15 @@ describe('Select.Basic', () => {
         expect(opt.props).toBeTruthy();
       };
 
-      const wrapper = mount(
+      const { container } = render(
         <Select onChange={readPropsFunc}>
           <Option value="light">Light</Option>
           <Option value="bamboo">Bamboo</Option>
         </Select>,
       );
 
-      toggleOpen(wrapper);
-      selectItem(wrapper);
+      toggleOpen(container);
+      selectItem(container);
       expect(errorSpy).toHaveBeenCalledWith(
         'Warning: Return type is option instead of Option instance. Please read value directly instead of reading from `props`.',
       );
@@ -1494,27 +1669,26 @@ describe('Select.Basic', () => {
   });
 
   it('not crash when options is null', () => {
-    mount(<Select options={null} />);
+    render(<Select options={null} />);
   });
 
   it('not crash when labelInValue and value is null', () => {
-    mount(<Select labelInValue value={null} />);
+    render(<Select labelInValue value={null} />);
   });
 
   it('not open when `notFoundCount` is empty & no data', () => {
-    const wrapper = mount(<Select options={null} notFoundContent={null} open showSearch />);
-    expect(wrapper.find('SelectTrigger').prop('visible')).toBeFalsy();
-    expect(wrapper.find('Input').prop('editable')).toBeTruthy();
+    const { container } = render(<Select options={null} notFoundContent={null} open showSearch />);
+    expect(container.querySelector('.rc-select-dropdown-empty')).toBeFalsy();
   });
 
   it('click outside to close select', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select>
         <Option value="1">One</Option>
       </Select>,
     );
 
-    toggleOpen(wrapper);
+    toggleOpen(container);
 
     const clickEvent = new Event('mousedown');
     Object.defineProperty(clickEvent, 'target', {
@@ -1523,80 +1697,65 @@ describe('Select.Basic', () => {
     act(() => {
       window.dispatchEvent(clickEvent);
     });
-    wrapper.update();
 
-    expectOpen(wrapper, false);
-
-    wrapper.unmount();
-  });
-
-  it('search should not work when `showSearch` is false', () => {
-    const wrapper = mount(
-      <Select open>
-        <Option value="1">One</Option>
-      </Select>,
-    );
-
-    wrapper.find('input').simulate('change', 'Z');
-    expect(wrapper.find('List').props().data).toHaveLength(1);
+    expectOpen(container, false);
   });
 
   describe('reset value to undefined should reset display value', () => {
     [undefined].forEach((value) => {
       it(`to ${value}`, () => {
-        const wrapper = mount(<Select value="light" />);
-        expect(wrapper.find('.rc-select-selection-item').text()).toEqual('light');
+        const { container, rerender } = render(<Select value="light" />);
+        expect(container.querySelector('.rc-select-selection-item').textContent).toEqual('light');
 
-        wrapper.setProps({ value });
-        wrapper.update();
-        expect(wrapper.find('.rc-select-selection-item')).toHaveLength(0);
+        rerender(<Select value={value} />);
+        expect(container.querySelector('.rc-select-selection-item')).toBeFalsy();
       });
     });
   });
 
   describe('disabled on open', () => {
     it('should not show dropdown when open and disabled', () => {
-      const wrapper = mount(
+      const { container } = render(
         <Select open disabled>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
         </Select>,
       );
-      expectOpen(wrapper, false);
+      expectOpen(container, false);
     });
 
     it('should close dropdown when disabled after open', () => {
-      const wrapper = mount(
-        <Select>
+      const renderDemo = (disabled?: boolean) => (
+        <Select disabled={disabled}>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
-        </Select>,
+        </Select>
       );
-      toggleOpen(wrapper);
-      expectOpen(wrapper, true);
-      wrapper.setProps({ disabled: true });
-      wrapper.update();
-      expectOpen(wrapper, false);
+      const { container, rerender } = render(renderDemo());
+      toggleOpen(container);
+      expectOpen(container, true);
+      rerender(renderDemo(true));
+      expectOpen(container, false);
     });
 
     it('should not open dropdown after remove disabled', () => {
-      const wrapper = mount(
-        <Select>
+      const renderDemo = (disabled?: boolean) => (
+        <Select disabled={disabled}>
           <Option value="1">1</Option>
           <Option value="2">2</Option>
-        </Select>,
+        </Select>
       );
-      toggleOpen(wrapper);
-      wrapper.setProps({ disabled: true });
-      wrapper.update();
-      wrapper.setProps({ disabled: false });
-      wrapper.update();
-      expectOpen(wrapper, false);
+
+      const { container, rerender } = render(renderDemo());
+      toggleOpen(container);
+      rerender(renderDemo(true));
+      rerender(renderDemo(false));
+      expectOpen(container, false);
     });
   });
 
   it('should pass className & style to option', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select
         options={[
           {
@@ -1607,73 +1766,112 @@ describe('Select.Basic', () => {
         ]}
       />,
     );
-    toggleOpen(wrapper);
-    expect(wrapper.find('.rc-select-item-option').hasClass('test-class')).toBeTruthy();
-    expect(wrapper.find('.rc-select-item-option').props().style).toEqual({
+    toggleOpen(container);
+    expect(container.querySelector('.rc-select-item-option')).toHaveClass('test-class');
+    expect(container.querySelector('.rc-select-item-option')).toHaveStyle({
       background: 'yellow',
     });
   });
 
-  it('`null` is a value', () => {
-    const onChange = jest.fn();
+  describe('`null` is a value', () => {
+    let errorSpy;
+    const warningMessage = 'Warning: `value` in Select options should not be `null`.';
 
-    const wrapper = mount(
-      <Select onChange={onChange}>
-        <Option value={1}>1</Option>
-        <Option value={null}>No</Option>
-        <Option value={0}>0</Option>
-        <Option value="">Empty</Option>
-      </Select>,
-    );
-
-    [
-      [1, '1'],
-      [null, 'No'],
-      [0, '0'],
-      ['', 'Empty'],
-    ].forEach(([value, showValue], index) => {
-      toggleOpen(wrapper);
-      selectItem(wrapper, index);
-      expect(onChange).toHaveBeenCalledWith(value, expect.anything());
-      expect(wrapper.find('.rc-select-selection-item').text()).toEqual(showValue);
-    });
-  });
-
-  describe('show placeholder', () => {
-    it('when searchValue is controlled', () => {
-      const wrapper = mount(<Select searchValue="light" placeholder="bamboo" />);
-      expect(
-        wrapper.find('.rc-select-selection-placeholder').getDOMNode().hasAttribute('style'),
-      ).toBe(false);
-      toggleOpen(wrapper);
-      expect(
-        (wrapper.find('.rc-select-selection-placeholder').getDOMNode() as HTMLSpanElement).style
-          .visibility,
-      ).toBe('hidden');
+    beforeAll(() => {
+      errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
     });
 
-    it('when value is null', () => {
-      const wrapper = mount(<Select value={null} placeholder="bamboo" />);
-      expect(wrapper.find('.rc-select-selection-placeholder').length).toBeTruthy();
+    beforeEach(() => {
+      errorSpy.mockReset();
+      resetWarned();
     });
 
-    it('not when value is null but it is an Option', () => {
-      const wrapper = mount(
-        <Select value={null} placeholder="bamboo" options={[{ value: null, label: 'light' }]} />,
+    afterAll(() => {
+      errorSpy.mockRestore();
+    });
+
+    it('`null` is a value and should throw a warning', () => {
+      const onChange = jest.fn();
+
+      const { container } = render(
+        <Select onChange={onChange}>
+          <Option value={1}>1</Option>
+          <Option value={null}>No</Option>
+          <Option value={0}>0</Option>
+          <Option value="">Empty</Option>
+        </Select>,
       );
-      expect(wrapper.find('.rc-select-selection-placeholder').length).toBeFalsy();
+
+      [
+        [1, '1'],
+        [null, 'No'],
+        [0, '0'],
+        ['', 'Empty'],
+      ].forEach(([value, showValue], index) => {
+        toggleOpen(container);
+        selectItem(container, index);
+        expect(onChange).toHaveBeenCalledWith(value, expect.anything());
+        expect(container.querySelector('.rc-select-selection-item').textContent).toEqual(showValue);
+      });
+
+      expect(errorSpy).toHaveBeenCalledWith(warningMessage);
+    });
+
+    it('`null` is a value in OptGroup should throw a warning', () => {
+      render(
+        <Select>
+          <OptGroup>
+            <Option value="1">1</Option>
+            <Option value={null}>null</Option>
+          </OptGroup>
+        </Select>,
+      );
+
+      expect(errorSpy).toHaveBeenCalledWith(warningMessage);
+    });
+
+    it('`null` is a value in fieldNames should throw a warning', () => {
+      render(
+        <Select
+          fieldNames={{
+            label: 'fieldLabel',
+            value: 'fieldValue',
+            options: 'fieldOptions',
+          }}
+          options={[
+            {
+              fieldLabel: 'label',
+              fieldOptions: [
+                {
+                  fieldLabel: '1',
+                  fieldValue: '1',
+                },
+                {
+                  fieldLabel: '2',
+                  fieldValue: null,
+                },
+              ],
+            },
+          ]}
+        />,
+      );
+
+      expect(errorSpy).toHaveBeenCalledWith(warningMessage);
     });
   });
 
   it('Remove options can keep the cache', () => {
-    const wrapper = mount(<Select value={903} options={[{ value: 903, label: 'Bamboo' }]} />);
-    expect(findSelection(wrapper).text()).toEqual('Bamboo');
+    const renderDemo = (props?: any) => (
+      <Select value={903} options={[{ value: 903, label: 'Bamboo' }]} {...props} />
+    );
+    const { container, rerender } = render(renderDemo());
+    expect(findSelection(container).textContent).toEqual('Bamboo');
 
-    wrapper.setProps({ options: [] });
-    expect(findSelection(wrapper).text()).toEqual('Bamboo');
+    rerender(renderDemo({ options: [] }));
+    expect(findSelection(container).textContent).toEqual('Bamboo');
 
-    wrapper.setProps({ options: [{ value: 903, label: 903 }] });
-    expect(findSelection(wrapper).text()).toEqual('903');
+    rerender(renderDemo({ options: [{ value: 903, label: 903 }] }));
+    expect(findSelection(container).textContent).toEqual('903');
   });
 
   // https://github.com/ant-design/ant-design/issues/24747
@@ -1685,7 +1883,7 @@ describe('Select.Basic', () => {
       return children;
     };
 
-    const wrapper = mount(
+    const { container } = render(
       <Select
         options={[{ value: 903, label: 'Bamboo' }]}
         dropdownRender={(node) => <Wrapper>{node}</Wrapper>}
@@ -1694,12 +1892,12 @@ describe('Select.Basic', () => {
     );
 
     renderTimes = 0;
-    wrapper.find('.rc-select-dropdown div').first().simulate('mouseenter');
+    fireEvent.mouseEnter(container.querySelector('.rc-select-item-option-content'));
     expect(renderTimes).toBe(1);
   });
 
   it('filterSort should work', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Select
         showSearch
         filterSort={(optionA, optionB) =>
@@ -1715,54 +1913,98 @@ describe('Select.Basic', () => {
       />,
     );
 
-    wrapper.find('input').simulate('change', { target: { value: 'i' } });
-    expect(wrapper.find('.rc-select-item-option-content').first().text()).toBe('Communicated');
+    fireEvent.change(container.querySelector('input'), { target: { value: 'i' } });
+    expect(container.querySelector('.rc-select-item-option-content').textContent).toBe(
+      'Communicated',
+    );
+  });
+
+  it('filterSort should work with search value', () => {
+    const { container } = render(
+      <Select
+        showSearch
+        filterSort={(optionA, optionB, { searchValue }) => {
+          const i =
+            (optionA.label as string).indexOf(searchValue) -
+            (optionB.label as string).indexOf(searchValue);
+          if (i == 0) {
+            return (optionA.label as string).localeCompare(optionB.label as string);
+          }
+          return i;
+        }}
+        optionFilterProp="label"
+        options={[
+          { value: 4, label: 'Not Identified' },
+          { value: 3, label: 'Closed' },
+          { value: 2, label: 'Communicated' },
+          { value: 5, label: 'Cancelled' },
+        ]}
+      />,
+    );
+
+    fireEvent.change(container.querySelector('input'), { target: { value: 'o' } });
+    expect(container.querySelector('.rc-select-item-option-content').textContent).toBe(
+      'Communicated',
+    );
   });
 
   it('correctly handles the `tabIndex` prop', () => {
-    const wrapper = mount(<Select tabIndex={0} />);
-    expect(wrapper.find('.rc-select').getDOMNode().getAttribute('tabindex')).toBeNull();
+    const { container } = render(<Select tabIndex={0} />);
+    expect(container.querySelector('.rc-select').getAttribute('tabindex')).toBeFalsy();
 
     expect(
-      wrapper.find('input.rc-select-selection-search-input').getDOMNode().getAttribute('tabindex'),
+      container.querySelector('input.rc-select-selection-search-input').getAttribute('tabindex'),
     ).toBe('0');
   });
 
   describe('placement', () => {
     it('default', () => {
-      const wrapper = mount(<Select open />);
-      expect(wrapper.find('Trigger').prop('popupPlacement')).toEqual('bottomLeft');
+      render(<Select open />);
+      expect(global.triggerProps.popupPlacement).toEqual('bottomLeft');
     });
 
     it('rtl', () => {
-      const wrapper = mount(<Select direction="rtl" open />);
-      expect(wrapper.find('Trigger').prop('popupPlacement')).toEqual('bottomRight');
+      render(<Select direction="rtl" open />);
+      expect(global.triggerProps.popupPlacement).toEqual('bottomRight');
     });
 
     it('customize', () => {
-      const wrapper = mount(<Select placement="topRight" open />);
-      expect(wrapper.find('Trigger').prop('popupPlacement')).toEqual('topRight');
+      render(<Select placement="topRight" open />);
+      expect(global.triggerProps.popupPlacement).toEqual('topRight');
     });
   });
 
-  it('scrollTo should work', () => {
+  it('scrollTo should work with number', () => {
     const ref = React.createRef<BaseSelectRef>();
-    const wrapper = mount(<Select ref={ref} />);
+    const { rerender } = render(<Select ref={ref} />);
 
     // Not crash
     ref.current.scrollTo(100);
 
     // Open to call again
-    wrapper.setProps({
-      open: true,
-    });
-    wrapper.update();
+    rerender(<Select ref={ref} open />);
     ref.current.scrollTo(100);
+  });
+
+  it('scrollTo should work with scrollConfig object', () => {
+    const ref = React.createRef<BaseSelectRef>();
+    const { rerender } = render(<Select ref={ref} />);
+    const scrollParams: ScrollConfig = {
+      index: 30,
+      align: 'top',
+    };
+
+    // Not crash
+    ref.current.scrollTo(scrollParams);
+
+    // Open to call again
+    rerender(<Select ref={ref} open />);
+    ref.current.scrollTo(scrollParams);
   });
 
   it('pass props', () => {
     // `count` is not a valid dom prop. Just compatible with origin logic.
-    const wrapper = mount(
+    const { container } = render(
       <Select
         {...({
           count: 10,
@@ -1770,23 +2012,217 @@ describe('Select.Basic', () => {
       />,
     );
 
-    expect(wrapper.find('div.rc-select').prop('count')).toEqual(10);
+    expect(container.querySelector('.rc-select').getAttribute('count')).toEqual('10');
   });
 
   it('should support onClick', () => {
     const onClick = jest.fn();
-    const wrapper = mount(<Select onClick={onClick} />);
-    wrapper.simulate('click');
+    const { container } = render(<Select onClick={onClick} />);
+    fireEvent.click(container.querySelector('.rc-select-selector'));
     expect(onClick).toHaveBeenCalled();
   });
 
-  it('should hide placeholder if force closed and showSearch with searchValue', () => {
-    const wrapper = mount(
-      <Select showSearch searchValue="search" open={false} placeholder="placeholder" />,
+  it('no warning for non-dom attr', () => {
+    const { container } = render(
+      <Select open>
+        <Select.Option light="little" data-test="good" aria-label="well">
+          Bamboo
+        </Select.Option>
+      </Select>,
     );
-    expect(
-      (wrapper.find('.rc-select-selection-placeholder').getDOMNode() as HTMLSpanElement).style
-        .visibility,
-    ).toBe('hidden');
+
+    expect(container.querySelector('div.rc-select-item')).not.toHaveAttribute('light');
+    expect(container.querySelector('div.rc-select-item')).toHaveAttribute('data-test', 'good');
+    expect(container.querySelector('div.rc-select-item')).toHaveAttribute('aria-label', 'well');
+  });
+
+  // https://github.com/ant-design/ant-design/issues/37591
+  describe('title attr', () => {
+    it('single', () => {
+      const { container } = render(
+        <Select value="b" options={[{ label: 'bamboo', title: 'TitleBamboo', value: 'b' }]} />,
+      );
+
+      // expect(container.find('.rc-select-selection-item').prop('title')).toEqual('TitleBamboo');
+      expect(container.querySelector('.rc-select-selection-item').getAttribute('title')).toEqual(
+        'TitleBamboo',
+      );
+    });
+
+    it('multiple', () => {
+      const { container } = render(
+        <Select
+          mode="multiple"
+          value={['b', 'l', 'r']}
+          maxTagCount={2}
+          options={[
+            { label: 'bamboo', title: 'TitleBamboo', value: 'b' },
+            { label: 'little', value: 'l' },
+            { label: 'Rest', value: 'r' },
+          ]}
+        />,
+      );
+
+      expect(
+        container.querySelectorAll('span.rc-select-selection-item')[0].getAttribute('title'),
+      ).toEqual('TitleBamboo');
+      expect(
+        container.querySelectorAll('span.rc-select-selection-item')[1].getAttribute('title'),
+      ).toEqual('little');
+      expect(
+        container.querySelectorAll('span.rc-select-selection-item')[2].getAttribute('title'),
+      ).toEqual('+ 1 ...');
+    });
+  });
+
+  it('should be focused when click clear button', () => {
+    jest.useFakeTimers();
+
+    const mouseDownPreventDefault = jest.fn();
+    const { container } = render(
+      <Select allowClear value="1">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+
+    expect(container.querySelector('.rc-select-clear-icon')).toBeTruthy();
+
+    const mouseDownEvent = createEvent.mouseDown(container.querySelector('.rc-select-clear-icon'));
+    mouseDownEvent.preventDefault = mouseDownPreventDefault;
+    fireEvent(container.querySelector('.rc-select-clear-icon'), mouseDownEvent);
+    jest.runAllTimers();
+
+    expect(container.querySelector('.rc-select').className).toContain('-focused');
+    jest.useRealTimers();
+  });
+
+  it('should support title', () => {
+    const { container: container1 } = render(<Select defaultValue="lucy" options={[]} />);
+    expect(container1.querySelector('.rc-select').getAttribute('title')).toBeFalsy();
+    expect(container1.querySelector('.rc-select-selection-item').getAttribute('title')).toBe(
+      'lucy',
+    );
+    const { container: container2 } = render(<Select defaultValue="lucy" options={[]} title="" />);
+    expect(container2.querySelector('.rc-select').getAttribute('title')).toBeFalsy();
+    expect(container2.querySelector('.rc-select-selection-item').getAttribute('title')).toBe('');
+    const { container: container3 } = render(
+      <Select defaultValue="lucy" options={[]} title="title" />,
+    );
+    expect(container3.querySelector('.rc-select').getAttribute('title')).toBe('title');
+    expect(container3.querySelector('.rc-select-selection-item').getAttribute('title')).toBe(
+      'title',
+    );
+  });
+
+  it('scrollbar should be left position with rtl direction', () => {
+    const options = new Array(10).fill(null).map((_, value) => ({ value }));
+
+    const { container } = testingRender(<Select open direction="rtl" options={options} />);
+    expect(container.querySelector('.rc-virtual-list-rtl')).toBeTruthy();
+  });
+
+  it('Should optionRender work', () => {
+    const options = [
+      { label: 'test1', value: '1' },
+      { label: 'test2', value: '2' },
+    ];
+
+    const { container } = testingRender(
+      <Select
+        open
+        options={options}
+        optionRender={(option, { index }) => {
+          return `${option.label} - ${index}`;
+        }}
+      />,
+    );
+    expect(container.querySelector('.rc-select-item-option-content').innerHTML).toEqual(
+      'test1 - 0',
+    );
+  });
+
+  it('labelRender', () => {
+    const onLabelRender = jest.fn();
+    const labelRender = (props: LabelInValueType) => {
+      const { label, value } = props;
+      onLabelRender();
+      return `${label}-${value}`;
+    };
+    const { container } = render(
+      <Select options={[{ label: 'realLabel', value: 'a' }]} value="a" labelRender={labelRender} />,
+    );
+
+    expect(onLabelRender).toHaveBeenCalled();
+    expect(findSelection(container).textContent).toEqual('realLabel-a');
+  });
+
+  it('labelRender when value is not in options', () => {
+    const onLabelRender = jest.fn();
+    const options = [{ label: 'realLabel', value: 'b' }];
+    const labelRender = (props: LabelInValueType) => {
+      const { label, value } = props;
+      // current value is in options
+      if (options.find((item) => item.value === value)) {
+        return label;
+      } else {
+        // current value is not in options
+        onLabelRender();
+        return `${label || 'fakeLabel'}-${value}`;
+      }
+    };
+    const { container } = render(<Select value="a" labelRender={labelRender} options={options} />);
+
+    expect(onLabelRender).toHaveBeenCalled();
+    expect(findSelection(container).textContent).toEqual('fakeLabel-a');
+  });
+
+  it('labelRender when labelInValue and useCache', () => {
+    const onLabelRender = jest.fn();
+    const labelRender = (props: LabelInValueType) => {
+      const { label, value } = props;
+      onLabelRender({ label, value });
+      return `custom label`;
+    };
+
+    const renderDemo = (props?: any) => (
+      <Select
+        labelInValue
+        value={{ key: 1, label: 'One' }}
+        labelRender={labelRender}
+        options={[
+          {
+            value: 2,
+            label: 'Two',
+          },
+        ]}
+        {...props}
+      />
+    );
+
+    const { container, rerender } = render(renderDemo());
+
+    expect(onLabelRender).toHaveBeenCalledWith({ label: 'One', value: 1 });
+    expect(findSelection(container).textContent).toEqual('custom label');
+
+    rerender(renderDemo({ options: [] }));
+    expect(findSelection(container).textContent).toEqual('custom label');
+  });
+
+  it('multiple items should not disabled', () => {
+    const { container } = testingRender(
+      <Select
+        open
+        maxCount={1}
+        mode="multiple"
+        value={['bamboo']}
+        options={[{ value: 'bamboo' }, { value: 'light' }]}
+      />,
+    );
+    const element = container.querySelectorAll<HTMLDivElement>(
+      'div.rc-virtual-list-holder-inner .rc-select-item',
+    );
+    expect(element[0]).not.toHaveClass('rc-select-item-option-disabled');
+    expect(element[1]).toHaveClass('rc-select-item-option-disabled');
   });
 });

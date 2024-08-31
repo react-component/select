@@ -1,9 +1,22 @@
-import '../../assets/index.less';
 import 'rc-dialog/assets/index.css';
+import '../../assets/index.less';
 
 import Dialog from 'rc-dialog';
+import Select, { type SelectProps } from 'rc-select';
 import React from 'react';
-import Select, { Option } from 'rc-select';
+
+const MySelect = (props: Partial<SelectProps>) => (
+  <Select
+    placeholder="placeholder"
+    style={{ width: 100 }}
+    getPopupContainer={(node) => node.parentNode}
+    options={new Array(3).fill(null).map((_, index) => ({
+      value: index,
+      label: `long_label_${index}`,
+    }))}
+    {...props}
+  />
+);
 
 class Test extends React.Component {
   state = {
@@ -11,9 +24,7 @@ class Test extends React.Component {
     destroy: false,
   };
 
-  getPopupContainer = node => node.parentNode;
-
-  setVisible = open => {
+  setVisible = (open) => {
     this.setState({
       open,
     });
@@ -38,6 +49,7 @@ class Test extends React.Component {
     if (destroy) {
       return null;
     }
+
     return (
       <div>
         <button type="button" onClick={this.open}>
@@ -49,17 +61,24 @@ class Test extends React.Component {
         </button>
         <Dialog visible={open} onClose={this.close}>
           <div style={{ marginTop: 20, position: 'relative' }}>
-            <Select
-              placeholder="placeholder"
-              style={{ width: 200 }}
-              getPopupContainer={this.getPopupContainer}
-            >
-              <Option value="1">1</Option>
-              <Option value="2">2</Option>
-              <Option value="3">3</Option>
-            </Select>
+            <MySelect />
           </div>
         </Dialog>
+        <div
+          style={{
+            transform: 'scale(1.5)',
+            transformOrigin: '0 0',
+            display: 'flex',
+            columnGap: 16,
+            flexWrap: 'wrap',
+          }}
+        >
+          <h3 style={{ width: '100%' }}>Transform: 150%</h3>
+          <MySelect />
+          <MySelect dropdownMatchSelectWidth />
+          <MySelect dropdownMatchSelectWidth={false} />
+          <MySelect dropdownMatchSelectWidth={300} />
+        </div>
       </div>
     );
   }

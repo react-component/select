@@ -1,46 +1,50 @@
-import { render, mount } from 'enzyme';
 import * as React from 'react';
 import Select, { Option } from '../../src';
+import { fireEvent, render } from '@testing-library/react';
 
 export default function allowClearTest(mode: any, value: any) {
   describe('allowClear', () => {
     it('renders correctly', () => {
-      const wrapper = render(<Select mode={mode} value={value} allowClear />);
-      expect(wrapper.find('.rc-select-clear-icon').length).toBeTruthy();
+      const { container } = render(<Select mode={mode} value={value} allowClear />);
+      expect(container.querySelector('.rc-select-clear-icon')).toBeTruthy();
     });
     it('clears value', () => {
       const onClear = jest.fn();
       const onChange = jest.fn();
+      const onDeselect = jest.fn();
       const useArrayValue = ['tags', 'multiple'].includes(mode);
-      const wrapper = mount(
+
+      const renderDemo = (disabled?: boolean) => (
         <Select
           defaultValue={useArrayValue ? ['1'] : '1'}
           allowClear
           mode={mode}
           onClear={onClear}
           onChange={onChange}
+          onDeselect={onDeselect}
+          disabled={disabled}
         >
           <Option value="1">1</Option>
           <Option value="2">2</Option>
-        </Select>,
+        </Select>
       );
 
+      const { container, rerender } = render(renderDemo());
+
       // disabled
-      wrapper.setProps({ disabled: true });
-      expect(wrapper.find('.rc-select-clear')).toHaveLength(0);
+      rerender(renderDemo(true));
+      expect(container.querySelector('.rc-select-clear')).toBeFalsy();
 
       // enabled
-      wrapper.setProps({ disabled: false });
-      wrapper
-        .find('.rc-select-clear')
-        .last()
-        .simulate('mousedown');
+      rerender(renderDemo(false));
+      fireEvent.mouseDown(container.querySelector('.rc-select-clear'));
       if (useArrayValue) {
         expect(onChange).toHaveBeenCalledWith([], []);
       } else {
         expect(onChange).toHaveBeenCalledWith(undefined, undefined);
       }
-      expect(wrapper.find('input').props().value).toEqual('');
+      expect(onDeselect).not.toBeCalled();
+      expect(container.querySelector('input').value).toEqual('');
       expect(onClear).toHaveBeenCalled();
     });
   });

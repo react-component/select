@@ -1,6 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { composeRef } from 'rc-util/lib/ref';
+import { warning } from 'rc-util/lib/warning';
 
 type InputRef = HTMLInputElement | HTMLTextAreaElement;
 
@@ -32,8 +33,8 @@ interface InputProps {
   >;
 }
 
-const Input: React.RefForwardingComponent<InputRef, InputProps> = (
-  {
+const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (props, ref) => {
+  const {
     prefixCls,
     id,
     inputElement,
@@ -53,45 +54,55 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     onCompositionEnd,
     open,
     attrs,
-  },
-  ref,
-) => {
+  } = props;
+
   let inputNode: React.ComponentElement<any, any> = inputElement || <input />;
 
+  const { ref: originRef, props: originProps } = inputNode;
+
   const {
-    ref: originRef,
-    props: {
-      onKeyDown: onOriginKeyDown,
-      onChange: onOriginChange,
-      onMouseDown: onOriginMouseDown,
-      onCompositionStart: onOriginCompositionStart,
-      onCompositionEnd: onOriginCompositionEnd,
-      style,
-    },
-  } = inputNode;
+    onKeyDown: onOriginKeyDown,
+    onChange: onOriginChange,
+    onMouseDown: onOriginMouseDown,
+    onCompositionStart: onOriginCompositionStart,
+    onCompositionEnd: onOriginCompositionEnd,
+    style,
+  } = originProps;
+
+  warning(
+    !('maxLength' in inputNode.props),
+    `Passing 'maxLength' to input element directly may not work because input in BaseSelect is controlled.`,
+  );
 
   inputNode = React.cloneElement(inputNode, {
+    type: 'search',
+    ...originProps,
+
+    // Override over origin props
     id,
     ref: composeRef(ref, originRef as any),
     disabled,
     tabIndex,
     autoComplete: autoComplete || 'off',
-    type: 'search',
+
     autoFocus,
     className: classNames(`${prefixCls}-selection-search-input`, inputNode?.props?.className),
-    style: { ...style, opacity: editable ? null : 0 },
+
     role: 'combobox',
-    'aria-expanded': open,
+    'aria-expanded': open || false,
     'aria-haspopup': 'listbox',
     'aria-owns': `${id}_list`,
     'aria-autocomplete': 'list',
     'aria-controls': `${id}_list`,
-    'aria-activedescendant': activeDescendantId,
+    'aria-activedescendant': open ? activeDescendantId : undefined,
     ...attrs,
     value: editable ? value : '',
     maxLength,
     readOnly: !editable,
     unselectable: !editable ? 'on' : null,
+
+    style: { ...style, opacity: editable ? null : 0 },
+
     onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
       onKeyDown(event);
       if (onOriginKeyDown) {
@@ -129,6 +140,9 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
 };
 
 const RefInput = React.forwardRef<InputRef, InputProps>(Input);
-RefInput.displayName = 'Input';
+
+if (process.env.NODE_ENV !== 'production') {
+  RefInput.displayName = 'Input';
+}
 
 export default RefInput;

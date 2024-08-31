@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Select.Multiple render not display maxTagPlaceholder if maxTagCount not reach 1`] = `
+exports[`Select.Multiple max tag render not display maxTagPlaceholder if maxTagCount not reach 1`] = `
 <div
   class="rc-select rc-select-multiple rc-select-show-search"
 >
@@ -19,9 +19,9 @@ exports[`Select.Multiple render not display maxTagPlaceholder if maxTagCount not
           style="width: 0px;"
         >
           <input
-            aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
             aria-autocomplete="list"
             aria-controls="rc_select_TEST_OR_SSR_list"
+            aria-expanded="false"
             aria-haspopup="listbox"
             aria-owns="rc_select_TEST_OR_SSR_list"
             autocomplete="off"
@@ -50,7 +50,7 @@ exports[`Select.Multiple render not display maxTagPlaceholder if maxTagCount not
 </div>
 `;
 
-exports[`Select.Multiple render truncates tags by maxTagCount and show maxTagPlaceholder 1`] = `
+exports[`Select.Multiple max tag render truncates tags by maxTagCount and show maxTagPlaceholder 1`] = `
 <div
   class="rc-select rc-select-multiple rc-select-show-search"
 >
@@ -139,9 +139,9 @@ exports[`Select.Multiple render truncates tags by maxTagCount and show maxTagPla
           style="width: 0px;"
         >
           <input
-            aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
             aria-autocomplete="list"
             aria-controls="rc_select_TEST_OR_SSR_list"
+            aria-expanded="false"
             aria-haspopup="listbox"
             aria-owns="rc_select_TEST_OR_SSR_list"
             autocomplete="off"
@@ -167,7 +167,7 @@ exports[`Select.Multiple render truncates tags by maxTagCount and show maxTagPla
 </div>
 `;
 
-exports[`Select.Multiple render truncates tags by maxTagCount and show maxTagPlaceholder function 1`] = `
+exports[`Select.Multiple max tag render truncates tags by maxTagCount and show maxTagPlaceholder function 1`] = `
 <div
   class="rc-select rc-select-multiple rc-select-show-search"
 >
@@ -242,7 +242,8 @@ exports[`Select.Multiple render truncates tags by maxTagCount and show maxTagPla
             class="rc-select-selection-item-content"
           >
             <span>
-              1 values omitted
+              1
+               values omitted
             </span>
           </span>
         </span>
@@ -256,9 +257,9 @@ exports[`Select.Multiple render truncates tags by maxTagCount and show maxTagPla
           style="width: 0px;"
         >
           <input
-            aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
             aria-autocomplete="list"
             aria-controls="rc_select_TEST_OR_SSR_list"
+            aria-expanded="false"
             aria-haspopup="listbox"
             aria-owns="rc_select_TEST_OR_SSR_list"
             autocomplete="off"
@@ -284,7 +285,7 @@ exports[`Select.Multiple render truncates tags by maxTagCount and show maxTagPla
 </div>
 `;
 
-exports[`Select.Multiple render truncates values by maxTagTextLength 1`] = `
+exports[`Select.Multiple max tag render truncates values by maxTagTextLength 1`] = `
 <div
   class="rc-select rc-select-multiple rc-select-show-search"
 >
@@ -357,9 +358,9 @@ exports[`Select.Multiple render truncates values by maxTagTextLength 1`] = `
           style="width: 0px;"
         >
           <input
-            aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
             aria-autocomplete="list"
             aria-controls="rc_select_TEST_OR_SSR_list"
+            aria-expanded="false"
             aria-haspopup="listbox"
             aria-owns="rc_select_TEST_OR_SSR_list"
             autocomplete="off"

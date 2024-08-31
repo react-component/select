@@ -1,17 +1,17 @@
-import { mount } from 'enzyme';
 import React from 'react';
 import SelectTrigger from '../src/SelectTrigger';
+import { render } from '@testing-library/react';
 
 describe('Select.Trigger', () => {
   it('set popupTransitionName if animation given', () => {
     const SimpleSelectTrigger = SelectTrigger as any;
 
-    const wrapper = mount(
+    render(
       <SimpleSelectTrigger prefixCls="rc-select" animation="slide-up">
         <div>foo</div>
       </SimpleSelectTrigger>,
     );
 
-    expect(wrapper.find('Trigger').prop('popupTransitionName')).toBe('rc-select-dropdown-slide-up');
+    expect(global.triggerProps.popupTransitionName).toBe('rc-select-dropdown-slide-up');
   });
 });

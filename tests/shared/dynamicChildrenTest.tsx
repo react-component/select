@@ -1,8 +1,8 @@
-import { mount } from 'enzyme';
 import React from 'react';
 import type { SelectProps } from '../../src';
 import Select, { Option } from '../../src';
 import { injectRunAllTimers, toggleOpen, selectItem, findSelection } from '../utils/common';
+import { render } from '@testing-library/react';
 
 export default function dynamicChildrenTest(mode: any, props?: Partial<SelectProps>) {
   injectRunAllTimers(jest);
@@ -62,11 +62,10 @@ export default function dynamicChildrenTest(mode: any, props?: Partial<SelectPro
       }
     }
 
-    const wrapper = mount(<App />);
+    const { container } = render(<App />);
     jest.runAllTimers();
-    wrapper.update();
-    toggleOpen(wrapper);
-    selectItem(wrapper, 1);
+    toggleOpen(container);
+    selectItem(container, 1);
     expect(onChange).toHaveBeenCalledWith(
       ['1', '3'],
       [expect.anything(), expect.objectContaining({ value: '3', children: '3-label' })],
@@ -130,10 +129,9 @@ export default function dynamicChildrenTest(mode: any, props?: Partial<SelectPro
       }
     }
 
-    const wrapper = mount(<App />);
+    const { container } = render(<App />);
     jest.runAllTimers();
-    wrapper.update();
-    expect(findSelection(wrapper).text()).toEqual('0-label-new');
+    expect(findSelection(container).textContent).toEqual('0-label-new');
   });
 
   it('defaultValue label update with dynamic children', () => {
@@ -179,8 +177,8 @@ export default function dynamicChildrenTest(mode: any, props?: Partial<SelectPro
       }
     }
 
-    const wrapper = mount(<App />);
+    const { container } = render(<App />);
     jest.runAllTimers();
-    expect(findSelection(wrapper).text()).toEqual('1-label-new');
+    expect(findSelection(container).textContent).toEqual('1-label-new');
   });
 }

@@ -1,9 +1,8 @@
-import { mount } from 'enzyme';
-import { act } from 'react-dom/test-utils';
-import * as React from 'react';
+import React, { act } from 'react';
 import Select from '../src';
 import type { SelectProps } from '../src';
 import { injectRunAllTimers } from './utils/common';
+import { fireEvent, render } from '@testing-library/react';
 
 describe('Select.Field', () => {
   injectRunAllTimers(jest);
@@ -20,7 +19,7 @@ describe('Select.Field', () => {
   const OPTION_2 = { bambooLabel: 'Little', bambooValue: 'little' };
 
   function mountSelect(props?: Partial<SelectProps<any>>) {
-    return mount(
+    return render(
       <Select
         open
         options={
@@ -45,34 +44,34 @@ describe('Select.Field', () => {
     const onChange = jest.fn();
     const onSelect = jest.fn();
 
-    const wrapper = mountSelect({ onChange, onSelect });
+    const { container } = mountSelect({ onChange, onSelect });
 
     act(() => {
       jest.runAllTimers();
     });
 
     // Label match
-    expect(wrapper.find('.rc-select-item-group').text()).toEqual('Bamboo');
-    expect(wrapper.find('.rc-select-item-option').first().text()).toEqual('Light');
-    expect(wrapper.find('.rc-select-item-option').last().text()).toEqual('Little');
+    expect(container.querySelector('.rc-select-item-group').textContent).toEqual('Bamboo');
+    expect(container.querySelector('.rc-select-item-option').textContent).toEqual('Light');
+    expect(container.querySelectorAll('.rc-select-item-option')[1].textContent).toEqual('Little');
 
     // Click
-    wrapper.find('.rc-select-item-option-content').last().simulate('click');
+    fireEvent.click(container.querySelectorAll('.rc-select-item-option-content')[1]);
     expect(onChange).toHaveBeenCalledWith('little', OPTION_2);
     expect(onSelect).toHaveBeenCalledWith('little', OPTION_2);
   });
 
   it('multiple', () => {
     const onChange = jest.fn();
-    const wrapper = mountSelect({ mode: 'multiple', onChange });
+    const { container } = mountSelect({ mode: 'multiple', onChange });
 
     // First one
-    wrapper.find('.rc-select-item-option-content').first().simulate('click');
+    fireEvent.click(container.querySelector('.rc-select-item-option-content')!);
     expect(onChange).toHaveBeenCalledWith(['light'], [OPTION_1]);
 
     // Last one
     onChange.mockReset();
-    wrapper.find('.rc-select-item-option-content').last().simulate('click');
+    fireEvent.click(container.querySelectorAll('.rc-select-item-option-content')[1]);
     expect(onChange).toHaveBeenCalledWith(['light', 'little'], [OPTION_1, OPTION_2]);
   });
 });

@@ -12,16 +12,16 @@ class Test extends React.Component {
     value: undefined,
   };
 
-  onChange = value => {
+  onChange = (value) => {
     console.log('select ', value);
     this.setState({
       value,
     });
   };
 
-  fetchData = value => {
+  fetchData = (value) => {
     if (value) {
-      fetch(value, data => {
+      fetch(value, (data) => {
         this.setState({
           data,
         });
@@ -42,7 +42,7 @@ class Test extends React.Component {
 
   render() {
     const { data, value, disabled } = this.state;
-    const options = data.map(d => (
+    const options = data.map((d) => (
       <Option key={d.value}>
         <i>{d.text}</i>
       </Option>

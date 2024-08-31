@@ -6,11 +6,13 @@ import { convertChildrenToData } from '../utils/legacyUtil';
  * Parse `children` to `options` if `options` is not provided.
  * Then flatten the `options`.
  */
-export default function useOptions<OptionType>(
+const useOptions = <OptionType>(
   options: OptionType[],
   children: React.ReactNode,
   fieldNames: FieldNames,
-) {
+  optionFilterProp: string,
+  optionLabelProp: string,
+) => {
   return React.useMemo(() => {
     let mergedOptions = options;
     const childrenAsData = !options;
@@ -22,18 +24,32 @@ export default function useOptions<OptionType>(
     const valueOptions = new Map<RawValueType, OptionType>();
     const labelOptions = new Map<React.ReactNode, OptionType>();
 
-    function dig(optionList: OptionType[], isChildren = false) {
+    const setLabelOptions = (
+      labelOptionsMap: Map<React.ReactNode, OptionType>,
+      option: OptionType,
+      key: string | number,
+    ) => {
+      if (key && typeof key === 'string') {
+        labelOptionsMap.set(option[key], option);
+      }
+    };
+
+    const dig = (optionList: OptionType[], isChildren = false) => {
       // for loop to speed up collection speed
       for (let i = 0; i < optionList.length; i += 1) {
         const option = optionList[i];
         if (!option[fieldNames.options] || isChildren) {
           valueOptions.set(option[fieldNames.value], option);
-          labelOptions.set(option[fieldNames.label], option);
+          setLabelOptions(labelOptions, option, fieldNames.label);
+          // https://github.com/ant-design/ant-design/issues/35304
+          setLabelOptions(labelOptions, option, optionFilterProp);
+          setLabelOptions(labelOptions, option, optionLabelProp);
         } else {
           dig(option[fieldNames.options], true);
         }
       }
-    }
+    };
+
     dig(mergedOptions);
 
     return {
@@ -41,5 +57,7 @@ export default function useOptions<OptionType>(
       valueOptions,
       labelOptions,
     };
-  }, [options, children, fieldNames]);
-}
+  }, [options, children, fieldNames, optionFilterProp, optionLabelProp]);
+};
+
+export default useOptions;

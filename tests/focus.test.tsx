@@ -1,7 +1,6 @@
-import { mount } from 'enzyme';
-import React from 'react';
-import { act } from 'react-dom/test-utils';
+import React, { useState, act } from 'react';
 import Select from '../src';
+import { fireEvent, render } from '@testing-library/react';
 
 describe('Select.Focus', () => {
   it('disabled should reset focused', () => {
@@ -10,23 +9,60 @@ describe('Select.Focus', () => {
 
     jest.clearAllTimers();
 
-    const wrapper = mount(<Select />);
+    const { container, rerender } = render(<Select />);
 
     // Focus
-    wrapper.find('input').simulate('focus');
+    fireEvent.focus(container.querySelector('input'));
     act(() => {
       jest.runAllTimers();
-      wrapper.update();
     });
-    expect(wrapper.exists('.rc-select-focused')).toBeTruthy();
+    expect(container.querySelector('.rc-select-focused')).toBeTruthy();
 
     // Disabled
-    wrapper.setProps({ disabled: true });
+    rerender(<Select disabled />);
     act(() => {
       jest.runAllTimers();
-      wrapper.update();
     });
-    expect(wrapper.exists('.rc-select-focused')).toBeFalsy();
+    expect(container.querySelector('.rc-select-focused')).toBeFalsy();
+
+    jest.useRealTimers();
+  });
+
+  it('after onBlur is triggered the focused does not need to be reset', () => {
+    jest.useFakeTimers();
+
+    const onFocus = jest.fn();
+
+    const Demo: React.FC = () => {
+      const [disabled, setDisabled] = useState(false);
+      return (
+        <>
+          <Select disabled={disabled} onFocus={onFocus} onBlur={() => setDisabled(true)} />
+          <button onClick={() => setDisabled(false)} />
+        </>
+      );
+    };
+
+    const { container } = render(<Demo />);
+
+    fireEvent.focus(container.querySelector('input'));
+    jest.runAllTimers();
+
+    // trigger disabled
+    fireEvent.blur(container.querySelector('input'));
+    jest.runAllTimers();
+
+    // reset focused
+    onFocus.mockReset();
+
+    expect(container.querySelector('.rc-select-disabled')).toBeTruthy();
+
+    // reset disabled
+    fireEvent.click(container.querySelector('button'));
+    fireEvent.focus(container.querySelector('input'));
+    jest.runAllTimers();
+
+    expect(onFocus).toHaveBeenCalled();
 
     jest.useRealTimers();
   });
@@ -38,11 +74,11 @@ describe('Select.Focus', () => {
     jest.clearAllTimers();
 
     (document.body.style as any).msTouchAction = true;
-    const wrapper = mount(<Select mode="tags" value="bamboo" />);
+    const { container } = render(<Select mode="tags" value="bamboo" />);
 
-    const focusFn = jest.spyOn(wrapper.find('input').instance(), 'focus' as any);
+    const focusFn = jest.spyOn(container.querySelector('input'), 'focus');
 
-    wrapper.find('.rc-select-selector').simulate('click');
+    fireEvent.click(container.querySelector('.rc-select-selector'));
     jest.runAllTimers();
 
     expect(focusFn).toHaveBeenCalled();

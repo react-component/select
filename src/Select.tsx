@@ -29,24 +29,32 @@
  * - `combobox` mode not support `optionLabelProp`
  */
 
-import * as React from 'react';
-import warning from 'rc-util/lib/warning';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
+import warning from 'rc-util/lib/warning';
+import * as React from 'react';
+import type {
+  BaseSelectProps,
+  BaseSelectPropsWithoutPrivate,
+  BaseSelectRef,
+  DisplayInfoType,
+  DisplayValueType,
+  RenderNode,
+} from './BaseSelect';
 import BaseSelect, { isMultiple } from './BaseSelect';
-import type { DisplayValueType, RenderNode } from './BaseSelect';
-import OptionList from './OptionList';
-import Option from './Option';
 import OptGroup from './OptGroup';
-import type { BaseSelectRef, BaseSelectPropsWithoutPrivate, BaseSelectProps } from './BaseSelect';
-import useOptions from './hooks/useOptions';
+import Option from './Option';
+import OptionList from './OptionList';
 import SelectContext from './SelectContext';
-import useId from './hooks/useId';
-import useRefFunc from './hooks/useRefFunc';
-import { fillFieldNames, flattenOptions, injectPropsWithOption } from './utils/valueUtil';
-import warningProps from './utils/warningPropsUtil';
-import { toArray } from './utils/commonUtil';
-import useFilterOptions from './hooks/useFilterOptions';
+import type { SelectContextProps } from './SelectContext';
 import useCache from './hooks/useCache';
+import useFilterOptions from './hooks/useFilterOptions';
+import useId from './hooks/useId';
+import useOptions from './hooks/useOptions';
+import useRefFunc from './hooks/useRefFunc';
+import type { FlattenOptionData } from './interface';
+import { hasValue, isComboNoValue, toArray } from './utils/commonUtil';
+import { fillFieldNames, flattenOptions, injectPropsWithOption } from './utils/valueUtil';
+import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
 
 const OMIT_DOM_PROPS = ['inputValue'];
 
@@ -77,23 +85,29 @@ export type FilterFunc<OptionType> = (inputValue: string, option?: OptionType) =
 export interface FieldNames {
   value?: string;
   label?: string;
+  groupLabel?: string;
   options?: string;
 }
 
 export interface BaseOptionType {
   disabled?: boolean;
+  className?: string;
+  title?: string;
   [name: string]: any;
 }
 
 export interface DefaultOptionType extends BaseOptionType {
-  label: React.ReactNode;
+  label?: React.ReactNode;
   value?: string | number | null;
   children?: Omit<DefaultOptionType, 'children'>[];
 }
 
-export type SelectHandler<ValueType = any, OptionType extends BaseOptionType = DefaultOptionType> =
-  | ((value: RawValueType | LabelInValueType, option: OptionType) => void)
-  | ((value: ValueType, option: OptionType) => void);
+export type SelectHandler<ValueType, OptionType extends BaseOptionType = DefaultOptionType> = (
+  value: ValueType,
+  option: OptionType,
+) => void;
+
+type ArrayElementType<T> = T extends (infer E)[] ? E : T;
 
 export interface SelectProps<ValueType = any, OptionType extends BaseOptionType = DefaultOptionType>
   extends BaseSelectPropsWithoutPrivate {
@@ -113,8 +127,8 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   autoClearSearchValue?: boolean;
 
   // >>> Select
-  onSelect?: SelectHandler<ValueType, OptionType>;
-  onDeselect?: SelectHandler<ValueType, OptionType>;
+  onSelect?: SelectHandler<ArrayElementType<ValueType>, OptionType>;
+  onDeselect?: SelectHandler<ArrayElementType<ValueType>, OptionType>;
 
   // >>> Options
   /**
@@ -123,15 +137,21 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
    * It's by design.
    */
   filterOption?: boolean | FilterFunc<OptionType>;
-  filterSort?: (optionA: OptionType, optionB: OptionType) => number;
+  filterSort?: (optionA: OptionType, optionB: OptionType, info: { searchValue: string }) => number;
   optionFilterProp?: keyof OptionType;
   optionLabelProp?: keyof OptionType;
   children?: React.ReactNode;
   options?: OptionType[];
+  optionRender?: (
+    oriOption: FlattenOptionData<OptionType>,
+    info: { index: number },
+  ) => React.ReactNode;
   defaultActiveFirstOption?: boolean;
   virtual?: boolean;
+  direction?: 'ltr' | 'rtl';
   listHeight?: number;
   listItemHeight?: number;
+  labelRender?: (props: LabelInValueType) => React.ReactNode;
 
   // >>> Icon
   menuItemSelectedIcon?: RenderNode;
@@ -140,6 +160,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   labelInValue?: boolean;
   value?: ValueType | null;
   defaultValue?: ValueType | null;
+  maxCount?: number;
   onChange?: (value: ValueType, option: OptionType | OptionType[]) => void;
 }
 
@@ -147,8 +168,8 @@ function isRawValue(value: DraftValueType): value is RawValueType {
   return !value || typeof value !== 'object';
 }
 
-const Select = React.forwardRef(
-  (props: SelectProps<any, DefaultOptionType>, ref: React.Ref<BaseSelectRef>) => {
+const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionType>>(
+  (props, ref) => {
     const {
       id,
       mode,
@@ -173,18 +194,22 @@ const Select = React.forwardRef(
       optionFilterProp,
       optionLabelProp,
       options,
+      optionRender,
       children,
       defaultActiveFirstOption,
       menuItemSelectedIcon,
       virtual,
+      direction,
       listHeight = 200,
       listItemHeight = 20,
+      labelRender,
 
       // Value
       value,
       defaultValue,
       labelInValue,
       onChange,
+      maxCount,
 
       ...restProps
     } = props;
@@ -219,7 +244,13 @@ const Select = React.forwardRef(
     });
 
     // =========================== Option ===========================
-    const parsedOptions = useOptions(options, children, mergedFieldNames);
+    const parsedOptions = useOptions(
+      options,
+      children,
+      mergedFieldNames,
+      optionFilterProp,
+      optionLabelProp,
+    );
     const { valueOptions, labelOptions, options: mergedOptions } = parsedOptions;
 
     // ========================= Wrap Value =========================
@@ -234,6 +265,7 @@ const Select = React.forwardRef(
           let rawLabel: React.ReactNode;
           let rawKey: React.Key;
           let rawDisabled: boolean | undefined;
+          let rawTitle: string;
 
           // Fill label & value
           if (isRawValue(val)) {
@@ -241,7 +273,7 @@ const Select = React.forwardRef(
           } else {
             rawKey = val.key;
             rawLabel = val.label;
-            rawValue = val.value ?? rawKey;
+            rawValue = val.value ?? (rawKey as RawValueType);
           }
 
           const option = valueOptions.get(rawValue);
@@ -251,11 +283,17 @@ const Select = React.forwardRef(
               rawLabel = option?.[optionLabelProp || mergedFieldNames.label];
             if (rawKey === undefined) rawKey = option?.key ?? rawValue;
             rawDisabled = option?.disabled;
+            rawTitle = option?.title;
 
             // Warning if label not same as provided
-            if (process.env.NODE_ENV !== 'production' && !isRawValue(val)) {
+            if (process.env.NODE_ENV !== 'production' && !optionLabelProp) {
               const optionLabel = option?.[mergedFieldNames.label];
-              if (optionLabel !== undefined && optionLabel !== rawLabel) {
+              if (
+                optionLabel !== undefined &&
+                !React.isValidElement(optionLabel) &&
+                !React.isValidElement(rawLabel) &&
+                optionLabel !== rawLabel
+              ) {
                 warning(false, '`label` of `value` is not same as `label` in Select options.');
               }
             }
@@ -266,6 +304,7 @@ const Select = React.forwardRef(
             value: rawValue,
             key: rawKey,
             disabled: rawDisabled,
+            title: rawTitle,
           };
         });
       },
@@ -279,15 +318,16 @@ const Select = React.forwardRef(
 
     // Merged value with LabelValueType
     const rawLabeledValues = React.useMemo(() => {
-      const values = convert2LabelValues(internalValue);
+      const newInternalValue = multiple && internalValue === null ? [] : internalValue;
+      const values = convert2LabelValues(newInternalValue);
 
-      // combobox no need save value when it's empty
-      if (mode === 'combobox' && !values[0]?.value) {
+      // combobox no need save value when it's no value (exclude value equal 0)
+      if (mode === 'combobox' && isComboNoValue(values[0]?.value)) {
         return [];
       }
 
       return values;
-    }, [internalValue, convert2LabelValues, mode]);
+    }, [internalValue, convert2LabelValues, mode, multiple]);
 
     // Fill label with cache to avoid option remove
     const [mergedValues, getMixedOption] = useCache(rawLabeledValues, valueOptions);
@@ -307,9 +347,9 @@ const Select = React.forwardRef(
 
       return mergedValues.map((item) => ({
         ...item,
-        label: item.label ?? item.value,
+        label: (typeof labelRender === 'function' ? labelRender(item) : item.label) ?? item.value,
       }));
-    }, [mode, mergedValues]);
+    }, [mode, mergedValues, labelRender]);
 
     /** Convert `displayValues` to raw value type set */
     const rawValues = React.useMemo(
@@ -320,10 +360,7 @@ const Select = React.forwardRef(
     React.useEffect(() => {
       if (mode === 'combobox') {
         const strValue = mergedValues[0]?.value;
-
-        if (strValue !== undefined && strValue !== null) {
-          setSearchValue(String(strValue));
-        }
+        setSearchValue(hasValue(strValue) ? String(strValue) : '');
       }
     }, [mergedValues]);
 
@@ -380,22 +417,37 @@ const Select = React.forwardRef(
       ) {
         return filteredOptions;
       }
-
+      // ignore when search value equal select input value
+      if (filteredOptions.some((item) => item[mergedFieldNames.value] === mergedSearchValue)) {
+        return filteredOptions;
+      }
       // Fill search value as option
       return [createTagOption(mergedSearchValue), ...filteredOptions];
-    }, [createTagOption, optionFilterProp, mode, filteredOptions, mergedSearchValue]);
+    }, [
+      createTagOption,
+      optionFilterProp,
+      mode,
+      filteredOptions,
+      mergedSearchValue,
+      mergedFieldNames,
+    ]);
 
     const orderedFilteredOptions = React.useMemo(() => {
       if (!filterSort) {
         return filledSearchOptions;
       }
 
-      return [...filledSearchOptions].sort((a, b) => filterSort(a, b));
-    }, [filledSearchOptions, filterSort]);
+      return [...filledSearchOptions].sort((a, b) =>
+        filterSort(a, b, { searchValue: mergedSearchValue }),
+      );
+    }, [filledSearchOptions, filterSort, mergedSearchValue]);
 
     const displayOptions = React.useMemo(
       () =>
-        flattenOptions(orderedFilteredOptions, { fieldNames: mergedFieldNames, childrenAsData }),
+        flattenOptions(orderedFilteredOptions, {
+          fieldNames: mergedFieldNames,
+          childrenAsData,
+        }),
       [orderedFilteredOptions, mergedFieldNames, childrenAsData],
     );
 
@@ -442,7 +494,7 @@ const Select = React.forwardRef(
     );
 
     // ========================= OptionList =========================
-    const triggerSelect = (val: RawValueType, selected: boolean) => {
+    const triggerSelect = (val: RawValueType, selected: boolean, type?: DisplayInfoType) => {
       const getSelectEnt = (): [RawValueType | LabelInValueType, DefaultOptionType] => {
         const option = getMixedOption(val);
         return [
@@ -450,7 +502,7 @@ const Select = React.forwardRef(
             ? {
                 label: option?.[mergedFieldNames.label],
                 value: val,
-                key: option.key ?? val,
+                key: option?.key ?? val,
               }
             : val,
           injectPropsWithOption(option),
@@ -460,7 +512,7 @@ const Select = React.forwardRef(
       if (selected && onSelect) {
         const [wrappedValue, option] = getSelectEnt();
         onSelect(wrappedValue, option);
-      } else if (!selected && onDeselect) {
+      } else if (!selected && onDeselect && type !== 'clear') {
         const [wrappedValue, option] = getSelectEnt();
         onDeselect(wrappedValue, option);
       }
@@ -496,10 +548,11 @@ const Select = React.forwardRef(
     // BaseSelect display values change
     const onDisplayValuesChange: BaseSelectProps['onDisplayValuesChange'] = (nextValues, info) => {
       triggerChange(nextValues);
+      const { type, values } = info;
 
-      if (info.type === 'remove' || info.type === 'clear') {
-        info.values.forEach((item) => {
-          triggerSelect(item.value, false);
+      if (type === 'remove' || type === 'clear') {
+        values.forEach((item) => {
+          triggerSelect(item.value, false, type);
         });
       }
     };
@@ -552,7 +605,7 @@ const Select = React.forwardRef(
     };
 
     // ========================== Context ===========================
-    const selectContext = React.useMemo(() => {
+    const selectContext = React.useMemo<SelectContextProps>(() => {
       const realVirtual = virtual !== false && dropdownMatchSelectWidth !== false;
       return {
         ...parsedOptions,
@@ -564,11 +617,15 @@ const Select = React.forwardRef(
         rawValues,
         fieldNames: mergedFieldNames,
         virtual: realVirtual,
+        direction,
         listHeight,
         listItemHeight,
         childrenAsData,
+        maxCount,
+        optionRender,
       };
     }, [
+      maxCount,
       parsedOptions,
       displayOptions,
       onActiveValue,
@@ -579,14 +636,17 @@ const Select = React.forwardRef(
       mergedFieldNames,
       virtual,
       dropdownMatchSelectWidth,
+      direction,
       listHeight,
       listItemHeight,
       childrenAsData,
+      optionRender,
     ]);
 
     // ========================== Warning ===========================
     if (process.env.NODE_ENV !== 'production') {
       warningProps(props);
+      warningNullOptions(mergedOptions, mergedFieldNames);
     }
 
     // ==============================================================
@@ -605,9 +665,12 @@ const Select = React.forwardRef(
           // >>> Values
           displayValues={displayValues}
           onDisplayValuesChange={onDisplayValuesChange}
+          // >>> Trigger
+          direction={direction}
           // >>> Search
           searchValue={mergedSearchValue}
           onSearch={onInternalSearch}
+          autoClearSearchValue={autoClearSearchValue}
           onSearchSplit={onInternalSearchSplit}
           dropdownMatchSelectWidth={dropdownMatchSelectWidth}
           // >>> OptionList
@@ -630,9 +693,8 @@ const TypedSelect = Select as unknown as (<
   ValueType = any,
   OptionType extends BaseOptionType | DefaultOptionType = DefaultOptionType,
 >(
-  props: React.PropsWithChildren<SelectProps<ValueType, OptionType>> & {
-    ref?: React.Ref<BaseSelectRef>;
-  },
+  props: React.PropsWithChildren<SelectProps<ValueType, OptionType>> &
+    React.RefAttributes<BaseSelectRef>,
 ) => React.ReactElement) & {
   Option: typeof Option;
   OptGroup: typeof OptGroup;

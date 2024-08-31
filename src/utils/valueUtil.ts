@@ -20,13 +20,19 @@ function getKey(data: BaseOptionType, index: number) {
   return `rc-index-key-${index}`;
 }
 
+export function isValidCount(value?: number) {
+  return typeof value !== 'undefined' && !Number.isNaN(value);
+}
+
 export function fillFieldNames(fieldNames: FieldNames | undefined, childrenAsData: boolean) {
-  const { label, value, options } = fieldNames || {};
+  const { label, value, options, groupLabel } = fieldNames || {};
+  const mergedLabel = label || (childrenAsData ? 'children' : 'label');
 
   return {
-    label: label || (childrenAsData ? 'children' : 'label'),
+    label: mergedLabel,
     value: value || 'value',
     options: options || 'options',
+    groupLabel: groupLabel || mergedLabel,
   };
 }
 
@@ -45,12 +51,15 @@ export function flattenOptions<OptionType extends BaseOptionType = DefaultOption
     label: fieldLabel,
     value: fieldValue,
     options: fieldOptions,
+    groupLabel,
   } = fillFieldNames(fieldNames, false);
 
   function dig(list: OptionType[], isGroupOption: boolean) {
-    list.forEach((data) => {
-      const label = data[fieldLabel];
+    if (!Array.isArray(list)) {
+      return;
+    }
 
+    list.forEach((data) => {
       if (isGroupOption || !(fieldOptions in data)) {
         const value = data[fieldValue];
 
@@ -59,11 +68,11 @@ export function flattenOptions<OptionType extends BaseOptionType = DefaultOption
           key: getKey(data, flattenList.length),
           groupOption: isGroupOption,
           data,
-          label,
+          label: data[fieldLabel],
           value,
         });
       } else {
-        let grpLabel = label;
+        let grpLabel = data[groupLabel];
         if (grpLabel === undefined && childrenAsData) {
           grpLabel = data.label;
         }
@@ -89,7 +98,7 @@ export function flattenOptions<OptionType extends BaseOptionType = DefaultOption
 /**
  * Inject `props` into `option` for legacy usage
  */
-export function injectPropsWithOption<T>(option: T): T {
+export function injectPropsWithOption<T extends object>(option: T): T {
   const newOption = { ...option };
   if (!('props' in newOption)) {
     Object.defineProperty(newOption, 'props', {
@@ -106,26 +115,25 @@ export function injectPropsWithOption<T>(option: T): T {
   return newOption;
 }
 
-export function getSeparatedContent(text: string, tokens: string[]): string[] {
+export const getSeparatedContent = (text: string, tokens: string[], end?: number): string[] => {
   if (!tokens || !tokens.length) {
     return null;
   }
-
   let match = false;
-
-  function separate(str: string, [token, ...restTokens]: string[]) {
+  const separate = (str: string, [token, ...restTokens]: string[]): string[] => {
     if (!token) {
       return [str];
     }
-
     const list = str.split(token);
     match = match || list.length > 1;
-
     return list
       .reduce((prevList, unitStr) => [...prevList, ...separate(unitStr, restTokens)], [])
-      .filter((unit) => unit);
-  }
-
+      .filter(Boolean);
+  };
   const list = separate(text, tokens);
-  return match ? list : null;
-}
+  if (match) {
+    return typeof end !== 'undefined' ? list.slice(0, end) : list;
+  } else {
+    return null;
+  }
+};
