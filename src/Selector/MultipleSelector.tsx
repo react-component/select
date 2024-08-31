@@ -138,7 +138,14 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
     };
     return (
       <span onMouseDown={onMouseDown}>
-        {tagRender({ label: content, value, disabled: itemDisabled, closable, onClose, isMaxTag: !!isMaxTag })}
+        {tagRender({
+          label: content,
+          value,
+          disabled: itemDisabled,
+          closable,
+          onClose,
+          isMaxTag: !!isMaxTag,
+        })}
       </span>
     );
   };

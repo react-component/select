@@ -60,7 +60,7 @@ class Test extends React.Component {
             placeholder="please select"
             onChange={this.onChange}
             onFocus={() => console.log('focus')}
-            onBlur={v => console.log('blur', v)}
+            onBlur={(v) => console.log('blur', v)}
             tokenSeparators={[' ', ',']}
           >
             {children}

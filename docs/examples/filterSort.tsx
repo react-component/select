@@ -22,7 +22,7 @@ const Test = () => (
       filterSort={sorterByLabel}
       optionFilterProp="label"
       options={incidencesStateResource}
-     />
+    />
     <h3> without filter sort </h3>
     <Select
       showSearch
