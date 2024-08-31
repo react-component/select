@@ -8,15 +8,9 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "@@/*": [
-        ".dumi/tmp/*"
-      ],
-      "rc-select": [
-        "src/index.ts"
-      ]
-    },
+      "@/*": ["src/*"],
+      "@@/*": [".dumi/tmp/*"],
+      "rc-select": ["src/index.ts"]
+    }
   }
 }

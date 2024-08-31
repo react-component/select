@@ -615,14 +615,14 @@ describe('Select.Combobox', () => {
           <Option value="2">2</Option>
         </Select>,
       );
-      
+
       const selectorEle = container.querySelector('.rc-select-selector');
-  
+
       const mouseDownEvent = createEvent.mouseDown(selectorEle);
       mouseDownEvent.preventDefault = preventDefault;
       fireEvent(selectorEle, mouseDownEvent);
       expect(preventDefault).toHaveBeenCalled();
-    })
+    });
 
     it('should not prevent default behavior when mode is combobox and it is disabled', () => {
       const preventDefault = jest.fn();
@@ -632,14 +632,13 @@ describe('Select.Combobox', () => {
           <Option value="2">2</Option>
         </Select>,
       );
-      
+
       const selectorEle = container.querySelector('.rc-select-selector');
-  
+
       const mouseDownEvent = createEvent.mouseDown(selectorEle);
       mouseDownEvent.preventDefault = preventDefault;
       fireEvent(selectorEle, mouseDownEvent);
       expect(preventDefault).not.toHaveBeenCalled();
-    })
+    });
   });
-  
 });

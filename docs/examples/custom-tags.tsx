@@ -4,7 +4,6 @@ import Select, { Option } from 'rc-select';
 import '../../assets/index.less';
 import type { CustomTagProps } from '@/BaseSelect';
 
-
 const children = [];
 for (let i = 10; i < 36; i += 1) {
   children.push(

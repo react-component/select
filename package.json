@@ -35,6 +35,7 @@
     "prepare": "husky && dumi setup",
     "compile": "father build && lessc assets/index.less assets/index.css",
     "prepublishOnly": "npm run compile && np --yolo --no-publish",
+    "prettier": "prettier --write --ignore-unknown .",
     "lint": "eslint src/ docs/examples/ --ext .tsx,.ts,.jsx,.js",
     "test": "rc-test",
     "tsc": "tsc --noEmit",
