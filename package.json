@@ -32,13 +32,16 @@
   "scripts": {
     "start": "dumi dev",
     "build": "dumi build",
-    "prepare": "dumi setup",
+    "prepare": "husky && dumi setup",
     "compile": "father build && lessc assets/index.less assets/index.css",
     "prepublishOnly": "npm run compile && np --yolo --no-publish",
     "lint": "eslint src/ docs/examples/ --ext .tsx,.ts,.jsx,.js",
     "test": "rc-test",
     "tsc": "tsc --noEmit",
     "now-build": "npm run build"
+  },
+  "lint-staged": {
+    "*": "prettier --write --ignore-unknown"
   },
   "peerDependencies": {
     "react": "*",
@@ -67,8 +70,10 @@
     "eslint-plugin-jest": "^27.6.0",
     "eslint-plugin-unicorn": "^50.0.1",
     "father": "^4.0.0",
+    "husky": "^9.1.5",
     "jsonp": "^0.2.1",
     "less": "^4.2.0",
+    "lint-staged": "^15.2.9",
     "np": "^9.2.0",
     "prettier": "^3.1.1",
     "querystring": "^0.2.1",
