@@ -1947,6 +1947,41 @@ describe('Select.Basic', () => {
       'Communicated',
     );
   });
+  it('filterSort should work with search value when grouping', () => {
+    const { container } = render(
+      <Select
+        open
+        showSearch
+        searchValue="entry"
+        style={{ width: 100 }}
+        placeholder="Search to Select"
+        optionFilterProp="label"
+        filterSort={(optionA, optionB, info) => {
+          if (!info.searchValue) return 0;
+          const labelA = (optionA?.label ?? '').toLowerCase();
+          const labelB = (optionB?.label ?? '').toLowerCase();
+          const matchA = labelA.startsWith(info.searchValue);
+          const matchB = labelB.startsWith(info.searchValue);
+          if (matchA && !matchB) return -1;
+          if (!matchA && matchB) return 1;
+          return labelA.localeCompare(labelB);
+        }}
+        options={[
+          {
+            value: 'group1',
+            label: 'group1',
+            options: [
+              { label: 'Entry1', value: 'Entry1' },
+              { label: 'Entry2', value: 'Entry2' },
+              { label: 'Entry3', value: 'Entry3' },
+              { label: 'Entry', value: 'Entry' },
+            ],
+          },
+        ]}
+      />,
+    );
+    expect(container.querySelector('.rc-select-item-option-grouped').textContent).toBe('Entry');
+  });
 
   it('correctly handles the `tabIndex` prop', () => {
     const { container } = render(<Select tabIndex={0} />);
