@@ -431,8 +431,8 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       mergedSearchValue,
       mergedFieldNames,
     ]);
-    const sorter = (options: DefaultOptionType[]) => {
-      const sortedOptions = [...options].sort((a, b) =>
+    const sorter = (inputOptions: DefaultOptionType[]) => {
+      const sortedOptions = [...inputOptions].sort((a, b) =>
         filterSort(a, b, { searchValue: mergedSearchValue }),
       );
       return sortedOptions.map((item) => {
