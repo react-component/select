@@ -442,7 +442,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
             options: sorter(item.options),
           };
         }
-        return { ...item };
+        return item;
       });
     };
     const orderedFilteredOptions = React.useMemo(() => {
