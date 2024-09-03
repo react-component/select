@@ -431,15 +431,26 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       mergedSearchValue,
       mergedFieldNames,
     ]);
-
+    const sorter = (inputOptions: DefaultOptionType[]) => {
+      const sortedOptions = [...inputOptions].sort((a, b) =>
+        filterSort(a, b, { searchValue: mergedSearchValue }),
+      );
+      return sortedOptions.map((item) => {
+        if (Array.isArray(item.options)) {
+          return {
+            ...item,
+            options: item.options.length > 0 ? sorter(item.options) : item.options,
+          };
+        }
+        return item;
+      });
+    };
     const orderedFilteredOptions = React.useMemo(() => {
       if (!filterSort) {
         return filledSearchOptions;
       }
 
-      return [...filledSearchOptions].sort((a, b) =>
-        filterSort(a, b, { searchValue: mergedSearchValue }),
-      );
+      return sorter(filledSearchOptions);
     }, [filledSearchOptions, filterSort, mergedSearchValue]);
 
     const displayOptions = React.useMemo(
