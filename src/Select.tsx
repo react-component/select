@@ -439,7 +439,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
         if (Array.isArray(item.options)) {
           return {
             ...item,
-            options: sorter(item.options),
+            options: item.options.length > 0 ? sorter(item.options) : item.options,
           };
         }
         return item;
