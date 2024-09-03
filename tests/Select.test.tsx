@@ -1947,6 +1947,7 @@ describe('Select.Basic', () => {
       'Communicated',
     );
   });
+
   it('filterSort should work with search value when grouping', () => {
     const { container } = render(
       <Select
