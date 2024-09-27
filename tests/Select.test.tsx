@@ -1048,6 +1048,39 @@ describe('Select.Basic', () => {
       expect(end).toBe(1);
       expect(cursorValue).toBe('1');
     });
+
+    it('Moving the cursor in TextArea does not display the listbox', () => {
+      const onKeyDown = jest.fn();
+      const onMouseDown = jest.fn();
+      const textareaRef = jest.fn();
+      const mouseDownPreventDefault = jest.fn();
+      const { container } = render(
+        <Select
+          mode="combobox"
+          value="abc\ndef"
+          ref={textareaRef}
+          getInputElement={() => (
+            <textarea rows={3} onKeyDown={onKeyDown} onMouseDown={onMouseDown} />
+          )}
+          options={[{ value: 'light' }, { value: 'bamboo' }]}
+          allowClear
+        />,
+      );
+
+      const textareaEle = container.querySelector('textarea');
+      toggleOpen(container);
+
+      const mouseDownEvent = createEvent.mouseDown(textareaEle);
+      mouseDownEvent.preventDefault = mouseDownPreventDefault;
+      fireEvent(textareaEle, mouseDownEvent);
+
+      keyDown(textareaEle, KeyCode.ENTER);
+
+      [KeyCode.LEFT, KeyCode.DOWN, KeyCode.RIGHT, KeyCode.UP].forEach((keyCode) => {
+        keyDown(textareaEle, keyCode);
+        expectOpen(container, false);
+      });
+    });
   });
 
   it('getRawInputElement for rc-cascader', () => {
