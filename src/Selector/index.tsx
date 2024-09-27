@@ -134,10 +134,14 @@ const Selector: React.ForwardRefRenderFunction<RefSelectorProps, SelectorProps> 
   // ====================== Input ======================
   const [getInputMouseDown, setInputMouseDown] = useLock(0);
 
-  const onInternalInputKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+  const onInternalInputKeyDown: React.KeyboardEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = (event) => {
     const { which } = event;
 
-    if (which === KeyCode.UP || which === KeyCode.DOWN) {
+    // Compatible with multiple lines in TextArea
+    const isTextAreaElement = inputRef.current instanceof HTMLTextAreaElement;
+    if (!isTextAreaElement && open && (which === KeyCode.UP || which === KeyCode.DOWN)) {
       event.preventDefault();
     }
 
@@ -150,7 +154,14 @@ const Selector: React.ForwardRefRenderFunction<RefSelectorProps, SelectorProps> 
       // So when enter is pressed, the tag's input value should be emitted here to let selector know
       onSearchSubmit?.((event.target as HTMLInputElement).value);
     }
-
+    // Move within the text box
+    if (
+      isTextAreaElement &&
+      !open &&
+      ~[KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT, KeyCode.RIGHT].indexOf(which)
+    ) {
+      return;
+    }
     if (isValidateOpenKey(which)) {
       onToggleOpen(true);
     }

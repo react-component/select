@@ -975,6 +975,79 @@ describe('Select.Basic', () => {
 
       expect(container.querySelector('input').getAttribute('type')).toEqual('email');
     });
+
+    it('move the cursor in the textarea', () => {
+      const onKeyDown = jest.fn();
+      const onChange = jest.fn();
+      const onMouseDown = jest.fn();
+      const onCompositionStart = jest.fn();
+      const onCompositionEnd = jest.fn();
+      const textareaRef = jest.fn();
+      const mouseDownPreventDefault = jest.fn();
+      const { container } = render(
+        <Select
+          mode="combobox"
+          ref={textareaRef}
+          getInputElement={() => (
+            <textarea
+              rows={3}
+              onKeyDown={onKeyDown}
+              onMouseDown={onMouseDown}
+              onCompositionStart={onCompositionStart}
+              onCompositionEnd={onCompositionEnd}
+              onChange={onChange}
+            />
+          )}
+          options={[{ value: 'light' }, { value: 'bamboo' }]}
+          allowClear
+        />,
+      );
+
+      const textareaEle = container.querySelector('textarea');
+      toggleOpen(container);
+
+      const mouseDownEvent = createEvent.mouseDown(textareaEle);
+      mouseDownEvent.preventDefault = mouseDownPreventDefault;
+      fireEvent(textareaEle, mouseDownEvent);
+
+      keyDown(textareaEle, KeyCode.NUM_ONE);
+      fireEvent.change(textareaEle, {
+        target: {
+          selectionStart: 1,
+          selectionEnd: 1,
+          value: '1',
+        },
+      });
+      keyDown(textareaEle, KeyCode.ENTER);
+      keyDown(textareaEle, KeyCode.ENTER);
+
+      keyDown(textareaEle, KeyCode.NUM_TWO);
+      fireEvent.change(textareaEle, {
+        target: {
+          selectionStart: 3,
+          selectionEnd: 3,
+          value: '1\n2',
+        },
+      });
+      keyDown(textareaEle, KeyCode.ENTER);
+
+      keyDown(textareaEle, KeyCode.UP);
+      fireEvent.change(textareaEle, {
+        target: {
+          selectionStart: 1,
+          selectionEnd: 1,
+        },
+      });
+
+      const start = textareaEle.selectionStart - 1;
+      const end = textareaEle.selectionEnd;
+      const cursorValue = textareaEle.value.substring(start, end);
+
+      expect(textareaEle.value).toBe('1\n2');
+      expect(start).toBe(0);
+      expect(end).toBe(1);
+      expect(cursorValue).toBe('1');
+    });
   });
 
   it('getRawInputElement for rc-cascader', () => {
