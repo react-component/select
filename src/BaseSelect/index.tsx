@@ -173,6 +173,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
 
   // >>> Icons
   allowClear?: boolean | { clearIcon?: RenderNode };
+  prefix?: React.ReactNode;
   suffixIcon?: RenderNode;
   /**
    * Clear all icon
@@ -259,6 +260,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
     // Icons
     allowClear,
+    prefix,
     suffixIcon,
     clearIcon,
 
@@ -795,6 +797,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
           inputElement={customizeInputElement}
           ref={selectorRef}
           id={id}
+          prefix={prefix}
           showSearch={mergedShowSearch}
           autoClearSearchValue={autoClearSearchValue}
           mode={mode}

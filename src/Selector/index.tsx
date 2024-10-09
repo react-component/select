@@ -72,6 +72,7 @@ export interface SelectorProps {
   disabled?: boolean;
   placeholder?: React.ReactNode;
   removeIcon?: RenderNode;
+  prefix?: React.ReactNode;
 
   // Tags
   maxTagCount?: number | 'responsive';
@@ -110,6 +111,7 @@ const Selector: React.ForwardRefRenderFunction<RefSelectorProps, SelectorProps> 
     showSearch,
     tokenWithEnter,
     disabled,
+    prefix,
 
     autoClearSearchValue,
 
@@ -284,6 +286,7 @@ const Selector: React.ForwardRefRenderFunction<RefSelectorProps, SelectorProps> 
       onClick={onClick}
       onMouseDown={onMouseDown}
     >
+      {prefix && <div className={`${prefixCls}-prefix`}>{prefix}</div>}
       {selectNode}
     </div>
   );
