@@ -121,6 +121,7 @@ export default () => (
 | showAction | actions trigger the dropdown to show | String[]? | - |
 | autoFocus | focus select after mount | boolean | - |
 | autoClearSearchValue | auto clear search input value when multiple select is selected/deselected | boolean | true |
+| prefix | specify the select prefix icon or text | ReactNode | - |
 | suffixIcon | specify the select arrow icon | ReactNode | - |
 | clearIcon | specify the clear icon | ReactNode | - |
 | removeIcon | specify the remove icon | ReactNode | - |

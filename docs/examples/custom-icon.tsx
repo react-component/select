@@ -103,6 +103,7 @@ class CustomIconComponent extends React.Component {
             value={value}
             mode="combobox"
             backfill
+            prefix="Foobar"
             suffixIcon={({ searchValue }) => {
               if (searchValue) {
                 return '😺';
@@ -193,6 +194,7 @@ class Test extends React.Component {
             onChange={this.onChange}
             onFocus={() => console.log('focus')}
             tokenSeparators={[' ', ',']}
+            prefix="Foobar"
             suffixIcon={getSvg(arrowPath)}
             clearIcon={getSvg(clearPath)}
             removeIcon={getSvg(clearPath)}

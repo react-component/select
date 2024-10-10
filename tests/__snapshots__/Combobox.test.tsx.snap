@@ -23,11 +23,11 @@ exports[`Select.Combobox renders controlled correctly 1`] = `
         type="search"
         value=""
       />
-    </span>
-    <span
-      class="rc-select-selection-placeholder"
-    >
-      Search
+      <span
+        class="rc-select-selection-placeholder"
+      >
+        Search
+      </span>
     </span>
   </div>
 </div>
@@ -56,11 +56,11 @@ exports[`Select.Combobox renders correctly 1`] = `
         type="search"
         value=""
       />
-    </span>
-    <span
-      class="rc-select-selection-placeholder"
-    >
-      Search
+      <span
+        class="rc-select-selection-placeholder"
+      >
+        Search
+      </span>
     </span>
   </div>
 </div>

@@ -72,6 +72,7 @@
 
       .@{select-prefix}-selection-search {
         width: 100%;
+        position: relative;
 
         &-input {
           width: 100%;
@@ -102,7 +103,6 @@
   // -------------- Multiple ---------------
   &-multiple .@{select-prefix}-selector {
     display: flex;
-    flex-wrap: wrap;
     padding: 1px;
     border: 1px solid #000;
 
@@ -122,7 +122,6 @@
     .@{select-prefix}-selection-overflow {
       display: flex;
       flex-wrap: wrap;
-      width: 100%;
 
       &-item {
         flex: none;

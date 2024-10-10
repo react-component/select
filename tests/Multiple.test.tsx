@@ -19,7 +19,7 @@ import {
   keyUp,
 } from './utils/common';
 import allowClearTest from './shared/allowClearTest';
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 describe('Select.Multiple', () => {
   injectRunAllTimers(jest);
@@ -372,6 +372,15 @@ describe('Select.Multiple', () => {
 
     rerender(renderDemo(<div>arrow</div>));
     expect(container.querySelector('.rc-select-arrow')).toBeTruthy();
+  });
+
+  it('show static prefix', () => {
+    render(<Select mode="multiple" value={['']} prefix="Foobar">
+      <Option value={1}>1</Option>
+      <Option value={2}>2</Option>
+    </Select>);
+
+    expect(screen.findByText('Foobar')).toBeTruthy();
   });
 
   it('block input when fast backspace', () => {
