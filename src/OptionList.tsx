@@ -124,8 +124,24 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
 
   // https://github.com/ant-design/ant-design/issues/34975
   const isSelected = React.useCallback(
-    (value: RawValueType) => rawValues.has(value) && mode !== 'combobox',
+    (value: RawValueType) => {
+      if (mode === 'combobox') {
+        return false;
+      }
+      return rawValues.has(value);
+    },
     [mode, [...rawValues].toString(), rawValues.size],
+  );
+
+  // https://github.com/ant-design/ant-design/issues/48036
+  const isAriaSelected = React.useCallback(
+    (value: RawValueType) => {
+      if (mode === 'combobox') {
+        return String(value).toLowerCase() === searchValue.toLowerCase();
+      }
+      return rawValues.has(value);
+    },
+    [mode, searchValue, [...rawValues].toString(), rawValues.size],
   );
 
   // Auto scroll to item position in single mode
@@ -275,7 +291,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
         {...attrs}
         key={index}
         {...getItemAriaProps(item, index)}
-        aria-selected={isSelected(value)}
+        aria-selected={isAriaSelected(value)}
       >
         {value}
       </div>
@@ -360,7 +376,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
             <div
               {...pickAttrs(passedProps)}
               {...(!virtual ? getItemAriaProps(item, itemIndex) : {})}
-              aria-selected={selected}
+              aria-selected={isAriaSelected(value)}
               className={optionClassName}
               title={optionTitle}
               onMouseMove={() => {
