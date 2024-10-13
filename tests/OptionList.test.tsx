@@ -202,6 +202,46 @@ describe('OptionList', () => {
     expect(onSelect).toHaveBeenCalledWith('1', expect.objectContaining({ selected: true }));
   });
 
+  it('should tab key select an active option', () => {
+    const onActiveValue = jest.fn();
+    const onSelect = jest.fn();
+    const toggleOpen = jest.fn();
+    const listRef = React.createRef<RefOptionListProps>();
+
+    render(
+      generateList({
+        options: [{ value: '1' }, { value: '2' }],
+        onActiveValue,
+        onSelect,
+        toggleOpen,
+        ref: listRef,
+      }),
+    );
+
+    act(() => {
+      toggleOpen(true);
+    });
+
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.DOWN } as any);
+    });
+
+    expect(onActiveValue).toHaveBeenCalledWith(
+      '2',
+      expect.anything(),
+      expect.objectContaining({ source: 'keyboard' }),
+    );
+
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.TAB } as any);
+    });
+
+    expect(onSelect).toHaveBeenCalledTimes(1);
+    expect(onSelect).toHaveBeenCalledWith('2', expect.objectContaining({ selected: true }));
+
+    expect(toggleOpen).toHaveBeenCalledWith(false);
+  });
+
   // mocked how we detect running platform in test environment
   it('special key operation on Mac', () => {
     const onActiveValue = jest.fn();

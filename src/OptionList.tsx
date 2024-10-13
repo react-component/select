@@ -215,7 +215,8 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
           break;
         }
 
-        // >>> Select
+        // >>> Select (Tab / Enter)
+        case KeyCode.TAB:
         case KeyCode.ENTER: {
           // value
           const item = memoFlattenOptions[activeIndex];
