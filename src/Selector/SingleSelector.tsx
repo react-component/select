@@ -77,7 +77,7 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
   }, [item, hasTextInput, placeholder, prefixCls]);
 
   return (
-    <>
+    <span className={`${prefixCls}-selection-wrap`}>
       <span className={`${prefixCls}-selection-search`}>
         <Input
           ref={inputRef}
@@ -121,7 +121,7 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
           {item.label}
         </span>
       ) : null}
-    </>
+    </span>
   );
 };
 

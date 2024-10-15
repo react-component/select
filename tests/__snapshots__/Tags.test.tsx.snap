@@ -8,94 +8,98 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
     <div
       class="rc-select-selector"
     >
-      <div
-        class="rc-select-selection-overflow"
+      <span
+        class="rc-select-selection-wrap"
       >
         <div
-          class="rc-select-selection-overflow-item"
-          style="opacity: 1;"
-        >
-          <span
-            class="rc-select-selection-item"
-            title="Jack"
-          >
-            <span
-              class="rc-select-selection-item-content"
-            >
-              Jack
-            </span>
-            <span
-              aria-hidden="true"
-              class="rc-select-selection-item-remove"
-              style="user-select: none;"
-              unselectable="on"
-            >
-              <span
-                class="rc-select-selection-item-remove-icon"
-              >
-                ×
-              </span>
-            </span>
-          </span>
-        </div>
-        <div
-          class="rc-select-selection-overflow-item"
-          style="opacity: 1;"
-        >
-          <span
-            class="rc-select-selection-item"
-            title="foo"
-          >
-            <span
-              class="rc-select-selection-item-content"
-            >
-              foo
-            </span>
-            <span
-              aria-hidden="true"
-              class="rc-select-selection-item-remove"
-              style="user-select: none;"
-              unselectable="on"
-            >
-              <span
-                class="rc-select-selection-item-remove-icon"
-              >
-                ×
-              </span>
-            </span>
-          </span>
-        </div>
-        <div
-          class="rc-select-selection-overflow-item rc-select-selection-overflow-item-suffix"
-          style="opacity: 1;"
+          class="rc-select-selection-overflow"
         >
           <div
-            class="rc-select-selection-search"
-            style="width: 0px;"
+            class="rc-select-selection-overflow-item"
+            style="opacity: 1;"
           >
-            <input
-              aria-activedescendant="rc_select_TEST_OR_SSR_list_1"
-              aria-autocomplete="list"
-              aria-controls="rc_select_TEST_OR_SSR_list"
-              aria-expanded="true"
-              aria-haspopup="listbox"
-              aria-owns="rc_select_TEST_OR_SSR_list"
-              autocomplete="off"
-              class="rc-select-selection-search-input"
-              id="rc_select_TEST_OR_SSR"
-              role="combobox"
-              type="search"
-              value=""
-            />
             <span
-              aria-hidden="true"
-              class="rc-select-selection-search-mirror"
+              class="rc-select-selection-item"
+              title="Jack"
             >
-               
+              <span
+                class="rc-select-selection-item-content"
+              >
+                Jack
+              </span>
+              <span
+                aria-hidden="true"
+                class="rc-select-selection-item-remove"
+                style="user-select: none;"
+                unselectable="on"
+              >
+                <span
+                  class="rc-select-selection-item-remove-icon"
+                >
+                  ×
+                </span>
+              </span>
             </span>
           </div>
+          <div
+            class="rc-select-selection-overflow-item"
+            style="opacity: 1;"
+          >
+            <span
+              class="rc-select-selection-item"
+              title="foo"
+            >
+              <span
+                class="rc-select-selection-item-content"
+              >
+                foo
+              </span>
+              <span
+                aria-hidden="true"
+                class="rc-select-selection-item-remove"
+                style="user-select: none;"
+                unselectable="on"
+              >
+                <span
+                  class="rc-select-selection-item-remove-icon"
+                >
+                  ×
+                </span>
+              </span>
+            </span>
+          </div>
+          <div
+            class="rc-select-selection-overflow-item rc-select-selection-overflow-item-suffix"
+            style="opacity: 1;"
+          >
+            <div
+              class="rc-select-selection-search"
+              style="width: 0px;"
+            >
+              <input
+                aria-activedescendant="rc_select_TEST_OR_SSR_list_1"
+                aria-autocomplete="list"
+                aria-controls="rc_select_TEST_OR_SSR_list"
+                aria-expanded="true"
+                aria-haspopup="listbox"
+                aria-owns="rc_select_TEST_OR_SSR_list"
+                autocomplete="off"
+                class="rc-select-selection-search-input"
+                id="rc_select_TEST_OR_SSR"
+                role="combobox"
+                type="search"
+                value=""
+              />
+              <span
+                aria-hidden="true"
+                class="rc-select-selection-search-mirror"
+              >
+                 
+              </span>
+            </div>
+          </div>
         </div>
-      </div>
+      </span>
     </div>
     <div
       class="rc-select-dropdown rc-select-dropdown-placement-bottomLeft"
@@ -235,42 +239,46 @@ exports[`Select.Tags max tag render not display maxTagPlaceholder if maxTagCount
   <div
     class="rc-select-selector"
   >
-    <div
-      class="rc-select-selection-overflow"
+    <span
+      class="rc-select-selection-wrap"
     >
       <div
-        class="rc-select-selection-overflow-item rc-select-selection-overflow-item-suffix"
-        style="opacity: 1;"
+        class="rc-select-selection-overflow"
       >
         <div
-          class="rc-select-selection-search"
-          style="width: 0px;"
+          class="rc-select-selection-overflow-item rc-select-selection-overflow-item-suffix"
+          style="opacity: 1;"
         >
-          <input
-            aria-autocomplete="list"
-            aria-controls="rc_select_TEST_OR_SSR_list"
-            aria-expanded="false"
-            aria-haspopup="listbox"
-            aria-owns="rc_select_TEST_OR_SSR_list"
-            autocomplete="off"
-            class="rc-select-selection-search-input"
-            id="rc_select_TEST_OR_SSR"
-            role="combobox"
-            type="search"
-            value=""
-          />
-          <span
-            aria-hidden="true"
-            class="rc-select-selection-search-mirror"
+          <div
+            class="rc-select-selection-search"
+            style="width: 0px;"
           >
-             
-          </span>
+            <input
+              aria-autocomplete="list"
+              aria-controls="rc_select_TEST_OR_SSR_list"
+              aria-expanded="false"
+              aria-haspopup="listbox"
+              aria-owns="rc_select_TEST_OR_SSR_list"
+              autocomplete="off"
+              class="rc-select-selection-search-input"
+              id="rc_select_TEST_OR_SSR"
+              role="combobox"
+              type="search"
+              value=""
+            />
+            <span
+              aria-hidden="true"
+              class="rc-select-selection-search-mirror"
+            >
+               
+            </span>
+          </div>
         </div>
       </div>
-    </div>
-    <span
-      class="rc-select-selection-placeholder"
-    />
+      <span
+        class="rc-select-selection-placeholder"
+      />
+    </span>
   </div>
 </div>
 `;
@@ -282,109 +290,113 @@ exports[`Select.Tags max tag render truncates tags by maxTagCount and show maxTa
   <div
     class="rc-select-selector"
   >
-    <div
-      class="rc-select-selection-overflow"
+    <span
+      class="rc-select-selection-wrap"
     >
       <div
-        class="rc-select-selection-overflow-item"
-        style="opacity: 1;"
-      >
-        <span
-          class="rc-select-selection-item"
-          title="One"
-        >
-          <span
-            class="rc-select-selection-item-content"
-          >
-            One
-          </span>
-          <span
-            aria-hidden="true"
-            class="rc-select-selection-item-remove"
-            style="user-select: none;"
-            unselectable="on"
-          >
-            <span
-              class="rc-select-selection-item-remove-icon"
-            >
-              ×
-            </span>
-          </span>
-        </span>
-      </div>
-      <div
-        class="rc-select-selection-overflow-item"
-        style="opacity: 1;"
-      >
-        <span
-          class="rc-select-selection-item"
-          title="Two"
-        >
-          <span
-            class="rc-select-selection-item-content"
-          >
-            Two
-          </span>
-          <span
-            aria-hidden="true"
-            class="rc-select-selection-item-remove"
-            style="user-select: none;"
-            unselectable="on"
-          >
-            <span
-              class="rc-select-selection-item-remove-icon"
-            >
-              ×
-            </span>
-          </span>
-        </span>
-      </div>
-      <div
-        class="rc-select-selection-overflow-item rc-select-selection-overflow-item-rest"
-        style="opacity: 1;"
-      >
-        <span
-          class="rc-select-selection-item"
-        >
-          <span
-            class="rc-select-selection-item-content"
-          >
-            <span>
-              Omitted
-            </span>
-          </span>
-        </span>
-      </div>
-      <div
-        class="rc-select-selection-overflow-item rc-select-selection-overflow-item-suffix"
-        style="opacity: 1;"
+        class="rc-select-selection-overflow"
       >
         <div
-          class="rc-select-selection-search"
-          style="width: 0px;"
+          class="rc-select-selection-overflow-item"
+          style="opacity: 1;"
         >
-          <input
-            aria-autocomplete="list"
-            aria-controls="rc_select_TEST_OR_SSR_list"
-            aria-expanded="false"
-            aria-haspopup="listbox"
-            aria-owns="rc_select_TEST_OR_SSR_list"
-            autocomplete="off"
-            class="rc-select-selection-search-input"
-            id="rc_select_TEST_OR_SSR"
-            role="combobox"
-            type="search"
-            value=""
-          />
           <span
-            aria-hidden="true"
-            class="rc-select-selection-search-mirror"
+            class="rc-select-selection-item"
+            title="One"
           >
-             
+            <span
+              class="rc-select-selection-item-content"
+            >
+              One
+            </span>
+            <span
+              aria-hidden="true"
+              class="rc-select-selection-item-remove"
+              style="user-select: none;"
+              unselectable="on"
+            >
+              <span
+                class="rc-select-selection-item-remove-icon"
+              >
+                ×
+              </span>
+            </span>
           </span>
         </div>
+        <div
+          class="rc-select-selection-overflow-item"
+          style="opacity: 1;"
+        >
+          <span
+            class="rc-select-selection-item"
+            title="Two"
+          >
+            <span
+              class="rc-select-selection-item-content"
+            >
+              Two
+            </span>
+            <span
+              aria-hidden="true"
+              class="rc-select-selection-item-remove"
+              style="user-select: none;"
+              unselectable="on"
+            >
+              <span
+                class="rc-select-selection-item-remove-icon"
+              >
+                ×
+              </span>
+            </span>
+          </span>
+        </div>
+        <div
+          class="rc-select-selection-overflow-item rc-select-selection-overflow-item-rest"
+          style="opacity: 1;"
+        >
+          <span
+            class="rc-select-selection-item"
+          >
+            <span
+              class="rc-select-selection-item-content"
+            >
+              <span>
+                Omitted
+              </span>
+            </span>
+          </span>
+        </div>
+        <div
+          class="rc-select-selection-overflow-item rc-select-selection-overflow-item-suffix"
+          style="opacity: 1;"
+        >
+          <div
+            class="rc-select-selection-search"
+            style="width: 0px;"
+          >
+            <input
+              aria-autocomplete="list"
+              aria-controls="rc_select_TEST_OR_SSR_list"
+              aria-expanded="false"
+              aria-haspopup="listbox"
+              aria-owns="rc_select_TEST_OR_SSR_list"
+              autocomplete="off"
+              class="rc-select-selection-search-input"
+              id="rc_select_TEST_OR_SSR"
+              role="combobox"
+              type="search"
+              value=""
+            />
+            <span
+              aria-hidden="true"
+              class="rc-select-selection-search-mirror"
+            >
+               
+            </span>
+          </div>
+        </div>
       </div>
-    </div>
+    </span>
   </div>
 </div>
 `;
@@ -396,110 +408,114 @@ exports[`Select.Tags max tag render truncates tags by maxTagCount and show maxTa
   <div
     class="rc-select-selector"
   >
-    <div
-      class="rc-select-selection-overflow"
+    <span
+      class="rc-select-selection-wrap"
     >
       <div
-        class="rc-select-selection-overflow-item"
-        style="opacity: 1;"
-      >
-        <span
-          class="rc-select-selection-item"
-          title="One"
-        >
-          <span
-            class="rc-select-selection-item-content"
-          >
-            One
-          </span>
-          <span
-            aria-hidden="true"
-            class="rc-select-selection-item-remove"
-            style="user-select: none;"
-            unselectable="on"
-          >
-            <span
-              class="rc-select-selection-item-remove-icon"
-            >
-              ×
-            </span>
-          </span>
-        </span>
-      </div>
-      <div
-        class="rc-select-selection-overflow-item"
-        style="opacity: 1;"
-      >
-        <span
-          class="rc-select-selection-item"
-          title="Two"
-        >
-          <span
-            class="rc-select-selection-item-content"
-          >
-            Two
-          </span>
-          <span
-            aria-hidden="true"
-            class="rc-select-selection-item-remove"
-            style="user-select: none;"
-            unselectable="on"
-          >
-            <span
-              class="rc-select-selection-item-remove-icon"
-            >
-              ×
-            </span>
-          </span>
-        </span>
-      </div>
-      <div
-        class="rc-select-selection-overflow-item rc-select-selection-overflow-item-rest"
-        style="opacity: 1;"
-      >
-        <span
-          class="rc-select-selection-item"
-        >
-          <span
-            class="rc-select-selection-item-content"
-          >
-            <span>
-              1
-               values omitted
-            </span>
-          </span>
-        </span>
-      </div>
-      <div
-        class="rc-select-selection-overflow-item rc-select-selection-overflow-item-suffix"
-        style="opacity: 1;"
+        class="rc-select-selection-overflow"
       >
         <div
-          class="rc-select-selection-search"
-          style="width: 0px;"
+          class="rc-select-selection-overflow-item"
+          style="opacity: 1;"
         >
-          <input
-            aria-autocomplete="list"
-            aria-controls="rc_select_TEST_OR_SSR_list"
-            aria-expanded="false"
-            aria-haspopup="listbox"
-            aria-owns="rc_select_TEST_OR_SSR_list"
-            autocomplete="off"
-            class="rc-select-selection-search-input"
-            id="rc_select_TEST_OR_SSR"
-            role="combobox"
-            type="search"
-            value=""
-          />
           <span
-            aria-hidden="true"
-            class="rc-select-selection-search-mirror"
+            class="rc-select-selection-item"
+            title="One"
           >
-             
+            <span
+              class="rc-select-selection-item-content"
+            >
+              One
+            </span>
+            <span
+              aria-hidden="true"
+              class="rc-select-selection-item-remove"
+              style="user-select: none;"
+              unselectable="on"
+            >
+              <span
+                class="rc-select-selection-item-remove-icon"
+              >
+                ×
+              </span>
+            </span>
           </span>
         </div>
+        <div
+          class="rc-select-selection-overflow-item"
+          style="opacity: 1;"
+        >
+          <span
+            class="rc-select-selection-item"
+            title="Two"
+          >
+            <span
+              class="rc-select-selection-item-content"
+            >
+              Two
+            </span>
+            <span
+              aria-hidden="true"
+              class="rc-select-selection-item-remove"
+              style="user-select: none;"
+              unselectable="on"
+            >
+              <span
+                class="rc-select-selection-item-remove-icon"
+              >
+                ×
+              </span>
+            </span>
+          </span>
+        </div>
+        <div
+          class="rc-select-selection-overflow-item rc-select-selection-overflow-item-rest"
+          style="opacity: 1;"
+        >
+          <span
+            class="rc-select-selection-item"
+          >
+            <span
+              class="rc-select-selection-item-content"
+            >
+              <span>
+                1
+                 values omitted
+              </span>
+            </span>
+          </span>
+        </div>
+        <div
+          class="rc-select-selection-overflow-item rc-select-selection-overflow-item-suffix"
+          style="opacity: 1;"
+        >
+          <div
+            class="rc-select-selection-search"
+            style="width: 0px;"
+          >
+            <input
+              aria-autocomplete="list"
+              aria-controls="rc_select_TEST_OR_SSR_list"
+              aria-expanded="false"
+              aria-haspopup="listbox"
+              aria-owns="rc_select_TEST_OR_SSR_list"
+              autocomplete="off"
+              class="rc-select-selection-search-input"
+              id="rc_select_TEST_OR_SSR"
+              role="combobox"
+              type="search"
+              value=""
+            />
+            <span
+              aria-hidden="true"
+              class="rc-select-selection-search-mirror"
+            >
+               
+            </span>
+          </div>
+        </div>
       </div>
-    </div>
+    </span>
   </div>
 </div>
 `;
@@ -511,93 +527,97 @@ exports[`Select.Tags max tag render truncates values by maxTagTextLength 1`] = `
   <div
     class="rc-select-selector"
   >
-    <div
-      class="rc-select-selection-overflow"
+    <span
+      class="rc-select-selection-wrap"
     >
       <div
-        class="rc-select-selection-overflow-item"
-        style="opacity: 1;"
-      >
-        <span
-          class="rc-select-selection-item"
-          title="One"
-        >
-          <span
-            class="rc-select-selection-item-content"
-          >
-            On...
-          </span>
-          <span
-            aria-hidden="true"
-            class="rc-select-selection-item-remove"
-            style="user-select: none;"
-            unselectable="on"
-          >
-            <span
-              class="rc-select-selection-item-remove-icon"
-            >
-              ×
-            </span>
-          </span>
-        </span>
-      </div>
-      <div
-        class="rc-select-selection-overflow-item"
-        style="opacity: 1;"
-      >
-        <span
-          class="rc-select-selection-item"
-          title="Two"
-        >
-          <span
-            class="rc-select-selection-item-content"
-          >
-            Tw...
-          </span>
-          <span
-            aria-hidden="true"
-            class="rc-select-selection-item-remove"
-            style="user-select: none;"
-            unselectable="on"
-          >
-            <span
-              class="rc-select-selection-item-remove-icon"
-            >
-              ×
-            </span>
-          </span>
-        </span>
-      </div>
-      <div
-        class="rc-select-selection-overflow-item rc-select-selection-overflow-item-suffix"
-        style="opacity: 1;"
+        class="rc-select-selection-overflow"
       >
         <div
-          class="rc-select-selection-search"
-          style="width: 0px;"
+          class="rc-select-selection-overflow-item"
+          style="opacity: 1;"
         >
-          <input
-            aria-autocomplete="list"
-            aria-controls="rc_select_TEST_OR_SSR_list"
-            aria-expanded="false"
-            aria-haspopup="listbox"
-            aria-owns="rc_select_TEST_OR_SSR_list"
-            autocomplete="off"
-            class="rc-select-selection-search-input"
-            id="rc_select_TEST_OR_SSR"
-            role="combobox"
-            type="search"
-            value=""
-          />
           <span
-            aria-hidden="true"
-            class="rc-select-selection-search-mirror"
+            class="rc-select-selection-item"
+            title="One"
           >
-             
+            <span
+              class="rc-select-selection-item-content"
+            >
+              On...
+            </span>
+            <span
+              aria-hidden="true"
+              class="rc-select-selection-item-remove"
+              style="user-select: none;"
+              unselectable="on"
+            >
+              <span
+                class="rc-select-selection-item-remove-icon"
+              >
+                ×
+              </span>
+            </span>
           </span>
         </div>
+        <div
+          class="rc-select-selection-overflow-item"
+          style="opacity: 1;"
+        >
+          <span
+            class="rc-select-selection-item"
+            title="Two"
+          >
+            <span
+              class="rc-select-selection-item-content"
+            >
+              Tw...
+            </span>
+            <span
+              aria-hidden="true"
+              class="rc-select-selection-item-remove"
+              style="user-select: none;"
+              unselectable="on"
+            >
+              <span
+                class="rc-select-selection-item-remove-icon"
+              >
+                ×
+              </span>
+            </span>
+          </span>
+        </div>
+        <div
+          class="rc-select-selection-overflow-item rc-select-selection-overflow-item-suffix"
+          style="opacity: 1;"
+        >
+          <div
+            class="rc-select-selection-search"
+            style="width: 0px;"
+          >
+            <input
+              aria-autocomplete="list"
+              aria-controls="rc_select_TEST_OR_SSR_list"
+              aria-expanded="false"
+              aria-haspopup="listbox"
+              aria-owns="rc_select_TEST_OR_SSR_list"
+              autocomplete="off"
+              class="rc-select-selection-search-input"
+              id="rc_select_TEST_OR_SSR"
+              role="combobox"
+              type="search"
+              value=""
+            />
+            <span
+              aria-hidden="true"
+              class="rc-select-selection-search-mirror"
+            >
+               
+            </span>
+          </div>
+        </div>
       </div>
-    </div>
+    </span>
   </div>
 </div>
 `;
