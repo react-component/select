@@ -104,8 +104,6 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
           attrs={pickAttrs(props, true)}
           maxLength={combobox ? maxLength : undefined}
         />
-        {/* Display placeholder */}
-        {placeholderNode}
       </span>
 
       {/* Display value */}
@@ -121,6 +119,9 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
           {item.label}
         </span>
       ) : null}
+
+      {/* Display placeholder */}
+      {placeholderNode}
     </span>
   );
 };
