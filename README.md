@@ -2,7 +2,7 @@
 
 ---
 
-React Select
+React Select Component.
 
 <!-- prettier-ignore -->
 [![NPM version][npm-image]][npm-url]
