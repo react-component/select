@@ -242,12 +242,12 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
   );
 
   return (
-    <>
+    <span className={`${selectionPrefixCls}-wrap`}>
       {selectionNode}
       {!values.length && !inputValue && (
         <span className={`${selectionPrefixCls}-placeholder`}>{placeholder}</span>
       )}
-    </>
+    </span>
   );
 };
 
