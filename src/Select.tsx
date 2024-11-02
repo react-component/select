@@ -164,7 +164,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   onChange?: (value: ValueType, option: OptionType | OptionType[]) => void;
 
   // >>> tags mode only
-  onBlurRemoveSpace?: boolean;
+  onBlurRemoveSpaces?: boolean;
   onBlurAddValue?: boolean;
 }
 
@@ -216,7 +216,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       maxCount,
 
       // tags mode only
-      onBlurRemoveSpace = true,
+      onBlurRemoveSpaces = true,
       onBlurAddValue = true,
 
       ...restProps
@@ -583,9 +583,9 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
 
       // [Submit] Tag mode should flush input
       if (info.source === 'submit') {
-        const formatted = onBlurRemoveSpace ? (searchText || '').trim() : searchText || '';
+        const formatted = onBlurRemoveSpaces ? (searchText || '').trim() : searchText || '';
         // prevent empty tags from appearing when you click the Enter button
-        if (formatted && onBlurAddValue) {
+        if (formatted.trim() && onBlurAddValue) {
           const newRawValues = Array.from(new Set<RawValueType>([...rawValues, formatted]));
           triggerChange(newRawValues);
           triggerSelect(formatted, true);

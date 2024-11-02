@@ -540,4 +540,22 @@ describe('Select.Tags', () => {
     });
     expect(onChange).not.toBeCalled();
   });
+
+  it('should not add value when onBlurAddValue is false', () => {
+    const { container } = render(<Select mode="tags" onBlurAddValue={false} />);
+    const input = container.querySelector<HTMLInputElement>('input');
+    toggleOpen(container);
+    fireEvent.change(input, { target: { value: 'test' } });
+    keyDown(input, KeyCode.TAB);
+    // no selection item
+    expect(container.querySelectorAll('.rc-select-selection-item')).toHaveLength(0);
+  });
+
+  it('should not add value when onBlurRemoveSpaces is false', () => {
+    const { container } = render(<Select mode="tags" onBlurRemoveSpaces={false} />);
+    toggleOpen(container);
+    fireEvent.change(container.querySelector('input'), { target: { value: ' test ' } });
+    keyDown(container.querySelector('input'), KeyCode.ENTER);
+    expect(findSelection(container).textContent).toEqual(' test ');
+  });
 });
