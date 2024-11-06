@@ -605,6 +605,49 @@ describe('Select.Basic', () => {
     jest.useRealTimers();
   });
 
+  describe('should call handleSearch twice on search and blur', () => {
+    injectRunAllTimers(jest);
+
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('multiple mode should call handleSearch twice on search and blur', async () => {
+      const handleSearch = jest.fn();
+      const { container } = render(
+        <Select showSearch onSearch={handleSearch} mode="multiple">
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
+      fireEvent.change(container.querySelector('input')!, { target: { value: '1' } });
+      // 模拟失去焦点（blur）事件
+      fireEvent.blur(container.querySelector('input'));
+      jest.runAllTimers();
+      expect(handleSearch).toHaveBeenCalledTimes(2);
+      jest.useRealTimers();
+    });
+
+    it('not multiple mode should call handleSearch twice on search and blur', async () => {
+      const handleSearch = jest.fn();
+      const { container } = render(
+        <Select showSearch onSearch={handleSearch}>
+          <Option value="1">1</Option>
+          <Option value="2">2</Option>
+        </Select>,
+      );
+      fireEvent.change(container.querySelector('input')!, { target: { value: '1' } });
+      fireEvent.blur(container.querySelector('input'));
+      jest.runAllTimers();
+      expect(handleSearch).toHaveBeenCalledTimes(2);
+      jest.useRealTimers();
+    });
+  });
+
   it('should render 0 as text properly', () => {
     const data = [
       { text: 0, value: '=0' },

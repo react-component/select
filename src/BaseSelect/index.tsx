@@ -605,9 +605,15 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
         onSearch(mergedSearchValue, { source: 'submit' });
       } else if (mode === 'multiple') {
         // `multiple` mode only clean the search value but not trigger event
-        onSearch('', {
-          source: 'blur',
-        });
+        if (mergedShowSearch) {
+          onSearch('', {
+            source: 'effect',
+          });
+        } else {
+          onSearch('', {
+            source: 'blur',
+          });
+        }
       }
     }
 
