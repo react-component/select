@@ -162,6 +162,10 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   defaultValue?: ValueType | null;
   maxCount?: number;
   onChange?: (value: ValueType, option: OptionType | OptionType[]) => void;
+
+  // >>> tags mode only
+  onBlurRemoveSpaces?: boolean;
+  onBlurAddValue?: boolean;
 }
 
 function isRawValue(value: DraftValueType): value is RawValueType {
@@ -210,6 +214,10 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       labelInValue,
       onChange,
       maxCount,
+
+      // tags mode only
+      onBlurRemoveSpaces = true,
+      onBlurAddValue = true,
 
       ...restProps
     } = props;
@@ -575,14 +583,15 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
 
       // [Submit] Tag mode should flush input
       if (info.source === 'submit') {
-        const formatted = (searchText || '').trim();
+        const formatted = onBlurRemoveSpaces ? (searchText || '').trim() : searchText || '';
         // prevent empty tags from appearing when you click the Enter button
-        if (formatted) {
+        if (formatted.trim() && onBlurAddValue) {
           const newRawValues = Array.from(new Set<RawValueType>([...rawValues, formatted]));
           triggerChange(newRawValues);
           triggerSelect(formatted, true);
-          setSearchValue('');
         }
+
+        setSearchValue('');
 
         return;
       }
