@@ -1,6 +1,6 @@
 import type { OptionListProps, RefOptionListProps } from '@/OptionList';
 import { fireEvent, render } from '@testing-library/react';
-import { forwardRef, act } from 'react';
+import { forwardRef, act, useState } from 'react';
 import BaseSelect from '../src/BaseSelect';
 
 const OptionList = forwardRef<RefOptionListProps, OptionListProps>(() => (
@@ -122,5 +122,55 @@ describe('BaseSelect', () => {
     );
 
     expect(container.querySelector('.rc-select-dropdown-placement-fallback')).toBeTruthy();
+  });
+
+  describe("Testing BaseSelect component's onContainerBlur params", () => {
+    it('BaseSelect with showSearch, onContainerBlur params is effect', () => {
+      const onSearch = jest.fn();
+      const { container } = render(
+        <BaseSelect
+          prefixCls="rc-select"
+          mode="multiple"
+          id="test"
+          displayValues={[]}
+          onDisplayValuesChange={() => {}}
+          searchValue="1"
+          showSearch
+          open
+          onSearch={onSearch}
+          OptionList={OptionList}
+          emptyOptions
+        />,
+      );
+      expect(container.querySelector('div.rc-select')).toBeTruthy();
+      fireEvent.change(container.querySelector('input'), { target: { value: '2' } });
+      expect(onSearch).toHaveBeenCalledWith('2', { source: 'typing' });
+      fireEvent.blur(container.querySelector('div.rc-select'));
+      expect(onSearch).toHaveBeenCalledWith('', { source: 'effect' });
+    });
+
+    it('BaseSelect without showSearch, onContainerBlur params is blur', () => {
+      const onSearch = jest.fn();
+      const { container } = render(
+        <BaseSelect
+          prefixCls="rc-select"
+          mode="multiple"
+          id="test"
+          displayValues={[]}
+          onDisplayValuesChange={() => {}}
+          searchValue="1"
+          showSearch={false}
+          open
+          onSearch={onSearch}
+          OptionList={OptionList}
+          emptyOptions
+        />,
+      );
+      expect(container.querySelector('div.rc-select')).toBeTruthy();
+      fireEvent.change(container.querySelector('input'), { target: { value: '2' } });
+      expect(onSearch).toHaveBeenCalledWith('2', { source: 'typing' });
+      fireEvent.blur(container.querySelector('div.rc-select'));
+      expect(onSearch).toHaveBeenCalledWith('', { source: 'blur' });
+    });
   });
 });
