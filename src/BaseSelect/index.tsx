@@ -435,7 +435,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
     if (onSearch && mergedSearchValue !== newSearchText) {
       onSearch(newSearchText, {
-        source: fromTyping ? 'typing' : 'effect',
+        source: fromTyping ? 'typing' : mergedShowSearch ? 'blur' : 'effect',
       });
     }
 
