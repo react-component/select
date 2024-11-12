@@ -158,7 +158,7 @@ describe('BaseSelect', () => {
           displayValues={[]}
           onDisplayValuesChange={() => {}}
           searchValue="1"
-          showSearch={false}
+          showSearch
           open
           onSearch={onSearch}
           OptionList={OptionList}
