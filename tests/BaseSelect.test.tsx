@@ -125,7 +125,7 @@ describe('BaseSelect', () => {
   });
 
   describe("Testing BaseSelect component's onContainerBlur params", () => {
-    it('mode with null, onContainerBlur params is blur', () => {
+    it('mode with null, onBlur source is blur', () => {
       const onSearch = jest.fn();
       const { container } = render(
         <BaseSelect
@@ -135,7 +135,6 @@ describe('BaseSelect', () => {
           onDisplayValuesChange={() => {}}
           searchValue="1"
           showSearch
-          open
           onSearch={onSearch}
           OptionList={OptionList}
           emptyOptions
@@ -148,7 +147,7 @@ describe('BaseSelect', () => {
       expect(onSearch).toHaveBeenCalledWith('', { source: 'blur' });
     });
 
-    it('mode with multiple, onContainerBlur params is blur', () => {
+    it('mode with multiple, onBlur source is blur', () => {
       const onSearch = jest.fn();
       const { container } = render(
         <BaseSelect
@@ -159,7 +158,6 @@ describe('BaseSelect', () => {
           onDisplayValuesChange={() => {}}
           searchValue="1"
           showSearch
-          open
           onSearch={onSearch}
           OptionList={OptionList}
           emptyOptions
