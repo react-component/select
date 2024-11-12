@@ -123,4 +123,53 @@ describe('BaseSelect', () => {
 
     expect(container.querySelector('.rc-select-dropdown-placement-fallback')).toBeTruthy();
   });
+
+  describe("Testing BaseSelect component's onContainerBlur params", () => {
+    it('mode with null, onContainerBlur params is blur', () => {
+      const onSearch = jest.fn();
+      const { container } = render(
+        <BaseSelect
+          prefixCls="rc-select"
+          id="test"
+          displayValues={[]}
+          onDisplayValuesChange={() => {}}
+          searchValue="1"
+          showSearch
+          open
+          onSearch={onSearch}
+          OptionList={OptionList}
+          emptyOptions
+        />,
+      );
+      expect(container.querySelector('div.rc-select')).toBeTruthy();
+      fireEvent.change(container.querySelector('input'), { target: { value: '2' } });
+      expect(onSearch).toHaveBeenCalledWith('2', { source: 'typing' });
+      fireEvent.blur(container.querySelector('div.rc-select'));
+      expect(onSearch).toHaveBeenCalledWith('', { source: 'blur' });
+    });
+
+    it('mode with multiple, onContainerBlur params is blur', () => {
+      const onSearch = jest.fn();
+      const { container } = render(
+        <BaseSelect
+          prefixCls="rc-select"
+          mode="multiple"
+          id="test"
+          displayValues={[]}
+          onDisplayValuesChange={() => {}}
+          searchValue="1"
+          showSearch={false}
+          open
+          onSearch={onSearch}
+          OptionList={OptionList}
+          emptyOptions
+        />,
+      );
+      expect(container.querySelector('div.rc-select')).toBeTruthy();
+      fireEvent.change(container.querySelector('input'), { target: { value: '2' } });
+      expect(onSearch).toHaveBeenCalledWith('2', { source: 'typing' });
+      fireEvent.blur(container.querySelector('div.rc-select'));
+      expect(onSearch).toHaveBeenCalledWith('', { source: 'blur' });
+    });
+  });
 });
