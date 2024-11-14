@@ -2367,4 +2367,28 @@ describe('Select.Basic', () => {
     expect(element[0]).not.toHaveClass('rc-select-item-option-disabled');
     expect(element[1]).toHaveClass('rc-select-item-option-disabled');
   });
+
+  it('click item and blur should trigger onBlur but not trigger onSearch', () => {
+    const onSearch = jest.fn();
+    const onBlur = jest.fn();
+
+    const Demo = () => (
+      <Select onSearch={onSearch} showSearch onBlur={onBlur}>
+        <Option value="11">11</Option>
+        <Option value="22">22</Option>
+        <Option value="33">33</Option>
+      </Select>
+    );
+
+    const { container } = render(<Demo />);
+    const input = container.querySelector('input');
+    fireEvent.change(input, { target: { value: '1' } });
+    fireEvent.click(
+      container.querySelectorAll('.rc-select-dropdown .rc-select-item-option-content')[0],
+    );
+    fireEvent.blur(input);
+    expect(container.querySelector('.rc-select-dropdown-hidden')).toBeTruthy();
+    expect(onSearch).toHaveBeenCalledTimes(1);
+    expect(onBlur).toHaveBeenCalledTimes(1);
+  });
 });
