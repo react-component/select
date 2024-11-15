@@ -393,4 +393,70 @@ describe('OptionList', () => {
     });
     expect(global.scrollToArgs).toEqual({ index: 1 });
   });
+
+  // Test keyboard navigation behavior when maxCount limit is reached
+  // Verifies that:
+  // 1. Can navigate between already selected options
+  // 2. Cannot navigate to unselected options when maxCount is reached
+  // 3. Navigation wraps around between selected options
+  it('should allow keyboard navigation on selected options when reach maxCount', () => {
+    const onActiveValue = jest.fn();
+    const listRef = React.createRef<RefOptionListProps>();
+
+    render(
+      generateList({
+        multiple: true,
+        maxCount: 2,
+        options: [
+          { value: '1', label: '1' },
+          { value: '2', label: '2' },
+          { value: '3', label: '3' },
+        ],
+        values: new Set(['1', '2']), // Pre-select first two options
+        onActiveValue,
+        ref: listRef,
+      }),
+    );
+
+    onActiveValue.mockReset();
+
+    // Press down key - should move to option '2'
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.DOWN } as any);
+    });
+    expect(onActiveValue).toHaveBeenCalledWith(
+      '2',
+      expect.anything(),
+      expect.objectContaining({ source: 'keyboard' }),
+    );
+
+    // Press down key again - should wrap to option '1'
+    onActiveValue.mockReset();
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.DOWN } as any);
+    });
+    expect(onActiveValue).toHaveBeenCalledWith(
+      '1',
+      expect.anything(),
+      expect.objectContaining({ source: 'keyboard' }),
+    );
+
+    // Press up key - should move back to option '2'
+    onActiveValue.mockReset();
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.UP } as any);
+    });
+    expect(onActiveValue).toHaveBeenCalledWith(
+      '2',
+      expect.anything(),
+      expect.objectContaining({ source: 'keyboard' }),
+    );
+
+    // Press down key - should not activate option '3' since maxCount is reached
+    onActiveValue.mockReset();
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.DOWN } as any);
+    });
+    expect(onActiveValue).not.toHaveBeenCalledWith('3', expect.anything(), expect.anything());
+  });
 });
