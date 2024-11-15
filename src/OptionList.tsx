@@ -85,6 +85,17 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     listRef.current?.scrollTo(typeof args === 'number' ? { index: args } : args);
   };
 
+  // https://github.com/ant-design/ant-design/issues/34975
+  const isSelected = React.useCallback(
+    (value: RawValueType) => {
+      if (mode === 'combobox') {
+        return false;
+      }
+      return rawValues.has(value);
+    },
+    [mode, [...rawValues].toString(), rawValues.size],
+  );
+
   // ========================== Active ==========================
   const getEnabledActiveIndex = (index: number, offset: number = 1): number => {
     const len = memoFlattenOptions.length;
@@ -94,7 +105,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
 
       const { group, data } = memoFlattenOptions[current] || {};
 
-      if (!group && !data?.disabled && !overMaxCount) {
+      if (!group && !data?.disabled && (isSelected(data.value) || !overMaxCount)) {
         return current;
       }
     }
@@ -121,17 +132,6 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
   useEffect(() => {
     setActive(defaultActiveFirstOption !== false ? getEnabledActiveIndex(0) : -1);
   }, [memoFlattenOptions.length, searchValue]);
-
-  // https://github.com/ant-design/ant-design/issues/34975
-  const isSelected = React.useCallback(
-    (value: RawValueType) => {
-      if (mode === 'combobox') {
-        return false;
-      }
-      return rawValues.has(value);
-    },
-    [mode, [...rawValues].toString(), rawValues.size],
-  );
 
   // https://github.com/ant-design/ant-design/issues/48036
   const isAriaSelected = React.useCallback(
