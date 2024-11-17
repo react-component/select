@@ -111,6 +111,40 @@ const Test: React.FC = () => {
           {children}
         </Select>
       </div>
+      <h2>tags select with onBlurRemoveSpaces = false</h2>
+      <div>
+        <Select
+          placeholder="placeholder"
+          mode="tags"
+          style={{ width: 500 }}
+          disabled={disabled}
+          maxTagCount={maxTagCount}
+          maxTagTextLength={10}
+          value={value}
+          onBlurRemoveSpaces={false}
+          onChange={(val) => {
+            console.log('change:', val);
+            setValue(val);
+          }}
+        />
+      </div>
+      <h2>tags select with onBlurAddValue = false</h2>
+      <div>
+        <Select
+          placeholder="placeholder"
+          mode="tags"
+          style={{ width: 500 }}
+          disabled={disabled}
+          maxTagCount={maxTagCount}
+          maxTagTextLength={10}
+          value={value}
+          onBlurAddValue={false}
+          onChange={(val) => {
+            console.log('change:', val);
+            setValue(val);
+          }}
+        />
+      </div>
     </div>
   );
 };
