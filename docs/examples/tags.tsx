@@ -39,6 +39,7 @@ const Test: React.FC = () => {
         <Select
           placeholder="placeholder"
           mode="tags"
+          preventCommitOnBlur={false}
           style={{ width: 400 }}
           disabled={disabled}
           maxTagCount={maxTagCount}
@@ -88,6 +89,7 @@ const Test: React.FC = () => {
         <Select
           placeholder="placeholder"
           mode="tags"
+          preventCommitOnBlur={false}
           style={{ width: 500 }}
           disabled={disabled}
           maxTagCount={maxTagCount}

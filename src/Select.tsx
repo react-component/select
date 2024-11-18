@@ -162,6 +162,9 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   defaultValue?: ValueType | null;
   maxCount?: number;
   onChange?: (value: ValueType, option: OptionType | OptionType[]) => void;
+
+  // >>> Blur
+  preventCommitOnBlur?: boolean
 }
 
 function isRawValue(value: DraftValueType): value is RawValueType {
@@ -210,6 +213,9 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       labelInValue,
       onChange,
       maxCount,
+
+      // Blur
+      preventCommitOnBlur = false,
 
       ...restProps
     } = props;
@@ -573,6 +579,12 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       setSearchValue(searchText);
       setActiveValue(null);
 
+      if(preventCommitOnBlur){
+        triggerChange('');
+        setSearchValue('');
+        return
+      }
+
       // [Submit] Tag mode should flush input
       if (info.source === 'submit') {
         const formatted = (searchText || '').trim();
@@ -583,7 +595,6 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
           triggerSelect(formatted, true);
           setSearchValue('');
         }
-
         return;
       }
 
