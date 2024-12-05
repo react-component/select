@@ -101,6 +101,9 @@ export function injectRunAllTimers(jest: Jest) {
 
 export function keyDown(element: HTMLElement, keyCode: number) {
   const event = createEvent.keyDown(element, { keyCode });
+  Object.defineProperties(event, {
+    which: { get: () => keyCode },
+  });
 
   act(() => {
     fireEvent(element, event);

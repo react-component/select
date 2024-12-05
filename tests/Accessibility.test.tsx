@@ -2,7 +2,7 @@ import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import Select from '../src';
 import { injectRunAllTimers, expectOpen, keyDown } from './utils/common';
-import { fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 
 describe('Select.Accessibility', () => {
   injectRunAllTimers(jest);
@@ -66,5 +66,40 @@ describe('Select.Accessibility', () => {
       document.querySelector('.rc-select-item-option-active .rc-select-item-option-content')!
         .textContent,
     ).toEqual('Light');
+  });
+
+  // https://github.com/ant-design/ant-design/issues/51292
+  it('edge bug', () => {
+    const { container } = render(
+      <Select
+        mode="combobox"
+        options={[
+          {
+            value: '123',
+          },
+          {
+            value: '1234',
+          },
+          {
+            value: '12345',
+          },
+        ]}
+        defaultValue="123"
+      />,
+    );
+
+    // Invalid key
+    keyDown(container.querySelector('input')!, undefined);
+    act(() => {
+      jest.runAllTimers();
+    });
+    expectOpen(container, false);
+
+    // Valid key
+    keyDown(container.querySelector('input')!, KeyCode.A);
+    act(() => {
+      jest.runAllTimers();
+    });
+    expectOpen(container);
   });
 });
