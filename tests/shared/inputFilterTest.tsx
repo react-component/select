@@ -22,7 +22,8 @@ export default function inputFilterTest(mode: any) {
     expect(container.querySelector('.rc-select')).toHaveClass('rc-select-open');
     expect(container.querySelector('input')).toHaveValue('1');
     fireEvent.click(container.querySelector('.rc-select-item-option'));
-    expect(container.querySelector('input')).toHaveValue(mode === 'single' ? '' : '1');
+    const isMultiple = mode === 'multiple' || mode === 'tags';
+    expect(container.querySelector('input')).toHaveValue(!isMultiple ? '' : '1');
   });
 
   it('should clear input filter after select', () => {

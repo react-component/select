@@ -454,6 +454,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   };
 
   // Close will clean up single mode search text
+  // mode not in ['combobox', 'multiple', 'tags', undefined]
   React.useEffect(() => {
     if (!mergedOpen && !multiple && mode && mode !== 'combobox') {
       onInternalSearch('', false, false);
