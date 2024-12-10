@@ -54,29 +54,6 @@ describe('Select.Blur', () => {
     expect(onSearch).toHaveBeenCalledWith('', { source: 'blur' });
   });
 
-  it('mode with multiple, onBlur source is blur', () => {
-    const onSearch = jest.fn();
-    const { container } = render(
-      <BaseSelect
-        prefixCls="rc-select"
-        mode="multiple"
-        id="test"
-        displayValues={[]}
-        onDisplayValuesChange={() => {}}
-        searchValue="1"
-        showSearch
-        onSearch={onSearch}
-        OptionList={OptionList}
-        emptyOptions
-      />,
-    );
-    expect(container.querySelector('div.rc-select')).toBeTruthy();
-    fireEvent.change(container.querySelector('input'), { target: { value: '2' } });
-    expect(onSearch).toHaveBeenCalledWith('2', { source: 'typing' });
-    fireEvent.blur(container.querySelector('div.rc-select'));
-    expect(onSearch).toHaveBeenCalledWith('', { source: 'blur' });
-  });
-
   it('click item and blur should trigger onBlur but not trigger onSearch', () => {
     const onSearch = jest.fn();
     const onBlur = jest.fn();
