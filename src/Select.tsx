@@ -161,7 +161,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   value?: ValueType | null;
   defaultValue?: ValueType | null;
   maxCount?: number;
-  onChange?: (value: ValueType, option: OptionType | OptionType[]) => void;
+  onChange?: (value: ValueType, option?: OptionType | OptionType[]) => void;
 }
 
 function isRawValue(value: DraftValueType): value is RawValueType {
