@@ -455,7 +455,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
   // Close will clean up single mode search text
   React.useEffect(() => {
-    if (!mergedOpen && !multiple && mode !== 'combobox') {
+    if (!mergedOpen && !multiple && mode && mode !== 'combobox') {
       onInternalSearch('', false, false);
     }
   }, [mergedOpen]);
@@ -603,7 +603,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       // `tags` mode should move `searchValue` into values
       if (mode === 'tags') {
         onSearch(mergedSearchValue, { source: 'submit' });
-      } else if (mode === 'multiple') {
+      } else if (!mode || mode === 'multiple') {
         // `multiple` mode only clean the search value but not trigger event
         onSearch('', {
           source: 'blur',
