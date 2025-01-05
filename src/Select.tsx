@@ -539,7 +539,6 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
 
       // Clean search value if single or configured
       if (mode === 'combobox') {
-        // setSearchValue(String(val));
         setActiveValue('');
       } else if (!isMultiple || autoClearSearchValue) {
         setSearchValue('');
