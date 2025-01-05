@@ -98,7 +98,7 @@ class CustomIconComponent extends React.Component {
             onSelect={this.onSelect}
             onInputKeyDown={this.onKeyDown}
             notFoundContent=""
-            allowClear
+            allowClear={{ clearIcon: getSvg(clearPath) }}
             placeholder="please select"
             value={value}
             mode="combobox"
@@ -110,7 +110,6 @@ class CustomIconComponent extends React.Component {
               }
               return getSvg(arrowPath);
             }}
-            clearIcon={getSvg(clearPath)}
             removeIcon={getSvg(clearPath)}
             menuItemSelectedIcon={singleItemIcon}
           >
@@ -185,7 +184,7 @@ class Test extends React.Component {
             choiceTransitionName="rc-select-selection__choice-zoom"
             style={{ width: 500 }}
             mode="multiple"
-            allowClear
+            allowClear={{ clearIcon: getSvg(clearPath) }}
             optionFilterProp="children"
             optionLabelProp="children"
             onSelect={this.onSelect}
@@ -196,7 +195,6 @@ class Test extends React.Component {
             tokenSeparators={[' ', ',']}
             prefix="Foobar"
             suffixIcon={getSvg(arrowPath)}
-            clearIcon={getSvg(clearPath)}
             removeIcon={getSvg(clearPath)}
             menuItemSelectedIcon={menuItemSelectedIcon}
           >

@@ -70,8 +70,6 @@ export type RawValueType = string | number;
 export interface LabelInValueType {
   label: React.ReactNode;
   value: RawValueType;
-  /** @deprecated `key` is useless since it should always same as `value` */
-  key?: React.Key;
 }
 
 export type DraftValueType =
@@ -119,9 +117,6 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   // >>> Field Names
   fieldNames?: FieldNames;
 
-  // >>> Search
-  /** @deprecated Use `searchValue` instead */
-  inputValue?: string;
   searchValue?: string;
   onSearch?: (value: string) => void;
   autoClearSearchValue?: boolean;
@@ -178,7 +173,6 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       fieldNames,
 
       // Search
-      inputValue,
       searchValue,
       onSearch,
       autoClearSearchValue = true,
@@ -239,7 +233,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
 
     // =========================== Search ===========================
     const [mergedSearchValue, setSearchValue] = useMergedState('', {
-      value: searchValue !== undefined ? searchValue : inputValue,
+      value: searchValue,
       postState: (search) => search || '',
     });
 
@@ -271,7 +265,6 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
           if (isRawValue(val)) {
             rawValue = val;
           } else {
-            rawKey = val.key;
             rawLabel = val.label;
             rawValue = val.value ?? (rawKey as RawValueType);
           }
@@ -513,7 +506,6 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
             ? {
                 label: option?.[mergedFieldNames.label],
                 value: val,
-                key: option?.key ?? val,
               }
             : val,
           injectPropsWithOption(option),

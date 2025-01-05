@@ -289,7 +289,7 @@ describe('Select.Basic', () => {
 
     resetWarned();
     const { container: container5 } = render(
-      <Select allowClear clearIcon={<div className="custom-clear-icon">x</div>} value="1">
+      <Select allowClear={{ clearIcon: <div className="custom-clear-icon">x</div> }} value="1">
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -298,7 +298,7 @@ describe('Select.Basic', () => {
     expect(container5.querySelector('.custom-clear-icon').textContent).toBe('x');
 
     const { container: container6 } = render(
-      <Select allowClear clearIcon={<div className="custom-clear-icon">x</div>}>
+      <Select allowClear={{ clearIcon: <div className="custom-clear-icon">x</div> }}>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -1240,7 +1240,7 @@ describe('Select.Basic', () => {
 
   it('does not filter when filterOption value is false', () => {
     const { container } = testingRender(
-      <Select inputValue="1" filterOption={false} open>
+      <Select searchValue="1" filterOption={false} open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
@@ -2330,7 +2330,7 @@ describe('Select.Basic', () => {
     const renderDemo = (props?: any) => (
       <Select
         labelInValue
-        value={{ key: 1, label: 'One' }}
+        value={{ value: 1, label: 'One' }}
         labelRender={labelRender}
         options={[
           {

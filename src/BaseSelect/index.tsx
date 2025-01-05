@@ -175,11 +175,6 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   allowClear?: boolean | { clearIcon?: RenderNode };
   prefix?: React.ReactNode;
   suffixIcon?: RenderNode;
-  /**
-   * Clear all icon
-   * @deprecated Please use `allowClear` instead
-   **/
-  clearIcon?: RenderNode;
   /** Selector remove icon */
   removeIcon?: RenderNode;
 
@@ -262,7 +257,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     allowClear,
     prefix,
     suffixIcon,
-    clearIcon,
 
     // Dropdown
     OptionList,
@@ -733,7 +727,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     onClearMouseDown,
     displayValues,
     allowClear,
-    clearIcon,
     disabled,
     mergedSearchValue,
     mode,
