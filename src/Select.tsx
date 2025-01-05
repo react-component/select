@@ -465,7 +465,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
           labeledValues.some((newVal, index) => mergedValues[index]?.value !== newVal?.value))
       ) {
         const returnValues = labelInValue
-          ? labeledValues.map(({ label, value }) => ({ label, value }))
+          ? labeledValues.map(({ label: l, value: v }) => ({ label: l, value: v }))
           : labeledValues.map((v) => v.value);
 
         const returnOptions = labeledValues.map((v) =>
