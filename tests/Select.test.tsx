@@ -487,7 +487,7 @@ describe('Select.Basic', () => {
     toggleOpen(container);
     selectItem(container);
     expect(handleChange).toHaveBeenCalledWith(
-      { key: '1', value: '1', label: 'One' },
+      { value: '1', label: 'One' },
       { children: 'One', key: null, testprop: 'test', value: '1' },
     );
   });
@@ -508,7 +508,7 @@ describe('Select.Basic', () => {
     toggleOpen(container);
     selectItem(container);
     expect(handleChange).toHaveBeenCalledWith(
-      { key: '1', label: 'One', value: '1' },
+      { label: 'One', value: '1' },
       { children: 'One', key: null, testprop: 'test', value: '1' },
     );
   });

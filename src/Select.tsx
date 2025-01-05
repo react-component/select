@@ -257,7 +257,6 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
         return valueList.map((val) => {
           let rawValue: RawValueType;
           let rawLabel: React.ReactNode;
-          let rawKey: React.Key;
           let rawDisabled: boolean | undefined;
           let rawTitle: string;
 
@@ -266,7 +265,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
             rawValue = val;
           } else {
             rawLabel = val.label;
-            rawValue = val.value ?? (rawKey as RawValueType);
+            rawValue = val.value;
           }
 
           const option = valueOptions.get(rawValue);
@@ -274,7 +273,6 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
             // Fill missing props
             if (rawLabel === undefined)
               rawLabel = option?.[optionLabelProp || mergedFieldNames.label];
-            if (rawKey === undefined) rawKey = option?.key ?? rawValue;
             rawDisabled = option?.disabled;
             rawTitle = option?.title;
 
@@ -295,7 +293,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
           return {
             label: rawLabel,
             value: rawValue,
-            key: rawKey,
+            key: rawValue,
             disabled: rawDisabled,
             title: rawTitle,
           };
@@ -466,7 +464,10 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
         (labeledValues.length !== mergedValues.length ||
           labeledValues.some((newVal, index) => mergedValues[index]?.value !== newVal?.value))
       ) {
-        const returnValues = labelInValue ? labeledValues : labeledValues.map((v) => v.value);
+        const returnValues = labelInValue
+          ? labeledValues.map(({ label, value }) => ({ label, value }))
+          : labeledValues.map((v) => v.value);
+
         const returnOptions = labeledValues.map((v) =>
           injectPropsWithOption(getMixedOption(v.value)),
         );
