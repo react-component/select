@@ -136,11 +136,13 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
       onPreventMouseDown(e);
       onToggleOpen(!open);
     };
+    const index = values.findIndex((item) => item.value === value);
     return (
       <span onMouseDown={onMouseDown}>
         {tagRender({
           label: content,
           value,
+          index: index >= 0 ? index : undefined,
           disabled: itemDisabled,
           closable,
           onClose,
