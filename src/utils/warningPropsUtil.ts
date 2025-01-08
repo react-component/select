@@ -28,7 +28,6 @@ function warningProps(props: SelectProps) {
     autoFocus,
     labelInValue,
     value,
-    inputValue,
     optionLabelProp,
   } = props;
 
@@ -149,11 +148,6 @@ function warningProps(props: SelectProps) {
         }\`.`,
       );
     }
-
-    warning(
-      inputValue === undefined,
-      '`inputValue` is deprecated, please use `searchValue` instead.',
-    );
   }
 }
 

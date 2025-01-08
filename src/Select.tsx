@@ -70,8 +70,6 @@ export type RawValueType = string | number;
 export interface LabelInValueType {
   label: React.ReactNode;
   value: RawValueType;
-  /** @deprecated `key` is useless since it should always same as `value` */
-  key?: React.Key;
 }
 
 export type DraftValueType =
@@ -119,9 +117,6 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   // >>> Field Names
   fieldNames?: FieldNames;
 
-  // >>> Search
-  /** @deprecated Use `searchValue` instead */
-  inputValue?: string;
   searchValue?: string;
   onSearch?: (value: string) => void;
   autoClearSearchValue?: boolean;
@@ -178,7 +173,6 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       fieldNames,
 
       // Search
-      inputValue,
       searchValue,
       onSearch,
       autoClearSearchValue = true,
@@ -239,7 +233,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
 
     // =========================== Search ===========================
     const [mergedSearchValue, setSearchValue] = useMergedState('', {
-      value: searchValue !== undefined ? searchValue : inputValue,
+      value: searchValue,
       postState: (search) => search || '',
     });
 
@@ -263,7 +257,6 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
         return valueList.map((val) => {
           let rawValue: RawValueType;
           let rawLabel: React.ReactNode;
-          let rawKey: React.Key;
           let rawDisabled: boolean | undefined;
           let rawTitle: string;
 
@@ -271,9 +264,8 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
           if (isRawValue(val)) {
             rawValue = val;
           } else {
-            rawKey = val.key;
             rawLabel = val.label;
-            rawValue = val.value ?? (rawKey as RawValueType);
+            rawValue = val.value;
           }
 
           const option = valueOptions.get(rawValue);
@@ -281,7 +273,6 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
             // Fill missing props
             if (rawLabel === undefined)
               rawLabel = option?.[optionLabelProp || mergedFieldNames.label];
-            if (rawKey === undefined) rawKey = option?.key ?? rawValue;
             rawDisabled = option?.disabled;
             rawTitle = option?.title;
 
@@ -302,7 +293,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
           return {
             label: rawLabel,
             value: rawValue,
-            key: rawKey,
+            key: rawValue,
             disabled: rawDisabled,
             title: rawTitle,
           };
@@ -473,7 +464,10 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
         (labeledValues.length !== mergedValues.length ||
           labeledValues.some((newVal, index) => mergedValues[index]?.value !== newVal?.value))
       ) {
-        const returnValues = labelInValue ? labeledValues : labeledValues.map((v) => v.value);
+        const returnValues = labelInValue
+          ? labeledValues.map(({ label: l, value: v }) => ({ label: l, value: v }))
+          : labeledValues.map((v) => v.value);
+
         const returnOptions = labeledValues.map((v) =>
           injectPropsWithOption(getMixedOption(v.value)),
         );
@@ -513,7 +507,6 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
             ? {
                 label: option?.[mergedFieldNames.label],
                 value: val,
-                key: option?.key ?? val,
               }
             : val,
           injectPropsWithOption(option),
@@ -547,7 +540,6 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
 
       // Clean search value if single or configured
       if (mode === 'combobox') {
-        // setSearchValue(String(val));
         setActiveValue('');
       } else if (!isMultiple || autoClearSearchValue) {
         setSearchValue('');

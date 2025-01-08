@@ -50,7 +50,7 @@ export default function removeSelectedTest(mode: any) {
       const handleChange = jest.fn();
       const { container } = render(
         <Select
-          value={[{ key: '1' }, { key: '2' }]}
+          value={[{ value: '1' }, { value: '2' }]}
           onChange={handleChange}
           onDeselect={handleDeselect}
           labelInValue
@@ -63,12 +63,12 @@ export default function removeSelectedTest(mode: any) {
       removeSelection(container);
 
       expect(handleDeselect).toHaveBeenCalledWith(
-        expect.objectContaining({ key: '1', label: '1' }),
+        expect.objectContaining({ value: '1', label: '1' }),
         expect.objectContaining({ value: '1' }),
       );
 
       expect(handleChange).toHaveBeenCalledWith(
-        [expect.objectContaining({ key: '2', label: '2' })],
+        [expect.objectContaining({ value: '2', label: '2' })],
         [expect.objectContaining({ value: '2' })],
       );
     });

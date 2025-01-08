@@ -375,10 +375,12 @@ describe('Select.Multiple', () => {
   });
 
   it('show static prefix', () => {
-    render(<Select mode="multiple" value={['']} prefix="Foobar">
-      <Option value={1}>1</Option>
-      <Option value={2}>2</Option>
-    </Select>);
+    render(
+      <Select mode="multiple" value={['']} prefix="Foobar">
+        <Option value={1}>1</Option>
+        <Option value={2}>2</Option>
+      </Select>,
+    );
 
     expect(screen.findByText('Foobar')).toBeTruthy();
   });
@@ -459,7 +461,7 @@ describe('Select.Multiple', () => {
     toggleOpen(container);
     selectItem(container, 0);
     expect(onChange).toHaveBeenCalledWith(
-      [{ label: 'Light', value: 'light', key: 'light' }],
+      [{ label: 'Light', value: 'light' }],
       [{ label: 'Light', value: 'light', option: 2333 }],
     );
     onChange.mockReset();
@@ -470,8 +472,8 @@ describe('Select.Multiple', () => {
     selectItem(container, 0);
     expect(onChange).toHaveBeenCalledWith(
       [
-        { label: 'Light', value: 'light', key: 'light' },
-        { label: 'Bamboo', value: 'bamboo', key: 'bamboo' },
+        { label: 'Light', value: 'light' },
+        { label: 'Bamboo', value: 'bamboo' },
       ],
       [
         { label: 'Light', value: 'light', option: 2333 },
