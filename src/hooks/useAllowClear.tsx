@@ -7,15 +7,19 @@ export const useAllowClear = (
   onClearMouseDown: React.MouseEventHandler<HTMLSpanElement>,
   displayValues: DisplayValueType[],
   allowClear?: boolean | { clearIcon?: RenderNode },
+  clearIcon?: RenderNode,
   disabled: boolean = false,
   mergedSearchValue?: string,
   mode?: Mode,
 ) => {
-  const clearIcon = React.useMemo(() => {
+  const mergedClearIcon = React.useMemo(() => {
     if (typeof allowClear === 'object') {
       return allowClear.clearIcon;
     }
-  }, [allowClear]);
+    if (clearIcon) {
+      return clearIcon;
+    }
+  }, [allowClear, clearIcon]);
 
   const mergedAllowClear = React.useMemo<boolean>(() => {
     if (
@@ -35,7 +39,7 @@ export const useAllowClear = (
       <TransBtn
         className={`${prefixCls}-clear`}
         onMouseDown={onClearMouseDown}
-        customizeIcon={clearIcon}
+        customizeIcon={mergedClearIcon}
       >
         ×
       </TransBtn>
