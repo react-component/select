@@ -14,6 +14,7 @@ import removeSelectedTest from './shared/removeSelectedTest';
 import maxTagRenderTest from './shared/maxTagRenderTest';
 import throwOptionValue from './shared/throwOptionValue';
 import { injectRunAllTimers, findSelection, expectOpen, toggleOpen, keyDown } from './utils/common';
+import type { CustomTagProps } from '@/BaseSelect';
 
 describe('Select.Tags', () => {
   injectRunAllTimers(jest);
@@ -299,6 +300,27 @@ describe('Select.Tags', () => {
 
       fireEvent.mouseDown(container.querySelector('span.A'));
       expectOpen(container, false);
+    });
+
+    it('tagRender props have index', () => {
+      const tagRender = (props: CustomTagProps) => {
+        const { index: tagIndex, label } = props;
+        return <div className={`${label}-${tagIndex}-test`}>{label}</div>;
+      };
+      const values = ['light', 'dark'];
+      const { container } = render(
+        <Select
+          mode="tags"
+          value={values}
+          tagRender={tagRender}
+          options={[{ value: 'light' }, { value: 'dark' }]}
+        />,
+      );
+      values.forEach((value, index) => {
+        const expectedText = `.${value}-${index}-test`;
+        const nodes = container.querySelectorAll(expectedText);
+        expect(nodes).toHaveLength(1);
+      });
     });
 
     it('disabled', () => {
