@@ -155,7 +155,9 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   // >>> Open
   open?: boolean;
   defaultOpen?: boolean;
+  /** @deprecated Please use `onPopupVisibleChange` instead */
   onDropdownVisibleChange?: (open: boolean) => void;
+  onPopupVisibleChange?: (open: boolean) => void;
 
   // >>> Customize Input
   /** @private Internal usage. Do not use in your production. */
@@ -183,14 +185,30 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   /** Selector remove icon */
   removeIcon?: RenderNode;
 
-  // >>> Dropdown
+  // >>> Dropdown/Popup
   animation?: string;
   transitionName?: string;
+
+  /** @deprecated Please use `popupStyle` instead */
   dropdownStyle?: React.CSSProperties;
+  popupStyle?: React.CSSProperties;
+
+  /** @deprecated Please use `popupClassName` instead */
   dropdownClassName?: string;
+  popupClassName?: string;
+
+  /** @deprecated Please use `popupMatchSelectWidth` instead */
   dropdownMatchSelectWidth?: boolean | number;
+  popupMatchSelectWidth?: boolean | number;
+
+  /** @deprecated Please use `popupRender` instead */
   dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
+  popupRender?: (menu: React.ReactElement) => React.ReactElement;
+
+  /** @deprecated Please use `popupAlign` instead */
   dropdownAlign?: AlignType;
+  popupAlign?: AlignType;
+
   placement?: Placement;
   builtinPlacements?: BuildInPlacements;
   getPopupContainer?: RenderDOMFunc;
@@ -245,6 +263,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     open,
     defaultOpen,
     onDropdownVisibleChange,
+    onPopupVisibleChange,
 
     // Active
     activeValue,
@@ -269,10 +288,15 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     animation,
     transitionName,
     dropdownStyle,
+    popupStyle,
     dropdownClassName,
+    popupClassName,
     dropdownMatchSelectWidth,
+    popupMatchSelectWidth,
     dropdownRender,
+    popupRender,
     dropdownAlign,
+    popupAlign,
     placement,
     builtinPlacements,
     getPopupContainer,
@@ -307,6 +331,12 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   omitDomProps?.forEach((propName) => {
     delete domProps[propName];
   });
+
+  // ============================= Compitable =============================
+  const mergedPopupStyle = popupStyle ?? dropdownStyle;
+  const mergedPopupClassName = popupClassName ?? dropdownClassName;
+  const mergedPopupRender = popupRender ?? dropdownRender;
+  const mergedPopupAlign = popupAlign ?? dropdownAlign;
 
   // ============================= Mobile =============================
   const [mobile, setMobile] = React.useState(false);
@@ -389,10 +419,11 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
         if (mergedOpen !== nextOpen) {
           onDropdownVisibleChange?.(nextOpen);
+          onPopupVisibleChange?.(nextOpen);
         }
       }
     },
-    [disabled, mergedOpen, setInnerOpen, onDropdownVisibleChange],
+    [disabled, mergedOpen, setInnerOpen, onDropdownVisibleChange, onPopupVisibleChange],
   );
 
   // ============================= Search =============================
@@ -766,12 +797,12 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       popupElement={optionList}
       animation={animation}
       transitionName={transitionName}
-      dropdownStyle={dropdownStyle}
-      dropdownClassName={dropdownClassName}
+      popupStyle={mergedPopupStyle}
+      popupClassName={mergedPopupClassName}
       direction={direction}
-      dropdownMatchSelectWidth={dropdownMatchSelectWidth}
-      dropdownRender={dropdownRender}
-      dropdownAlign={dropdownAlign}
+      popupMatchSelectWidth={popupMatchSelectWidth}
+      popupRender={mergedPopupRender}
+      popupAlign={mergedPopupAlign}
       placement={placement}
       builtinPlacements={builtinPlacements}
       getPopupContainer={getPopupContainer}

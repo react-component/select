@@ -149,6 +149,28 @@ function warningProps(props: SelectProps) {
       );
     }
   }
+
+  // Deprecated API warnings
+  const deprecatedProps = {
+    dropdownClassName: 'popupClassName',
+    dropdownStyle: 'popupStyle',
+    dropdownAlign: 'popupAlign',
+    dropdownRender: 'popupRender',
+    dropdownMatchSelectWidth: 'popupMatchSelectWidth',
+  };
+
+  Object.entries(deprecatedProps).forEach(([deprecatedProp, newProp]) => {
+    if (deprecatedProp in props) {
+      warning(false, `'${deprecatedProp}' is deprecated. Please use '${newProp}' instead.`);
+    }
+  });
+
+  if ('onDropdownVisibleChange' in props) {
+    warning(
+      false,
+      '`onDropdownVisibleChange` is deprecated. Please use `onPopupVisibleChange` instead.',
+    );
+  }
 }
 
 // value in Select option should not be null
