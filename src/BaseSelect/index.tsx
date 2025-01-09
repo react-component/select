@@ -337,7 +337,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   const mergedPopupClassName = popupClassName ?? dropdownClassName;
   const mergedPopupRender = popupRender ?? dropdownRender;
   const mergedPopupAlign = popupAlign ?? dropdownAlign;
-
+  const mergedPopupMatchSelectWidth = popupMatchSelectWidth ?? dropdownMatchSelectWidth;
   // ============================= Mobile =============================
   const [mobile, setMobile] = React.useState(false);
   React.useEffect(() => {
@@ -800,7 +800,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       popupStyle={mergedPopupStyle}
       popupClassName={mergedPopupClassName}
       direction={direction}
-      popupMatchSelectWidth={popupMatchSelectWidth}
+      popupMatchSelectWidth={mergedPopupMatchSelectWidth}
       popupRender={mergedPopupRender}
       popupAlign={mergedPopupAlign}
       placement={placement}
