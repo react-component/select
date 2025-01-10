@@ -16,6 +16,7 @@ export interface DisplayValueType {
   label?: React.ReactNode;
   title?: React.ReactNode;
   disabled?: boolean;
+  index?: number;
 }
 
 export type RenderNode = React.ReactNode | ((props: any) => React.ReactNode);

@@ -131,6 +131,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
     closable?: boolean,
     onClose?: React.MouseEventHandler,
     isMaxTag?: boolean,
+    info?: { index: number },
   ) => {
     const onMouseDown = (e: React.MouseEvent) => {
       onPreventMouseDown(e);
@@ -141,6 +142,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
         {tagRender({
           label: content,
           value,
+          index: info?.index,
           disabled: itemDisabled,
           closable,
           onClose,
@@ -150,7 +152,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
     );
   };
 
-  const renderItem = (valueItem: DisplayValueType) => {
+  const renderItem = (valueItem: DisplayValueType, info: { index: number }) => {
     const { disabled: itemDisabled, label, value } = valueItem;
     const closable = !disabled && !itemDisabled;
 
@@ -173,7 +175,15 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
     };
 
     return typeof tagRender === 'function'
-      ? customizeRenderSelector(value, displayLabel, itemDisabled, closable, onClose)
+      ? customizeRenderSelector(
+          value,
+          displayLabel,
+          itemDisabled,
+          closable,
+          onClose,
+          undefined,
+          info,
+        )
       : defaultRenderSelector(valueItem, displayLabel, itemDisabled, closable, onClose);
   };
 
