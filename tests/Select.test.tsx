@@ -2368,3 +2368,91 @@ describe('Select.Basic', () => {
     expect(element[1]).toHaveClass('rc-select-item-option-disabled');
   });
 });
+
+describe('Select.Deprecated APIs', () => {
+  beforeAll(() => {
+    jest.useFakeTimers();
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
+  beforeEach(() => {
+    resetWarned();
+  });
+
+  const deprecatedAPIs = {
+    dropdownClassName: 'popupClassName',
+    dropdownStyle: 'popupStyle',
+    dropdownAlign: 'popupAlign',
+    dropdownRender: 'popupRender',
+    dropdownMatchSelectWidth: 'popupMatchSelectWidth',
+    onDropdownVisibleChange: 'onPopupVisibleChange',
+  };
+
+  Object.entries(deprecatedAPIs).forEach(([deprecatedProp, newProp]) => {
+    it(`should warning if use deprecated API '${deprecatedProp}'`, () => {
+      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      const props = {
+        [deprecatedProp]: deprecatedProp === 'dropdownRender' ? (menu) => menu : true,
+      };
+
+      render(
+        <Select {...props}>
+          <Option value="1">1</Option>
+        </Select>,
+      );
+
+      expect(errorSpy).toHaveBeenCalledWith(
+        `Warning: \`${deprecatedProp}\` is deprecated. Please use \`${newProp}\` instead.`,
+      );
+
+      errorSpy.mockRestore();
+    });
+  });
+
+  it('should not warning if use new APIs', () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    render(
+      <Select
+        popupClassName="test"
+        popupStyle={{ color: 'red' }}
+        popupAlign={{ offset: [0, 0] }}
+        popupRender={(menu) => menu}
+        popupMatchSelectWidth={100}
+        onPopupVisibleChange={() => {}}
+      >
+        <Option value="1">1</Option>
+      </Select>,
+    );
+
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+
+  it('should work with both old and new APIs', () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    const { container } = render(
+      <Select dropdownMatchSelectWidth={100} popupMatchSelectWidth={200}>
+        <Option value="1">1</Option>
+      </Select>,
+    );
+
+    // Should use new API value
+    toggleOpen(container);
+    expect((container.querySelector('.rc-select-dropdown') as HTMLElement).style.width).toBe(
+      '200px',
+    );
+
+    // Should still show warning
+    expect(errorSpy).toHaveBeenCalledWith(
+      `Warning: \`dropdownMatchSelectWidth\` is deprecated. Please use \`popupMatchSelectWidth\` instead.`,
+    );
+
+    errorSpy.mockRestore();
+  });
+});

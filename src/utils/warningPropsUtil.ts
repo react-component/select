@@ -161,7 +161,7 @@ function warningProps(props: SelectProps) {
 
   Object.entries(deprecatedProps).forEach(([deprecatedProp, newProp]) => {
     if (deprecatedProp in props) {
-      warning(false, `'${deprecatedProp}' is deprecated. Please use '${newProp}' instead.`);
+      warning(false, `\`${deprecatedProp}\` is deprecated. Please use \`${newProp}\` instead.`);
     }
   });
 
