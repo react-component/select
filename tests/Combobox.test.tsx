@@ -455,16 +455,16 @@ describe('Select.Combobox', () => {
   // https://github.com/ant-design/ant-design/issues/16572
   it('close when enter press without active option', () => {
     jest.useFakeTimers();
-    const onDropdownVisibleChange = jest.fn();
+    const onPopupVisibleChange = jest.fn();
     const { container } = render(
-      <Select mode="combobox" open onDropdownVisibleChange={onDropdownVisibleChange}>
+      <Select mode="combobox" open onPopupVisibleChange={onPopupVisibleChange}>
         <Option value="One">One</Option>
         <Option value="Two">Two</Option>
       </Select>,
     );
     keyDown(container.querySelector('input')!, KeyCode.ENTER);
     jest.runAllTimers();
-    expect(onDropdownVisibleChange).toHaveBeenCalledWith(false);
+    expect(onPopupVisibleChange).toHaveBeenCalledWith(false);
     jest.useRealTimers();
   });
 

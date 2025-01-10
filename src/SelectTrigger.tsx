@@ -107,6 +107,12 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
     ...restProps
   } = props;
 
+  // We still use `dropdown` className to keep compatibility
+  // This is used for:
+  // 1. Styles
+  // 2. Animation
+  // 3. Theme customization
+  // Please do not modify this since it's a breaking change
   const popupPrefixCls = `${prefixCls}-dropdown`;
 
   let popupNode = popupElement;

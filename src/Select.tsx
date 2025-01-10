@@ -180,8 +180,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       // Select
       onSelect,
       onDeselect,
-      dropdownMatchSelectWidth = true,
-      popupMatchSelectWidth = dropdownMatchSelectWidth,
+      popupMatchSelectWidth = true,
 
       // Options
       filterOption,

@@ -50,7 +50,7 @@ class Test extends React.Component {
             tokenSeparators={[' ', ',']}
             onFocus={() => console.log('focus')}
             onBlur={() => console.log('blur')}
-            dropdownRender={(menu) => (
+            popupRender={(menu) => (
               <React.Fragment>
                 <div
                   onClick={() => {

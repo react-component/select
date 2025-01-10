@@ -315,7 +315,7 @@ describe('Select.Basic', () => {
     const { container } = render(
       <Select
         direction="rtl"
-        dropdownRender={(origin) => (
+        popupRender={(origin) => (
           <>
             <Hooker />
             {origin}
@@ -892,13 +892,13 @@ describe('Select.Basic', () => {
         open: true,
       };
 
-      public onDropdownVisibleChange = (open) => {
+      public onPopupVisibleChange = (open) => {
         this.setState({ open });
       };
 
       public render() {
         return (
-          <Select open={this.state.open} onDropdownVisibleChange={this.onDropdownVisibleChange}>
+          <Select open={this.state.open} onPopupVisibleChange={this.onPopupVisibleChange}>
             <Option value="1">1</Option>
           </Select>
         );
@@ -1323,7 +1323,7 @@ describe('Select.Basic', () => {
     const { container } = testingRender(
       <Select
         open
-        dropdownRender={(menu) => (
+        popupRender={(menu) => (
           <div>
             <div className="dropdown-custom-node">CUSTOM NODE</div>
             {menu}
@@ -1345,7 +1345,7 @@ describe('Select.Basic', () => {
     const { container } = testingRender(
       <Select
         onMouseDown={onMouseDown}
-        dropdownRender={(menu) => (
+        popupRender={(menu) => (
           <div>
             <div id="dropdown-custom-node" onClick={onChildClick}>
               CUSTOM NODE
@@ -1486,7 +1486,7 @@ describe('Select.Basic', () => {
           listItemHeight={10}
           listHeight={100}
           style={{ width: 1000 }}
-          dropdownMatchSelectWidth={false}
+          popupMatchSelectWidth={false}
           options={options}
         />,
       );
@@ -1517,7 +1517,7 @@ describe('Select.Basic', () => {
 
   it('dropdown should auto-adjust horizontally when dropdownMatchSelectWidth is false', () => {
     render(
-      <Select dropdownMatchSelectWidth={233}>
+      <Select popupMatchSelectWidth={233}>
         <Option value={0}>0</Option>
         <Option value={1}>1</Option>
       </Select>,
@@ -1992,7 +1992,7 @@ describe('Select.Basic', () => {
     const { container } = render(
       <Select
         options={[{ value: 903, label: 'Bamboo' }]}
-        dropdownRender={(node) => <Wrapper>{node}</Wrapper>}
+        popupRender={(node) => <Wrapper>{node}</Wrapper>}
         open
       />,
     );
@@ -2366,93 +2366,5 @@ describe('Select.Basic', () => {
     );
     expect(element[0]).not.toHaveClass('rc-select-item-option-disabled');
     expect(element[1]).toHaveClass('rc-select-item-option-disabled');
-  });
-});
-
-describe('Select.Deprecated APIs', () => {
-  beforeAll(() => {
-    jest.useFakeTimers();
-  });
-
-  afterAll(() => {
-    jest.useRealTimers();
-  });
-
-  beforeEach(() => {
-    resetWarned();
-  });
-
-  const deprecatedAPIs = {
-    dropdownClassName: 'popupClassName',
-    dropdownStyle: 'popupStyle',
-    dropdownAlign: 'popupAlign',
-    dropdownRender: 'popupRender',
-    dropdownMatchSelectWidth: 'popupMatchSelectWidth',
-    onDropdownVisibleChange: 'onPopupVisibleChange',
-  };
-
-  Object.entries(deprecatedAPIs).forEach(([deprecatedProp, newProp]) => {
-    it(`should warning if use deprecated API '${deprecatedProp}'`, () => {
-      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-
-      const props = {
-        [deprecatedProp]: deprecatedProp === 'dropdownRender' ? (menu) => menu : true,
-      };
-
-      render(
-        <Select {...props}>
-          <Option value="1">1</Option>
-        </Select>,
-      );
-
-      expect(errorSpy).toHaveBeenCalledWith(
-        `Warning: \`${deprecatedProp}\` is deprecated. Please use \`${newProp}\` instead.`,
-      );
-
-      errorSpy.mockRestore();
-    });
-  });
-
-  it('should not warning if use new APIs', () => {
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-
-    render(
-      <Select
-        popupClassName="test"
-        popupStyle={{ color: 'red' }}
-        popupAlign={{ offset: [0, 0] }}
-        popupRender={(menu) => menu}
-        popupMatchSelectWidth={100}
-        onPopupVisibleChange={() => {}}
-      >
-        <Option value="1">1</Option>
-      </Select>,
-    );
-
-    expect(errorSpy).not.toHaveBeenCalled();
-    errorSpy.mockRestore();
-  });
-
-  it('should work with both old and new APIs', () => {
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-
-    const { container } = render(
-      <Select dropdownMatchSelectWidth={100} popupMatchSelectWidth={200}>
-        <Option value="1">1</Option>
-      </Select>,
-    );
-
-    // Should use new API value
-    toggleOpen(container);
-    expect((container.querySelector('.rc-select-dropdown') as HTMLElement).style.width).toBe(
-      '200px',
-    );
-
-    // Should still show warning
-    expect(errorSpy).toHaveBeenCalledWith(
-      `Warning: \`dropdownMatchSelectWidth\` is deprecated. Please use \`popupMatchSelectWidth\` instead.`,
-    );
-
-    errorSpy.mockRestore();
   });
 });
