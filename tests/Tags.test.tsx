@@ -301,6 +301,20 @@ describe('Select.Tags', () => {
       expectOpen(container, false);
     });
 
+    // https://github.com/ant-design/ant-design/issues/48930
+    it('should not call tagRender when value is empty', () => {
+      const tagRender = jest.fn();
+      render(
+        <Select
+          mode="tags"
+          value={[]}
+          tagRender={tagRender}
+          options={[{ value: 'light' }, { value: 'dark' }]}
+        />,
+      );
+      expect(tagRender).not.toHaveBeenCalled();
+    });
+
     it('disabled', () => {
       const tagRender = jest.fn();
       render(
