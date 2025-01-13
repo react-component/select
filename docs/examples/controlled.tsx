@@ -43,7 +43,7 @@ class Controlled extends React.Component<{}, ControlledState> {
     console.log('onFocus');
   };
 
-  onDropdownVisibleChange = (open) => {
+  onPopupVisibleChange = (open) => {
     this.setState({ open });
   };
 
@@ -68,7 +68,7 @@ class Controlled extends React.Component<{}, ControlledState> {
             optionLabelProp="children"
             optionFilterProp="text"
             onChange={this.onChange}
-            onDropdownVisibleChange={this.onDropdownVisibleChange}
+            onPopupVisibleChange={this.onPopupVisibleChange}
           >
             <Option value="01" text="jack" title="jack">
               <b

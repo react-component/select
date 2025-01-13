@@ -156,7 +156,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   // >>> Open
   open?: boolean;
   defaultOpen?: boolean;
-  onDropdownVisibleChange?: (open: boolean) => void;
+  onPopupVisibleChange?: (open: boolean) => void;
 
   // >>> Customize Input
   /** @private Internal usage. Do not use in your production. */
@@ -184,14 +184,16 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   /** Selector remove icon */
   removeIcon?: RenderNode;
 
-  // >>> Dropdown
+  // >>> Dropdown/Popup
   animation?: string;
   transitionName?: string;
-  dropdownStyle?: React.CSSProperties;
-  dropdownClassName?: string;
-  dropdownMatchSelectWidth?: boolean | number;
-  dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
-  dropdownAlign?: AlignType;
+
+  popupStyle?: React.CSSProperties;
+  popupClassName?: string;
+  popupMatchSelectWidth?: boolean | number;
+  popupRender?: (menu: React.ReactElement) => React.ReactElement;
+  popupAlign?: AlignType;
+
   placement?: Placement;
   builtinPlacements?: BuildInPlacements;
   getPopupContainer?: RenderDOMFunc;
@@ -245,7 +247,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     // Open
     open,
     defaultOpen,
-    onDropdownVisibleChange,
+    onPopupVisibleChange,
 
     // Active
     activeValue,
@@ -269,11 +271,11 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     OptionList,
     animation,
     transitionName,
-    dropdownStyle,
-    dropdownClassName,
-    dropdownMatchSelectWidth,
-    dropdownRender,
-    dropdownAlign,
+    popupStyle,
+    popupClassName,
+    popupMatchSelectWidth,
+    popupRender,
+    popupAlign,
     placement,
     builtinPlacements,
     getPopupContainer,
@@ -389,11 +391,11 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
         setInnerOpen(nextOpen);
 
         if (mergedOpen !== nextOpen) {
-          onDropdownVisibleChange?.(nextOpen);
+          onPopupVisibleChange?.(nextOpen);
         }
       }
     },
-    [disabled, mergedOpen, setInnerOpen, onDropdownVisibleChange],
+    [disabled, mergedOpen, setInnerOpen, onPopupVisibleChange],
   );
 
   // ============================= Search =============================
@@ -767,12 +769,12 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       popupElement={optionList}
       animation={animation}
       transitionName={transitionName}
-      dropdownStyle={dropdownStyle}
-      dropdownClassName={dropdownClassName}
+      popupStyle={popupStyle}
+      popupClassName={popupClassName}
       direction={direction}
-      dropdownMatchSelectWidth={dropdownMatchSelectWidth}
-      dropdownRender={dropdownRender}
-      dropdownAlign={dropdownAlign}
+      popupMatchSelectWidth={popupMatchSelectWidth}
+      popupRender={popupRender}
+      popupAlign={popupAlign}
       placement={placement}
       builtinPlacements={builtinPlacements}
       getPopupContainer={getPopupContainer}

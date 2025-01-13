@@ -75,9 +75,9 @@ class Test extends React.Component {
         >
           <h3 style={{ width: '100%' }}>Transform: 150%</h3>
           <MySelect />
-          <MySelect dropdownMatchSelectWidth />
-          <MySelect dropdownMatchSelectWidth={false} />
-          <MySelect dropdownMatchSelectWidth={300} />
+          <MySelect popupMatchSelectWidth />
+          <MySelect popupMatchSelectWidth={false} />
+          <MySelect popupMatchSelectWidth={300} />
         </div>
       </div>
     );

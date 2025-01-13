@@ -21,7 +21,7 @@ const Test = () => (
         animation="slide-up"
         showSearch
         onChange={onChange}
-        dropdownStyle={{
+        popupStyle={{
           width: 'auto',
         }}
       >

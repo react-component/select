@@ -130,8 +130,8 @@ class Test extends React.Component {
             id="my-select-rtl"
             placeholder="rtl"
             direction="rtl"
-            dropdownMatchSelectWidth={300}
-            dropdownStyle={{ minWidth: 300 }}
+            popupMatchSelectWidth={300}
+            popupStyle={{ minWidth: 300 }}
             style={{ width: 500 }}
           >
             <Option value="1">1</Option>

@@ -34,14 +34,14 @@ class Test extends React.Component {
       >
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
-            <Select onChange={this.onChange} dropdownMatchSelectWidth={500} value={value}>
+            <Select onChange={this.onChange} popupMatchSelectWidth={500} value={value}>
               <Option value="1">Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack</Option>
               <Option value="2">Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy</Option>
               <Option value="3">Jill</Option>
             </Select>
           </div>
           <div>
-            <Select onChange={this.onChange} dropdownMatchSelectWidth={500} value={value}>
+            <Select onChange={this.onChange} popupMatchSelectWidth={500} value={value}>
               <Option value="1">Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack</Option>
               <Option value="2">Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy</Option>{' '}
               <Option value="3">Jill</Option>
@@ -50,7 +50,7 @@ class Test extends React.Component {
         </div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <div>
-            <Select onChange={this.onChange} dropdownMatchSelectWidth={500} value={value}>
+            <Select onChange={this.onChange} popupMatchSelectWidth={500} value={value}>
               <Option value="1">Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack</Option>
               <Option value="2">Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy</Option>
               <Option value="3">Jill</Option>
@@ -64,14 +64,14 @@ class Test extends React.Component {
           }}
         >
           <div>
-            <Select onChange={this.onChange} dropdownMatchSelectWidth={500} value={value}>
+            <Select onChange={this.onChange} popupMatchSelectWidth={500} value={value}>
               <Option value="1">Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack</Option>
               <Option value="2">Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy</Option>
               <Option value="3">Jill</Option>
             </Select>
           </div>
           <div>
-            <Select onChange={this.onChange} dropdownMatchSelectWidth={500} value={value}>
+            <Select onChange={this.onChange} popupMatchSelectWidth={500} value={value}>
               <Option value="1">Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack Jack</Option>
               <Option value="2">Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy Lucy</Option>
               <Option value="3">Jill</Option>
