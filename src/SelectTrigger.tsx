@@ -5,10 +5,10 @@ import * as React from 'react';
 import type { Placement, RenderDOMFunc } from './BaseSelect';
 
 const getBuiltInPlacements = (
-  dropdownMatchSelectWidth: number | boolean,
+  popupMatchSelectWidth: number | boolean,
 ): Record<string, AlignType> => {
   // Enable horizontal overflow auto-adjustment when a custom dropdown width is provided
-  const adjustX = dropdownMatchSelectWidth === true ? 0 : 1;
+  const adjustX = popupMatchSelectWidth === true ? 0 : 1;
   return {
     bottomLeft: {
       points: ['tl', 'bl'],
@@ -64,13 +64,13 @@ export interface SelectTriggerProps {
   transitionName?: string;
   placement?: Placement;
   builtinPlacements?: BuildInPlacements;
-  dropdownStyle: React.CSSProperties;
-  dropdownClassName: string;
+  popupStyle: React.CSSProperties;
+  popupClassName: string;
   direction: string;
-  dropdownMatchSelectWidth?: boolean | number;
-  dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
+  popupMatchSelectWidth?: boolean | number;
+  popupRender?: (menu: React.ReactElement) => React.ReactElement;
   getPopupContainer?: RenderDOMFunc;
-  dropdownAlign: AlignType;
+  popupAlign: AlignType;
   empty: boolean;
 
   getTriggerDOMNode: (node: HTMLElement) => HTMLElement;
@@ -91,14 +91,14 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
     popupElement,
     animation,
     transitionName,
-    dropdownStyle,
-    dropdownClassName,
+    popupStyle,
+    popupClassName,
     direction = 'ltr',
     placement,
     builtinPlacements,
-    dropdownMatchSelectWidth,
-    dropdownRender,
-    dropdownAlign,
+    popupMatchSelectWidth,
+    popupRender,
+    popupAlign,
     getPopupContainer,
     empty,
     getTriggerDOMNode,
@@ -107,38 +107,44 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
     ...restProps
   } = props;
 
-  const dropdownPrefixCls = `${prefixCls}-dropdown`;
+  // We still use `dropdown` className to keep compatibility
+  // This is used for:
+  // 1. Styles
+  // 2. Animation
+  // 3. Theme customization
+  // Please do not modify this since it's a breaking change
+  const popupPrefixCls = `${prefixCls}-dropdown`;
 
   let popupNode = popupElement;
-  if (dropdownRender) {
-    popupNode = dropdownRender(popupElement);
+  if (popupRender) {
+    popupNode = popupRender(popupElement);
   }
 
   const mergedBuiltinPlacements = React.useMemo(
-    () => builtinPlacements || getBuiltInPlacements(dropdownMatchSelectWidth),
-    [builtinPlacements, dropdownMatchSelectWidth],
+    () => builtinPlacements || getBuiltInPlacements(popupMatchSelectWidth),
+    [builtinPlacements, popupMatchSelectWidth],
   );
 
   // ===================== Motion ======================
-  const mergedTransitionName = animation ? `${dropdownPrefixCls}-${animation}` : transitionName;
+  const mergedTransitionName = animation ? `${popupPrefixCls}-${animation}` : transitionName;
 
   // =================== Popup Width ===================
-  const isNumberPopupWidth = typeof dropdownMatchSelectWidth === 'number';
+  const isNumberPopupWidth = typeof popupMatchSelectWidth === 'number';
 
   const stretch = React.useMemo(() => {
     if (isNumberPopupWidth) {
       return null;
     }
 
-    return dropdownMatchSelectWidth === false ? 'minWidth' : 'width';
-  }, [dropdownMatchSelectWidth, isNumberPopupWidth]);
+    return popupMatchSelectWidth === false ? 'minWidth' : 'width';
+  }, [popupMatchSelectWidth, isNumberPopupWidth]);
 
-  let popupStyle = dropdownStyle;
+  let mergedPopupStyle = popupStyle;
 
   if (isNumberPopupWidth) {
-    popupStyle = {
+    mergedPopupStyle = {
       ...popupStyle,
-      width: dropdownMatchSelectWidth,
+      width: popupMatchSelectWidth,
     };
   }
 
@@ -156,18 +162,18 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
       hideAction={onPopupVisibleChange ? ['click'] : []}
       popupPlacement={placement || (direction === 'rtl' ? 'bottomRight' : 'bottomLeft')}
       builtinPlacements={mergedBuiltinPlacements}
-      prefixCls={dropdownPrefixCls}
+      prefixCls={popupPrefixCls}
       popupTransitionName={mergedTransitionName}
       popup={<div onMouseEnter={onPopupMouseEnter}>{popupNode}</div>}
       ref={triggerPopupRef}
       stretch={stretch}
-      popupAlign={dropdownAlign}
+      popupAlign={popupAlign}
       popupVisible={visible}
       getPopupContainer={getPopupContainer}
-      popupClassName={classNames(dropdownClassName, {
-        [`${dropdownPrefixCls}-empty`]: empty,
+      popupClassName={classNames(popupClassName, {
+        [`${popupPrefixCls}-empty`]: empty,
       })}
-      popupStyle={popupStyle}
+      popupStyle={mergedPopupStyle}
       getTriggerDOMNode={getTriggerDOMNode}
       onPopupVisibleChange={onPopupVisibleChange}
     >

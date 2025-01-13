@@ -180,7 +180,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       // Select
       onSelect,
       onDeselect,
-      dropdownMatchSelectWidth = true,
+      popupMatchSelectWidth = true,
 
       // Options
       filterOption,
@@ -609,7 +609,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
 
     // ========================== Context ===========================
     const selectContext = React.useMemo<SelectContextProps>(() => {
-      const realVirtual = virtual !== false && dropdownMatchSelectWidth !== false;
+      const realVirtual = virtual !== false && popupMatchSelectWidth !== false;
       return {
         ...parsedOptions,
         flattenOptions: displayOptions,
@@ -638,7 +638,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       rawValues,
       mergedFieldNames,
       virtual,
-      dropdownMatchSelectWidth,
+      popupMatchSelectWidth,
       direction,
       listHeight,
       listItemHeight,
@@ -675,7 +675,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
           onSearch={onInternalSearch}
           autoClearSearchValue={autoClearSearchValue}
           onSearchSplit={onInternalSearchSplit}
-          dropdownMatchSelectWidth={dropdownMatchSelectWidth}
+          popupMatchSelectWidth={popupMatchSelectWidth}
           // >>> OptionList
           OptionList={OptionList}
           emptyOptions={!displayOptions.length}

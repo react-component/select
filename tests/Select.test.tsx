@@ -316,7 +316,7 @@ describe('Select.Basic', () => {
     const { container } = render(
       <Select
         direction="rtl"
-        dropdownRender={(origin) => (
+        popupRender={(origin) => (
           <>
             <Hooker />
             {origin}
@@ -893,13 +893,13 @@ describe('Select.Basic', () => {
         open: true,
       };
 
-      public onDropdownVisibleChange = (open) => {
+      public onPopupVisibleChange = (open) => {
         this.setState({ open });
       };
 
       public render() {
         return (
-          <Select open={this.state.open} onDropdownVisibleChange={this.onDropdownVisibleChange}>
+          <Select open={this.state.open} onPopupVisibleChange={this.onPopupVisibleChange}>
             <Option value="1">1</Option>
           </Select>
         );
@@ -1324,7 +1324,7 @@ describe('Select.Basic', () => {
     const { container } = testingRender(
       <Select
         open
-        dropdownRender={(menu) => (
+        popupRender={(menu) => (
           <div>
             <div className="dropdown-custom-node">CUSTOM NODE</div>
             {menu}
@@ -1346,7 +1346,7 @@ describe('Select.Basic', () => {
     const { container } = testingRender(
       <Select
         onMouseDown={onMouseDown}
-        dropdownRender={(menu) => (
+        popupRender={(menu) => (
           <div>
             <div id="dropdown-custom-node" onClick={onChildClick}>
               CUSTOM NODE
@@ -1487,7 +1487,7 @@ describe('Select.Basic', () => {
           listItemHeight={10}
           listHeight={100}
           style={{ width: 1000 }}
-          dropdownMatchSelectWidth={false}
+          popupMatchSelectWidth={false}
           options={options}
         />,
       );
@@ -1518,7 +1518,7 @@ describe('Select.Basic', () => {
 
   it('dropdown should auto-adjust horizontally when dropdownMatchSelectWidth is false', () => {
     render(
-      <Select dropdownMatchSelectWidth={233}>
+      <Select popupMatchSelectWidth={233}>
         <Option value={0}>0</Option>
         <Option value={1}>1</Option>
       </Select>,
@@ -1993,7 +1993,7 @@ describe('Select.Basic', () => {
     const { container } = render(
       <Select
         options={[{ value: 903, label: 'Bamboo' }]}
-        dropdownRender={(node) => <Wrapper>{node}</Wrapper>}
+        popupRender={(node) => <Wrapper>{node}</Wrapper>}
         open
       />,
     );
