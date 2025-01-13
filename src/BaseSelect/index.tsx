@@ -535,11 +535,11 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     }
 
     if (mergedOpen && (!isEnterKey || !keyLockRef.current)) {
+      // Lock the Enter key after it is pressed to avoid repeated triggering of the onChange event.
+      if (isEnterKey) {
+        keyLockRef.current = true;
+      }
       listRef.current?.onKeyDown(event, ...rest);
-    }
-
-    if (isEnterKey) {
-      keyLockRef.current = true;
     }
 
     onKeyDown?.(event, ...rest);
@@ -564,6 +564,11 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       type: 'remove',
       values: [val],
     });
+  };
+
+  const onSelectorBlur = () => {
+    // Unlock the Enter key after the selector blur; otherwise, the Enter key needs to be pressed twice to trigger the correct effect.
+    keyLockRef.current = false;
   };
 
   // ========================== Focus / Blur ==========================
@@ -813,6 +818,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
           onSearchSubmit={onInternalSearchSubmit}
           onRemove={onSelectorRemove}
           tokenWithEnter={tokenWithEnter}
+          onSelectorBlur={onSelectorBlur}
         />
       )}
     </SelectTrigger>

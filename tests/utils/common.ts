@@ -117,3 +117,23 @@ export function keyUp(element: HTMLElement, keyCode: number) {
     fireEvent(element, event);
   });
 }
+
+/**
+ * Wait for a time delay. Will wait `advanceTime * times` ms.
+ *
+ * @param advanceTime Default 1000
+ * @param times Default 20
+ */
+export async function waitFakeTimer(advanceTime = 1000, times = 20) {
+  for (let i = 0; i < times; i += 1) {
+    await act(async () => {
+      await Promise.resolve();
+
+      if (advanceTime > 0) {
+        jest.advanceTimersByTime(advanceTime);
+      } else {
+        jest.runAllTimers();
+      }
+    });
+  }
+}
