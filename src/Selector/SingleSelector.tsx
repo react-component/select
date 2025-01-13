@@ -36,6 +36,7 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
     onInputPaste,
     onInputCompositionStart,
     onInputCompositionEnd,
+    onInputBlur,
     title,
   } = props;
 
@@ -100,6 +101,7 @@ const SingleSelector: React.FC<SelectorProps> = (props) => {
           onPaste={onInputPaste}
           onCompositionStart={onInputCompositionStart}
           onCompositionEnd={onInputCompositionEnd}
+          onBlur={onInputBlur}
           tabIndex={tabIndex}
           attrs={pickAttrs(props, true)}
           maxLength={combobox ? maxLength : undefined}

@@ -25,6 +25,7 @@ interface InputProps {
   onMouseDown: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
   onPaste: React.ClipboardEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
+  onBlur: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLElement>;
   onCompositionStart: React.CompositionEventHandler<
     HTMLInputElement | HTMLTextAreaElement | HTMLElement
   >;
@@ -52,6 +53,7 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (props, ref)
     onPaste,
     onCompositionStart,
     onCompositionEnd,
+    onBlur,
     open,
     attrs,
   } = props;
@@ -66,6 +68,7 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (props, ref)
     onMouseDown: onOriginMouseDown,
     onCompositionStart: onOriginCompositionStart,
     onCompositionEnd: onOriginCompositionEnd,
+    onBlur: onOriginBlur,
     style,
   } = originProps;
 
@@ -134,6 +137,12 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (props, ref)
       }
     },
     onPaste,
+    onBlur(event: React.FocusEvent<HTMLElement>) {
+      onBlur(event);
+      if (onOriginBlur) {
+        onOriginBlur(event);
+      }
+    },
   });
 
   return inputNode;
