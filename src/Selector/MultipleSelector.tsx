@@ -188,6 +188,10 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
   };
 
   const renderRest = (omittedValues: DisplayValueType[]) => {
+    // https://github.com/ant-design/ant-design/issues/48930
+    if (!values.length) {
+      return null;
+    }
     const content =
       typeof maxTagPlaceholder === 'function'
         ? maxTagPlaceholder(omittedValues)
