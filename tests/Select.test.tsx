@@ -28,6 +28,7 @@ import {
   keyUp,
   selectItem,
   toggleOpen,
+  waitFakeTimer,
 } from './utils/common';
 
 describe('Select.Basic', () => {
@@ -2366,5 +2367,54 @@ describe('Select.Basic', () => {
     );
     expect(element[0]).not.toHaveClass('rc-select-item-option-disabled');
     expect(element[1]).toHaveClass('rc-select-item-option-disabled');
+  });
+
+  it('release Enter key lock after customize input calls blur()', async () => {
+    let inputElem: HTMLInputElement | null = null;
+    const onBlur = jest.fn();
+    const Demo: React.FC = () => {
+      const ref = React.useRef<HTMLInputElement>(null);
+      const onSelect = () => {
+        ref.current!.blur();
+        fireEvent.blur(ref.current);
+      };
+      const getInputElement = () => {
+        return <input ref={ref} onBlur={onBlur} />;
+      };
+      return (
+        <Select
+          options={[{ value: 'aa' }, { value: 'bb' }]}
+          onSelect={onSelect}
+          mode="combobox"
+          getInputElement={getInputElement}
+        />
+      );
+    };
+    const { container } = render(<Demo />);
+    inputElem = container.querySelector('input');
+    toggleOpen(container);
+    await waitFakeTimer();
+    expectOpen(container, true);
+
+    keyDown(inputElem!, 40);
+    keyUp(inputElem!, 40);
+    keyDown(inputElem!, 13);
+
+    await waitFakeTimer();
+    expect(onBlur).toHaveBeenCalledTimes(1);
+    expectOpen(container, false);
+    expect(inputElem.value).toEqual('aa');
+
+    toggleOpen(container);
+    await waitFakeTimer();
+    expectOpen(container, true);
+
+    keyDown(inputElem!, 40);
+    keyUp(inputElem!, 40);
+    keyDown(inputElem!, 13);
+
+    await waitFakeTimer();
+    expect(onBlur).toHaveBeenCalledTimes(2);
+    expect(inputElem.value).toEqual('bb');
   });
 });

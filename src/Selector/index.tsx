@@ -44,6 +44,7 @@ export interface InnerSelectorProps {
   onInputPaste: React.ClipboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onInputCompositionStart: React.CompositionEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onInputCompositionEnd: React.CompositionEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onInputBlur: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }
 
 export interface RefSelectorProps {
@@ -92,7 +93,8 @@ export interface SelectorProps {
   onSearchSubmit?: (searchText: string) => void;
   onRemove: (value: DisplayValueType) => void;
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-
+  // on inner input blur
+  onInputBlur?: () => void;
   /**
    * @private get real dom for trigger align.
    * This may be removed after React provides replacement of `findDOMNode`
@@ -119,6 +121,7 @@ const Selector: React.ForwardRefRenderFunction<RefSelectorProps, SelectorProps> 
     onSearchSubmit,
     onToggleOpen,
     onInputKeyDown,
+    onInputBlur,
 
     domRef,
   } = props;
@@ -270,6 +273,7 @@ const Selector: React.ForwardRefRenderFunction<RefSelectorProps, SelectorProps> 
     onInputPaste,
     onInputCompositionStart,
     onInputCompositionEnd,
+    onInputBlur,
   };
 
   const selectNode =
