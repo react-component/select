@@ -72,6 +72,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
     onInputMouseDown,
     onInputCompositionStart,
     onInputCompositionEnd,
+    onInputBlur,
   } = props;
 
   const measureRef = React.useRef<HTMLSpanElement>(null);
@@ -221,6 +222,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
         onPaste={onInputPaste}
         onCompositionStart={onInputCompositionStart}
         onCompositionEnd={onInputCompositionEnd}
+        onBlur={onInputBlur}
         tabIndex={tabIndex}
         attrs={pickAttrs(props, true)}
       />
