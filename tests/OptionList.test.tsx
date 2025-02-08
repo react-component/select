@@ -6,7 +6,9 @@ import OptionList from '../src/OptionList';
 import SelectContext from '../src/SelectContext';
 import { fillFieldNames, flattenOptions } from '../src/utils/valueUtil';
 import { injectRunAllTimers } from './utils/common';
-import { createEvent, fireEvent, render } from '@testing-library/react';
+import { createEvent, fireEvent, render, waitFor } from '@testing-library/react';
+import Select from '../src';
+import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 
 jest.mock('../src/utils/platformUtil');
 
@@ -458,5 +460,75 @@ describe('OptionList', () => {
       listRef.current.onKeyDown({ which: KeyCode.DOWN } as any);
     });
     expect(onActiveValue).not.toHaveBeenCalledWith('3', expect.anything(), expect.anything());
+  });
+
+  describe('List.ScrollBar', () => {
+    let mockElement;
+    let boundingRect = {
+      top: 0,
+      bottom: 0,
+      width: 100,
+      height: 50,
+    };
+
+    beforeAll(() => {
+      mockElement = spyElementPrototypes(HTMLElement, {
+        offsetHeight: {
+          get: () => 100,
+        },
+        clientHeight: {
+          get: () => 50,
+        },
+        getBoundingClientRect: () => boundingRect,
+        offsetParent: {
+          get: () => document.body,
+        },
+      });
+    });
+
+    afterAll(() => {
+      mockElement.mockRestore();
+    });
+
+    beforeEach(() => {
+      boundingRect = {
+        top: 0,
+        bottom: 0,
+        width: 100,
+        height: 50,
+      };
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('should show scrollbar when showScrollBar is true', async () => {
+      const options = Array.from({ length: 10 }, (_, index) => ({
+        label: `${index + 1}`,
+        value: `${index + 1}`,
+      }));
+
+      const { container } = render(<Select open showScrollBar options={options} />);
+
+      await waitFor(() => {
+        const scrollbarElement = container.querySelector('.rc-virtual-list-scrollbar-visible');
+        expect(scrollbarElement).not.toBeNull();
+      });
+    });
+    it('not have scrollbar when showScrollBar is false', async () => {
+      const options = Array.from({ length: 10 }, (_, index) => ({
+        label: `${index + 1}`,
+        value: `${index + 1}`,
+      }));
+
+      const { container } = render(<Select open showScrollBar={false} options={options} />);
+
+      await waitFor(() => {
+        const scrollbarElement = container.querySelector('.rc-virtual-list-scrollbar-visible');
+        expect(scrollbarElement).toBeNull();
+      });
+    });
   });
 });
