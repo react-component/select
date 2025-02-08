@@ -44,6 +44,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     toggleOpen,
     notFoundContent,
     onPopupScroll,
+    showScrollBar,
   } = useBaseProps();
   const {
     maxCount,
@@ -325,6 +326,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
         virtual={virtual}
         direction={direction}
         innerProps={virtual ? null : a11yProps}
+        showScrollBar={showScrollBar}
       >
         {(item, itemIndex) => {
           const { group, groupOption, data, label, value } = item;
