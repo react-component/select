@@ -136,7 +136,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   tagRender?: (props: CustomTagProps) => React.ReactElement;
   direction?: 'ltr' | 'rtl';
   maxLength?: number;
-
+  showScrollBar?: boolean | 'optional';
   // MISC
   tabIndex?: number;
   autoFocus?: boolean;
@@ -223,6 +223,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     className,
     showSearch,
     tagRender,
+    showScrollBar = 'optional',
     direction,
     omitDomProps,
 
@@ -693,8 +694,19 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       showSearch: mergedShowSearch,
       multiple,
       toggleOpen: onToggleOpen,
+      showScrollBar,
     }),
-    [props, notFoundContent, triggerOpen, mergedOpen, id, mergedShowSearch, multiple, onToggleOpen],
+    [
+      props,
+      notFoundContent,
+      triggerOpen,
+      mergedOpen,
+      id,
+      mergedShowSearch,
+      multiple,
+      onToggleOpen,
+      showScrollBar,
+    ],
   );
 
   // ==================================================================
