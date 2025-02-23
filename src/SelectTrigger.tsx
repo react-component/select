@@ -163,7 +163,7 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
       popupPlacement={placement || (direction === 'rtl' ? 'bottomRight' : 'bottomLeft')}
       builtinPlacements={mergedBuiltinPlacements}
       prefixCls={popupPrefixCls}
-      popupTransitionName={mergedTransitionName}
+      popupMotion={{ motionName: mergedTransitionName }}
       popup={<div onMouseEnter={onPopupMouseEnter}>{popupNode}</div>}
       ref={triggerPopupRef}
       stretch={stretch}
