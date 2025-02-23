@@ -1,5 +1,5 @@
 import * as React from 'react';
-import toArray from 'rc-util/lib/Children/toArray';
+import toArray from '@rc-component/util/lib/Children/toArray';
 import type { BaseOptionType, DefaultOptionType } from '../Select';
 
 function convertNodeToOption<OptionType extends BaseOptionType = DefaultOptionType>(
@@ -27,9 +27,7 @@ export function convertChildrenToData<OptionType extends BaseOptionType = Defaul
         type: { isSelectOptGroup },
         key,
         props: { children, ...restProps },
-      } = node as React.ReactElement & {
-        type: { isSelectOptGroup?: boolean };
-      };
+      } = node as React.ReactElement & { type: { isSelectOptGroup?: boolean } };
 
       if (optionOnly || !isSelectOptGroup) {
         return convertNodeToOption(node);

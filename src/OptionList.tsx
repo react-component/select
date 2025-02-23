@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import KeyCode from 'rc-util/lib/KeyCode';
-import useMemo from 'rc-util/lib/hooks/useMemo';
-import omit from 'rc-util/lib/omit';
-import pickAttrs from 'rc-util/lib/pickAttrs';
+import KeyCode from '@rc-component/util/lib/KeyCode';
+import useMemo from '@rc-component/util/lib/hooks/useMemo';
+import omit from '@rc-component/util/lib/omit';
+import pickAttrs from '@rc-component/util/lib/pickAttrs';
 import type { ListRef } from 'rc-virtual-list';
 import List from 'rc-virtual-list';
 import type { ScrollConfig } from 'rc-virtual-list/lib/List';

@@ -1,9 +1,9 @@
 import type { AlignType, BuildInPlacements } from '@rc-component/trigger/lib/interface';
 import classNames from 'classnames';
-import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
-import useMergedState from 'rc-util/lib/hooks/useMergedState';
-import isMobile from 'rc-util/lib/isMobile';
-import { useComposeRef } from 'rc-util/lib/ref';
+import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
+import useMergedState from '@rc-component/util/lib/hooks/useMergedState';
+import isMobile from '@rc-component/util/lib/isMobile';
+import { useComposeRef } from '@rc-component/util/lib/ref';
 import type { ScrollConfig, ScrollTo } from 'rc-virtual-list/lib/List';
 import * as React from 'react';
 import { useAllowClear } from '../hooks/useAllowClear';

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React from 'react';
-import Select from 'rc-select';
+import Select from '@rc-component/select';
 import '../../assets/index.less';
 
 function onChange(value, option) {

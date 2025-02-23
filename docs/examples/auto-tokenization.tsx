@@ -1,5 +1,5 @@
 import React from 'react';
-import Select from 'rc-select';
+import Select from '@rc-component/select';
 import '../../assets/index.less';
 
 const Demo: React.FC = () => (

@@ -10,7 +10,7 @@
     "paths": {
       "@/*": ["src/*"],
       "@@/*": [".dumi/tmp/*"],
-      "rc-select": ["src/index.ts"]
+      "@rc-component/select": ["src/index.ts"]
     }
   }
 }

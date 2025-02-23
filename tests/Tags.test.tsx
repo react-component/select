@@ -1,5 +1,5 @@
 import { createEvent, fireEvent, render } from '@testing-library/react';
-import KeyCode from 'rc-util/lib/KeyCode';
+import KeyCode from '@rc-component/util/lib/KeyCode';
 import classNames from 'classnames';
 import * as React from 'react';
 import Select, { BaseSelect, OptGroup, Option } from '../src';

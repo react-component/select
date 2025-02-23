@@ -29,8 +29,8 @@
  * - `combobox` mode not support `optionLabelProp`
  */
 
-import useMergedState from 'rc-util/lib/hooks/useMergedState';
-import warning from 'rc-util/lib/warning';
+import useMergedState from '@rc-component/util/lib/hooks/useMergedState';
+import warning from '@rc-component/util/lib/warning';
 import * as React from 'react';
 import type {
   BaseSelectProps,

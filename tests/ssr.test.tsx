@@ -3,8 +3,8 @@ import { renderToString } from 'react-dom/server';
 import Select from '../src';
 import { injectRunAllTimers } from './utils/common';
 
-// Mock rc-util `canUseDom`
-jest.mock('rc-util/lib/Dom/canUseDom', () => {
+// Mock @rc-component/util `canUseDom`
+jest.mock('@rc-component/util/lib/Dom/canUseDom', () => {
   return () => global.canUseDom;
 });
 

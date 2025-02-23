@@ -8,7 +8,7 @@
  * - https://www.w3.org/TR/wai-aria-practices/examples/combobox/aria1.1pattern/listbox-combo.html
  */
 
-import KeyCode from 'rc-util/lib/KeyCode';
+import KeyCode from '@rc-component/util/lib/KeyCode';
 import type { ScrollTo } from 'rc-virtual-list/lib/List';
 import * as React from 'react';
 import { useRef } from 'react';
