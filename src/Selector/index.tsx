@@ -17,6 +17,7 @@ import useLock from '../hooks/useLock';
 import { isValidateOpenKey } from '../utils/keyUtil';
 import MultipleSelector from './MultipleSelector';
 import SingleSelector from './SingleSelector';
+import classNames from 'classnames';
 
 export interface InnerSelectorProps {
   prefixCls: string;
@@ -54,6 +55,8 @@ export interface RefSelectorProps {
 }
 
 export interface SelectorProps {
+  prefixClassName: string;
+  prefixStyle: React.CSSProperties;
   id: string;
   prefixCls: string;
   showSearch?: boolean;
@@ -107,6 +110,8 @@ const Selector: React.ForwardRefRenderFunction<RefSelectorProps, SelectorProps> 
   const compositionStatusRef = useRef<boolean>(false);
 
   const {
+    prefixClassName,
+    prefixStyle,
     prefixCls,
     open,
     mode,
@@ -290,7 +295,11 @@ const Selector: React.ForwardRefRenderFunction<RefSelectorProps, SelectorProps> 
       onClick={onClick}
       onMouseDown={onMouseDown}
     >
-      {prefix && <div className={`${prefixCls}-prefix`}>{prefix}</div>}
+      {prefix && (
+        <div className={classNames(`${prefixCls}-prefix`, prefixClassName)} style={prefixStyle}>
+          {prefix}
+        </div>
+      )}
       {selectNode}
     </div>
   );

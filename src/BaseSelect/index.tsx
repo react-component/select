@@ -30,6 +30,7 @@ import { getSeparatedContent, isValidCount } from '../utils/valueUtil';
 import SelectContext from '../SelectContext';
 import type { SelectContextProps } from '../SelectContext';
 import Polite from './Polite';
+import { SemanticName } from '../Select';
 
 export type {
   DisplayInfoType,
@@ -131,6 +132,8 @@ export type BaseSelectPropsWithoutPrivate = Omit<BaseSelectProps, keyof BaseSele
 export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttributes {
   className?: string;
   style?: React.CSSProperties;
+  classNames?: Partial<Record<SemanticName, string>>;
+  styles?: Partial<Record<SemanticName, React.CSSProperties>>;
   title?: string;
   showSearch?: boolean;
   tagRender?: (props: CustomTagProps) => React.ReactElement;
@@ -290,6 +293,9 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     onKeyUp,
     onKeyDown,
     onMouseDown,
+
+    classNames: selectClassNames,
+    styles,
 
     // Rest Props
     ...restProps
@@ -720,9 +726,10 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   if (showSuffixIcon) {
     arrowNode = (
       <TransBtn
-        className={classNames(`${prefixCls}-arrow`, {
+        className={classNames(`${prefixCls}-arrow`, selectClassNames?.suffix, {
           [`${prefixCls}-arrow-loading`]: loading,
         })}
+        style={styles?.suffix}
         customizeIcon={suffixIcon}
         customizeIconProps={{
           loading,
@@ -812,6 +819,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       ) : (
         <Selector
           {...props}
+          prefixClassName={selectClassNames?.prefix}
+          prefixStyle={styles?.prefix}
           domRef={selectorDomRef}
           prefixCls={prefixCls}
           inputElement={customizeInputElement}

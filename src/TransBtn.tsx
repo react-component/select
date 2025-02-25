@@ -4,6 +4,7 @@ import type { RenderNode } from './BaseSelect';
 
 export interface TransBtnProps {
   className: string;
+  style?: React.CSSProperties;
   customizeIcon: RenderNode;
   customizeIconProps?: any;
   onMouseDown?: React.MouseEventHandler<HTMLSpanElement>;
@@ -12,7 +13,8 @@ export interface TransBtnProps {
 }
 
 const TransBtn: React.FC<TransBtnProps> = (props) => {
-  const { className, customizeIcon, customizeIconProps, children, onMouseDown, onClick } = props;
+  const { className, style, customizeIcon, customizeIconProps, children, onMouseDown, onClick } =
+    props;
 
   const icon =
     typeof customizeIcon === 'function' ? customizeIcon(customizeIconProps) : customizeIcon;
@@ -24,7 +26,7 @@ const TransBtn: React.FC<TransBtnProps> = (props) => {
         event.preventDefault();
         onMouseDown?.(event);
       }}
-      style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
+      style={{ userSelect: 'none', WebkitUserSelect: 'none', ...style }}
       unselectable="on"
       onClick={onClick}
       aria-hidden
