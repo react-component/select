@@ -2417,4 +2417,35 @@ describe('Select.Basic', () => {
     expect(onBlur).toHaveBeenCalledTimes(2);
     expect(inputElem.value).toEqual('bb');
   });
+  it('support classnames and styles', () => {
+    const customClassNames = {
+      prefix: 'cutsom-prefix',
+      suffix: 'custom-suffix',
+    };
+    const customStyle = {
+      prefix: { color: 'red' },
+      suffix: { color: 'green' },
+    };
+    const { container } = render(
+      <Select
+        open
+        classNames={customClassNames}
+        styles={customStyle}
+        suffixIcon={<div>arrow</div>}
+        prefix="Foobar"
+        value={['bamboo']}
+        mode="multiple"
+        options={[
+          { value: 'jack', label: 'Jack' },
+          { value: 'lucy', label: 'Lucy' },
+        ]}
+      />,
+    );
+    const prefix = container.querySelector('.rc-select-prefix');
+    const suffix = container.querySelector('.rc-select-arrow');
+    expect(prefix).toHaveClass('cutsom-prefix');
+    expect(prefix).toHaveStyle('color: red');
+    expect(suffix).toHaveClass('custom-suffix');
+    expect(suffix).toHaveStyle('color: green');
+  });
 });
