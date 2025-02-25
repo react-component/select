@@ -184,6 +184,11 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     }
   };
 
+  const onUpdateValue = (value: RawValueType) => {
+    if (value !== undefined) {
+      onSelect(value, { selected: !rawValues.has(value) });
+    }
+  };
   // ========================= Keyboard =========================
   React.useImperativeHandle(ref, () => ({
     onKeyDown: (event) => {
@@ -207,10 +212,16 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
             }
           }
 
+          const nextActiveIndex = getEnabledActiveIndex(activeIndex + offset, offset);
           if (offset !== 0) {
-            const nextActiveIndex = getEnabledActiveIndex(activeIndex + offset, offset);
             scrollIntoView(nextActiveIndex);
             setActive(nextActiveIndex, true);
+          }
+          const item = memoFlattenOptions[nextActiveIndex];
+          if (item && !item.data.disabled) {
+            onUpdateValue(item.value);
+          } else {
+            onUpdateValue(undefined);
           }
 
           break;
