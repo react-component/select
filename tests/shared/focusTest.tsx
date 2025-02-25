@@ -1,5 +1,5 @@
 import React from 'react';
-import { resetWarned } from 'rc-util/lib/warning';
+import { resetWarned } from '@rc-component/util/lib/warning';
 import Option from '../../src/Option';
 import Select from '../../src/Select';
 import { render } from '@testing-library/react';

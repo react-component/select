@@ -1,6 +1,6 @@
 import React from 'react';
 import Select, { Option } from '../../src';
-import { resetWarned } from 'rc-util/lib/warning';
+import { resetWarned } from '@rc-component/util/lib/warning';
 import { render } from '@testing-library/react';
 
 export default function throwOptionValue(mode: any) {

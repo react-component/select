@@ -1,5 +1,5 @@
 import * as React from 'react';
-import pickAttrs from 'rc-util/lib/pickAttrs';
+import pickAttrs from '@rc-component/util/lib/pickAttrs';
 import Input from './Input';
 import type { InnerSelectorProps } from '.';
 import { getTitle } from '../utils/commonUtil';

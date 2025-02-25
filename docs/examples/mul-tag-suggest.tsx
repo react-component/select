@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React from 'react';
-import Select, { Option } from 'rc-select';
+import Select, { Option } from '@rc-component/select';
 import '../../assets/index.less';
 
 import { fetch } from './common/tbFetchSuggest';

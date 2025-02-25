@@ -1,4 +1,4 @@
-import Select from 'rc-select';
+import Select from '@rc-component/select';
 import React from 'react';
 import '../../assets/index.less';
 

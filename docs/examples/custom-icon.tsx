@@ -1,5 +1,5 @@
 /* eslint-disable no-console, max-classes-per-file */
-import Select, { Option } from 'rc-select';
+import Select, { Option } from '@rc-component/select';
 import React from 'react';
 import '../../assets/index.less';
 

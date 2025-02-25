@@ -2,7 +2,7 @@ import 'rc-dialog/assets/index.css';
 import '../../assets/index.less';
 
 import Dialog from 'rc-dialog';
-import Select, { type SelectProps } from 'rc-select';
+import Select, { type SelectProps } from '@rc-component/select';
 import React from 'react';
 
 const MySelect = (props: Partial<SelectProps>) => (

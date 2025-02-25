@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import classNames from 'classnames';
-import pickAttrs from 'rc-util/lib/pickAttrs';
+import pickAttrs from '@rc-component/util/lib/pickAttrs';
 import Overflow from 'rc-overflow';
 import TransBtn from '../TransBtn';
 import type { InnerSelectorProps } from '.';
