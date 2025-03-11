@@ -113,6 +113,7 @@ export default () => (
 | onFocus | called when focus | function | - |
 | onPopupScroll | called when menu is scrolled | function | - |
 | onSelect | called when a option is selected. param is option's value and option instance | Function(value, option:Option) | - |
+| tabSelectsValue | whether to enable the hot key for tab selection | boolean | true |
 | onDeselect | called when a option is deselected. param is option's value. only called for multiple or tags | Function(value, option:Option) | - |
 | onInputKeyDown | called when key down on input | Function(event) | - |
 | defaultActiveFirstOption | whether active first option by default | boolean | true |
