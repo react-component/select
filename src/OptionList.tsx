@@ -233,7 +233,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
 
         // >>> Select (Tab / Enter)
         case KeyCode.TAB: {
-          tabSelectsValue && selectOptionHotKeyLogic(event);
+          if (tabSelectsValue) selectOptionHotKeyLogic(event);
           break;
         }
         case KeyCode.ENTER: {
