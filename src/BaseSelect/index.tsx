@@ -294,9 +294,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     onKeyDown,
     onMouseDown,
 
-    classNames: selectClassNames,
-    styles,
-
     // Rest Props
     ...restProps
   } = props;
@@ -411,7 +408,12 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     [tokenSeparators],
   );
 
-  const { maxCount, rawValues } = React.useContext<SelectContextProps>(SelectContext) || {};
+  const {
+    maxCount,
+    rawValues,
+    classNames: selectClassNames,
+    styles,
+  } = React.useContext<SelectContextProps>(SelectContext) || {};
 
   const onInternalSearch = (searchText: string, fromTyping: boolean, isCompositing: boolean) => {
     if (multiple && isValidCount(maxCount) && rawValues?.size >= maxCount) {

@@ -107,7 +107,7 @@ export type SelectHandler<ValueType, OptionType extends BaseOptionType = Default
 
 type ArrayElementType<T> = T extends (infer E)[] ? E : T;
 
-export type SemanticName = 'prefix' | 'suffix';
+export type SemanticName = 'prefix' | 'suffix' | 'item' | 'list' | 'input' | 'tag';
 export interface SelectProps<ValueType = any, OptionType extends BaseOptionType = DefaultOptionType>
   extends BaseSelectPropsWithoutPrivate {
   prefixCls?: string;
@@ -207,7 +207,8 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       labelInValue,
       onChange,
       maxCount,
-
+      classNames: selectClassNames,
+      styles,
       ...restProps
     } = props;
 
@@ -629,8 +630,12 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
         childrenAsData,
         maxCount,
         optionRender,
+        classNames: selectClassNames,
+        styles,
       };
     }, [
+      selectClassNames,
+      styles,
       maxCount,
       parsedOptions,
       displayOptions,

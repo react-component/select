@@ -2,7 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { composeRef } from '@rc-component/util/lib/ref';
 import { warning } from '@rc-component/util/lib/warning';
-
+import SelectContext from '../SelectContext';
 type InputRef = HTMLInputElement | HTMLTextAreaElement;
 
 interface InputProps {
@@ -57,6 +57,8 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (props, ref)
     open,
     attrs,
   } = props;
+  const { classNames: contextClassNames, styles: contextStyles } =
+    React.useContext(SelectContext) || {};
 
   let inputNode: React.ComponentElement<any, any> = inputElement || <input />;
 
@@ -80,7 +82,6 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (props, ref)
   inputNode = React.cloneElement(inputNode, {
     type: 'search',
     ...originProps,
-
     // Override over origin props
     id,
     ref: composeRef(ref, originRef as any),
@@ -89,7 +90,11 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (props, ref)
     autoComplete: autoComplete || 'off',
 
     autoFocus,
-    className: classNames(`${prefixCls}-selection-search-input`, inputNode?.props?.className),
+    className: classNames(
+      `${prefixCls}-selection-search-input`,
+      inputNode?.props?.className,
+      contextClassNames?.input,
+    ),
 
     role: 'combobox',
     'aria-expanded': open || false,
@@ -104,7 +109,7 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (props, ref)
     readOnly: !editable,
     unselectable: !editable ? 'on' : null,
 
-    style: { ...style, opacity: editable ? null : 0 },
+    style: { ...style, opacity: editable ? null : 0, ...contextStyles?.input },
 
     onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
       onKeyDown(event);

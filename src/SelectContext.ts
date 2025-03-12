@@ -6,11 +6,14 @@ import type {
   OnActiveValue,
   OnInternalSelect,
   SelectProps,
+  SemanticName,
 } from './Select';
 import type { FlattenOptionData } from './interface';
 
 // Use any here since we do not get the type during compilation
 export interface SelectContextProps {
+  classNames?: Partial<Record<SemanticName, string>>;
+  styles?: Partial<Record<SemanticName, React.CSSProperties>>;
   options: BaseOptionType[];
   optionRender?: SelectProps['optionRender'];
   flattenOptions: FlattenOptionData<BaseOptionType>[];

@@ -2421,10 +2421,16 @@ describe('Select.Basic', () => {
     const customClassNames = {
       prefix: 'cutsom-prefix',
       suffix: 'custom-suffix',
+      list: 'custom-list',
+      item: 'custom-item',
+      input: 'custom-input',
     };
     const customStyle = {
       prefix: { color: 'red' },
       suffix: { color: 'green' },
+      list: { color: 'yellow' },
+      item: { color: 'blue' },
+      input: { color: 'black' },
     };
     const { container } = render(
       <Select
@@ -2441,11 +2447,23 @@ describe('Select.Basic', () => {
         ]}
       />,
     );
+
+    console.log(container.innerHTML);
+
     const prefix = container.querySelector('.rc-select-prefix');
     const suffix = container.querySelector('.rc-select-arrow');
-    expect(prefix).toHaveClass('cutsom-prefix');
-    expect(prefix).toHaveStyle('color: red');
-    expect(suffix).toHaveClass('custom-suffix');
-    expect(suffix).toHaveStyle('color: green');
+    const item = container.querySelector('.rc-select-item-option');
+    const list = container.querySelector('.rc-virtual-list');
+    const input = container.querySelector('.rc-select-selection-search-input');
+    expect(prefix).toHaveClass(customClassNames.prefix);
+    expect(prefix).toHaveStyle(customStyle.prefix);
+    expect(suffix).toHaveClass(customClassNames.suffix);
+    expect(suffix).toHaveStyle(customStyle.suffix);
+    expect(item).toHaveClass(customClassNames.item);
+    expect(item).toHaveStyle(customStyle.item);
+    expect(list).toHaveClass(customClassNames.list);
+    expect(list).toHaveStyle(customStyle.list);
+    expect(input).toHaveClass(customClassNames.input);
+    expect(input).toHaveStyle(customStyle.input);
   });
 });
