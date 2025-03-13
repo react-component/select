@@ -30,7 +30,7 @@ import { getSeparatedContent, isValidCount } from '../utils/valueUtil';
 import SelectContext from '../SelectContext';
 import type { SelectContextProps } from '../SelectContext';
 import Polite from './Polite';
-import { SemanticName } from '../Select';
+type BaseSelectSemanticName = 'prefix' | 'suffix' | 'input';
 
 export type {
   DisplayInfoType,
@@ -132,8 +132,8 @@ export type BaseSelectPropsWithoutPrivate = Omit<BaseSelectProps, keyof BaseSele
 export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttributes {
   className?: string;
   style?: React.CSSProperties;
-  classNames?: Partial<Record<SemanticName, string>>;
-  styles?: Partial<Record<SemanticName, React.CSSProperties>>;
+  classNames?: Partial<Record<BaseSelectSemanticName, string>>;
+  styles?: Partial<Record<BaseSelectSemanticName, React.CSSProperties>>;
   title?: string;
   showSearch?: boolean;
   tagRender?: (props: CustomTagProps) => React.ReactElement;
