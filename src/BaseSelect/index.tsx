@@ -30,7 +30,7 @@ import { getSeparatedContent, isValidCount } from '../utils/valueUtil';
 import SelectContext from '../SelectContext';
 import type { SelectContextProps } from '../SelectContext';
 import Polite from './Polite';
-type BaseSelectSemanticName = 'prefix' | 'suffix' | 'input';
+export type BaseSelectSemanticName = 'prefix' | 'suffix' | 'input';
 
 export type {
   DisplayInfoType,

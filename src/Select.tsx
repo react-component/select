@@ -36,6 +36,7 @@ import type {
   BaseSelectProps,
   BaseSelectPropsWithoutPrivate,
   BaseSelectRef,
+  BaseSelectSemanticName,
   DisplayInfoType,
   DisplayValueType,
   RenderNode,
@@ -107,7 +108,7 @@ export type SelectHandler<ValueType, OptionType extends BaseOptionType = Default
 
 type ArrayElementType<T> = T extends (infer E)[] ? E : T;
 
-export type SemanticName = 'prefix' | 'suffix' | 'listItem' | 'list' | 'input';
+export type SemanticName = BaseSelectSemanticName | 'listItem' | 'list';
 export interface SelectProps<ValueType = any, OptionType extends BaseOptionType = DefaultOptionType>
   extends BaseSelectPropsWithoutPrivate {
   prefixCls?: string;
