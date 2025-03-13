@@ -2448,8 +2448,6 @@ describe('Select.Basic', () => {
       />,
     );
 
-    console.log(container.innerHTML);
-
     const prefix = container.querySelector('.rc-select-prefix');
     const suffix = container.querySelector('.rc-select-arrow');
     const item = container.querySelector('.rc-select-item-option');
