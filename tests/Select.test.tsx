@@ -2422,14 +2422,14 @@ describe('Select.Basic', () => {
       prefix: 'cutsom-prefix',
       suffix: 'custom-suffix',
       list: 'custom-list',
-      item: 'custom-item',
+      listItem: 'custom-item',
       input: 'custom-input',
     };
     const customStyle = {
       prefix: { color: 'red' },
       suffix: { color: 'green' },
       list: { color: 'yellow' },
-      item: { color: 'blue' },
+      listItem: { color: 'blue' },
       input: { color: 'black' },
     };
     const { container } = render(
@@ -2457,8 +2457,8 @@ describe('Select.Basic', () => {
     expect(prefix).toHaveStyle(customStyle.prefix);
     expect(suffix).toHaveClass(customClassNames.suffix);
     expect(suffix).toHaveStyle(customStyle.suffix);
-    expect(item).toHaveClass(customClassNames.item);
-    expect(item).toHaveStyle(customStyle.item);
+    expect(item).toHaveClass(customClassNames.listItem);
+    expect(item).toHaveStyle(customStyle.listItem);
     expect(list).toHaveClass(customClassNames.list);
     expect(list).toHaveStyle(customStyle.list);
     expect(input).toHaveClass(customClassNames.input);

@@ -363,7 +363,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
             itemPrefixCls,
             optionPrefixCls,
             className,
-            contextClassNames?.item,
+            contextClassNames?.listItem,
             {
               [`${optionPrefixCls}-grouped`]: groupOption,
               [`${optionPrefixCls}-active`]: activeIndex === itemIndex && !mergedDisabled,
@@ -403,7 +403,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
                   onSelectValue(value);
                 }
               }}
-              style={{ ...contextStyles?.item, ...style }}
+              style={{ ...contextStyles?.listItem, ...style }}
             >
               <div className={`${optionPrefixCls}-content`}>
                 {typeof optionRender === 'function'
