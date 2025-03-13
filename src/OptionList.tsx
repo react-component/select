@@ -60,6 +60,8 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     listHeight,
     listItemHeight,
     optionRender,
+    classNames: contextClassNames,
+    styles: contextStyles,
   } = React.useContext(SelectContext);
 
   const itemPrefixCls = `${prefixCls}-item`;
@@ -327,6 +329,8 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
         direction={direction}
         innerProps={virtual ? null : a11yProps}
         showScrollBar={showScrollBar}
+        className={contextClassNames?.list}
+        style={contextStyles?.list}
       >
         {(item, itemIndex) => {
           const { group, groupOption, data, label, value } = item;
@@ -355,12 +359,18 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
           const mergedDisabled = disabled || (!selected && overMaxCount);
 
           const optionPrefixCls = `${itemPrefixCls}-option`;
-          const optionClassName = classNames(itemPrefixCls, optionPrefixCls, className, {
-            [`${optionPrefixCls}-grouped`]: groupOption,
-            [`${optionPrefixCls}-active`]: activeIndex === itemIndex && !mergedDisabled,
-            [`${optionPrefixCls}-disabled`]: mergedDisabled,
-            [`${optionPrefixCls}-selected`]: selected,
-          });
+          const optionClassName = classNames(
+            itemPrefixCls,
+            optionPrefixCls,
+            className,
+            contextClassNames?.listItem,
+            {
+              [`${optionPrefixCls}-grouped`]: groupOption,
+              [`${optionPrefixCls}-active`]: activeIndex === itemIndex && !mergedDisabled,
+              [`${optionPrefixCls}-disabled`]: mergedDisabled,
+              [`${optionPrefixCls}-selected`]: selected,
+            },
+          );
 
           const mergedLabel = getLabel(item);
 
@@ -393,7 +403,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
                   onSelectValue(value);
                 }
               }}
-              style={style}
+              style={{ ...contextStyles?.listItem, ...style }}
             >
               <div className={`${optionPrefixCls}-content`}>
                 {typeof optionRender === 'function'

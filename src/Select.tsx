@@ -36,6 +36,7 @@ import type {
   BaseSelectProps,
   BaseSelectPropsWithoutPrivate,
   BaseSelectRef,
+  BaseSelectSemanticName,
   DisplayInfoType,
   DisplayValueType,
   RenderNode,
@@ -107,6 +108,7 @@ export type SelectHandler<ValueType, OptionType extends BaseOptionType = Default
 
 type ArrayElementType<T> = T extends (infer E)[] ? E : T;
 
+export type SemanticName = BaseSelectSemanticName | 'listItem' | 'list';
 export interface SelectProps<ValueType = any, OptionType extends BaseOptionType = DefaultOptionType>
   extends BaseSelectPropsWithoutPrivate {
   prefixCls?: string;
@@ -157,6 +159,8 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   defaultValue?: ValueType | null;
   maxCount?: number;
   onChange?: (value: ValueType, option?: OptionType | OptionType[]) => void;
+  classNames?: Partial<Record<SemanticName, string>>;
+  styles?: Partial<Record<SemanticName, React.CSSProperties>>;
 }
 
 function isRawValue(value: DraftValueType): value is RawValueType {
@@ -204,7 +208,8 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       labelInValue,
       onChange,
       maxCount,
-
+      classNames: selectClassNames,
+      styles,
       ...restProps
     } = props;
 
@@ -626,8 +631,12 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
         childrenAsData,
         maxCount,
         optionRender,
+        classNames: selectClassNames,
+        styles,
       };
     }, [
+      selectClassNames,
+      styles,
       maxCount,
       parsedOptions,
       displayOptions,
