@@ -107,7 +107,7 @@ export type SelectHandler<ValueType, OptionType extends BaseOptionType = Default
 
 type ArrayElementType<T> = T extends (infer E)[] ? E : T;
 
-export type SemanticName = 'prefix' | 'suffix' | 'item' | 'list' | 'input' | 'tag';
+export type SemanticName = 'prefix' | 'suffix' | 'item' | 'list' | 'input';
 export interface SelectProps<ValueType = any, OptionType extends BaseOptionType = DefaultOptionType>
   extends BaseSelectPropsWithoutPrivate {
   prefixCls?: string;
