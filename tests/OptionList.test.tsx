@@ -64,6 +64,7 @@ describe('OptionList', () => {
             options,
             onActiveValue: () => {},
             onSelect: () => {},
+            tabSelectsValue: true,
             rawValues: values || new Set(),
             virtual: true,
             ...props,
@@ -241,6 +242,47 @@ describe('OptionList', () => {
     expect(onSelect).toHaveBeenCalledTimes(1);
     expect(onSelect).toHaveBeenCalledWith('2', expect.objectContaining({ selected: true }));
 
+    expect(toggleOpen).toHaveBeenCalledWith(false);
+  });
+
+  it('should not select active option when tab key pressed with tabSelectsValue false', () => {
+    const onActiveValue = jest.fn();
+    const onSelect = jest.fn();
+    const toggleOpen = jest.fn();
+    const listRef = React.createRef<RefOptionListProps>();
+
+    render(
+      generateList({
+        options: [{ value: '1' }, { value: '2' }],
+        onActiveValue,
+        onSelect,
+        toggleOpen,
+        ref: listRef,
+        tabSelectsValue: false, // 关闭 tab 选中功能
+      }),
+    );
+
+    act(() => {
+      toggleOpen(true);
+    });
+
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.DOWN } as any);
+    });
+
+    expect(onActiveValue).toHaveBeenCalledWith(
+      '2',
+      expect.anything(),
+      expect.objectContaining({ source: 'keyboard' }),
+    );
+
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.TAB } as any);
+    });
+
+    // 断言选择未被触发
+    expect(onSelect).toHaveBeenCalledTimes(0);
+    // 断言弹窗状态关闭
     expect(toggleOpen).toHaveBeenCalledWith(false);
   });
 
