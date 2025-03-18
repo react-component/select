@@ -58,11 +58,8 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (props, ref)
     open,
     attrs,
   } = props;
-  const { classNames: selectClassNames, styles: selectStyles } =
-    React.useContext(SelectContext) || {};
-  const { classNames: baseSelectClassNames, styles: baseSelectStyles } = useBaseProps() || {};
-  const contextClassNames = selectClassNames ?? baseSelectClassNames;
-  const contextStyles = selectStyles ?? baseSelectStyles;
+
+  const { classNames: contextClassNames, styles: contextStyles } = useBaseProps() || {};
 
   let inputNode: React.ComponentElement<any, any> = inputElement || <input />;
 
