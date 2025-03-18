@@ -283,6 +283,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     placement,
     builtinPlacements,
     getPopupContainer,
+    styles: baseSelectStyles,
+    classNames: baseSelectClassNames,
 
     // Focus
     showAction = [],
@@ -412,8 +414,11 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     maxCount,
     rawValues,
     classNames: selectClassNames,
-    styles,
+    styles: selectStyles,
   } = React.useContext<SelectContextProps>(SelectContext) || {};
+
+  const contextClassNames = baseSelectClassNames ?? selectClassNames;
+  const contextStyles = baseSelectStyles ?? selectStyles;
 
   const onInternalSearch = (searchText: string, fromTyping: boolean, isCompositing: boolean) => {
     if (multiple && isValidCount(maxCount) && rawValues?.size >= maxCount) {
@@ -703,6 +708,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       multiple,
       toggleOpen: onToggleOpen,
       showScrollBar,
+      styles: contextStyles,
+      classNames: contextClassNames,
     }),
     [
       props,
@@ -728,10 +735,10 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   if (showSuffixIcon) {
     arrowNode = (
       <TransBtn
-        className={classNames(`${prefixCls}-arrow`, selectClassNames?.suffix, {
+        className={classNames(`${prefixCls}-arrow`, contextClassNames?.suffix, {
           [`${prefixCls}-arrow-loading`]: loading,
         })}
-        style={styles?.suffix}
+        style={contextStyles?.suffix}
         customizeIcon={suffixIcon}
         customizeIconProps={{
           loading,
@@ -821,8 +828,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       ) : (
         <Selector
           {...props}
-          prefixClassName={selectClassNames?.prefix}
-          prefixStyle={styles?.prefix}
+          prefixClassName={contextClassNames?.prefix}
+          prefixStyle={contextStyles?.prefix}
           domRef={selectorDomRef}
           prefixCls={prefixCls}
           inputElement={customizeInputElement}

@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { composeRef } from '@rc-component/util/lib/ref';
 import { warning } from '@rc-component/util/lib/warning';
 import SelectContext from '../SelectContext';
+import useBaseProps from '../hooks/useBaseProps';
 type InputRef = HTMLInputElement | HTMLTextAreaElement;
 
 interface InputProps {
@@ -57,8 +58,11 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (props, ref)
     open,
     attrs,
   } = props;
-  const { classNames: contextClassNames, styles: contextStyles } =
+  const { classNames: selectClassNames, styles: selectStyles } =
     React.useContext(SelectContext) || {};
+  const { classNames: baseSelectClassNames, styles: baseSelectStyles } = useBaseProps() || {};
+  const contextClassNames = selectClassNames ?? baseSelectClassNames;
+  const contextStyles = selectStyles ?? baseSelectStyles;
 
   let inputNode: React.ComponentElement<any, any> = inputElement || <input />;
 
