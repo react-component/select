@@ -2,7 +2,6 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { composeRef } from '@rc-component/util/lib/ref';
 import { warning } from '@rc-component/util/lib/warning';
-import SelectContext from '../SelectContext';
 import useBaseProps from '../hooks/useBaseProps';
 type InputRef = HTMLInputElement | HTMLTextAreaElement;
 
