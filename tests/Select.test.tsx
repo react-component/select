@@ -2469,15 +2469,11 @@ describe('Select.Basic', () => {
     const customClassNames = {
       prefix: 'cutsom-prefix',
       suffix: 'custom-suffix',
-      list: 'custom-list',
-      listItem: 'custom-item',
       input: 'custom-input',
     };
     const customStyle = {
       prefix: { color: 'red' },
       suffix: { color: 'green' },
-      list: { color: 'yellow' },
-      listItem: { color: 'blue' },
       input: { color: 'black' },
     };
     const OptionList = React.forwardRef<RefOptionListProps, any>((props, ref) => {
