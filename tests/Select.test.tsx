@@ -2418,9 +2418,10 @@ describe('Select.Basic', () => {
     expect(onBlur).toHaveBeenCalledTimes(2);
     expect(inputElem.value).toEqual('bb');
   });
-  it('support classnames and styles', () => {
+
+  it('support classnames and styles for select', () => {
     const customClassNames = {
-      prefix: 'cutsom-prefix',
+      prefix: 'custom-prefix',
       suffix: 'custom-suffix',
       list: 'custom-list',
       listItem: 'custom-item',
@@ -2465,9 +2466,10 @@ describe('Select.Basic', () => {
     expect(input).toHaveClass(customClassNames.input);
     expect(input).toHaveStyle(customStyle.input);
   });
+
   it('support classnames and styles for baseSelect', () => {
     const customClassNames = {
-      prefix: 'cutsom-prefix',
+      prefix: 'custom-prefix',
       suffix: 'custom-suffix',
       input: 'custom-input',
     };

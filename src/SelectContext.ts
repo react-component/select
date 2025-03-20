@@ -11,6 +11,9 @@ import type {
 import type { FlattenOptionData } from './interface';
 
 // Use any here since we do not get the type during compilation
+/**
+ * SelectContext is only used for Select. BaseSelect should not consume this context.
+ */
 export interface SelectContextProps {
   classNames?: Partial<Record<SemanticName, string>>;
   styles?: Partial<Record<SemanticName, React.CSSProperties>>;

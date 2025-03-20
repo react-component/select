@@ -1,5 +1,5 @@
 import type { AlignType, BuildInPlacements } from '@rc-component/trigger/lib/interface';
-import classNames from 'classnames';
+import cls from 'classnames';
 import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import useMergedState from '@rc-component/util/lib/hooks/useMergedState';
 import isMobile from '@rc-component/util/lib/isMobile';
@@ -130,22 +130,27 @@ export interface BaseSelectPrivateProps {
 export type BaseSelectPropsWithoutPrivate = Omit<BaseSelectProps, keyof BaseSelectPrivateProps>;
 
 export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttributes {
+  // Style
   className?: string;
   style?: React.CSSProperties;
   classNames?: Partial<Record<BaseSelectSemanticName, string>>;
   styles?: Partial<Record<BaseSelectSemanticName, React.CSSProperties>>;
-  title?: string;
+
+  // Selector
   showSearch?: boolean;
   tagRender?: (props: CustomTagProps) => React.ReactElement;
   direction?: 'ltr' | 'rtl';
+  autoFocus?: boolean;
+  placeholder?: React.ReactNode;
+  maxCount?: number;
+
+  // MISC
+  title?: string;
+  tabIndex?: number;
+  notFoundContent?: React.ReactNode;
+  onClear?: () => void;
   maxLength?: number;
   showScrollBar?: boolean | 'optional';
-  // MISC
-  tabIndex?: number;
-  autoFocus?: boolean;
-  notFoundContent?: React.ReactNode;
-  placeholder?: React.ReactNode;
-  onClear?: () => void;
 
   choiceTransitionName?: string;
 
@@ -224,6 +229,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     id,
     prefixCls,
     className,
+    styles,
+    classNames,
     showSearch,
     tagRender,
     showScrollBar = 'optional',
@@ -236,6 +243,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     emptyOptions,
     notFoundContent = 'Not Found',
     onClear,
+    maxCount,
 
     // Mode
     mode,
@@ -283,8 +291,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     placement,
     builtinPlacements,
     getPopupContainer,
-    styles: baseSelectStyles,
-    classNames: baseSelectClassNames,
 
     // Focus
     showAction = [],
@@ -410,18 +416,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     [tokenSeparators],
   );
 
-  const {
-    maxCount,
-    rawValues,
-    classNames: selectClassNames,
-    styles: selectStyles,
-  } = React.useContext<SelectContextProps>(SelectContext) || {};
-
-  const contextClassNames = baseSelectClassNames ?? selectClassNames;
-  const contextStyles = baseSelectStyles ?? selectStyles;
-
   const onInternalSearch = (searchText: string, fromTyping: boolean, isCompositing: boolean) => {
-    if (multiple && isValidCount(maxCount) && rawValues?.size >= maxCount) {
+    if (multiple && isValidCount(maxCount) && displayValues.length >= maxCount) {
       return;
     }
     let ret = true;
@@ -431,7 +427,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     const separatedList = getSeparatedContent(
       searchText,
       tokenSeparators,
-      isValidCount(maxCount) ? maxCount - rawValues.size : undefined,
+      isValidCount(maxCount) ? maxCount - displayValues.length : undefined,
     );
 
     // Check if match the `tokenSeparators`
@@ -708,8 +704,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       multiple,
       toggleOpen: onToggleOpen,
       showScrollBar,
-      styles: contextStyles,
-      classNames: contextClassNames,
+      styles,
+      classNames,
     }),
     [
       props,
@@ -721,6 +717,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       multiple,
       onToggleOpen,
       showScrollBar,
+      styles,
+      classNames,
     ],
   );
 
@@ -735,10 +733,10 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   if (showSuffixIcon) {
     arrowNode = (
       <TransBtn
-        className={classNames(`${prefixCls}-arrow`, contextClassNames?.suffix, {
+        className={cls(`${prefixCls}-arrow`, classNames?.suffix, {
           [`${prefixCls}-arrow-loading`]: loading,
         })}
-        style={contextStyles?.suffix}
+        style={styles?.suffix}
         customizeIcon={suffixIcon}
         customizeIconProps={{
           loading,
@@ -779,7 +777,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   const optionList = <OptionList ref={listRef} />;
 
   // ============================= Select =============================
-  const mergedClassName = classNames(prefixCls, className, {
+  const mergedClassName = cls(prefixCls, className, {
     [`${prefixCls}-focused`]: mockFocused,
     [`${prefixCls}-multiple`]: multiple,
     [`${prefixCls}-single`]: !multiple,
@@ -828,8 +826,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       ) : (
         <Selector
           {...props}
-          prefixClassName={contextClassNames?.prefix}
-          prefixStyle={contextStyles?.prefix}
+          prefixClassName={classNames?.prefix}
+          prefixStyle={styles?.prefix}
           domRef={selectorDomRef}
           prefixCls={prefixCls}
           inputElement={customizeInputElement}
