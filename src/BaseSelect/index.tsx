@@ -27,8 +27,6 @@ import type { RefTriggerProps } from '../SelectTrigger';
 import SelectTrigger from '../SelectTrigger';
 import TransBtn from '../TransBtn';
 import { getSeparatedContent, isValidCount } from '../utils/valueUtil';
-import SelectContext from '../SelectContext';
-import type { SelectContextProps } from '../SelectContext';
 import Polite from './Polite';
 export type BaseSelectSemanticName = 'prefix' | 'suffix' | 'input';
 
