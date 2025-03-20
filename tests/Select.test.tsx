@@ -13,6 +13,7 @@ import type { ScrollConfig } from 'rc-virtual-list/lib/List';
 import React from 'react';
 import type { SelectProps } from '../src';
 import Select, { OptGroup, Option, useBaseProps } from '../src';
+import BaseSelect from '../src/BaseSelect';
 import type { BaseSelectRef } from '../src/BaseSelect';
 import allowClearTest from './shared/allowClearTest';
 import blurTest from './shared/blurTest';
@@ -2461,6 +2462,48 @@ describe('Select.Basic', () => {
     expect(item).toHaveStyle(customStyle.listItem);
     expect(list).toHaveClass(customClassNames.list);
     expect(list).toHaveStyle(customStyle.list);
+    expect(input).toHaveClass(customClassNames.input);
+    expect(input).toHaveStyle(customStyle.input);
+  });
+  it('support classnames and styles for baseSelect', () => {
+    const customClassNames = {
+      prefix: 'cutsom-prefix',
+      suffix: 'custom-suffix',
+      list: 'custom-list',
+      listItem: 'custom-item',
+      input: 'custom-input',
+    };
+    const customStyle = {
+      prefix: { color: 'red' },
+      suffix: { color: 'green' },
+      list: { color: 'yellow' },
+      listItem: { color: 'blue' },
+      input: { color: 'black' },
+    };
+    const { container } = render(
+      <BaseSelect
+        displayValues={[]}
+        prefixCls="rc-select"
+        id="base-select"
+        open
+        classNames={customClassNames}
+        styles={customStyle}
+        suffixIcon={<div>arrow</div>}
+        prefix="Foobar"
+        onDisplayValuesChange={() => {}}
+        searchValue=""
+        onSearch={() => {}}
+        OptionList={() => <div>Option List</div>}
+        emptyOptions={false}
+      />,
+    );
+    const prefix = container.querySelector('.rc-select-prefix');
+    const suffix = container.querySelector('.rc-select-arrow');
+    const input = container.querySelector('.rc-select-selection-search-input');
+    expect(prefix).toHaveClass(customClassNames.prefix);
+    expect(prefix).toHaveStyle(customStyle.prefix);
+    expect(suffix).toHaveClass(customClassNames.suffix);
+    expect(suffix).toHaveStyle(customStyle.suffix);
     expect(input).toHaveClass(customClassNames.input);
     expect(input).toHaveStyle(customStyle.input);
   });
