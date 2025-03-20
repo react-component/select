@@ -14,7 +14,7 @@ import React from 'react';
 import type { SelectProps } from '../src';
 import Select, { OptGroup, Option, useBaseProps } from '../src';
 import BaseSelect from '../src/BaseSelect';
-import type { BaseSelectRef } from '../src/BaseSelect';
+import type { BaseSelectRef, RefOptionListProps } from '../src/BaseSelect';
 import allowClearTest from './shared/allowClearTest';
 import blurTest from './shared/blurTest';
 import focusTest from './shared/focusTest';
@@ -2480,6 +2480,9 @@ describe('Select.Basic', () => {
       listItem: { color: 'blue' },
       input: { color: 'black' },
     };
+    const OptionList = React.forwardRef<RefOptionListProps, any>((props, ref) => {
+      return <div ref={ref as unknown as React.Ref<HTMLDivElement>}>Option List</div>;
+    });
     const { container } = render(
       <BaseSelect
         displayValues={[]}
@@ -2493,7 +2496,7 @@ describe('Select.Basic', () => {
         onDisplayValuesChange={() => {}}
         searchValue=""
         onSearch={() => {}}
-        OptionList={() => <div>Option List</div>}
+        OptionList={OptionList}
         emptyOptions={false}
       />,
     );
