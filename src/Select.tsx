@@ -208,7 +208,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       labelInValue,
       onChange,
       maxCount,
-      classNames: selectClassNames,
+      classNames,
       styles,
       ...restProps
     } = props;
@@ -631,12 +631,10 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
         childrenAsData,
         maxCount,
         optionRender,
-        classNames: selectClassNames,
+        classNames,
         styles,
       };
     }, [
-      selectClassNames,
-      styles,
       maxCount,
       parsedOptions,
       displayOptions,
@@ -653,6 +651,8 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       listItemHeight,
       childrenAsData,
       optionRender,
+      classNames,
+      styles,
     ]);
 
     // ========================== Warning ===========================
@@ -674,9 +674,13 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
           ref={ref}
           omitDomProps={OMIT_DOM_PROPS}
           mode={mode}
+          // >>> Style
+          classNames={classNames}
+          styles={styles}
           // >>> Values
           displayValues={displayValues}
           onDisplayValuesChange={onDisplayValuesChange}
+          maxCount={maxCount}
           // >>> Trigger
           direction={direction}
           // >>> Search

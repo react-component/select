@@ -13,7 +13,8 @@ import type { ScrollConfig } from 'rc-virtual-list/lib/List';
 import React from 'react';
 import type { SelectProps } from '../src';
 import Select, { OptGroup, Option, useBaseProps } from '../src';
-import type { BaseSelectRef } from '../src/BaseSelect';
+import BaseSelect from '../src/BaseSelect';
+import type { BaseSelectRef, RefOptionListProps } from '../src/BaseSelect';
 import allowClearTest from './shared/allowClearTest';
 import blurTest from './shared/blurTest';
 import focusTest from './shared/focusTest';
@@ -2417,9 +2418,10 @@ describe('Select.Basic', () => {
     expect(onBlur).toHaveBeenCalledTimes(2);
     expect(inputElem.value).toEqual('bb');
   });
-  it('support classnames and styles', () => {
+
+  it('support classnames and styles for select', () => {
     const customClassNames = {
-      prefix: 'cutsom-prefix',
+      prefix: 'custom-prefix',
       suffix: 'custom-suffix',
       list: 'custom-list',
       listItem: 'custom-item',
@@ -2461,6 +2463,48 @@ describe('Select.Basic', () => {
     expect(item).toHaveStyle(customStyle.listItem);
     expect(list).toHaveClass(customClassNames.list);
     expect(list).toHaveStyle(customStyle.list);
+    expect(input).toHaveClass(customClassNames.input);
+    expect(input).toHaveStyle(customStyle.input);
+  });
+
+  it('support classnames and styles for baseSelect', () => {
+    const customClassNames = {
+      prefix: 'custom-prefix',
+      suffix: 'custom-suffix',
+      input: 'custom-input',
+    };
+    const customStyle = {
+      prefix: { color: 'red' },
+      suffix: { color: 'green' },
+      input: { color: 'black' },
+    };
+    const OptionList = React.forwardRef<RefOptionListProps, any>((props, ref) => {
+      return <div ref={ref as unknown as React.Ref<HTMLDivElement>}>Option List</div>;
+    });
+    const { container } = render(
+      <BaseSelect
+        displayValues={[]}
+        prefixCls="rc-select"
+        id="base-select"
+        open
+        classNames={customClassNames}
+        styles={customStyle}
+        suffixIcon={<div>arrow</div>}
+        prefix="Foobar"
+        onDisplayValuesChange={() => {}}
+        searchValue=""
+        onSearch={() => {}}
+        OptionList={OptionList}
+        emptyOptions={false}
+      />,
+    );
+    const prefix = container.querySelector('.rc-select-prefix');
+    const suffix = container.querySelector('.rc-select-arrow');
+    const input = container.querySelector('.rc-select-selection-search-input');
+    expect(prefix).toHaveClass(customClassNames.prefix);
+    expect(prefix).toHaveStyle(customStyle.prefix);
+    expect(suffix).toHaveClass(customClassNames.suffix);
+    expect(suffix).toHaveStyle(customStyle.suffix);
     expect(input).toHaveClass(customClassNames.input);
     expect(input).toHaveStyle(customStyle.input);
   });
