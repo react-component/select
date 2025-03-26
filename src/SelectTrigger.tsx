@@ -74,7 +74,7 @@ export interface SelectTriggerProps {
   empty: boolean;
 
   getTriggerDOMNode: (node: HTMLElement) => HTMLElement;
-  onPopupVisibleChange?: (visible: boolean) => void;
+  onOpenChange?: (visible: boolean) => void;
 
   onPopupMouseEnter: () => void;
 }
@@ -102,7 +102,7 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
     getPopupContainer,
     empty,
     getTriggerDOMNode,
-    onPopupVisibleChange,
+    onOpenChange,
     onPopupMouseEnter,
     ...restProps
   } = props;
@@ -158,8 +158,8 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
   return (
     <Trigger
       {...restProps}
-      showAction={onPopupVisibleChange ? ['click'] : []}
-      hideAction={onPopupVisibleChange ? ['click'] : []}
+      showAction={onOpenChange ? ['click'] : []}
+      hideAction={onOpenChange ? ['click'] : []}
       popupPlacement={placement || (direction === 'rtl' ? 'bottomRight' : 'bottomLeft')}
       builtinPlacements={mergedBuiltinPlacements}
       prefixCls={popupPrefixCls}
@@ -175,7 +175,7 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
       })}
       popupStyle={mergedPopupStyle}
       getTriggerDOMNode={getTriggerDOMNode}
-      onPopupVisibleChange={onPopupVisibleChange}
+      onOpenChange={onOpenChange}
     >
       {children}
     </Trigger>

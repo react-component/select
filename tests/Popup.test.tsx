@@ -13,17 +13,17 @@ describe('Select.Popup', () => {
   injectRunAllTimers(jest);
 
   it('click popup should not trigger close', () => {
-    const onPopupVisibleChange = jest.fn();
+    const onOpenChange = jest.fn();
     render(
       <Select
         open
         options={[{ value: 'bamboo' }]}
-        onPopupVisibleChange={onPopupVisibleChange}
+        onOpenChange={onOpenChange}
         getPopupContainer={() => document.body}
       />,
     );
 
     fireEvent.mouseDown(document.querySelector('.rc-select-dropdown'));
-    expect(onPopupVisibleChange).not.toHaveBeenCalled();
+    expect(onOpenChange).not.toHaveBeenCalled();
   });
 });

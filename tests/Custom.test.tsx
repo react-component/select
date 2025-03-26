@@ -15,15 +15,12 @@ describe('Select.Custom', () => {
   });
 
   it('getRawInputElement', () => {
-    const onPopupVisibleChange = jest.fn();
+    const onOpenChange = jest.fn();
     const { container } = render(
-      <Select
-        getRawInputElement={() => <span className="custom" />}
-        onPopupVisibleChange={onPopupVisibleChange}
-      />,
+      <Select getRawInputElement={() => <span className="custom" />} onOpenChange={onOpenChange} />,
     );
     fireEvent.click(container.querySelector('.custom'));
 
-    expect(onPopupVisibleChange).toHaveBeenCalledWith(true);
+    expect(onOpenChange).toHaveBeenCalledWith(true);
   });
 });
