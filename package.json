@@ -49,8 +49,8 @@
     "react-dom": "*"
   },
   "dependencies": {
-    "@rc-component/trigger": "^3.0.0",
     "@rc-component/motion": "^1.1.4",
+    "@rc-component/trigger": "^3.0.0",
     "@rc-component/util": "^1.2.1",
     "classnames": "2.x",
     "rc-overflow": "^1.4.0",
@@ -62,6 +62,7 @@
     "@testing-library/jest-dom": "^6.4.5",
     "@testing-library/react": "^15.0.6",
     "@types/jest": "^29.5.12",
+    "@types/node": "^22.14.0",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
     "babel-jest": "^29.6.1",
