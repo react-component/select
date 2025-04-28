@@ -2423,16 +2423,20 @@ describe('Select.Basic', () => {
     const customClassNames = {
       prefix: 'custom-prefix',
       suffix: 'custom-suffix',
-      list: 'custom-list',
-      listItem: 'custom-item',
       input: 'custom-input',
+      popup: {
+        list: 'custom-list',
+        listItem: 'custom-item',
+      },
     };
     const customStyle = {
       prefix: { color: 'red' },
       suffix: { color: 'green' },
-      list: { color: 'yellow' },
-      listItem: { color: 'blue' },
       input: { color: 'black' },
+      popup: {
+        list: { color: 'yellow' },
+        listItem: { color: 'blue' },
+      },
     };
     const { container } = render(
       <Select
@@ -2459,10 +2463,10 @@ describe('Select.Basic', () => {
     expect(prefix).toHaveStyle(customStyle.prefix);
     expect(suffix).toHaveClass(customClassNames.suffix);
     expect(suffix).toHaveStyle(customStyle.suffix);
-    expect(item).toHaveClass(customClassNames.listItem);
-    expect(item).toHaveStyle(customStyle.listItem);
-    expect(list).toHaveClass(customClassNames.list);
-    expect(list).toHaveStyle(customStyle.list);
+    expect(item).toHaveClass(customClassNames.popup.listItem);
+    expect(item).toHaveStyle(customStyle.popup.listItem);
+    expect(list).toHaveClass(customClassNames.popup.list);
+    expect(list).toHaveStyle(customStyle.popup.list);
     expect(input).toHaveClass(customClassNames.input);
     expect(input).toHaveStyle(customStyle.input);
   });

@@ -108,7 +108,8 @@ export type SelectHandler<ValueType, OptionType extends BaseOptionType = Default
 
 type ArrayElementType<T> = T extends (infer E)[] ? E : T;
 
-export type SemanticName = BaseSelectSemanticName | 'listItem' | 'list';
+export type SemanticName = BaseSelectSemanticName;
+export type PopupSemantic = 'listItem' | 'list';
 export interface SelectProps<ValueType = any, OptionType extends BaseOptionType = DefaultOptionType>
   extends BaseSelectPropsWithoutPrivate {
   prefixCls?: string;

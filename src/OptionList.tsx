@@ -329,8 +329,8 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
         direction={direction}
         innerProps={virtual ? null : a11yProps}
         showScrollBar={showScrollBar}
-        className={contextClassNames?.list}
-        style={contextStyles?.list}
+        className={contextClassNames?.popup?.list}
+        style={contextStyles?.popup?.list}
       >
         {(item, itemIndex) => {
           const { group, groupOption, data, label, value } = item;
@@ -363,7 +363,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
             itemPrefixCls,
             optionPrefixCls,
             className,
-            contextClassNames?.listItem,
+            contextClassNames?.popup?.listItem,
             {
               [`${optionPrefixCls}-grouped`]: groupOption,
               [`${optionPrefixCls}-active`]: activeIndex === itemIndex && !mergedDisabled,
@@ -403,7 +403,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
                   onSelectValue(value);
                 }
               }}
-              style={{ ...contextStyles?.listItem, ...style }}
+              style={{ ...contextStyles?.popup?.listItem, ...style }}
             >
               <div className={`${optionPrefixCls}-content`}>
                 {typeof optionRender === 'function'

@@ -7,6 +7,7 @@ import type {
   OnInternalSelect,
   SelectProps,
   SemanticName,
+  PopupSemantic,
 } from './Select';
 import type { FlattenOptionData } from './interface';
 
@@ -15,8 +16,12 @@ import type { FlattenOptionData } from './interface';
  * SelectContext is only used for Select. BaseSelect should not consume this context.
  */
 export interface SelectContextProps {
-  classNames?: Partial<Record<SemanticName, string>>;
-  styles?: Partial<Record<SemanticName, React.CSSProperties>>;
+  classNames?: Partial<Record<SemanticName, string>> & {
+    popup?: Partial<Record<PopupSemantic, string>>;
+  };
+  styles?: Partial<Record<SemanticName, React.CSSProperties>> & {
+    popup?: Partial<Record<PopupSemantic, React.CSSProperties>>;
+  };
   options: BaseOptionType[];
   optionRender?: SelectProps['optionRender'];
   flattenOptions: FlattenOptionData<BaseOptionType>[];
