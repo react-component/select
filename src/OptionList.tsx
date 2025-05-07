@@ -157,7 +157,10 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     const timeoutId = setTimeout(() => {
       if (!multiple && open && rawValues.size === 1) {
         const value: RawValueType = Array.from(rawValues)[0];
-        const index = memoFlattenOptions.findIndex(({ data }) => data.value === value);
+        // Scroll to the option closest to the searchValue if searching.
+        const index = memoFlattenOptions.findIndex(({ data }) =>
+          searchValue ? String(data.value).startsWith(searchValue) : data.value === value,
+        );
 
         if (index !== -1) {
           setActive(index);
