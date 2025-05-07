@@ -162,7 +162,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   // >>> Open
   open?: boolean;
   defaultOpen?: boolean;
-  onPopupVisibleChange?: (open: boolean) => void;
+  onOpenChange?: (open: boolean) => void;
 
   // >>> Customize Input
   /** @private Internal usage. Do not use in your production. */
@@ -257,7 +257,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     // Open
     open,
     defaultOpen,
-    onPopupVisibleChange,
+    onOpenChange,
 
     // Active
     activeValue,
@@ -401,11 +401,11 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
         setInnerOpen(nextOpen);
 
         if (mergedOpen !== nextOpen) {
-          onPopupVisibleChange?.(nextOpen);
+          onOpenChange?.(nextOpen);
         }
       }
     },
-    [disabled, mergedOpen, setInnerOpen, onPopupVisibleChange],
+    [disabled, mergedOpen, setInnerOpen, onOpenChange],
   );
 
   // ============================= Search =============================
@@ -794,7 +794,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       ref={triggerRef}
       disabled={disabled}
       prefixCls={prefixCls}
-      visible={triggerOpen}
+      open={triggerOpen}
       popupElement={optionList}
       animation={animation}
       transitionName={transitionName}
@@ -814,7 +814,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
         // But we should update `rc-resize-observer` first.
         selectorDomRef.current || node
       }
-      onPopupVisibleChange={onTriggerVisibleChange}
+      onOpenChange={onTriggerVisibleChange}
       onPopupMouseEnter={onPopupMouseEnter}
     >
       {customizeRawInputElement ? (

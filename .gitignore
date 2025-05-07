@@ -41,3 +41,4 @@ tsconfig.test.json
 .dumi/tmp-test
 .dumi/tmp-production
 .history
+pnpm-lock.yaml

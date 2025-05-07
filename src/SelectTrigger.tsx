@@ -57,7 +57,7 @@ export interface SelectTriggerProps {
   prefixCls: string;
   children: React.ReactElement;
   disabled: boolean;
-  visible: boolean;
+  open: boolean;
   popupElement: React.ReactElement;
 
   animation?: string;
@@ -74,7 +74,7 @@ export interface SelectTriggerProps {
   empty: boolean;
 
   getTriggerDOMNode: (node: HTMLElement) => HTMLElement;
-  onPopupVisibleChange?: (visible: boolean) => void;
+  onOpenChange?: (open: boolean) => void;
 
   onPopupMouseEnter: () => void;
 }
@@ -86,7 +86,7 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
   const {
     prefixCls,
     disabled,
-    visible,
+    open,
     children,
     popupElement,
     animation,
@@ -102,7 +102,7 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
     getPopupContainer,
     empty,
     getTriggerDOMNode,
-    onPopupVisibleChange,
+    onOpenChange,
     onPopupMouseEnter,
     ...restProps
   } = props;
@@ -158,8 +158,8 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
   return (
     <Trigger
       {...restProps}
-      showAction={onPopupVisibleChange ? ['click'] : []}
-      hideAction={onPopupVisibleChange ? ['click'] : []}
+      showAction={onOpenChange ? ['click'] : []}
+      hideAction={onOpenChange ? ['click'] : []}
       popupPlacement={placement || (direction === 'rtl' ? 'bottomRight' : 'bottomLeft')}
       builtinPlacements={mergedBuiltinPlacements}
       prefixCls={popupPrefixCls}
@@ -168,14 +168,14 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
       ref={triggerPopupRef}
       stretch={stretch}
       popupAlign={popupAlign}
-      popupVisible={visible}
+      popupVisible={open}
       getPopupContainer={getPopupContainer}
       popupClassName={classNames(popupClassName, {
         [`${popupPrefixCls}-empty`]: empty,
       })}
       popupStyle={mergedPopupStyle}
       getTriggerDOMNode={getTriggerDOMNode}
-      onPopupVisibleChange={onPopupVisibleChange}
+      onOpenChange={onOpenChange}
     >
       {children}
     </Trigger>

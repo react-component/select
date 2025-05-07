@@ -894,13 +894,13 @@ describe('Select.Basic', () => {
         open: true,
       };
 
-      public onPopupVisibleChange = (open) => {
+      public onOpenChange = (open) => {
         this.setState({ open });
       };
 
       public render() {
         return (
-          <Select open={this.state.open} onPopupVisibleChange={this.onPopupVisibleChange}>
+          <Select open={this.state.open} onOpenChange={this.onOpenChange}>
             <Option value="1">1</Option>
           </Select>
         );
