@@ -136,8 +136,8 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
    */
   filterOption?: boolean | FilterFunc<OptionType>;
   filterSort?: (optionA: OptionType, optionB: OptionType, info: { searchValue: string }) => number;
-  optionFilterProp?: string;
-  optionLabelProp?: string;
+  optionFilterProp?: keyof OptionType;
+  optionLabelProp?: keyof OptionType;
   children?: React.ReactNode;
   options?: OptionType[];
   optionRender?: (
