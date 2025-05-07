@@ -127,6 +127,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   // >>> Select
   onSelect?: SelectHandler<ArrayElementType<ValueType>, OptionType>;
   onDeselect?: SelectHandler<ArrayElementType<ValueType>, OptionType>;
+  tabSelectsValue?: boolean;
 
   // >>> Options
   /**
@@ -186,6 +187,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       onSelect,
       onDeselect,
       popupMatchSelectWidth = true,
+      tabSelectsValue = true,
 
       // Options
       filterOption,
@@ -622,6 +624,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
         onActiveValue,
         defaultActiveFirstOption: mergedDefaultActiveFirstOption,
         onSelect: onInternalSelect,
+        tabSelectsValue,
         menuItemSelectedIcon,
         rawValues,
         fieldNames: mergedFieldNames,
@@ -642,6 +645,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       onActiveValue,
       mergedDefaultActiveFirstOption,
       onInternalSelect,
+      tabSelectsValue,
       menuItemSelectedIcon,
       rawValues,
       mergedFieldNames,

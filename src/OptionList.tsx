@@ -52,6 +52,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     onActiveValue,
     defaultActiveFirstOption,
     onSelect,
+    tabSelectsValue,
     menuItemSelectedIcon,
     rawValues,
     fieldNames,
@@ -190,6 +191,20 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
   };
 
   // ========================= Keyboard =========================
+  const selectOptionHotKeyLogic = (event) => {
+    // value
+    const item = memoFlattenOptions[activeIndex];
+    if (item && !item?.data?.disabled && !overMaxCount) {
+      onSelectValue(item.value);
+    } else {
+      onSelectValue(undefined);
+    }
+
+    if (open) {
+      event.preventDefault();
+    }
+  };
+
   React.useImperativeHandle(ref, () => ({
     onKeyDown: (event) => {
       const { which, ctrlKey } = event;
@@ -222,20 +237,16 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
         }
 
         // >>> Select (Tab / Enter)
-        case KeyCode.TAB:
-        case KeyCode.ENTER: {
-          // value
-          const item = memoFlattenOptions[activeIndex];
-          if (item && !item?.data?.disabled && !overMaxCount) {
-            onSelectValue(item.value);
+        case KeyCode.TAB: {
+          if (tabSelectsValue) {
+            selectOptionHotKeyLogic(event);
           } else {
-            onSelectValue(undefined);
+            toggleOpen(false);
           }
-
-          if (open) {
-            event.preventDefault();
-          }
-
+          break;
+        }
+        case KeyCode.ENTER: {
+          selectOptionHotKeyLogic(event);
           break;
         }
 

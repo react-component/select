@@ -28,6 +28,7 @@ export interface SelectContextProps {
   onActiveValue: OnActiveValue;
   defaultActiveFirstOption?: boolean;
   onSelect: OnInternalSelect;
+  tabSelectsValue: boolean;
   menuItemSelectedIcon?: RenderNode;
   rawValues: Set<RawValueType>;
   fieldNames?: FieldNames;
