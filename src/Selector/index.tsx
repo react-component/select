@@ -52,6 +52,7 @@ export interface RefSelectorProps {
   focus: (options?: FocusOptions) => void;
   blur: () => void;
   scrollTo?: ScrollTo;
+  nativeElement: HTMLDivElement;
 }
 
 export interface SelectorProps {
@@ -98,11 +99,6 @@ export interface SelectorProps {
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   // on inner input blur
   onInputBlur?: () => void;
-  /**
-   * @private get real dom for trigger align.
-   * This may be removed after React provides replacement of `findDOMNode`
-   */
-  domRef: React.Ref<HTMLDivElement>;
 }
 
 const Selector: React.ForwardRefRenderFunction<RefSelectorProps, SelectorProps> = (props, ref) => {
@@ -127,11 +123,11 @@ const Selector: React.ForwardRefRenderFunction<RefSelectorProps, SelectorProps> 
     onToggleOpen,
     onInputKeyDown,
     onInputBlur,
-
-    domRef,
   } = props;
 
   // ======================= Ref =======================
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
   React.useImperativeHandle(ref, () => ({
     focus: (options) => {
       inputRef.current.focus(options);
@@ -139,6 +135,7 @@ const Selector: React.ForwardRefRenderFunction<RefSelectorProps, SelectorProps> 
     blur: () => {
       inputRef.current.blur();
     },
+    nativeElement: containerRef.current,
   }));
 
   // ====================== Input ======================
@@ -290,7 +287,7 @@ const Selector: React.ForwardRefRenderFunction<RefSelectorProps, SelectorProps> 
 
   return (
     <div
-      ref={domRef}
+      ref={containerRef}
       className={`${prefixCls}-selector`}
       onClick={onClick}
       onMouseDown={onMouseDown}
