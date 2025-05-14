@@ -4,6 +4,7 @@ import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import useMergedState from '@rc-component/util/lib/hooks/useMergedState';
 import isMobile from '@rc-component/util/lib/isMobile';
 import { useComposeRef } from '@rc-component/util/lib/ref';
+import { getDOM } from '@rc-component/util/lib/Dom/findDOMNode';
 import type { ScrollConfig, ScrollTo } from 'rc-virtual-list/lib/List';
 import * as React from 'react';
 import { useAllowClear } from '../hooks/useAllowClear';
@@ -330,11 +331,11 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
   // ============================== Refs ==============================
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const selectorDomRef = React.useRef<HTMLDivElement>(null);
   const triggerRef = React.useRef<RefTriggerProps>(null);
   const selectorRef = React.useRef<RefSelectorProps>(null);
   const listRef = React.useRef<RefOptionListProps>(null);
   const blurRef = React.useRef<boolean>(false);
+  const customDomRef = React.useRef<HTMLElement>(null);
 
   /** Used for component focused management */
   const [mockFocused, setMockFocused, cancelSetMockFocused] = useDelayReset();
@@ -344,7 +345,10 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     focus: selectorRef.current?.focus,
     blur: selectorRef.current?.blur,
     scrollTo: (arg) => listRef.current?.scrollTo(arg),
-    nativeElement: containerRef.current || selectorDomRef.current,
+    nativeElement:
+      containerRef.current ||
+      selectorRef.current?.nativeElement ||
+      (getDOM(customDomRef.current) as HTMLElement),
   }));
 
   // ========================== Search Value ==========================
@@ -368,7 +372,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     typeof getRawInputElement === 'function' && getRawInputElement();
 
   const customizeRawInputRef = useComposeRef<HTMLElement>(
-    selectorDomRef,
+    customDomRef,
     customizeRawInputElement?.props?.ref,
   );
 
@@ -808,12 +812,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       builtinPlacements={builtinPlacements}
       getPopupContainer={getPopupContainer}
       empty={emptyOptions}
-      getTriggerDOMNode={(node) =>
-        // TODO: This is workaround and should be removed in `rc-select`
-        // And use new standard `nativeElement` for ref.
-        // But we should update `rc-resize-observer` first.
-        selectorDomRef.current || node
-      }
       onPopupVisibleChange={onTriggerVisibleChange}
       onPopupMouseEnter={onPopupMouseEnter}
     >
@@ -826,7 +824,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
           {...props}
           prefixClassName={classNames?.prefix}
           prefixStyle={styles?.prefix}
-          domRef={selectorDomRef}
           prefixCls={prefixCls}
           inputElement={customizeInputElement}
           ref={selectorRef}

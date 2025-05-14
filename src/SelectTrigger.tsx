@@ -73,7 +73,6 @@ export interface SelectTriggerProps {
   popupAlign: AlignType;
   empty: boolean;
 
-  getTriggerDOMNode: (node: HTMLElement) => HTMLElement;
   onPopupVisibleChange?: (visible: boolean) => void;
 
   onPopupMouseEnter: () => void;
@@ -101,7 +100,6 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
     popupAlign,
     getPopupContainer,
     empty,
-    getTriggerDOMNode,
     onPopupVisibleChange,
     onPopupMouseEnter,
     ...restProps
@@ -174,7 +172,6 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
         [`${popupPrefixCls}-empty`]: empty,
       })}
       popupStyle={mergedPopupStyle}
-      getTriggerDOMNode={getTriggerDOMNode}
       onPopupVisibleChange={onPopupVisibleChange}
     >
       {children}
