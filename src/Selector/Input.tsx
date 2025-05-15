@@ -2,6 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { composeRef } from 'rc-util/lib/ref';
 import { warning } from 'rc-util/lib/warning';
+import composeProps from 'rc-util/lib/composeProps';
 
 type InputRef = HTMLInputElement | HTMLTextAreaElement;
 
@@ -39,38 +40,19 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (props, ref)
     prefixCls,
     id,
     inputElement,
-    disabled,
-    tabIndex,
     autoFocus,
     autoComplete,
     editable,
     activeDescendantId,
     value,
-    maxLength,
-    onKeyDown,
-    onMouseDown,
-    onChange,
-    onPaste,
-    onCompositionStart,
-    onCompositionEnd,
-    onBlur,
     open,
     attrs,
+    ...restProps
   } = props;
 
   let inputNode: React.ComponentElement<any, any> = inputElement || <input />;
 
   const { ref: originRef, props: originProps } = inputNode;
-
-  const {
-    onKeyDown: onOriginKeyDown,
-    onChange: onOriginChange,
-    onMouseDown: onOriginMouseDown,
-    onCompositionStart: onOriginCompositionStart,
-    onCompositionEnd: onOriginCompositionEnd,
-    onBlur: onOriginBlur,
-    style,
-  } = originProps;
 
   warning(
     !('maxLength' in inputNode.props),
@@ -79,17 +61,15 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (props, ref)
 
   inputNode = React.cloneElement(inputNode, {
     type: 'search',
-    ...originProps,
+    ...composeProps(restProps, originProps, true),
 
     // Override over origin props
     id,
     ref: composeRef(ref, originRef as any),
-    disabled,
-    tabIndex,
     autoComplete: autoComplete || 'off',
 
     autoFocus,
-    className: classNames(`${prefixCls}-selection-search-input`, inputNode?.props?.className),
+    className: classNames(`${prefixCls}-selection-search-input`, originProps?.className),
 
     role: 'combobox',
     'aria-expanded': open || false,
@@ -100,49 +80,10 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (props, ref)
     'aria-activedescendant': open ? activeDescendantId : undefined,
     ...attrs,
     value: editable ? value : '',
-    maxLength,
     readOnly: !editable,
     unselectable: !editable ? 'on' : null,
 
-    style: { ...style, opacity: editable ? null : 0 },
-
-    onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
-      onKeyDown(event);
-      if (onOriginKeyDown) {
-        onOriginKeyDown(event);
-      }
-    },
-    onMouseDown: (event: React.MouseEvent<HTMLElement>) => {
-      onMouseDown(event);
-      if (onOriginMouseDown) {
-        onOriginMouseDown(event);
-      }
-    },
-    onChange: (event: React.ChangeEvent<HTMLElement>) => {
-      onChange(event);
-      if (onOriginChange) {
-        onOriginChange(event);
-      }
-    },
-    onCompositionStart(event: React.CompositionEvent<HTMLElement>) {
-      onCompositionStart(event);
-      if (onOriginCompositionStart) {
-        onOriginCompositionStart(event);
-      }
-    },
-    onCompositionEnd(event: React.CompositionEvent<HTMLElement>) {
-      onCompositionEnd(event);
-      if (onOriginCompositionEnd) {
-        onOriginCompositionEnd(event);
-      }
-    },
-    onPaste,
-    onBlur(event: React.FocusEvent<HTMLElement>) {
-      onBlur(event);
-      if (onOriginBlur) {
-        onOriginBlur(event);
-      }
-    },
+    style: { ...originProps.style, opacity: editable ? null : 0 },
   });
 
   return inputNode;
