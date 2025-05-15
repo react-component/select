@@ -924,6 +924,7 @@ describe('Select.Basic', () => {
       const onCompositionEnd = jest.fn();
       const textareaRef = jest.fn();
       const mouseDownPreventDefault = jest.fn();
+      const onPaste = jest.fn();
       const { container } = render(
         <Select
           mode="combobox"
@@ -934,6 +935,7 @@ describe('Select.Basic', () => {
               onMouseDown={onMouseDown}
               onCompositionStart={onCompositionStart}
               onCompositionEnd={onCompositionEnd}
+              onPaste={onPaste}
               ref={textareaRef}
               className="custom-input"
             />
@@ -965,6 +967,13 @@ describe('Select.Basic', () => {
       expect(textareaRef).toHaveBeenCalled();
       expect(onCompositionStart).toHaveBeenCalled();
       expect(onCompositionEnd).toHaveBeenCalled();
+
+      fireEvent.paste(textareaEle, {
+        target: { value: 'hi' },
+        clipboardData: { getData: () => 'hi' },
+      });
+      expect(onPaste).toHaveBeenCalled();
+      expect(textareaEle.value).toEqual('hi');
     });
 
     it('not override customize props', () => {
