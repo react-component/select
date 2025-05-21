@@ -110,8 +110,18 @@ type ArrayElementType<T> = T extends (infer E)[] ? E : T;
 
 export type SemanticName = BaseSelectSemanticName;
 export type PopupSemantic = 'listItem' | 'list';
+interface ShowSearch<OptionType> {
+  searchValue?: string;
+  autoClearSearchValue?: boolean;
+  onSearch?: (value: string) => void;
+  tokenSeparators?: string | string[];
+  filterOption?: boolean | FilterFunc<OptionType>;
+  filterSort?: (optionA: OptionType, optionB: OptionType, info: { searchValue: string }) => number;
+  optionFilterProp?: string;
+  optionLabelProp?: string;
+}
 export interface SelectProps<ValueType = any, OptionType extends BaseOptionType = DefaultOptionType>
-  extends BaseSelectPropsWithoutPrivate {
+  extends Omit<BaseSelectPropsWithoutPrivate, 'showSearch'> {
   prefixCls?: string;
   id?: string;
 
@@ -119,7 +129,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
 
   // >>> Field Names
   fieldNames?: FieldNames;
-
+  showSearch?: boolean | ShowSearch<OptionType>;
   searchValue?: string;
   onSearch?: (value: string) => void;
   autoClearSearchValue?: boolean;
@@ -177,23 +187,13 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       prefixCls = 'rc-select',
       backfill,
       fieldNames,
-
       // Search
-      searchValue,
-      onSearch,
-      autoClearSearchValue = true,
-
+      showSearch,
       // Select
       onSelect,
       onDeselect,
       onActive,
       popupMatchSelectWidth = true,
-
-      // Options
-      filterOption,
-      filterSort,
-      optionFilterProp,
-      optionLabelProp,
       options,
       optionRender,
       children,
@@ -215,6 +215,31 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       styles,
       ...restProps
     } = props;
+
+    const legacySearchProps = [
+      'filterOption',
+      'searchValue',
+      'optionFilterProp',
+      'optionLabelProp',
+      'filterSort',
+      'onSearch',
+      'autoClearSearchValue',
+      'tokenSeparators',
+    ];
+    const legacyShowSearch: ShowSearch<DefaultOptionType> = {};
+    legacySearchProps.forEach((propsName) => {
+      legacyShowSearch[propsName] = restProps?.[propsName];
+    });
+    const mergedShowSearch = typeof showSearch === 'object' ? showSearch : legacyShowSearch;
+    const {
+      filterOption,
+      searchValue,
+      optionFilterProp,
+      optionLabelProp,
+      filterSort,
+      onSearch,
+      autoClearSearchValue,
+    } = mergedShowSearch;
 
     const mergedId = useId(id);
     const multiple = isMultiple(mode);
@@ -698,6 +723,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
           // >>> Trigger
           direction={direction}
           // >>> Search
+          showSearch={showSearch === undefined ? undefined : !!showSearch}
           searchValue={mergedSearchValue}
           onSearch={onInternalSearch}
           autoClearSearchValue={autoClearSearchValue}
