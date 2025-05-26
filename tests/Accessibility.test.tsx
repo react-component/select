@@ -23,6 +23,8 @@ describe('Select.Accessibility', () => {
 
   // https://github.com/ant-design/ant-design/issues/31850
   it('active index should keep', () => {
+    const onActive = jest.fn();
+
     const { container } = render(
       <Select
         showSearch
@@ -40,6 +42,7 @@ describe('Select.Accessibility', () => {
             value: 'light',
           },
         ]}
+        onActive={onActive}
       />,
     );
 
@@ -52,13 +55,18 @@ describe('Select.Accessibility', () => {
       document.querySelector('.rc-select-item-option-active .rc-select-item-option-content')
         .textContent,
     ).toEqual('Bamboo');
+    expect(onActive).toHaveBeenCalledWith('bamboo');
 
     keyDown(container.querySelector('input')!, KeyCode.ENTER);
     expectOpen(container, false);
 
     // Next Match
     fireEvent.change(container.querySelector('input')!, { target: { value: '' } });
+    expect(onActive).toHaveBeenCalledWith('bamboo');
+    fireEvent.change(container.querySelector('input')!, { target: { value: 'not exist' } });
+    expect(onActive).toHaveBeenCalledWith(null);
     fireEvent.change(container.querySelector('input')!, { target: { value: 'g' } });
+    expect(onActive).toHaveBeenCalledWith('light');
     jest.runAllTimers();
 
     expectOpen(container);

@@ -18,6 +18,10 @@ class Combobox extends React.Component {
     console.log('Ref:', this.textareaRef);
   }
 
+  onActive = (value) => {
+    console.log('onActive', value);
+  };
+
   onChange = (value, option) => {
     console.log('onChange', value, option);
     this.setState({
@@ -83,6 +87,7 @@ class Combobox extends React.Component {
           value={value}
           mode="combobox"
           onChange={this.onChange}
+          onActive={this.onActive}
           filterOption={(inputValue, option) => {
             if (!inputValue) {
               return true;

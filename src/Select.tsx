@@ -127,6 +127,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   // >>> Select
   onSelect?: SelectHandler<ArrayElementType<ValueType>, OptionType>;
   onDeselect?: SelectHandler<ArrayElementType<ValueType>, OptionType>;
+  onActive?: (value: ValueType) => void;
 
   // >>> Options
   /**
@@ -185,6 +186,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       // Select
       onSelect,
       onDeselect,
+      onActive,
       popupMatchSelectWidth = true,
 
       // Options
@@ -500,8 +502,10 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
         if (backfill && mode === 'combobox' && active !== null && source === 'keyboard') {
           setActiveValue(String(active));
         }
+
+        onActive?.(active);
       },
-      [backfill, mode],
+      [backfill, mode, onActive],
     );
 
     // ========================= OptionList =========================
