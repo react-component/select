@@ -51,7 +51,7 @@ import useFilterOptions from './hooks/useFilterOptions';
 import useId from './hooks/useId';
 import useOptions from './hooks/useOptions';
 import useRefFunc from './hooks/useRefFunc';
-import type { FlattenOptionData } from './interface';
+import type { FlattenOptionData, RawValueType } from './interface';
 import { hasValue, isComboNoValue, toArray } from './utils/commonUtil';
 import { fillFieldNames, flattenOptions, injectPropsWithOption } from './utils/valueUtil';
 import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
@@ -66,7 +66,6 @@ export type OnActiveValue = (
 
 export type OnInternalSelect = (value: RawValueType, info: { selected: boolean }) => void;
 
-export type RawValueType = string | number;
 export interface LabelInValueType {
   label: React.ReactNode;
   value: RawValueType;
