@@ -15,6 +15,7 @@ import useBaseProps from './hooks/useBaseProps';
 import type { FlattenOptionData } from './interface';
 import { isPlatformMac } from './utils/platformUtil';
 import { isValidCount } from './utils/valueUtil';
+import { useEvent } from 'rc-util';
 
 // export interface OptionListProps<OptionsType extends object[]> {
 export type OptionListProps = Record<string, never>;
@@ -128,11 +129,6 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     onActiveValue(flattenItem.value, index, info);
   };
 
-  // Auto active first item when list length or searchValue changed
-  useEffect(() => {
-    setActive(defaultActiveFirstOption !== false ? getEnabledActiveIndex(0) : -1);
-  }, [memoFlattenOptions.length, searchValue]);
-
   // https://github.com/ant-design/ant-design/issues/48036
   const isAriaSelected = React.useCallback(
     (value: RawValueType) => {
@@ -144,35 +140,35 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     [mode, searchValue, [...rawValues].toString(), rawValues.size],
   );
 
-  // Auto scroll to item position in single mode
-  useEffect(() => {
-    /**
-     * React will skip `onChange` when component update.
-     * `setActive` function will call root accessibility state update which makes re-render.
-     * So we need to delay to let Input component trigger onChange first.
-     */
-    const timeoutId = setTimeout(() => {
-      if (!multiple && open && rawValues.size === 1) {
-        const value: RawValueType = Array.from(rawValues)[0];
-        // Scroll to the option closest to the searchValue if searching.
-        const index = memoFlattenOptions.findIndex(({ data }) =>
-          searchValue ? String(data.value).startsWith(searchValue) : data.value === value,
-        );
+  const handleActive = useEvent(() => {
+    if (!open) return;
 
-        if (index !== -1) {
-          setActive(index);
-          scrollIntoView(index);
-        }
-      }
-    });
+    let index = -1;
 
-    // Force trigger scrollbar visible when open
-    if (open) {
-      listRef.current?.scrollTo(undefined);
+    // Auto scroll to item position in single mode
+    if (!multiple && rawValues.size === 1) {
+      const value: RawValueType = Array.from(rawValues)[0];
+      // Scroll to the option closest to the searchValue if searching.
+      index = memoFlattenOptions.findIndex(({ data }) =>
+        searchValue ? String(data.value).startsWith(searchValue) : data.value === value,
+      );
     }
 
-    return () => clearTimeout(timeoutId);
-  }, [open, searchValue]);
+    if (index === -1 && defaultActiveFirstOption !== false) {
+      // If no value found, scroll to the first enabled item
+      index = getEnabledActiveIndex(0);
+    }
+
+    setActive(index);
+
+    if (index !== -1) {
+      scrollIntoView(index);
+    }
+
+    listRef.current?.scrollTo(undefined);
+  });
+
+  useEffect(handleActive, [open, searchValue, memoFlattenOptions.length]);
 
   // ========================== Values ==========================
   const onSelectValue = (value: RawValueType) => {

@@ -111,6 +111,7 @@ describe('OptionList', () => {
 
     render(
       generateList({
+        open: true,
         options: [{ value: '1' }, { value: '2' }],
         values: new Set('1'),
         onActiveValue,
