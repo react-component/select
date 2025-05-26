@@ -55,6 +55,7 @@ import type { FlattenOptionData, RawValueType } from './interface';
 import { hasValue, isComboNoValue, toArray } from './utils/commonUtil';
 import { fillFieldNames, flattenOptions, injectPropsWithOption } from './utils/valueUtil';
 import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
+import { useEvent } from 'rc-util';
 
 const OMIT_DOM_PROPS = ['inputValue'];
 
@@ -128,6 +129,9 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   // >>> Select
   onSelect?: SelectHandler<ArrayElementType<ValueType>, OptionType>;
   onDeselect?: SelectHandler<ArrayElementType<ValueType>, OptionType>;
+
+  // >>> active
+  onActive?: OnActiveValue;
 
   // >>> Options
   /**
@@ -209,6 +213,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       labelInValue,
       onChange,
       maxCount,
+      onActive,
 
       ...restProps
     } = props;
@@ -487,21 +492,18 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
     };
 
     // ======================= Accessibility ========================
-    const [activeValue, setActiveValue] = React.useState<string>(null);
+    const [innerActiveValue, setInnerActiveValue] = React.useState<string>(null);
     const [accessibilityIndex, setAccessibilityIndex] = React.useState(0);
     const mergedDefaultActiveFirstOption =
       defaultActiveFirstOption !== undefined ? defaultActiveFirstOption : mode !== 'combobox';
 
-    const onActiveValue: OnActiveValue = React.useCallback(
-      (active, index, { source = 'keyboard' } = {}) => {
-        setAccessibilityIndex(index);
-
-        if (backfill && mode === 'combobox' && active !== null && source === 'keyboard') {
-          setActiveValue(String(active));
-        }
-      },
-      [backfill, mode],
-    );
+    const handleActiveValueChange = useEvent<OnActiveValue>((active, index, info = {}) => {
+      setAccessibilityIndex(index);
+      onActive?.(active, index, info);
+      if (backfill && mode === 'combobox' && active !== null && info.source === 'keyboard') {
+        setInnerActiveValue(String(active));
+      }
+    });
 
     // ========================= OptionList =========================
     const triggerSelect = (val: RawValueType, selected: boolean, type?: DisplayInfoType) => {
@@ -547,10 +549,10 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       // Clean search value if single or configured
       if (mode === 'combobox') {
         // setSearchValue(String(val));
-        setActiveValue('');
+        setInnerActiveValue('');
       } else if (!isMultiple || autoClearSearchValue) {
         setSearchValue('');
-        setActiveValue('');
+        setInnerActiveValue('');
       }
     });
 
@@ -570,7 +572,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
     // =========================== Search ===========================
     const onInternalSearch: BaseSelectProps['onSearch'] = (searchText, info) => {
       setSearchValue(searchText);
-      setActiveValue(null);
+      setInnerActiveValue(null);
 
       // [Submit] Tag mode should flush input
       if (info.source === 'submit') {
@@ -620,7 +622,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       return {
         ...parsedOptions,
         flattenOptions: displayOptions,
-        onActiveValue,
+        onActiveValue: handleActiveValueChange,
         defaultActiveFirstOption: mergedDefaultActiveFirstOption,
         onSelect: onInternalSelect,
         menuItemSelectedIcon,
@@ -638,7 +640,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       maxCount,
       parsedOptions,
       displayOptions,
-      onActiveValue,
+      handleActiveValueChange,
       mergedDefaultActiveFirstOption,
       onInternalSelect,
       menuItemSelectedIcon,
@@ -687,7 +689,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
           OptionList={OptionList}
           emptyOptions={!displayOptions.length}
           // >>> Accessibility
-          activeValue={activeValue}
+          activeValue={innerActiveValue}
           activeDescendantId={`${mergedId}_list_${accessibilityIndex}`}
         />
       </SelectContext.Provider>

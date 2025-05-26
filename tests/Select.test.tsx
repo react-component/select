@@ -1648,6 +1648,41 @@ describe('Select.Basic', () => {
     expect(onKeyUp).toHaveBeenCalled();
   });
 
+  it('onActive', () => {
+    const onActive = jest.fn();
+    const { getByRole, container } = render(
+      <Select onActive={onActive} open>
+        <Option value="1">One</Option>
+        <Option value="2">Two</Option>
+        <Option value={3}>Three</Option>
+      </Select>,
+    );
+
+    const input = getByRole('combobox');
+
+    keyDown(input, KeyCode.DOWN);
+    keyDown(input, KeyCode.DOWN);
+    expect(onActive).toHaveBeenCalledTimes(3);
+    expect(onActive).toHaveBeenLastCalledWith(
+      3,
+      2,
+      expect.objectContaining({
+        source: 'keyboard',
+      }),
+    );
+
+    fireEvent.mouseMove(container.querySelector('.rc-select-item-option'));
+    expect(onActive).toHaveBeenCalledTimes(4);
+
+    expect(onActive).toHaveBeenLastCalledWith(
+      '1',
+      0,
+      expect.objectContaining({
+        source: 'mouse',
+      }),
+    );
+  });
+
   describe('warning if label not same as option', () => {
     it('should work', () => {
       resetWarned();
