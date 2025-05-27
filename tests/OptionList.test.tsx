@@ -462,6 +462,54 @@ describe('OptionList', () => {
     expect(onActiveValue).not.toHaveBeenCalledWith('3', expect.anything(), expect.anything());
   });
 
+  it('should deselect a selected option when Enter is pressed and maxCount is reached', () => {
+    const onSelect = jest.fn();
+    const toggleOpen = jest.fn();
+    const listRef = React.createRef<RefOptionListProps>();
+
+    // Initial selected values: '1' and '2'
+    const initialValues = new Set(['1', '2']);
+
+    render(
+      generateList({
+        multiple: true,
+        maxCount: 2,
+        options: [
+          { value: '1', label: '1' },
+          { value: '2', label: '2' },
+          { value: '3', label: '3' },
+        ],
+        values: initialValues,
+        onSelect,
+        toggleOpen,
+        ref: listRef,
+      }),
+    );
+
+    // Verify initial selection state
+    expect(initialValues.has('1')).toBe(true); // 1 is selected
+    expect(initialValues.has('2')).toBe(true); // 2 is selected
+    expect(initialValues.has('3')).toBe(false); // 3 is not selected
+
+    act(() => {
+      toggleOpen(true);
+    });
+
+    act(() => {
+      listRef.current.onKeyDown({ which: KeyCode.ENTER } as any);
+    });
+
+    // Verify that onSelect was called to deselect '1'
+    expect(onSelect).toHaveBeenCalledWith('1', expect.objectContaining({ selected: false }));
+
+    // Verify that onSelect was NOT called for '2' or '3'
+    expect(onSelect).not.toHaveBeenCalledWith('2', expect.anything());
+    expect(onSelect).not.toHaveBeenCalledWith('3', expect.anything());
+
+    // Verify only one call was made (for deselecting '1')
+    expect(onSelect).toHaveBeenCalledTimes(1);
+  });
+
   describe('List.ScrollBar', () => {
     let mockElement;
     let boundingRect = {
