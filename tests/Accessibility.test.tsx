@@ -59,6 +59,7 @@ describe('Select.Accessibility', () => {
         .textContent,
     ).toEqual('Bamboo');
     expect(onActive).toHaveBeenCalledWith('bamboo');
+    expect(onActive).toHaveBeenCalledTimes(1);
 
     keyDown(container.querySelector('input')!, KeyCode.ENTER);
     expectOpen(container, false);
@@ -69,18 +70,21 @@ describe('Select.Accessibility', () => {
       await Promise.resolve();
     });
     expect(onActive).toHaveBeenCalledWith('bamboo');
+    expect(onActive).toHaveBeenCalledTimes(2);
 
     fireEvent.change(container.querySelector('input')!, { target: { value: 'not exist' } });
     await act(async () => {
       await Promise.resolve();
     });
     expect(onActive).toHaveBeenCalledWith(null);
+    expect(onActive).toHaveBeenCalledTimes(3);
 
     fireEvent.change(container.querySelector('input')!, { target: { value: 'g' } });
     await act(async () => {
       await Promise.resolve();
     });
     expect(onActive).toHaveBeenCalledWith('light');
+    expect(onActive).toHaveBeenCalledTimes(4);
 
     await act(async () => {
       jest.runAllTimers();
