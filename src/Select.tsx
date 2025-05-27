@@ -495,6 +495,8 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
     const mergedDefaultActiveFirstOption =
       defaultActiveFirstOption !== undefined ? defaultActiveFirstOption : mode !== 'combobox';
 
+    const activeEventRef = React.useRef<Promise<void>>();
+
     const onActiveValue: OnActiveValue = React.useCallback(
       (active, index, { source = 'keyboard' } = {}) => {
         setAccessibilityIndex(index);
@@ -503,7 +505,14 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
           setActiveValue(String(active));
         }
 
-        onActive?.(active);
+        // Active will call multiple times.
+        // We only need trigger the last one.
+        const promise = Promise.resolve().then(() => {
+          if (activeEventRef.current === promise) {
+            onActive?.(active);
+          }
+        });
+        activeEventRef.current = promise;
       },
       [backfill, mode, onActive],
     );

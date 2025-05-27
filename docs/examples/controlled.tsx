@@ -47,6 +47,10 @@ class Controlled extends React.Component<{}, ControlledState> {
     this.setState({ open });
   };
 
+  onActive = (value) => {
+    console.error('onActive', value);
+  };
+
   render() {
     const { open, destroy, value } = this.state;
     if (destroy) {
@@ -69,6 +73,7 @@ class Controlled extends React.Component<{}, ControlledState> {
             optionFilterProp="text"
             onChange={this.onChange}
             onPopupVisibleChange={this.onPopupVisibleChange}
+            onActive={this.onActive}
           >
             <Option value="01" text="jack" title="jack">
               <b
