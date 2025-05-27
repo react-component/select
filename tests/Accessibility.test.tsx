@@ -22,7 +22,7 @@ describe('Select.Accessibility', () => {
   });
 
   // https://github.com/ant-design/ant-design/issues/31850
-  it('active index should keep', () => {
+  it('active index should keep', async () => {
     const onActive = jest.fn();
 
     const { container } = render(
@@ -48,7 +48,10 @@ describe('Select.Accessibility', () => {
 
     // First Match
     fireEvent.change(container.querySelector('input')!, { target: { value: 'b' } });
-    jest.runAllTimers();
+    await act(async () => {
+      jest.runAllTimers();
+      await Promise.resolve();
+    });
 
     expectOpen(container);
     expect(
@@ -62,12 +65,27 @@ describe('Select.Accessibility', () => {
 
     // Next Match
     fireEvent.change(container.querySelector('input')!, { target: { value: '' } });
+    await act(async () => {
+      await Promise.resolve();
+    });
     expect(onActive).toHaveBeenCalledWith('bamboo');
+
     fireEvent.change(container.querySelector('input')!, { target: { value: 'not exist' } });
+    await act(async () => {
+      await Promise.resolve();
+    });
     expect(onActive).toHaveBeenCalledWith(null);
+
     fireEvent.change(container.querySelector('input')!, { target: { value: 'g' } });
+    await act(async () => {
+      await Promise.resolve();
+    });
     expect(onActive).toHaveBeenCalledWith('light');
-    jest.runAllTimers();
+
+    await act(async () => {
+      jest.runAllTimers();
+      await Promise.resolve();
+    });
 
     expectOpen(container);
     expect(
