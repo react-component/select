@@ -154,20 +154,22 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
      * `setActive` function will call root accessibility state update which makes re-render.
      * So we need to delay to let Input component trigger onChange first.
      */
-    const timeoutId = setTimeout(() => {
-      if (!multiple && open && rawValues.size === 1) {
-        const value: RawValueType = Array.from(rawValues)[0];
-        // Scroll to the option closest to the searchValue if searching.
-        const index = memoFlattenOptions.findIndex(({ data }) =>
-          searchValue ? String(data.value).startsWith(searchValue) : data.value === value,
-        );
+    let timeoutId: NodeJS.Timeout;
 
-        if (index !== -1) {
-          setActive(index);
+    if (!multiple && open && rawValues.size === 1) {
+      const value: RawValueType = Array.from(rawValues)[0];
+      // Scroll to the option closest to the searchValue if searching.
+      const index = memoFlattenOptions.findIndex(({ data }) =>
+        searchValue ? String(data.value).startsWith(searchValue) : data.value === value,
+      );
+
+      if (index !== -1) {
+        setActive(index);
+        timeoutId = setTimeout(() => {
           scrollIntoView(index);
-        }
+        });
       }
-    });
+    }
 
     // Force trigger scrollbar visible when open
     if (open) {

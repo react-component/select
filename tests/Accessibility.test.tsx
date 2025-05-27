@@ -22,7 +22,9 @@ describe('Select.Accessibility', () => {
   });
 
   // https://github.com/ant-design/ant-design/issues/31850
-  it('active index should keep', () => {
+  it('active index should keep', async () => {
+    const onActive = jest.fn();
+
     const { container } = render(
       <Select
         showSearch
@@ -40,26 +42,54 @@ describe('Select.Accessibility', () => {
             value: 'light',
           },
         ]}
+        onActive={onActive}
       />,
     );
 
     // First Match
     fireEvent.change(container.querySelector('input')!, { target: { value: 'b' } });
-    jest.runAllTimers();
+    await act(async () => {
+      jest.runAllTimers();
+      await Promise.resolve();
+    });
 
     expectOpen(container);
     expect(
       document.querySelector('.rc-select-item-option-active .rc-select-item-option-content')
         .textContent,
     ).toEqual('Bamboo');
+    expect(onActive).toHaveBeenCalledWith('bamboo');
+    expect(onActive).toHaveBeenCalledTimes(1);
 
     keyDown(container.querySelector('input')!, KeyCode.ENTER);
     expectOpen(container, false);
 
     // Next Match
     fireEvent.change(container.querySelector('input')!, { target: { value: '' } });
+    await act(async () => {
+      await Promise.resolve();
+    });
+    expect(onActive).toHaveBeenCalledWith('bamboo');
+    expect(onActive).toHaveBeenCalledTimes(2);
+
+    fireEvent.change(container.querySelector('input')!, { target: { value: 'not exist' } });
+    await act(async () => {
+      await Promise.resolve();
+    });
+    expect(onActive).toHaveBeenCalledWith(null);
+    expect(onActive).toHaveBeenCalledTimes(3);
+
     fireEvent.change(container.querySelector('input')!, { target: { value: 'g' } });
-    jest.runAllTimers();
+    await act(async () => {
+      await Promise.resolve();
+    });
+    expect(onActive).toHaveBeenCalledWith('light');
+    expect(onActive).toHaveBeenCalledTimes(4);
+
+    await act(async () => {
+      jest.runAllTimers();
+      await Promise.resolve();
+    });
 
     expectOpen(container);
     expect(

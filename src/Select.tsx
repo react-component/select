@@ -127,6 +127,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   // >>> Select
   onSelect?: SelectHandler<ArrayElementType<ValueType>, OptionType>;
   onDeselect?: SelectHandler<ArrayElementType<ValueType>, OptionType>;
+  onActive?: (value: ValueType) => void;
 
   // >>> Options
   /**
@@ -185,6 +186,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       // Select
       onSelect,
       onDeselect,
+      onActive,
       popupMatchSelectWidth = true,
 
       // Options
@@ -493,6 +495,8 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
     const mergedDefaultActiveFirstOption =
       defaultActiveFirstOption !== undefined ? defaultActiveFirstOption : mode !== 'combobox';
 
+    const activeEventRef = React.useRef<Promise<void>>();
+
     const onActiveValue: OnActiveValue = React.useCallback(
       (active, index, { source = 'keyboard' } = {}) => {
         setAccessibilityIndex(index);
@@ -500,8 +504,17 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
         if (backfill && mode === 'combobox' && active !== null && source === 'keyboard') {
           setActiveValue(String(active));
         }
+
+        // Active will call multiple times.
+        // We only need trigger the last one.
+        const promise = Promise.resolve().then(() => {
+          if (activeEventRef.current === promise) {
+            onActive?.(active);
+          }
+        });
+        activeEventRef.current = promise;
       },
-      [backfill, mode],
+      [backfill, mode, onActive],
     );
 
     // ========================= OptionList =========================
