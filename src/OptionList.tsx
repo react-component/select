@@ -228,7 +228,11 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
         case KeyCode.ENTER: {
           // value
           const item = memoFlattenOptions[activeIndex];
-          if (item && !item?.data?.disabled && !overMaxCount) {
+          if (!item || item.data.disabled) {
+            return onSelectValue(undefined);
+          }
+
+          if (!overMaxCount || rawValues.has(item.value)) {
             onSelectValue(item.value);
           } else {
             onSelectValue(undefined);
