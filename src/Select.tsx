@@ -90,7 +90,7 @@ export interface FieldNames {
 
 export interface BaseOptionType {
   disabled?: boolean;
-  className?: string;
+  className?: string | undefined;
   title?: string;
   [name: string]: any;
 }
