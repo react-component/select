@@ -227,22 +227,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       ...restProps
     } = props;
 
-    // const legacySearchProps = [
-    //   'filterOption',
-    //   'searchValue',
-    //   'optionFilterProp',
-    //   'optionLabelProp',
-    //   'filterSort',
-    //   'onSearch',
-    //   'autoClearSearchValue',
-    //   'tokenSeparators',
-    // ];
-    // const legacyShowSearch: SearchConfig<DefaultOptionType> = {};
-    // legacySearchProps.forEach((propsName) => {
-    //   legacyShowSearch[propsName] = props?.[propsName];
-    // });
     const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch, props);
-    // const mergedShowSearch = typeof showSearch === 'object' ? showSearch : legacyShowSearch;
     const {
       filterOption,
       searchValue,
