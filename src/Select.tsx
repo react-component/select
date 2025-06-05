@@ -56,6 +56,7 @@ import type { FlattenOptionData } from './interface';
 import { hasValue, isComboNoValue, toArray } from './utils/commonUtil';
 import { fillFieldNames, flattenOptions, injectPropsWithOption } from './utils/valueUtil';
 import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
+import useSearchConfig from './hooks/useSearchConfig';
 
 const OMIT_DOM_PROPS = ['inputValue'];
 
@@ -110,7 +111,7 @@ type ArrayElementType<T> = T extends (infer E)[] ? E : T;
 
 export type SemanticName = BaseSelectSemanticName;
 export type PopupSemantic = 'listItem' | 'list';
-interface SearchConfig<OptionType> {
+export interface SearchConfig<OptionType> {
   searchValue?: string;
   autoClearSearchValue?: boolean;
   onSearch?: (value: string) => void;
@@ -226,21 +227,22 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       ...restProps
     } = props;
 
-    const legacySearchProps = [
-      'filterOption',
-      'searchValue',
-      'optionFilterProp',
-      'optionLabelProp',
-      'filterSort',
-      'onSearch',
-      'autoClearSearchValue',
-      'tokenSeparators',
-    ];
-    const legacyShowSearch: SearchConfig<DefaultOptionType> = {};
-    legacySearchProps.forEach((propsName) => {
-      legacyShowSearch[propsName] = props?.[propsName];
-    });
-    const mergedShowSearch = typeof showSearch === 'object' ? showSearch : legacyShowSearch;
+    // const legacySearchProps = [
+    //   'filterOption',
+    //   'searchValue',
+    //   'optionFilterProp',
+    //   'optionLabelProp',
+    //   'filterSort',
+    //   'onSearch',
+    //   'autoClearSearchValue',
+    //   'tokenSeparators',
+    // ];
+    // const legacyShowSearch: SearchConfig<DefaultOptionType> = {};
+    // legacySearchProps.forEach((propsName) => {
+    //   legacyShowSearch[propsName] = props?.[propsName];
+    // });
+    const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch, props);
+    // const mergedShowSearch = typeof showSearch === 'object' ? showSearch : legacyShowSearch;
     const {
       filterOption,
       searchValue,
@@ -250,7 +252,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       onSearch,
       autoClearSearchValue = true,
       tokenSeparators,
-    } = mergedShowSearch;
+    } = searchConfig;
 
     const mergedId = useId(id);
     const multiple = isMultiple(mode);
@@ -734,7 +736,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
           // >>> Trigger
           direction={direction}
           // >>> Search
-          showSearch={showSearch === undefined ? undefined : !!showSearch}
+          showSearch={mergedShowSearch}
           searchValue={mergedSearchValue}
           onSearch={onInternalSearch}
           autoClearSearchValue={autoClearSearchValue}
