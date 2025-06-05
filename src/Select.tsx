@@ -110,11 +110,11 @@ type ArrayElementType<T> = T extends (infer E)[] ? E : T;
 
 export type SemanticName = BaseSelectSemanticName;
 export type PopupSemantic = 'listItem' | 'list';
-interface ShowSearch<OptionType> {
+interface SearchConfig<OptionType> {
   searchValue?: string;
   autoClearSearchValue?: boolean;
   onSearch?: (value: string) => void;
-  tokenSeparators?: string | string[];
+  tokenSeparators?: string[];
   filterOption?: boolean | FilterFunc<OptionType>;
   filterSort?: (optionA: OptionType, optionB: OptionType, info: { searchValue: string }) => number;
   optionFilterProp?: string;
@@ -129,9 +129,10 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
 
   // >>> Field Names
   fieldNames?: FieldNames;
-  showSearch?: boolean | ShowSearch<OptionType>;
-  searchValue?: string;
-  onSearch?: (value: string) => void;
+  showSearch?: boolean | SearchConfig<OptionType>;
+  /**  @deprecated pleace use  SearchConfig.searchValue */
+  searchValue?: SearchConfig<OptionType>['searchValue'];
+  /**  @deprecated pleace use  SearchConfig.autoClearSearchValue */
   autoClearSearchValue?: boolean;
 
   // >>> Select
@@ -139,16 +140,25 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   onDeselect?: SelectHandler<ArrayElementType<ValueType>, OptionType>;
   onActive?: (value: ValueType) => void;
 
+  /**  @deprecated pleace use  SearchConfig.onSearch */
+  onSearch?: SearchConfig<OptionType>['onSearch'];
+  /**  @deprecated pleace use  SearchConfig.tokenSeparators */
+  tokenSeparators?: string[];
   // >>> Options
   /**
    * In Select, `false` means do nothing.
    * In TreeSelect, `false` will highlight match item.
    * It's by design.
    */
-  filterOption?: boolean | FilterFunc<OptionType>;
-  filterSort?: (optionA: OptionType, optionB: OptionType, info: { searchValue: string }) => number;
+  /**  @deprecated pleace use  SearchConfig.filterOption */
+  filterOption?: SearchConfig<OptionType>['filterOption'];
+  /**  @deprecated pleace use  SearchConfig.filterSort */
+  filterSort?: SearchConfig<OptionType>['filterSort'];
+  /**  @deprecated pleace use  SearchConfig.optionFilterProp */
   optionFilterProp?: string;
+  /**  @deprecated pleace use  SearchConfig.optionLabelProp */
   optionLabelProp?: string;
+
   children?: React.ReactNode;
   options?: OptionType[];
   optionRender?: (
@@ -226,7 +236,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       'autoClearSearchValue',
       'tokenSeparators',
     ];
-    const legacyShowSearch: ShowSearch<DefaultOptionType> = {};
+    const legacyShowSearch: SearchConfig<DefaultOptionType> = {};
     legacySearchProps.forEach((propsName) => {
       legacyShowSearch[propsName] = restProps?.[propsName];
     });
@@ -239,6 +249,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       filterSort,
       onSearch,
       autoClearSearchValue,
+      tokenSeparators,
     } = mergedShowSearch;
 
     const mergedId = useId(id);
@@ -728,6 +739,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
           onSearch={onInternalSearch}
           autoClearSearchValue={autoClearSearchValue}
           onSearchSplit={onInternalSearchSplit}
+          tokenSeparators={tokenSeparators}
           popupMatchSelectWidth={popupMatchSelectWidth}
           // >>> OptionList
           OptionList={OptionList}
