@@ -238,10 +238,6 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
     ];
     const legacyShowSearch: SearchConfig<DefaultOptionType> = {};
     legacySearchProps.forEach((propsName) => {
-      if (propsName === 'autoClearSearchValue') {
-        legacyShowSearch[propsName] = props?.[propsName] ?? true;
-        return;
-      }
       legacyShowSearch[propsName] = props?.[propsName];
     });
     const mergedShowSearch = typeof showSearch === 'object' ? showSearch : legacyShowSearch;
