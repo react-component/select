@@ -117,6 +117,53 @@ describe('Select.Combobox', () => {
     expect(container.querySelector('input').value).toEqual('1');
   });
 
+  it('activeOptionFilter should work', async () => {
+    const { container } = render(
+      <Select
+        mode="combobox"
+        showSearch
+        activeOptionFilter={(searchValue, option) => {
+          return String(option.value).includes(searchValue);
+        }}
+      >
+        <Option value="apple">apple</Option>
+        <Option value="banana">banana</Option>
+        <Option value="orange">orange</Option>
+      </Select>,
+    );
+
+    const input = container.querySelector('input')!;
+    fireEvent.change(input, { target: { value: 'an' } });
+    await delay();
+
+    expect(
+      container.querySelector('.rc-select-item-option-active .rc-select-item-option-content'),
+    ).toHaveTextContent('banana');
+
+    fireEvent.change(input, { target: { value: 'ora' } });
+    await delay();
+
+    expect(
+      container.querySelector('.rc-select-item-option-active .rc-select-item-option-content'),
+    ).toHaveTextContent('orange');
+  });
+
+  it('activeOptionFilter with empty function should not activate any option', async () => {
+    const { container } = render(
+      <Select mode="combobox" showSearch activeOptionFilter={() => false}>
+        <Option value="apple">apple</Option>
+        <Option value="banana">banana</Option>
+        <Option value="orange">orange</Option>
+      </Select>,
+    );
+
+    const input = container.querySelector('input')!;
+    fireEvent.change(input, { target: { value: 'an' } });
+    await delay();
+
+    expect(container.querySelector('.rc-select-item-option-active')).toBeNull();
+  });
+
   describe('input value', () => {
     const createSelect = (props?: Partial<SelectProps>) => (
       <Select mode="combobox" {...props}>
