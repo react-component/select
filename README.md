@@ -132,6 +132,7 @@ export default () => (
 | direction | direction of dropdown | 'ltr' \| 'rtl' | 'ltr' |
 | optionRender | Custom rendering options | (oriOption: FlattenOptionData\<BaseOptionType\> , info: { index: number }) => React.ReactNode | - |
 | labelRender  | Custom rendering label   |  (props: LabelInValueType) => React.ReactNode   | - |
+| activeOptionFilter | Custom filter function for active option when searching. | (searchValue: string, option: OptionType) => boolean | - |
 | maxCount | The max number of items can be selected | number | - |
 
 ### Methods
