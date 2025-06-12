@@ -85,11 +85,10 @@ export default () => (
 | dropdownAlign | additional align applied to dropdown | [AlignType](https://github.com/react-component/trigger/blob/728d7e92394aa4b3214650f743fc47e1382dfa68/src/interface.ts#L25-L80) | {} |
 | dropdownMenuStyle | additional style applied to dropdown menu | Object | React.CSSProperties |
 | notFoundContent | specify content to show when no result matches. | ReactNode | 'Not Found' |
-| tokenSeparators | separator used to tokenize on tag/multiple mode | string[]? |  |
 | open | control select open | boolean |  |
 | defaultOpen | control select default open | boolean |  |
 | placeholder | select placeholder | React Node |  |
-| showSearch | whether show search input in single mode | boolean | true |
+| showSearch | whether show search input in single mode | boolean \| Object | true |
 | allowClear | whether allowClear | boolean | { clearIcon?: ReactNode } | false |
 | tags | when tagging is enabled the user can select from pre-existing options or create a new tag by picking the first choice, which is what the user has typed into the search box so far. | boolean | false |
 | tagRender | render custom tags. | (props: CustomTagProps) => ReactNode | - |
@@ -99,16 +98,11 @@ export default () => (
 | combobox | enable combobox mode(can not set multiple at the same time) | boolean | false |
 | multiple | whether multiple select | boolean | false |
 | disabled | whether disabled select | boolean | false |
-| filterOption | whether filter options by input value. default filter by option's optionFilterProp prop's value | boolean | true/Function(inputValue:string, option:Option) |
-| optionFilterProp | which prop value of option will be used for filter if filterOption is true | String | 'value' |
-| filterSort | Sort function for search options sorting, see [Array.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)'s compareFunction. | Function(optionA:Option, optionB: Option) | - |
-| optionLabelProp | render option value or option children as content of select | String: 'value'/'children' | 'value' |
 | defaultValue | initial selected option(s) | String \| String[] | - |
 | value | current selected option(s) | String \| String[] \| {key:String, label:React.Node} \| {key:String, label:React.Node}[] | - |
 | labelInValue | whether to embed label in value, see above value type. Not support `combobox` mode | boolean | false |
 | backfill | whether backfill select option to search input (Only works in single and combobox mode) | boolean | false |
 | onChange | called when select an option or input value change(combobox) | function(value, option:Option \| Option[]) | - |
-| onSearch | called when input changed | function | - |
 | onBlur | called when blur | function | - |
 | onFocus | called when focus | function | - |
 | onPopupScroll | called when menu is scrolled | function | - |
@@ -120,7 +114,6 @@ export default () => (
 | getInputElement | customize input element | function(): Element | - |
 | showAction | actions trigger the dropdown to show | String[]? | - |
 | autoFocus | focus select after mount | boolean | - |
-| autoClearSearchValue | auto clear search input value when multiple select is selected/deselected | boolean | true |
 | prefix | specify the select prefix icon or text | ReactNode | - |
 | suffixIcon | specify the select arrow icon | ReactNode | - |
 | clearIcon | specify the clear icon | ReactNode | - |
@@ -140,6 +133,19 @@ export default () => (
 | ----- | ------------------------- | ---------- | ------ |
 | focus | focus select programmably | -          | -      |
 | blur  | blur select programmably  | -          | -      |
+
+### showSearch
+
+| name | description | type | default |
+| --- | --- | --- | --- |
+| autoClearSearchValue | auto clear search input value when multiple select is selected/deselected | boolean | true |
+| filterOption | whether filter options by input value. default filter by option's optionFilterProp prop's value | boolean | true/Function(inputValue:string, option:Option) |
+| filterSort | Sort function for search options sorting, see [Array.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)'s compareFunction. | Function(optionA:Option, optionB: Option) | - |
+| optionFilterProp | which prop value of option will be used for filter if filterOption is true | String | 'value' |
+| optionLabelProp | render option value or option children as content of select | String: 'value'/'children' | 'value' |
+| searchValue | The current input "search" text | string | - |
+| tokenSeparators | separator used to tokenize on tag/multiple mode | string[]? |  |
+| onSearch | called when input changed | function | - |
 
 ### Option props
 
