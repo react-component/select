@@ -49,7 +49,7 @@ import SelectContext from './SelectContext';
 import type { SelectContextProps } from './SelectContext';
 import useCache from './hooks/useCache';
 import useFilterOptions from './hooks/useFilterOptions';
-import useId from './hooks/useId';
+import useId from '@rc-component/util/lib/hooks/useId';
 import useOptions from './hooks/useOptions';
 import useRefFunc from './hooks/useRefFunc';
 import type { FlattenOptionData } from './interface';
