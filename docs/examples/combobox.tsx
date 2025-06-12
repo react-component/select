@@ -150,6 +150,40 @@ class Combobox extends React.Component {
             options={this.state.options}
             onChange={this.onAsyncChange}
           />
+
+          <h3>Active Option Filter - Middle Match</h3>
+          <Select
+            style={{ width: 500 }}
+            showSearch
+            allowClear
+            mode="combobox"
+            placeholder="Search value can be matched anywhere in the option's value. Try input 'ran'"
+            activeOptionFilter={(searchValue, option) => {
+              return String(option.value).includes(searchValue);
+            }}
+          >
+            {['apple', 'banana', 'orange', 'grape'].map((i) => (
+              <Option value={i} key={i}>
+                {i}
+              </Option>
+            ))}
+          </Select>
+
+          <h3>No Active Highlight</h3>
+          <Select
+            style={{ width: 500 }}
+            showSearch
+            allowClear
+            mode="combobox"
+            placeholder="No option will be actively highlighted."
+            activeOptionFilter={() => false}
+          >
+            {['apple', 'banana', 'orange', 'grape'].map((i) => (
+              <Option value={i} key={i}>
+                {i}
+              </Option>
+            ))}
+          </Select>
         </div>
       </div>
     );
