@@ -2630,14 +2630,14 @@ describe('Select.Basic', () => {
       expect(items[0].title).toBe('12');
       expect(items[2].title).toBe('12');
     });
-    it('autoClearSearchValue,tokenSeparators', () => {
+    it('autoClearSearchValue', () => {
       const { container } = render(
         <>
           <div id="test1">
-            <LegacyDemo showSearch autoClearSearchValue={false} tokenSeparators={[',', '*']} />
+            <LegacyDemo showSearch autoClearSearchValue={false} />
           </div>
           <div id="test2">
-            <CurrentDemo autoClearSearchValue={false} tokenSeparators={[',', '*']} />
+            <CurrentDemo autoClearSearchValue={false} />
           </div>
         </>,
       );
@@ -2652,10 +2652,6 @@ describe('Select.Basic', () => {
       fireEvent.click(items[1]);
       expect(legacyInput).toHaveValue('a');
       expect(currentInput).toHaveValue('a');
-      fireEvent.change(legacyInput, { target: { value: '1,' } });
-      fireEvent.change(currentInput, { target: { value: '1,' } });
-      expect(legacyInput).toHaveValue('');
-      expect(currentInput).toHaveValue('');
     });
   });
 });

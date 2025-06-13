@@ -115,7 +115,6 @@ export interface SearchConfig<OptionType> {
   searchValue?: string;
   autoClearSearchValue?: boolean;
   onSearch?: (value: string) => void;
-  tokenSeparators?: string[];
   filterOption?: boolean | FilterFunc<OptionType>;
   filterSort?: (optionA: OptionType, optionB: OptionType, info: { searchValue: string }) => number;
   optionFilterProp?: string;
@@ -142,7 +141,6 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
 
   /**  @deprecated pleace use  SearchConfig.onSearch */
   onSearch?: SearchConfig<OptionType>['onSearch'];
-  /**  @deprecated pleace use  SearchConfig.tokenSeparators */
   tokenSeparators?: string[];
   // >>> Options
   /**
@@ -234,7 +232,6 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       filterSort,
       onSearch,
       autoClearSearchValue = true,
-      tokenSeparators,
     } = searchConfig;
 
     const mergedId = useId(id);
@@ -724,7 +721,6 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
           onSearch={onInternalSearch}
           autoClearSearchValue={autoClearSearchValue}
           onSearchSplit={onInternalSearchSplit}
-          tokenSeparators={tokenSeparators}
           popupMatchSelectWidth={popupMatchSelectWidth}
           // >>> OptionList
           OptionList={OptionList}

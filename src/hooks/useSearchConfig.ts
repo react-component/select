@@ -7,7 +7,6 @@ const legacySearchProps = [
   'filterSort',
   'onSearch',
   'autoClearSearchValue',
-  'tokenSeparators',
 ];
 // Convert `showSearch` to unique config
 export default function useSearchConfig(
@@ -21,7 +20,6 @@ export default function useSearchConfig(
     filterSort,
     onSearch,
     autoClearSearchValue,
-    tokenSeparators,
   } = props || {};
   return React.useMemo<[boolean | undefined, SearchConfig<DefaultOptionType>]>(() => {
     const legacyShowSearch: SearchConfig<DefaultOptionType> = {};
@@ -46,6 +44,5 @@ export default function useSearchConfig(
     filterSort,
     onSearch,
     autoClearSearchValue,
-    tokenSeparators,
   ]);
 }

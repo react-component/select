@@ -85,6 +85,7 @@ export default () => (
 | dropdownAlign | additional align applied to dropdown | [AlignType](https://github.com/react-component/trigger/blob/728d7e92394aa4b3214650f743fc47e1382dfa68/src/interface.ts#L25-L80) | {} |
 | dropdownMenuStyle | additional style applied to dropdown menu | Object | React.CSSProperties |
 | notFoundContent | specify content to show when no result matches. | ReactNode | 'Not Found' |
+| tokenSeparators | separator used to tokenize on tag/multiple mode | string[]? |  |
 | open | control select open | boolean |  |
 | defaultOpen | control select default open | boolean |  |
 | placeholder | select placeholder | React Node |  |
@@ -140,11 +141,10 @@ export default () => (
 | name | description | type | default |
 | --- | --- | --- | --- |
 | autoClearSearchValue | auto clear search input value when multiple select is selected/deselected | boolean | true |
-| filterOption | whether filter options by input value. default filter by option's optionFilterProp prop's value | boolean | true/Function(inputValue:string, option:Option) |
+| filterOption | whether filter options by input value. default filter by option's optionFilterProp prop's value | boolean\| (inputValue: string, option: Option) => boolean | true |
 | filterSort | Sort function for search options sorting, see [Array.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)'s compareFunction. | Function(optionA:Option, optionB: Option) | - |
 | optionFilterProp | which prop value of option will be used for filter if filterOption is true | String | 'value' |
 | searchValue | The current input "search" text | string | - |
-| tokenSeparators | separator used to tokenize on tag/multiple mode | string[]? |  |
 | onSearch | called when input changed | function | - |
 
 ### Option props
