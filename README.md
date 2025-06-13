@@ -98,6 +98,7 @@ export default () => (
 | combobox | enable combobox mode(can not set multiple at the same time) | boolean | false |
 | multiple | whether multiple select | boolean | false |
 | disabled | whether disabled select | boolean | false |
+| optionLabelProp | render option value or option children as content of select | String: 'value'/'children' | 'value' |
 | defaultValue | initial selected option(s) | String \| String[] | - |
 | value | current selected option(s) | String \| String[] \| {key:String, label:React.Node} \| {key:String, label:React.Node}[] | - |
 | labelInValue | whether to embed label in value, see above value type. Not support `combobox` mode | boolean | false |
@@ -142,7 +143,6 @@ export default () => (
 | filterOption | whether filter options by input value. default filter by option's optionFilterProp prop's value | boolean | true/Function(inputValue:string, option:Option) |
 | filterSort | Sort function for search options sorting, see [Array.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)'s compareFunction. | Function(optionA:Option, optionB: Option) | - |
 | optionFilterProp | which prop value of option will be used for filter if filterOption is true | String | 'value' |
-| optionLabelProp | render option value or option children as content of select | String: 'value'/'children' | 'value' |
 | searchValue | The current input "search" text | string | - |
 | tokenSeparators | separator used to tokenize on tag/multiple mode | string[]? |  |
 | onSearch | called when input changed | function | - |

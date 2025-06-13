@@ -119,7 +119,6 @@ export interface SearchConfig<OptionType> {
   filterOption?: boolean | FilterFunc<OptionType>;
   filterSort?: (optionA: OptionType, optionB: OptionType, info: { searchValue: string }) => number;
   optionFilterProp?: string;
-  optionLabelProp?: string;
 }
 export interface SelectProps<ValueType = any, OptionType extends BaseOptionType = DefaultOptionType>
   extends Omit<BaseSelectPropsWithoutPrivate, 'showSearch'> {
@@ -157,7 +156,6 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   filterSort?: SearchConfig<OptionType>['filterSort'];
   /**  @deprecated pleace use  SearchConfig.optionFilterProp */
   optionFilterProp?: string;
-  /**  @deprecated pleace use  SearchConfig.optionLabelProp */
   optionLabelProp?: string;
 
   children?: React.ReactNode;
@@ -205,6 +203,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       onDeselect,
       onActive,
       popupMatchSelectWidth = true,
+      optionLabelProp,
       options,
       optionRender,
       children,
@@ -232,7 +231,6 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       filterOption,
       searchValue,
       optionFilterProp,
-      optionLabelProp,
       filterSort,
       onSearch,
       autoClearSearchValue = true,

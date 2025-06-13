@@ -2521,23 +2521,7 @@ describe('Select.Basic', () => {
     expect(input).toHaveClass(customClassNames.input);
     expect(input).toHaveStyle(customStyle.input);
   });
-  // searchValue?: string;
-  //   autoClearSearchValue?: boolean;
-  //   onSearch?: (value: string) => void;
-  //   tokenSeparators?: string[];
-  //   filterOption?: boolean | FilterFunc<OptionType>;
-  //   filterSort?: (optionA: OptionType, optionB: OptionType, info: { searchValue: string }) => number;
-  //   optionFilterProp?: string;
-  //   optionLabelProp?: string;
-  //  const props = {
-  //   searchValue: '1',
-  //   autoClearSearchValue: false,
-  //   filterSort: (optionA, optionB) => {
-  //     return Number(optionB.value) - Number(optionA.value);
-  //   },
-  //   optionFilterProp: 'label',
-  //   optionLabelProp: 'value',
-  // };
+
   describe('combine showSearch', () => {
     let errorSpy;
 
@@ -2617,7 +2601,7 @@ describe('Select.Basic', () => {
       expect(currentInput).toHaveValue('1');
       expect(legacyInput.value).toBe(currentInput.value);
     });
-    it('option:sort,FilterProp,LabelProp ', () => {
+    it('option:sort,FilterProp ', () => {
       const { container } = render(
         <>
           <div id="test1">
@@ -2628,7 +2612,6 @@ describe('Select.Basic', () => {
                 return Number(b.label) - Number(a.label);
               }}
               optionFilterProp="label"
-              optionLabelProp="value"
             />
           </div>
           <div id="test2">
@@ -2638,7 +2621,6 @@ describe('Select.Basic', () => {
                 return Number(b.label) - Number(a.label);
               }}
               optionFilterProp="label"
-              optionLabelProp="value"
             />
           </div>
         </>,
