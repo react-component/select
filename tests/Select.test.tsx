@@ -1,4 +1,4 @@
-import type { DefaultOptionType, LabelInValueType, SearchConfig } from '@/Select';
+import type { LabelInValueType } from '@/Select';
 import {
   createEvent,
   fireEvent,
