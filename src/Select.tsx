@@ -128,6 +128,8 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
 
   // >>> Field Names
   fieldNames?: FieldNames;
+  /**  @deprecated pleace use  SearchConfig.onSearch */
+  onSearch?: SearchConfig<OptionType>['onSearch'];
   showSearch?: boolean | SearchConfig<OptionType>;
   /**  @deprecated pleace use  SearchConfig.searchValue */
   searchValue?: SearchConfig<OptionType>['searchValue'];
@@ -139,9 +141,6 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   onDeselect?: SelectHandler<ArrayElementType<ValueType>, OptionType>;
   onActive?: (value: ValueType) => void;
 
-  /**  @deprecated pleace use  SearchConfig.onSearch */
-  onSearch?: SearchConfig<OptionType>['onSearch'];
-  tokenSeparators?: string[];
   // >>> Options
   /**
    * In Select, `false` means do nothing.
