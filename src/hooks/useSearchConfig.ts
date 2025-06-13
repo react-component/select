@@ -11,11 +11,25 @@ const legacySearchProps = [
   'tokenSeparators',
 ];
 // Convert `showSearch` to unique config
-export default function useSearchConfig(showSearch, props) {
-  return React.useMemo<[boolean, SearchConfig<DefaultOptionType>]>(() => {
+export default function useSearchConfig(
+  showSearch: boolean | SearchConfig<DefaultOptionType> | undefined,
+  props: any,
+) {
+  const {
+    filterOption,
+    searchValue,
+    optionFilterProp,
+    optionLabelProp,
+    filterSort,
+    onSearch,
+    autoClearSearchValue,
+    tokenSeparators,
+  } = props || {};
+  return React.useMemo<[boolean | undefined, SearchConfig<DefaultOptionType>]>(() => {
     const legacyShowSearch: SearchConfig<DefaultOptionType> = {};
-    legacySearchProps.forEach((propsName) => {
-      legacyShowSearch[propsName] = props?.[propsName];
+    legacySearchProps.forEach((name) => {
+      const val = props?.[name];
+      if (val !== undefined) legacyShowSearch[name] = val;
     });
     const searchConfig: SearchConfig<DefaultOptionType> =
       typeof showSearch === 'object' ? showSearch : legacyShowSearch;
@@ -28,13 +42,13 @@ export default function useSearchConfig(showSearch, props) {
     return [true, searchConfig];
   }, [
     showSearch,
-    props?.filterOption,
-    props?.searchValue,
-    props?.optionFilterProp,
-    props?.optionLabelProp,
-    props?.filterSort,
-    props?.onSearch,
-    props?.autoClearSearchValue,
-    props?.tokenSeparators,
+    filterOption,
+    searchValue,
+    optionFilterProp,
+    optionLabelProp,
+    filterSort,
+    onSearch,
+    autoClearSearchValue,
+    tokenSeparators,
   ]);
 }
