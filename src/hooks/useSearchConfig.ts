@@ -1,13 +1,6 @@
 import type { SearchConfig, DefaultOptionType, SelectProps } from '@/Select';
 import * as React from 'react';
-const legacySearchProps = [
-  'filterOption',
-  'searchValue',
-  'optionFilterProp',
-  'filterSort',
-  'onSearch',
-  'autoClearSearchValue',
-];
+
 // Convert `showSearch` to unique config
 export default function useSearchConfig(
   showSearch: boolean | SearchConfig<DefaultOptionType> | undefined,
