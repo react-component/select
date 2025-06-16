@@ -128,12 +128,12 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
 
   // >>> Field Names
   fieldNames?: FieldNames;
-  /**  @deprecated pleace use  showSearch.onSearch */
+  /**  @deprecated please use  showSearch.onSearch */
   onSearch?: SearchConfig<OptionType>['onSearch'];
   showSearch?: boolean | SearchConfig<OptionType>;
-  /**  @deprecated pleace use  showSearch.searchValue */
+  /**  @deprecated please use  showSearch.searchValue */
   searchValue?: SearchConfig<OptionType>['searchValue'];
-  /**  @deprecated pleace use  showSearch.autoClearSearchValue */
+  /**  @deprecated please use  showSearch.autoClearSearchValue */
   autoClearSearchValue?: boolean;
 
   // >>> Select
