@@ -1,4 +1,4 @@
-import type { SearchConfig, DefaultOptionType } from '@/Select';
+import type { SearchConfig, DefaultOptionType, SelectProps } from '@/Select';
 import * as React from 'react';
 const legacySearchProps = [
   'filterOption',
@@ -11,7 +11,7 @@ const legacySearchProps = [
 // Convert `showSearch` to unique config
 export default function useSearchConfig(
   showSearch: boolean | SearchConfig<DefaultOptionType> | undefined,
-  props: any,
+  props: SelectProps,
 ) {
   const {
     filterOption,
@@ -22,19 +22,25 @@ export default function useSearchConfig(
     autoClearSearchValue,
   } = props || {};
   return React.useMemo<[boolean | undefined, SearchConfig<DefaultOptionType>]>(() => {
-    const legacyShowSearch: SearchConfig<DefaultOptionType> = {};
-    legacySearchProps.forEach((name) => {
-      const val = props?.[name];
-      if (val !== undefined) legacyShowSearch[name] = val;
-    });
-    const searchConfig: SearchConfig<DefaultOptionType> =
-      typeof showSearch === 'object' ? showSearch : legacyShowSearch;
-    if (showSearch === undefined) {
-      return [undefined, searchConfig];
+    const legacyShowSearch: SearchConfig<DefaultOptionType> = {
+      filterOption,
+      searchValue,
+      optionFilterProp,
+      filterSort,
+      onSearch,
+      autoClearSearchValue,
+    };
+
+    if (showSearch === undefined || showSearch === true) {
+      return [showSearch as undefined | boolean, legacyShowSearch];
     }
     if (!showSearch) {
       return [false, {}];
     }
+    const searchConfig = {
+      ...legacyShowSearch,
+      ...showSearch,
+    };
     return [true, searchConfig];
   }, [
     showSearch,
