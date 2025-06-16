@@ -147,11 +147,11 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
    * In TreeSelect, `false` will highlight match item.
    * It's by design.
    */
-  /**  @deprecated pleace use  showSearch.filterOption */
+  /**  @deprecated please use  showSearch.filterOption */
   filterOption?: SearchConfig<OptionType>['filterOption'];
-  /**  @deprecated pleace use  showSearch.filterSort */
+  /**  @deprecated please use  showSearch.filterSort */
   filterSort?: SearchConfig<OptionType>['filterSort'];
-  /**  @deprecated pleace use  showSearch.optionFilterProp */
+  /**  @deprecated please use  showSearch.optionFilterProp */
   optionFilterProp?: string;
   optionLabelProp?: string;
 
