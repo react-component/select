@@ -128,12 +128,12 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
 
   // >>> Field Names
   fieldNames?: FieldNames;
-  /**  @deprecated pleace use  SearchConfig.onSearch */
+  /**  @deprecated pleace use  showSearch.onSearch */
   onSearch?: SearchConfig<OptionType>['onSearch'];
   showSearch?: boolean | SearchConfig<OptionType>;
-  /**  @deprecated pleace use  SearchConfig.searchValue */
+  /**  @deprecated pleace use  showSearch.searchValue */
   searchValue?: SearchConfig<OptionType>['searchValue'];
-  /**  @deprecated pleace use  SearchConfig.autoClearSearchValue */
+  /**  @deprecated pleace use  showSearch.autoClearSearchValue */
   autoClearSearchValue?: boolean;
 
   // >>> Select
@@ -147,11 +147,11 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
    * In TreeSelect, `false` will highlight match item.
    * It's by design.
    */
-  /**  @deprecated pleace use  SearchConfig.filterOption */
+  /**  @deprecated pleace use  showSearch.filterOption */
   filterOption?: SearchConfig<OptionType>['filterOption'];
-  /**  @deprecated pleace use  SearchConfig.filterSort */
+  /**  @deprecated pleace use  showSearch.filterSort */
   filterSort?: SearchConfig<OptionType>['filterSort'];
-  /**  @deprecated pleace use  SearchConfig.optionFilterProp */
+  /**  @deprecated pleace use  showSearch.optionFilterProp */
   optionFilterProp?: string;
   optionLabelProp?: string;
 
