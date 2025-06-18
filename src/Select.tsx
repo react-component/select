@@ -56,6 +56,7 @@ import type { FlattenOptionData } from './interface';
 import { hasValue, isComboNoValue, toArray } from './utils/commonUtil';
 import { fillFieldNames, flattenOptions, injectPropsWithOption } from './utils/valueUtil';
 import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
+import useSearchConfig from './hooks/useSearchConfig';
 
 const OMIT_DOM_PROPS = ['inputValue'];
 
@@ -110,8 +111,16 @@ type ArrayElementType<T> = T extends (infer E)[] ? E : T;
 
 export type SemanticName = BaseSelectSemanticName;
 export type PopupSemantic = 'listItem' | 'list';
+export interface SearchConfig<OptionType> {
+  searchValue?: string;
+  autoClearSearchValue?: boolean;
+  onSearch?: (value: string) => void;
+  filterOption?: boolean | FilterFunc<OptionType>;
+  filterSort?: (optionA: OptionType, optionB: OptionType, info: { searchValue: string }) => number;
+  optionFilterProp?: string;
+}
 export interface SelectProps<ValueType = any, OptionType extends BaseOptionType = DefaultOptionType>
-  extends BaseSelectPropsWithoutPrivate {
+  extends Omit<BaseSelectPropsWithoutPrivate, 'showSearch'> {
   prefixCls?: string;
   id?: string;
 
@@ -119,9 +128,12 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
 
   // >>> Field Names
   fieldNames?: FieldNames;
-
-  searchValue?: string;
-  onSearch?: (value: string) => void;
+  /**  @deprecated please use  showSearch.onSearch */
+  onSearch?: SearchConfig<OptionType>['onSearch'];
+  showSearch?: boolean | SearchConfig<OptionType>;
+  /**  @deprecated please use  showSearch.searchValue */
+  searchValue?: SearchConfig<OptionType>['searchValue'];
+  /**  @deprecated please use  showSearch.autoClearSearchValue */
   autoClearSearchValue?: boolean;
 
   // >>> Select
@@ -135,10 +147,14 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
    * In TreeSelect, `false` will highlight match item.
    * It's by design.
    */
-  filterOption?: boolean | FilterFunc<OptionType>;
-  filterSort?: (optionA: OptionType, optionB: OptionType, info: { searchValue: string }) => number;
+  /**  @deprecated please use  showSearch.filterOption */
+  filterOption?: SearchConfig<OptionType>['filterOption'];
+  /**  @deprecated please use  showSearch.filterSort */
+  filterSort?: SearchConfig<OptionType>['filterSort'];
+  /**  @deprecated please use  showSearch.optionFilterProp */
   optionFilterProp?: string;
   optionLabelProp?: string;
+
   children?: React.ReactNode;
   options?: OptionType[];
   optionRender?: (
@@ -177,22 +193,13 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       prefixCls = 'rc-select',
       backfill,
       fieldNames,
-
       // Search
-      searchValue,
-      onSearch,
-      autoClearSearchValue = true,
-
+      showSearch,
       // Select
       onSelect,
       onDeselect,
       onActive,
       popupMatchSelectWidth = true,
-
-      // Options
-      filterOption,
-      filterSort,
-      optionFilterProp,
       optionLabelProp,
       options,
       optionRender,
@@ -215,6 +222,16 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       styles,
       ...restProps
     } = props;
+
+    const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch, props);
+    const {
+      filterOption,
+      searchValue,
+      optionFilterProp,
+      filterSort,
+      onSearch,
+      autoClearSearchValue = true,
+    } = searchConfig;
 
     const mergedId = useId(id);
     const multiple = isMultiple(mode);
@@ -698,6 +715,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
           // >>> Trigger
           direction={direction}
           // >>> Search
+          showSearch={mergedShowSearch}
           searchValue={mergedSearchValue}
           onSearch={onInternalSearch}
           autoClearSearchValue={autoClearSearchValue}

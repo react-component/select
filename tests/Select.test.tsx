@@ -2521,4 +2521,154 @@ describe('Select.Basic', () => {
     expect(input).toHaveClass(customClassNames.input);
     expect(input).toHaveStyle(customStyle.input);
   });
+
+  describe('combine showSearch', () => {
+    let errorSpy;
+
+    beforeAll(() => {
+      errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
+    });
+
+    beforeEach(() => {
+      errorSpy.mockReset();
+      resetWarned();
+    });
+
+    afterAll(() => {
+      errorSpy.mockRestore();
+    });
+    const currentSearchFn = jest.fn();
+    const legacySearchFn = jest.fn();
+
+    const LegacyDemo = (props) => {
+      return (
+        <Select
+          open
+          {...props}
+          options={[
+            { value: 'a', label: '1' },
+            { value: 'b', label: '2' },
+            { value: 'c', label: '12' },
+          ]}
+        />
+      );
+    };
+    const CurrentDemo = (props) => {
+      return (
+        <Select
+          open
+          showSearch={props}
+          options={[
+            { value: 'a', label: '1' },
+            { value: 'b', label: '2' },
+            { value: 'c', label: '12' },
+          ]}
+        />
+      );
+    };
+    it('onSearch', () => {
+      const { container } = render(
+        <>
+          <div id="test1">
+            <LegacyDemo onSearch={legacySearchFn} />
+          </div>
+          <div id="test2">
+            <CurrentDemo onSearch={currentSearchFn} />
+          </div>
+        </>,
+      );
+      const legacyInput = container.querySelector<HTMLInputElement>('#test1 input');
+      const currentInput = container.querySelector<HTMLInputElement>('#test2 input');
+      fireEvent.change(legacyInput, { target: { value: '2' } });
+      fireEvent.change(currentInput, { target: { value: '2' } });
+      expect(currentSearchFn).toHaveBeenCalledWith('2');
+      expect(legacySearchFn).toHaveBeenCalledWith('2');
+    });
+    it('searchValue', () => {
+      const { container } = render(
+        <>
+          <div id="test1">
+            <LegacyDemo searchValue="1" showSearch />
+          </div>
+          <div id="test2">
+            <CurrentDemo searchValue="1" />
+          </div>
+        </>,
+      );
+      const legacyInput = container.querySelector<HTMLInputElement>('#test1 input');
+      const currentInput = container.querySelector<HTMLInputElement>('#test2 input');
+      expect(legacyInput).toHaveValue('1');
+      expect(currentInput).toHaveValue('1');
+      expect(legacyInput.value).toBe(currentInput.value);
+    });
+    it('option:sort,FilterProp ', () => {
+      const { container } = render(
+        <>
+          <div id="test1">
+            <LegacyDemo
+              searchValue="2"
+              showSearch
+              filterSort={(a, b) => {
+                return Number(b.label) - Number(a.label);
+              }}
+              optionFilterProp="label"
+            />
+          </div>
+          <div id="test2">
+            <CurrentDemo
+              searchValue="2"
+              filterSort={(a, b) => {
+                return Number(b.label) - Number(a.label);
+              }}
+              optionFilterProp="label"
+            />
+          </div>
+        </>,
+      );
+      const items = container.querySelectorAll<HTMLDivElement>('.rc-select-item-option');
+      expect(items.length).toBe(4);
+      expect(items[0].title).toBe('12');
+      expect(items[2].title).toBe('12');
+    });
+    it('autoClearSearchValue', () => {
+      const { container } = render(
+        <>
+          <div id="test1">
+            <LegacyDemo showSearch autoClearSearchValue={false} />
+          </div>
+          <div id="test2">
+            <CurrentDemo autoClearSearchValue={false} />
+          </div>
+        </>,
+      );
+      const legacyInput = container.querySelector<HTMLInputElement>('#test1 input');
+      const currentInput = container.querySelector<HTMLInputElement>('#test2 input');
+      fireEvent.change(legacyInput, { target: { value: 'a' } });
+      fireEvent.change(currentInput, { target: { value: 'a' } });
+      expect(legacyInput).toHaveValue('a');
+      expect(currentInput).toHaveValue('a');
+      const items = container.querySelectorAll<HTMLDivElement>('.rc-select-item-option');
+      fireEvent.click(items[0]);
+      fireEvent.click(items[1]);
+      expect(legacyInput).toHaveValue('a');
+      expect(currentInput).toHaveValue('a');
+    });
+
+    it.each([
+      // [description, props, shouldExist]
+      ['showSearch=false and mode=undefined', { showSearch: false }, false],
+      ['showSearch=undefined and mode=undefined', {}, false],
+      ['showSearch=undefined and mode=tags', { mode: 'tags' }, true],
+      ['showSearch=false and mode=tags', { showSearch: false, mode: 'tags' }, true],
+      ['showSearch=true and mode=undefined', { showSearch: true }, true],
+    ])('%s', (_, props: { showSearch?: boolean; mode?: 'tags' }, shouldExist) => {
+      const { container } = render(<Select options={[{ value: 'a', label: '1' }]} {...props} />);
+      const inputNode = container.querySelector('input');
+      if (shouldExist) {
+        expect(inputNode).not.toHaveAttribute('readonly');
+      } else {
+        expect(inputNode).toHaveAttribute('readonly');
+      }
+    });
+  });
 });
