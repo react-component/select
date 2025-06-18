@@ -13,27 +13,26 @@ export default function useSearchConfig(
     filterSort,
     onSearch,
     autoClearSearchValue,
-  } = props || {};
+  } = props;
   return React.useMemo<[boolean | undefined, SearchConfig<DefaultOptionType>]>(() => {
-    const legacyShowSearch: SearchConfig<DefaultOptionType> = {
+    const searchConfig = {
       filterOption,
       searchValue,
       optionFilterProp,
       filterSort,
       onSearch,
       autoClearSearchValue,
+      ...(typeof showSearch === 'object' ? showSearch : {}),
     };
 
-    if (showSearch === undefined || showSearch === true) {
-      return [showSearch as undefined | boolean, legacyShowSearch];
-    }
-    if (!showSearch) {
+    if (showSearch === false) {
       return [false, {}];
     }
-    const searchConfig = {
-      ...legacyShowSearch,
-      ...showSearch,
-    };
+
+    if (showSearch === undefined) {
+      return [undefined, searchConfig];
+    }
+
     return [true, searchConfig];
   }, [
     showSearch,
