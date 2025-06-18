@@ -2653,5 +2653,22 @@ describe('Select.Basic', () => {
       expect(legacyInput).toHaveValue('a');
       expect(currentInput).toHaveValue('a');
     });
+
+    it.only.each([
+      // [description, props, shouldExist]
+      ['showSearch=false and mode=undefined', { showSearch: false }, false],
+      ['showSearch=undefined and mode=undefined', {}, false],
+      ['showSearch=undefined and mode=tags', { mode: 'tags' }, true],
+      ['showSearch=false and mode=tags', { showSearch: false, mode: 'tags' }, true],
+      ['showSearch=true and mode=undefined', { showSearch: true }, true],
+    ])('%s', (_, props: { showSearch?: boolean; mode?: 'tags' }, shouldExist) => {
+      const { container } = render(<Select options={[{ value: 'a', label: '1' }]} {...props} />);
+      const inputNode = container.querySelector('input');
+      if (shouldExist) {
+        expect(inputNode).not.toHaveAttribute('readonly');
+      } else {
+        expect(inputNode).toHaveAttribute('readonly');
+      }
+    });
   });
 });
