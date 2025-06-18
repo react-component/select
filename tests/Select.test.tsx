@@ -2654,7 +2654,7 @@ describe('Select.Basic', () => {
       expect(currentInput).toHaveValue('a');
     });
 
-    it.only.each([
+    it.each([
       // [description, props, shouldExist]
       ['showSearch=false and mode=undefined', { showSearch: false }, false],
       ['showSearch=undefined and mode=undefined', {}, false],
