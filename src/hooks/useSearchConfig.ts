@@ -15,6 +15,7 @@ export default function useSearchConfig(
     autoClearSearchValue,
   } = props;
   return React.useMemo<[boolean | undefined, SearchConfig<DefaultOptionType>]>(() => {
+    const isObject = typeof showSearch === 'object';
     const searchConfig = {
       filterOption,
       searchValue,
@@ -22,18 +23,10 @@ export default function useSearchConfig(
       filterSort,
       onSearch,
       autoClearSearchValue,
-      ...(typeof showSearch === 'object' ? showSearch : {}),
+      ...(isObject ? showSearch : {}),
     };
 
-    if (showSearch === false) {
-      return [false, {}];
-    }
-
-    if (showSearch === undefined) {
-      return [undefined, searchConfig];
-    }
-
-    return [true, searchConfig];
+    return [isObject ? true : showSearch, searchConfig];
   }, [
     showSearch,
     filterOption,
