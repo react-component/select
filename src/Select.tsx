@@ -58,7 +58,7 @@ import { fillFieldNames, flattenOptions, injectPropsWithOption } from './utils/v
 import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
 import useSearchConfig from './hooks/useSearchConfig';
 
-const OMIT_DOM_PROPS = ['inputValue', 'filterOption', 'optionFilterProp', 'filterSort'];
+const OMIT_DOM_PROPS = ['inputValue'];
 
 export type OnActiveValue = (
   active: RawValueType,
@@ -195,6 +195,13 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       fieldNames,
       // Search
       showSearch,
+      searchValue: legacySearchValue,
+      onSearch: legacyOnSearch,
+      autoClearSearchValue: legacyAutoClearSearchValue,
+      filterOption: legacyFilterOption,
+      optionFilterProp: legacyOptionFilterProp,
+      filterSort: legacyFilterSort,
+
       // Select
       onSelect,
       onDeselect,
@@ -223,7 +230,15 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       ...restProps
     } = props;
 
-    const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch, props);
+    const searchProps = {
+      searchValue: legacySearchValue,
+      onSearch: legacyOnSearch,
+      autoClearSearchValue: legacyAutoClearSearchValue,
+      filterOption: legacyFilterOption,
+      optionFilterProp: legacyOptionFilterProp,
+      filterSort: legacyFilterSort,
+    };
+    const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch, searchProps);
     const {
       filterOption,
       searchValue,

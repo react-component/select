@@ -4,7 +4,7 @@ import * as React from 'react';
 // Convert `showSearch` to unique config
 export default function useSearchConfig(
   showSearch: boolean | SearchConfig<DefaultOptionType> | undefined,
-  props: SelectProps,
+  props: SearchConfig<DefaultOptionType>,
 ) {
   const {
     filterOption,
