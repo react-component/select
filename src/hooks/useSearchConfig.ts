@@ -1,4 +1,4 @@
-import type { SearchConfig, DefaultOptionType, SelectProps } from '@/Select';
+import type { SearchConfig, DefaultOptionType } from '@/Select';
 import * as React from 'react';
 
 // Convert `showSearch` to unique config
