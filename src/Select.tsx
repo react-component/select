@@ -58,14 +58,7 @@ import { fillFieldNames, flattenOptions, injectPropsWithOption } from './utils/v
 import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
 import useSearchConfig from './hooks/useSearchConfig';
 
-const OMIT_DOM_PROPS = [
-  'inputValue',
-  'filterOption',
-  'optionFilterProp',
-  'filterSort',
-  'filterTreeNode',
-  'treeNodeFilterProp',
-];
+const OMIT_DOM_PROPS = ['inputValue', 'filterOption', 'optionFilterProp', 'filterSort'];
 
 export type OnActiveValue = (
   active: RawValueType,
