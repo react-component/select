@@ -42,7 +42,6 @@ exports[`Select.Basic does not filter when filterOption value is false 1`] = `
             style="display: flex; flex-direction: column;"
           >
             <div
-              aria-selected="false"
               class="rc-select-item rc-select-item-option rc-select-item-option-active"
               title="1"
             >
@@ -63,7 +62,6 @@ exports[`Select.Basic does not filter when filterOption value is false 1`] = `
               </span>
             </div>
             <div
-              aria-selected="false"
               class="rc-select-item rc-select-item-option"
               title="2"
             >
@@ -418,7 +416,6 @@ exports[`Select.Basic render should support fieldName 1`] = `
           groupLabel
         </div>
         <div
-          aria-selected="false"
           class="rc-select-item rc-select-item-option rc-select-item-option-grouped rc-select-item-option-active"
           title="label"
         >
@@ -465,7 +462,6 @@ exports[`Select.Basic render should support fieldName 2`] = `
           groupLabel
         </div>
         <div
-          aria-selected="false"
           class="rc-select-item rc-select-item-option rc-select-item-option-grouped rc-select-item-option-active"
           title="label"
         >
@@ -512,7 +508,6 @@ exports[`Select.Basic render should support fieldName 3`] = `
           groupLabel
         </div>
         <div
-          aria-selected="false"
           class="rc-select-item rc-select-item-option rc-select-item-option-grouped rc-select-item-option-active"
           title="label"
         >
@@ -580,7 +575,6 @@ exports[`Select.Basic should contain falsy children 1`] = `
             style="display: flex; flex-direction: column;"
           >
             <div
-              aria-selected="true"
               class="rc-select-item rc-select-item-option rc-select-item-option-active rc-select-item-option-selected"
               title="1"
             >
@@ -603,7 +597,6 @@ exports[`Select.Basic should contain falsy children 1`] = `
               </span>
             </div>
             <div
-              aria-selected="false"
               class="rc-select-item rc-select-item-option"
               title="2"
             >
@@ -679,7 +672,6 @@ exports[`Select.Basic should render custom dropdown correctly 1`] = `
               style="display: flex; flex-direction: column;"
             >
               <div
-                aria-selected="false"
                 class="rc-select-item rc-select-item-option rc-select-item-option-active"
                 title="1"
               >
@@ -700,7 +692,6 @@ exports[`Select.Basic should render custom dropdown correctly 1`] = `
                 </span>
               </div>
               <div
-                aria-selected="false"
                 class="rc-select-item rc-select-item-option"
                 title="2"
               >
