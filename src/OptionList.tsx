@@ -398,7 +398,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
             <div
               {...pickAttrs(passedProps)}
               {...(!virtual ? getItemAriaProps(item, itemIndex) : {})}
-              aria-selected={isAriaSelected(value)}
+              aria-selected={virtual ? undefined : isAriaSelected(value)}
               className={optionClassName}
               title={optionTitle}
               onMouseMove={() => {
