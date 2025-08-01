@@ -26,9 +26,7 @@ export default function useDelayReset(
     if (value === true) {
       // true 值立即设置
       setBool(true);
-      if (callback) {
-        callback();
-      }
+      callback?.();
     } else {
       // false 值延迟设置
       delayRef.current = window.setTimeout(() => {
