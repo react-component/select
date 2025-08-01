@@ -33,9 +33,7 @@ export default function useDelayReset(
       // false 值延迟设置
       delayRef.current = window.setTimeout(() => {
         setBool(false);
-        if (callback) {
-          callback();
-        }
+        callback?.();
       }, timeout);
     }
   };
