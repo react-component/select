@@ -14,17 +14,26 @@ export default function useDelayReset(
     window.clearTimeout(delayRef.current);
   };
 
-  React.useEffect(() => cancelLatest, []);
+  React.useEffect(() => {
+    return () => {
+      cancelLatest();
+    };
+  }, []);
 
-  const delaySetBool = (value: boolean, callback: () => void) => {
+  const delaySetBool = (value: boolean, callback?: () => void) => {
     cancelLatest();
 
-    delayRef.current = window.setTimeout(() => {
-      setBool(value);
-      if (callback) {
-        callback();
-      }
-    }, timeout);
+    if (value === true) {
+      // true 值立即设置
+      setBool(true);
+      callback?.();
+    } else {
+      // false 值延迟设置
+      delayRef.current = window.setTimeout(() => {
+        setBool(false);
+        callback?.();
+      }, timeout);
+    }
   };
 
   return [bool, delaySetBool, cancelLatest];

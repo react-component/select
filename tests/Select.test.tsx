@@ -10,7 +10,7 @@ import KeyCode from '@rc-component/util/lib/KeyCode';
 import { spyElementPrototypes } from '@rc-component/util/lib/test/domHook';
 import { resetWarned } from '@rc-component/util/lib/warning';
 import type { ScrollConfig } from 'rc-virtual-list/lib/List';
-import React from 'react';
+import React, { StrictMode } from 'react';
 import type { SelectProps } from '../src';
 import Select, { OptGroup, Option, useBaseProps } from '../src';
 import BaseSelect from '../src/BaseSelect';
@@ -2669,6 +2669,18 @@ describe('Select.Basic', () => {
       } else {
         expect(inputNode).toHaveAttribute('readonly');
       }
+    });
+
+    it('should has focus class when focus', () => {
+      const { container } = render(
+        <StrictMode>
+          <Select options={[{ value: 'a', label: '1' }]} />
+        </StrictMode>,
+      );
+      const inputNode = container.querySelector('input');
+      fireEvent.focus(inputNode);
+      const select = container.querySelector('.rc-select');
+      expect(select).toHaveClass('rc-select-focused');
     });
   });
 });
