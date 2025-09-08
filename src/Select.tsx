@@ -272,7 +272,8 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
     );
 
     // =========================== Search ===========================
-    const [mergedSearchValue, setSearchValue] = useControlledState('', searchValue);
+    const [internalSearchValue, setSearchValue] = useControlledState('', searchValue);
+    const mergedSearchValue = internalSearchValue || '';
 
     // =========================== Option ===========================
     const parsedOptions = useOptions(
