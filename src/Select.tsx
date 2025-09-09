@@ -29,7 +29,7 @@
  * - `combobox` mode not support `optionLabelProp`
  */
 
-import useMergedState from '@rc-component/util/lib/hooks/useMergedState';
+import useControlledState from '@rc-component/util/lib/hooks/useControlledState';
 import warning from '@rc-component/util/lib/warning';
 import * as React from 'react';
 import type {
@@ -272,10 +272,8 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
     );
 
     // =========================== Search ===========================
-    const [mergedSearchValue, setSearchValue] = useMergedState('', {
-      value: searchValue,
-      postState: (search) => search || '',
-    });
+    const [internalSearchValue, setSearchValue] = useControlledState('', searchValue);
+    const mergedSearchValue = internalSearchValue || '';
 
     // =========================== Option ===========================
     const parsedOptions = useOptions(
@@ -343,9 +341,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
     );
 
     // =========================== Values ===========================
-    const [internalValue, setInternalValue] = useMergedState(defaultValue, {
-      value,
-    });
+    const [internalValue, setInternalValue] = useControlledState(defaultValue, value);
 
     // Merged value with LabelValueType
     const rawLabeledValues = React.useMemo(() => {

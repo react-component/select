@@ -1,7 +1,7 @@
 import type { AlignType, BuildInPlacements } from '@rc-component/trigger/lib/interface';
 import cls from 'classnames';
 import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
-import useMergedState from '@rc-component/util/lib/hooks/useMergedState';
+import useControlledState from '@rc-component/util/lib/hooks/useControlledState';
 import isMobile from '@rc-component/util/lib/isMobile';
 import { useComposeRef } from '@rc-component/util/lib/ref';
 import { getDOM } from '@rc-component/util/lib/Dom/findDOMNode';
@@ -383,10 +383,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     setRendered(true);
   }, []);
 
-  const [innerOpen, setInnerOpen] = useMergedState<boolean>(false, {
-    defaultValue: defaultOpen,
-    value: open,
-  });
+  const [innerOpen, setInnerOpen] = useControlledState<boolean>(defaultOpen || false, open);
 
   let mergedOpen = rendered ? innerOpen : false;
 
