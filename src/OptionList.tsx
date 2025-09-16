@@ -62,6 +62,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     optionRender,
     classNames: contextClassNames,
     styles: contextStyles,
+    filterSort,
   } = React.useContext(SelectContext);
 
   const itemPrefixCls = `${prefixCls}-item`;
@@ -158,10 +159,14 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
 
     if (!multiple && open && rawValues.size === 1) {
       const value: RawValueType = Array.from(rawValues)[0];
+      // When filterSort is provided, we need to scroll to the first option if searching.
       // Scroll to the option closest to the searchValue if searching.
-      const index = memoFlattenOptions.findIndex(({ data }) =>
-        searchValue ? String(data.value).startsWith(searchValue) : data.value === value,
-      );
+      const index =
+        filterSort && searchValue
+          ? 0
+          : memoFlattenOptions.findIndex(({ data }) =>
+              searchValue ? String(data.value).startsWith(searchValue) : data.value === value,
+            );
 
       if (index !== -1) {
         setActive(index);
