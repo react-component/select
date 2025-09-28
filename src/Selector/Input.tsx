@@ -1,5 +1,5 @@
 import * as React from 'react';
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import { composeRef } from '@rc-component/util/lib/ref';
 import { warning } from '@rc-component/util/lib/warning';
 import composeProps from '@rc-component/util/lib/composeProps';
@@ -70,7 +70,7 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (props, ref)
     ref: composeRef(ref, originRef as any),
     autoComplete: autoComplete || 'off',
 
-    className: classNames(
+    className: clsx(
       `${prefixCls}-selection-search-input`,
       originProps.className,
       contextClassNames?.input,
