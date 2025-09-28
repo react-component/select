@@ -1,6 +1,6 @@
 import { createEvent, fireEvent, render } from '@testing-library/react';
 import KeyCode from '@rc-component/util/lib/KeyCode';
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import * as React from 'react';
 import Select, { BaseSelect, OptGroup, Option } from '../src';
 import allowClearTest from './shared/allowClearTest';
@@ -279,7 +279,7 @@ describe('Select.Tags', () => {
         const { label } = props;
         onTagRender(label);
         return (
-          <span className={classNames(label, 'customize-tag')}>
+          <span className={clsx(label, 'customize-tag')}>
             {label}
             {label}
           </span>

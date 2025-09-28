@@ -1,6 +1,6 @@
 import Trigger, { type TriggerRef } from '@rc-component/trigger';
 import type { AlignType, BuildInPlacements } from '@rc-component/trigger/lib/interface';
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import * as React from 'react';
 import type { Placement, RenderDOMFunc } from './BaseSelect';
 
@@ -168,9 +168,7 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
       popupAlign={popupAlign}
       popupVisible={visible}
       getPopupContainer={getPopupContainer}
-      popupClassName={classNames(popupClassName, {
-        [`${popupPrefixCls}-empty`]: empty,
-      })}
+      popupClassName={clsx(popupClassName, { [`${popupPrefixCls}-empty`]: empty })}
       popupStyle={mergedPopupStyle}
       onPopupVisibleChange={onPopupVisibleChange}
     >

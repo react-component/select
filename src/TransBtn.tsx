@@ -1,5 +1,5 @@
 import * as React from 'react';
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import type { RenderNode } from './BaseSelect';
 
 export interface TransBtnProps {
@@ -34,9 +34,7 @@ const TransBtn: React.FC<TransBtnProps> = (props) => {
       {icon !== undefined ? (
         icon
       ) : (
-        <span className={classNames(className.split(/\s+/).map((cls) => `${cls}-icon`))}>
-          {children}
-        </span>
+        <span className={clsx(className.split(/\s+/).map((cls) => `${cls}-icon`))}>{children}</span>
       )}
     </span>
   );

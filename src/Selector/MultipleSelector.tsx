@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import pickAttrs from '@rc-component/util/lib/pickAttrs';
 import Overflow from 'rc-overflow';
 import TransBtn from '../TransBtn';
@@ -107,7 +107,7 @@ const SelectSelector: React.FC<SelectorProps> = (props) => {
   ) => (
     <span
       title={getTitle(item)}
-      className={classNames(`${selectionPrefixCls}-item`, {
+      className={clsx(`${selectionPrefixCls}-item`, {
         [`${selectionPrefixCls}-item-disabled`]: itemDisabled,
       })}
     >
