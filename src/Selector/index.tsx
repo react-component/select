@@ -17,7 +17,7 @@ import useLock from '../hooks/useLock';
 import { isValidateOpenKey } from '../utils/keyUtil';
 import MultipleSelector from './MultipleSelector';
 import SingleSelector from './SingleSelector';
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 
 export interface InnerSelectorProps {
   prefixCls: string;
@@ -293,7 +293,7 @@ const Selector: React.ForwardRefRenderFunction<RefSelectorProps, SelectorProps> 
       onMouseDown={onMouseDown}
     >
       {prefix && (
-        <div className={classNames(`${prefixCls}-prefix`, prefixClassName)} style={prefixStyle}>
+        <div className={clsx(`${prefixCls}-prefix`, prefixClassName)} style={prefixStyle}>
           {prefix}
         </div>
       )}

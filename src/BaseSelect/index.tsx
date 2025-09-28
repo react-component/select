@@ -1,5 +1,5 @@
 import type { AlignType, BuildInPlacements } from '@rc-component/trigger/lib/interface';
-import cls from 'classnames';
+import { clsx } from 'clsx';
 import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import useControlledState from '@rc-component/util/lib/hooks/useControlledState';
 import isMobile from '@rc-component/util/lib/isMobile';
@@ -732,7 +732,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   if (showSuffixIcon) {
     arrowNode = (
       <TransBtn
-        className={cls(`${prefixCls}-arrow`, classNames?.suffix, {
+        className={clsx(`${prefixCls}-arrow`, classNames?.suffix, {
           [`${prefixCls}-arrow-loading`]: loading,
         })}
         style={styles?.suffix}
@@ -776,7 +776,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   const optionList = <OptionList ref={listRef} />;
 
   // ============================= Select =============================
-  const mergedClassName = cls(prefixCls, className, {
+  const mergedClassName = clsx(prefixCls, className, {
     [`${prefixCls}-focused`]: mockFocused,
     [`${prefixCls}-multiple`]: multiple,
     [`${prefixCls}-single`]: !multiple,

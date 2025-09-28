@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import KeyCode from '@rc-component/util/lib/KeyCode';
 import useMemo from '@rc-component/util/lib/hooks/useMemo';
 import omit from '@rc-component/util/lib/omit';
@@ -351,7 +351,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
 
             return (
               <div
-                className={classNames(itemPrefixCls, `${itemPrefixCls}-group`, data.className)}
+                className={clsx(itemPrefixCls, `${itemPrefixCls}-group`, data.className)}
                 title={groupTitle}
               >
                 {label !== undefined ? label : key}
@@ -368,7 +368,8 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
           const mergedDisabled = disabled || (!selected && overMaxCount);
 
           const optionPrefixCls = `${itemPrefixCls}-option`;
-          const optionClassName = classNames(
+
+          const optionClassName = clsx(
             itemPrefixCls,
             optionPrefixCls,
             className,
