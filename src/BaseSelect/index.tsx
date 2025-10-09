@@ -13,6 +13,7 @@ import type { BaseSelectContextProps } from '../hooks/useBaseProps';
 import useDelayReset from '../hooks/useDelayReset';
 import useLock from '../hooks/useLock';
 import useSelectTriggerControl from '../hooks/useSelectTriggerControl';
+import useComponents, { type ComponentsConfig } from '../hooks/useComponents';
 import type {
   DisplayInfoType,
   DisplayValueType,
@@ -31,6 +32,14 @@ import { getSeparatedContent, isValidCount } from '../utils/valueUtil';
 import Polite from './Polite';
 import SelectInput from '@/SelectInput';
 export type BaseSelectSemanticName = 'prefix' | 'suffix' | 'input';
+
+/**
+ * ZombieJ:
+ * We are currently refactoring the semantic structure of the component. Changelog:
+ * - Remove `suffixIcon` and change to `suffix`.
+ * - Add `components.root` for replacing response element.
+ *   - Remove `getInputElement` and `getRawInputElement` since we can use `components.input` instead.
+ */
 
 export type {
   DisplayInfoType,
@@ -183,7 +192,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   // >>> Icons
   allowClear?: boolean | { clearIcon?: RenderNode };
   prefix?: React.ReactNode;
-  suffixIcon?: RenderNode;
+  suffix?: React.ReactNode;
   /**
    * Clear all icon
    * @deprecated Please use `allowClear` instead
@@ -220,6 +229,9 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
+
+  // >>> Components
+  components?: ComponentsConfig;
 }
 
 export const isMultiple = (mode: Mode) => mode === 'tags' || mode === 'multiple';
@@ -277,6 +289,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     allowClear,
     prefix,
     suffixIcon,
+    suffix,
     clearIcon,
 
     // Dropdown
@@ -301,6 +314,9 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     onKeyUp,
     onKeyDown,
     onMouseDown,
+
+    // Components
+    components,
 
     // Rest Props
     ...restProps
@@ -781,7 +797,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     [`${prefixCls}-focused`]: mockFocused,
     [`${prefixCls}-multiple`]: multiple,
     [`${prefixCls}-single`]: !multiple,
-    [`${prefixCls}-allow-clear`]: allowClear,
+    [`${prefixCls}-allow-clear`]: mergedAllowClear,
     [`${prefixCls}-show-arrow`]: showSuffixIcon,
     [`${prefixCls}-disabled`]: disabled,
     [`${prefixCls}-loading`]: loading,
@@ -873,12 +889,17 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   //   );
   // }
 
+  const { root: RootComponent } = useComponents(components);
   renderNode = (
-    <SelectInput
+    <RootComponent
       {...domProps}
       prefixCls={prefixCls}
       className={mergedClassName}
       ref={containerRef}
+      prefix={prefix}
+      suffix={suffix}
+      clearIcon={clearNode}
+      multiple={multiple}
     />
   );
 

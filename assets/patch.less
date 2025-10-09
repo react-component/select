@@ -2,5 +2,18 @@
 @import (reference) url('./index.less');
 
 .@{select-prefix}.@{select-prefix} {
-  display: flex;
+  display: inline-flex;
+  align-items: center;
+
+  // Content 部分自动占据剩余宽度
+  .@{select-prefix}-content {
+    flex: auto;
+  }
+
+  // 其他部分禁止自动宽度，使用内容宽度
+  .@{select-prefix}-prefix,
+  .@{select-prefix}-suffix,
+  .@{select-prefix}-clear {
+    flex: none;
+  }
 }

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 export interface AffixProps {
   prefixCls: string;
-  type: 'prefix' | 'suffix';
+  type: 'prefix' | 'suffix' | 'clear';
   children?: React.ReactNode;
 }
 
@@ -13,5 +13,5 @@ export default function Affix(props: AffixProps) {
     return null;
   }
 
-  return <div className={`${prefixCls}-${type}`}>123</div>;
+  return <div className={`${prefixCls}-${type}`}>{children}</div>;
 }
