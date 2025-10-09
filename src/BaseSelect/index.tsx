@@ -29,6 +29,7 @@ import SelectTrigger from '../SelectTrigger';
 import TransBtn from '../TransBtn';
 import { getSeparatedContent, isValidCount } from '../utils/valueUtil';
 import Polite from './Polite';
+import SelectInput from '@/SelectInput';
 export type BaseSelectSemanticName = 'prefix' | 'suffix' | 'input';
 
 export type {
@@ -850,27 +851,36 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   let renderNode: React.ReactNode;
 
   // Render raw
-  if (customizeRawInputElement) {
-    renderNode = selectorNode;
-  } else {
-    renderNode = (
-      <div
-        className={mergedClassName}
-        {...domProps}
-        ref={containerRef}
-        onMouseDown={onInternalMouseDown}
-        onKeyDown={onInternalKeyDown}
-        onKeyUp={onInternalKeyUp}
-        onFocus={onContainerFocus}
-        onBlur={onContainerBlur}
-      >
-        <Polite visible={mockFocused && !mergedOpen} values={displayValues} />
-        {selectorNode}
-        {arrowNode}
-        {mergedAllowClear && clearNode}
-      </div>
-    );
-  }
+  // if (customizeRawInputElement) {
+  //   renderNode = selectorNode;
+  // } else {
+  //   renderNode = (
+  //     <div
+  //       className={mergedClassName}
+  //       {...domProps}
+  //       ref={containerRef}
+  //       onMouseDown={onInternalMouseDown}
+  //       onKeyDown={onInternalKeyDown}
+  //       onKeyUp={onInternalKeyUp}
+  //       onFocus={onContainerFocus}
+  //       onBlur={onContainerBlur}
+  //     >
+  //       <Polite visible={mockFocused && !mergedOpen} values={displayValues} />
+  //       {selectorNode}
+  //       {arrowNode}
+  //       {mergedAllowClear && clearNode}
+  //     </div>
+  //   );
+  // }
+
+  renderNode = (
+    <SelectInput
+      {...domProps}
+      prefixCls={prefixCls}
+      className={mergedClassName}
+      ref={containerRef}
+    />
+  );
 
   return (
     <BaseSelectContext.Provider value={baseSelectContext}>{renderNode}</BaseSelectContext.Provider>
