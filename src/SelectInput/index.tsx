@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import Affix from './Affix';
 import SelectContent from './Content';
 import SelectInputContext from './context';
-import type { DisplayValueType } from '../interface';
+import type { DisplayValueType, Mode } from '../interface';
 
 export interface SelectInputProps {
   prefixCls: string;
@@ -14,6 +14,11 @@ export interface SelectInputProps {
   displayValues: DisplayValueType[];
   placeholder?: React.ReactNode;
   searchValue?: string;
+  mode?: Mode;
+  open?: boolean;
+  onSearch?: (searchText: string, fromTyping: boolean, isCompositing: boolean) => void;
+  onSearchSubmit?: (searchText: string) => void;
+  onInputBlur?: () => void;
   // Add other props that need to be passed through
   className?: string;
   style?: React.CSSProperties;
@@ -30,6 +35,11 @@ export default function SelectInput(props: SelectInputProps) {
     displayValues,
     placeholder,
     searchValue,
+    mode,
+    open,
+    onSearch,
+    onSearchSubmit,
+    onInputBlur,
     className,
     style,
     ...restProps
@@ -42,8 +52,24 @@ export default function SelectInput(props: SelectInputProps) {
       displayValues,
       placeholder,
       searchValue,
+      mode,
+      open,
+      onSearch,
+      onSearchSubmit,
+      onInputBlur,
     }),
-    [prefixCls, multiple, displayValues, placeholder, searchValue],
+    [
+      prefixCls,
+      multiple,
+      displayValues,
+      placeholder,
+      searchValue,
+      mode,
+      open,
+      onSearch,
+      onSearchSubmit,
+      onInputBlur,
+    ],
   );
 
   return (

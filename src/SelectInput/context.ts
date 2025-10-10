@@ -1,4 +1,4 @@
-import type { DisplayValueType } from '../interface';
+import type { DisplayValueType, Mode } from '../interface';
 import * as React from 'react';
 
 export interface ContentContextProps {
@@ -7,6 +7,11 @@ export interface ContentContextProps {
   displayValues: DisplayValueType[];
   placeholder?: React.ReactNode;
   searchValue?: string;
+  mode?: Mode;
+  open?: boolean;
+  onSearch?: (searchText: string, fromTyping: boolean, isCompositing: boolean) => void;
+  onSearchSubmit?: (searchText: string) => void;
+  onInputBlur?: () => void;
 }
 
 const SelectInputContext = React.createContext<ContentContextProps>(null!);

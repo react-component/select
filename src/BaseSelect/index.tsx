@@ -904,10 +904,40 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       displayValues={displayValues}
       placeholder={placeholder}
       searchValue={mergedSearchValue}
+      mode={mode}
+      open={mergedOpen}
       onSearch={onInternalSearch}
       onSearchSubmit={onInternalSearchSubmit}
       onInputBlur={onInputBlur}
+      onFocus={onContainerFocus}
+      onBlur={onContainerBlur}
     />
+  );
+
+  renderNode = (
+    <SelectTrigger
+      ref={triggerRef}
+      disabled={disabled}
+      prefixCls={prefixCls}
+      visible={triggerOpen}
+      popupElement={optionList}
+      animation={animation}
+      transitionName={transitionName}
+      popupStyle={popupStyle}
+      popupClassName={popupClassName}
+      direction={direction}
+      popupMatchSelectWidth={popupMatchSelectWidth}
+      popupRender={popupRender}
+      popupAlign={popupAlign}
+      placement={placement}
+      builtinPlacements={builtinPlacements}
+      getPopupContainer={getPopupContainer}
+      empty={emptyOptions}
+      onPopupVisibleChange={onTriggerVisibleChange}
+      onPopupMouseEnter={onPopupMouseEnter}
+    >
+      {renderNode}
+    </SelectTrigger>
   );
 
   return (

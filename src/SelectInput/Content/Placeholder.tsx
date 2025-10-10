@@ -6,9 +6,18 @@ export default function Placeholder() {
 
   const { searchValue } = useSelectInputContext();
 
-  if (displayValues.length || searchValue) {
+  if (displayValues.length) {
     return null;
   }
 
-  return <div className={`${prefixCls}-placeholder`}>{placeholder}</div>;
+  return (
+    <div
+      className={`${prefixCls}-placeholder`}
+      style={{
+        visibility: searchValue ? 'hidden' : 'visible',
+      }}
+    >
+      {placeholder}
+    </div>
+  );
 }
