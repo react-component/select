@@ -4,7 +4,9 @@ import { useSelectInputContext } from '../context';
 export default function Placeholder() {
   const { prefixCls, placeholder, displayValues } = useSelectInputContext();
 
-  if (displayValues.length) {
+  const { searchValue } = useSelectInputContext();
+
+  if (displayValues.length || searchValue) {
     return null;
   }
 

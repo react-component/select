@@ -903,6 +903,10 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       multiple={multiple}
       displayValues={displayValues}
       placeholder={placeholder}
+      searchValue={mergedSearchValue}
+      onSearch={onInternalSearch}
+      onSearchSubmit={onInternalSearchSubmit}
+      onInputBlur={onInputBlur}
     />
   );
 

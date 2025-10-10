@@ -4,14 +4,11 @@ import { useSelectInputContext } from '../context';
 import Placeholder from './Placeholder';
 
 export default function SingleContent() {
-  const { prefixCls, displayValues: value } = useSelectInputContext();
-
-  // For single mode, we only show the first value
-  const displayValue = value[0]?.label?.toString() || value[0]?.value?.toString() || '';
+  const { prefixCls, searchValue } = useSelectInputContext();
 
   return (
     <div className={`${prefixCls}-content`}>
-      <Input value={displayValue} />
+      <Input value={searchValue} />
       <Placeholder />
     </div>
   );

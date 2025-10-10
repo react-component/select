@@ -13,6 +13,7 @@ export interface SelectInputProps {
   multiple?: boolean;
   displayValues: DisplayValueType[];
   placeholder?: React.ReactNode;
+  searchValue?: string;
   // Add other props that need to be passed through
   className?: string;
   style?: React.CSSProperties;
@@ -28,6 +29,7 @@ export default function SelectInput(props: SelectInputProps) {
     multiple,
     displayValues,
     placeholder,
+    searchValue,
     className,
     style,
     ...restProps
@@ -39,8 +41,9 @@ export default function SelectInput(props: SelectInputProps) {
       multiple: !!multiple,
       displayValues,
       placeholder,
+      searchValue,
     }),
-    [prefixCls, multiple, displayValues, placeholder],
+    [prefixCls, multiple, displayValues, placeholder, searchValue],
   );
 
   return (

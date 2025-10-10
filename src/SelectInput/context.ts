@@ -6,6 +6,7 @@ export interface ContentContextProps {
   multiple: boolean;
   displayValues: DisplayValueType[];
   placeholder?: React.ReactNode;
+  searchValue?: string;
 }
 
 const SelectInputContext = React.createContext<ContentContextProps>(null!);
