@@ -900,6 +900,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       suffix={suffix}
       clearIcon={clearNode}
       multiple={multiple}
+      displayValues={displayValues}
     />
   );
 
