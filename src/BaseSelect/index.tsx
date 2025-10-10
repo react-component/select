@@ -256,6 +256,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     notFoundContent = 'Not Found',
     onClear,
     maxCount,
+    placeholder,
 
     // Mode
     mode,
