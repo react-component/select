@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useSelectInputContext } from './context';
+import useBaseProps from '../hooks/useBaseProps';
 
 export interface InputProps {
   disabled?: boolean;
@@ -17,71 +18,95 @@ export interface InputProps {
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const { onChange, onKeyDown, onBlur, ...restProps } = props;
-  const { prefixCls, mode, open, onSearch, onSearchSubmit, onInputBlur } = useSelectInputContext();
+  const { prefixCls, mode, onSearch, onSearchSubmit, onInputBlur } = useSelectInputContext();
+  const { triggerOpen } = useBaseProps();
 
   const inputCls = `${prefixCls}-input`;
 
-  // 用于处理输入法组合状态
+  // Used to handle input method composition status
   const compositionStatusRef = React.useRef<boolean>(false);
 
-  // 处理输入变化
+  // Handle input changes
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     const { value } = event.target;
 
-    // 调用 onSearch 回调
+    // Call onSearch callback
     if (onSearch) {
       onSearch(value, true, compositionStatusRef.current);
     }
 
-    // 调用原始的 onChange 回调
+    // Call original onChange callback
     onChange?.(event);
   };
 
-  // 处理键盘事件
+  // Handle keyboard events
   const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
     const { key } = event;
     const { value } = event.currentTarget;
 
-    // 处理 Enter 键提交 - 参考 Selector 的实现
+    // Handle Enter key submission - referencing Selector implementation
     if (
       key === 'Enter' &&
       mode === 'tags' &&
       !compositionStatusRef.current &&
-      !open &&
+      !triggerOpen &&
       onSearchSubmit
     ) {
       onSearchSubmit(value);
     }
 
-    // 调用原始的 onKeyDown 回调
+    // Call original onKeyDown callback
     onKeyDown?.(event);
   };
 
-  // 处理失焦事件
+  // Handle blur events
   const handleBlur: React.FocusEventHandler<HTMLInputElement> = (event) => {
-    // 调用 onInputBlur 回调
+    // Call onInputBlur callback
     onInputBlur?.();
 
-    // 调用原始的 onBlur 回调
+    // Call original onBlur callback
     onBlur?.(event);
   };
 
-  // 处理输入法组合开始
+  // Handle input method composition start
   const handleCompositionStart = () => {
     compositionStatusRef.current = true;
   };
 
-  // 处理输入法组合结束
+  // Handle input method composition end
   const handleCompositionEnd: React.CompositionEventHandler<HTMLInputElement> = (event) => {
     compositionStatusRef.current = false;
 
-    // 输入法组合结束时触发搜索
+    // Trigger search when input method composition ends
     const { value } = event.currentTarget;
     onSearch?.(value, true, false);
   };
 
+  // ============================= Mouse ==============================
+  // const onMouseDown: React.MouseEventHandler<HTMLElement> = (event) => {
+  //   // const inputMouseDown = getInputMouseDown();
+  //   // // when mode is combobox and it is disabled, don't prevent default behavior
+  //   // // https://github.com/ant-design/ant-design/issues/37320
+  //   // // https://github.com/ant-design/ant-design/issues/48281
+  //   // if (
+  //   //   event.target !== inputRef.current &&
+  //   //   !inputMouseDown &&
+  //   //   !(mode === 'combobox' && disabled)
+  //   // ) {
+  //   //   event.preventDefault();
+  //   // }
+  //   // if ((mode !== 'combobox' && (!showSearch || !inputMouseDown)) || !open) {
+  //   //   if (open && autoClearSearchValue !== false) {
+  //   //     onSearch('', true, false);
+  //   //   }
+  //   //   onToggleOpen();
+  //   // }
+  // };
+
+  // ============================= Render =============================
   return (
     <input
+      {...restProps}
       ref={ref}
       className={inputCls}
       onChange={handleChange}
@@ -89,7 +114,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       onBlur={handleBlur}
       onCompositionStart={handleCompositionStart}
       onCompositionEnd={handleCompositionEnd}
-      {...restProps}
+      // onMouseDown={onMouseDown}
     />
   );
 });

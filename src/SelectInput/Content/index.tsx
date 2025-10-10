@@ -3,12 +3,14 @@ import SingleContent from './SingleContent';
 import MultipleContent from './MultipleContent';
 import { useSelectInputContext } from '../context';
 
-export default function SelectContent() {
+const SelectContent = React.forwardRef<HTMLInputElement>(function SelectContent(_, ref) {
   const { multiple } = useSelectInputContext();
 
   if (multiple) {
-    return <MultipleContent />;
+    return <MultipleContent ref={ref} />;
   }
 
-  return <SingleContent />;
-}
+  return <SingleContent ref={ref} />;
+});
+
+export default SelectContent;

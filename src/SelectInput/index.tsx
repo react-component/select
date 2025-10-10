@@ -2,10 +2,17 @@ import * as React from 'react';
 import clsx from 'clsx';
 import Affix from './Affix';
 import SelectContent from './Content';
-import SelectInputContext from './context';
+import SelectInputContext, { type ContentContextProps } from './context';
 import type { DisplayValueType, Mode } from '../interface';
+import useBaseProps from '../hooks/useBaseProps';
 
-export interface SelectInputProps {
+export interface SelectInputRef {
+  focus: (options?: FocusOptions) => void;
+  blur: () => void;
+  nativeElement: HTMLDivElement;
+}
+
+export interface SelectInputProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'prefix'> {
   prefixCls: string;
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
@@ -15,7 +22,6 @@ export interface SelectInputProps {
   placeholder?: React.ReactNode;
   searchValue?: string;
   mode?: Mode;
-  open?: boolean;
   onSearch?: (searchText: string, fromTyping: boolean, isCompositing: boolean) => void;
   onSearchSubmit?: (searchText: string) => void;
   onInputBlur?: () => void;
@@ -25,27 +31,77 @@ export interface SelectInputProps {
   [key: string]: any;
 }
 
-export default function SelectInput(props: SelectInputProps) {
+export default React.forwardRef<SelectInputRef, SelectInputProps>(function SelectInput(
+  props: SelectInputProps,
+  ref: React.ForwardedRef<SelectInputRef>,
+) {
   const {
+    // Style
     prefixCls,
+    className,
+    style,
+
+    // UI
     prefix,
     suffix,
     clearIcon,
+
+    // Data
     multiple,
     displayValues,
     placeholder,
-    searchValue,
     mode,
-    open,
+
+    // Search
+    searchValue,
     onSearch,
     onSearchSubmit,
     onInputBlur,
-    className,
-    style,
+
+    // Events
+    onMouseDown,
+    onBlur,
+
     ...restProps
   } = props;
 
-  const cachedContext = React.useMemo(
+  const { triggerOpen, toggleOpen } = useBaseProps();
+
+  const rootRef = React.useRef<HTMLDivElement>(null);
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  // ====================== Refs ======================
+  React.useImperativeHandle(
+    ref,
+    () => ({
+      focus: (options?: FocusOptions) => {
+        // Focus the inner input if available, otherwise fall back to root div.
+        inputRef.current.focus?.(options);
+      },
+      blur: () => {
+        inputRef.current.blur?.();
+      },
+      nativeElement: rootRef.current,
+    }),
+    [],
+  );
+
+  // ====================== Open ======================
+  const onInternalMouseDown: SelectInputProps['onMouseDown'] = (event) => {
+    event.preventDefault();
+    inputRef.current?.focus();
+
+    toggleOpen();
+    onMouseDown?.(event);
+  };
+
+  const onInternalBlur: SelectInputProps['onBlur'] = (event) => {
+    toggleOpen(false);
+    onBlur?.(event);
+  };
+
+  // ==================== Context =====================
+  const cachedContext = React.useMemo<ContentContextProps>(
     () => ({
       prefixCls,
       multiple: !!multiple,
@@ -53,7 +109,6 @@ export default function SelectInput(props: SelectInputProps) {
       placeholder,
       searchValue,
       mode,
-      open,
       onSearch,
       onSearchSubmit,
       onInputBlur,
@@ -65,21 +120,30 @@ export default function SelectInput(props: SelectInputProps) {
       placeholder,
       searchValue,
       mode,
-      open,
       onSearch,
       onSearchSubmit,
       onInputBlur,
     ],
   );
 
+  // ===================== Render =====================
   return (
     <SelectInputContext.Provider value={cachedContext}>
-      <div className={clsx(className)} style={style} {...restProps}>
+      <div
+        {...restProps}
+        // Style
+        ref={rootRef}
+        className={clsx(className)}
+        style={style}
+        // Open
+        onMouseDown={onInternalMouseDown}
+        onBlur={onInternalBlur}
+      >
         {/* Prefix */}
         <Affix type="prefix">{prefix}</Affix>
 
         {/* Content */}
-        <SelectContent />
+        <SelectContent ref={inputRef} />
 
         {/* Suffix */}
         <Affix type="suffix">{suffix}</Affix>
@@ -88,4 +152,4 @@ export default function SelectInput(props: SelectInputProps) {
       </div>
     </SelectInputContext.Provider>
   );
-}
+});

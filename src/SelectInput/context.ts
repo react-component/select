@@ -5,13 +5,12 @@ export interface ContentContextProps {
   prefixCls: string;
   multiple: boolean;
   displayValues: DisplayValueType[];
-  placeholder?: React.ReactNode;
-  searchValue?: string;
-  mode?: Mode;
-  open?: boolean;
-  onSearch?: (searchText: string, fromTyping: boolean, isCompositing: boolean) => void;
-  onSearchSubmit?: (searchText: string) => void;
-  onInputBlur?: () => void;
+  placeholder: React.ReactNode;
+  searchValue: string;
+  mode: Mode;
+  onSearch: (searchText: string, fromTyping: boolean, isCompositing: boolean) => void;
+  onSearchSubmit: (searchText: string) => void;
+  onInputBlur: () => void;
 }
 
 const SelectInputContext = React.createContext<ContentContextProps>(null!);
