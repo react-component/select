@@ -1,14 +1,9 @@
 import * as React from 'react';
 import Input from '../Input';
-import type { DisplayValueType } from '../../../interface';
+import { useSelectInputContext } from '../context';
 
-export interface MultipleContentProps {
-  prefixCls: string;
-  value: DisplayValueType[];
-}
-
-export default function MultipleContent(props: MultipleContentProps) {
-  const { prefixCls, value } = props;
+export default function MultipleContent() {
+  const { prefixCls, displayValues: value } = useSelectInputContext();
 
   // For multiple mode, we show all values as a comma-separated string
   const displayValue = value
@@ -17,7 +12,7 @@ export default function MultipleContent(props: MultipleContentProps) {
 
   return (
     <div className={`${prefixCls}-content`}>
-      <Input prefixCls={prefixCls} value={displayValue} />
+      <Input value={displayValue} />
     </div>
   );
 }

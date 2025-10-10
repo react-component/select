@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { useSelectInputContext } from './context';
 
 export interface InputProps {
-  prefixCls: string;
   disabled?: boolean;
   readOnly?: boolean;
   value?: string;
@@ -16,7 +16,8 @@ export interface InputProps {
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
-  const { prefixCls, ...restProps } = props;
+  const { ...restProps } = props;
+  const { prefixCls } = useSelectInputContext();
 
   const inputCls = `${prefixCls}-input`;
 

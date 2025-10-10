@@ -1,26 +1,14 @@
 import * as React from 'react';
 import SingleContent from './SingleContent';
 import MultipleContent from './MultipleContent';
-import type { DisplayValueType } from '../../interface';
+import { useSelectInputContext } from '../context';
 
-export interface SelectContentProps {
-  prefixCls: string;
-  multiple?: boolean;
-  value: DisplayValueType[];
-}
-
-export interface SharedContentProps {
-  prefixCls: string;
-  value: DisplayValueType[];
-}
-
-export default function SelectContent(props: SelectContentProps) {
-  const { prefixCls, multiple, value } = props;
-  const sharedProps: SharedContentProps = { prefixCls, value };
+export default function SelectContent() {
+  const { multiple } = useSelectInputContext();
 
   if (multiple) {
-    return <MultipleContent {...sharedProps} />;
+    return <MultipleContent />;
   }
 
-  return <SingleContent {...sharedProps} />;
+  return <SingleContent />;
 }

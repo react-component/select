@@ -1,13 +1,14 @@
 import * as React from 'react';
+import { useSelectInputContext } from './context';
 
 export interface AffixProps {
-  prefixCls: string;
   type: 'prefix' | 'suffix' | 'clear';
   children?: React.ReactNode;
 }
 
 export default function Affix(props: AffixProps) {
-  const { prefixCls, type, children } = props;
+  const { type, children } = props;
+  const { prefixCls } = useSelectInputContext();
 
   if (!children) {
     return null;
