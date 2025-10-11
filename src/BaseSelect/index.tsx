@@ -350,11 +350,11 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   const triggerRef = React.useRef<RefTriggerProps>(null);
   const selectorRef = React.useRef<RefSelectorProps>(null);
   const listRef = React.useRef<RefOptionListProps>(null);
-  const blurRef = React.useRef<boolean>(false);
+  // const blurRef = React.useRef<boolean>(false);
   const customDomRef = React.useRef<HTMLElement>(null);
 
   /** Used for component focused management */
-  const [mockFocused, setMockFocused, cancelSetMockFocused] = useDelayReset();
+  const [focused, setFocused] = React.useState(false);
 
   // =========================== Imperative ===========================
   React.useImperativeHandle(ref, () => ({
@@ -502,16 +502,16 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
   // ============================ Disabled ============================
   // Close dropdown & remove focus state when disabled change
-  // React.useEffect(() => {
-  //   if (innerOpen && disabled) {
-  //     setInnerOpen(false);
-  //   }
+  React.useEffect(() => {
+    // if (mergedOpen && disabled) {
+    //   triggerOpen(false);
+    // }
 
-  //   // After onBlur is triggered, the focused does not need to be reset
-  //   if (disabled && !blurRef.current) {
-  //     setMockFocused(false);
-  //   }
-  // }, [disabled]);
+    // After onBlur is triggered, the focused does not need to be reset
+    if (disabled) {
+      setFocused(false);
+    }
+  }, [disabled, mergedOpen]);
 
   // ============================ Keyboard ============================
   /**
@@ -615,17 +615,15 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   // const focusRef = React.useRef<boolean>(false);
 
   const onInternalFocus: React.FocusEventHandler<HTMLElement> = (event) => {
-    //   setMockFocused(true);
-    //   if (!disabled) {
-    //     if (onFocus && !focusRef.current) {
-    //       onFocus(...args);
-    //     }
-    //     // `showAction` should handle `focus` if set
-    //     if (showAction.includes('focus')) {
-    //       triggerOpen(true);
-    //     }
-    //   }
-    //   focusRef.current = true;
+    setFocused(true);
+
+    if (!disabled) {
+      // `showAction` should handle `focus` if set
+      if (showAction.includes('focus')) {
+        triggerOpen(true);
+      }
+    }
+
     onFocus?.(event);
   };
 
@@ -656,6 +654,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   // };
 
   const onInternalBlur: React.FocusEventHandler<HTMLElement> = (event) => {
+    setFocused(false);
+
     if (mergedSearchValue) {
       // `tags` mode should move `searchValue` into values
       if (mode === 'tags') {
@@ -668,6 +668,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       }
     }
 
+    triggerOpen(false);
     onBlur?.(event);
   };
 
@@ -813,7 +814,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
   // ============================= Select =============================
   const mergedClassName = clsx(prefixCls, className, {
-    [`${prefixCls}-focused`]: mockFocused,
+    [`${prefixCls}-focused`]: focused,
     [`${prefixCls}-multiple`]: multiple,
     [`${prefixCls}-single`]: !multiple,
     [`${prefixCls}-allow-clear`]: mergedAllowClear,
@@ -968,7 +969,10 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   );
 
   return (
-    <BaseSelectContext.Provider value={baseSelectContext}>{renderNode}</BaseSelectContext.Provider>
+    <BaseSelectContext.Provider value={baseSelectContext}>
+      <Polite visible={focused && !mergedOpen} values={displayValues} />
+      {renderNode}
+    </BaseSelectContext.Provider>
   );
 });
 
