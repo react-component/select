@@ -26,6 +26,7 @@ export interface SelectInputProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   onInputBlur?: () => void;
   onClearMouseDown?: React.MouseEventHandler<HTMLElement>;
   onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onSelectorRemove?: (value: DisplayValueType) => void;
   maxLength?: number;
   autoFocus?: boolean;
   // Add other props that need to be passed through
@@ -51,6 +52,7 @@ const DEFAULT_OMIT_PROPS = [
   'onPopupScroll',
   'tabIndex',
   'activeValue',
+  'onSelectorRemove',
 ] as const;
 
 export default React.forwardRef<SelectInputRef, SelectInputProps>(function SelectInput(
@@ -89,6 +91,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
     onBlur,
     onClearMouseDown,
     onInputKeyDown,
+    onSelectorRemove,
 
     ...restProps
   } = props;

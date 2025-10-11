@@ -31,6 +31,7 @@ import TransBtn from '../TransBtn';
 import { getSeparatedContent, isValidCount } from '../utils/valueUtil';
 import Polite from './Polite';
 import useOpen from '../hooks/useOpen';
+import { useEvent } from '@rc-component/util';
 export type BaseSelectSemanticName = 'prefix' | 'suffix' | 'input';
 
 /**
@@ -596,14 +597,14 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   // };
 
   // ============================ Selector ============================
-  const onSelectorRemove = (val: DisplayValueType) => {
+  const onSelectorRemove = useEvent((val: DisplayValueType) => {
     const newValues = displayValues.filter((i) => i !== val);
 
     onDisplayValuesChange(newValues, {
       type: 'remove',
       values: [val],
     });
-  };
+  });
 
   const onInputBlur = () => {
     // Unlock the Enter key after the input blur; otherwise, the Enter key needs to be pressed twice to trigger the correct effect.
@@ -937,6 +938,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       onBlur={onInternalBlur}
       onClearMouseDown={onClearMouseDown}
       onKeyDown={onInternalKeyDown}
+      onSelectorRemove={onSelectorRemove}
       // Open
       onMouseDown={onInternalMouseDown}
     />

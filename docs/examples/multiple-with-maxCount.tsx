@@ -14,6 +14,7 @@ const Test: React.FC = () => {
     <>
       <h2>Multiple with maxCount</h2>
       <Select
+        showSearch
         maxCount={4}
         mode="multiple"
         value={value}

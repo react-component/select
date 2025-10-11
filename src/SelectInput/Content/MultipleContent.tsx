@@ -25,7 +25,7 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
   { inputProps },
   ref,
 ) {
-  const { prefixCls, displayValues, searchValue } = useSelectInputContext();
+  const { prefixCls, displayValues, searchValue, onSelectorRemove } = useSelectInputContext();
   const baseProps = useBaseProps();
   const { disabled, showSearch, open, toggleOpen } = baseProps;
 
@@ -56,8 +56,7 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
   };
 
   const onRemove = (value: DisplayValueType) => {
-    // TODO: This should be connected to parent's remove logic
-    console.log('Remove:', value);
+    onSelectorRemove?.(value);
   };
 
   // ======================== Item ========================
@@ -135,7 +134,7 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
         disabled={disabled}
         readOnly={!inputEditable}
         {...inputProps}
-        value={String(inputValue || '')}
+        value={inputValue || ''}
       />
 
       {/* Measure Node */}
