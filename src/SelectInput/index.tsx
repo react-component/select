@@ -5,7 +5,21 @@ import SelectContent from './Content';
 import SelectInputContext, { type ContentContextProps } from './context';
 import type { DisplayValueType, Mode } from '../interface';
 import useBaseProps from '../hooks/useBaseProps';
-import { useEvent } from '@rc-component/util';
+import { omit, useEvent } from '@rc-component/util';
+
+const DEFAULT_OMIT_PROPS = [
+  'value',
+  'onChange',
+  'removeIcon',
+  'placeholder',
+  'maxTagCount',
+  'maxTagTextLength',
+  'maxTagPlaceholder',
+  'choiceTransitionName',
+  'onInputKeyDown',
+  'onPopupScroll',
+  'tabIndex',
+] as const;
 
 export interface SelectInputRef {
   focus: (options?: FocusOptions) => void;
@@ -145,10 +159,12 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
   );
 
   // ===================== Render =====================
+  const domProps = omit(restProps, DEFAULT_OMIT_PROPS);
+
   return (
     <SelectInputContext.Provider value={cachedContext}>
       <div
-        {...restProps}
+        {...domProps}
         // Style
         ref={rootRef}
         className={clsx(className)}

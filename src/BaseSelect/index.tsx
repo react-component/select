@@ -906,7 +906,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   const { root: RootComponent } = useComponents(components);
   renderNode = (
     <RootComponent
-      {...domProps}
+      {...restProps}
       // Ref
       ref={containerRef}
       // Style
