@@ -9,7 +9,7 @@ import type { DisplayValueType, RawValueType } from '../../interface';
 import type { RenderNode, CustomTagProps } from '../../BaseSelect';
 import TransBtn from '../../TransBtn';
 import { getTitle } from '../../utils/commonUtil';
-import useLayoutEffect from '../../hooks/useLayoutEffect';
+import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import useBaseProps from '../../hooks/useBaseProps';
 
 function itemKey(value: DisplayValueType) {
@@ -25,9 +25,18 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
   { inputProps },
   ref,
 ) {
-  const { prefixCls, displayValues, searchValue, onSelectorRemove } = useSelectInputContext();
-  const baseProps = useBaseProps();
-  const { disabled, showSearch, open, toggleOpen } = baseProps;
+  const {
+    prefixCls,
+    displayValues,
+    searchValue,
+    onSelectorRemove,
+    removeIcon: removeIconFromContext,
+    maxTagPlaceholder: maxTagPlaceholderFromContext,
+    maxTagTextLength,
+    maxTagCount,
+    tagRender: tagRenderFromContext,
+  } = useSelectInputContext();
+  const { disabled, showSearch, open, toggleOpen } = useBaseProps();
 
   const measureRef = React.useRef<HTMLSpanElement>(null);
   const [inputWidth, setInputWidth] = useState(0);
@@ -44,12 +53,15 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
     }
   }, [inputValue]);
 
-  // These would typically come from parent props - using defaults for now
-  const removeIcon: RenderNode = '×';
-  const maxTagTextLength: number | undefined = undefined;
-  const maxTagCount: number | 'responsive' | undefined = undefined;
-  const maxTagPlaceholder = (omittedValues: DisplayValueType[]) => `+ ${omittedValues.length} ...`;
-  const tagRender: ((props: CustomTagProps) => React.ReactElement) | undefined = undefined;
+  // Props from context with safe defaults
+  const removeIcon: RenderNode = removeIconFromContext ?? '×';
+  const maxTagPlaceholder:
+    | React.ReactNode
+    | ((omittedValues: DisplayValueType[]) => React.ReactNode) =
+    maxTagPlaceholderFromContext ??
+    ((omittedValues: DisplayValueType[]) => `+ ${omittedValues.length} ...`);
+  const tagRender: ((props: CustomTagProps) => React.ReactElement) | undefined =
+    tagRenderFromContext;
 
   const onToggleOpen = (newOpen?: boolean) => {
     toggleOpen(newOpen);
@@ -208,7 +220,17 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
       data={displayValues}
       renderItem={renderItem}
       renderRest={renderRest}
-      suffix={inputNode}
+      // suffix={inputNode}
+      suffix={
+        <Input
+          ref={ref}
+          disabled={disabled}
+          readOnly={!inputEditable}
+          {...inputProps}
+          value={inputValue || ''}
+          syncWidth
+        />
+      }
       itemKey={itemKey}
       maxCount={maxTagCount}
     />

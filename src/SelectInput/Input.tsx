@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useSelectInputContext } from './context';
+import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 
 export interface InputProps {
   disabled?: boolean;
@@ -13,10 +14,12 @@ export interface InputProps {
   className?: string;
   style?: React.CSSProperties;
   maxLength?: number;
+  /** width always match content width */
+  syncWidth?: boolean;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
-  const { onChange, onKeyDown, onBlur, ...restProps } = props;
+  const { onChange, onKeyDown, onBlur, style, syncWidth, value, ...restProps } = props;
   const { prefixCls, mode, onSearch, onSearchSubmit, onInputBlur, autoFocus } =
     useSelectInputContext();
 
@@ -25,27 +28,34 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   // Used to handle input method composition status
   const compositionStatusRef = React.useRef<boolean>(false);
 
+  // ============================== Refs ==============================
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  React.useImperativeHandle(ref, () => inputRef.current);
+
+  // ============================== Data ==============================
   // Handle input changes
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    const { value } = event.target;
+    const { value: nextVal } = event.target;
 
     // Call onSearch callback
     if (onSearch) {
-      onSearch(value, true, compositionStatusRef.current);
+      onSearch(nextVal, true, compositionStatusRef.current);
     }
 
     // Call original onChange callback
     onChange?.(event);
   };
 
+  // ============================ Keyboard ============================
   // Handle keyboard events
   const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
     const { key } = event;
-    const { value } = event.currentTarget;
+    const { value: nextVal } = event.currentTarget;
 
     // Handle Enter key submission - referencing Selector implementation
     if (key === 'Enter' && mode === 'tags' && !compositionStatusRef.current && onSearchSubmit) {
-      onSearchSubmit(value);
+      onSearchSubmit(nextVal);
     }
 
     // Call original onKeyDown callback
@@ -71,38 +81,41 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     compositionStatusRef.current = false;
 
     // Trigger search when input method composition ends
-    const { value } = event.currentTarget;
-    onSearch?.(value, true, false);
+    const { value: nextVal } = event.currentTarget;
+    onSearch?.(nextVal, true, false);
   };
 
-  // ============================= Mouse ==============================
-  // const onMouseDown: React.MouseEventHandler<HTMLElement> = (event) => {
-  //   // const inputMouseDown = getInputMouseDown();
-  //   // // when mode is combobox and it is disabled, don't prevent default behavior
-  //   // // https://github.com/ant-design/ant-design/issues/37320
-  //   // // https://github.com/ant-design/ant-design/issues/48281
-  //   // if (
-  //   //   event.target !== inputRef.current &&
-  //   //   !inputMouseDown &&
-  //   //   !(mode === 'combobox' && disabled)
-  //   // ) {
-  //   //   event.preventDefault();
-  //   // }
-  //   // if ((mode !== 'combobox' && (!showSearch || !inputMouseDown)) || !open) {
-  //   //   if (open && autoClearSearchValue !== false) {
-  //   //     onSearch('', true, false);
-  //   //   }
-  //   //   onToggleOpen();
-  //   // }
-  // };
+  // ============================= Width ==============================
+  const [widthCssVar, setWidthCssVar] = React.useState<number | undefined>(undefined);
+
+  // When syncWidth is enabled, adjust input width based on content
+  useLayoutEffect(() => {
+    const input = inputRef.current;
+
+    if (syncWidth && input) {
+      input.style.width = '0px';
+      const scrollWidth = input.scrollWidth;
+      setWidthCssVar(scrollWidth);
+
+      // Reset input style
+      input.style.width = '';
+    }
+  }, [syncWidth, value]);
 
   // ============================= Render =============================
   return (
     <input
       {...restProps}
-      ref={ref}
+      ref={inputRef}
+      style={
+        {
+          ...style,
+          '--select-input-width': widthCssVar,
+        } as React.CSSProperties
+      }
       autoFocus={autoFocus}
       className={inputCls}
+      value={value || ''}
       onChange={handleChange}
       onKeyDown={handleKeyDown}
       onBlur={handleBlur}
