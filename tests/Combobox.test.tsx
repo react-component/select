@@ -74,15 +74,11 @@ describe('Select.Combobox', () => {
     );
 
     expect(container.querySelector('input').value).toBe('');
-    expect(container.querySelector('.rc-select-selection-placeholder')!.textContent).toEqual(
-      'placeholder',
-    );
+    expect(container.querySelector('.rc-select-placeholder')!.textContent).toEqual('placeholder');
     fireEvent.change(container.querySelector('input')!, { target: { value: '1' } });
-    expect(container.querySelector('.rc-select-selection-placeholder')).toBeFalsy();
+    expect(container.querySelector('.rc-select-placeholder')).toBeFalsy();
     expect(container.querySelector('input')!.value).toBe('1');
   });
-
-  return;
 
   it('fire change event immediately when user inputing', () => {
     const handleChange = jest.fn();
@@ -118,6 +114,8 @@ describe('Select.Combobox', () => {
     selectItem(container);
     expect(container.querySelector('input').value).toEqual('1');
   });
+
+  return;
 
   describe('input value', () => {
     const createSelect = (props?: Partial<SelectProps>) => (

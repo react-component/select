@@ -702,8 +702,8 @@ describe('Select.Basic', () => {
         </Select>,
       );
       const inputSpy = jest.spyOn(container1.querySelector('input'), 'focus');
-      fireEvent.mouseDown(container1.querySelector('.rc-select-selection-placeholder'));
-      fireEvent.click(container1.querySelector('.rc-select-selection-placeholder'));
+      fireEvent.mouseDown(container1.querySelector('.rc-select-placeholder'));
+      fireEvent.click(container1.querySelector('.rc-select-placeholder'));
       expect(inputSpy).toHaveBeenCalled();
     });
   });

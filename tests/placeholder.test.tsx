@@ -6,26 +6,26 @@ import { render } from '@testing-library/react';
 describe('Select placeholder', () => {
   it('when searchValue is controlled', () => {
     const { container } = render(<Select searchValue="light" placeholder="bamboo" />);
-    expect(container.querySelector('.rc-select-selection-placeholder')).not.toHaveStyle({
+    expect(container.querySelector('.rc-select-placeholder')).not.toHaveStyle({
       visibility: 'hidden',
     });
     toggleOpen(container);
-    expect(container.querySelector('.rc-select-selection-placeholder')).toHaveStyle({
+    expect(container.querySelector('.rc-select-placeholder')).toHaveStyle({
       visibility: 'hidden',
     });
   });
 
   it('when value is null', () => {
     const { container } = render(<Select value={null} placeholder="bamboo" />);
-    expect(container.querySelector('.rc-select-selection-placeholder')).toBeTruthy();
-    expect(container.querySelector('.rc-select-selection-placeholder').textContent).toBe('bamboo');
+    expect(container.querySelector('.rc-select-placeholder')).toBeTruthy();
+    expect(container.querySelector('.rc-select-placeholder').textContent).toBe('bamboo');
   });
 
   it('not when value is null but it is an Option', () => {
     const { container } = render(
       <Select value={null} placeholder="bamboo" options={[{ value: null, label: 'light' }]} />,
     );
-    expect(container.querySelector('.rc-select-selection-placeholder')).toBeFalsy();
+    expect(container.querySelector('.rc-select-placeholder')).toBeFalsy();
     expect(container.querySelector('.rc-select-selection-item').textContent).toBe('light');
     toggleOpen(container);
     expect(container.querySelector('.rc-select-selection-item').textContent).toBe('light');
@@ -35,11 +35,9 @@ describe('Select placeholder', () => {
     const { container } = render(
       <Select showSearch searchValue="search" open={false} placeholder="placeholder" />,
     );
-    expect(container.querySelector('.rc-select-selection-placeholder')).toHaveStyle({
+    expect(container.querySelector('.rc-select-placeholder')).toHaveStyle({
       visibility: 'hidden',
     });
-    expect(container.querySelector('.rc-select-selection-placeholder').textContent).toBe(
-      'placeholder',
-    );
+    expect(container.querySelector('.rc-select-placeholder').textContent).toBe('placeholder');
   });
 });

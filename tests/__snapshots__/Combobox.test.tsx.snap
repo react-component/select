@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Select.Combobox renders controlled correctly 1`] = `
+<div
+  class="rc-select rc-select-single rc-select-show-search"
+>
+  <div
+    class="rc-select-content"
+  >
+    <div
+      class="rc-select-placeholder"
+      style="visibility: visible;"
+    >
+      Search
+    </div>
+    <input
+      class="rc-select-input"
+      value=""
+    />
+  </div>
+</div>
+`;
+
+exports[`Select.Combobox renders correctly 1`] = `
+<div
+  class="rc-select rc-select-single rc-select-show-search"
+>
+  <div
+    class="rc-select-content"
+  >
+    <div
+      class="rc-select-placeholder"
+      style="visibility: visible;"
+    >
+      Search
+    </div>
+    <input
+      class="rc-select-input"
+      value=""
+    />
+  </div>
+</div>
+`;

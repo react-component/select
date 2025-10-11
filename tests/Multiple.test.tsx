@@ -422,9 +422,9 @@ describe('Select.Multiple', () => {
     const { container } = render(
       <Select mode="multiple" searchValue="light" placeholder="bamboo" />,
     );
-    expect(container.querySelector('.rc-select-selection-placeholder')).toBeTruthy();
+    expect(container.querySelector('.rc-select-placeholder')).toBeTruthy();
     toggleOpen(container);
-    expect(container.querySelector('.rc-select-selection-placeholder')).toBeFalsy();
+    expect(container.querySelector('.rc-select-placeholder')).toBeFalsy();
   });
 
   it('clear input when popup closed', () => {
