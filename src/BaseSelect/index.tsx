@@ -56,7 +56,6 @@ const DEFAULT_OMIT_PROPS = [
   'onChange',
   'removeIcon',
   'placeholder',
-  'autoFocus',
   'maxTagCount',
   'maxTagTextLength',
   'maxTagPlaceholder',
@@ -359,13 +358,14 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
   // =========================== Imperative ===========================
   React.useImperativeHandle(ref, () => ({
-    focus: selectorRef.current?.focus,
-    blur: selectorRef.current?.blur,
+    focus: containerRef.current?.focus,
+    blur: containerRef.current?.blur,
     scrollTo: (arg) => listRef.current?.scrollTo(arg),
     nativeElement:
-      containerRef.current ||
-      selectorRef.current?.nativeElement ||
-      (getDOM(customDomRef.current) as HTMLElement),
+      // containerRef.current ||
+      // selectorRef.current?.nativeElement ||
+      // (getDOM(customDomRef.current) as HTMLElement),
+      selectorRef.current?.nativeElement,
   }));
 
   // ========================== Search Value ==========================

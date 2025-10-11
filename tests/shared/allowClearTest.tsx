@@ -6,7 +6,7 @@ export default function allowClearTest(mode: any, value: any) {
   describe('allowClear', () => {
     it('renders correctly', () => {
       const { container } = render(<Select mode={mode} value={value} allowClear />);
-      expect(container.querySelector('.rc-select-clear-icon')).toBeTruthy();
+      expect(container.querySelector('.rc-select-clear')).toBeTruthy();
     });
     it('clears value', () => {
       const onClear = jest.fn();

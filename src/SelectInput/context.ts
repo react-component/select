@@ -8,6 +8,7 @@ export interface ContentContextProps {
   placeholder: React.ReactNode;
   searchValue: string;
   maxLength?: number;
+  autoFocus?: boolean;
   mode: Mode;
   onSearch: (searchText: string, fromTyping: boolean, isCompositing: boolean) => void;
   onSearchSubmit: (searchText: string) => void;

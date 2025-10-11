@@ -61,6 +61,10 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
     onSearchSubmit,
     onInputBlur,
 
+    // Input
+    maxLength,
+    autoFocus,
+
     // Events
     onMouseDown,
     onBlur,
@@ -111,8 +115,6 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
   };
 
   // ==================== Context =====================
-  const maxLength = props.maxLength;
-
   const cachedContext = React.useMemo<ContentContextProps>(
     () => ({
       prefixCls,
@@ -125,6 +127,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
       onSearchSubmit,
       onInputBlur,
       maxLength,
+      autoFocus,
     }),
     [
       prefixCls,
@@ -137,6 +140,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
       onSearchSubmit,
       onInputBlur,
       maxLength,
+      autoFocus,
     ],
   );
 

@@ -19,7 +19,7 @@ export interface InputProps {
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const { onChange, onKeyDown, onBlur, ...restProps } = props;
-  const { prefixCls, mode, onSearch, onSearchSubmit, onInputBlur, maxLength } =
+  const { prefixCls, mode, onSearch, onSearchSubmit, onInputBlur, maxLength, autoFocus } =
     useSelectInputContext();
   const { triggerOpen } = useBaseProps();
 
@@ -110,6 +110,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     <input
       {...restProps}
       ref={ref}
+      autoFocus={autoFocus}
       className={inputCls}
       maxLength={mode === 'combobox' ? maxLength : undefined}
       onChange={handleChange}
