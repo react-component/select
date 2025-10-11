@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useSelectInputContext } from './context';
-import useBaseProps from '../hooks/useBaseProps';
 
 export interface InputProps {
   disabled?: boolean;
@@ -19,9 +18,8 @@ export interface InputProps {
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const { onChange, onKeyDown, onBlur, ...restProps } = props;
-  const { prefixCls, mode, onSearch, onSearchSubmit, onInputBlur, maxLength, autoFocus } =
+  const { prefixCls, mode, onSearch, onSearchSubmit, onInputBlur, autoFocus } =
     useSelectInputContext();
-  const { triggerOpen } = useBaseProps();
 
   const inputCls = `${prefixCls}-input`;
 
@@ -47,13 +45,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     const { value } = event.currentTarget;
 
     // Handle Enter key submission - referencing Selector implementation
-    if (
-      key === 'Enter' &&
-      mode === 'tags' &&
-      !compositionStatusRef.current &&
-      !triggerOpen &&
-      onSearchSubmit
-    ) {
+    if (key === 'Enter' && mode === 'tags' && !compositionStatusRef.current && onSearchSubmit) {
       onSearchSubmit(value);
     }
 

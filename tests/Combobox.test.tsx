@@ -239,7 +239,9 @@ describe('Select.Combobox', () => {
       fireEvent.change(container.querySelector('input')!, { target: { value: '0' } });
       expectOpen(container);
 
+      console.log('!11111111111111');
       selectItem(container);
+      console.log('!2222222222222');
       jest.runAllTimers();
       expectOpen(container, false);
       jest.useRealTimers();

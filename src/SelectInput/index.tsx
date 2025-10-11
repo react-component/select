@@ -2,7 +2,7 @@ import * as React from 'react';
 import clsx from 'clsx';
 import Affix from './Affix';
 import SelectContent from './Content';
-import SelectInputContext, { type ContentContextProps } from './context';
+import SelectInputContext from './context';
 import type { DisplayValueType, Mode } from '../interface';
 
 export interface SelectInputRef {
@@ -95,6 +95,18 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
   const rootRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
+  // Wrap onSearch to trigger dropdown open when typing
+  const onInternalSearch = useEvent(
+    (searchText: string, fromTyping: boolean, isCompositing: boolean) => {
+      // Open dropdown when user is typing and not compositing
+      if (fromTyping && !isCompositing && !triggerOpen) {
+        toggleOpen(true);
+      }
+
+      onSearch?.(searchText, fromTyping, isCompositing);
+    },
+  );
+
   // ====================== Refs ======================
   React.useImperativeHandle(
     ref,
@@ -134,8 +146,14 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
   // ===================== Render =====================
   const domProps = omit(restProps, DEFAULT_OMIT_PROPS);
 
+  // Create context value with wrapped onSearch
+  const contextValue = {
+    ...props,
+    onSearch: onInternalSearch,
+  };
+
   return (
-    <SelectInputContext.Provider value={props}>
+    <SelectInputContext.Provider value={contextValue}>
       <div
         {...domProps}
         // Style

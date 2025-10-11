@@ -40,8 +40,6 @@ export default function useOpen(
       return;
     }
 
-    console.error('toggleOpen', nextOpenVal);
-
     if (nextOpenVal) {
       triggerEvent(true);
       return;
