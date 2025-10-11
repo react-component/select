@@ -1,10 +1,16 @@
 import * as React from 'react';
 import { useSelectInputContext } from '../context';
 
-export default function Placeholder() {
+export interface PlaceholderProps {
+  hasSearchValue?: boolean;
+}
+
+export default function Placeholder(props: PlaceholderProps) {
   const { prefixCls, placeholder, displayValues } = useSelectInputContext();
 
   const { searchValue } = useSelectInputContext();
+
+  const { hasSearchValue = !!searchValue } = props;
 
   if (displayValues.length) {
     return null;
@@ -14,7 +20,7 @@ export default function Placeholder() {
     <div
       className={`${prefixCls}-placeholder`}
       style={{
-        visibility: searchValue ? 'hidden' : 'visible',
+        visibility: hasSearchValue ? 'hidden' : 'visible',
       }}
     >
       {placeholder}

@@ -8,9 +8,25 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function S
   { inputProps },
   ref,
 ) {
-  const { prefixCls, searchValue, displayValues, maxLength, mode } = useSelectInputContext();
+  const { prefixCls, searchValue, activeValue, displayValues, maxLength, mode, onSearch } =
+    useSelectInputContext();
 
+  const [inputChanged, setInputChanged] = React.useState(false);
+
+  const combobox = mode === 'combobox';
   const displayValue = displayValues[0];
+
+  // Implement the same logic as the old SingleSelector
+  let mergedSearchValue: string = searchValue || '';
+  if (combobox && activeValue && !inputChanged) {
+    mergedSearchValue = activeValue;
+  }
+
+  React.useEffect(() => {
+    if (combobox) {
+      setInputChanged(false);
+    }
+  }, [combobox, activeValue]);
 
   return (
     <div className={`${prefixCls}-content`}>
@@ -18,19 +34,23 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function S
         <div
           className={`${prefixCls}-content-value`}
           style={{
-            visibility: searchValue ? 'hidden' : 'visible',
+            visibility: mergedSearchValue ? 'hidden' : 'visible',
           }}
         >
           {displayValue.label}
         </div>
       ) : (
-        <Placeholder />
+        <Placeholder hasSearchValue={!!mergedSearchValue} />
       )}
       <Input
         ref={ref}
         {...inputProps}
-        value={searchValue}
+        value={mergedSearchValue}
         maxLength={mode === 'combobox' ? maxLength : undefined}
+        onChange={(e) => {
+          setInputChanged(true);
+          inputProps.onChange?.(e);
+        }}
       />
     </div>
   );

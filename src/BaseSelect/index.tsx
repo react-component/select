@@ -474,6 +474,11 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       });
     }
 
+    // Open if from typing
+    if (searchText && fromTyping) {
+      triggerOpen(true);
+    }
+
     return ret;
   };
 
@@ -923,6 +928,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       displayValues={displayValues}
       placeholder={placeholder}
       searchValue={mergedSearchValue}
+      activeValue={activeValue}
       onSearch={onInternalSearch}
       onSearchSubmit={onInternalSearchSubmit}
       onInputBlur={onInputBlur}

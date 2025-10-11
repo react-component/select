@@ -319,7 +319,7 @@ describe('Select.Combobox', () => {
       onChange.mockReset();
 
       keyDown(inputEle, KeyCode.DOWN);
-      expect(inputEle.value).toEqual('light@gmail.com');
+      expect(inputEle).toHaveValue('light@gmail.com');
       expect(onChange).not.toHaveBeenCalled();
 
       keyDown(inputEle, KeyCode.ENTER);

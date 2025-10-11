@@ -20,6 +20,7 @@ export interface SelectInputProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   displayValues: DisplayValueType[];
   placeholder?: React.ReactNode;
   searchValue?: string;
+  activeValue?: string;
   mode?: Mode;
   onSearch?: (searchText: string, fromTyping: boolean, isCompositing: boolean) => void;
   onSearchSubmit?: (searchText: string) => void;

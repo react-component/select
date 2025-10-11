@@ -13,12 +13,11 @@ export interface InputProps {
   className?: string;
   style?: React.CSSProperties;
   maxLength?: number;
-  [key: string]: any;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const { onChange, onKeyDown, onBlur, ...restProps } = props;
-  const { prefixCls, mode, onSearch, onSearchSubmit, onInputBlur, onInputKeyDown, autoFocus } =
+  const { prefixCls, mode, onSearch, onSearchSubmit, onInputBlur, autoFocus } =
     useSelectInputContext();
 
   const inputCls = `${prefixCls}-input`;
@@ -43,12 +42,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
     const { key } = event;
     const { value } = event.currentTarget;
-
-    // Call the internal keyboard handler from context first
-    // This handles up/down arrow prevention and validate open keys
-    if (onInputKeyDown) {
-      onInputKeyDown(event);
-    }
 
     // Handle Enter key submission - referencing Selector implementation
     if (key === 'Enter' && mode === 'tags' && !compositionStatusRef.current && onSearchSubmit) {
