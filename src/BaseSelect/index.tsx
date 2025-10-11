@@ -519,65 +519,65 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   const keyLockRef = React.useRef(false);
 
   // KeyDown
-  // const onInternalKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event, ...rest) => {
-  //   const clearLock = getClearLock();
-  //   const { key } = event;
+  const onInternalKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
+    //   const clearLock = getClearLock();
+    const { key } = event;
 
-  //   const isEnterKey = key === 'Enter';
+    const isEnterKey = key === 'Enter';
 
-  //   if (isEnterKey) {
-  //     // Do not submit form when type in the input
-  //     if (mode !== 'combobox') {
-  //       event.preventDefault();
-  //     }
+    if (isEnterKey) {
+      // Do not submit form when type in the input
+      if (mode !== 'combobox') {
+        event.preventDefault();
+      }
 
-  //     // We only manage open state here, close logic should handle by list component
-  //     if (!mergedOpen) {
-  //       onToggleOpen(true);
-  //     }
-  //   }
+      // We only manage open state here, close logic should handle by list component
+      if (!mergedOpen) {
+        triggerOpen(true);
+      }
+    }
 
-  //   setClearLock(!!mergedSearchValue);
+    //   setClearLock(!!mergedSearchValue);
 
-  //   // Remove value by `backspace`
-  //   if (
-  //     key === 'Backspace' &&
-  //     !clearLock &&
-  //     multiple &&
-  //     !mergedSearchValue &&
-  //     displayValues.length
-  //   ) {
-  //     const cloneDisplayValues = [...displayValues];
-  //     let removedDisplayValue = null;
+    //   // Remove value by `backspace`
+    //   if (
+    //     key === 'Backspace' &&
+    //     !clearLock &&
+    //     multiple &&
+    //     !mergedSearchValue &&
+    //     displayValues.length
+    //   ) {
+    //     const cloneDisplayValues = [...displayValues];
+    //     let removedDisplayValue = null;
 
-  //     for (let i = cloneDisplayValues.length - 1; i >= 0; i -= 1) {
-  //       const current = cloneDisplayValues[i];
+    //     for (let i = cloneDisplayValues.length - 1; i >= 0; i -= 1) {
+    //       const current = cloneDisplayValues[i];
 
-  //       if (!current.disabled) {
-  //         cloneDisplayValues.splice(i, 1);
-  //         removedDisplayValue = current;
-  //         break;
-  //       }
-  //     }
+    //       if (!current.disabled) {
+    //         cloneDisplayValues.splice(i, 1);
+    //         removedDisplayValue = current;
+    //         break;
+    //       }
+    //     }
 
-  //     if (removedDisplayValue) {
-  //       onDisplayValuesChange(cloneDisplayValues, {
-  //         type: 'remove',
-  //         values: [removedDisplayValue],
-  //       });
-  //     }
-  //   }
+    //     if (removedDisplayValue) {
+    //       onDisplayValuesChange(cloneDisplayValues, {
+    //         type: 'remove',
+    //         values: [removedDisplayValue],
+    //       });
+    //     }
+    //   }
 
-  //   if (mergedOpen && (!isEnterKey || !keyLockRef.current)) {
-  //     // Lock the Enter key after it is pressed to avoid repeated triggering of the onChange event.
-  //     if (isEnterKey) {
-  //       keyLockRef.current = true;
-  //     }
-  //     listRef.current?.onKeyDown(event, ...rest);
-  //   }
+    if (mergedOpen && (!isEnterKey || !keyLockRef.current)) {
+      // Lock the Enter key after it is pressed to avoid repeated triggering of the onChange event.
+      if (isEnterKey) {
+        keyLockRef.current = true;
+      }
+      listRef.current?.onKeyDown(event);
+    }
 
-  //   onKeyDown?.(event, ...rest);
-  // };
+    onKeyDown?.(event);
+  };
 
   // // KeyUp
   // const onInternalKeyUp: React.KeyboardEventHandler<HTMLDivElement> = (event, ...rest) => {
@@ -929,6 +929,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       onFocus={onInternalFocus}
       onBlur={onInternalBlur}
       onClearMouseDown={onClearMouseDown}
+      onKeyDown={onInternalKeyDown}
       // Open
       onMouseDown={onInternalMouseDown}
     />

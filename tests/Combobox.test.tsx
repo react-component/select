@@ -239,16 +239,12 @@ describe('Select.Combobox', () => {
       fireEvent.change(container.querySelector('input')!, { target: { value: '0' } });
       expectOpen(container);
 
-      console.log('!11111111111111');
       selectItem(container);
-      console.log('!2222222222222');
       jest.runAllTimers();
       expectOpen(container, false);
       jest.useRealTimers();
     });
   });
-
-  return;
 
   describe('backfill', () => {
     it('basic', () => {
@@ -350,7 +346,7 @@ describe('Select.Combobox', () => {
       </Select>,
     );
 
-    expect(container.querySelector('.rc-select-clear-icon')).toBeTruthy();
+    expect(container.querySelector('.rc-select-clear')).toBeTruthy();
   });
 
   it("should hide clear icon when inputValue is ''", () => {
@@ -362,10 +358,12 @@ describe('Select.Combobox', () => {
     );
 
     fireEvent.change(container.querySelector('input')!, { target: { value: '1' } });
-    expect(container.querySelector('.rc-select-clear-icon')).toBeTruthy();
+    expect(container.querySelector('.rc-select-clear')).toBeTruthy();
     fireEvent.change(container.querySelector('input')!, { target: { value: '' } });
-    expect(container.querySelector('.rc-select-clear-icon')).toBeFalsy();
+    expect(container.querySelector('.rc-select-clear')).toBeFalsy();
   });
+
+  return;
 
   it('autocomplete - option update when input change', () => {
     class App extends React.Component {

@@ -35,6 +35,8 @@ export interface SelectInputProps extends Omit<React.HTMLAttributes<HTMLDivEleme
 }
 import useBaseProps from '../hooks/useBaseProps';
 import { omit, useEvent } from '@rc-component/util';
+import KeyCode from '@rc-component/util/lib/KeyCode';
+import { isValidateOpenKey } from '../utils/keyUtil';
 
 const DEFAULT_OMIT_PROPS = [
   'value',
@@ -95,15 +97,37 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
   const rootRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-  // Wrap onSearch to trigger dropdown open when typing
-  const onInternalSearch = useEvent(
-    (searchText: string, fromTyping: boolean, isCompositing: boolean) => {
-      // Open dropdown when user is typing and not compositing
-      if (fromTyping && !isCompositing && !triggerOpen) {
-        toggleOpen(true);
+  // Handle keyboard events similar to original Selector
+  const onInternalInputKeyDown = useEvent(
+    (event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { which } = event;
+
+      // Compatible with multiple lines in TextArea
+      const isTextAreaElement = inputRef.current instanceof HTMLTextAreaElement;
+
+      // Prevent default behavior for up/down arrows when dropdown is open
+      if (!isTextAreaElement && triggerOpen && (which === KeyCode.UP || which === KeyCode.DOWN)) {
+        event.preventDefault();
       }
 
-      onSearch?.(searchText, fromTyping, isCompositing);
+      // Call the original onInputKeyDown callback
+      if (onInputKeyDown) {
+        onInputKeyDown(event);
+      }
+
+      // Move within the text box for TextArea
+      if (
+        isTextAreaElement &&
+        !triggerOpen &&
+        ~[KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT, KeyCode.RIGHT].indexOf(which)
+      ) {
+        return;
+      }
+
+      // Open dropdown when a valid open key is pressed
+      if (isValidateOpenKey(which)) {
+        toggleOpen(true);
+      }
     },
   );
 
@@ -146,10 +170,10 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
   // ===================== Render =====================
   const domProps = omit(restProps, DEFAULT_OMIT_PROPS);
 
-  // Create context value with wrapped onSearch
+  // Create context value with wrapped callbacks
   const contextValue = {
     ...props,
-    onSearch: onInternalSearch,
+    onInputKeyDown: onInternalInputKeyDown,
   };
 
   return (
