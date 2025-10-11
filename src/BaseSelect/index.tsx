@@ -609,36 +609,31 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   /** Record real focus status */
   // const focusRef = React.useRef<boolean>(false);
 
-  // const onContainerFocus: React.FocusEventHandler<HTMLElement> = (...args) => {
-  //   setMockFocused(true);
-
-  //   if (!disabled) {
-  //     if (onFocus && !focusRef.current) {
-  //       onFocus(...args);
-  //     }
-
-  //     // `showAction` should handle `focus` if set
-  //     if (showAction.includes('focus')) {
-  //       triggerOpen(true);
-  //     }
-  //   }
-
-  //   focusRef.current = true;
-  // };
+  const onInternalFocus: React.FocusEventHandler<HTMLElement> = (event) => {
+    //   setMockFocused(true);
+    //   if (!disabled) {
+    //     if (onFocus && !focusRef.current) {
+    //       onFocus(...args);
+    //     }
+    //     // `showAction` should handle `focus` if set
+    //     if (showAction.includes('focus')) {
+    //       triggerOpen(true);
+    //     }
+    //   }
+    //   focusRef.current = true;
+    onFocus?.(event);
+  };
 
   // const onContainerBlur: React.FocusEventHandler<HTMLElement> = (...args) => {
   //   blurRef.current = true;
-
   //   setMockFocused(false, () => {
   //     focusRef.current = false;
   //     blurRef.current = false;
   //     triggerOpen(false);
   //   });
-
   //   if (disabled) {
   //     return;
   //   }
-
   //   if (mergedSearchValue) {
   //     // `tags` mode should move `searchValue` into values
   //     if (mode === 'tags') {
@@ -650,7 +645,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   //       });
   //     }
   //   }
-
   //   if (onBlur) {
   //     onBlur(...args);
   //   }
@@ -932,7 +926,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       onSearch={onInternalSearch}
       onSearchSubmit={onInternalSearchSubmit}
       onInputBlur={onInputBlur}
-      // onFocus={onContainerFocus}
+      onFocus={onInternalFocus}
       onBlur={onInternalBlur}
       onClearMouseDown={onClearMouseDown}
       // Open
