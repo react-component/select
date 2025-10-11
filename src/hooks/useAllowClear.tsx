@@ -1,6 +1,6 @@
-import TransBtn from '../TransBtn';
-import type { DisplayValueType, Mode, RenderNode } from '../interface';
-import React, { useMemo } from 'react';
+import type { DisplayValueType, Mode } from '../interface';
+import type React from 'react';
+import { useMemo } from 'react';
 
 export interface AllowClearConfig {
   allowClear: boolean;
@@ -9,10 +9,9 @@ export interface AllowClearConfig {
 
 export const useAllowClear = (
   prefixCls: string,
-  onClearMouseDown: React.MouseEventHandler<HTMLSpanElement>,
   displayValues: DisplayValueType[],
-  allowClear?: boolean | { clearIcon?: RenderNode },
-  clearIcon?: RenderNode,
+  allowClear?: boolean | { clearIcon?: React.ReactNode },
+  clearIcon?: React.ReactNode,
   disabled: boolean = false,
   mergedSearchValue?: string,
   mode?: Mode,
@@ -37,24 +36,7 @@ export const useAllowClear = (
 
     return {
       allowClear: mergedAllowClear,
-      clearIcon: mergedAllowClear ? (
-        <TransBtn
-          className={`${prefixCls}-clear`}
-          onMouseDown={onClearMouseDown}
-          customizeIcon={allowClearConfig.clearIcon || clearIcon}
-        >
-          ×
-        </TransBtn>
-      ) : null,
+      clearIcon: mergedAllowClear ? allowClearConfig.clearIcon || clearIcon || '×' : null,
     };
-  }, [
-    allowClearConfig,
-    clearIcon,
-    disabled,
-    displayValues.length,
-    mergedSearchValue,
-    mode,
-    onClearMouseDown,
-    prefixCls,
-  ]);
+  }, [allowClearConfig, clearIcon, disabled, displayValues.length, mergedSearchValue, mode]);
 };

@@ -197,7 +197,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
    * Clear all icon
    * @deprecated Please use `allowClear` instead
    **/
-  clearIcon?: RenderNode;
+  clearIcon?: React.ReactNode;
   /** Selector remove icon */
   removeIcon?: RenderNode;
 
@@ -790,7 +790,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   const onClearMouseDown: React.MouseEventHandler<HTMLSpanElement> = () => {
     onClear?.();
 
-    selectorRef.current?.focus();
+    containerRef.current?.focus();
 
     onDisplayValuesChange([], {
       type: 'clear',
@@ -801,7 +801,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
   const { allowClear: mergedAllowClear, clearIcon: clearNode } = useAllowClear(
     prefixCls,
-    onClearMouseDown,
     displayValues,
     allowClear,
     clearIcon,
@@ -935,6 +934,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       onInputBlur={onInputBlur}
       // onFocus={onContainerFocus}
       onBlur={onInternalBlur}
+      onClearMouseDown={onClearMouseDown}
       // Open
       onMouseDown={onInternalMouseDown}
     />

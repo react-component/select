@@ -26,6 +26,7 @@ export interface SelectInputProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   onSearch?: (searchText: string, fromTyping: boolean, isCompositing: boolean) => void;
   onSearchSubmit?: (searchText: string) => void;
   onInputBlur?: () => void;
+  onClearMouseDown?: React.MouseEventHandler<HTMLElement>;
   maxLength?: number;
   // Add other props that need to be passed through
   className?: string;
@@ -63,6 +64,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
     // Events
     onMouseDown,
     onBlur,
+    onClearMouseDown,
 
     ...restProps
   } = props;
@@ -166,6 +168,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
             onMouseDown={(e) => {
               // Mark to tell not trigger open or focus
               (e.nativeEvent as any)._select_lazy = true;
+              onClearMouseDown?.(e);
             }}
           >
             {clearIcon}
