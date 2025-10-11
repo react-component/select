@@ -23,9 +23,6 @@
 
   .@{select-prefix}-input {
     border: none;
-    position: absolute;
-    inset: 0;
-    inset: 0;
     background: transparent;
   }
 
@@ -60,5 +57,22 @@
     position: absolute;
     top: 0;
     right: 0;
+  }
+
+  // ============================= Single =============================
+  &-single {
+    .@{select-prefix}-input {
+      position: absolute;
+      inset: 0;
+    }
+  }
+
+  // ============================ Multiple ============================
+  &-multiple {
+    .@{select-prefix}-item {
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      margin-right: 4px;
+    }
   }
 }
