@@ -2,9 +2,13 @@ import * as React from 'react';
 import Input from '../Input';
 import { useSelectInputContext } from '../context';
 import Placeholder from './Placeholder';
+import type { SharedContentProps } from '.';
 
-export default React.forwardRef<HTMLInputElement>(function SingleContent(_, ref) {
-  const { prefixCls, searchValue, displayValues, maxLength } = useSelectInputContext();
+export default React.forwardRef<HTMLInputElement, SharedContentProps>(function SingleContent(
+  { inputProps },
+  ref,
+) {
+  const { prefixCls, searchValue, displayValues, maxLength, mode } = useSelectInputContext();
 
   const displayValue = displayValues[0];
 
@@ -22,7 +26,12 @@ export default React.forwardRef<HTMLInputElement>(function SingleContent(_, ref)
       ) : (
         <Placeholder />
       )}
-      <Input ref={ref} value={searchValue} maxLength={maxLength} />
+      <Input
+        ref={ref}
+        {...inputProps}
+        value={searchValue}
+        maxLength={mode === 'combobox' ? maxLength : undefined}
+      />
     </div>
   );
 });

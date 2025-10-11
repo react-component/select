@@ -1,11 +1,15 @@
 import * as React from 'react';
 import Input from '../Input';
 import { useSelectInputContext } from '../context';
+import type { SharedContentProps } from '.';
 
 // This is just a placeholder, do not code any logic here
 
-export default React.forwardRef<HTMLInputElement>(function MultipleContent(_, ref) {
-  const { prefixCls, displayValues: value, maxLength } = useSelectInputContext();
+export default React.forwardRef<HTMLInputElement, SharedContentProps>(function MultipleContent(
+  { inputProps },
+  ref,
+) {
+  const { prefixCls, displayValues: value, maxLength, mode } = useSelectInputContext();
 
   // For multiple mode, we show all values as a comma-separated string
   const displayValue = value
@@ -14,7 +18,12 @@ export default React.forwardRef<HTMLInputElement>(function MultipleContent(_, re
 
   return (
     <div className={`${prefixCls}-content`}>
-      <Input ref={ref} value={displayValue} maxLength={maxLength} />
+      <Input
+        ref={ref}
+        {...inputProps}
+        value={displayValue}
+        maxLength={mode === 'combobox' ? maxLength : undefined}
+      />
     </div>
   );
 });

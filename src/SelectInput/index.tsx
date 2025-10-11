@@ -4,22 +4,6 @@ import Affix from './Affix';
 import SelectContent from './Content';
 import SelectInputContext, { type ContentContextProps } from './context';
 import type { DisplayValueType, Mode } from '../interface';
-import useBaseProps from '../hooks/useBaseProps';
-import { omit, useEvent } from '@rc-component/util';
-
-const DEFAULT_OMIT_PROPS = [
-  'value',
-  'onChange',
-  'removeIcon',
-  'placeholder',
-  'maxTagCount',
-  'maxTagTextLength',
-  'maxTagPlaceholder',
-  'choiceTransitionName',
-  'onInputKeyDown',
-  'onPopupScroll',
-  'tabIndex',
-] as const;
 
 export interface SelectInputRef {
   focus: (options?: FocusOptions) => void;
@@ -41,12 +25,30 @@ export interface SelectInputProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   onSearchSubmit?: (searchText: string) => void;
   onInputBlur?: () => void;
   onClearMouseDown?: React.MouseEventHandler<HTMLElement>;
+  onInputKeyDown?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   maxLength?: number;
+  autoFocus?: boolean;
   // Add other props that need to be passed through
   className?: string;
   style?: React.CSSProperties;
   [key: string]: any;
 }
+import useBaseProps from '../hooks/useBaseProps';
+import { omit, useEvent } from '@rc-component/util';
+
+const DEFAULT_OMIT_PROPS = [
+  'value',
+  'onChange',
+  'removeIcon',
+  'placeholder',
+  'maxTagCount',
+  'maxTagTextLength',
+  'maxTagPlaceholder',
+  'choiceTransitionName',
+  'onInputKeyDown',
+  'onPopupScroll',
+  'tabIndex',
+] as const;
 
 export default React.forwardRef<SelectInputRef, SelectInputProps>(function SelectInput(
   props: SelectInputProps,
@@ -83,6 +85,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
     onMouseDown,
     onBlur,
     onClearMouseDown,
+    onInputKeyDown,
 
     ...restProps
   } = props;
@@ -128,41 +131,11 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
     onBlur?.(event);
   };
 
-  // ==================== Context =====================
-  const cachedContext = React.useMemo<ContentContextProps>(
-    () => ({
-      prefixCls,
-      multiple: !!multiple,
-      displayValues,
-      placeholder,
-      searchValue,
-      mode,
-      onSearch,
-      onSearchSubmit,
-      onInputBlur,
-      maxLength,
-      autoFocus,
-    }),
-    [
-      prefixCls,
-      multiple,
-      displayValues,
-      placeholder,
-      searchValue,
-      mode,
-      onSearch,
-      onSearchSubmit,
-      onInputBlur,
-      maxLength,
-      autoFocus,
-    ],
-  );
-
   // ===================== Render =====================
   const domProps = omit(restProps, DEFAULT_OMIT_PROPS);
 
   return (
-    <SelectInputContext.Provider value={cachedContext}>
+    <SelectInputContext.Provider value={props}>
       <div
         {...domProps}
         // Style

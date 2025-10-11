@@ -112,7 +112,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       ref={ref}
       autoFocus={autoFocus}
       className={inputCls}
-      maxLength={mode === 'combobox' ? maxLength : undefined}
       onChange={handleChange}
       onKeyDown={handleKeyDown}
       onBlur={handleBlur}
