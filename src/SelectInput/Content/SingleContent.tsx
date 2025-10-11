@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Input from '../Input';
 import { useSelectInputContext } from '../context';
+import useBaseProps from '../../hooks/useBaseProps';
 import Placeholder from './Placeholder';
 import type { SharedContentProps } from '.';
 
@@ -8,8 +9,9 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function S
   { inputProps },
   ref,
 ) {
-  const { prefixCls, searchValue, activeValue, displayValues, maxLength, mode, onSearch } =
+  const { prefixCls, searchValue, activeValue, displayValues, maxLength, mode } =
     useSelectInputContext();
+  const { triggerOpen } = useBaseProps();
 
   const [inputChanged, setInputChanged] = React.useState(false);
 
@@ -18,7 +20,7 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function S
 
   // Implement the same logic as the old SingleSelector
   let mergedSearchValue: string = searchValue || '';
-  if (combobox && activeValue && !inputChanged) {
+  if (combobox && activeValue && !inputChanged && triggerOpen) {
     mergedSearchValue = activeValue;
   }
 
