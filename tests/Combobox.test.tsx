@@ -486,8 +486,6 @@ describe('Select.Combobox', () => {
     jest.useRealTimers();
   });
 
-  return;
-
   it('should keep close after blur', async () => {
     const { container } = render(
       <Select mode="combobox" notFoundContent={null}>
@@ -619,7 +617,7 @@ describe('Select.Combobox', () => {
         </Select>,
       );
 
-      const selectorEle = container.querySelector('.rc-select-selector');
+      const selectorEle = container.querySelector('.rc-select');
 
       const mouseDownEvent = createEvent.mouseDown(selectorEle);
       mouseDownEvent.preventDefault = preventDefault;
@@ -636,7 +634,7 @@ describe('Select.Combobox', () => {
         </Select>,
       );
 
-      const selectorEle = container.querySelector('.rc-select-selector');
+      const selectorEle = container.querySelector('.rc-select');
 
       const mouseDownEvent = createEvent.mouseDown(selectorEle);
       mouseDownEvent.preventDefault = preventDefault;

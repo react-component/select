@@ -1,5 +1,4 @@
 import * as React from 'react';
-import clsx from 'clsx';
 import Affix from './Affix';
 import SelectContent from './Content';
 import SelectInputContext from './context';
@@ -94,7 +93,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
     ...restProps
   } = props;
 
-  const { triggerOpen, toggleOpen } = useBaseProps();
+  const { triggerOpen, toggleOpen, showSearch, disabled } = useBaseProps();
 
   const rootRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -151,14 +150,23 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
 
   // ====================== Open ======================
   const onInternalMouseDown: SelectInputProps['onMouseDown'] = useEvent((event) => {
-    event.preventDefault();
+    if (!disabled) {
+      event.preventDefault();
 
-    if (!(event.nativeEvent as any)._select_lazy) {
-      inputRef.current?.focus();
-      toggleOpen();
-    } else if (triggerOpen) {
-      // Lazy should also close when click clear icon
-      toggleOpen(false);
+      // Check if we should prevent closing when clicking on selector
+      // Don't close if: open && not multiple && (combobox mode || showSearch)
+      const shouldPreventClose = triggerOpen && !multiple && (mode === 'combobox' || showSearch);
+
+      if (!(event.nativeEvent as any)._select_lazy) {
+        inputRef.current?.focus();
+        // Only toggle open if we should not prevent close
+        if (!shouldPreventClose) {
+          toggleOpen();
+        }
+      } else if (triggerOpen) {
+        // Lazy should also close when click clear icon
+        toggleOpen(false);
+      }
     }
 
     onMouseDown?.(event);
@@ -184,7 +192,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
         {...domProps}
         // Style
         ref={rootRef}
-        className={clsx(className)}
+        className={className}
         style={style}
         // Open
         onMouseDown={onInternalMouseDown}
