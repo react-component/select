@@ -12,6 +12,16 @@ export interface TransBtnProps {
   children?: React.ReactNode;
 }
 
+/**
+ * Small wrapper for Select icons (clear/arrow/etc.).
+ * Prevents default mousedown to avoid blurring or caret moves, and
+ * renders a custom icon or a fallback icon span.
+ *
+ * DOM structure:
+ * <span className={className} ...>
+ *   { icon || <span className={`${className}-icon`}>{children}</span> }
+ * </span>
+ */
 const TransBtn: React.FC<TransBtnProps> = (props) => {
   const { className, style, customizeIcon, customizeIconProps, children, onMouseDown, onClick } =
     props;

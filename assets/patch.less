@@ -5,6 +5,8 @@
   display: inline-flex;
   align-items: center;
   user-select: none;
+  border: 1px solid blue;
+  position: relative;
 
   // Content 部分自动占据剩余宽度
   .@{select-prefix}-content {
@@ -37,6 +39,7 @@
     }
   }
 
+  .@{select-prefix}-content,
   .@{select-prefix}-input,
   .@{select-prefix}-placeholder {
     padding: 0;
@@ -51,5 +54,11 @@
   .@{select-prefix}-suffix,
   .@{select-prefix}-clear {
     flex: none;
+  }
+
+  .@{select-prefix}-clear {
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 }

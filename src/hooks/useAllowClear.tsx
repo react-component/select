@@ -1,6 +1,11 @@
 import TransBtn from '../TransBtn';
 import type { DisplayValueType, Mode, RenderNode } from '../interface';
-import React from 'react';
+import React, { useMemo } from 'react';
+
+export interface AllowClearConfig {
+  allowClear: boolean;
+  clearIcon: React.ReactNode;
+}
 
 export const useAllowClear = (
   prefixCls: string,
@@ -11,38 +16,45 @@ export const useAllowClear = (
   disabled: boolean = false,
   mergedSearchValue?: string,
   mode?: Mode,
-) => {
-  const mergedClearIcon = React.useMemo(() => {
-    if (typeof allowClear === 'object') {
-      return allowClear.clearIcon;
+): AllowClearConfig => {
+  // Convert boolean to object first
+  const allowClearConfig = useMemo<Partial<AllowClearConfig>>(() => {
+    if (typeof allowClear === 'boolean') {
+      return { allowClear };
     }
-    if (clearIcon) {
-      return clearIcon;
+    if (allowClear && typeof allowClear === 'object') {
+      return allowClear;
     }
-  }, [allowClear, clearIcon]);
+    return { allowClear: false };
+  }, [allowClear]);
 
-  const mergedAllowClear = React.useMemo<boolean>(() => {
-    if (
+  return useMemo(() => {
+    const mergedAllowClear =
       !disabled &&
-      !!allowClear &&
+      allowClearConfig.allowClear !== false &&
       (displayValues.length || mergedSearchValue) &&
-      !(mode === 'combobox' && mergedSearchValue === '')
-    ) {
-      return true;
-    }
-    return false;
-  }, [allowClear, disabled, displayValues.length, mergedSearchValue, mode]);
+      !(mode === 'combobox' && mergedSearchValue === '');
 
-  return {
-    allowClear: mergedAllowClear,
-    clearIcon: (
-      <TransBtn
-        className={`${prefixCls}-clear`}
-        onMouseDown={onClearMouseDown}
-        customizeIcon={mergedClearIcon}
-      >
-        ×
-      </TransBtn>
-    ),
-  };
+    return {
+      allowClear: mergedAllowClear,
+      clearIcon: mergedAllowClear ? (
+        <TransBtn
+          className={`${prefixCls}-clear`}
+          onMouseDown={onClearMouseDown}
+          customizeIcon={allowClearConfig.clearIcon || clearIcon}
+        >
+          ×
+        </TransBtn>
+      ) : null,
+    };
+  }, [
+    allowClearConfig,
+    clearIcon,
+    disabled,
+    displayValues.length,
+    mergedSearchValue,
+    mode,
+    onClearMouseDown,
+    prefixCls,
+  ]);
 };

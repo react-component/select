@@ -5,6 +5,7 @@ import SelectContent from './Content';
 import SelectInputContext, { type ContentContextProps } from './context';
 import type { DisplayValueType, Mode } from '../interface';
 import useBaseProps from '../hooks/useBaseProps';
+import { useEvent } from '@rc-component/util';
 
 export interface SelectInputRef {
   focus: (options?: FocusOptions) => void;
@@ -87,13 +88,19 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
   );
 
   // ====================== Open ======================
-  const onInternalMouseDown: SelectInputProps['onMouseDown'] = (event) => {
+  const onInternalMouseDown: SelectInputProps['onMouseDown'] = useEvent((event) => {
     event.preventDefault();
-    inputRef.current?.focus();
 
-    toggleOpen();
+    if (!(event.nativeEvent as any)._select_lazy) {
+      inputRef.current?.focus();
+      toggleOpen();
+    } else if (triggerOpen) {
+      // Lazy should also close when click clear icon
+      toggleOpen(false);
+    }
+
     onMouseDown?.(event);
-  };
+  });
 
   const onInternalBlur: SelectInputProps['onBlur'] = (event) => {
     toggleOpen(false);
@@ -148,7 +155,17 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
         {/* Suffix */}
         <Affix type="suffix">{suffix}</Affix>
         {/* Clear Icon */}
-        {clearIcon && <Affix type="clear">{clearIcon}</Affix>}
+        {clearIcon && (
+          <Affix
+            type="clear"
+            onMouseDown={(e) => {
+              // Mark to tell not trigger open or focus
+              (e.nativeEvent as any)._select_lazy = true;
+            }}
+          >
+            {clearIcon}
+          </Affix>
+        )}
       </div>
     </SelectInputContext.Provider>
   );
