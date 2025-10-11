@@ -112,10 +112,8 @@ describe('Select.Combobox', () => {
 
     toggleOpen(container);
     selectItem(container);
-    expect(container.querySelector('input').value).toEqual('1');
+    expect(container.querySelector('input')).toHaveValue('1');
   });
-
-  return;
 
   describe('input value', () => {
     const createSelect = (props?: Partial<SelectProps>) => (
@@ -247,6 +245,8 @@ describe('Select.Combobox', () => {
       jest.useRealTimers();
     });
   });
+
+  return;
 
   describe('backfill', () => {
     it('basic', () => {

@@ -18,10 +18,10 @@ export function expectOpen(wrapper: any, open: boolean = true) {
 
 export function toggleOpen(wrapper: any) {
   if (wrapper instanceof HTMLElement) {
-    fireEvent.mouseDown(wrapper.querySelector('.rc-select-selector'));
+    fireEvent.mouseDown(wrapper.querySelector('.rc-select'));
     return;
   }
-  wrapper.find('.rc-select-selector').simulate('mousedown');
+  wrapper.find('.rc-select').simulate('mousedown');
 }
 
 export function selectItem(wrapper: any, index: number = 0) {
