@@ -4,8 +4,8 @@ import { useSelectInputContext } from '../context';
 
 // This is just a placeholder, do not code any logic here
 
-export default React.forwardRef<HTMLInputElement, unknown>(function MultipleContent(_, ref) {
-  const { prefixCls, displayValues: value } = useSelectInputContext();
+export default React.forwardRef<HTMLInputElement>(function MultipleContent(_, ref) {
+  const { prefixCls, displayValues: value, maxLength } = useSelectInputContext();
 
   // For multiple mode, we show all values as a comma-separated string
   const displayValue = value
@@ -14,7 +14,7 @@ export default React.forwardRef<HTMLInputElement, unknown>(function MultipleCont
 
   return (
     <div className={`${prefixCls}-content`}>
-      <Input ref={ref} value={displayValue} />
+      <Input ref={ref} value={displayValue} maxLength={maxLength} />
     </div>
   );
 });

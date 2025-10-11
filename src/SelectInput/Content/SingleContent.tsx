@@ -3,8 +3,8 @@ import Input from '../Input';
 import { useSelectInputContext } from '../context';
 import Placeholder from './Placeholder';
 
-export default React.forwardRef<HTMLInputElement, unknown>(function SingleContent(_, ref) {
-  const { prefixCls, searchValue, displayValues } = useSelectInputContext();
+export default React.forwardRef<HTMLInputElement>(function SingleContent(_, ref) {
+  const { prefixCls, searchValue, displayValues, maxLength } = useSelectInputContext();
 
   const displayValue = displayValues[0];
 
@@ -22,7 +22,7 @@ export default React.forwardRef<HTMLInputElement, unknown>(function SingleConten
       ) : (
         <Placeholder />
       )}
-      <Input ref={ref} value={searchValue} />
+      <Input ref={ref} value={searchValue} maxLength={maxLength} />
     </div>
   );
 });

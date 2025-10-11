@@ -26,6 +26,7 @@ export interface SelectInputProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   onSearch?: (searchText: string, fromTyping: boolean, isCompositing: boolean) => void;
   onSearchSubmit?: (searchText: string) => void;
   onInputBlur?: () => void;
+  maxLength?: number;
   // Add other props that need to be passed through
   className?: string;
   style?: React.CSSProperties;
@@ -108,6 +109,8 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
   };
 
   // ==================== Context =====================
+  const maxLength = props.maxLength;
+
   const cachedContext = React.useMemo<ContentContextProps>(
     () => ({
       prefixCls,
@@ -119,6 +122,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
       onSearch,
       onSearchSubmit,
       onInputBlur,
+      maxLength,
     }),
     [
       prefixCls,
@@ -130,6 +134,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
       onSearch,
       onSearchSubmit,
       onInputBlur,
+      maxLength,
     ],
   );
 
