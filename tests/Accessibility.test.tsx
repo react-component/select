@@ -62,6 +62,10 @@ describe('Select.Accessibility', () => {
     expect(onActive).toHaveBeenCalledTimes(1);
 
     keyDown(container.querySelector('input')!, KeyCode.ENTER);
+    await act(async () => {
+      jest.runAllTimers();
+      await Promise.resolve();
+    });
     expectOpen(container, false);
 
     // Next Match

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import pickAttrs from '@rc-component/util/lib/pickAttrs';
 import SingleContent from './SingleContent';
 import MultipleContent from './MultipleContent';
 import { useSelectInputContext } from '../context';
@@ -10,9 +11,13 @@ export interface SharedContentProps {
 
 const SelectContent = React.forwardRef<HTMLInputElement>(function SelectContent(_, ref) {
   const { multiple, onInputKeyDown } = useSelectInputContext();
-  const { showSearch } = useBaseProps();
+  const baseProps = useBaseProps();
+  const { showSearch } = baseProps;
+
+  const ariaProps = pickAttrs(baseProps, { aria: true });
 
   const sharedInputProps: SharedContentProps['inputProps'] = {
+    ...ariaProps,
     onKeyDown: onInputKeyDown,
     readOnly: !showSearch,
   };
