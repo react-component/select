@@ -31,8 +31,6 @@ describe('Select.Combobox', () => {
   keyDownTest('combobox');
   openControlledTest('combobox');
 
-  return;
-
   it('renders correctly', () => {
     const { container } = render(
       <Select mode="combobox" placeholder="Search">
@@ -83,6 +81,8 @@ describe('Select.Combobox', () => {
     expect(container.querySelector('.rc-select-selection-placeholder')).toBeFalsy();
     expect(container.querySelector('input')!.value).toBe('1');
   });
+
+  return;
 
   it('fire change event immediately when user inputing', () => {
     const handleChange = jest.fn();
