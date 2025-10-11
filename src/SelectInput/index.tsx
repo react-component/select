@@ -51,6 +51,7 @@ const DEFAULT_OMIT_PROPS = [
   'onInputKeyDown',
   'onPopupScroll',
   'tabIndex',
+  'activeValue',
 ] as const;
 
 export default React.forwardRef<SelectInputRef, SelectInputProps>(function SelectInput(

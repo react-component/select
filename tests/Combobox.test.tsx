@@ -363,8 +363,6 @@ describe('Select.Combobox', () => {
     expect(container.querySelector('.rc-select-clear')).toBeFalsy();
   });
 
-  return;
-
   it('autocomplete - option update when input change', () => {
     class App extends React.Component {
       public state = {
@@ -469,6 +467,7 @@ describe('Select.Combobox', () => {
   });
 
   it('should reset value by control', () => {
+    jest.useFakeTimers();
     const onChange = jest.fn();
     const { container } = render(
       <Select mode="combobox" value="" onChange={onChange}>
@@ -479,11 +478,15 @@ describe('Select.Combobox', () => {
 
     toggleOpen(container);
     selectItem(container);
+    jest.runAllTimers();
     expect(onChange).toHaveBeenCalled();
     expectOpen(container, false);
 
-    expect(container.querySelector('input')!.value).toEqual('');
+    expect(container.querySelector('input')!).toHaveValue('');
+    jest.useRealTimers();
   });
+
+  return;
 
   it('should keep close after blur', async () => {
     const { container } = render(
