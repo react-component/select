@@ -2204,8 +2204,7 @@ describe('Select.Basic', () => {
         <Select value="b" options={[{ label: 'bamboo', title: 'TitleBamboo', value: 'b' }]} />,
       );
 
-      // expect(container.find('.rc-select-item').prop('title')).toEqual('TitleBamboo');
-      expect(container.querySelector('.rc-select-item').getAttribute('title')).toEqual(
+      expect(container.querySelector('.rc-select-content-value').getAttribute('title')).toEqual(
         'TitleBamboo',
       );
     });

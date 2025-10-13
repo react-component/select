@@ -35,7 +35,9 @@ export function selectItem(wrapper: any, index: number = 0) {
 export function findSelection(wrapper: any, index: number = 0) {
   if (wrapper instanceof HTMLElement) {
     const itemNode = wrapper.querySelectorAll('.rc-select-item')[index];
-    const contentNode = itemNode.querySelector('.rc-select-item-content');
+    const contentNode =
+      itemNode?.querySelector('.rc-select-item-content') ||
+      wrapper.querySelector('.rc-select-content-value');
 
     if (contentNode) {
       return contentNode;
