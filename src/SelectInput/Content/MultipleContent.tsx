@@ -45,6 +45,8 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
     maxTagCount,
   } = useBaseProps();
 
+  const selectionItemPrefixCls = `${prefixCls}-selection-item`;
+
   // ===================== Search ======================
   const inputValue = showSearch ? searchValue : '';
   const inputEditable: boolean = showSearch && (triggerOpen || focused);
@@ -78,14 +80,14 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
   ) => (
     <span
       title={getTitle(item)}
-      className={clsx(`${prefixCls}-item`, {
-        [`${prefixCls}-item-disabled`]: itemDisabled,
+      className={clsx(selectionItemPrefixCls, {
+        [`${selectionItemPrefixCls}-disabled`]: itemDisabled,
       })}
     >
-      <span className={`${prefixCls}-item-content`}>{content}</span>
+      <span className={`${selectionItemPrefixCls}-content`}>{content}</span>
       {closable && (
         <TransBtn
-          className={`${prefixCls}-item-remove`}
+          className={`${selectionItemPrefixCls}-remove`}
           onMouseDown={onPreventMouseDown}
           onClick={onClose}
           customizeIcon={removeIcon}

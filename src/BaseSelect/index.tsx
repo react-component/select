@@ -522,7 +522,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
   // KeyDown
   const onInternalKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
-    //   const clearLock = getClearLock();
+    const clearLock = getClearLock();
     const { key } = event;
 
     const isEnterKey = key === 'Enter';
@@ -539,36 +539,36 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       }
     }
 
-    //   setClearLock(!!mergedSearchValue);
+    setClearLock(!!mergedSearchValue);
 
-    //   // Remove value by `backspace`
-    //   if (
-    //     key === 'Backspace' &&
-    //     !clearLock &&
-    //     multiple &&
-    //     !mergedSearchValue &&
-    //     displayValues.length
-    //   ) {
-    //     const cloneDisplayValues = [...displayValues];
-    //     let removedDisplayValue = null;
+    // Remove value by `backspace`
+    if (
+      key === 'Backspace' &&
+      !clearLock &&
+      multiple &&
+      !mergedSearchValue &&
+      displayValues.length
+    ) {
+      const cloneDisplayValues = [...displayValues];
+      let removedDisplayValue = null;
 
-    //     for (let i = cloneDisplayValues.length - 1; i >= 0; i -= 1) {
-    //       const current = cloneDisplayValues[i];
+      for (let i = cloneDisplayValues.length - 1; i >= 0; i -= 1) {
+        const current = cloneDisplayValues[i];
 
-    //       if (!current.disabled) {
-    //         cloneDisplayValues.splice(i, 1);
-    //         removedDisplayValue = current;
-    //         break;
-    //       }
-    //     }
+        if (!current.disabled) {
+          cloneDisplayValues.splice(i, 1);
+          removedDisplayValue = current;
+          break;
+        }
+      }
 
-    //     if (removedDisplayValue) {
-    //       onDisplayValuesChange(cloneDisplayValues, {
-    //         type: 'remove',
-    //         values: [removedDisplayValue],
-    //       });
-    //     }
-    //   }
+      if (removedDisplayValue) {
+        onDisplayValuesChange(cloneDisplayValues, {
+          type: 'remove',
+          values: [removedDisplayValue],
+        });
+      }
+    }
 
     if (mergedOpen && (!isEnterKey || !keyLockRef.current)) {
       // Lock the Enter key after it is pressed to avoid repeated triggering of the onChange event.

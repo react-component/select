@@ -26,7 +26,7 @@ export default function maxTagTextLengthTest(mode: any) {
         </Select>,
       );
 
-      expect(container.querySelectorAll('.rc-select-item')).toHaveLength(3);
+      expect(container.querySelectorAll('.rc-select-selection-item')).toHaveLength(3);
     });
 
     it('truncates tags by maxTagCount while maxTagCount is 0', () => {
@@ -38,7 +38,7 @@ export default function maxTagTextLengthTest(mode: any) {
         </Select>,
       );
 
-      expect(container.querySelectorAll('.rc-select-item')).toHaveLength(1);
+      expect(container.querySelectorAll('.rc-select-selection-item')).toHaveLength(1);
       expect(findSelection(container).textContent).toEqual('+ 3 ...');
     });
 

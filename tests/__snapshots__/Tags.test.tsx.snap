@@ -13,17 +13,17 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
         style="opacity: 1;"
       >
         <span
-          class="rc-select-item"
+          class="rc-select-selection-item"
           title="Jack"
         >
           <span
-            class="rc-select-item-content"
+            class="rc-select-selection-item-content"
           >
             Jack
           </span>
           <span
             aria-hidden="true"
-            class="rc-select-item-remove"
+            class="rc-select-selection-item-remove"
             style="user-select: none;"
             unselectable="on"
           >
@@ -36,17 +36,17 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
         style="opacity: 1;"
       >
         <span
-          class="rc-select-item"
+          class="rc-select-selection-item"
           title="foo"
         >
           <span
-            class="rc-select-item-content"
+            class="rc-select-selection-item-content"
           >
             foo
           </span>
           <span
             aria-hidden="true"
-            class="rc-select-item-remove"
+            class="rc-select-selection-item-remove"
             style="user-select: none;"
             unselectable="on"
           >
@@ -245,17 +245,17 @@ exports[`Select.Tags max tag render truncates tags by maxTagCount and show maxTa
       style="opacity: 1;"
     >
       <span
-        class="rc-select-item"
+        class="rc-select-selection-item"
         title="One"
       >
         <span
-          class="rc-select-item-content"
+          class="rc-select-selection-item-content"
         >
           One
         </span>
         <span
           aria-hidden="true"
-          class="rc-select-item-remove"
+          class="rc-select-selection-item-remove"
           style="user-select: none;"
           unselectable="on"
         >
@@ -268,17 +268,17 @@ exports[`Select.Tags max tag render truncates tags by maxTagCount and show maxTa
       style="opacity: 1;"
     >
       <span
-        class="rc-select-item"
+        class="rc-select-selection-item"
         title="Two"
       >
         <span
-          class="rc-select-item-content"
+          class="rc-select-selection-item-content"
         >
           Two
         </span>
         <span
           aria-hidden="true"
-          class="rc-select-item-remove"
+          class="rc-select-selection-item-remove"
           style="user-select: none;"
           unselectable="on"
         >
@@ -291,10 +291,10 @@ exports[`Select.Tags max tag render truncates tags by maxTagCount and show maxTa
       style="opacity: 1;"
     >
       <span
-        class="rc-select-item"
+        class="rc-select-selection-item"
       >
         <span
-          class="rc-select-item-content"
+          class="rc-select-selection-item-content"
         >
           <span>
             Omitted
@@ -337,17 +337,17 @@ exports[`Select.Tags max tag render truncates tags by maxTagCount and show maxTa
       style="opacity: 1;"
     >
       <span
-        class="rc-select-item"
+        class="rc-select-selection-item"
         title="One"
       >
         <span
-          class="rc-select-item-content"
+          class="rc-select-selection-item-content"
         >
           One
         </span>
         <span
           aria-hidden="true"
-          class="rc-select-item-remove"
+          class="rc-select-selection-item-remove"
           style="user-select: none;"
           unselectable="on"
         >
@@ -360,17 +360,17 @@ exports[`Select.Tags max tag render truncates tags by maxTagCount and show maxTa
       style="opacity: 1;"
     >
       <span
-        class="rc-select-item"
+        class="rc-select-selection-item"
         title="Two"
       >
         <span
-          class="rc-select-item-content"
+          class="rc-select-selection-item-content"
         >
           Two
         </span>
         <span
           aria-hidden="true"
-          class="rc-select-item-remove"
+          class="rc-select-selection-item-remove"
           style="user-select: none;"
           unselectable="on"
         >
@@ -383,10 +383,10 @@ exports[`Select.Tags max tag render truncates tags by maxTagCount and show maxTa
       style="opacity: 1;"
     >
       <span
-        class="rc-select-item"
+        class="rc-select-selection-item"
       >
         <span
-          class="rc-select-item-content"
+          class="rc-select-selection-item-content"
         >
           <span>
             1
@@ -430,17 +430,17 @@ exports[`Select.Tags max tag render truncates values by maxTagTextLength 1`] = `
       style="opacity: 1;"
     >
       <span
-        class="rc-select-item"
+        class="rc-select-selection-item"
         title="One"
       >
         <span
-          class="rc-select-item-content"
+          class="rc-select-selection-item-content"
         >
           On...
         </span>
         <span
           aria-hidden="true"
-          class="rc-select-item-remove"
+          class="rc-select-selection-item-remove"
           style="user-select: none;"
           unselectable="on"
         >
@@ -453,17 +453,17 @@ exports[`Select.Tags max tag render truncates values by maxTagTextLength 1`] = `
       style="opacity: 1;"
     >
       <span
-        class="rc-select-item"
+        class="rc-select-selection-item"
         title="Two"
       >
         <span
-          class="rc-select-item-content"
+          class="rc-select-selection-item-content"
         >
           Tw...
         </span>
         <span
           aria-hidden="true"
-          class="rc-select-item-remove"
+          class="rc-select-selection-item-remove"
           style="user-select: none;"
           unselectable="on"
         >
