@@ -39,6 +39,7 @@ import useBaseProps from '../hooks/useBaseProps';
 import { omit, useEvent } from '@rc-component/util';
 import KeyCode from '@rc-component/util/lib/KeyCode';
 import { isValidateOpenKey } from '../utils/keyUtil';
+import clsx from 'clsx';
 
 const DEFAULT_OMIT_PROPS = [
   'value',
@@ -98,7 +99,8 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
     ...restProps
   } = props;
 
-  const { triggerOpen, toggleOpen, showSearch, disabled, classNames, styles } = useBaseProps();
+  const { triggerOpen, toggleOpen, showSearch, disabled, loading, classNames, styles } =
+    useBaseProps();
 
   const rootRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -204,7 +206,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
         onBlur={onInternalBlur}
       >
         {/* Prefix */}
-        <Affix type="prefix" className={classNames?.prefix} style={styles?.prefix}>
+        <Affix className={clsx(`${prefixCls}-prefix`, classNames?.prefix)} style={styles?.prefix}>
           {prefix}
         </Affix>
 
@@ -212,15 +214,23 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
         <SelectContent ref={inputRef} />
 
         {/* Suffix */}
-        <Affix type="suffix" className={classNames?.suffix} style={styles?.suffix}>
+        <Affix
+          className={clsx(
+            `${prefixCls}-suffix`,
+            {
+              [`${prefixCls}-suffix-loading`]: loading,
+            },
+            classNames?.suffix,
+          )}
+          style={styles?.suffix}
+        >
           {suffix}
         </Affix>
         {/* Clear Icon */}
         {clearIcon && (
           <Affix
-            type="clear"
-            className={classNames?.suffix}
-            style={styles?.suffix}
+            className={clsx(`${prefixCls}-clear`, classNames?.clear)}
+            style={styles?.clear}
             onMouseDown={(e) => {
               // Mark to tell not trigger open or focus
               (e.nativeEvent as any)._select_lazy = true;

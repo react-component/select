@@ -1572,7 +1572,7 @@ describe('Select.Basic', () => {
 
   it('if loading, arrow should show loading icon', () => {
     const { container } = render(
-      <Select style={{ width: 1000 }} loading>
+      <Select style={{ width: 1000 }} loading suffix="Bamboo">
         <Option value={0}>0</Option>
         <Option value={1}>1</Option>
       </Select>,
@@ -1581,7 +1581,7 @@ describe('Select.Basic', () => {
   });
   it('if loading and multiple which has not arrow, but have loading icon', () => {
     const renderDemo = (loading?: boolean) => (
-      <Select style={{ width: 1000 }} mode="multiple" loading={loading}>
+      <Select style={{ width: 1000 }} mode="multiple" loading={loading} suffix="Bamboo">
         <Option value={0}>0</Option>
         <Option value={1}>1</Option>
       </Select>

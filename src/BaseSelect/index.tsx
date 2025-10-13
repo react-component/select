@@ -32,7 +32,7 @@ import { getSeparatedContent, isValidCount } from '../utils/valueUtil';
 import Polite from './Polite';
 import useOpen from '../hooks/useOpen';
 import { useEvent } from '@rc-component/util';
-export type BaseSelectSemanticName = 'prefix' | 'suffix' | 'input';
+export type BaseSelectSemanticName = 'prefix' | 'suffix' | 'input' | 'clear';
 
 /**
  * ZombieJ:
@@ -582,16 +582,16 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     onKeyDown?.(event);
   };
 
-  // // KeyUp
-  // const onInternalKeyUp: React.KeyboardEventHandler<HTMLDivElement> = (event, ...rest) => {
-  //   if (mergedOpen) {
-  //     listRef.current?.onKeyUp(event, ...rest);
-  //   }
-  //   if (event.key === 'Enter') {
-  //     keyLockRef.current = false;
-  //   }
-  //   onKeyUp?.(event, ...rest);
-  // };
+  // KeyUp
+  const onInternalKeyUp: React.KeyboardEventHandler<HTMLDivElement> = (event, ...rest) => {
+    if (mergedOpen) {
+      listRef.current?.onKeyUp(event, ...rest);
+    }
+    if (event.key === 'Enter') {
+      keyLockRef.current = false;
+    }
+    onKeyUp?.(event, ...rest);
+  };
 
   // ============================ Selector ============================
   const onSelectorRemove = useEvent((val: DisplayValueType) => {
@@ -937,6 +937,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       onBlur={onInternalBlur}
       onClearMouseDown={onClearMouseDown}
       onKeyDown={onInternalKeyDown}
+      onKeyUp={onInternalKeyUp}
       onSelectorRemove={onSelectorRemove}
       // Open
       onMouseDown={onInternalMouseDown}

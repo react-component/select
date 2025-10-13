@@ -1,23 +1,16 @@
 import * as React from 'react';
-import clsx from 'clsx';
-import { useSelectInputContext } from './context';
 
 export interface AffixProps extends React.HTMLAttributes<HTMLDivElement> {
-  type: 'prefix' | 'suffix' | 'clear';
   children?: React.ReactNode;
 }
 
+// Affix is a simple wrapper which should not read context or logical props
 export default function Affix(props: AffixProps) {
-  const { type, children, className, ...restProps } = props;
-  const { prefixCls } = useSelectInputContext();
+  const { children, ...restProps } = props;
 
   if (!children) {
     return null;
   }
 
-  return (
-    <div className={clsx(`${prefixCls}-${type}`, className)} {...restProps}>
-      {children}
-    </div>
-  );
+  return <div {...restProps}>{children}</div>;
 }
