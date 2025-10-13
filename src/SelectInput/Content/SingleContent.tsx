@@ -6,12 +6,13 @@ import useBaseProps from '../../hooks/useBaseProps';
 import Placeholder from './Placeholder';
 import type { SharedContentProps } from '.';
 import SelectContext from '../../SelectContext';
+import { getTitle } from '../../utils/commonUtil';
 
 const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
   ({ inputProps }, ref) => {
     const { prefixCls, searchValue, activeValue, displayValues, maxLength, mode } =
       useSelectInputContext();
-    const { triggerOpen } = useBaseProps();
+    const { triggerOpen, title: rootTitle } = useBaseProps();
     const selectContext = React.useContext(SelectContext);
 
     const [inputChanged, setInputChanged] = React.useState(false);
@@ -45,14 +46,23 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
           restProps = {
             ...restProps,
             ...rest,
+            title: getTitle(option.data),
             className: clsx(restProps.className, className),
             style: { ...restProps.style, ...style },
           };
         }
       }
 
+      if (displayValue && !restProps.title) {
+        restProps.title = getTitle(displayValue);
+      }
+
+      if (rootTitle !== undefined) {
+        restProps.title = rootTitle;
+      }
+
       return restProps;
-    }, [displayValue, selectContext?.flattenOptions, prefixCls, mergedSearchValue]);
+    }, [displayValue, selectContext?.flattenOptions, prefixCls, mergedSearchValue, rootTitle]);
 
     React.useEffect(() => {
       if (combobox) {

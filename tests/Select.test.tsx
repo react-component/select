@@ -2295,15 +2295,17 @@ describe('Select.Basic', () => {
   it('should support title', () => {
     const { container: container1 } = render(<Select defaultValue="lucy" options={[]} />);
     expect(container1.querySelector('.rc-select').getAttribute('title')).toBeFalsy();
-    expect(container1.querySelector('.rc-select-item').getAttribute('title')).toBe('lucy');
+    expect(container1.querySelector('.rc-select-content-value').getAttribute('title')).toBe('lucy');
     const { container: container2 } = render(<Select defaultValue="lucy" options={[]} title="" />);
     expect(container2.querySelector('.rc-select').getAttribute('title')).toBeFalsy();
-    expect(container2.querySelector('.rc-select-item').getAttribute('title')).toBe('');
+    expect(container2.querySelector('.rc-select-content-value').getAttribute('title')).toBe('');
     const { container: container3 } = render(
       <Select defaultValue="lucy" options={[]} title="title" />,
     );
     expect(container3.querySelector('.rc-select').getAttribute('title')).toBe('title');
-    expect(container3.querySelector('.rc-select-item').getAttribute('title')).toBe('title');
+    expect(container3.querySelector('.rc-select-content-value').getAttribute('title')).toBe(
+      'title',
+    );
   });
 
   it('scrollbar should be left position with rtl direction', () => {
