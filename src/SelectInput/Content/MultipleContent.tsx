@@ -31,13 +31,19 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
     searchValue,
     onSelectorRemove,
     removeIcon: removeIconFromContext,
+
+    focused,
+  } = useSelectInputContext();
+  const {
+    disabled,
+    showSearch,
+    triggerOpen,
+    toggleOpen,
+    tagRender: tagRenderFromContext,
     maxTagPlaceholder: maxTagPlaceholderFromContext,
     maxTagTextLength,
     maxTagCount,
-    tagRender: tagRenderFromContext,
-    focused,
-  } = useSelectInputContext();
-  const { disabled, showSearch, triggerOpen, toggleOpen } = useBaseProps();
+  } = useBaseProps();
 
   // ===================== Search ======================
   const inputValue = showSearch ? searchValue : '';
