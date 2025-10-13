@@ -19,13 +19,25 @@ export interface InputProps {
   maxLength?: number;
   /** width always match content width */
   syncWidth?: boolean;
+  /** autoComplete for input */
+  autoComplete?: string;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
-  const { onChange, onKeyDown, onBlur, style, syncWidth, value, className, ...restProps } = props;
+  const {
+    onChange,
+    onKeyDown,
+    onBlur,
+    style,
+    syncWidth,
+    value,
+    className,
+    autoComplete,
+    ...restProps
+  } = props;
   const { prefixCls, mode, onSearch, onSearchSubmit, onInputBlur, autoFocus } =
     useSelectInputContext();
-  const { id, classNames, styles } = useBaseProps() || {};
+  const { id, classNames, styles, open, activeDescendantId } = useBaseProps() || {};
 
   const inputCls = clsx(`${prefixCls}-input`, classNames?.input, className);
 
@@ -121,6 +133,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
         } as React.CSSProperties
       }
       autoFocus={autoFocus}
+      autoComplete={autoComplete || 'off'}
       className={inputCls}
       value={value || ''}
       onChange={handleChange}
@@ -128,6 +141,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       onBlur={handleBlur}
       onCompositionStart={handleCompositionStart}
       onCompositionEnd={handleCompositionEnd}
+      // Accessibility attributes
+      role="combobox"
+      aria-expanded={open || false}
+      aria-haspopup="listbox"
+      aria-owns={`${id}_list`}
+      aria-autocomplete="list"
+      aria-controls={`${id}_list`}
+      aria-activedescendant={open ? activeDescendantId : undefined}
       // onMouseDown={onMouseDown}
     />
   );
