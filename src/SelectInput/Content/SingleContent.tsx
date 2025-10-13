@@ -22,14 +22,17 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function S
   const displayValue = displayValues[0];
 
   // Implement the same logic as the old SingleSelector
-  let mergedSearchValue: string = searchValue || '';
-  if (combobox && activeValue && !inputChanged && triggerOpen) {
-    mergedSearchValue = activeValue;
-  }
+  const mergedSearchValue = React.useMemo(() => {
+    if (combobox && activeValue && !inputChanged && triggerOpen) {
+      return activeValue;
+    }
+
+    return searchValue || '';
+  }, [combobox, activeValue, inputChanged, triggerOpen, searchValue]);
 
   // Extract option props, excluding label and value, and handle className/style merging
   const optionProps = React.useMemo(() => {
-    let restProps = {
+    let restProps: React.HTMLAttributes<HTMLDivElement> = {
       className: `${prefixCls}-content-value`,
       style: {
         visibility: mergedSearchValue ? 'hidden' : 'visible',

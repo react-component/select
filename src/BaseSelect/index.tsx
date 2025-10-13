@@ -395,11 +395,11 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   );
 
   // ============================== Open ==============================
-  // Not trigger `open` in `combobox` when `notFoundContent` is empty
+  // Not trigger `open` when `notFoundContent` is empty
   const emptyListContent = !notFoundContent && emptyOptions;
 
   const [mergedOpen, triggerOpen] = useOpen(open, onPopupVisibleChange, (nextOpen) =>
-    disabled || (emptyListContent && mergedOpen && mode === 'combobox') ? false : nextOpen,
+    disabled || emptyListContent ? false : nextOpen,
   );
 
   // // SSR not support Portal which means we need delay `open` for the first time render
