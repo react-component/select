@@ -5,6 +5,7 @@ import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import useBaseProps from '../hooks/useBaseProps';
 
 export interface InputProps {
+  id?: string;
   disabled?: boolean;
   readOnly?: boolean;
   value?: string;
@@ -24,7 +25,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const { onChange, onKeyDown, onBlur, style, syncWidth, value, className, ...restProps } = props;
   const { prefixCls, mode, onSearch, onSearchSubmit, onInputBlur, autoFocus } =
     useSelectInputContext();
-  const { classNames, styles } = useBaseProps() || {};
+  const { id, classNames, styles } = useBaseProps() || {};
 
   const inputCls = clsx(`${prefixCls}-input`, classNames?.input, className);
 
@@ -108,6 +109,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   // ============================= Render =============================
   return (
     <input
+      id={id}
       type={mode === 'combobox' ? 'text' : 'search'}
       {...restProps}
       ref={inputRef}
