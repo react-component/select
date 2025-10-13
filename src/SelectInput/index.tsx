@@ -54,6 +54,7 @@ const DEFAULT_OMIT_PROPS = [
   'tabIndex',
   'activeValue',
   'onSelectorRemove',
+  'focused',
 ] as const;
 
 export default React.forwardRef<SelectInputRef, SelectInputProps>(function SelectInput(

@@ -672,8 +672,8 @@ describe('Select.Basic', () => {
 
       const focusSpy = jest.spyOn(container.querySelector('input'), 'focus');
 
-      fireEvent.mouseDown(container.querySelector('.rc-select-selector'));
-      fireEvent.click(container.querySelector('.rc-select-selector'));
+      fireEvent.mouseDown(container.querySelector('.rc-select'));
+      fireEvent.click(container.querySelector('.rc-select'));
       expect(focusSpy).toHaveBeenCalled();
 
       // We should mock trigger focus event since it not work in jsdom
@@ -1371,7 +1371,7 @@ describe('Select.Basic', () => {
     );
 
     // Open
-    fireEvent.mouseDown(container.querySelector('.rc-select-selector'));
+    fireEvent.mouseDown(container.querySelector('.rc-select'));
 
     fireEvent.mouseDown(container.querySelector('div#dropdown-custom-node'));
     fireEvent.click(container.querySelector('div#dropdown-custom-node'));
@@ -1864,6 +1864,8 @@ describe('Select.Basic', () => {
     });
 
     it('should not open dropdown after remove disabled', () => {
+      jest.useFakeTimers();
+
       const renderDemo = (disabled?: boolean) => (
         <Select disabled={disabled}>
           <Option value="1">1</Option>
@@ -1873,9 +1875,25 @@ describe('Select.Basic', () => {
 
       const { container, rerender } = render(renderDemo());
       toggleOpen(container);
+      act(() => {
+        jest.runAllTimers();
+      });
+      console.log('~~~~1');
       rerender(renderDemo(true));
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      console.log('~~~~2');
       rerender(renderDemo(false));
+
+      act(() => {
+        jest.runAllTimers();
+      });
+
       expectOpen(container, false);
+
+      jest.useRealTimers();
     });
   });
 
@@ -2113,9 +2131,7 @@ describe('Select.Basic', () => {
     const { container } = render(<Select tabIndex={0} />);
     expect(container.querySelector('.rc-select').getAttribute('tabindex')).toBeFalsy();
 
-    expect(
-      container.querySelector('input.rc-select-selection-search-input').getAttribute('tabindex'),
-    ).toBe('0');
+    expect(container.querySelector('input').getAttribute('tabindex')).toBe('0');
   });
 
   describe('placement', () => {
@@ -2179,7 +2195,7 @@ describe('Select.Basic', () => {
   it('should support onClick', () => {
     const onClick = jest.fn();
     const { container } = render(<Select onClick={onClick} />);
-    fireEvent.click(container.querySelector('.rc-select-selector'));
+    fireEvent.click(container.querySelector('.rc-select'));
     expect(onClick).toHaveBeenCalled();
   });
 

@@ -36,10 +36,7 @@ export default function useOpen(
 
     const nextOpenVal = typeof nextOpen === 'boolean' ? nextOpen : !mergedOpen;
 
-    if (nextOpenVal === mergedOpen) {
-      return;
-    }
-
+    // Since `mergedOpen` is post-processed, we need to check if the value really changed
     if (nextOpenVal) {
       triggerEvent(true);
       return;

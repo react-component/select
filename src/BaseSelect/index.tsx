@@ -504,12 +504,9 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   // ============================ Disabled ============================
   // Close dropdown & remove focus state when disabled change
   React.useEffect(() => {
-    // if (mergedOpen && disabled) {
-    //   triggerOpen(false);
-    // }
-
     // After onBlur is triggered, the focused does not need to be reset
     if (disabled) {
+      triggerOpen(false);
       setFocused(false);
     }
   }, [disabled, mergedOpen]);

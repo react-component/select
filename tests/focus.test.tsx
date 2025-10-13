@@ -78,7 +78,7 @@ describe('Select.Focus', () => {
 
     const focusFn = jest.spyOn(container.querySelector('input'), 'focus');
 
-    fireEvent.click(container.querySelector('.rc-select-selector'));
+    fireEvent.click(container.querySelector('.rc-select'));
     jest.runAllTimers();
 
     expect(focusFn).toHaveBeenCalled();
