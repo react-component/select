@@ -29,6 +29,8 @@ export interface SelectInputProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   onSelectorRemove?: (value: DisplayValueType) => void;
   maxLength?: number;
   autoFocus?: boolean;
+  /** Check if `tokenSeparators` contains `\n` or `\r\n` */
+  tokenWithEnter?: boolean;
   // Add other props that need to be passed through
   className?: string;
   style?: React.CSSProperties;
@@ -95,6 +97,9 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
     onClearMouseDown,
     onInputKeyDown,
     onSelectorRemove,
+
+    // Token handling
+    tokenWithEnter,
 
     ...restProps
   } = props;

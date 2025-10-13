@@ -462,7 +462,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       onSearchSplit?.(patchLabels);
 
       // Should close when paste finish
-      // onToggleOpen(false);
       triggerOpen(false);
 
       // Tell Selector that break next actions
@@ -476,7 +475,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     }
 
     // Open if from typing
-    if (searchText && fromTyping) {
+    if (searchText && fromTyping && ret) {
       triggerOpen(true);
     }
 
@@ -941,6 +940,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       onKeyDown={onInternalKeyDown}
       onKeyUp={onInternalKeyUp}
       onSelectorRemove={onSelectorRemove}
+      // Token handling
+      tokenWithEnter={tokenWithEnter}
       // Open
       onMouseDown={onInternalMouseDown}
     />

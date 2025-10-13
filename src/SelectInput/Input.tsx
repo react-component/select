@@ -34,7 +34,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     autoComplete,
     ...restProps
   } = props;
-  const { prefixCls, mode, onSearch, onSearchSubmit, onInputBlur, autoFocus } =
+  const { prefixCls, mode, onSearch, onSearchSubmit, onInputBlur, autoFocus, tokenWithEnter } =
     useSelectInputContext();
   const { id, classNames, styles, open, activeDescendantId, role, disabled } = useBaseProps() || {};
 
@@ -42,6 +42,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 
   // Used to handle input method composition status
   const compositionStatusRef = React.useRef<boolean>(false);
+
+  // Used to handle paste content, similar to original Selector implementation
+  const pastedTextRef = React.useRef<string | null>(null);
 
   // ============================== Refs ==============================
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -51,7 +54,20 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   // ============================== Data ==============================
   // Handle input changes
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    const { value: nextVal } = event.target;
+    let { value: nextVal } = event.target;
+
+    // Handle pasted text with tokenWithEnter, similar to original Selector implementation
+    if (tokenWithEnter && pastedTextRef.current && /[\r\n]/.test(pastedTextRef.current)) {
+      // CRLF will be treated as a single space for input element
+      const replacedText = pastedTextRef.current
+        .replace(/[\r\n]+$/, '')
+        .replace(/\r\n/g, ' ')
+        .replace(/[\r\n]/g, ' ');
+      nextVal = nextVal.replace(replacedText, pastedTextRef.current);
+    }
+
+    // Reset pasted text reference
+    pastedTextRef.current = null;
 
     // Call onSearch callback
     if (onSearch) {
@@ -95,9 +111,18 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const handleCompositionEnd: React.CompositionEventHandler<HTMLInputElement> = (event) => {
     compositionStatusRef.current = false;
 
-    // Trigger search when input method composition ends
-    const { value: nextVal } = event.currentTarget;
-    onSearch?.(nextVal, true, false);
+    // Trigger search when input method composition ends, similar to original Selector
+    if (mode !== 'combobox') {
+      const { value: nextVal } = event.currentTarget;
+      onSearch?.(nextVal, true, false);
+    }
+  };
+
+  // Handle paste events to track pasted content
+  const handlePaste: React.ClipboardEventHandler<HTMLInputElement> = (event) => {
+    const { clipboardData } = event;
+    const pastedValue = clipboardData?.getData('text');
+    pastedTextRef.current = pastedValue || '';
   };
 
   // ============================= Width ==============================
@@ -139,6 +164,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       onChange={handleChange}
       onKeyDown={handleKeyDown}
       onBlur={handleBlur}
+      onPaste={handlePaste}
       onCompositionStart={handleCompositionStart}
       onCompositionEnd={handleCompositionEnd}
       // Accessibility attributes

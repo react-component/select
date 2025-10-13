@@ -3,6 +3,9 @@ import { createEvent, fireEvent } from '@testing-library/react';
 
 export function expectOpen(wrapper: any, open: boolean = true) {
   if (wrapper instanceof HTMLElement) {
+    act(() => {
+      jest.runAllTimers();
+    });
     expect(!!wrapper.querySelector('.rc-select-open')).toBe(open);
     return;
   }

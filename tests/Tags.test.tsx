@@ -1,4 +1,4 @@
-import { createEvent, fireEvent, render } from '@testing-library/react';
+import { act, createEvent, fireEvent, render } from '@testing-library/react';
 import KeyCode from '@rc-component/util/lib/KeyCode';
 import { clsx } from 'clsx';
 import * as React from 'react';
@@ -62,11 +62,10 @@ describe('Select.Tags', () => {
   it('tokenize input', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
-    const option2 = <Option value="2">2</Option>;
     const { container } = render(
       <Select mode="tags" tokenSeparators={[',']} onChange={handleChange} onSelect={handleSelect}>
         <Option value="1">1</Option>
-        {option2}
+        <Option value="2">2</Option>
       </Select>,
     );
 
@@ -79,6 +78,7 @@ describe('Select.Tags', () => {
     expect(findSelection(container, 1).textContent).toEqual('3');
     expect(findSelection(container, 2).textContent).toEqual('4');
     expect(container.querySelector('input').value).toBe('');
+
     expectOpen(container, false);
   });
 
@@ -513,9 +513,7 @@ describe('Select.Tags', () => {
     const { container } = render(<Select mode="tags" tabIndex={0} />);
     expect(container.querySelector('.rc-select').getAttribute('tabindex')).toBeFalsy();
 
-    expect(
-      container.querySelector('input.rc-select-selection-search-input').getAttribute('tabindex'),
-    ).toBe('0');
+    expect(container.querySelector('input').getAttribute('tabindex')).toBe('0');
   });
 
   it('press enter should not submit form', () => {
