@@ -324,8 +324,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
   // ============================== MISC ==============================
   const multiple = isMultiple(mode);
-  const mergedShowSearch =
-    (showSearch !== undefined ? showSearch : multiple) || mode === 'combobox';
+  // const mergedShowSearch =
+  //   (showSearch !== undefined ? showSearch : multiple) || mode === 'combobox';
 
   const domProps = {
     ...restProps,
@@ -739,7 +739,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       open: mergedOpen,
       triggerOpen: mergedOpen,
       id,
-      showSearch: mergedShowSearch,
+      showSearch,
       multiple,
       toggleOpen: triggerOpen,
       showScrollBar,
@@ -751,7 +751,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       notFoundContent,
       triggerOpen,
       id,
-      mergedShowSearch,
+      showSearch,
       multiple,
       mergedOpen,
       showScrollBar,
@@ -824,7 +824,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     [`${prefixCls}-loading`]: loading,
     [`${prefixCls}-open`]: mergedOpen,
     [`${prefixCls}-customize-input`]: customizeInputElement,
-    [`${prefixCls}-show-search`]: mergedShowSearch,
+    [`${prefixCls}-show-search`]: showSearch,
   });
 
   // >>> Selector
