@@ -262,7 +262,7 @@ describe('Select.Basic', () => {
         <Option value="2">2</Option>
       </Select>,
     );
-    expect(container1.querySelector('.rc-select-clear-icon')).toBeTruthy();
+    expect(container1.querySelector('.rc-select-clear')).toBeTruthy();
 
     const { container: container2 } = render(
       <Select allowClear>
@@ -270,7 +270,7 @@ describe('Select.Basic', () => {
         <Option value="2">2</Option>
       </Select>,
     );
-    expect(container2.querySelector('.rc-select-clear-icon')).toBeFalsy();
+    expect(container2.querySelector('.rc-select-clear')).toBeFalsy();
 
     const { container: container3 } = render(
       <Select allowClear={{ clearIcon: <div className="custom-clear-icon">x</div> }} value="1">
@@ -2262,11 +2262,11 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    expect(container.querySelector('.rc-select-clear-icon')).toBeTruthy();
+    expect(container.querySelector('.rc-select-clear')).toBeTruthy();
 
-    const mouseDownEvent = createEvent.mouseDown(container.querySelector('.rc-select-clear-icon'));
+    const mouseDownEvent = createEvent.mouseDown(container.querySelector('.rc-select-clear'));
     mouseDownEvent.preventDefault = mouseDownPreventDefault;
-    fireEvent(container.querySelector('.rc-select-clear-icon'), mouseDownEvent);
+    fireEvent(container.querySelector('.rc-select-clear'), mouseDownEvent);
     jest.runAllTimers();
 
     expect(container.querySelector('.rc-select').className).toContain('-focused');

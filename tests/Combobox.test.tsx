@@ -335,7 +335,7 @@ describe('Select.Combobox', () => {
       </Select>,
     );
 
-    expect(container.querySelector('.rc-select-clear-icon')).toBeFalsy();
+    expect(container.querySelector('.rc-select-clear')).toBeFalsy();
   });
 
   it("should show clear icon when inputValue is not ''", () => {
