@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export default function useSelectTriggerControl(
-  elements: () => (HTMLElement | undefined)[],
+  elements: () => (HTMLElement | SVGElement | undefined)[],
   open: boolean,
   triggerOpen: (open: boolean) => void,
   customizedTrigger: boolean,

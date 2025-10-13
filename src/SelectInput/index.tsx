@@ -97,7 +97,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
     ...restProps
   } = props;
 
-  const { triggerOpen, toggleOpen, showSearch, disabled } = useBaseProps();
+  const { triggerOpen, toggleOpen, showSearch, disabled, classNames, styles } = useBaseProps();
 
   const rootRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -203,17 +203,23 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
         onBlur={onInternalBlur}
       >
         {/* Prefix */}
-        <Affix type="prefix">{prefix}</Affix>
+        <Affix type="prefix" className={classNames?.prefix} style={styles?.prefix}>
+          {prefix}
+        </Affix>
 
         {/* Content */}
         <SelectContent ref={inputRef} />
 
         {/* Suffix */}
-        <Affix type="suffix">{suffix}</Affix>
+        <Affix type="suffix" className={classNames?.suffix} style={styles?.suffix}>
+          {suffix}
+        </Affix>
         {/* Clear Icon */}
         {clearIcon && (
           <Affix
             type="clear"
+            className={classNames?.suffix}
+            style={styles?.suffix}
             onMouseDown={(e) => {
               // Mark to tell not trigger open or focus
               (e.nativeEvent as any)._select_lazy = true;

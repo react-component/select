@@ -1,4 +1,5 @@
 import * as React from 'react';
+import clsx from 'clsx';
 import { useSelectInputContext } from './context';
 
 export interface AffixProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -7,7 +8,7 @@ export interface AffixProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export default function Affix(props: AffixProps) {
-  const { type, children, ...restProps } = props;
+  const { type, children, className, ...restProps } = props;
   const { prefixCls } = useSelectInputContext();
 
   if (!children) {
@@ -15,7 +16,7 @@ export default function Affix(props: AffixProps) {
   }
 
   return (
-    <div className={`${prefixCls}-${type}`} {...restProps}>
+    <div className={clsx(`${prefixCls}-${type}`, className)} {...restProps}>
       {children}
     </div>
   );

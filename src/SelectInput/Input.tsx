@@ -1,6 +1,8 @@
 import * as React from 'react';
+import clsx from 'clsx';
 import { useSelectInputContext } from './context';
 import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
+import useBaseProps from '../hooks/useBaseProps';
 
 export interface InputProps {
   disabled?: boolean;
@@ -19,11 +21,12 @@ export interface InputProps {
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
-  const { onChange, onKeyDown, onBlur, style, syncWidth, value, ...restProps } = props;
+  const { onChange, onKeyDown, onBlur, style, syncWidth, value, className, ...restProps } = props;
   const { prefixCls, mode, onSearch, onSearchSubmit, onInputBlur, autoFocus } =
     useSelectInputContext();
+  const { classNames, styles } = useBaseProps() || {};
 
-  const inputCls = `${prefixCls}-input`;
+  const inputCls = clsx(`${prefixCls}-input`, classNames?.input, className);
 
   // Used to handle input method composition status
   const compositionStatusRef = React.useRef<boolean>(false);
@@ -109,6 +112,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       ref={inputRef}
       style={
         {
+          ...styles?.input,
           ...style,
           '--select-input-width': widthCssVar,
         } as React.CSSProperties

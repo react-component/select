@@ -1558,7 +1558,7 @@ describe('Select.Basic', () => {
         <Option value={1}>1</Option>
       </Select>,
     );
-    expect(container.querySelector('.rc-select-arrow-loading')).toBeTruthy();
+    expect(container.querySelector('.rc-select-suffix-loading')).toBeTruthy();
   });
   it('if loading and multiple which has not arrow, but have loading icon', () => {
     const renderDemo = (loading?: boolean) => (
@@ -1569,11 +1569,11 @@ describe('Select.Basic', () => {
     );
 
     const { container, rerender } = render(renderDemo());
-    expect(container.querySelector('.rc-select-arrow-icon')).toBeFalsy();
-    expect(container.querySelector('.rc-select-arrow-loading')).toBeFalsy();
+    expect(container.querySelector('.rc-select-suffix-icon')).toBeFalsy();
+    expect(container.querySelector('.rc-select-suffix-loading')).toBeFalsy();
 
     rerender(renderDemo(true));
-    expect(container.querySelector('.rc-select-arrow-loading')).toBeTruthy();
+    expect(container.querySelector('.rc-select-suffix-loading')).toBeTruthy();
   });
 
   it('should keep trigger onSelect by select', () => {
@@ -1799,6 +1799,8 @@ describe('Select.Basic', () => {
   });
 
   it('click outside to close select', () => {
+    jest.useFakeTimers();
+
     const { container } = render(
       <Select>
         <Option value="1">One</Option>
@@ -1815,7 +1817,13 @@ describe('Select.Basic', () => {
       window.dispatchEvent(clickEvent);
     });
 
+    act(() => {
+      jest.runAllTimers();
+    });
+
     expectOpen(container, false);
+
+    jest.useRealTimers();
   });
 
   describe('reset value to undefined should reset display value', () => {
@@ -2452,7 +2460,7 @@ describe('Select.Basic', () => {
         open
         classNames={customClassNames}
         styles={customStyle}
-        suffixIcon={<div>arrow</div>}
+        suffix={<div>arrow</div>}
         prefix="Foobar"
         value={['bamboo']}
         mode="multiple"
@@ -2464,10 +2472,10 @@ describe('Select.Basic', () => {
     );
 
     const prefix = container.querySelector('.rc-select-prefix');
-    const suffix = container.querySelector('.rc-select-arrow');
+    const suffix = container.querySelector('.rc-select-suffix');
     const item = container.querySelector('.rc-select-item-option');
     const list = container.querySelector('.rc-virtual-list');
-    const input = container.querySelector('.rc-select-selection-search-input');
+    const input = container.querySelector('input');
     expect(prefix).toHaveClass(customClassNames.prefix);
     expect(prefix).toHaveStyle(customStyle.prefix);
     expect(suffix).toHaveClass(customClassNames.suffix);
@@ -2502,7 +2510,7 @@ describe('Select.Basic', () => {
         open
         classNames={customClassNames}
         styles={customStyle}
-        suffixIcon={<div>arrow</div>}
+        suffix={<div>arrow</div>}
         prefix="Foobar"
         onDisplayValuesChange={() => {}}
         searchValue=""
@@ -2512,8 +2520,8 @@ describe('Select.Basic', () => {
       />,
     );
     const prefix = container.querySelector('.rc-select-prefix');
-    const suffix = container.querySelector('.rc-select-arrow');
-    const input = container.querySelector('.rc-select-selection-search-input');
+    const suffix = container.querySelector('.rc-select-suffix');
+    const input = container.querySelector('input');
     expect(prefix).toHaveClass(customClassNames.prefix);
     expect(prefix).toHaveStyle(customStyle.prefix);
     expect(suffix).toHaveClass(customClassNames.suffix);

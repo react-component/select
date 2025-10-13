@@ -723,13 +723,13 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   //   };
   // }
 
-  // // Close when click on non-select element
-  // useSelectTriggerControl(
-  //   () => [containerRef.current, triggerRef.current?.getPopupElement()],
-  //   triggerOpen,
-  //   onToggleOpen,
-  //   !!customizeRawInputElement,
-  // );
+  // Close when click on non-select element
+  useSelectTriggerControl(
+    () => [getDOM(containerRef.current), triggerRef.current?.getPopupElement()],
+    mergedOpen,
+    triggerOpen,
+    !!customizeRawInputElement,
+  );
 
   // ============================ Context =============================
   const baseSelectContext = React.useMemo<BaseSelectContextProps>(
