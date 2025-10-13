@@ -1830,10 +1830,10 @@ describe('Select.Basic', () => {
     [undefined].forEach((value) => {
       it(`to ${value}`, () => {
         const { container, rerender } = render(<Select value="light" />);
-        expect(container.querySelector('.rc-select-selection-item').textContent).toEqual('light');
+        expect(container.querySelector('.rc-select-item').textContent).toEqual('light');
 
         rerender(<Select value={value} />);
-        expect(container.querySelector('.rc-select-selection-item')).toBeFalsy();
+        expect(container.querySelector('.rc-select-item')).toBeFalsy();
       });
     });
   });
@@ -1936,7 +1936,7 @@ describe('Select.Basic', () => {
         toggleOpen(container);
         selectItem(container, index);
         expect(onChange).toHaveBeenCalledWith(value, expect.anything());
-        expect(container.querySelector('.rc-select-selection-item').textContent).toEqual(showValue);
+        expect(container.querySelector('.rc-select-item').textContent).toEqual(showValue);
       });
 
       expect(errorSpy).toHaveBeenCalledWith(warningMessage);
@@ -2204,8 +2204,8 @@ describe('Select.Basic', () => {
         <Select value="b" options={[{ label: 'bamboo', title: 'TitleBamboo', value: 'b' }]} />,
       );
 
-      // expect(container.find('.rc-select-selection-item').prop('title')).toEqual('TitleBamboo');
-      expect(container.querySelector('.rc-select-selection-item').getAttribute('title')).toEqual(
+      // expect(container.find('.rc-select-item').prop('title')).toEqual('TitleBamboo');
+      expect(container.querySelector('.rc-select-item').getAttribute('title')).toEqual(
         'TitleBamboo',
       );
     });
@@ -2224,15 +2224,15 @@ describe('Select.Basic', () => {
         />,
       );
 
-      expect(
-        container.querySelectorAll('span.rc-select-selection-item')[0].getAttribute('title'),
-      ).toEqual('TitleBamboo');
-      expect(
-        container.querySelectorAll('span.rc-select-selection-item')[1].getAttribute('title'),
-      ).toEqual('little');
-      expect(
-        container.querySelectorAll('span.rc-select-selection-item')[2].getAttribute('title'),
-      ).toEqual('+ 1 ...');
+      expect(container.querySelectorAll('span.rc-select-item')[0].getAttribute('title')).toEqual(
+        'TitleBamboo',
+      );
+      expect(container.querySelectorAll('span.rc-select-item')[1].getAttribute('title')).toEqual(
+        'little',
+      );
+      expect(container.querySelectorAll('span.rc-select-item')[2].getAttribute('title')).toEqual(
+        '+ 1 ...',
+      );
     });
   });
 
@@ -2261,19 +2261,15 @@ describe('Select.Basic', () => {
   it('should support title', () => {
     const { container: container1 } = render(<Select defaultValue="lucy" options={[]} />);
     expect(container1.querySelector('.rc-select').getAttribute('title')).toBeFalsy();
-    expect(container1.querySelector('.rc-select-selection-item').getAttribute('title')).toBe(
-      'lucy',
-    );
+    expect(container1.querySelector('.rc-select-item').getAttribute('title')).toBe('lucy');
     const { container: container2 } = render(<Select defaultValue="lucy" options={[]} title="" />);
     expect(container2.querySelector('.rc-select').getAttribute('title')).toBeFalsy();
-    expect(container2.querySelector('.rc-select-selection-item').getAttribute('title')).toBe('');
+    expect(container2.querySelector('.rc-select-item').getAttribute('title')).toBe('');
     const { container: container3 } = render(
       <Select defaultValue="lucy" options={[]} title="title" />,
     );
     expect(container3.querySelector('.rc-select').getAttribute('title')).toBe('title');
-    expect(container3.querySelector('.rc-select-selection-item').getAttribute('title')).toBe(
-      'title',
-    );
+    expect(container3.querySelector('.rc-select-item').getAttribute('title')).toBe('title');
   });
 
   it('scrollbar should be left position with rtl direction', () => {

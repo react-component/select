@@ -26,9 +26,9 @@ describe('Select placeholder', () => {
       <Select value={null} placeholder="bamboo" options={[{ value: null, label: 'light' }]} />,
     );
     expect(container.querySelector('.rc-select-placeholder')).toBeFalsy();
-    expect(container.querySelector('.rc-select-selection-item').textContent).toBe('light');
+    expect(container.querySelector('.rc-select-item').textContent).toBe('light');
     toggleOpen(container);
-    expect(container.querySelector('.rc-select-selection-item').textContent).toBe('light');
+    expect(container.querySelector('.rc-select-item').textContent).toBe('light');
   });
 
   it('should hide placeholder if force closed and showSearch with searchValue', () => {

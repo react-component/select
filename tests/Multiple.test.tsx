@@ -512,16 +512,14 @@ describe('Select.Multiple', () => {
     const { container } = render(
       <Select mode="multiple" options={[{ value: 'title' }]} value={['title']} />,
     );
-    expect(container.querySelector('.rc-select-selection-item').getAttribute('title')).toBe(
-      'title',
-    );
+    expect(container.querySelector('.rc-select-item').getAttribute('title')).toBe('title');
   });
 
   it('should not render title defaultly when label is ReactNode', () => {
     const { container } = render(
       <Select mode="multiple" options={[{ value: '1', label: <div>label</div> }]} value={['1']} />,
     );
-    expect(container.querySelector('.rc-select-selection-item').getAttribute('title')).toBeFalsy();
+    expect(container.querySelector('.rc-select-item').getAttribute('title')).toBeFalsy();
   });
 
   it('disabled should not show remove icon', () => {
@@ -533,7 +531,7 @@ describe('Select.Multiple', () => {
       </Select>,
     );
 
-    expect(container.querySelector('.rc-select-selection-item-remove')).toBeFalsy();
+    expect(container.querySelector('.rc-select-item-remove')).toBeFalsy();
   });
 
   it('do not crash if value not in options when removing option', () => {
@@ -573,8 +571,8 @@ describe('Select.Multiple', () => {
       </Select>,
     );
 
-    expect(wrapper1.container.querySelector('.rc-select-selection-item')).toBeFalsy();
-    expect(wrapper2.container.querySelector('.rc-select-selection-item')).toBeFalsy();
+    expect(wrapper1.container.querySelector('.rc-select-item')).toBeFalsy();
+    expect(wrapper2.container.querySelector('.rc-select-item')).toBeFalsy();
   });
 
   describe('optionLabelProp', () => {

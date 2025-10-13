@@ -34,8 +34,8 @@ export function selectItem(wrapper: any, index: number = 0) {
 
 export function findSelection(wrapper: any, index: number = 0) {
   if (wrapper instanceof HTMLElement) {
-    const itemNode = wrapper.querySelectorAll('.rc-select-selection-item')[index];
-    const contentNode = itemNode.querySelector('.rc-select-selection-item-content');
+    const itemNode = wrapper.querySelectorAll('.rc-select-item')[index];
+    const contentNode = itemNode.querySelector('.rc-select-item-content');
 
     if (contentNode) {
       return contentNode;
@@ -43,8 +43,8 @@ export function findSelection(wrapper: any, index: number = 0) {
 
     return itemNode;
   } else {
-    const itemNode = wrapper.find('.rc-select-selection-item').at(index);
-    const contentNode = itemNode.find('.rc-select-selection-item-content');
+    const itemNode = wrapper.find('.rc-select-item').at(index);
+    const contentNode = itemNode.find('.rc-select-item-content');
 
     if (contentNode.length) {
       return contentNode;
@@ -58,17 +58,17 @@ export function removeSelection(wrapper: any, index: number = 0) {
   const preventDefault = jest.fn();
 
   if (wrapper instanceof HTMLElement) {
-    const ele = wrapper.querySelectorAll('.rc-select-selection-item-remove')[index];
+    const ele = wrapper.querySelectorAll('.rc-select-item-remove')[index];
     const mouseDownEvent = createEvent.mouseDown(ele);
     mouseDownEvent.preventDefault = preventDefault;
 
     fireEvent(ele, mouseDownEvent);
-    fireEvent.click(wrapper.querySelectorAll('.rc-select-selection-item-remove')[index]);
+    fireEvent.click(wrapper.querySelectorAll('.rc-select-item-remove')[index]);
   } else {
     wrapper
-      .find('.rc-select-selection-item')
+      .find('.rc-select-item')
       .at(index)
-      .find('.rc-select-selection-item-remove')
+      .find('.rc-select-item-remove')
       .last()
       .simulate('mousedown', { preventDefault })
       .simulate('click');
