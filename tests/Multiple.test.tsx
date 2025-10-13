@@ -19,7 +19,7 @@ import {
   keyUp,
 } from './utils/common';
 import allowClearTest from './shared/allowClearTest';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 
 describe('Select.Multiple', () => {
   injectRunAllTimers(jest);
@@ -360,18 +360,18 @@ describe('Select.Multiple', () => {
   });
 
   it('show arrow on multiple mode when explicitly set', () => {
-    const renderDemo = (suffixIcon?: React.ReactNode) => (
-      <Select mode="multiple" value={['']} suffixIcon={suffixIcon}>
+    const renderDemo = (suffix?: React.ReactNode) => (
+      <Select mode="multiple" value={['']} suffix={suffix}>
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
       </Select>
     );
     const { container, rerender } = render(renderDemo());
 
-    expect(container.querySelector('.rc-select-arrow')).toBeFalsy();
+    expect(container.querySelector('.rc-select-suffix')).toBeFalsy();
 
     rerender(renderDemo(<div>arrow</div>));
-    expect(container.querySelector('.rc-select-arrow')).toBeTruthy();
+    expect(container.querySelector('.rc-select-suffix')).toBeTruthy();
   });
 
   it('show static prefix', () => {
@@ -402,6 +402,7 @@ describe('Select.Multiple', () => {
     keyDown(container.querySelector('input'), KeyCode.L);
     fireEvent.change(container.querySelector('input'), { target: { value: 'l' } });
 
+    console.log('clear');
     // Backspace
     keyDown(container.querySelector('input'), KeyCode.BACKSPACE);
     fireEvent.change(container.querySelector('input'), { target: { value: '' } });
@@ -411,7 +412,10 @@ describe('Select.Multiple', () => {
     keyDown(container.querySelector('input'), KeyCode.BACKSPACE);
     expect(onChange).not.toHaveBeenCalled();
 
-    jest.runAllTimers();
+    console.log('after 200ms');
+    act(() => {
+      jest.runAllTimers();
+    });
     keyDown(container.querySelector('input'), KeyCode.BACKSPACE);
     expect(onChange).toHaveBeenCalledWith([], expect.anything());
 

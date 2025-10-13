@@ -27,7 +27,14 @@ export default function useSearchConfig(
       ...(isObject ? showSearch : {}),
     };
 
-    return [isObject || (!showSearch && mode === 'tags') ? true : showSearch, searchConfig];
+    return [
+      isObject ||
+      (!showSearch && mode === 'tags') ||
+      (mode === 'multiple' && showSearch === undefined)
+        ? true
+        : showSearch,
+      searchConfig,
+    ];
   }, [
     mode,
     showSearch,
