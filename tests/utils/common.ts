@@ -19,6 +19,9 @@ export function expectOpen(wrapper: any, open: boolean = true) {
 export function toggleOpen(wrapper: any) {
   if (wrapper instanceof HTMLElement) {
     fireEvent.mouseDown(wrapper.querySelector('.rc-select'));
+    act(() => {
+      jest.runAllTimers();
+    });
     return;
   }
   wrapper.find('.rc-select').simulate('mousedown');
@@ -27,6 +30,9 @@ export function toggleOpen(wrapper: any) {
 export function selectItem(wrapper: any, index: number = 0) {
   if (wrapper instanceof HTMLElement) {
     fireEvent.click(wrapper.querySelectorAll('.rc-select-item-option-content')[index]);
+    act(() => {
+      jest.runAllTimers();
+    });
     return;
   }
   wrapper.find('div.rc-select-item-option-content').at(index).simulate('click');

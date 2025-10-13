@@ -24,7 +24,7 @@ export function isValidateOpenKey(currentKeyCode: number): boolean {
       KeyCode.CONTEXT_MENU,
       // Arrow keys - should not trigger open when navigating in input
       KeyCode.UP,
-      KeyCode.DOWN,
+      // KeyCode.DOWN,
       KeyCode.LEFT,
       KeyCode.RIGHT,
       // F1-F12

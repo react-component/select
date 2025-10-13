@@ -108,6 +108,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   // ============================= Render =============================
   return (
     <input
+      type={mode === 'combobox' ? 'text' : 'search'}
       {...restProps}
       ref={inputRef}
       style={

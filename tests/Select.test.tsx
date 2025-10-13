@@ -35,6 +35,15 @@ import {
 describe('Select.Basic', () => {
   injectRunAllTimers(jest);
 
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.clearAllTimers();
+    jest.useRealTimers();
+  });
+
   allowClearTest(undefined, '903');
   focusTest('single', {});
   blurTest('single');
@@ -786,7 +795,7 @@ describe('Select.Basic', () => {
   });
 
   [KeyCode.ENTER, KeyCode.DOWN].forEach((keyCode) => {
-    it('open on key press', () => {
+    it(`open on key press: ${keyCode}`, () => {
       const { container } = render(<Select />);
       keyDown(container.querySelector('input'), keyCode);
       expectOpen(container);
@@ -794,6 +803,8 @@ describe('Select.Basic', () => {
   });
 
   it('close on ESC', () => {
+    jest.useFakeTimers();
+
     const onKeyDown = jest.fn();
     const { container } = render(
       <div onKeyDown={onKeyDown}>
@@ -805,6 +816,9 @@ describe('Select.Basic', () => {
     const inputEle = container.querySelector('input');
     fireEvent.change(inputEle, { target: { value: 'foo' } });
     keyDown(inputEle, KeyCode.ESC);
+    act(() => {
+      jest.runAllTimers();
+    });
 
     expect(inputEle.value).toBe('');
     expectOpen(container, false);
@@ -812,7 +826,12 @@ describe('Select.Basic', () => {
 
     // should keep propagation when optionList is closed
     keyDown(inputEle, KeyCode.ESC);
+    act(() => {
+      jest.runAllTimers();
+    });
     expect(onKeyDown).toHaveBeenCalledTimes(1);
+
+    jest.useRealTimers();
   });
 
   it('not open when system key down', () => {
