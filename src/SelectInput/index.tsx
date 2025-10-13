@@ -32,6 +32,7 @@ export interface SelectInputProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   // Add other props that need to be passed through
   className?: string;
   style?: React.CSSProperties;
+  focused?: boolean;
   [key: string]: any;
 }
 import useBaseProps from '../hooks/useBaseProps';

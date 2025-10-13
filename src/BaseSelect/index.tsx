@@ -919,6 +919,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       // Style
       prefixCls={prefixCls}
       className={mergedClassName}
+      // Focus state
+      focused={focused}
       // UI
       prefix={prefix}
       suffix={suffix}

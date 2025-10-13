@@ -35,23 +35,13 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
     maxTagTextLength,
     maxTagCount,
     tagRender: tagRenderFromContext,
+    focused,
   } = useSelectInputContext();
-  const { disabled, showSearch, open, toggleOpen } = useBaseProps();
-
-  const measureRef = React.useRef<HTMLSpanElement>(null);
-  const [inputWidth, setInputWidth] = useState(0);
-  const [focused, setFocused] = useState(false);
+  const { disabled, showSearch, triggerOpen, toggleOpen } = useBaseProps();
 
   // ===================== Search ======================
   const inputValue = showSearch ? searchValue : '';
-  const inputEditable: boolean = showSearch && (open || focused);
-
-  // We measure width and set to the input immediately
-  useLayoutEffect(() => {
-    if (measureRef.current) {
-      setInputWidth(measureRef.current.scrollWidth);
-    }
-  }, [inputValue]);
+  const inputEditable: boolean = showSearch && (triggerOpen || focused);
 
   // Props from context with safe defaults
   const removeIcon: RenderNode = removeIconFromContext ?? '×';
@@ -111,7 +101,7 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
   ) => {
     const onMouseDown = (e: React.MouseEvent) => {
       onPreventMouseDown(e);
-      onToggleOpen(!open);
+      onToggleOpen(!triggerOpen);
     };
     return (
       <span onMouseDown={onMouseDown}>
@@ -127,34 +117,6 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
       </span>
     );
   };
-
-  // ======================= Input ========================
-  // >>> Input Node
-  const inputNode = (
-    <div
-      className={`${prefixCls}-search`}
-      style={{ width: inputWidth }}
-      onFocus={() => {
-        setFocused(true);
-      }}
-      onBlur={() => {
-        setFocused(false);
-      }}
-    >
-      <Input
-        ref={ref}
-        disabled={disabled}
-        readOnly={!inputEditable}
-        {...inputProps}
-        value={inputValue || ''}
-      />
-
-      {/* Measure Node */}
-      <span ref={measureRef} className={`${prefixCls}-search-mirror`} aria-hidden>
-        {inputValue}&nbsp;
-      </span>
-    </div>
-  );
 
   // ====================== Overflow ======================
   const renderItem = (valueItem: DisplayValueType, info: { index: number }) => {
@@ -207,13 +169,6 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
   };
 
   // ======================= Render =======================
-  // return (
-  //   // <div className={`${prefixCls}-content`}>
-  //     {/* <Input ref={ref} {...inputProps} value={searchValue} /> */}
-
-  //   // </div>
-  // );
-
   return (
     <Overflow
       prefixCls={`${prefixCls}-content`}
