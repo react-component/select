@@ -6,7 +6,6 @@ import useBaseProps from '../hooks/useBaseProps';
 
 export interface InputProps {
   id?: string;
-  disabled?: boolean;
   readOnly?: boolean;
   value?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
@@ -37,7 +36,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   } = props;
   const { prefixCls, mode, onSearch, onSearchSubmit, onInputBlur, autoFocus } =
     useSelectInputContext();
-  const { id, classNames, styles, open, activeDescendantId } = useBaseProps() || {};
+  const { id, classNames, styles, open, activeDescendantId, role, disabled } = useBaseProps() || {};
 
   const inputCls = clsx(`${prefixCls}-input`, classNames?.input, className);
 
@@ -135,6 +134,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       autoFocus={autoFocus}
       autoComplete={autoComplete || 'off'}
       className={inputCls}
+      disabled={disabled}
       value={value || ''}
       onChange={handleChange}
       onKeyDown={handleKeyDown}
@@ -142,7 +142,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       onCompositionStart={handleCompositionStart}
       onCompositionEnd={handleCompositionEnd}
       // Accessibility attributes
-      role="combobox"
+      role={role || 'combobox'}
       aria-expanded={open || false}
       aria-haspopup="listbox"
       aria-owns={`${id}_list`}

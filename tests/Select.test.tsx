@@ -685,8 +685,6 @@ describe('Select.Basic', () => {
       fireEvent.click(container.querySelector('.rc-select'));
       expect(focusSpy).toHaveBeenCalled();
 
-      // We should mock trigger focus event since it not work in jsdom
-      fireEvent.focus(container.querySelector('input'));
       jest.runAllTimers();
     });
 
@@ -696,7 +694,7 @@ describe('Select.Basic', () => {
 
     it('fires focus event', () => {
       expect(handleFocus).toHaveBeenCalled();
-      expect(handleFocus.mock.calls.length).toBe(1);
+      expect(handleFocus.mock.calls).toHaveLength(1);
     });
 
     it('set className', () => {
@@ -1849,10 +1847,10 @@ describe('Select.Basic', () => {
     [undefined].forEach((value) => {
       it(`to ${value}`, () => {
         const { container, rerender } = render(<Select value="light" />);
-        expect(container.querySelector('.rc-select-item').textContent).toEqual('light');
+        expect(container.querySelector('.rc-select-content-value').textContent).toEqual('light');
 
         rerender(<Select value={value} />);
-        expect(container.querySelector('.rc-select-item')).toBeFalsy();
+        expect(container.querySelector('.rc-select-content-value')).toBeFalsy();
       });
     });
   });
@@ -1973,7 +1971,7 @@ describe('Select.Basic', () => {
         toggleOpen(container);
         selectItem(container, index);
         expect(onChange).toHaveBeenCalledWith(value, expect.anything());
-        expect(container.querySelector('.rc-select-item').textContent).toEqual(showValue);
+        expect(container.querySelector('.rc-select-content-value').textContent).toEqual(showValue);
       });
 
       expect(errorSpy).toHaveBeenCalledWith(warningMessage);

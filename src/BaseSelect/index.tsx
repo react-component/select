@@ -620,9 +620,9 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       if (showAction.includes('focus')) {
         triggerOpen(true);
       }
-    }
 
-    onFocus?.(event);
+      onFocus?.(event);
+    }
   };
 
   // const onContainerBlur: React.FocusEventHandler<HTMLElement> = (...args) => {
@@ -666,8 +666,10 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       }
     }
 
-    triggerOpen(false);
-    onBlur?.(event);
+    if (!disabled) {
+      triggerOpen(false);
+      onBlur?.(event);
+    }
   };
 
   // Give focus back of Select
