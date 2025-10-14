@@ -50,7 +50,7 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
 
   // ===================== Search ======================
   const inputValue = showSearch ? searchValue : '';
-  const inputEditable: boolean = showSearch && (triggerOpen || focused);
+  const inputEditable: boolean = showSearch && !disabled;
 
   // Props from context with safe defaults
   const removeIcon: RenderNode = removeIconFromContext ?? '×';
