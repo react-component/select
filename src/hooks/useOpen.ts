@@ -1,5 +1,5 @@
 import { useControlledState, useEvent } from '@rc-component/util';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 const internalMacroTask = (fn: VoidFunction) => {
   const channel = new MessageChannel();
@@ -29,14 +29,27 @@ export type TriggerOpenType = (nextOpen?: boolean, ignoreNext?: boolean) => void
  * Otherwise use uncontrolled logic.
  * Setting `open` takes effect immediately,
  * but setting it to `false` is delayed via MessageChannel.
+ *
+ * SSR handling: During SSR, `open` is always false to avoid Portal issues.
+ * On client-side hydration, it syncs with the actual open state.
  */
 export default function useOpen(
   propOpen: boolean,
   onOpen: (nextOpen: boolean) => void,
   postOpen: (nextOpen: boolean) => boolean,
 ): [boolean, TriggerOpenType] {
+  // SSR not support Portal which means we need delay `open` for the first time render
+  const [rendered, setRendered] = useState(false);
+
+  useEffect(() => {
+    setRendered(true);
+  }, []);
+
   const [stateOpen, internalSetOpen] = useControlledState(false, propOpen);
-  const mergedOpen = postOpen(stateOpen);
+
+  // During SSR, always return false for open state
+  const ssrSafeOpen = rendered ? stateOpen : false;
+  const mergedOpen = postOpen(ssrSafeOpen);
 
   const taskIdRef = useRef(0);
   const taskLockRef = useRef(false);

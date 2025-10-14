@@ -6,12 +6,12 @@ import { render } from '@testing-library/react';
 describe('Select placeholder', () => {
   it('when searchValue is controlled', () => {
     const { container } = render(<Select searchValue="light" placeholder="bamboo" />);
-    expect(container.querySelector('.rc-select-placeholder')).not.toHaveStyle({
-      visibility: 'hidden',
+    expect(container.querySelector('.rc-select-placeholder')).toHaveStyle({
+      visibility: 'visible',
     });
     toggleOpen(container);
     expect(container.querySelector('.rc-select-placeholder')).toHaveStyle({
-      visibility: 'hidden',
+      visibility: 'visible',
     });
   });
 
@@ -26,9 +26,9 @@ describe('Select placeholder', () => {
       <Select value={null} placeholder="bamboo" options={[{ value: null, label: 'light' }]} />,
     );
     expect(container.querySelector('.rc-select-placeholder')).toBeFalsy();
-    expect(container.querySelector('.rc-select-item').textContent).toBe('light');
+    expect(container.querySelector('.rc-select-content-value').textContent).toBe('light');
     toggleOpen(container);
-    expect(container.querySelector('.rc-select-item').textContent).toBe('light');
+    expect(container.querySelector('.rc-select-content-value').textContent).toBe('light');
   });
 
   it('should hide placeholder if force closed and showSearch with searchValue', () => {

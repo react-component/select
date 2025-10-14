@@ -12,7 +12,7 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
   ({ inputProps }, ref) => {
     const { prefixCls, searchValue, activeValue, displayValues, maxLength, mode } =
       useSelectInputContext();
-    const { triggerOpen, title: rootTitle } = useBaseProps();
+    const { triggerOpen, title: rootTitle, showSearch } = useBaseProps();
     const selectContext = React.useContext(SelectContext);
 
     const [inputChanged, setInputChanged] = React.useState(false);
@@ -26,8 +26,9 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
         return activeValue;
       }
 
-      return searchValue || '';
-    }, [combobox, activeValue, inputChanged, triggerOpen, searchValue]);
+      return showSearch ? searchValue : '';
+    }, [combobox, activeValue, inputChanged, triggerOpen, searchValue, showSearch]);
+    console.log('>>>', showSearch, searchValue, mergedSearchValue);
 
     // Extract option props, excluding label and value, and handle className/style merging
     const optionProps = React.useMemo(() => {

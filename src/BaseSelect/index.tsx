@@ -403,36 +403,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     disabled || emptyListContent ? false : nextOpen,
   );
 
-  // // SSR not support Portal which means we need delay `open` for the first time render
-  // const [rendered, setRendered] = React.useState(false);
-  // useLayoutEffect(() => {
-  //   setRendered(true);
-  // }, []);
-
-  // const [innerOpen, setInnerOpen] = useControlledState<boolean>(defaultOpen || false, open);
-
-  // let mergedOpen = rendered ? innerOpen : false;
-
-  // if (disabled || (emptyListContent && mergedOpen && mode === 'combobox')) {
-  //   mergedOpen = false;
-  // }
-  // const triggerOpen = emptyListContent ? false : mergedOpen;
-
-  // const onToggleOpen = React.useCallback(
-  //   (newOpen?: boolean) => {
-  //     const nextOpen = newOpen !== undefined ? newOpen : !mergedOpen;
-
-  //     if (!disabled) {
-  //       setInnerOpen(nextOpen);
-
-  //       if (mergedOpen !== nextOpen) {
-  //         onPopupVisibleChange?.(nextOpen);
-  //       }
-  //     }
-  //   },
-  //   [disabled, mergedOpen, setInnerOpen, onPopupVisibleChange],
-  // );
-
   // ============================= Search =============================
   const tokenWithEnter = React.useMemo<boolean>(
     () => (tokenSeparators || []).some((tokenSeparator) => ['\n', '\r\n'].includes(tokenSeparator)),
