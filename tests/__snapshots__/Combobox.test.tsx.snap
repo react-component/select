@@ -2,7 +2,7 @@
 
 exports[`Select.Combobox renders controlled correctly 1`] = `
 <div
-  class="rc-select rc-select-single rc-select-show-search"
+  class="rc-select rc-select-single"
 >
   <div
     class="rc-select-content"
@@ -14,7 +14,17 @@ exports[`Select.Combobox renders controlled correctly 1`] = `
       Search
     </div>
     <input
+      aria-autocomplete="list"
+      aria-controls="test-id_list"
+      aria-expanded="false"
+      aria-haspopup="listbox"
+      aria-owns="test-id_list"
+      autocomplete="off"
       class="rc-select-input"
+      id="test-id"
+      readonly=""
+      role="combobox"
+      type="text"
       value=""
     />
   </div>
@@ -23,7 +33,7 @@ exports[`Select.Combobox renders controlled correctly 1`] = `
 
 exports[`Select.Combobox renders correctly 1`] = `
 <div
-  class="rc-select rc-select-single rc-select-show-search"
+  class="rc-select rc-select-single"
 >
   <div
     class="rc-select-content"
@@ -35,7 +45,17 @@ exports[`Select.Combobox renders correctly 1`] = `
       Search
     </div>
     <input
+      aria-autocomplete="list"
+      aria-controls="test-id_list"
+      aria-expanded="false"
+      aria-haspopup="listbox"
+      aria-owns="test-id_list"
+      autocomplete="off"
       class="rc-select-input"
+      id="test-id"
+      readonly=""
+      role="combobox"
+      type="text"
       value=""
     />
   </div>
