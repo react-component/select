@@ -1,20 +1,17 @@
 import * as React from 'react';
-import SelectInput, { type SelectInputProps } from '../SelectInput';
+import SelectInput, { type SelectInputRef, type SelectInputProps } from '../SelectInput';
 
 export interface ComponentsConfig {
   root?: React.ComponentType<any> | string;
-  input?:
-    | React.ComponentType<
-        | React.TextareaHTMLAttributes<HTMLTextAreaElement>
-        | React.InputHTMLAttributes<HTMLInputElement>
-      >
-    | string;
+  input?: React.ComponentType<any> | string;
 }
 
 export interface FilledComponentsConfig {
-  root: React.ComponentType<SelectInputProps>;
-  input: React.ComponentType<
-    React.TextareaHTMLAttributes<HTMLTextAreaElement> | React.InputHTMLAttributes<HTMLInputElement>
+  root: React.ForwardRefExoticComponent<SelectInputProps & React.RefAttributes<SelectInputRef>>;
+  input: React.ForwardRefExoticComponent<
+    | React.TextareaHTMLAttributes<HTMLTextAreaElement>
+    | (React.InputHTMLAttributes<HTMLInputElement> &
+        React.RefAttributes<HTMLInputElement | HTMLTextAreaElement>)
   >;
 }
 

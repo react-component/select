@@ -34,8 +34,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     autoComplete,
     ...restProps
   } = props;
-  const { prefixCls, mode, onSearch, onSearchSubmit, onInputBlur, autoFocus, tokenWithEnter } =
-    useSelectInputContext();
+  const {
+    prefixCls,
+    mode,
+    onSearch,
+    onSearchSubmit,
+    onInputBlur,
+    autoFocus,
+    tokenWithEnter,
+    components: { input: InputComponent },
+  } = useSelectInputContext();
   const { id, classNames, styles, open, activeDescendantId, role, disabled } = useBaseProps() || {};
 
   const inputCls = clsx(`${prefixCls}-input`, classNames?.input, className);
@@ -144,7 +152,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 
   // ============================= Render =============================
   return (
-    <input
+    <InputComponent
       id={id}
       type={mode === 'combobox' ? 'text' : 'search'}
       {...restProps}

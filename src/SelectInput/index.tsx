@@ -3,6 +3,13 @@ import Affix from './Affix';
 import SelectContent from './Content';
 import SelectInputContext from './context';
 import type { DisplayValueType, Mode } from '../interface';
+import useBaseProps from '../hooks/useBaseProps';
+import { omit, useEvent } from '@rc-component/util';
+import KeyCode from '@rc-component/util/lib/KeyCode';
+import { isValidateOpenKey } from '../utils/keyUtil';
+import clsx from 'clsx';
+import type { FilledComponentsConfig } from '../hooks/useComponents';
+import { getDOM } from '@rc-component/util/lib/Dom/findDOMNode';
 
 export interface SelectInputRef {
   focus: (options?: FocusOptions) => void;
@@ -36,13 +43,8 @@ export interface SelectInputProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   className?: string;
   style?: React.CSSProperties;
   focused?: boolean;
-  [key: string]: any;
+  components: FilledComponentsConfig;
 }
-import useBaseProps from '../hooks/useBaseProps';
-import { omit, useEvent } from '@rc-component/util';
-import KeyCode from '@rc-component/util/lib/KeyCode';
-import { isValidateOpenKey } from '../utils/keyUtil';
-import clsx from 'clsx';
 
 const DEFAULT_OMIT_PROPS = [
   'value',
@@ -172,7 +174,9 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
   // ====================== Open ======================
   const onInternalMouseDown: SelectInputProps['onMouseDown'] = useEvent((event) => {
     if (!disabled) {
-      event.preventDefault();
+      if (event.target !== getDOM(inputRef.current)) {
+        event.preventDefault();
+      }
 
       // Check if we should prevent closing when clicking on selector
       // Don't close if: open && not multiple && (combobox mode || showSearch)
@@ -180,13 +184,6 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
 
       if (!(event.nativeEvent as any)._select_lazy) {
         inputRef.current?.focus();
-
-        // Clear search value if autoClearSearchValue is not false when closing
-        if ((mode !== 'combobox' && (!showSearch || shouldPreventClose)) || !triggerOpen) {
-          if (triggerOpen && autoClearSearchValue !== false) {
-            onSearch?.('', true, false);
-          }
-        }
 
         // Only toggle open if we should not prevent close
         if (!shouldPreventClose) {

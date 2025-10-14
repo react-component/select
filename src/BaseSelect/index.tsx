@@ -1,7 +1,5 @@
 import type { AlignType, BuildInPlacements } from '@rc-component/trigger/lib/interface';
 import { clsx } from 'clsx';
-import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
-import useControlledState from '@rc-component/util/lib/hooks/useControlledState';
 import isMobile from '@rc-component/util/lib/isMobile';
 import { useComposeRef } from '@rc-component/util/lib/ref';
 import { getDOM } from '@rc-component/util/lib/Dom/findDOMNode';
@@ -10,7 +8,6 @@ import * as React from 'react';
 import { useAllowClear } from '../hooks/useAllowClear';
 import { BaseSelectContext } from '../hooks/useBaseProps';
 import type { BaseSelectContextProps } from '../hooks/useBaseProps';
-import useDelayReset from '../hooks/useDelayReset';
 import useLock from '../hooks/useLock';
 import useSelectTriggerControl from '../hooks/useSelectTriggerControl';
 import useComponents, { type ComponentsConfig } from '../hooks/useComponents';
@@ -24,14 +21,13 @@ import type {
   RenderNode,
 } from '../interface';
 import type { RefSelectorProps } from '../Selector';
-import Selector from '../Selector';
 import type { RefTriggerProps } from '../SelectTrigger';
 import SelectTrigger from '../SelectTrigger';
-import TransBtn from '../TransBtn';
 import { getSeparatedContent, isValidCount } from '../utils/valueUtil';
 import Polite from './Polite';
 import useOpen from '../hooks/useOpen';
 import { useEvent } from '@rc-component/util';
+import type { SelectInputRef } from '../SelectInput';
 export type BaseSelectSemanticName = 'prefix' | 'suffix' | 'input' | 'clear';
 
 /**
@@ -347,7 +343,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   }, []);
 
   // ============================== Refs ==============================
-  const containerRef = React.useRef<HTMLDivElement>(null);
+  const containerRef = React.useRef<SelectInputRef>(null);
   const triggerRef = React.useRef<RefTriggerProps>(null);
   const selectorRef = React.useRef<RefSelectorProps>(null);
   const listRef = React.useRef<RefOptionListProps>(null);

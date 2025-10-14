@@ -678,7 +678,7 @@ describe('Select.Multiple', () => {
       const { container } = render(
         <Select mode="multiple" open={false} showSearch={true} searchValue="test" />,
       );
-      expect(container.querySelector('input').value).toBe('');
+      expect(container.querySelector('input')).toHaveValue('');
     });
     it('search value should show when autoClearSearchValue is false', () => {
       const { container } = render(
@@ -690,7 +690,7 @@ describe('Select.Multiple', () => {
           searchValue="test"
         />,
       );
-      expect(container.querySelector('input').value).toBe('test');
+      expect(container.querySelector('input')).toHaveValue('test');
     });
     it('search value should no clear when autoClearSearchValue is false', () => {
       const { container } = render(
@@ -704,7 +704,7 @@ describe('Select.Multiple', () => {
 
       toggleOpen(container);
       toggleOpen(container);
-      expect(container.querySelector('input').value).toBe('test');
+      expect(container.querySelector('input')).toHaveValue('test');
     });
     it('search value should clear when autoClearSearchValue is true', () => {
       const { container } = render(
@@ -712,7 +712,7 @@ describe('Select.Multiple', () => {
       );
       toggleOpen(container);
       toggleOpen(container);
-      expect(container.querySelector('input').value).toBe('');
+      expect(container.querySelector('input')).toHaveValue('');
     });
   });
 });
