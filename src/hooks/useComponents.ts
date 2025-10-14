@@ -1,8 +1,8 @@
 import * as React from 'react';
-import SelectInput, { type SelectInputRef, type SelectInputProps } from '../SelectInput';
+import type { SelectInputRef, SelectInputProps } from '../SelectInput';
 
 export interface ComponentsConfig {
-  root?: React.ComponentType<any> | string;
+  root?: React.ComponentType<any> | string | React.ReactElement;
   input?: React.ComponentType<any> | string;
 }
 
@@ -17,7 +17,7 @@ export interface FilledComponentsConfig {
 
 export default function useComponents(components?: ComponentsConfig) {
   return React.useMemo(() => {
-    const { root: RootComponent = SelectInput, input: InputComponent = 'input' } = components || {};
+    const { root: RootComponent, input: InputComponent } = components || {};
 
     return { root: RootComponent, input: InputComponent } as FilledComponentsConfig;
   }, [components]);

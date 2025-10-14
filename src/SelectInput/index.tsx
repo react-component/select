@@ -8,7 +8,7 @@ import { omit, useEvent } from '@rc-component/util';
 import KeyCode from '@rc-component/util/lib/KeyCode';
 import { isValidateOpenKey } from '../utils/keyUtil';
 import clsx from 'clsx';
-import type { FilledComponentsConfig } from '../hooks/useComponents';
+import type { ComponentsConfig } from '../hooks/useComponents';
 import { getDOM } from '@rc-component/util/lib/Dom/findDOMNode';
 
 export interface SelectInputRef {
@@ -43,7 +43,7 @@ export interface SelectInputProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   className?: string;
   style?: React.CSSProperties;
   focused?: boolean;
-  components: FilledComponentsConfig;
+  components: ComponentsConfig;
 }
 
 const DEFAULT_OMIT_PROPS = [
@@ -104,19 +104,14 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
     // Token handling
     tokenWithEnter,
 
+    // Components
+    components,
+
     ...restProps
   } = props;
 
-  const {
-    triggerOpen,
-    toggleOpen,
-    showSearch,
-    disabled,
-    loading,
-    classNames,
-    styles,
-    autoClearSearchValue,
-  } = useBaseProps();
+  const { triggerOpen, toggleOpen, showSearch, disabled, loading, classNames, styles } =
+    useBaseProps();
 
   const rootRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -161,10 +156,10 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
     () => ({
       focus: (options?: FocusOptions) => {
         // Focus the inner input if available, otherwise fall back to root div.
-        inputRef.current.focus?.(options);
+        (inputRef.current || rootRef.current).focus?.(options);
       },
       blur: () => {
-        inputRef.current.blur?.();
+        (inputRef.current || rootRef.current).blur?.();
       },
       nativeElement: rootRef.current,
     }),
@@ -203,6 +198,9 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
     onBlur?.(event);
   };
 
+  // =================== Components ===================
+  const { root: RootComponent } = components;
+
   // ===================== Render =====================
   const domProps = omit(restProps, DEFAULT_OMIT_PROPS);
 
@@ -212,6 +210,31 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
     onInputKeyDown: onInternalInputKeyDown,
   };
 
+  const sharedProps = {
+    // Open
+    onMouseDown: onInternalMouseDown,
+    onBlur: onInternalBlur,
+  } as const;
+
+  if (RootComponent) {
+    if (React.isValidElement<any>(RootComponent)) {
+      const oriProps = RootComponent.props || {};
+      return React.cloneElement(RootComponent, {
+        ...sharedProps,
+        onMouseDown: (e: React.MouseEvent<HTMLDivElement>) => {
+          sharedProps.onMouseDown(e);
+          oriProps.onMouseDown?.(e);
+        },
+        onBlur: (e: React.FocusEvent<HTMLDivElement>) => {
+          sharedProps.onBlur(e);
+          oriProps.onBlur?.(e);
+        },
+        ref: rootRef,
+      });
+    }
+    return <RootComponent {...sharedProps} ref={rootRef} />;
+  }
+
   return (
     <SelectInputContext.Provider value={contextValue}>
       <div
@@ -220,9 +243,8 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
         ref={rootRef}
         className={className}
         style={style}
-        // Open
-        onMouseDown={onInternalMouseDown}
-        onBlur={onInternalBlur}
+        // Shared Props
+        {...sharedProps}
       >
         {/* Prefix */}
         <Affix className={clsx(`${prefixCls}-prefix`, classNames?.prefix)} style={styles?.prefix}>

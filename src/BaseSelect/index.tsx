@@ -10,7 +10,6 @@ import { BaseSelectContext } from '../hooks/useBaseProps';
 import type { BaseSelectContextProps } from '../hooks/useBaseProps';
 import useLock from '../hooks/useLock';
 import useSelectTriggerControl from '../hooks/useSelectTriggerControl';
-import useComponents, { type ComponentsConfig } from '../hooks/useComponents';
 import type {
   DisplayInfoType,
   DisplayValueType,
@@ -28,6 +27,8 @@ import Polite from './Polite';
 import useOpen from '../hooks/useOpen';
 import { useEvent } from '@rc-component/util';
 import type { SelectInputRef } from '../SelectInput';
+import SelectInput from '../SelectInput';
+import type { ComponentsConfig } from '../hooks/useComponents';
 export type BaseSelectSemanticName = 'prefix' | 'suffix' | 'input' | 'clear';
 
 /**
@@ -312,7 +313,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     onMouseDown,
 
     // Components
-    components,
+    components = {},
 
     // Rest Props
     ...restProps
@@ -904,11 +905,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   //   );
   // }
 
-  const mergedComponents = useComponents(components);
-  const { root: RootComponent } = mergedComponents;
-
   renderNode = (
-    <RootComponent
+    <SelectInput
       {...restProps}
       // Ref
       ref={containerRef}
@@ -943,7 +941,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       // Open
       onMouseDown={onInternalMouseDown}
       // Components
-      components={mergedComponents}
+      components={components}
     />
   );
 

@@ -42,7 +42,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     onInputBlur,
     autoFocus,
     tokenWithEnter,
-    components: { input: InputComponent },
+    components: { input: InputComponent = 'input' },
   } = useSelectInputContext();
   const { id, classNames, styles, open, activeDescendantId, role, disabled } = useBaseProps() || {};
 
