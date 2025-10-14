@@ -44,6 +44,7 @@ export interface SelectInputProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   style?: React.CSSProperties;
   focused?: boolean;
   components: ComponentsConfig;
+  children?: React.ReactElement;
 }
 
 const DEFAULT_OMIT_PROPS = [
@@ -77,6 +78,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
     prefix,
     suffix,
     clearIcon,
+    children,
 
     // Data
     multiple,
@@ -281,6 +283,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
             {clearIcon}
           </Affix>
         )}
+        {children}
       </div>
     </SelectInputContext.Provider>
   );

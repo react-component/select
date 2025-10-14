@@ -682,25 +682,11 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     const { target } = event;
     const popupElement: HTMLDivElement = triggerRef.current?.getPopupElement();
 
-    console.log('???');
-
     // We should give focus back to selector if clicked item is not focusable
-    // if (popupElement?.contains(target as HTMLElement)) {
-    //   const timeoutId = setTimeout(() => {
-    //     const index = activeTimeoutIds.indexOf(timeoutId);
-    //     if (index !== -1) {
-    //       activeTimeoutIds.splice(index, 1);
-    //     }
-
-    //     cancelSetMockFocused();
-
-    //     if (!mobile && !popupElement.contains(document.activeElement)) {
-    //       selectorRef.current?.focus();
-    //     }
-    //   });
-
-    //   activeTimeoutIds.push(timeoutId);
-    // }
+    if (popupElement?.contains(target as HTMLElement) && triggerOpen) {
+      // Tell `open` not to close since it's safe in the popup
+      triggerOpen(true, true);
+    }
 
     onMouseDown?.(event, ...restArgs);
   };
@@ -881,9 +867,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   //   </SelectTrigger>
   // );
 
-  // >>> Render
-  let renderNode: React.ReactNode;
-
   // Render raw
   // if (customizeRawInputElement) {
   //   renderNode = selectorNode;
@@ -907,7 +890,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   //   );
   // }
 
-  renderNode = (
+  // >>> Render
+  let renderNode: React.ReactElement = (
     <SelectInput
       {...restProps}
       // Ref
@@ -947,6 +931,39 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     />
   );
 
+  // const renderSelectTrigger = (childrenNode?: React.ReactElement) => (
+  //   <SelectTrigger
+  //     ref={triggerRef}
+  //     disabled={disabled}
+  //     prefixCls={prefixCls}
+  //     visible={mergedOpen}
+  //     popupElement={optionList}
+  //     animation={animation}
+  //     transitionName={transitionName}
+  //     popupStyle={popupStyle}
+  //     popupClassName={popupClassName}
+  //     direction={direction}
+  //     popupMatchSelectWidth={popupMatchSelectWidth}
+  //     popupRender={popupRender}
+  //     popupAlign={popupAlign}
+  //     placement={placement}
+  //     builtinPlacements={builtinPlacements}
+  //     getPopupContainer={getPopupContainer}
+  //     empty={emptyOptions}
+  //     // onPopupVisibleChange={onTriggerVisibleChange}
+  //     onPopupMouseEnter={onPopupMouseEnter}
+  //   >
+  //     {childrenNode}
+  //   </SelectTrigger>
+  // );
+
+  // if (components.root) {
+  //   renderNode = renderSelectTrigger(renderSelectInput());
+  // } else {
+  //   // renderNode = renderSelectInput(renderSelectTrigger());
+  //   renderNode = renderSelectInput(renderSelectTrigger(<a />));
+  // }
+
   renderNode = (
     <SelectTrigger
       ref={triggerRef}
@@ -968,6 +985,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       empty={emptyOptions}
       // onPopupVisibleChange={onTriggerVisibleChange}
       onPopupMouseEnter={onPopupMouseEnter}
+      onPopupMouseDown={onInternalMouseDown}
     >
       {renderNode}
     </SelectTrigger>
