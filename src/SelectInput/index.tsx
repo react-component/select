@@ -21,6 +21,7 @@ export interface SelectInputProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   searchValue?: string;
   activeValue?: string;
   mode?: Mode;
+  autoClearSearchValue?: boolean;
   onSearch?: (searchText: string, fromTyping: boolean, isCompositing: boolean) => void;
   onSearchSubmit?: (searchText: string) => void;
   onInputBlur?: () => void;
@@ -104,8 +105,16 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
     ...restProps
   } = props;
 
-  const { triggerOpen, toggleOpen, showSearch, disabled, loading, classNames, styles } =
-    useBaseProps();
+  const {
+    triggerOpen,
+    toggleOpen,
+    showSearch,
+    disabled,
+    loading,
+    classNames,
+    styles,
+    autoClearSearchValue,
+  } = useBaseProps();
 
   const rootRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -171,6 +180,14 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
 
       if (!(event.nativeEvent as any)._select_lazy) {
         inputRef.current?.focus();
+
+        // Clear search value if autoClearSearchValue is not false when closing
+        if ((mode !== 'combobox' && (!showSearch || shouldPreventClose)) || !triggerOpen) {
+          if (triggerOpen && autoClearSearchValue !== false) {
+            onSearch?.('', true, false);
+          }
+        }
+
         // Only toggle open if we should not prevent close
         if (!shouldPreventClose) {
           toggleOpen();

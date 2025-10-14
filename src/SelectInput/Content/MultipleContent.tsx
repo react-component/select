@@ -30,16 +30,16 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
     prefixCls,
     displayValues,
     searchValue,
+    mode,
     onSelectorRemove,
     removeIcon: removeIconFromContext,
-
-    focused,
   } = useSelectInputContext();
   const {
     disabled,
     showSearch,
     triggerOpen,
     toggleOpen,
+    autoClearSearchValue,
     tagRender: tagRenderFromContext,
     maxTagPlaceholder: maxTagPlaceholderFromContext,
     maxTagTextLength,
@@ -49,7 +49,13 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
   const selectionItemPrefixCls = `${prefixCls}-selection-item`;
 
   // ===================== Search ======================
-  const inputValue = showSearch ? searchValue : '';
+  // Apply autoClearSearchValue logic: when dropdown is closed and autoClearSearchValue is not false (default true), clear search value
+  let computedSearchValue = searchValue;
+  if (!triggerOpen && mode === 'multiple' && autoClearSearchValue !== false) {
+    computedSearchValue = '';
+  }
+
+  const inputValue = showSearch ? computedSearchValue || '' : '';
   const inputEditable: boolean = showSearch && !disabled;
 
   // Props from context with safe defaults
