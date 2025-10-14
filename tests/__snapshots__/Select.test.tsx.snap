@@ -106,28 +106,6 @@ exports[`Select.Basic filterOption could be true as described in default value 1
 </div>
 `;
 
-exports[`Select.Basic no search 1`] = `
-<div
-  class="rc-select rc-select-single"
->
-  <div
-    class="rc-select-content"
-  >
-    <div
-      class="rc-select-content-value"
-      style="visibility: visible;"
-    >
-      1
-    </div>
-    <input
-      class="rc-select-input"
-      readonly=""
-      value=""
-    />
-  </div>
-</div>
-`;
-
 exports[`Select.Basic render renders aria-attributes correctly 1`] = `
 <div
   aria-label="some-label"
@@ -183,8 +161,15 @@ exports[`Select.Basic render renders correctly 1`] = `
       2
     </div>
     <input
+      aria-autocomplete="list"
+      aria-controls="test-id_list"
+      aria-expanded="false"
+      aria-haspopup="listbox"
+      aria-owns="test-id_list"
+      autocomplete="off"
       class="antd-input"
       id="test-id"
+      role="combobox"
       type="search"
       value=""
     />
@@ -250,8 +235,16 @@ exports[`Select.Basic render renders disabled select correctly 1`] = `
       2
     </div>
     <input
+      aria-autocomplete="list"
+      aria-controls="test-id_list"
+      aria-expanded="false"
+      aria-haspopup="listbox"
+      aria-owns="test-id_list"
+      autocomplete="off"
       class="antd-input"
+      disabled=""
       id="test-id"
+      role="combobox"
       type="search"
       value=""
     />

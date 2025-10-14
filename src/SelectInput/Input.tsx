@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { useSelectInputContext } from './context';
 import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import useBaseProps from '../hooks/useBaseProps';
+import { composeRef } from '@rc-component/util/lib/ref';
 
 export interface InputProps {
   id?: string;
@@ -151,41 +152,68 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   }, [syncWidth, value]);
 
   // ============================= Render =============================
-  return (
-    <InputComponent
-      id={id}
-      type={mode === 'combobox' ? 'text' : 'search'}
-      {...restProps}
-      ref={inputRef}
-      style={
-        {
-          ...styles?.input,
-          ...style,
-          '--select-input-width': widthCssVar,
-        } as React.CSSProperties
+  // Extract shared input props
+  const sharedInputProps = {
+    id,
+    type: mode === 'combobox' ? 'text' : 'search',
+    ...restProps,
+    ref: inputRef as React.Ref<HTMLInputElement>,
+    style: {
+      ...styles?.input,
+      ...style,
+      '--select-input-width': widthCssVar,
+    } as React.CSSProperties,
+    autoFocus,
+    autoComplete: autoComplete || 'off',
+    className: inputCls,
+    disabled,
+    value: value || '',
+    onChange: handleChange,
+    onKeyDown: handleKeyDown,
+    onBlur: handleBlur,
+    onPaste: handlePaste,
+    onCompositionStart: handleCompositionStart,
+    onCompositionEnd: handleCompositionEnd,
+    // Accessibility attributes
+    role: role || 'combobox',
+    'aria-expanded': open || false,
+    'aria-haspopup': 'listbox' as const,
+    'aria-owns': `${id}_list`,
+    'aria-autocomplete': 'list' as const,
+    'aria-controls': `${id}_list`,
+    'aria-activedescendant': open ? activeDescendantId : undefined,
+  };
+
+  // Handle different InputComponent types
+  if (React.isValidElement(InputComponent)) {
+    // If InputComponent is a ReactElement, use cloneElement with merged props
+    const existingProps: any = InputComponent.props || {};
+
+    // Start with shared props as base
+    const mergedProps = { ...sharedInputProps, ...existingProps };
+
+    // Batch update function calls
+    Object.keys(existingProps).forEach((key) => {
+      const existingValue = (existingProps as any)[key];
+
+      if (typeof existingValue === 'function') {
+        // Merge event handlers
+        (mergedProps as any)[key] = (...args: any[]) => {
+          existingValue(...args);
+          (sharedInputProps as any)[key]?.(...args);
+        };
       }
-      autoFocus={autoFocus}
-      autoComplete={autoComplete || 'off'}
-      className={inputCls}
-      disabled={disabled}
-      value={value || ''}
-      onChange={handleChange}
-      onKeyDown={handleKeyDown}
-      onBlur={handleBlur}
-      onPaste={handlePaste}
-      onCompositionStart={handleCompositionStart}
-      onCompositionEnd={handleCompositionEnd}
-      // Accessibility attributes
-      role={role || 'combobox'}
-      aria-expanded={open || false}
-      aria-haspopup="listbox"
-      aria-owns={`${id}_list`}
-      aria-autocomplete="list"
-      aria-controls={`${id}_list`}
-      aria-activedescendant={open ? activeDescendantId : undefined}
-      // onMouseDown={onMouseDown}
-    />
-  );
+    });
+
+    // Update ref
+    mergedProps.ref = composeRef((InputComponent as any).ref, sharedInputProps.ref);
+
+    return React.cloneElement(InputComponent, mergedProps);
+  }
+
+  // If InputComponent is a component type, render normally
+  const Component = InputComponent as React.ComponentType<any>;
+  return <Component {...sharedInputProps} />;
 });
 
 export default Input;

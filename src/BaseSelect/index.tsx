@@ -29,6 +29,7 @@ import { useEvent } from '@rc-component/util';
 import type { SelectInputRef } from '../SelectInput';
 import SelectInput from '../SelectInput';
 import type { ComponentsConfig } from '../hooks/useComponents';
+import useComponents from '../hooks/useComponents';
 export type BaseSelectSemanticName = 'prefix' | 'suffix' | 'input' | 'clear';
 
 /**
@@ -313,7 +314,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     onMouseDown,
 
     // Components
-    components = {},
+    components,
 
     // Rest Props
     ...restProps
@@ -365,6 +366,9 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       // (getDOM(customDomRef.current) as HTMLElement),
       selectorRef.current?.nativeElement,
   }));
+
+  // =========================== Components ===========================
+  const mergedComponents = useComponents(components, getInputElement, getRawInputElement);
 
   // ========================== Search Value ==========================
   const mergedSearchValue = React.useMemo(() => {
@@ -927,7 +931,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       // Open
       onMouseDown={onInternalMouseDown}
       // Components
-      components={components}
+      components={mergedComponents}
     />
   );
 

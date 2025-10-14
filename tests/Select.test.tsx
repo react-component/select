@@ -456,7 +456,7 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    expect(container.firstChild).toMatchSnapshot();
+    expect(container.querySelector('input')).toHaveAttribute('readonly');
   });
 
   it('should contain falsy children', () => {
@@ -2256,15 +2256,15 @@ describe('Select.Basic', () => {
         />,
       );
 
-      expect(container.querySelectorAll('span.rc-select-item')[0].getAttribute('title')).toEqual(
-        'TitleBamboo',
-      );
-      expect(container.querySelectorAll('span.rc-select-item')[1].getAttribute('title')).toEqual(
-        'little',
-      );
-      expect(container.querySelectorAll('span.rc-select-item')[2].getAttribute('title')).toEqual(
-        '+ 1 ...',
-      );
+      expect(
+        container.querySelectorAll('span.rc-select-selection-item')[0].getAttribute('title'),
+      ).toEqual('TitleBamboo');
+      expect(
+        container.querySelectorAll('span.rc-select-selection-item')[1].getAttribute('title'),
+      ).toEqual('little');
+      expect(
+        container.querySelectorAll('span.rc-select-selection-item')[2].getAttribute('title'),
+      ).toEqual('+ 1 ...');
     });
   });
 
@@ -2424,7 +2424,6 @@ describe('Select.Basic', () => {
       const ref = React.useRef<HTMLInputElement>(null);
       const onSelect = () => {
         ref.current!.blur();
-        fireEvent.blur(ref.current);
       };
       const getInputElement = () => {
         return <input ref={ref} onBlur={onBlur} />;

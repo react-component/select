@@ -1,9 +1,10 @@
 import * as React from 'react';
 import type { SelectInputRef, SelectInputProps } from '../SelectInput';
+import type { BaseSelectProps } from '../BaseSelect';
 
 export interface ComponentsConfig {
   root?: React.ComponentType<any> | string | React.ReactElement;
-  input?: React.ComponentType<any> | string;
+  input?: React.ComponentType<any> | string | React.ReactElement;
 }
 
 export interface FilledComponentsConfig {
@@ -15,10 +16,27 @@ export interface FilledComponentsConfig {
   >;
 }
 
-export default function useComponents(components?: ComponentsConfig) {
+export default function useComponents(
+  components?: ComponentsConfig,
+  getInputElement?: BaseSelectProps['getInputElement'],
+  getRawInputElement?: BaseSelectProps['getRawInputElement'],
+): ComponentsConfig {
   return React.useMemo(() => {
-    const { root: RootComponent, input: InputComponent } = components || {};
+    let { root, input } = components || {};
 
-    return { root: RootComponent, input: InputComponent } as FilledComponentsConfig;
-  }, [components]);
+    // root: getRawInputElement
+    if (getRawInputElement) {
+      root = getRawInputElement();
+    }
+
+    // input: getInputElement
+    if (getInputElement) {
+      input = getInputElement();
+    }
+
+    return {
+      root,
+      input,
+    };
+  }, [components, getInputElement, getRawInputElement]);
 }
