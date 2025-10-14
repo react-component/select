@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useState } from 'react';
 import { clsx } from 'clsx';
 import Overflow from 'rc-overflow';
 import Input from '../Input';
@@ -9,7 +8,6 @@ import type { DisplayValueType, RawValueType } from '../../interface';
 import type { RenderNode, CustomTagProps } from '../../BaseSelect';
 import TransBtn from '../../TransBtn';
 import { getTitle } from '../../utils/commonUtil';
-import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import useBaseProps from '../../hooks/useBaseProps';
 import Placeholder from './Placeholder';
 
