@@ -679,10 +679,12 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   );
 
   const onInternalMouseDown: React.MouseEventHandler<HTMLDivElement> = (event, ...restArgs) => {
-    // const { target } = event;
-    // const popupElement: HTMLDivElement = triggerRef.current?.getPopupElement();
+    const { target } = event;
+    const popupElement: HTMLDivElement = triggerRef.current?.getPopupElement();
 
-    // // We should give focus back to selector if clicked item is not focusable
+    console.log('???');
+
+    // We should give focus back to selector if clicked item is not focusable
     // if (popupElement?.contains(target as HTMLElement)) {
     //   const timeoutId = setTimeout(() => {
     //     const index = activeTimeoutIds.indexOf(timeoutId);
