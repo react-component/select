@@ -2,19 +2,26 @@ import * as React from 'react';
 import SelectInput, { type SelectInputProps } from '../SelectInput';
 
 export interface ComponentsConfig {
-  root?: React.ComponentType<any>;
-  input?: React.ComponentType<any>;
+  root?: React.ComponentType<any> | string;
+  input?:
+    | React.ComponentType<
+        | React.TextareaHTMLAttributes<HTMLTextAreaElement>
+        | React.InputHTMLAttributes<HTMLInputElement>
+      >
+    | string;
 }
 
-export interface ReturnType {
-  root: React.ComponentType<SelectInputProps> | string;
-  input: React.ComponentType<any> | string;
+export interface FilledComponentsConfig {
+  root: React.ComponentType<SelectInputProps>;
+  input: React.ComponentType<
+    React.TextareaHTMLAttributes<HTMLTextAreaElement> | React.InputHTMLAttributes<HTMLInputElement>
+  >;
 }
 
-export default function useComponents(components?: ComponentsConfig): ReturnType {
+export default function useComponents(components?: ComponentsConfig) {
   return React.useMemo(() => {
     const { root: RootComponent = SelectInput, input: InputComponent = 'input' } = components || {};
 
-    return { root: RootComponent, input: InputComponent };
+    return { root: RootComponent, input: InputComponent } as FilledComponentsConfig;
   }, [components]);
 }

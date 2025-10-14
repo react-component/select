@@ -908,7 +908,9 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   //   );
   // }
 
-  const { root: RootComponent } = useComponents(components);
+  const mergedComponents = useComponents(components);
+  const { root: RootComponent } = mergedComponents;
+
   renderNode = (
     <RootComponent
       {...restProps}
@@ -944,6 +946,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       tokenWithEnter={tokenWithEnter}
       // Open
       onMouseDown={onInternalMouseDown}
+      // Components
+      components={mergedComponents}
     />
   );
 
