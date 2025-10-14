@@ -75,7 +75,7 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
         {displayValue ? (
           <div {...optionProps}>{displayValue.label}</div>
         ) : (
-          <Placeholder hasSearchValue={!!mergedSearchValue} />
+          <Placeholder show={!mergedSearchValue} />
         )}
         <Input
           ref={ref}

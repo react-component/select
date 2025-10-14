@@ -611,7 +611,6 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
     const onInternalSearch: BaseSelectProps['onSearch'] = (searchText, info) => {
       setSearchValue(searchText);
       setActiveValue(null);
-      console.log('???', searchText);
 
       // [Submit] Tag mode should flush input
       if (info.source === 'submit') {

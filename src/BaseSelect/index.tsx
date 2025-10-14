@@ -439,7 +439,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   );
 
   const onInternalSearch = (searchText: string, fromTyping: boolean, isCompositing: boolean) => {
-    console.log('is', searchText);
     if (multiple && isValidCount(maxCount) && displayValues.length >= maxCount) {
       return;
     }

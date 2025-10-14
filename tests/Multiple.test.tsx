@@ -33,6 +33,14 @@ describe('Select.Multiple', () => {
   dynamicChildrenTest('multiple');
   inputFilterTest('multiple');
 
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   it('tokenize input', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
@@ -426,9 +434,13 @@ describe('Select.Multiple', () => {
     const { container } = render(
       <Select mode="multiple" searchValue="light" placeholder="bamboo" />,
     );
-    expect(container.querySelector('.rc-select-placeholder')).toBeTruthy();
+    expect(container.querySelector('.rc-select-placeholder')).toHaveStyle({
+      visibility: 'visible',
+    });
     toggleOpen(container);
-    expect(container.querySelector('.rc-select-placeholder')).toBeFalsy();
+    expect(container.querySelector('.rc-select-placeholder')).toHaveStyle({
+      visibility: 'hidden',
+    });
   });
 
   it('clear input when popup closed', () => {
@@ -437,12 +449,13 @@ describe('Select.Multiple', () => {
     );
     toggleOpen(container);
     fireEvent.change(container.querySelector('input'), { target: { value: 'bamboo' } });
-    expect(container.querySelector('input').value).toEqual('bamboo');
+    expect(container.querySelector('input')).toHaveValue('bamboo');
 
     // Close and open again
     toggleOpen(container);
+    fireEvent.blur(container.querySelector('input'));
     toggleOpen(container);
-    expect(container.querySelector('input').value).toEqual('');
+    expect(container.querySelector('input')).toHaveValue('');
   });
 
   it('ajax update should keep options', () => {

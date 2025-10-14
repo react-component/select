@@ -11,6 +11,7 @@ import TransBtn from '../../TransBtn';
 import { getTitle } from '../../utils/commonUtil';
 import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import useBaseProps from '../../hooks/useBaseProps';
+import Placeholder from './Placeholder';
 
 function itemKey(value: DisplayValueType) {
   return value.key ?? value.value;
@@ -178,24 +179,27 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
 
   // ======================= Render =======================
   return (
-    <Overflow
-      prefixCls={`${prefixCls}-content`}
-      data={displayValues}
-      renderItem={renderItem}
-      renderRest={renderRest}
-      // suffix={inputNode}
-      suffix={
-        <Input
-          ref={ref}
-          disabled={disabled}
-          readOnly={!inputEditable}
-          {...inputProps}
-          value={inputValue || ''}
-          syncWidth
-        />
-      }
-      itemKey={itemKey}
-      maxCount={maxTagCount}
-    />
+    <>
+      <Placeholder show={!searchValue || !triggerOpen} />
+      <Overflow
+        prefixCls={`${prefixCls}-content`}
+        data={displayValues}
+        renderItem={renderItem}
+        renderRest={renderRest}
+        // suffix={inputNode}
+        suffix={
+          <Input
+            ref={ref}
+            disabled={disabled}
+            readOnly={!inputEditable}
+            {...inputProps}
+            value={inputValue || ''}
+            syncWidth
+          />
+        }
+        itemKey={itemKey}
+        maxCount={maxTagCount}
+      />
+    </>
   );
 });
