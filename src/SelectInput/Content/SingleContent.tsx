@@ -26,9 +26,12 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
         return activeValue;
       }
 
+      if (combobox) {
+        return searchValue;
+      }
+
       return showSearch ? searchValue : '';
     }, [combobox, activeValue, inputChanged, triggerOpen, searchValue, showSearch]);
-    console.log('>>>', showSearch, searchValue, mergedSearchValue);
 
     // Extract option props, excluding label and value, and handle className/style merging
     const optionProps = React.useMemo(() => {
