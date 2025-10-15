@@ -569,32 +569,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     }
   };
 
-  // const onContainerBlur: React.FocusEventHandler<HTMLElement> = (...args) => {
-  //   blurRef.current = true;
-  //   setMockFocused(false, () => {
-  //     focusRef.current = false;
-  //     blurRef.current = false;
-  //     triggerOpen(false);
-  //   });
-  //   if (disabled) {
-  //     return;
-  //   }
-  //   if (mergedSearchValue) {
-  //     // `tags` mode should move `searchValue` into values
-  //     if (mode === 'tags') {
-  //       onSearch(mergedSearchValue, { source: 'submit' });
-  //     } else if (mode === 'multiple') {
-  //       // `multiple` mode only clean the search value but not trigger event
-  //       onSearch('', {
-  //         source: 'blur',
-  //       });
-  //     }
-  //   }
-  //   if (onBlur) {
-  //     onBlur(...args);
-  //   }
-  // };
-
   const onInternalBlur: React.FocusEventHandler<HTMLElement> = (event) => {
     setFocused(false);
 
