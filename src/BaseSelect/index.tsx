@@ -347,7 +347,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   // ============================== Refs ==============================
   const containerRef = React.useRef<SelectInputRef>(null);
   const triggerRef = React.useRef<RefTriggerProps>(null);
-  const selectorRef = React.useRef<RefSelectorProps>(null);
+  // const selectorRef = React.useRef<RefSelectorProps>(null);
   const listRef = React.useRef<RefOptionListProps>(null);
   // const blurRef = React.useRef<boolean>(false);
   const customDomRef = React.useRef<HTMLElement>(null);
@@ -360,11 +360,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     focus: containerRef.current?.focus,
     blur: containerRef.current?.blur,
     scrollTo: (arg) => listRef.current?.scrollTo(arg),
-    nativeElement:
-      // containerRef.current ||
-      // selectorRef.current?.nativeElement ||
-      // (getDOM(customDomRef.current) as HTMLElement),
-      selectorRef.current?.nativeElement,
+    nativeElement: getDOM(containerRef.current) as HTMLElement,
   }));
 
   // =========================== Components ===========================

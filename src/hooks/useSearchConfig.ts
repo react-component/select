@@ -29,7 +29,8 @@ export default function useSearchConfig(
 
     return [
       isObject ||
-      (!showSearch && mode === 'tags') ||
+      mode === 'combobox' ||
+      mode === 'tags' ||
       (mode === 'multiple' && showSearch === undefined)
         ? true
         : showSearch,

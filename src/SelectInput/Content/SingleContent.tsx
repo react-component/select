@@ -26,10 +26,6 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
         return activeValue;
       }
 
-      if (combobox) {
-        return searchValue;
-      }
-
       return showSearch ? searchValue : '';
     }, [combobox, activeValue, inputChanged, triggerOpen, searchValue, showSearch]);
 

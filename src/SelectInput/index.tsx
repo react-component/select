@@ -10,6 +10,7 @@ import { isValidateOpenKey } from '../utils/keyUtil';
 import clsx from 'clsx';
 import type { ComponentsConfig } from '../hooks/useComponents';
 import { getDOM } from '@rc-component/util/lib/Dom/findDOMNode';
+import { composeRef } from '@rc-component/util/lib/ref';
 
 export interface SelectInputRef {
   focus: (options?: FocusOptions) => void;
@@ -153,9 +154,8 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
   );
 
   // ====================== Refs ======================
-  React.useImperativeHandle(
-    ref,
-    () => ({
+  React.useImperativeHandle(ref, () => {
+    return {
       focus: (options?: FocusOptions) => {
         // Focus the inner input if available, otherwise fall back to root div.
         (inputRef.current || rootRef.current).focus?.(options);
@@ -164,9 +164,8 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
         (inputRef.current || rootRef.current).blur?.();
       },
       nativeElement: rootRef.current,
-    }),
-    [],
-  );
+    };
+  });
 
   // ====================== Open ======================
   const onInternalMouseDown: SelectInputProps['onMouseDown'] = useEvent((event) => {
@@ -231,7 +230,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
           sharedProps.onBlur(e);
           oriProps.onBlur?.(e);
         },
-        ref: rootRef,
+        ref: composeRef((RootComponent as any).ref, rootRef),
       });
     }
     return <RootComponent {...sharedProps} ref={rootRef} />;
