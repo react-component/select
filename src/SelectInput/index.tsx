@@ -204,7 +204,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
   const { root: RootComponent } = components;
 
   // ===================== Render =====================
-  const domProps = omit(restProps, DEFAULT_OMIT_PROPS);
+  const domProps = omit(restProps, DEFAULT_OMIT_PROPS as any);
 
   // Create context value with wrapped callbacks
   const contextValue = {

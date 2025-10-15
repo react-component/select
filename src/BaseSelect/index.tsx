@@ -27,6 +27,7 @@ import type { SelectInputRef } from '../SelectInput';
 import SelectInput from '../SelectInput';
 import type { ComponentsConfig } from '../hooks/useComponents';
 import useComponents from '../hooks/useComponents';
+
 export type BaseSelectSemanticName = 'prefix' | 'suffix' | 'input' | 'clear';
 
 /**
@@ -46,20 +47,6 @@ export type {
   RenderNode,
   RawValueType,
 };
-
-const DEFAULT_OMIT_PROPS = [
-  'value',
-  'onChange',
-  'removeIcon',
-  'placeholder',
-  'maxTagCount',
-  'maxTagTextLength',
-  'maxTagPlaceholder',
-  'choiceTransitionName',
-  'onInputKeyDown',
-  'onPopupScroll',
-  'tabIndex',
-] as const;
 export interface RefOptionListProps {
   onKeyDown: React.KeyboardEventHandler;
   onKeyUp: React.KeyboardEventHandler;
@@ -321,18 +308,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   const multiple = isMultiple(mode);
   // const mergedShowSearch =
   //   (showSearch !== undefined ? showSearch : multiple) || mode === 'combobox';
-
-  const domProps = {
-    ...restProps,
-  };
-
-  DEFAULT_OMIT_PROPS.forEach((propName) => {
-    delete domProps[propName];
-  });
-
-  omitDomProps?.forEach((propName) => {
-    delete domProps[propName];
-  });
 
   // ============================== Refs ==============================
   const containerRef = React.useRef<SelectInputRef>(null);
