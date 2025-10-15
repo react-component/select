@@ -2,7 +2,7 @@ import * as React from 'react';
 import Affix from './Affix';
 import SelectContent from './Content';
 import SelectInputContext from './context';
-import type { DisplayValueType, Mode } from '../interface';
+import type { DisplayValueType, Mode, RenderNode } from '../interface';
 import useBaseProps from '../hooks/useBaseProps';
 import { omit, useEvent } from '@rc-component/util';
 import KeyCode from '@rc-component/util/lib/KeyCode';
@@ -23,6 +23,7 @@ export interface SelectInputProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
   clearIcon?: React.ReactNode;
+  removeIcon?: RenderNode;
   multiple?: boolean;
   displayValues: DisplayValueType[];
   placeholder?: React.ReactNode;

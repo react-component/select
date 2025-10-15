@@ -1,7 +1,5 @@
 import type { AlignType, BuildInPlacements } from '@rc-component/trigger/lib/interface';
 import { clsx } from 'clsx';
-import isMobile from '@rc-component/util/lib/isMobile';
-import { useComposeRef } from '@rc-component/util/lib/ref';
 import { getDOM } from '@rc-component/util/lib/Dom/findDOMNode';
 import type { ScrollConfig, ScrollTo } from 'rc-virtual-list/lib/List';
 import * as React from 'react';
@@ -19,7 +17,6 @@ import type {
   RenderDOMFunc,
   RenderNode,
 } from '../interface';
-import type { RefSelectorProps } from '../Selector';
 import type { RefTriggerProps } from '../SelectTrigger';
 import SelectTrigger from '../SelectTrigger';
 import { getSeparatedContent, isValidCount } from '../utils/valueUtil';
@@ -190,7 +187,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   // >>> Icons
   allowClear?: boolean | { clearIcon?: React.ReactNode };
   prefix?: React.ReactNode;
-  suffix?: React.ReactNode;
+  suffix?: RenderNode;
   /**
    * Clear all icon
    * @deprecated Please use `allowClear` instead
@@ -337,20 +334,10 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     delete domProps[propName];
   });
 
-  // ============================= Mobile =============================
-  const [mobile, setMobile] = React.useState(false);
-  React.useEffect(() => {
-    // Only update on the client side
-    setMobile(isMobile());
-  }, []);
-
   // ============================== Refs ==============================
   const containerRef = React.useRef<SelectInputRef>(null);
   const triggerRef = React.useRef<RefTriggerProps>(null);
-  // const selectorRef = React.useRef<RefSelectorProps>(null);
   const listRef = React.useRef<RefOptionListProps>(null);
-  // const blurRef = React.useRef<boolean>(false);
-  const customDomRef = React.useRef<HTMLElement>(null);
 
   /** Used for component focused management */
   const [focused, setFocused] = React.useState(false);
@@ -381,15 +368,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   // Only works in `combobox`
   const customizeInputElement: React.ReactElement =
     (mode === 'combobox' && typeof getInputElement === 'function' && getInputElement()) || null;
-
-  // Used for customize replacement for `rc-cascader`
-  const customizeRawInputElement: React.ReactElement =
-    typeof getRawInputElement === 'function' && getRawInputElement();
-
-  const customizeRawInputRef = useComposeRef<HTMLElement>(
-    customDomRef,
-    customizeRawInputElement?.props?.ref,
-  );
 
   // ============================== Open ==============================
   // Not trigger `open` when `notFoundContent` is empty
@@ -717,28 +695,19 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   // ==                            Render                            ==
   // ==================================================================
 
-  // ============================= Arrow ==============================
-  // const showSuffixIcon = !!suffixIcon || loading;
-  // let arrowNode: React.ReactNode;
-
-  // if (showSuffixIcon) {
-  //   arrowNode = (
-  //     <TransBtn
-  //       className={clsx(`${prefixCls}-arrow`, classNames?.suffix, {
-  //         [`${prefixCls}-arrow-loading`]: loading,
-  //       })}
-  //       style={styles?.suffix}
-  //       customizeIcon={suffixIcon}
-  //       customizeIconProps={{
-  //         loading,
-  //         searchValue: mergedSearchValue,
-  //         open: mergedOpen,
-  //         focused: mockFocused,
-  //         showSearch: mergedShowSearch,
-  //       }}
-  //     />
-  //   );
-  // }
+  // ============================= Suffix =============================
+  const suffixIcon: React.ReactNode = React.useMemo(() => {
+    if (typeof suffix === 'function') {
+      return suffix({
+        searchValue: mergedSearchValue,
+        open: mergedOpen,
+        focused,
+        showSearch,
+        loading,
+      });
+    }
+    return suffix;
+  }, [suffix, mergedSearchValue, mergedOpen, focused, showSearch, loading]);
 
   // ============================= Clear ==============================
   const onClearMouseDown: React.MouseEventHandler<HTMLSpanElement> = () => {
@@ -772,93 +741,13 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     [`${prefixCls}-multiple`]: multiple,
     [`${prefixCls}-single`]: !multiple,
     [`${prefixCls}-allow-clear`]: mergedAllowClear,
-    // [`${prefixCls}-show-arrow`]: showSuffixIcon,
+    [`${prefixCls}-show-arrow`]: suffixIcon !== undefined && suffixIcon !== null,
     [`${prefixCls}-disabled`]: disabled,
     [`${prefixCls}-loading`]: loading,
     [`${prefixCls}-open`]: mergedOpen,
     [`${prefixCls}-customize-input`]: customizeInputElement,
     [`${prefixCls}-show-search`]: showSearch,
   });
-
-  // >>> Selector
-  // const selectorNode = (
-  //   <SelectTrigger
-  //     ref={triggerRef}
-  //     disabled={disabled}
-  //     prefixCls={prefixCls}
-  //     visible={mergedOpen}
-  //     popupElement={optionList}
-  //     animation={animation}
-  //     transitionName={transitionName}
-  //     popupStyle={popupStyle}
-  //     popupClassName={popupClassName}
-  //     direction={direction}
-  //     popupMatchSelectWidth={popupMatchSelectWidth}
-  //     popupRender={popupRender}
-  //     popupAlign={popupAlign}
-  //     placement={placement}
-  //     builtinPlacements={builtinPlacements}
-  //     getPopupContainer={getPopupContainer}
-  //     empty={emptyOptions}
-  //     onPopupVisibleChange={onTriggerVisibleChange}
-  //     onPopupMouseEnter={onPopupMouseEnter}
-  //   >
-  //     {customizeRawInputElement ? (
-  //       React.cloneElement(customizeRawInputElement, {
-  //         ref: customizeRawInputRef,
-  //       })
-  //     ) : (
-  //       <Selector
-  //         {...props}
-  //         prefixClassName={classNames?.prefix}
-  //         prefixStyle={styles?.prefix}
-  //         prefixCls={prefixCls}
-  //         inputElement={customizeInputElement}
-  //         ref={selectorRef}
-  //         id={id}
-  //         prefix={prefix}
-  //         showSearch={mergedShowSearch}
-  //         autoClearSearchValue={autoClearSearchValue}
-  //         mode={mode}
-  //         activeDescendantId={activeDescendantId}
-  //         tagRender={tagRender}
-  //         values={displayValues}
-  //         open={mergedOpen}
-  //         onToggleOpen={onToggleOpen}
-  //         activeValue={activeValue}
-  //         searchValue={mergedSearchValue}
-  //         onSearch={onInternalSearch}
-  //         onSearchSubmit={onInternalSearchSubmit}
-  //         onRemove={onSelectorRemove}
-  //         tokenWithEnter={tokenWithEnter}
-  //         onInputBlur={onInputBlur}
-  //       />
-  //     )}
-  //   </SelectTrigger>
-  // );
-
-  // Render raw
-  // if (customizeRawInputElement) {
-  //   renderNode = selectorNode;
-  // } else {
-  //   renderNode = (
-  //     <div
-  //       className={mergedClassName}
-  //       {...domProps}
-  //       ref={containerRef}
-  //       onMouseDown={onInternalMouseDown}
-  //       onKeyDown={onInternalKeyDown}
-  //       onKeyUp={onInternalKeyUp}
-  //       onFocus={onContainerFocus}
-  //       onBlur={onContainerBlur}
-  //     >
-  //       <Polite visible={mockFocused && !mergedOpen} values={displayValues} />
-  //       {selectorNode}
-  //       {arrowNode}
-  //       {mergedAllowClear && clearNode}
-  //     </div>
-  //   );
-  // }
 
   // >>> Render
   let renderNode: React.ReactElement = (
@@ -873,7 +762,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       focused={focused}
       // UI
       prefix={prefix}
-      suffix={suffix}
+      suffix={suffixIcon}
       clearIcon={clearNode}
       // Type or mode
       multiple={multiple}
@@ -900,39 +789,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       components={mergedComponents}
     />
   );
-
-  // const renderSelectTrigger = (childrenNode?: React.ReactElement) => (
-  //   <SelectTrigger
-  //     ref={triggerRef}
-  //     disabled={disabled}
-  //     prefixCls={prefixCls}
-  //     visible={mergedOpen}
-  //     popupElement={optionList}
-  //     animation={animation}
-  //     transitionName={transitionName}
-  //     popupStyle={popupStyle}
-  //     popupClassName={popupClassName}
-  //     direction={direction}
-  //     popupMatchSelectWidth={popupMatchSelectWidth}
-  //     popupRender={popupRender}
-  //     popupAlign={popupAlign}
-  //     placement={placement}
-  //     builtinPlacements={builtinPlacements}
-  //     getPopupContainer={getPopupContainer}
-  //     empty={emptyOptions}
-  //     // onPopupVisibleChange={onTriggerVisibleChange}
-  //     onPopupMouseEnter={onPopupMouseEnter}
-  //   >
-  //     {childrenNode}
-  //   </SelectTrigger>
-  // );
-
-  // if (components.root) {
-  //   renderNode = renderSelectTrigger(renderSelectInput());
-  // } else {
-  //   // renderNode = renderSelectInput(renderSelectTrigger());
-  //   renderNode = renderSelectInput(renderSelectTrigger(<a />));
-  // }
 
   renderNode = (
     <SelectTrigger
