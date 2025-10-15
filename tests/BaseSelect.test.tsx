@@ -2,13 +2,22 @@ import type { OptionListProps, RefOptionListProps } from '@/OptionList';
 import { fireEvent, render } from '@testing-library/react';
 import { forwardRef, act } from 'react';
 import BaseSelect from '../src/BaseSelect';
+import { waitFakeTimer } from './utils/common';
 
 const OptionList = forwardRef<RefOptionListProps, OptionListProps>(() => (
   <div className="popup">Popup</div>
 ));
 
 describe('BaseSelect', () => {
-  it('customized inputElement should trigger popup properly', () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  it('customized inputElement should trigger popup properly', async () => {
     const { container } = render(
       <BaseSelect
         prefixCls="rc-select"
@@ -27,11 +36,17 @@ describe('BaseSelect', () => {
       />,
     );
     expect(container.querySelector('div.popup')).toBeFalsy();
+
     fireEvent.click(container.querySelector('a.trigger'));
+    await waitFakeTimer();
     expect(container.querySelector('div.popup')).toBeTruthy();
+
     fireEvent.mouseDown(container.querySelector('a.trigger'));
+    await waitFakeTimer();
     expect(container.querySelector('div.rc-select-dropdown-hidden')).toBeFalsy();
+
     fireEvent.click(container.querySelector('a.trigger'));
+    await waitFakeTimer();
     expect(container.querySelector('div.rc-select-dropdown-hidden')).toBeTruthy();
   });
 

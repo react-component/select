@@ -668,20 +668,20 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     forceUpdate({});
   }
 
-  // // Used for raw custom input trigger
-  // let onTriggerVisibleChange: null | ((newOpen: boolean) => void);
-  // if (customizeRawInputElement) {
-  //   onTriggerVisibleChange = (newOpen: boolean) => {
-  //     onToggleOpen(newOpen);
-  //   };
-  // }
+  // Used for raw custom input trigger
+  let onTriggerVisibleChange: null | ((newOpen: boolean) => void);
+  if (!!mergedComponents.root) {
+    onTriggerVisibleChange = (newOpen: boolean) => {
+      triggerOpen(newOpen);
+    };
+  }
 
   // Close when click on non-select element
   useSelectTriggerControl(
     () => [getDOM(containerRef.current), triggerRef.current?.getPopupElement()],
     mergedOpen,
     triggerOpen,
-    !!customizeRawInputElement,
+    !!mergedComponents.root,
   );
 
   // ============================ Context =============================
@@ -953,7 +953,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       builtinPlacements={builtinPlacements}
       getPopupContainer={getPopupContainer}
       empty={emptyOptions}
-      // onPopupVisibleChange={onTriggerVisibleChange}
+      onPopupVisibleChange={onTriggerVisibleChange}
       onPopupMouseEnter={onPopupMouseEnter}
       onPopupMouseDown={onInternalMouseDown}
     >

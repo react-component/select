@@ -1895,13 +1895,11 @@ describe('Select.Basic', () => {
       act(() => {
         jest.runAllTimers();
       });
-      console.log('~~~~1');
       rerender(renderDemo(true));
       act(() => {
         jest.runAllTimers();
       });
 
-      console.log('~~~~2');
       rerender(renderDemo(false));
 
       act(() => {

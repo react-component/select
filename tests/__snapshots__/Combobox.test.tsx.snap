@@ -2,7 +2,7 @@
 
 exports[`Select.Combobox renders controlled correctly 1`] = `
 <div
-  class="rc-select rc-select-single"
+  class="rc-select rc-select-single rc-select-show-search"
 >
   <div
     class="rc-select-content"
@@ -22,7 +22,6 @@ exports[`Select.Combobox renders controlled correctly 1`] = `
       autocomplete="off"
       class="rc-select-input"
       id="test-id"
-      readonly=""
       role="combobox"
       type="text"
       value=""
@@ -33,7 +32,7 @@ exports[`Select.Combobox renders controlled correctly 1`] = `
 
 exports[`Select.Combobox renders correctly 1`] = `
 <div
-  class="rc-select rc-select-single"
+  class="rc-select rc-select-single rc-select-show-search"
 >
   <div
     class="rc-select-content"
@@ -53,7 +52,6 @@ exports[`Select.Combobox renders correctly 1`] = `
       autocomplete="off"
       class="rc-select-input"
       id="test-id"
-      readonly=""
       role="combobox"
       type="text"
       value=""

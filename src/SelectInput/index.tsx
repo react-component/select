@@ -211,29 +211,15 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
     onInputKeyDown: onInternalInputKeyDown,
   };
 
-  const sharedProps = {
-    // Open
-    onMouseDown: onInternalMouseDown,
-    onBlur: onInternalBlur,
-  } as const;
-
   if (RootComponent) {
     if (React.isValidElement<any>(RootComponent)) {
-      const oriProps = RootComponent.props || {};
       return React.cloneElement(RootComponent, {
-        ...sharedProps,
-        onMouseDown: (e: React.MouseEvent<HTMLDivElement>) => {
-          sharedProps.onMouseDown(e);
-          oriProps.onMouseDown?.(e);
-        },
-        onBlur: (e: React.FocusEvent<HTMLDivElement>) => {
-          sharedProps.onBlur(e);
-          oriProps.onBlur?.(e);
-        },
+        ...domProps,
         ref: composeRef((RootComponent as any).ref, rootRef),
       });
     }
-    return <RootComponent {...sharedProps} ref={rootRef} />;
+
+    return <RootComponent {...domProps} ref={rootRef} />;
   }
 
   return (
@@ -244,8 +230,9 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
         ref={rootRef}
         className={className}
         style={style}
-        // Shared Props
-        {...sharedProps}
+        // Mouse Events
+        onMouseDown={onInternalMouseDown}
+        onBlur={onInternalBlur}
       >
         {/* Prefix */}
         <Affix className={clsx(`${prefixCls}-prefix`, classNames?.prefix)} style={styles?.prefix}>
