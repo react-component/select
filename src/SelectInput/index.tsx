@@ -7,7 +7,7 @@ import useBaseProps from '../hooks/useBaseProps';
 import { omit, useEvent } from '@rc-component/util';
 import KeyCode from '@rc-component/util/lib/KeyCode';
 import { isValidateOpenKey } from '../utils/keyUtil';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import type { ComponentsConfig } from '../hooks/useComponents';
 import { getDOM } from '@rc-component/util/lib/Dom/findDOMNode';
 import { composeRef } from '@rc-component/util/lib/ref';

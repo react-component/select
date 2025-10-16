@@ -1,5 +1,5 @@
 import * as React from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { useSelectInputContext } from './context';
 import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import useBaseProps from '../hooks/useBaseProps';

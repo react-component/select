@@ -1,5 +1,5 @@
 import * as React from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import Input from '../Input';
 import { useSelectInputContext } from '../context';
 import useBaseProps from '../../hooks/useBaseProps';
