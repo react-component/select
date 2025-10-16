@@ -566,16 +566,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     }
   };
 
-  // Give focus back of Select
-  const activeTimeoutIds: any[] = [];
-  React.useEffect(
-    () => () => {
-      activeTimeoutIds.forEach((timeoutId) => clearTimeout(timeoutId));
-      activeTimeoutIds.splice(0, activeTimeoutIds.length);
-    },
-    [],
-  );
-
   const onInternalMouseDown: React.MouseEventHandler<HTMLDivElement> = (event, ...restArgs) => {
     const { target } = event;
     const popupElement: HTMLDivElement = triggerRef.current?.getPopupElement();

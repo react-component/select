@@ -374,6 +374,32 @@ describe('Select.Basic', () => {
     expect(container.querySelector('input').getAttribute('readonly')).toBeFalsy();
   });
 
+  it('should keep dropdown open when clicking inside popup to prevent accidental close', async () => {
+    const { container } = render(
+      <Select
+        popupRender={(origin) => (
+          <div className="popup-inner">
+            {origin}
+            <button className="little" />
+          </div>
+        )}
+      >
+        <Option value="1">One</Option>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
+
+    toggleOpen(container);
+
+    fireEvent.mouseDown(container.querySelector('.little'));
+    fireEvent.blur(container.querySelector('input'));
+    fireEvent.focus(container.querySelector('.little'));
+
+    await waitFakeTimer();
+
+    expectOpen(container, true);
+  });
+
   it('filter options by "value" prop by default', () => {
     const { container } = render(
       <Select showSearch>
