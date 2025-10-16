@@ -1,0 +1,83 @@
+// This is used for semantic refactoring
+@import (reference) url('./index.less');
+
+.@{select-prefix}.@{select-prefix} {
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+  border: 1px solid blue;
+  position: relative;
+
+  // Content 部分自动占据剩余宽度
+  .@{select-prefix}-content {
+    flex: auto;
+    display: flex;
+    align-items: center;
+    /* Prevent content from wrapping */
+    min-width: 0; /* allow flex item to shrink */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+  }
+
+  .@{select-prefix}-input {
+    border: none;
+    background: transparent;
+  }
+
+  .@{select-prefix}-placeholder {
+    opacity: 0.5;
+
+    &::after {
+      content: '\00a0'; // nbsp placeholder
+      width: 0;
+      overflow: hidden;
+    }
+  }
+
+  .@{select-prefix}-content,
+  .@{select-prefix}-input,
+  .@{select-prefix}-placeholder {
+    padding: 0;
+    margin: 0;
+    line-height: 1.5;
+    font-size: 14px;
+    font-weight: normal;
+  }
+
+  // 其他部分禁止自动宽度，使用内容宽度
+  .@{select-prefix}-prefix,
+  .@{select-prefix}-suffix,
+  .@{select-prefix}-clear {
+    flex: none;
+  }
+
+  .@{select-prefix}-clear {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  // ============================= Single =============================
+  &-single {
+    .@{select-prefix}-input {
+      position: absolute;
+      inset: 0;
+    }
+  }
+
+  // ============================ Multiple ============================
+  &-multiple {
+    .@{select-prefix}-selection-item {
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      margin-right: 4px;
+    }
+
+    .@{select-prefix}-input {
+      width: calc(var(--select-input-width, 10) * 1px);
+      min-width: 4px;
+    }
+  }
+}

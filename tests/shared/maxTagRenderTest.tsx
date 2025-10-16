@@ -14,7 +14,11 @@ export default function maxTagTextLengthTest(mode: any) {
         </Select>,
       );
 
-      expect(container.firstChild).toMatchSnapshot();
+      expect(
+        Array.from(container.querySelectorAll('.rc-select-selection-item-content')).map(
+          (ele) => ele.textContent,
+        ),
+      ).toMatchSnapshot();
     });
 
     it('truncates tags by maxTagCount', () => {
@@ -44,14 +48,15 @@ export default function maxTagTextLengthTest(mode: any) {
 
     it('not display maxTagPlaceholder if maxTagCount not reach', () => {
       const { container } = render(
-        <Select mode={mode} maxTagCount={2}>
+        <Select mode={mode} maxTagCount={2} value={['one']}>
           <Option value="one">One</Option>
           <Option value="two">Two</Option>
           <Option value="three">Three</Option>
         </Select>,
       );
 
-      expect(container.firstChild).toMatchSnapshot();
+      expect(container.querySelectorAll('.rc-select-content-item')).toHaveLength(2);
+      expect(container.querySelector('.rc-select-content-item-rest')).toBeFalsy();
     });
 
     it('truncates tags by maxTagCount and show maxTagPlaceholder', () => {
@@ -68,7 +73,8 @@ export default function maxTagTextLengthTest(mode: any) {
         </Select>,
       );
 
-      expect(container.firstChild).toMatchSnapshot();
+      expect(container.querySelectorAll('.rc-select-content-item')).toHaveLength(4);
+      expect(container.querySelector('.rc-select-content-item-rest')).toHaveTextContent('Omitted');
     });
 
     it('truncates tags by maxTagCount and show maxTagPlaceholder function', () => {
@@ -88,7 +94,10 @@ export default function maxTagTextLengthTest(mode: any) {
         </Select>,
       );
 
-      expect(container.firstChild).toMatchSnapshot();
+      expect(container.querySelectorAll('.rc-select-content-item')).toHaveLength(4);
+      expect(container.querySelector('.rc-select-content-item-rest')).toHaveTextContent(
+        '1 values omitted',
+      );
     });
 
     it('tagRender should work on maxTagPlaceholder', () => {

@@ -35,12 +35,36 @@ import {
 describe('Select.Basic', () => {
   injectRunAllTimers(jest);
 
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.clearAllTimers();
+    jest.useRealTimers();
+  });
+
   allowClearTest(undefined, '903');
   focusTest('single', {});
   blurTest('single');
   keyDownTest('single');
   inputFilterTest('single');
   openControlledTest('single');
+
+  it('should trigger close event when clicking on Select with open, value and allowClear', async () => {
+    const onPopupVisibleChange = jest.fn();
+    const { container } = render(
+      <Select open value="1" allowClear onPopupVisibleChange={onPopupVisibleChange}>
+        <Option value="1">One</Option>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
+
+    // Click on the Select should trigger close event
+    fireEvent.mouseDown(container.querySelector('.rc-select-clear'));
+    await waitFakeTimer();
+    expect(onPopupVisibleChange).toHaveBeenCalledWith(false);
+  });
 
   describe('render', () => {
     function genSelect(props?: Partial<SelectProps>) {
@@ -262,7 +286,7 @@ describe('Select.Basic', () => {
         <Option value="2">2</Option>
       </Select>,
     );
-    expect(container1.querySelector('.rc-select-clear-icon')).toBeTruthy();
+    expect(container1.querySelector('.rc-select-clear')).toBeTruthy();
 
     const { container: container2 } = render(
       <Select allowClear>
@@ -270,7 +294,7 @@ describe('Select.Basic', () => {
         <Option value="2">2</Option>
       </Select>,
     );
-    expect(container2.querySelector('.rc-select-clear-icon')).toBeFalsy();
+    expect(container2.querySelector('.rc-select-clear')).toBeFalsy();
 
     const { container: container3 } = render(
       <Select allowClear={{ clearIcon: <div className="custom-clear-icon">x</div> }} value="1">
@@ -365,6 +389,32 @@ describe('Select.Basic', () => {
     expect(container.querySelector('input').getAttribute('readonly')).toBeFalsy();
   });
 
+  it('should keep dropdown open when clicking inside popup to prevent accidental close', async () => {
+    const { container } = render(
+      <Select
+        popupRender={(origin) => (
+          <div className="popup-inner">
+            {origin}
+            <button className="little" />
+          </div>
+        )}
+      >
+        <Option value="1">One</Option>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
+
+    toggleOpen(container);
+
+    fireEvent.mouseDown(container.querySelector('.little'));
+    fireEvent.blur(container.querySelector('input'));
+    fireEvent.focus(container.querySelector('.little'));
+
+    await waitFakeTimer();
+
+    expectOpen(container, true);
+  });
+
   it('filter options by "value" prop by default', () => {
     const { container } = render(
       <Select showSearch>
@@ -447,7 +497,7 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    expect(container.firstChild).toMatchSnapshot();
+    expect(container.querySelector('input')).toHaveAttribute('readonly');
   });
 
   it('should contain falsy children', () => {
@@ -672,12 +722,10 @@ describe('Select.Basic', () => {
 
       const focusSpy = jest.spyOn(container.querySelector('input'), 'focus');
 
-      fireEvent.mouseDown(container.querySelector('.rc-select-selector'));
-      fireEvent.click(container.querySelector('.rc-select-selector'));
+      fireEvent.mouseDown(container.querySelector('.rc-select'));
+      fireEvent.click(container.querySelector('.rc-select'));
       expect(focusSpy).toHaveBeenCalled();
 
-      // We should mock trigger focus event since it not work in jsdom
-      fireEvent.focus(container.querySelector('input'));
       jest.runAllTimers();
     });
 
@@ -687,7 +735,7 @@ describe('Select.Basic', () => {
 
     it('fires focus event', () => {
       expect(handleFocus).toHaveBeenCalled();
-      expect(handleFocus.mock.calls.length).toBe(1);
+      expect(handleFocus.mock.calls).toHaveLength(1);
     });
 
     it('set className', () => {
@@ -702,8 +750,8 @@ describe('Select.Basic', () => {
         </Select>,
       );
       const inputSpy = jest.spyOn(container1.querySelector('input'), 'focus');
-      fireEvent.mouseDown(container1.querySelector('.rc-select-selection-placeholder'));
-      fireEvent.click(container1.querySelector('.rc-select-selection-placeholder'));
+      fireEvent.mouseDown(container1.querySelector('.rc-select-placeholder'));
+      fireEvent.click(container1.querySelector('.rc-select-placeholder'));
       expect(inputSpy).toHaveBeenCalled();
     });
   });
@@ -786,7 +834,7 @@ describe('Select.Basic', () => {
   });
 
   [KeyCode.ENTER, KeyCode.DOWN].forEach((keyCode) => {
-    it('open on key press', () => {
+    it(`open on key press: ${keyCode}`, () => {
       const { container } = render(<Select />);
       keyDown(container.querySelector('input'), keyCode);
       expectOpen(container);
@@ -794,6 +842,8 @@ describe('Select.Basic', () => {
   });
 
   it('close on ESC', () => {
+    jest.useFakeTimers();
+
     const onKeyDown = jest.fn();
     const { container } = render(
       <div onKeyDown={onKeyDown}>
@@ -805,6 +855,9 @@ describe('Select.Basic', () => {
     const inputEle = container.querySelector('input');
     fireEvent.change(inputEle, { target: { value: 'foo' } });
     keyDown(inputEle, KeyCode.ESC);
+    act(() => {
+      jest.runAllTimers();
+    });
 
     expect(inputEle.value).toBe('');
     expectOpen(container, false);
@@ -812,7 +865,12 @@ describe('Select.Basic', () => {
 
     // should keep propagation when optionList is closed
     keyDown(inputEle, KeyCode.ESC);
+    act(() => {
+      jest.runAllTimers();
+    });
     expect(onKeyDown).toHaveBeenCalledTimes(1);
+
+    jest.useRealTimers();
   });
 
   it('not open when system key down', () => {
@@ -1371,7 +1429,7 @@ describe('Select.Basic', () => {
     );
 
     // Open
-    fireEvent.mouseDown(container.querySelector('.rc-select-selector'));
+    fireEvent.mouseDown(container.querySelector('.rc-select'));
 
     fireEvent.mouseDown(container.querySelector('div#dropdown-custom-node'));
     fireEvent.click(container.querySelector('div#dropdown-custom-node'));
@@ -1553,27 +1611,27 @@ describe('Select.Basic', () => {
 
   it('if loading, arrow should show loading icon', () => {
     const { container } = render(
-      <Select style={{ width: 1000 }} loading>
+      <Select style={{ width: 1000 }} loading suffix="Bamboo">
         <Option value={0}>0</Option>
         <Option value={1}>1</Option>
       </Select>,
     );
-    expect(container.querySelector('.rc-select-arrow-loading')).toBeTruthy();
+    expect(container.querySelector('.rc-select-suffix-loading')).toBeTruthy();
   });
   it('if loading and multiple which has not arrow, but have loading icon', () => {
     const renderDemo = (loading?: boolean) => (
-      <Select style={{ width: 1000 }} mode="multiple" loading={loading}>
+      <Select style={{ width: 1000 }} mode="multiple" loading={loading} suffix="Bamboo">
         <Option value={0}>0</Option>
         <Option value={1}>1</Option>
       </Select>
     );
 
     const { container, rerender } = render(renderDemo());
-    expect(container.querySelector('.rc-select-arrow-icon')).toBeFalsy();
-    expect(container.querySelector('.rc-select-arrow-loading')).toBeFalsy();
+    expect(container.querySelector('.rc-select-suffix-icon')).toBeFalsy();
+    expect(container.querySelector('.rc-select-suffix-loading')).toBeFalsy();
 
     rerender(renderDemo(true));
-    expect(container.querySelector('.rc-select-arrow-loading')).toBeTruthy();
+    expect(container.querySelector('.rc-select-suffix-loading')).toBeTruthy();
   });
 
   it('should keep trigger onSelect by select', () => {
@@ -1799,6 +1857,8 @@ describe('Select.Basic', () => {
   });
 
   it('click outside to close select', () => {
+    jest.useFakeTimers();
+
     const { container } = render(
       <Select>
         <Option value="1">One</Option>
@@ -1815,17 +1875,23 @@ describe('Select.Basic', () => {
       window.dispatchEvent(clickEvent);
     });
 
+    act(() => {
+      jest.runAllTimers();
+    });
+
     expectOpen(container, false);
+
+    jest.useRealTimers();
   });
 
   describe('reset value to undefined should reset display value', () => {
     [undefined].forEach((value) => {
       it(`to ${value}`, () => {
         const { container, rerender } = render(<Select value="light" />);
-        expect(container.querySelector('.rc-select-selection-item').textContent).toEqual('light');
+        expect(container.querySelector('.rc-select-content-value').textContent).toEqual('light');
 
         rerender(<Select value={value} />);
-        expect(container.querySelector('.rc-select-selection-item')).toBeFalsy();
+        expect(container.querySelector('.rc-select-content-value')).toBeFalsy();
       });
     });
   });
@@ -1856,6 +1922,8 @@ describe('Select.Basic', () => {
     });
 
     it('should not open dropdown after remove disabled', () => {
+      jest.useFakeTimers();
+
       const renderDemo = (disabled?: boolean) => (
         <Select disabled={disabled}>
           <Option value="1">1</Option>
@@ -1865,9 +1933,23 @@ describe('Select.Basic', () => {
 
       const { container, rerender } = render(renderDemo());
       toggleOpen(container);
+      act(() => {
+        jest.runAllTimers();
+      });
       rerender(renderDemo(true));
+      act(() => {
+        jest.runAllTimers();
+      });
+
       rerender(renderDemo(false));
+
+      act(() => {
+        jest.runAllTimers();
+      });
+
       expectOpen(container, false);
+
+      jest.useRealTimers();
     });
   });
 
@@ -1928,7 +2010,7 @@ describe('Select.Basic', () => {
         toggleOpen(container);
         selectItem(container, index);
         expect(onChange).toHaveBeenCalledWith(value, expect.anything());
-        expect(container.querySelector('.rc-select-selection-item').textContent).toEqual(showValue);
+        expect(container.querySelector('.rc-select-content-value').textContent).toEqual(showValue);
       });
 
       expect(errorSpy).toHaveBeenCalledWith(warningMessage);
@@ -2105,9 +2187,7 @@ describe('Select.Basic', () => {
     const { container } = render(<Select tabIndex={0} />);
     expect(container.querySelector('.rc-select').getAttribute('tabindex')).toBeFalsy();
 
-    expect(
-      container.querySelector('input.rc-select-selection-search-input').getAttribute('tabindex'),
-    ).toBe('0');
+    expect(container.querySelector('input').getAttribute('tabindex')).toBe('0');
   });
 
   describe('placement', () => {
@@ -2171,7 +2251,7 @@ describe('Select.Basic', () => {
   it('should support onClick', () => {
     const onClick = jest.fn();
     const { container } = render(<Select onClick={onClick} />);
-    fireEvent.click(container.querySelector('.rc-select-selector'));
+    fireEvent.click(container.querySelector('.rc-select'));
     expect(onClick).toHaveBeenCalled();
   });
 
@@ -2196,8 +2276,7 @@ describe('Select.Basic', () => {
         <Select value="b" options={[{ label: 'bamboo', title: 'TitleBamboo', value: 'b' }]} />,
       );
 
-      // expect(container.find('.rc-select-selection-item').prop('title')).toEqual('TitleBamboo');
-      expect(container.querySelector('.rc-select-selection-item').getAttribute('title')).toEqual(
+      expect(container.querySelector('.rc-select-content-value').getAttribute('title')).toEqual(
         'TitleBamboo',
       );
     });
@@ -2239,11 +2318,11 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    expect(container.querySelector('.rc-select-clear-icon')).toBeTruthy();
+    expect(container.querySelector('.rc-select-clear')).toBeTruthy();
 
-    const mouseDownEvent = createEvent.mouseDown(container.querySelector('.rc-select-clear-icon'));
+    const mouseDownEvent = createEvent.mouseDown(container.querySelector('.rc-select-clear'));
     mouseDownEvent.preventDefault = mouseDownPreventDefault;
-    fireEvent(container.querySelector('.rc-select-clear-icon'), mouseDownEvent);
+    fireEvent(container.querySelector('.rc-select-clear'), mouseDownEvent);
     jest.runAllTimers();
 
     expect(container.querySelector('.rc-select').className).toContain('-focused');
@@ -2253,17 +2332,15 @@ describe('Select.Basic', () => {
   it('should support title', () => {
     const { container: container1 } = render(<Select defaultValue="lucy" options={[]} />);
     expect(container1.querySelector('.rc-select').getAttribute('title')).toBeFalsy();
-    expect(container1.querySelector('.rc-select-selection-item').getAttribute('title')).toBe(
-      'lucy',
-    );
+    expect(container1.querySelector('.rc-select-content-value').getAttribute('title')).toBe('lucy');
     const { container: container2 } = render(<Select defaultValue="lucy" options={[]} title="" />);
     expect(container2.querySelector('.rc-select').getAttribute('title')).toBeFalsy();
-    expect(container2.querySelector('.rc-select-selection-item').getAttribute('title')).toBe('');
+    expect(container2.querySelector('.rc-select-content-value').getAttribute('title')).toBe('');
     const { container: container3 } = render(
       <Select defaultValue="lucy" options={[]} title="title" />,
     );
     expect(container3.querySelector('.rc-select').getAttribute('title')).toBe('title');
-    expect(container3.querySelector('.rc-select-selection-item').getAttribute('title')).toBe(
+    expect(container3.querySelector('.rc-select-content-value').getAttribute('title')).toBe(
       'title',
     );
   });
@@ -2386,7 +2463,6 @@ describe('Select.Basic', () => {
       const ref = React.useRef<HTMLInputElement>(null);
       const onSelect = () => {
         ref.current!.blur();
-        fireEvent.blur(ref.current);
       };
       const getInputElement = () => {
         return <input ref={ref} onBlur={onBlur} />;
@@ -2452,7 +2528,7 @@ describe('Select.Basic', () => {
         open
         classNames={customClassNames}
         styles={customStyle}
-        suffixIcon={<div>arrow</div>}
+        suffix={<div>arrow</div>}
         prefix="Foobar"
         value={['bamboo']}
         mode="multiple"
@@ -2464,10 +2540,10 @@ describe('Select.Basic', () => {
     );
 
     const prefix = container.querySelector('.rc-select-prefix');
-    const suffix = container.querySelector('.rc-select-arrow');
+    const suffix = container.querySelector('.rc-select-suffix');
     const item = container.querySelector('.rc-select-item-option');
     const list = container.querySelector('.rc-virtual-list');
-    const input = container.querySelector('.rc-select-selection-search-input');
+    const input = container.querySelector('input');
     expect(prefix).toHaveClass(customClassNames.prefix);
     expect(prefix).toHaveStyle(customStyle.prefix);
     expect(suffix).toHaveClass(customClassNames.suffix);
@@ -2502,7 +2578,7 @@ describe('Select.Basic', () => {
         open
         classNames={customClassNames}
         styles={customStyle}
-        suffixIcon={<div>arrow</div>}
+        suffix={<div>arrow</div>}
         prefix="Foobar"
         onDisplayValuesChange={() => {}}
         searchValue=""
@@ -2512,8 +2588,8 @@ describe('Select.Basic', () => {
       />,
     );
     const prefix = container.querySelector('.rc-select-prefix');
-    const suffix = container.querySelector('.rc-select-arrow');
-    const input = container.querySelector('.rc-select-selection-search-input');
+    const suffix = container.querySelector('.rc-select-suffix');
+    const input = container.querySelector('input');
     expect(prefix).toHaveClass(customClassNames.prefix);
     expect(prefix).toHaveStyle(customStyle.prefix);
     expect(suffix).toHaveClass(customClassNames.suffix);

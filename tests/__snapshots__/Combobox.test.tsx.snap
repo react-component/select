@@ -5,34 +5,27 @@ exports[`Select.Combobox renders controlled correctly 1`] = `
   class="rc-select rc-select-single rc-select-show-search"
 >
   <div
-    class="rc-select-selector"
+    class="rc-select-content"
   >
-    <span
-      class="rc-select-selection-wrap"
+    <div
+      class="rc-select-placeholder"
+      style="visibility: visible;"
     >
-      <span
-        class="rc-select-selection-search"
-      >
-        <input
-          aria-autocomplete="list"
-          aria-controls="test-id_list"
-          aria-expanded="false"
-          aria-haspopup="listbox"
-          aria-owns="test-id_list"
-          autocomplete="off"
-          class="rc-select-selection-search-input"
-          id="test-id"
-          role="combobox"
-          type="search"
-          value=""
-        />
-      </span>
-      <span
-        class="rc-select-selection-placeholder"
-      >
-        Search
-      </span>
-    </span>
+      Search
+    </div>
+    <input
+      aria-autocomplete="list"
+      aria-controls="test-id_list"
+      aria-expanded="false"
+      aria-haspopup="listbox"
+      aria-owns="test-id_list"
+      autocomplete="off"
+      class="rc-select-input"
+      id="test-id"
+      role="combobox"
+      type="text"
+      value=""
+    />
   </div>
 </div>
 `;
@@ -42,34 +35,27 @@ exports[`Select.Combobox renders correctly 1`] = `
   class="rc-select rc-select-single rc-select-show-search"
 >
   <div
-    class="rc-select-selector"
+    class="rc-select-content"
   >
-    <span
-      class="rc-select-selection-wrap"
+    <div
+      class="rc-select-placeholder"
+      style="visibility: visible;"
     >
-      <span
-        class="rc-select-selection-search"
-      >
-        <input
-          aria-autocomplete="list"
-          aria-controls="test-id_list"
-          aria-expanded="false"
-          aria-haspopup="listbox"
-          aria-owns="test-id_list"
-          autocomplete="off"
-          class="rc-select-selection-search-input"
-          id="test-id"
-          role="combobox"
-          type="search"
-          value=""
-        />
-      </span>
-      <span
-        class="rc-select-selection-placeholder"
-      >
-        Search
-      </span>
-    </span>
+      Search
+    </div>
+    <input
+      aria-autocomplete="list"
+      aria-controls="test-id_list"
+      aria-expanded="false"
+      aria-haspopup="listbox"
+      aria-owns="test-id_list"
+      autocomplete="off"
+      class="rc-select-input"
+      id="test-id"
+      role="combobox"
+      type="text"
+      value=""
+    />
   </div>
 </div>
 `;

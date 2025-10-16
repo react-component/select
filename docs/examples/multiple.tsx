@@ -99,7 +99,7 @@ class Test extends React.Component {
             style={{ width: 500 }}
             mode="multiple"
             loading={loading}
-            suffixIcon={suffixIcon}
+            suffix={suffixIcon}
             allowClear
             optionFilterProp="children"
             optionLabelProp="children"

@@ -3,6 +3,9 @@ import { createEvent, fireEvent } from '@testing-library/react';
 
 export function expectOpen(wrapper: any, open: boolean = true) {
   if (wrapper instanceof HTMLElement) {
+    act(() => {
+      jest.runAllTimers();
+    });
     expect(!!wrapper.querySelector('.rc-select-open')).toBe(open);
     return;
   }
@@ -18,15 +21,21 @@ export function expectOpen(wrapper: any, open: boolean = true) {
 
 export function toggleOpen(wrapper: any) {
   if (wrapper instanceof HTMLElement) {
-    fireEvent.mouseDown(wrapper.querySelector('.rc-select-selector'));
+    fireEvent.mouseDown(wrapper.querySelector('.rc-select'));
+    act(() => {
+      jest.runAllTimers();
+    });
     return;
   }
-  wrapper.find('.rc-select-selector').simulate('mousedown');
+  wrapper.find('.rc-select').simulate('mousedown');
 }
 
 export function selectItem(wrapper: any, index: number = 0) {
   if (wrapper instanceof HTMLElement) {
     fireEvent.click(wrapper.querySelectorAll('.rc-select-item-option-content')[index]);
+    act(() => {
+      jest.runAllTimers();
+    });
     return;
   }
   wrapper.find('div.rc-select-item-option-content').at(index).simulate('click');
@@ -35,7 +44,9 @@ export function selectItem(wrapper: any, index: number = 0) {
 export function findSelection(wrapper: any, index: number = 0) {
   if (wrapper instanceof HTMLElement) {
     const itemNode = wrapper.querySelectorAll('.rc-select-selection-item')[index];
-    const contentNode = itemNode.querySelector('.rc-select-selection-item-content');
+    const contentNode =
+      itemNode?.querySelector('.rc-select-selection-item-content') ||
+      wrapper.querySelector('.rc-select-content-value');
 
     if (contentNode) {
       return contentNode;
@@ -43,8 +54,8 @@ export function findSelection(wrapper: any, index: number = 0) {
 
     return itemNode;
   } else {
-    const itemNode = wrapper.find('.rc-select-selection-item').at(index);
-    const contentNode = itemNode.find('.rc-select-selection-item-content');
+    const itemNode = wrapper.find('.rc-select-item').at(index);
+    const contentNode = itemNode.find('.rc-select-item-content');
 
     if (contentNode.length) {
       return contentNode;

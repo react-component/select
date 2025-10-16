@@ -238,7 +238,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       optionFilterProp: legacyOptionFilterProp,
       filterSort: legacyFilterSort,
     };
-    const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch, searchProps);
+    const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch, searchProps, mode);
     const {
       filterOption,
       searchValue,

@@ -2,7 +2,7 @@ import React from 'react';
 import Option from '../../src/Option';
 import Select from '../../src/Select';
 import { injectRunAllTimers } from '../utils/common';
-import { type RenderResult, render, fireEvent, createEvent } from '@testing-library/react';
+import { type RenderResult, render, fireEvent, createEvent, act } from '@testing-library/react';
 
 export default function blurTest(mode: any) {
   describe(`blur of ${mode}`, () => {
@@ -34,8 +34,11 @@ export default function blurTest(mode: any) {
     it('clears inputValue', () => {
       fireEvent.change(wrapper.container.querySelector('input'), { target: { value: '1' } });
       fireEvent.blur(wrapper.container.querySelector('input'));
+      act(() => {
+        jest.runAllTimers();
+      });
 
-      expect(wrapper.container.querySelector('input').value).toBe('');
+      expect(wrapper.container.querySelector('input')).toHaveValue('');
     });
 
     it('blur()', () => {
@@ -62,11 +65,9 @@ export default function blurTest(mode: any) {
         handleBlur.mockReset();
 
         const preventDefault = jest.fn();
-        const mouseDownEvent = createEvent.mouseDown(
-          wrapper.container.querySelector('.rc-select-selector'),
-        );
+        const mouseDownEvent = createEvent.mouseDown(wrapper.container.querySelector('.rc-select'));
         mouseDownEvent.preventDefault = preventDefault;
-        fireEvent(wrapper.container.querySelector('.rc-select-selector'), mouseDownEvent);
+        fireEvent(wrapper.container.querySelector('.rc-select'), mouseDownEvent);
         expect(preventDefault).toHaveBeenCalled();
         expect(handleBlur).not.toHaveBeenCalled();
 

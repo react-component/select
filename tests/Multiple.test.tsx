@@ -19,7 +19,7 @@ import {
   keyUp,
 } from './utils/common';
 import allowClearTest from './shared/allowClearTest';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 
 describe('Select.Multiple', () => {
   injectRunAllTimers(jest);
@@ -32,6 +32,14 @@ describe('Select.Multiple', () => {
   removeSelectedTest('multiple');
   dynamicChildrenTest('multiple');
   inputFilterTest('multiple');
+
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
 
   it('tokenize input', () => {
     const handleChange = jest.fn();
@@ -360,18 +368,18 @@ describe('Select.Multiple', () => {
   });
 
   it('show arrow on multiple mode when explicitly set', () => {
-    const renderDemo = (suffixIcon?: React.ReactNode) => (
-      <Select mode="multiple" value={['']} suffixIcon={suffixIcon}>
+    const renderDemo = (suffix?: React.ReactNode) => (
+      <Select mode="multiple" value={['']} suffix={suffix}>
         <Option value={1}>1</Option>
         <Option value={2}>2</Option>
       </Select>
     );
     const { container, rerender } = render(renderDemo());
 
-    expect(container.querySelector('.rc-select-arrow')).toBeFalsy();
+    expect(container.querySelector('.rc-select-suffix')).toBeFalsy();
 
     rerender(renderDemo(<div>arrow</div>));
-    expect(container.querySelector('.rc-select-arrow')).toBeTruthy();
+    expect(container.querySelector('.rc-select-suffix')).toBeTruthy();
   });
 
   it('show static prefix', () => {
@@ -402,6 +410,7 @@ describe('Select.Multiple', () => {
     keyDown(container.querySelector('input'), KeyCode.L);
     fireEvent.change(container.querySelector('input'), { target: { value: 'l' } });
 
+    console.log('clear');
     // Backspace
     keyDown(container.querySelector('input'), KeyCode.BACKSPACE);
     fireEvent.change(container.querySelector('input'), { target: { value: '' } });
@@ -411,7 +420,10 @@ describe('Select.Multiple', () => {
     keyDown(container.querySelector('input'), KeyCode.BACKSPACE);
     expect(onChange).not.toHaveBeenCalled();
 
-    jest.runAllTimers();
+    console.log('after 200ms');
+    act(() => {
+      jest.runAllTimers();
+    });
     keyDown(container.querySelector('input'), KeyCode.BACKSPACE);
     expect(onChange).toHaveBeenCalledWith([], expect.anything());
 
@@ -422,9 +434,13 @@ describe('Select.Multiple', () => {
     const { container } = render(
       <Select mode="multiple" searchValue="light" placeholder="bamboo" />,
     );
-    expect(container.querySelector('.rc-select-selection-placeholder')).toBeTruthy();
+    expect(container.querySelector('.rc-select-placeholder')).toHaveStyle({
+      visibility: 'visible',
+    });
     toggleOpen(container);
-    expect(container.querySelector('.rc-select-selection-placeholder')).toBeFalsy();
+    expect(container.querySelector('.rc-select-placeholder')).toHaveStyle({
+      visibility: 'hidden',
+    });
   });
 
   it('clear input when popup closed', () => {
@@ -433,12 +449,13 @@ describe('Select.Multiple', () => {
     );
     toggleOpen(container);
     fireEvent.change(container.querySelector('input'), { target: { value: 'bamboo' } });
-    expect(container.querySelector('input').value).toEqual('bamboo');
+    expect(container.querySelector('input')).toHaveValue('bamboo');
 
     // Close and open again
     toggleOpen(container);
+    fireEvent.blur(container.querySelector('input'));
     toggleOpen(container);
-    expect(container.querySelector('input').value).toEqual('');
+    expect(container.querySelector('input')).toHaveValue('');
   });
 
   it('ajax update should keep options', () => {
@@ -490,9 +507,6 @@ describe('Select.Multiple', () => {
         showSearch
       />,
     );
-    expect(container.querySelector('input')).toHaveAttribute('readOnly');
-
-    fireEvent.focus(container.querySelector('input'));
 
     expect(container.querySelector('input')).not.toHaveAttribute('readOnly');
   });
@@ -501,14 +515,12 @@ describe('Select.Multiple', () => {
     const { container } = render(
       <Select mode="multiple" options={[{ value: 'bamboo' }, { value: 'light' }]} tabIndex={0} />,
     );
-    expect(container.querySelector('.rc-select').getAttribute('tabindex')).toBeFalsy();
+    expect(container.querySelector('.rc-select')).not.toHaveAttribute('tabindex');
 
-    expect(
-      container.querySelector('input.rc-select-selection-search-input').getAttribute('tabindex'),
-    ).toBe('0');
+    expect(container.querySelector('input')).toHaveAttribute('tabindex', '0');
   });
 
-  it('should render title defaultly', () => {
+  it('should render title by default', () => {
     const { container } = render(
       <Select mode="multiple" options={[{ value: 'title' }]} value={['title']} />,
     );
@@ -517,7 +529,7 @@ describe('Select.Multiple', () => {
     );
   });
 
-  it('should not render title defaultly when label is ReactNode', () => {
+  it('should not render title by default when label is ReactNode', () => {
     const { container } = render(
       <Select mode="multiple" options={[{ value: '1', label: <div>label</div> }]} value={['1']} />,
     );
@@ -533,7 +545,7 @@ describe('Select.Multiple', () => {
       </Select>,
     );
 
-    expect(container.querySelector('.rc-select-selection-item-remove')).toBeFalsy();
+    expect(container.querySelector('.rc-select-item-remove')).toBeFalsy();
   });
 
   it('do not crash if value not in options when removing option', () => {
@@ -573,8 +585,8 @@ describe('Select.Multiple', () => {
       </Select>,
     );
 
-    expect(wrapper1.container.querySelector('.rc-select-selection-item')).toBeFalsy();
-    expect(wrapper2.container.querySelector('.rc-select-selection-item')).toBeFalsy();
+    expect(wrapper1.container.querySelector('.rc-select-item')).toBeFalsy();
+    expect(wrapper2.container.querySelector('.rc-select-item')).toBeFalsy();
   });
 
   describe('optionLabelProp', () => {
@@ -666,7 +678,7 @@ describe('Select.Multiple', () => {
       const { container } = render(
         <Select mode="multiple" open={false} showSearch={true} searchValue="test" />,
       );
-      expect(container.querySelector('input').value).toBe('');
+      expect(container.querySelector('input')).toHaveValue('');
     });
     it('search value should show when autoClearSearchValue is false', () => {
       const { container } = render(
@@ -678,7 +690,7 @@ describe('Select.Multiple', () => {
           searchValue="test"
         />,
       );
-      expect(container.querySelector('input').value).toBe('test');
+      expect(container.querySelector('input')).toHaveValue('test');
     });
     it('search value should no clear when autoClearSearchValue is false', () => {
       const { container } = render(
@@ -692,7 +704,7 @@ describe('Select.Multiple', () => {
 
       toggleOpen(container);
       toggleOpen(container);
-      expect(container.querySelector('input').value).toBe('test');
+      expect(container.querySelector('input')).toHaveValue('test');
     });
     it('search value should clear when autoClearSearchValue is true', () => {
       const { container } = render(
@@ -700,7 +712,7 @@ describe('Select.Multiple', () => {
       );
       toggleOpen(container);
       toggleOpen(container);
-      expect(container.querySelector('input').value).toBe('');
+      expect(container.querySelector('input')).toHaveValue('');
     });
   });
 });

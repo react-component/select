@@ -74,11 +74,9 @@ describe('Select.Combobox', () => {
     );
 
     expect(container.querySelector('input').value).toBe('');
-    expect(container.querySelector('.rc-select-selection-placeholder')!.textContent).toEqual(
-      'placeholder',
-    );
+    expect(container.querySelector('.rc-select-placeholder')!.textContent).toEqual('placeholder');
     fireEvent.change(container.querySelector('input')!, { target: { value: '1' } });
-    expect(container.querySelector('.rc-select-selection-placeholder')).toBeFalsy();
+    expect(container.querySelector('.rc-select-placeholder')).toBeFalsy();
     expect(container.querySelector('input')!.value).toBe('1');
   });
 
@@ -114,7 +112,7 @@ describe('Select.Combobox', () => {
 
     toggleOpen(container);
     selectItem(container);
-    expect(container.querySelector('input').value).toEqual('1');
+    expect(container.querySelector('input')).toHaveValue('1');
   });
 
   describe('input value', () => {
@@ -321,7 +319,7 @@ describe('Select.Combobox', () => {
       onChange.mockReset();
 
       keyDown(inputEle, KeyCode.DOWN);
-      expect(inputEle.value).toEqual('light@gmail.com');
+      expect(inputEle).toHaveValue('light@gmail.com');
       expect(onChange).not.toHaveBeenCalled();
 
       keyDown(inputEle, KeyCode.ENTER);
@@ -337,7 +335,7 @@ describe('Select.Combobox', () => {
       </Select>,
     );
 
-    expect(container.querySelector('.rc-select-clear-icon')).toBeFalsy();
+    expect(container.querySelector('.rc-select-clear')).toBeFalsy();
   });
 
   it("should show clear icon when inputValue is not ''", () => {
@@ -348,7 +346,7 @@ describe('Select.Combobox', () => {
       </Select>,
     );
 
-    expect(container.querySelector('.rc-select-clear-icon')).toBeTruthy();
+    expect(container.querySelector('.rc-select-clear')).toBeTruthy();
   });
 
   it("should hide clear icon when inputValue is ''", () => {
@@ -360,9 +358,9 @@ describe('Select.Combobox', () => {
     );
 
     fireEvent.change(container.querySelector('input')!, { target: { value: '1' } });
-    expect(container.querySelector('.rc-select-clear-icon')).toBeTruthy();
+    expect(container.querySelector('.rc-select-clear')).toBeTruthy();
     fireEvent.change(container.querySelector('input')!, { target: { value: '' } });
-    expect(container.querySelector('.rc-select-clear-icon')).toBeFalsy();
+    expect(container.querySelector('.rc-select-clear')).toBeFalsy();
   });
 
   it('autocomplete - option update when input change', () => {
@@ -469,6 +467,7 @@ describe('Select.Combobox', () => {
   });
 
   it('should reset value by control', () => {
+    jest.useFakeTimers();
     const onChange = jest.fn();
     const { container } = render(
       <Select mode="combobox" value="" onChange={onChange}>
@@ -479,10 +478,12 @@ describe('Select.Combobox', () => {
 
     toggleOpen(container);
     selectItem(container);
+    jest.runAllTimers();
     expect(onChange).toHaveBeenCalled();
     expectOpen(container, false);
 
-    expect(container.querySelector('input')!.value).toEqual('');
+    expect(container.querySelector('input')!).toHaveValue('');
+    jest.useRealTimers();
   });
 
   it('should keep close after blur', async () => {
@@ -616,7 +617,7 @@ describe('Select.Combobox', () => {
         </Select>,
       );
 
-      const selectorEle = container.querySelector('.rc-select-selector');
+      const selectorEle = container.querySelector('.rc-select');
 
       const mouseDownEvent = createEvent.mouseDown(selectorEle);
       mouseDownEvent.preventDefault = preventDefault;
@@ -633,7 +634,7 @@ describe('Select.Combobox', () => {
         </Select>,
       );
 
-      const selectorEle = container.querySelector('.rc-select-selector');
+      const selectorEle = container.querySelector('.rc-select');
 
       const mouseDownEvent = createEvent.mouseDown(selectorEle);
       mouseDownEvent.preventDefault = preventDefault;

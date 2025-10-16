@@ -1,48 +1,42 @@
-import TransBtn from '../TransBtn';
-import type { DisplayValueType, Mode, RenderNode } from '../interface';
-import React from 'react';
+import type { DisplayValueType, Mode } from '../interface';
+import type React from 'react';
+import { useMemo } from 'react';
+
+export interface AllowClearConfig {
+  allowClear: boolean;
+  clearIcon: React.ReactNode;
+}
 
 export const useAllowClear = (
   prefixCls: string,
-  onClearMouseDown: React.MouseEventHandler<HTMLSpanElement>,
   displayValues: DisplayValueType[],
-  allowClear?: boolean | { clearIcon?: RenderNode },
-  clearIcon?: RenderNode,
+  allowClear?: boolean | { clearIcon?: React.ReactNode },
+  clearIcon?: React.ReactNode,
   disabled: boolean = false,
   mergedSearchValue?: string,
   mode?: Mode,
-) => {
-  const mergedClearIcon = React.useMemo(() => {
-    if (typeof allowClear === 'object') {
-      return allowClear.clearIcon;
+): AllowClearConfig => {
+  // Convert boolean to object first
+  const allowClearConfig = useMemo<Partial<AllowClearConfig>>(() => {
+    if (typeof allowClear === 'boolean') {
+      return { allowClear };
     }
-    if (clearIcon) {
-      return clearIcon;
+    if (allowClear && typeof allowClear === 'object') {
+      return allowClear;
     }
-  }, [allowClear, clearIcon]);
+    return { allowClear: false };
+  }, [allowClear]);
 
-  const mergedAllowClear = React.useMemo<boolean>(() => {
-    if (
+  return useMemo(() => {
+    const mergedAllowClear =
       !disabled &&
-      !!allowClear &&
+      allowClearConfig.allowClear !== false &&
       (displayValues.length || mergedSearchValue) &&
-      !(mode === 'combobox' && mergedSearchValue === '')
-    ) {
-      return true;
-    }
-    return false;
-  }, [allowClear, disabled, displayValues.length, mergedSearchValue, mode]);
+      !(mode === 'combobox' && mergedSearchValue === '');
 
-  return {
-    allowClear: mergedAllowClear,
-    clearIcon: (
-      <TransBtn
-        className={`${prefixCls}-clear`}
-        onMouseDown={onClearMouseDown}
-        customizeIcon={mergedClearIcon}
-      >
-        ×
-      </TransBtn>
-    ),
-  };
+    return {
+      allowClear: mergedAllowClear,
+      clearIcon: mergedAllowClear ? allowClearConfig.clearIcon || clearIcon || '×' : null,
+    };
+  }, [allowClearConfig, clearIcon, disabled, displayValues.length, mergedSearchValue, mode]);
 };

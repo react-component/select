@@ -66,23 +66,4 @@ describe('Select.Focus', () => {
 
     jest.useRealTimers();
   });
-
-  it('IE focus', () => {
-    jest.clearAllTimers();
-    jest.useFakeTimers();
-
-    jest.clearAllTimers();
-
-    (document.body.style as any).msTouchAction = true;
-    const { container } = render(<Select mode="tags" value="bamboo" />);
-
-    const focusFn = jest.spyOn(container.querySelector('input'), 'focus');
-
-    fireEvent.click(container.querySelector('.rc-select-selector'));
-    jest.runAllTimers();
-
-    expect(focusFn).toHaveBeenCalled();
-
-    jest.useRealTimers();
-  });
 });

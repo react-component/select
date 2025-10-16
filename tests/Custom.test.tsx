@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Select from '../src';
-import { injectRunAllTimers } from './utils/common';
+import { injectRunAllTimers, waitFakeTimer } from './utils/common';
 import { fireEvent, render } from '@testing-library/react';
 
 describe('Select.Custom', () => {
@@ -14,7 +14,7 @@ describe('Select.Custom', () => {
     jest.useRealTimers();
   });
 
-  it('getRawInputElement', () => {
+  it('getRawInputElement', async () => {
     const onPopupVisibleChange = jest.fn();
     const { container } = render(
       <Select
@@ -23,6 +23,7 @@ describe('Select.Custom', () => {
       />,
     );
     fireEvent.click(container.querySelector('.custom'));
+    await waitFakeTimer();
 
     expect(onPopupVisibleChange).toHaveBeenCalledWith(true);
   });
