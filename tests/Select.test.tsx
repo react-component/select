@@ -51,6 +51,21 @@ describe('Select.Basic', () => {
   inputFilterTest('single');
   openControlledTest('single');
 
+  it('should trigger close event when clicking on Select with open, value and allowClear', async () => {
+    const onPopupVisibleChange = jest.fn();
+    const { container } = render(
+      <Select open value="1" allowClear onPopupVisibleChange={onPopupVisibleChange}>
+        <Option value="1">One</Option>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
+
+    // Click on the Select should trigger close event
+    fireEvent.mouseDown(container.querySelector('.rc-select-clear'));
+    await waitFakeTimer();
+    expect(onPopupVisibleChange).toHaveBeenCalledWith(false);
+  });
+
   describe('render', () => {
     function genSelect(props?: Partial<SelectProps>) {
       return (
