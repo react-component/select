@@ -138,4 +138,56 @@ describe('BaseSelect', () => {
 
     expect(container.querySelector('.rc-select-dropdown-placement-fallback')).toBeTruthy();
   });
+
+  it('should use RootComponent when provided in components prop', () => {
+    const CustomRoot = forwardRef<HTMLDivElement>((props, ref) => (
+      <div ref={ref} className="custom-root" {...props} />
+    ));
+
+    const { container } = render(
+      <BaseSelect
+        prefixCls="rc-select"
+        id="test"
+        displayValues={[]}
+        onDisplayValuesChange={() => {}}
+        searchValue=""
+        onSearch={() => {}}
+        OptionList={OptionList}
+        emptyOptions
+        components={{
+          root: CustomRoot,
+        }}
+      />,
+    );
+
+    expect(container.querySelector('.custom-root')).toBeTruthy();
+    expect(container.querySelector('.rc-select')).toBeFalsy();
+  });
+
+  it('should use React element as RootComponent when provided in components prop', () => {
+    const CustomRoot = forwardRef<HTMLDivElement>((props, ref) => (
+      <div ref={ref} className="custom-root-element" {...props} />
+    ));
+
+    const customElement = <CustomRoot />;
+
+    const { container } = render(
+      <BaseSelect
+        prefixCls="rc-select"
+        id="test"
+        displayValues={[]}
+        onDisplayValuesChange={() => {}}
+        searchValue=""
+        onSearch={() => {}}
+        OptionList={OptionList}
+        emptyOptions
+        components={{
+          root: customElement,
+        }}
+      />,
+    );
+
+    expect(container.querySelector('.custom-root-element')).toBeTruthy();
+    expect(container.querySelector('.rc-select')).toBeFalsy();
+  });
 });
