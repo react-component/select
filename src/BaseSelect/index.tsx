@@ -174,6 +174,8 @@ export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttri
   // >>> Icons
   allowClear?: boolean | { clearIcon?: React.ReactNode };
   prefix?: React.ReactNode;
+  /** @deprecated Please use `suffix` instead. */
+  suffixIcon?: RenderNode;
   suffix?: RenderNode;
   /**
    * Clear all icon
@@ -272,6 +274,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     allowClear,
     prefix,
     suffix,
+    suffixIcon,
     clearIcon,
 
     // Dropdown
@@ -306,8 +309,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
   // ============================== MISC ==============================
   const multiple = isMultiple(mode);
-  // const mergedShowSearch =
-  //   (showSearch !== undefined ? showSearch : multiple) || mode === 'combobox';
 
   // ============================== Refs ==============================
   const containerRef = React.useRef<SelectInputRef>(null);
@@ -645,9 +646,11 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   // ==================================================================
 
   // ============================= Suffix =============================
-  const suffixIcon: React.ReactNode = React.useMemo(() => {
-    if (typeof suffix === 'function') {
-      return suffix({
+  const mergedSuffixIcon: React.ReactNode = React.useMemo(() => {
+    const nextSuffix = suffix ?? suffixIcon;
+
+    if (typeof nextSuffix === 'function') {
+      return nextSuffix({
         searchValue: mergedSearchValue,
         open: mergedOpen,
         focused,
@@ -655,8 +658,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
         loading,
       });
     }
-    return suffix;
-  }, [suffix, mergedSearchValue, mergedOpen, focused, showSearch, loading]);
+    return nextSuffix;
+  }, [suffix, suffixIcon, mergedSearchValue, mergedOpen, focused, showSearch, loading]);
 
   // ============================= Clear ==============================
   const onClearMouseDown: React.MouseEventHandler<HTMLSpanElement> = () => {
@@ -690,7 +693,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     [`${prefixCls}-multiple`]: multiple,
     [`${prefixCls}-single`]: !multiple,
     [`${prefixCls}-allow-clear`]: mergedAllowClear,
-    [`${prefixCls}-show-arrow`]: suffixIcon !== undefined && suffixIcon !== null,
+    [`${prefixCls}-show-arrow`]: mergedSuffixIcon !== undefined && mergedSuffixIcon !== null,
     [`${prefixCls}-disabled`]: disabled,
     [`${prefixCls}-loading`]: loading,
     [`${prefixCls}-open`]: mergedOpen,
@@ -711,7 +714,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       focused={focused}
       // UI
       prefix={prefix}
-      suffix={suffixIcon}
+      suffix={mergedSuffixIcon}
       clearIcon={clearNode}
       // Type or mode
       multiple={multiple}
