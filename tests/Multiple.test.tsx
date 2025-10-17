@@ -438,9 +438,7 @@ describe('Select.Multiple', () => {
       visibility: 'visible',
     });
     toggleOpen(container);
-    expect(container.querySelector('.rc-select-placeholder')).toHaveStyle({
-      visibility: 'hidden',
-    });
+    expect(container.querySelector('.rc-select-placeholder')).toBeFalsy();
   });
 
   it('clear input when popup closed', () => {
