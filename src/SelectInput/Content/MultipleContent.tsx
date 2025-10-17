@@ -183,27 +183,24 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
 
   // ======================= Render =======================
   return (
-    <>
-      <Placeholder show={!searchValue || !triggerOpen} />
-      <Overflow
-        prefixCls={`${prefixCls}-content`}
-        data={displayValues}
-        renderItem={renderItem}
-        renderRest={renderRest}
-        // suffix={inputNode}
-        suffix={
-          <Input
-            ref={ref}
-            disabled={disabled}
-            readOnly={!inputEditable}
-            {...inputProps}
-            value={inputValue || ''}
-            syncWidth
-          />
-        }
-        itemKey={itemKey}
-        maxCount={maxTagCount}
-      />
-    </>
+    <Overflow
+      prefixCls={`${prefixCls}-content`}
+      prefix={!displayValues.length && (!searchValue || !triggerOpen) ? <Placeholder /> : null}
+      data={displayValues}
+      renderItem={renderItem}
+      renderRest={renderRest}
+      suffix={
+        <Input
+          ref={ref}
+          disabled={disabled}
+          readOnly={!inputEditable}
+          {...inputProps}
+          value={inputValue || ''}
+          syncWidth
+        />
+      }
+      itemKey={itemKey}
+      maxCount={maxTagCount}
+    />
   );
 });
