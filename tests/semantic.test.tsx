@@ -1,16 +1,10 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
 import { render } from '@testing-library/react';
-import BaseSelect from '../src/BaseSelect';
-import type { OptionListProps, RefOptionListProps } from '../src/OptionList';
+import Select from '../src';
 
-const OptionList = forwardRef<RefOptionListProps, OptionListProps>(() => (
-  <div className="popup">Popup</div>
-));
-
-describe('BaseSelect Semantic Styles', () => {
+describe('Select Semantic Styles', () => {
   const defaultProps = {
     prefixCls: 'rc-select',
-    OptionList,
     displayValues: [],
     emptyOptions: true,
     id: 'test',
@@ -33,7 +27,7 @@ describe('BaseSelect Semantic Styles', () => {
     };
 
     const { container } = render(
-      <BaseSelect
+      <Select
         {...defaultProps}
         classNames={classNames}
         placeholder="Test placeholder"
@@ -72,7 +66,7 @@ describe('BaseSelect Semantic Styles', () => {
     };
 
     const { container } = render(
-      <BaseSelect
+      <Select
         {...defaultProps}
         styles={styles}
         placeholder="Test placeholder"
@@ -116,10 +110,10 @@ describe('BaseSelect Semantic Styles', () => {
     ];
 
     const { container } = render(
-      <BaseSelect
+      <Select
         {...defaultProps}
         mode="multiple"
-        displayValues={displayValues}
+        value={displayValues}
         classNames={classNames}
         styles={styles}
       />,
@@ -151,9 +145,9 @@ describe('BaseSelect Semantic Styles', () => {
     };
 
     const { container } = render(
-      <BaseSelect
+      <Select
         {...defaultProps}
-        displayValues={[{ key: '1', label: 'Option 1', value: '1' }]}
+        value={[{ key: '1', label: 'Option 1', value: '1' }]}
         allowClear
         classNames={classNames}
         styles={styles}
