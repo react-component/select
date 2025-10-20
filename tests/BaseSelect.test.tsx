@@ -1,4 +1,4 @@
-import type { OptionListProps, RefOptionListProps } from '@/OptionList';
+import type { OptionListProps, RefOptionListProps } from '../src/OptionList';
 import { fireEvent, render } from '@testing-library/react';
 import { forwardRef, act } from 'react';
 import BaseSelect from '../src/BaseSelect';

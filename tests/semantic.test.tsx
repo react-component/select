@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { render } from '@testing-library/react';
 import BaseSelect from '../src/BaseSelect';
-import type { OptionListProps, RefOptionListProps } from '@/OptionList';
+import type { OptionListProps, RefOptionListProps } from '../src/OptionList';
 
 const OptionList = forwardRef<RefOptionListProps, OptionListProps>(() => (
   <div className="popup">Popup</div>
