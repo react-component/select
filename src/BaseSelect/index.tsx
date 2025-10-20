@@ -28,7 +28,16 @@ import SelectInput from '../SelectInput';
 import type { ComponentsConfig } from '../hooks/useComponents';
 import useComponents from '../hooks/useComponents';
 
-export type BaseSelectSemanticName = 'prefix' | 'suffix' | 'input' | 'clear';
+export type BaseSelectSemanticName =
+  | 'prefix'
+  | 'suffix'
+  | 'input'
+  | 'clear'
+  | 'placeholder'
+  | 'content'
+  | 'item'
+  | 'itemContent'
+  | 'itemRemove';
 
 /**
  * ZombieJ:

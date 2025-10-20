@@ -12,7 +12,7 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
   ({ inputProps }, ref) => {
     const { prefixCls, searchValue, activeValue, displayValues, maxLength, mode } =
       useSelectInputContext();
-    const { triggerOpen, title: rootTitle, showSearch } = useBaseProps();
+    const { triggerOpen, title: rootTitle, showSearch, classNames, styles } = useBaseProps();
     const selectContext = React.useContext(SelectContext);
 
     const [inputChanged, setInputChanged] = React.useState(false);
@@ -71,7 +71,7 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
     }, [combobox, activeValue]);
 
     return (
-      <div className={`${prefixCls}-content`}>
+      <div className={clsx(`${prefixCls}-content`, classNames?.content)} style={styles?.content}>
         {displayValue ? (
           <div {...optionProps}>{displayValue.label}</div>
         ) : (

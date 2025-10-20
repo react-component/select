@@ -42,6 +42,8 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
     maxTagPlaceholder: maxTagPlaceholderFromContext,
     maxTagTextLength,
     maxTagCount,
+    classNames,
+    styles,
   } = useBaseProps();
 
   const selectionItemPrefixCls = `${prefixCls}-selection-item`;
@@ -85,14 +87,25 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
   ) => (
     <span
       title={getTitle(item)}
-      className={clsx(selectionItemPrefixCls, {
-        [`${selectionItemPrefixCls}-disabled`]: itemDisabled,
-      })}
+      className={clsx(
+        selectionItemPrefixCls,
+        {
+          [`${selectionItemPrefixCls}-disabled`]: itemDisabled,
+        },
+        classNames?.item,
+      )}
+      style={styles?.item}
     >
-      <span className={`${selectionItemPrefixCls}-content`}>{content}</span>
+      <span
+        className={clsx(`${selectionItemPrefixCls}-content`, classNames?.itemContent)}
+        style={styles?.itemContent}
+      >
+        {content}
+      </span>
       {closable && (
         <TransBtn
-          className={`${selectionItemPrefixCls}-remove`}
+          className={clsx(`${selectionItemPrefixCls}-remove`, classNames?.itemRemove)}
+          style={styles?.itemRemove}
           onMouseDown={onPreventMouseDown}
           onClick={onClose}
           customizeIcon={removeIcon}
@@ -185,6 +198,8 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
   return (
     <Overflow
       prefixCls={`${prefixCls}-content`}
+      className={classNames?.content}
+      style={styles?.content}
       prefix={!displayValues.length && (!searchValue || !triggerOpen) ? <Placeholder /> : null}
       data={displayValues}
       renderItem={renderItem}
