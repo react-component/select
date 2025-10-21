@@ -22,7 +22,13 @@ const macroTask = (fn: VoidFunction, times = 1) => {
  * Trigger by latest open call, if nextOpen is undefined, means toggle.
  * ignoreNext will skip next call in the macro task queue.
  */
-export type TriggerOpenType = (nextOpen?: boolean, ignoreNext?: boolean) => void;
+export type TriggerOpenType = (
+  nextOpen?: boolean,
+  config?: {
+    ignoreNext?: boolean;
+    lazy?: boolean;
+  },
+) => void;
 
 /**
  * When `open` is controlled, follow the controlled value;
@@ -61,30 +67,34 @@ export default function useOpen(
     internalSetOpen(nextOpen);
   });
 
-  const toggleOpen = useEvent<TriggerOpenType>((nextOpen?: boolean, ignoreNext = false) => {
+  const toggleOpen = useEvent<TriggerOpenType>((nextOpen, config = {}) => {
+    const { ignoreNext = false, lazy = false } = config;
+
     taskIdRef.current += 1;
     const id = taskIdRef.current;
 
     const nextOpenVal = typeof nextOpen === 'boolean' ? nextOpen : !mergedOpen;
 
     // Since `mergedOpen` is post-processed, we need to check if the value really changed
-    if (nextOpenVal) {
-      triggerEvent(true);
+    if (nextOpenVal || !lazy) {
+      if (!taskLockRef.current) {
+        triggerEvent(nextOpenVal);
 
-      // Lock if needed
-      if (ignoreNext) {
-        taskLockRef.current = ignoreNext;
+        // Lock if needed
+        if (ignoreNext) {
+          taskLockRef.current = ignoreNext;
 
-        macroTask(() => {
-          taskLockRef.current = false;
-        }, 2);
+          macroTask(() => {
+            taskLockRef.current = false;
+          }, 2);
+        }
       }
       return;
     }
 
     macroTask(() => {
       if (id === taskIdRef.current && !taskLockRef.current) {
-        triggerEvent(false);
+        triggerEvent(nextOpenVal);
       }
     });
   });
