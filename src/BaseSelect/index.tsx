@@ -570,7 +570,9 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     }
 
     if (!disabled) {
-      triggerOpen(false);
+      triggerOpen(false, {
+        lazy: true,
+      });
       onBlur?.(event);
     }
   };
@@ -582,7 +584,9 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     // We should give focus back to selector if clicked item is not focusable
     if (popupElement?.contains(target as HTMLElement) && triggerOpen) {
       // Tell `open` not to close since it's safe in the popup
-      triggerOpen(true, true);
+      triggerOpen(true, {
+        ignoreNext: true,
+      });
     }
 
     onMouseDown?.(event, ...restArgs);
