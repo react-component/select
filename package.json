@@ -1,6 +1,6 @@
 {
   "name": "@rc-component/select",
-  "version": "1.2.0-alpha.3",
+  "version": "1.2.0",
   "description": "React Select",
   "engines": {
     "node": ">=8.x"
