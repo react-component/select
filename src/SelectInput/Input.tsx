@@ -43,6 +43,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     onInputBlur,
     autoFocus,
     tokenWithEnter,
+    placeholder,
     components: { input: InputComponent = 'input' },
   } = useSelectInputContext();
   const { id, classNames, styles, open, activeDescendantId, role, disabled } = useBaseProps() || {};
@@ -190,7 +191,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     const existingProps: any = InputComponent.props || {};
 
     // Start with shared props as base
-    const mergedProps = { ...sharedInputProps, ...existingProps };
+    const mergedProps = {
+      placeholder: props.placeholder || placeholder,
+      ...sharedInputProps,
+      ...existingProps,
+    };
 
     // Batch update function calls
     Object.keys(existingProps).forEach((key) => {
