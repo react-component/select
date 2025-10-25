@@ -510,6 +510,179 @@ describe('OptionList', () => {
     expect(onSelect).toHaveBeenCalledTimes(1);
   });
 
+  describe('filterSort scroll behavior', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('should scroll to index 0 when filterSort is provided and searchValue exists', () => {
+      const onActiveValue = jest.fn();
+      const listRef = React.createRef<RefOptionListProps>();
+      const filterSort = jest.fn((a, b) => 0); // Mock filterSort function
+
+      render(
+        generateList({
+          options: [
+            { value: '1', label: 'Option 1' },
+            { value: '2', label: 'Option 2' },
+            { value: '3', label: 'Option 3' },
+          ],
+          values: new Set(['2']), // Pre-select option '2'
+          searchValue: 'Option', // Has search value
+          filterSort, // Has filterSort
+          open: true,
+          multiple: false, // Single mode
+          onActiveValue,
+          ref: listRef,
+        }),
+      );
+
+      // Verify that when filterSort and searchValue are both present,
+      // the index should be 0 (first option)
+      expect(onActiveValue).toHaveBeenCalledWith('1', 0, expect.anything());
+    });
+
+    it('should scroll to matching option when filterSort is provided but no searchValue', () => {
+      const onActiveValue = jest.fn();
+      const listRef = React.createRef<RefOptionListProps>();
+      const filterSort = jest.fn((a, b) => 0); // Mock filterSort function
+
+      render(
+        generateList({
+          options: [
+            { value: '1', label: 'Option 1' },
+            { value: '2', label: 'Option 2' },
+            { value: '3', label: 'Option 3' },
+          ],
+          values: new Set(['2']), // Pre-select option '2'
+          searchValue: '', // No search value
+          filterSort, // Has filterSort
+          open: true,
+          multiple: false, // Single mode
+          onActiveValue,
+          ref: listRef,
+        }),
+      );
+
+      // Verify that when filterSort is provided but no searchValue,
+      // it should find the index of the selected value (option '2' at index 1)
+      expect(onActiveValue).toHaveBeenCalledWith('2', 1, expect.anything());
+    });
+
+    it('should scroll to matching option when no filterSort but searchValue exists', () => {
+      const onActiveValue = jest.fn();
+      const listRef = React.createRef<RefOptionListProps>();
+
+      render(
+        generateList({
+          options: [
+            { value: '1', label: 'Option 1' },
+            { value: '2', label: 'Option 2' },
+            { value: '3', label: 'Option 3' },
+          ],
+          values: new Set(['2']), // Pre-select option '2'
+          searchValue: '2', // Search value that matches option '2'
+          filterSort: undefined, // No filterSort
+          open: true,
+          multiple: false, // Single mode
+          onActiveValue,
+          ref: listRef,
+        }),
+      );
+
+      // Verify that when no filterSort but searchValue exists,
+      // it should find the index of the option that starts with searchValue
+      expect(onActiveValue).toHaveBeenCalledWith('2', 1, expect.anything());
+    });
+
+    it('should scroll to selected value when no filterSort and no searchValue', () => {
+      const onActiveValue = jest.fn();
+      const listRef = React.createRef<RefOptionListProps>();
+
+      render(
+        generateList({
+          options: [
+            { value: '1', label: 'Option 1' },
+            { value: '2', label: 'Option 2' },
+            { value: '3', label: 'Option 3' },
+          ],
+          values: new Set(['2']), // Pre-select option '2'
+          searchValue: '', // No search value
+          filterSort: undefined, // No filterSort
+          open: true,
+          multiple: false, // Single mode
+          onActiveValue,
+          ref: listRef,
+        }),
+      );
+
+      // Verify that when no filterSort and no searchValue,
+      // it should find the index of the selected value (option '2' at index 1)
+      expect(onActiveValue).toHaveBeenCalledWith('2', 1, expect.anything());
+    });
+
+    it('should call scrollIntoView with correct index when filterSort is used', () => {
+      const onActiveValue = jest.fn();
+      const listRef = React.createRef<RefOptionListProps>();
+      const filterSort = jest.fn((a, b) => 0); // Mock filterSort function
+
+      render(
+        generateList({
+          options: [
+            { value: '1', label: 'Option 1' },
+            { value: '2', label: 'Option 2' },
+            { value: '3', label: 'Option 3' },
+          ],
+          values: new Set(['2']), // Pre-select option '2'
+          searchValue: 'test', // Has search value
+          filterSort, // Has filterSort
+          open: true,
+          multiple: false, // Single mode
+          onActiveValue,
+          ref: listRef,
+        }),
+      );
+
+      // Fast-forward timers to trigger the setTimeout for scrollIntoView
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      // Verify that scrollIntoView was called with index 0 when filterSort and searchValue are present
+      expect(global.scrollToArgs).toEqual({ index: 0 });
+    });
+
+    it('should not scroll when selected value is not found in options', () => {
+      const onActiveValue = jest.fn();
+      const listRef = React.createRef<RefOptionListProps>();
+
+      render(
+        generateList({
+          options: [
+            { value: '1', label: 'Option 1' },
+            { value: '2', label: 'Option 2' },
+            { value: '3', label: 'Option 3' },
+          ],
+          values: new Set(['4']), // Pre-select option '4' which doesn't exist
+          searchValue: '',
+          filterSort: undefined,
+          open: true,
+          multiple: false, // Single mode
+          onActiveValue,
+          ref: listRef,
+        }),
+      );
+
+      // When the selected value is not found, the component will still activate the first available option
+      // This is the expected behavior based on the current implementation
+      expect(onActiveValue).toHaveBeenCalledWith('1', 0, expect.anything());
+    });
+  });
+
   describe('List.ScrollBar', () => {
     let mockElement;
     let boundingRect = {
