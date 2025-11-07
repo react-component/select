@@ -1,4 +1,4 @@
-# rc-select
+# @rc-component/select
 
 ---
 
@@ -12,22 +12,20 @@ React Select Component.
 [![bundle size][bundlephobia-image]][bundlephobia-url]
 [![dumi][dumi-image]][dumi-url]
 
-[npm-image]: http://img.shields.io/npm/v/rc-select.svg?style=flat-square
-[npm-url]: http://npmjs.org/package/rc-select
-[travis-image]: https://img.shields.io/travis/react-component/select/master?style=flat-square
-[travis-url]: https://travis-ci.com/react-component/select
-[github-actions-image]: https://github.com/react-component/select/workflows/CI/badge.svg
-[github-actions-url]: https://github.com/react-component/select/actions
+[npm-image]: https://img.shields.io/npm/v/@rc-component/select.svg?style=flat-square
+[npm-url]: http://npmjs.org/package/@rc-component/select
+[github-actions-image]: https://github.com/react-component/select/actions/workflows/test.yml/badge.svg
+[github-actions-url]: https://github.com/react-component/select/actions/workflows/test.yml
 [codecov-image]: https://img.shields.io/codecov/c/github/react-component/select/master.svg?style=flat-square
 [codecov-url]: https://app.codecov.io/gh/react-component/select
 [david-url]: https://david-dm.org/react-component/select
 [david-image]: https://david-dm.org/react-component/select/status.svg?style=flat-square
 [david-dev-url]: https://david-dm.org/react-component/select?type=dev
 [david-dev-image]: https://david-dm.org/react-component/select/dev-status.svg?style=flat-square
-[download-image]: https://img.shields.io/npm/dm/rc-select.svg?style=flat-square
-[download-url]: https://npmjs.org/package/rc-select
-[bundlephobia-url]: https://bundlephobia.com/package/rc-select
-[bundlephobia-image]: https://badgen.net/bundlephobia/minzip/rc-select
+[download-image]: https://img.shields.io/npm/dm/@rc-component/select.svg?style=flat-square
+[download-url]: https://npmjs.org/package/@rc-component/select
+[bundlephobia-url]: https://bundlephobia.com/package/@rc-component/select
+[bundlephobia-image]: https://badgen.net/bundlephobia/minzip/@rc-component/select
 [dumi-url]: https://github.com/umijs/dumi
 [dumi-image]: https://img.shields.io/badge/docs%20by-dumi-blue?style=flat-square
 
@@ -46,15 +44,15 @@ React Select Component.
 
 ## install
 
-[![rc-select](https://nodei.co/npm/rc-select.png)](https://npmjs.org/package/rc-select)
+[![@rc-component/select](https://nodei.co/npm/@rc-component/select.png)](https://npmjs.org/package/@rc-component/select)
 
 ## Usage
 
 ### basic use
 
 ```jsx | pure
-import Select, { Option } from 'rc-select';
-import 'rc-select/assets/index.css';
+import Select, { Option } from '@rc-component/select';
+import '@rc-component/select/assets/index.css';
 
 export default () => (
   <Select>
@@ -178,7 +176,7 @@ npm start
 
 local example: http://localhost:9001/
 
-online example: http://select.react-component.now.sh/
+online example: https://select-react-component.vercel.app/
 
 ## Test Case
 
@@ -194,4 +192,4 @@ npm run coverage
 
 ## License
 
-rc-select is released under the MIT license.
+@rc-component/select is released under the MIT license.
