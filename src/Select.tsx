@@ -492,8 +492,11 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
     // =========================== Change ===========================
     const triggerChange = (values: DraftValueType) => {
       const labeledValues = convert2LabelValues(values);
-      setInternalValue(labeledValues);
 
+      if(!('value' in props)){
+        setInternalValue(labeledValues);
+      }
+      
       if (
         onChange &&
         // Trigger event only when value changed
