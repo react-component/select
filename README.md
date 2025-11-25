@@ -14,8 +14,8 @@ React Select Component.
 
 [npm-image]: https://img.shields.io/npm/v/@rc-component/select.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/@rc-component/select
-[github-actions-image]: https://github.com/react-component/select/actions/workflows/react-component-ci.yml/badge.svg
-[github-actions-url]: https://github.com/react-component/select/actions/workflows/react-component-ci.yml
+[github-actions-image]: https://github.com/react-component/select/actions/workflows/test.yml/badge.svg
+[github-actions-url]: https://github.com/react-component/select/actions/workflows/test.yml
 [codecov-image]: https://img.shields.io/codecov/c/github/react-component/select/master.svg?style=flat-square
 [codecov-url]: https://app.codecov.io/gh/react-component/select
 [david-url]: https://david-dm.org/react-component/select
