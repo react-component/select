@@ -171,7 +171,8 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
   // ====================== Open ======================
   const onInternalMouseDown: SelectInputProps['onMouseDown'] = useEvent((event) => {
     if (!disabled) {
-      if (event.target !== getDOM(inputRef.current)) {
+      const inputDOM = getDOM(inputRef.current);
+      if (inputDOM && event.target !== inputDOM && !inputDOM.contains(event.target as Node)) {
         event.preventDefault();
       }
 
