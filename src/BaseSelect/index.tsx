@@ -570,9 +570,9 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     }
 
     if (!disabled) {
-      triggerOpen(false, {
-        lazy: true,
-      });
+      // triggerOpen(false, {
+      //   lazy: true,
+      // });
       onBlur?.(event);
     }
   };

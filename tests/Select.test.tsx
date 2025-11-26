@@ -807,6 +807,8 @@ describe('Select.Basic', () => {
       toggleOpen(container);
       fireEvent.blur(container.querySelector('input'));
       act(() => {
+        // Force trigger blur to active to document.body
+        container.querySelector('input').blur();
         jest.runAllTimers();
       });
       expectOpen(container, false);

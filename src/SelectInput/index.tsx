@@ -11,6 +11,7 @@ import { clsx } from 'clsx';
 import type { ComponentsConfig } from '../hooks/useComponents';
 import { getDOM } from '@rc-component/util/lib/Dom/findDOMNode';
 import { composeRef } from '@rc-component/util/lib/ref';
+import { macroTask } from '../hooks/useOpen';
 
 export interface SelectInputRef {
   focus: (options?: FocusOptions) => void;
@@ -197,7 +198,13 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
   });
 
   const onInternalBlur: SelectInputProps['onBlur'] = (event) => {
-    toggleOpen(false);
+    macroTask(() => {
+      const inputNode = getDOM(inputRef.current);
+      if (inputNode !== document.activeElement && !inputNode.contains(document.activeElement)) {
+        toggleOpen(false);
+      }
+    });
+
     onBlur?.(event);
   };
 
