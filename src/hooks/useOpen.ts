@@ -7,7 +7,7 @@ const internalMacroTask = (fn: VoidFunction) => {
   channel.port2.postMessage(null);
 };
 
-const macroTask = (fn: VoidFunction, times = 1) => {
+export const macroTask = (fn: VoidFunction, times = 1) => {
   if (times <= 0) {
     fn();
     return;
@@ -68,7 +68,7 @@ export default function useOpen(
   });
 
   const toggleOpen = useEvent<TriggerOpenType>((nextOpen, config = {}) => {
-    const { ignoreNext = false, lazy = false } = config;
+    const { ignoreNext = false } = config;
 
     taskIdRef.current += 1;
     const id = taskIdRef.current;
@@ -76,7 +76,7 @@ export default function useOpen(
     const nextOpenVal = typeof nextOpen === 'boolean' ? nextOpen : !mergedOpen;
 
     // Since `mergedOpen` is post-processed, we need to check if the value really changed
-    if (nextOpenVal || !lazy) {
+    if (nextOpenVal) {
       if (!taskLockRef.current) {
         triggerEvent(nextOpenVal);
 

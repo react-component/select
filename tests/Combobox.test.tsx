@@ -503,6 +503,8 @@ describe('Select.Combobox', () => {
     }
 
     fireEvent.blur(container.querySelector('input')!);
+    container.querySelector('input').blur();
+
     await delay(100);
 
     expectOpen(container, false);
@@ -591,6 +593,7 @@ describe('Select.Combobox', () => {
 
     fireEvent.blur(container.querySelector('input'));
     act(() => {
+      container.querySelector('input').blur();
       jest.runAllTimers();
     });
 
