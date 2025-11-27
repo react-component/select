@@ -200,7 +200,10 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
   const onInternalBlur: SelectInputProps['onBlur'] = (event) => {
     macroTask(() => {
       const inputNode = getDOM(inputRef.current);
-      if (inputNode !== document.activeElement && !inputNode.contains(document.activeElement)) {
+      if (
+        !inputNode ||
+        (inputNode !== document.activeElement && !inputNode.contains(document.activeElement))
+      ) {
         toggleOpen(false);
       }
     });
