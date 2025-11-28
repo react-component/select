@@ -41,11 +41,10 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
       if (displayValue && selectContext?.flattenOptions) {
         const option = selectContext.flattenOptions.find((opt) => opt.value === displayValue.value);
         if (option?.data) {
-          const { label, value, className, style, key, ...rest } = option.data;
+          const { className, style } = option.data;
 
           restProps = {
             ...restProps,
-            ...rest,
             title: getTitle(option.data),
             className: clsx(restProps.className, className),
             style: { ...restProps.style, ...style },
