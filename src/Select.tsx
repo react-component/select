@@ -179,6 +179,12 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   onChange?: (value: ValueType, option?: OptionType | OptionType[]) => void;
   classNames?: Partial<Record<SemanticName, string>>;
   styles?: Partial<Record<SemanticName, React.CSSProperties>>;
+
+  // >>> Accessibility
+  // https://github.com/ant-design/ant-design/issues/46030
+  // https://github.com/ant-design/ant-design/issues/53713
+  // https://github.com/ant-design/ant-design/pull/55185#discussion_r2389642896
+  role?: string;
 }
 
 function isRawValue(value: DraftValueType): value is RawValueType {
