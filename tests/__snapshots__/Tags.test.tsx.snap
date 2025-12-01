@@ -111,7 +111,7 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
       >
         <div
           class="rc-virtual-list-holder"
-          style="max-height: 200px; overflow-y: auto;"
+          style="max-height: 200px; overflow-y: hidden;"
         >
           <div>
             <div
