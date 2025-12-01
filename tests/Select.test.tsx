@@ -511,6 +511,48 @@ describe('Select.Basic', () => {
     expect(container.querySelector('.rc-select-item-option-content').textContent).toBe('2');
   });
 
+  it('supports optionFilterProp as array for multiple field searching (value + pinyin)', () => {
+    const { container } = render(
+      <Select showSearch={{ optionFilterProp: ['value', 'pinyin'] }} style={{ width: 300 }}>
+        <Option value="张三" pinyin="zhangsan">
+          张三
+        </Option>
+        <Option value="李四" pinyin="lisi">
+          李四
+        </Option>
+        <Option value="王五" pinyin="wangwu">
+          王五
+        </Option>
+        <Option value="lisa" pinyin="lisa">
+          lisa
+        </Option>
+      </Select>,
+    );
+
+    const input = container.querySelector('input');
+
+    fireEvent.change(input, { target: { value: 'zhang' } });
+
+    let items = container.querySelectorAll('.rc-select-item-option-content');
+    expect(items).toHaveLength(1);
+    expect(items[0].textContent).toBe('张三');
+
+    fireEvent.change(input, { target: { value: '王' } });
+
+    items = container.querySelectorAll('.rc-select-item-option-content');
+    expect(items).toHaveLength(1);
+    expect(items[0].textContent).toBe('王五');
+
+    fireEvent.change(input, { target: { value: 'li' } });
+
+    items = container.querySelectorAll('.rc-select-item-option-content');
+    const texts = Array.from(items).map((item) => item.textContent);
+
+    expect(items).toHaveLength(2);
+    expect(texts).toContain('李四');
+    expect(texts).toContain('lisa');
+  });
+
   it('filter array children', () => {
     const { container } = render(
       <Select optionFilterProp="children" showSearch>

@@ -12,9 +12,9 @@ export default (
   fieldNames: FieldNames,
   searchValue?: string,
   filterOption?: SelectProps['filterOption'],
-  optionFilterProp?: string,
-) =>
-  React.useMemo(() => {
+  optionFilterProp?: string[],
+) => {
+  return React.useMemo(() => {
     if (!searchValue || filterOption === false) {
       return options;
     }
@@ -29,8 +29,8 @@ export default (
       ? filterOption
       : (_: string, option: DefaultOptionType) => {
           // Use provided `optionFilterProp`
-          if (optionFilterProp) {
-            return includes(option[optionFilterProp], upperSearch);
+          if (optionFilterProp && optionFilterProp.length) {
+            return optionFilterProp.some((prop) => includes(option[prop], upperSearch));
           }
 
           // Auto select `label` or `value` by option type
@@ -76,3 +76,4 @@ export default (
 
     return filteredOptions;
   }, [options, filterOption, optionFilterProp, searchValue, fieldNames]);
+};

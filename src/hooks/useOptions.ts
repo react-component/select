@@ -10,7 +10,7 @@ const useOptions = <OptionType>(
   options: OptionType[],
   children: React.ReactNode,
   fieldNames: FieldNames,
-  optionFilterProp: string,
+  optionFilterProp: string[],
   optionLabelProp: string,
 ) => {
   return React.useMemo(() => {
@@ -42,7 +42,9 @@ const useOptions = <OptionType>(
           valueOptions.set(option[fieldNames.value], option);
           setLabelOptions(labelOptions, option, fieldNames.label);
           // https://github.com/ant-design/ant-design/issues/35304
-          setLabelOptions(labelOptions, option, optionFilterProp);
+          optionFilterProp.forEach((prop) => {
+            setLabelOptions(labelOptions, option, prop);
+          });
           setLabelOptions(labelOptions, option, optionLabelProp);
         } else {
           dig(option[fieldNames.options], true);
