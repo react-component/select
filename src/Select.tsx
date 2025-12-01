@@ -465,7 +465,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       return [createTagOption(mergedSearchValue), ...filteredOptions];
     }, [
       createTagOption,
-      optionFilterProp,
+      normalizedOptionFilterProp,
       mode,
       filteredOptions,
       mergedSearchValue,
