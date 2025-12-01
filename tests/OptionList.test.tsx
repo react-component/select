@@ -13,9 +13,9 @@ import { spyElementPrototypes } from '@rc-component/util/lib/test/domHook';
 jest.mock('../src/utils/platformUtil');
 
 // Mock VirtualList
-jest.mock('rc-virtual-list', () => {
+jest.mock('@rc-component/virtual-list', () => {
   const OriReact = jest.requireActual('react');
-  const OriList = jest.requireActual('rc-virtual-list').default;
+  const OriList = jest.requireActual('@rc-component/virtual-list').default;
 
   return OriReact.forwardRef((props, ref) => {
     const oriRef = OriReact.useRef();
@@ -561,7 +561,9 @@ describe('OptionList', () => {
       const { container } = render(<Select open showScrollBar options={options} />);
 
       await waitFor(() => {
-        const scrollbarElement = container.querySelector('.rc-virtual-list-scrollbar-visible');
+        const scrollbarElement = container.querySelector(
+          '.@rc-component/virtual-list-scrollbar-visible',
+        );
         expect(scrollbarElement).not.toBeNull();
       });
     });
@@ -574,7 +576,9 @@ describe('OptionList', () => {
       const { container } = render(<Select open showScrollBar={false} options={options} />);
 
       await waitFor(() => {
-        const scrollbarElement = container.querySelector('.rc-virtual-list-scrollbar-visible');
+        const scrollbarElement = container.querySelector(
+          '.@rc-component/virtual-list-scrollbar-visible',
+        );
         expect(scrollbarElement).toBeNull();
       });
     });

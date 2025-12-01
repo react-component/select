@@ -9,7 +9,7 @@ import {
 import KeyCode from '@rc-component/util/lib/KeyCode';
 import { spyElementPrototypes } from '@rc-component/util/lib/test/domHook';
 import { resetWarned } from '@rc-component/util/lib/warning';
-import type { ScrollConfig } from 'rc-virtual-list/lib/List';
+import type { ScrollConfig } from '@rc-component/virtual-list/lib/List';
 import React, { StrictMode } from 'react';
 import type { SelectProps } from '../src';
 import Select, { OptGroup, Option, useBaseProps } from '../src';
