@@ -389,6 +389,46 @@ describe('Select.Basic', () => {
     expect(container.querySelector('input').getAttribute('readonly')).toBeFalsy();
   });
 
+  it('dynamic change icon should not trigger close', () => {
+    const Demo = () => {
+      const [open, setOpen] = React.useState(false);
+
+      return (
+        <Select
+          open={open}
+          onPopupVisibleChange={setOpen}
+          showSearch
+          suffix={
+            open ? (
+              <span className="bamboo" key="bamboo" />
+            ) : (
+              <span className="little" key="little" />
+            )
+          }
+        />
+      );
+    };
+
+    const { container } = render(<Demo />);
+    const suffix = container.querySelector('.little');
+
+    const mouseDownEvent = createEvent.mouseDown(suffix);
+
+    // First click on the element and re-render to remove the node
+    fireEvent(suffix, mouseDownEvent);
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    // Then popup to the window event (jsdom can not mock this. so we just fire directly)
+    fireEvent(window, mouseDownEvent);
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    expectOpen(container);
+  });
+
   it('should keep dropdown open when clicking inside popup to prevent accidental close', async () => {
     const { container } = render(
       <Select
