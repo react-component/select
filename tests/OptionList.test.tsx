@@ -561,9 +561,7 @@ describe('OptionList', () => {
       const { container } = render(<Select open showScrollBar options={options} />);
 
       await waitFor(() => {
-        const scrollbarElement = container.querySelector(
-          '.@rc-component/virtual-list-scrollbar-visible',
-        );
+        const scrollbarElement = container.querySelector('.rc-virtual-list-scrollbar-visible');
         expect(scrollbarElement).not.toBeNull();
       });
     });
@@ -576,9 +574,7 @@ describe('OptionList', () => {
       const { container } = render(<Select open showScrollBar={false} options={options} />);
 
       await waitFor(() => {
-        const scrollbarElement = container.querySelector(
-          '.@rc-component/virtual-list-scrollbar-visible',
-        );
+        const scrollbarElement = container.querySelector('.rc-virtual-list-scrollbar-visible');
         expect(scrollbarElement).toBeNull();
       });
     });
