@@ -21,6 +21,8 @@ export default function useSelectTriggerControl(
 
     if (
       open &&
+      // Marked by SelectInput mouseDown event
+      !(event as any)._ignore_global_close &&
       elements()
         .filter((element) => element)
         .every((element) => !element.contains(target) && element !== target)
