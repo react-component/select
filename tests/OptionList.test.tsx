@@ -13,9 +13,9 @@ import { spyElementPrototypes } from '@rc-component/util/lib/test/domHook';
 jest.mock('../src/utils/platformUtil');
 
 // Mock VirtualList
-jest.mock('rc-virtual-list', () => {
+jest.mock('@rc-component/virtual-list', () => {
   const OriReact = jest.requireActual('react');
-  const OriList = jest.requireActual('rc-virtual-list').default;
+  const OriList = jest.requireActual('@rc-component/virtual-list').default;
 
   return OriReact.forwardRef((props, ref) => {
     const oriRef = OriReact.useRef();

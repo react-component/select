@@ -1,7 +1,7 @@
 import type { AlignType, BuildInPlacements } from '@rc-component/trigger/lib/interface';
 import { clsx } from 'clsx';
 import { getDOM } from '@rc-component/util/lib/Dom/findDOMNode';
-import type { ScrollConfig, ScrollTo } from 'rc-virtual-list/lib/List';
+import type { ScrollConfig, ScrollTo } from '@rc-component/virtual-list/lib/List';
 import * as React from 'react';
 import { useAllowClear } from '../hooks/useAllowClear';
 import { BaseSelectContext } from '../hooks/useBaseProps';
