@@ -3,31 +3,32 @@ import Select, { Option } from '@rc-component/select';
 import '../../assets/index.less';
 
 const Test = () => {
-  const [value, setValue] = React.useState<string>('');
+  const [value, setValue] = React.useState<string>('张三');
 
   return (
     <div>
       <h2>Select optionFilterProp</h2>
       <div style={{ width: 300 }}>
         <Select
-          defaultValue="张三"
           style={{ width: 500 }}
+          showSearch={{ optionFilterProp: ['value', 'pinyin'] }}
           placeholder="placeholder"
-          optionFilterProp="desc"
           onChange={(val: string) => {
             setValue(val);
           }}
           value={value}
-          showSearch
         >
-          <Option value="张三" desc="张三 zhang san">
+          <Option value="张三" pinyin="zhangsan">
             张三
           </Option>
-          <Option value="李四" desc="李四 li si">
+          <Option value="李四" pinyin="lisi">
             李四
           </Option>
-          <Option value="王五" desc="王五 wang wu">
+          <Option value="王五" pinyin="wangwu">
             王五
+          </Option>
+          <Option value="lisa" pinyin="lisa">
+            lisa
           </Option>
         </Select>
       </div>

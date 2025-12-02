@@ -117,10 +117,12 @@ export interface SearchConfig<OptionType> {
   onSearch?: (value: string) => void;
   filterOption?: boolean | FilterFunc<OptionType>;
   filterSort?: (optionA: OptionType, optionB: OptionType, info: { searchValue: string }) => number;
-  optionFilterProp?: string;
+  optionFilterProp?: string | string[];
 }
-export interface SelectProps<ValueType = any, OptionType extends BaseOptionType = DefaultOptionType>
-  extends Omit<BaseSelectPropsWithoutPrivate, 'showSearch'> {
+export interface SelectProps<
+  ValueType = any,
+  OptionType extends BaseOptionType = DefaultOptionType,
+> extends Omit<BaseSelectPropsWithoutPrivate, 'showSearch'> {
   prefixCls?: string;
   id?: string;
 
@@ -152,7 +154,7 @@ export interface SelectProps<ValueType = any, OptionType extends BaseOptionType 
   /**  @deprecated please use  showSearch.filterSort */
   filterSort?: SearchConfig<OptionType>['filterSort'];
   /**  @deprecated please use  showSearch.optionFilterProp */
-  optionFilterProp?: string;
+  optionFilterProp?: string | string[];
   optionLabelProp?: string;
 
   children?: React.ReactNode;
@@ -248,6 +250,11 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       autoClearSearchValue = true,
     } = searchConfig;
 
+    const normalizedOptionFilterProp = React.useMemo(() => {
+      if (!optionFilterProp) return [];
+      return Array.isArray(optionFilterProp) ? optionFilterProp : [optionFilterProp];
+    }, [optionFilterProp]);
+
     const mergedId = useId(id);
     const multiple = isMultiple(mode);
     const childrenAsData = !!(!options && children);
@@ -280,7 +287,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       options,
       children,
       mergedFieldNames,
-      optionFilterProp,
+      normalizedOptionFilterProp,
       optionLabelProp,
     );
     const { valueOptions, labelOptions, options: mergedOptions } = parsedOptions;
@@ -432,15 +439,21 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       mergedFieldNames,
       mergedSearchValue,
       mergedFilterOption,
-      optionFilterProp,
+      normalizedOptionFilterProp,
     );
 
     // Fill options with search value if needed
     const filledSearchOptions = React.useMemo(() => {
+      const hasItemMatchingSearch = (item: DefaultOptionType) => {
+        if (normalizedOptionFilterProp.length) {
+          return normalizedOptionFilterProp.some((prop) => item?.[prop] === mergedSearchValue);
+        }
+        return item?.value === mergedSearchValue;
+      };
       if (
         mode !== 'tags' ||
         !mergedSearchValue ||
-        filteredOptions.some((item) => item[optionFilterProp || 'value'] === mergedSearchValue)
+        filteredOptions.some((item) => hasItemMatchingSearch(item))
       ) {
         return filteredOptions;
       }
@@ -452,7 +465,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       return [createTagOption(mergedSearchValue), ...filteredOptions];
     }, [
       createTagOption,
-      optionFilterProp,
+      normalizedOptionFilterProp,
       mode,
       filteredOptions,
       mergedSearchValue,
