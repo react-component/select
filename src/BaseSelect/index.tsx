@@ -7,7 +7,7 @@ import { useAllowClear } from '../hooks/useAllowClear';
 import { BaseSelectContext } from '../hooks/useBaseProps';
 import type { BaseSelectContextProps } from '../hooks/useBaseProps';
 import useLock from '../hooks/useLock';
-import useSelectTriggerControl from '../hooks/useSelectTriggerControl';
+import useSelectTriggerControl, { isInside } from '../hooks/useSelectTriggerControl';
 import type {
   DisplayInfoType,
   DisplayValueType,
@@ -21,7 +21,7 @@ import type { RefTriggerProps } from '../SelectTrigger';
 import SelectTrigger from '../SelectTrigger';
 import { getSeparatedContent, isValidCount } from '../utils/valueUtil';
 import Polite from './Polite';
-import useOpen from '../hooks/useOpen';
+import useOpen, { macroTask } from '../hooks/useOpen';
 import { useEvent } from '@rc-component/util';
 import type { SelectInputRef } from '../SelectInput';
 import SelectInput from '../SelectInput';
@@ -538,6 +538,15 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   };
 
   // ========================== Focus / Blur ==========================
+  const getSelectElements = () => [
+    getDOM(containerRef.current),
+    triggerRef.current?.getPopupElement(),
+  ];
+
+  // Close when click on non-select element
+  useSelectTriggerControl(getSelectElements, mergedOpen, triggerOpen, !!mergedComponents.root);
+
+  // ========================== Focus / Blur ==========================
   /** Record real focus status */
   // const focusRef = React.useRef<boolean>(false);
 
@@ -554,6 +563,14 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     }
   };
 
+  const onRootBlur = () => {
+    macroTask(() => {
+      if (!isInside(getSelectElements(), document.activeElement as HTMLElement)) {
+        triggerOpen(false);
+      }
+    });
+  };
+
   const onInternalBlur: React.FocusEventHandler<HTMLElement> = (event) => {
     setFocused(false);
 
@@ -568,6 +585,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
         });
       }
     }
+
+    onRootBlur();
 
     if (!disabled) {
       onBlur?.(event);
@@ -603,14 +622,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       triggerOpen(newOpen);
     };
   }
-
-  // Close when click on non-select element
-  useSelectTriggerControl(
-    () => [getDOM(containerRef.current), triggerRef.current?.getPopupElement()],
-    mergedOpen,
-    triggerOpen,
-    !!mergedComponents.root,
-  );
 
   // ============================ Context =============================
   const baseSelectContext = React.useMemo<BaseSelectContextProps>(
@@ -764,6 +775,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       onPopupVisibleChange={onTriggerVisibleChange}
       onPopupMouseEnter={onPopupMouseEnter}
       onPopupMouseDown={onInternalMouseDown}
+      onPopupBlur={onRootBlur}
     >
       {renderNode}
     </SelectTrigger>

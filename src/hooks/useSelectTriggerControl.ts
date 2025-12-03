@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { useEvent } from '@rc-component/util';
 
+export function isInside(elements: (HTMLElement | SVGElement | undefined)[], target: HTMLElement) {
+  return elements
+    .filter((element) => element)
+    .some((element) => element.contains(target) || element === target);
+}
+
 export default function useSelectTriggerControl(
   elements: () => (HTMLElement | SVGElement | undefined)[],
   open: boolean,
@@ -23,9 +29,7 @@ export default function useSelectTriggerControl(
       open &&
       // Marked by SelectInput mouseDown event
       !(event as any)._ignore_global_close &&
-      elements()
-        .filter((element) => element)
-        .every((element) => !element.contains(target) && element !== target)
+      !isInside(elements(), target)
     ) {
       // Should trigger close
       triggerOpen(false);
