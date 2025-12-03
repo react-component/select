@@ -11,7 +11,7 @@ window.MessageChannel = class {
             if (port._target && typeof port._target.onmessage === 'function') {
               port._target.onmessage({ data: message });
             }
-          }, 0);
+          }, 10);
         },
         _target: null,
       };

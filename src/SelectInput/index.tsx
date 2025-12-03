@@ -11,7 +11,6 @@ import { clsx } from 'clsx';
 import type { ComponentsConfig } from '../hooks/useComponents';
 import { getDOM } from '@rc-component/util/lib/Dom/findDOMNode';
 import { composeRef } from '@rc-component/util/lib/ref';
-import { macroTask } from '../hooks/useOpen';
 
 export interface SelectInputRef {
   focus: (options?: FocusOptions) => void;
@@ -101,7 +100,6 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
 
     // Events
     onMouseDown,
-    onBlur,
     onClearMouseDown,
     onInputKeyDown,
     onSelectorRemove,
@@ -203,20 +201,6 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
     onMouseDown?.(event);
   });
 
-  const onInternalBlur: SelectInputProps['onBlur'] = (event) => {
-    macroTask(() => {
-      const inputNode = getDOM(inputRef.current);
-      if (
-        !inputNode ||
-        (inputNode !== document.activeElement && !inputNode.contains(document.activeElement))
-      ) {
-        toggleOpen(false);
-      }
-    });
-
-    onBlur?.(event);
-  };
-
   // =================== Components ===================
   const { root: RootComponent } = components;
 
@@ -250,7 +234,6 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
         style={style}
         // Mouse Events
         onMouseDown={onInternalMouseDown}
-        onBlur={onInternalBlur}
       >
         {/* Prefix */}
         <Affix className={clsx(`${prefixCls}-prefix`, classNames?.prefix)} style={styles?.prefix}>
