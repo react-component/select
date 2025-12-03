@@ -3,10 +3,16 @@ import Select from '../src';
 import { fireEvent, render } from '@testing-library/react';
 
 describe('Select.Focus', () => {
-  it('disabled should reset focused', () => {
-    jest.clearAllTimers();
+  beforeEach(() => {
     jest.useFakeTimers();
+  });
 
+  afterEach(() => {
+    jest.clearAllTimers();
+    jest.useRealTimers();
+  });
+
+  it('disabled should reset focused', () => {
     jest.clearAllTimers();
 
     const { container, rerender } = render(<Select />);
@@ -24,13 +30,9 @@ describe('Select.Focus', () => {
       jest.runAllTimers();
     });
     expect(container.querySelector('.rc-select-focused')).toBeFalsy();
-
-    jest.useRealTimers();
   });
 
   it('after onBlur is triggered the focused does not need to be reset', () => {
-    jest.useFakeTimers();
-
     const onFocus = jest.fn();
 
     const Demo: React.FC = () => {
@@ -63,7 +65,57 @@ describe('Select.Focus', () => {
     jest.runAllTimers();
 
     expect(onFocus).toHaveBeenCalled();
+  });
 
-    jest.useRealTimers();
+  it('when popupRender has custom input, focus it and trigger SelectInput blur should not close the popup', () => {
+    const onPopupVisibleChange = jest.fn();
+
+    const { container } = render(
+      <Select
+        open
+        onPopupVisibleChange={onPopupVisibleChange}
+        popupRender={() => (
+          <div className="bamboo">
+            <input className="custom-input" />
+          </div>
+        )}
+      />,
+    );
+
+    const selectInput = container.querySelector('input.rc-select-input') as HTMLElement;
+    const customInput = container.querySelector('.custom-input') as HTMLElement;
+
+    fireEvent.focus(selectInput);
+    selectInput.focus();
+    fireEvent.blur(selectInput);
+
+    // Focus custom input should not close popup
+    fireEvent.focus(customInput);
+    selectInput.focus();
+
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    expect(onPopupVisibleChange).not.toHaveBeenCalled();
+
+    // Click on the popup element will blur to document but should not close
+    fireEvent.mouseDown(container.querySelector('.bamboo'));
+    fireEvent.blur(customInput);
+    document.body.focus();
+
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    expect(onPopupVisibleChange).not.toHaveBeenCalled();
+
+    // Click on the body should close the popup
+    fireEvent.mouseDown(document.body);
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    expect(onPopupVisibleChange).toHaveBeenCalledWith(false);
   });
 });
