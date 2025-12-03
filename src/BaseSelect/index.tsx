@@ -563,7 +563,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     }
   };
 
-  const onRootBlur: React.FocusEventHandler<HTMLElement> = () => {
+  const onRootBlur = () => {
     macroTask(() => {
       if (!isInside(getSelectElements(), document.activeElement as HTMLElement)) {
         triggerOpen(false);
@@ -586,7 +586,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       }
     }
 
-    onRootBlur(event);
+    onRootBlur();
 
     if (!disabled) {
       onBlur?.(event);
