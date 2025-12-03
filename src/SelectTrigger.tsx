@@ -77,6 +77,7 @@ export interface SelectTriggerProps {
 
   onPopupMouseEnter: () => void;
   onPopupMouseDown: React.MouseEventHandler<HTMLDivElement>;
+  onPopupBlur?: React.FocusEventHandler<HTMLDivElement>;
 }
 
 const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTriggerProps> = (
@@ -104,6 +105,7 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
     onPopupVisibleChange,
     onPopupMouseEnter,
     onPopupMouseDown,
+    onPopupBlur,
     ...restProps
   } = props;
 
@@ -165,7 +167,7 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
       prefixCls={popupPrefixCls}
       popupMotion={{ motionName: mergedTransitionName }}
       popup={
-        <div onMouseEnter={onPopupMouseEnter} onMouseDown={onPopupMouseDown}>
+        <div onMouseEnter={onPopupMouseEnter} onMouseDown={onPopupMouseDown} onBlur={onPopupBlur}>
           {popupNode}
         </div>
       }

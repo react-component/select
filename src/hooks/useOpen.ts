@@ -86,7 +86,7 @@ export default function useOpen(
 
           macroTask(() => {
             taskLockRef.current = false;
-          }, 2);
+          }, 3);
         }
       }
       return;
