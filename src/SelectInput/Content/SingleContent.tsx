@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { clsx } from 'clsx';
+import pickAttrs from '@rc-component/util/lib/pickAttrs';
 import Input from '../Input';
 import { useSelectInputContext } from '../context';
 import useBaseProps from '../../hooks/useBaseProps';
@@ -42,10 +43,11 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
         const option = selectContext.flattenOptions.find((opt) => opt.value === displayValue.value);
         if (option?.data) {
           const { label, value, className, style, key, ...rest } = option.data;
+          const attrs = pickAttrs(rest);
 
           restProps = {
             ...restProps,
-            ...rest,
+            ...attrs,
             title: getTitle(option.data),
             className: clsx(restProps.className, className),
             style: { ...restProps.style, ...style },
