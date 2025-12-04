@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { clsx } from 'clsx';
-import Overflow from 'rc-overflow';
+import Overflow from '@rc-component/overflow';
 import Input from '../Input';
 import { useSelectInputContext } from '../context';
 import type { SharedContentProps } from '.';
