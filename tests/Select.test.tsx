@@ -561,7 +561,7 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    keyDown(container.querySelector('input'), 40);
+    keyDown(container.querySelector('input'), KeyCode.DOWN);
     expectOpen(container);
   });
 
@@ -2524,9 +2524,9 @@ describe('Select.Basic', () => {
     await waitFakeTimer();
     expectOpen(container, true);
 
-    keyDown(inputElem!, 40);
-    keyUp(inputElem!, 40);
-    keyDown(inputElem!, 13);
+    keyDown(inputElem!, KeyCode.DOWN);
+    keyUp(inputElem!, KeyCode.DOWN);
+    keyDown(inputElem!, KeyCode.ENTER);
 
     await waitFakeTimer();
     expect(onBlur).toHaveBeenCalledTimes(1);
@@ -2537,9 +2537,9 @@ describe('Select.Basic', () => {
     await waitFakeTimer();
     expectOpen(container, true);
 
-    keyDown(inputElem!, 40);
-    keyUp(inputElem!, 40);
-    keyDown(inputElem!, 13);
+    keyDown(inputElem!, KeyCode.DOWN);
+    keyUp(inputElem!, KeyCode.DOWN);
+    keyDown(inputElem!, KeyCode.ENTER);
 
     await waitFakeTimer();
     expect(onBlur).toHaveBeenCalledTimes(2);
