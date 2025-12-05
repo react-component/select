@@ -21,7 +21,7 @@ import type { RefTriggerProps } from '../SelectTrigger';
 import SelectTrigger from '../SelectTrigger';
 import { getSeparatedContent, isValidCount } from '../utils/valueUtil';
 import Polite from './Polite';
-import useOpen from '../hooks/useOpen';
+import useOpen, { macroTask } from '../hooks/useOpen';
 import { useEvent } from '@rc-component/util';
 import type { SelectInputRef } from '../SelectInput';
 import SelectInput from '../SelectInput';
@@ -547,8 +547,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   useSelectTriggerControl(getSelectElements, mergedOpen, triggerOpen, !!mergedComponents.root);
 
   // ========================== Focus / Blur ==========================
-  /** Record real focus status */
-  // const focusRef = React.useRef<boolean>(false);
+  const internalMouseDownRef = React.useRef(false);
 
   const onInternalFocus: React.FocusEventHandler<HTMLElement> = (event) => {
     setFocused(true);
@@ -565,7 +564,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
   const onRootBlur = () => {
     // Delay close should check the activeElement
-    if (mergedOpen) {
+    if (mergedOpen && !internalMouseDownRef.current) {
       triggerOpen(false, {
         cancelFun: () => isInside(getSelectElements(), document.activeElement as HTMLElement),
       });
@@ -605,6 +604,11 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     }
 
     onMouseDown?.(event, ...restArgs);
+
+    internalMouseDownRef.current = true;
+    macroTask(() => {
+      internalMouseDownRef.current = false;
+    });
   };
 
   // ============================ Dropdown ============================

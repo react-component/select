@@ -118,4 +118,25 @@ describe('Select.Focus', () => {
 
     expect(onPopupVisibleChange).toHaveBeenCalledWith(false);
   });
+
+  it('click inner that no have focusable element should not close the popup', () => {
+    const onPopupVisibleChange = jest.fn();
+
+    const { container } = render(
+      <Select
+        open
+        onPopupVisibleChange={onPopupVisibleChange}
+        popupRender={() => <div className="bamboo" />}
+      />,
+    );
+
+    fireEvent.mouseDown(container.querySelector('.bamboo'));
+    fireEvent.blur(container.querySelector('input'));
+
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    expect(onPopupVisibleChange).not.toHaveBeenCalled();
+  });
 });

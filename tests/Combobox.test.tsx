@@ -500,6 +500,8 @@ describe('Select.Combobox', () => {
     for (let i = 0; i < 10; i += 1) {
       fireEvent.mouseDown(container.querySelector('input')!);
       expectOpen(container);
+
+      await delay(100);
     }
 
     fireEvent.blur(container.querySelector('input')!);
