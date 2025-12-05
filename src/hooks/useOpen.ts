@@ -88,7 +88,8 @@ export default function useOpen(
 
     // Since `mergedOpen` is post-processed, we need to check if the value really changed
     if (!weak) {
-      weakLockRef.current = true;
+      // Only `true` need lock
+      weakLockRef.current = nextOpenVal;
     }
 
     // Weak update can be ignored
