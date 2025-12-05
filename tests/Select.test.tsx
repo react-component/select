@@ -1951,7 +1951,6 @@ describe('Select.Basic', () => {
 
     toggleOpen(container);
 
-    console.log('!~~~~~~~~');
     const clickEvent = new Event('mousedown');
     Object.defineProperty(clickEvent, 'target', {
       get: () => document.body,

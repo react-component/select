@@ -21,7 +21,7 @@ import type { RefTriggerProps } from '../SelectTrigger';
 import SelectTrigger from '../SelectTrigger';
 import { getSeparatedContent, isValidCount } from '../utils/valueUtil';
 import Polite from './Polite';
-import useOpen, { macroTask } from '../hooks/useOpen';
+import useOpen from '../hooks/useOpen';
 import { useEvent } from '@rc-component/util';
 import type { SelectInputRef } from '../SelectInput';
 import SelectInput from '../SelectInput';
