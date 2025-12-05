@@ -26,6 +26,7 @@ export type TriggerOpenType = (
   nextOpen?: boolean,
   config?: {
     weak?: boolean;
+    cancelFun?: () => boolean;
   },
 ) => void;
 
@@ -67,7 +68,7 @@ export default function useOpen(
   });
 
   const toggleOpen = useEvent<TriggerOpenType>((nextOpen, config = {}) => {
-    const { weak = false } = config;
+    const { weak = false, cancelFun } = config;
 
     taskIdRef.current += 1;
     const id = taskIdRef.current;
@@ -79,17 +80,18 @@ export default function useOpen(
         // Always check if id is match
         id === taskIdRef.current &&
         // Only weak update when not locked
-        (!weak || !weakLockRef.current)
+        (!weak || !weakLockRef.current) &&
+        // Check if need to cancel
+        !cancelFun?.()
       ) {
         triggerEvent(nextOpenVal);
-        weakLockRef.current = false;
       }
     }
 
     // Since `mergedOpen` is post-processed, we need to check if the value really changed
     if (!weak) {
       // Only `true` need lock
-      weakLockRef.current = nextOpenVal;
+      weakLockRef.current = true;
     }
 
     // Weak update can be ignored
@@ -98,6 +100,7 @@ export default function useOpen(
     } else {
       macroTask(() => {
         triggerUpdate();
+        weakLockRef.current = false;
       });
     }
   });

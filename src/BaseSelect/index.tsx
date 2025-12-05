@@ -564,13 +564,12 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   };
 
   const onRootBlur = () => {
-    macroTask(() => {
-      if (!isInside(getSelectElements(), document.activeElement as HTMLElement)) {
-        triggerOpen(false, {
-          weak: true,
-        });
-      }
-    });
+    // Delay close should check the activeElement
+    if (mergedOpen) {
+      triggerOpen(false, {
+        cancelFun: () => isInside(getSelectElements(), document.activeElement as HTMLElement),
+      });
+    }
   };
 
   const onInternalBlur: React.FocusEventHandler<HTMLElement> = (event) => {

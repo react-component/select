@@ -26,16 +26,17 @@ export default function useSelectTriggerControl(
       target = (event.composedPath()[0] || target) as HTMLElement;
     }
 
+    if ((event as any)._ori_target) {
+      target = (event as any)._ori_target;
+    }
+
     if (
       open &&
       // Marked by SelectInput mouseDown event
-      !(event as any)._ignore_global_close &&
       !isInside(elements(), target)
     ) {
       // Should trigger close
-      triggerOpen(false, {
-        weak: true,
-      });
+      triggerOpen(false);
     }
   });
 
