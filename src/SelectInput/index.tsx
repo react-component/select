@@ -170,14 +170,13 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
   // ====================== Open ======================
   const onInternalMouseDown: SelectInputProps['onMouseDown'] = useEvent((event) => {
     if (!disabled) {
-      const inputDOM = getDOM(inputRef.current);
-
       // https://github.com/ant-design/ant-design/issues/56002
       // Tell `useSelectTriggerControl` to ignore this event
       // When icon is dynamic render, the parentNode will miss
       // so we need to mark the event directly
-      (event.nativeEvent as any)._ori_target = inputDOM;
+      (event.nativeEvent as any)._ignore_global_close = true;
 
+      const inputDOM = getDOM(inputRef.current);
       if (inputDOM && event.target !== inputDOM && !inputDOM.contains(event.target as Node)) {
         event.preventDefault();
       }
