@@ -566,7 +566,9 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   const onRootBlur = () => {
     macroTask(() => {
       if (!isInside(getSelectElements(), document.activeElement as HTMLElement)) {
-        triggerOpen(false);
+        triggerOpen(false, {
+          weak: true,
+        });
       }
     });
   };
@@ -593,16 +595,14 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     }
   };
 
-  const onInternalMouseDown: React.MouseEventHandler<HTMLDivElement> = (event, ...restArgs) => {
+  const onRootMouseDown: React.MouseEventHandler<HTMLDivElement> = (event, ...restArgs) => {
     const { target } = event;
     const popupElement: HTMLDivElement = triggerRef.current?.getPopupElement();
 
     // We should give focus back to selector if clicked item is not focusable
     if (popupElement?.contains(target as HTMLElement) && triggerOpen) {
       // Tell `open` not to close since it's safe in the popup
-      triggerOpen(true, {
-        ignoreNext: true,
-      });
+      triggerOpen(true);
     }
 
     onMouseDown?.(event, ...restArgs);
@@ -747,7 +747,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       // Token handling
       tokenWithEnter={tokenWithEnter}
       // Open
-      onMouseDown={onInternalMouseDown}
+      onMouseDown={onRootMouseDown}
       // Components
       components={mergedComponents}
     />
@@ -774,7 +774,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       empty={emptyOptions}
       onPopupVisibleChange={onTriggerVisibleChange}
       onPopupMouseEnter={onPopupMouseEnter}
-      onPopupMouseDown={onInternalMouseDown}
+      onPopupMouseDown={onRootMouseDown}
       onPopupBlur={onRootBlur}
     >
       {renderNode}

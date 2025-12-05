@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useEvent } from '@rc-component/util';
+import type { TriggerOpenType } from './useOpen';
 
 export function isInside(elements: (HTMLElement | SVGElement | undefined)[], target: HTMLElement) {
   return elements
@@ -10,7 +11,7 @@ export function isInside(elements: (HTMLElement | SVGElement | undefined)[], tar
 export default function useSelectTriggerControl(
   elements: () => (HTMLElement | SVGElement | undefined)[],
   open: boolean,
-  triggerOpen: (open: boolean) => void,
+  triggerOpen: TriggerOpenType,
   customizedTrigger: boolean,
 ) {
   const onGlobalMouseDown = useEvent((event: MouseEvent) => {
@@ -32,7 +33,9 @@ export default function useSelectTriggerControl(
       !isInside(elements(), target)
     ) {
       // Should trigger close
-      triggerOpen(false);
+      triggerOpen(false, {
+        weak: true,
+      });
     }
   });
 
