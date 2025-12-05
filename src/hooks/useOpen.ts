@@ -25,7 +25,6 @@ export const macroTask = (fn: VoidFunction, times = 1) => {
 export type TriggerOpenType = (
   nextOpen?: boolean,
   config?: {
-    weak?: boolean;
     cancelFun?: () => boolean;
   },
 ) => void;
@@ -58,7 +57,6 @@ export default function useOpen(
   const mergedOpen = postOpen(ssrSafeOpen);
 
   const taskIdRef = useRef(0);
-  const weakLockRef = useRef(false);
 
   const triggerEvent = useEvent((nextOpen: boolean) => {
     if (onOpen && mergedOpen !== nextOpen) {
@@ -68,7 +66,7 @@ export default function useOpen(
   });
 
   const toggleOpen = useEvent<TriggerOpenType>((nextOpen, config = {}) => {
-    const { weak = false, cancelFun } = config;
+    const { cancelFun } = config;
 
     taskIdRef.current += 1;
     const id = taskIdRef.current;
@@ -79,19 +77,11 @@ export default function useOpen(
       if (
         // Always check if id is match
         id === taskIdRef.current &&
-        // Only weak update when not locked
-        (!weak || !weakLockRef.current) &&
         // Check if need to cancel
         !cancelFun?.()
       ) {
         triggerEvent(nextOpenVal);
       }
-    }
-
-    // Since `mergedOpen` is post-processed, we need to check if the value really changed
-    if (!weak) {
-      // Only `true` need lock
-      weakLockRef.current = true;
     }
 
     // Weak update can be ignored
@@ -100,7 +90,6 @@ export default function useOpen(
     } else {
       macroTask(() => {
         triggerUpdate();
-        weakLockRef.current = false;
       });
     }
   });
