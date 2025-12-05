@@ -21,7 +21,7 @@ import type { RefTriggerProps } from '../SelectTrigger';
 import SelectTrigger from '../SelectTrigger';
 import { getSeparatedContent, isValidCount } from '../utils/valueUtil';
 import Polite from './Polite';
-import useOpen, { macroTask } from '../hooks/useOpen';
+import useOpen from '../hooks/useOpen';
 import { useEvent } from '@rc-component/util';
 import type { SelectInputRef } from '../SelectInput';
 import SelectInput from '../SelectInput';
@@ -564,11 +564,12 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   };
 
   const onRootBlur = () => {
-    macroTask(() => {
-      if (!isInside(getSelectElements(), document.activeElement as HTMLElement)) {
-        triggerOpen(false);
-      }
-    });
+    // Delay close should check the activeElement
+    if (mergedOpen) {
+      triggerOpen(false, {
+        cancelFun: () => isInside(getSelectElements(), document.activeElement as HTMLElement),
+      });
+    }
   };
 
   const onInternalBlur: React.FocusEventHandler<HTMLElement> = (event) => {
@@ -593,16 +594,14 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     }
   };
 
-  const onInternalMouseDown: React.MouseEventHandler<HTMLDivElement> = (event, ...restArgs) => {
+  const onRootMouseDown: React.MouseEventHandler<HTMLDivElement> = (event, ...restArgs) => {
     const { target } = event;
     const popupElement: HTMLDivElement = triggerRef.current?.getPopupElement();
 
     // We should give focus back to selector if clicked item is not focusable
     if (popupElement?.contains(target as HTMLElement) && triggerOpen) {
       // Tell `open` not to close since it's safe in the popup
-      triggerOpen(true, {
-        ignoreNext: true,
-      });
+      triggerOpen(true);
     }
 
     onMouseDown?.(event, ...restArgs);
@@ -747,7 +746,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       // Token handling
       tokenWithEnter={tokenWithEnter}
       // Open
-      onMouseDown={onInternalMouseDown}
+      onMouseDown={onRootMouseDown}
       // Components
       components={mergedComponents}
     />
@@ -774,7 +773,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       empty={emptyOptions}
       onPopupVisibleChange={onTriggerVisibleChange}
       onPopupMouseEnter={onPopupMouseEnter}
-      onPopupMouseDown={onInternalMouseDown}
+      onPopupMouseDown={onRootMouseDown}
       onPopupBlur={onRootBlur}
     >
       {renderNode}

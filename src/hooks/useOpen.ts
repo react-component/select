@@ -20,13 +20,12 @@ export const macroTask = (fn: VoidFunction, times = 1) => {
 
 /**
  * Trigger by latest open call, if nextOpen is undefined, means toggle.
- * ignoreNext will skip next call in the macro task queue.
+ * `weak` means this call can be ignored if previous call exists.
  */
 export type TriggerOpenType = (
   nextOpen?: boolean,
   config?: {
-    ignoreNext?: boolean;
-    lazy?: boolean;
+    cancelFun?: () => boolean;
   },
 ) => void;
 
@@ -58,7 +57,6 @@ export default function useOpen(
   const mergedOpen = postOpen(ssrSafeOpen);
 
   const taskIdRef = useRef(0);
-  const taskLockRef = useRef(false);
 
   const triggerEvent = useEvent((nextOpen: boolean) => {
     if (onOpen && mergedOpen !== nextOpen) {
@@ -68,35 +66,32 @@ export default function useOpen(
   });
 
   const toggleOpen = useEvent<TriggerOpenType>((nextOpen, config = {}) => {
-    const { ignoreNext = false } = config;
+    const { cancelFun } = config;
 
     taskIdRef.current += 1;
     const id = taskIdRef.current;
 
     const nextOpenVal = typeof nextOpen === 'boolean' ? nextOpen : !mergedOpen;
 
-    // Since `mergedOpen` is post-processed, we need to check if the value really changed
-    if (nextOpenVal) {
-      if (!taskLockRef.current) {
+    function triggerUpdate() {
+      if (
+        // Always check if id is match
+        id === taskIdRef.current &&
+        // Check if need to cancel
+        !cancelFun?.()
+      ) {
         triggerEvent(nextOpenVal);
-
-        // Lock if needed
-        if (ignoreNext) {
-          taskLockRef.current = ignoreNext;
-
-          macroTask(() => {
-            taskLockRef.current = false;
-          }, 3);
-        }
       }
-      return;
     }
 
-    macroTask(() => {
-      if (id === taskIdRef.current && !taskLockRef.current) {
-        triggerEvent(nextOpenVal);
-      }
-    });
+    // Weak update can be ignored
+    if (nextOpenVal) {
+      triggerUpdate();
+    } else {
+      macroTask(() => {
+        triggerUpdate();
+      });
+    }
   });
 
   return [mergedOpen, toggleOpen] as const;
