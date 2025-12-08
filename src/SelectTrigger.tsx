@@ -1,4 +1,4 @@
-import Trigger, { type TriggerRef } from '@rc-component/trigger';
+import Trigger, { type TriggerRef, type TriggerProps } from '@rc-component/trigger';
 import type { AlignType, BuildInPlacements } from '@rc-component/trigger/lib/interface';
 import { clsx } from 'clsx';
 import * as React from 'react';
@@ -53,7 +53,7 @@ export interface RefTriggerProps {
   getPopupElement: () => HTMLDivElement;
 }
 
-export interface SelectTriggerProps {
+export interface SelectTriggerProps extends Pick<TriggerProps, 'forceRender'> {
   prefixCls: string;
   children: React.ReactElement;
   disabled: boolean;

@@ -17,7 +17,7 @@ import type {
   RenderDOMFunc,
   RenderNode,
 } from '../interface';
-import type { RefTriggerProps } from '../SelectTrigger';
+import type { RefTriggerProps, SelectTriggerProps } from '../SelectTrigger';
 import SelectTrigger from '../SelectTrigger';
 import { getSeparatedContent, isValidCount } from '../utils/valueUtil';
 import Polite from './Polite';
@@ -129,7 +129,8 @@ export interface BaseSelectPrivateProps {
 
 export type BaseSelectPropsWithoutPrivate = Omit<BaseSelectProps, keyof BaseSelectPrivateProps>;
 
-export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttributes {
+export interface BaseSelectProps
+  extends BaseSelectPrivateProps, React.AriaAttributes, Pick<SelectTriggerProps, 'forceRender'> {
   // Style
   className?: string;
   style?: React.CSSProperties;
@@ -298,6 +299,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     placement,
     builtinPlacements,
     getPopupContainer,
+    forceRender,
 
     // Focus
     showAction = [],
@@ -774,6 +776,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       placement={placement}
       builtinPlacements={builtinPlacements}
       getPopupContainer={getPopupContainer}
+      forceRender={forceRender}
       empty={emptyOptions}
       onPopupVisibleChange={onTriggerVisibleChange}
       onPopupMouseEnter={onPopupMouseEnter}
