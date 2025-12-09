@@ -2843,4 +2843,18 @@ describe('Select.Basic', () => {
       expect(select).toHaveClass('rc-select-focused');
     });
   });
+
+  describe('forceRender prop', () => {
+    it('should not render listbox by default', () => {
+      const { container } = render(
+        <Select options={[{ value: 'a', label: '1' }]} forceRender={false} />,
+      );
+      expect(container.querySelector('.rc-select-dropdown')).not.toBeInTheDocument();
+    });
+
+    it('should render listbox if forceRender is passed', () => {
+      const { container } = render(<Select options={[{ value: 'a', label: '1' }]} forceRender />);
+      expect(container.querySelector('.rc-select-dropdown')).toBeInTheDocument();
+    });
+  });
 });
