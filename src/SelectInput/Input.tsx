@@ -179,9 +179,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     role: role || 'combobox',
     'aria-expanded': open || false,
     'aria-haspopup': 'listbox' as const,
-    'aria-owns': `${id}_list`,
+    'aria-owns': open ? `${id}_list` : undefined,
     'aria-autocomplete': 'list' as const,
-    'aria-controls': `${id}_list`,
+    'aria-controls': open ? `${id}_list` : undefined,
     'aria-activedescendant': open ? activeDescendantId : undefined,
   };
 
