@@ -2847,7 +2847,7 @@ describe('Select.Basic', () => {
   describe('forceRender prop', () => {
     it('should not render listbox by default', () => {
       const { container } = render(
-        <Select options={[{ value: 'a', label: '1' }]} forceRender={false} />,
+        <Select options={[{ value: 'a', label: '1' }]} />,
       );
       expect(container.querySelector('.rc-select-dropdown')).not.toBeInTheDocument();
     });
