@@ -214,4 +214,62 @@ describe('Select.Accessibility', () => {
       });
     });
   });
+
+  describe('Select Input attributes', () => {
+    it('should have correct aria and role attributes by default', () => {
+      const { container } = render(
+        <Select
+          options={[
+            {
+              value: '123',
+            },
+            {
+              value: '1234',
+            },
+            {
+              value: '12345',
+            },
+          ]}
+        />,
+      );
+
+      const input = container.querySelector('input');
+      expect(input).toHaveAttribute('role', 'combobox');
+      expect(input).toHaveAttribute('aria-expanded', 'false');
+      expect(input).toHaveAttribute('aria-haspopup', 'listbox');
+      expect(input).not.toHaveAttribute('aria-owns');
+      expect(input).toHaveAttribute('aria-autocomplete', 'list');
+      expect(input).not.toHaveAttribute('aria-controls');
+      expect(input).not.toHaveAttribute('aria-activedescendant');
+    });
+
+    it('should have correct aria and role attributes when open', () => {
+      const { container } = render(
+        <Select
+          id="select"
+          open
+          options={[
+            {
+              value: '123',
+            },
+            {
+              value: '1234',
+            },
+            {
+              value: '12345',
+            },
+          ]}
+        />,
+      );
+
+      const input = container.querySelector('input');
+      expect(input).toHaveAttribute('role', 'combobox');
+      expect(input).toHaveAttribute('aria-expanded', 'true');
+      expect(input).toHaveAttribute('aria-haspopup', 'listbox');
+      expect(input).toHaveAttribute('aria-owns', 'select_list');
+      expect(input).toHaveAttribute('aria-autocomplete', 'list');
+      expect(input).toHaveAttribute('aria-controls', 'select_list');
+      expect(input).toHaveAttribute('aria-activedescendant', 'select_list_0');
+    });
+  });
 });

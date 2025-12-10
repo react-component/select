@@ -124,12 +124,10 @@ exports[`Select.Basic render renders aria-attributes correctly 1`] = `
     </div>
     <input
       aria-autocomplete="list"
-      aria-controls="test-id_list"
       aria-expanded="false"
       aria-haspopup="listbox"
       aria-label="some-label"
       aria-labelledby="test-id"
-      aria-owns="test-id_list"
       autocomplete="off"
       class="antd-input"
       id="test-id"
@@ -162,10 +160,8 @@ exports[`Select.Basic render renders correctly 1`] = `
     </div>
     <input
       aria-autocomplete="list"
-      aria-controls="test-id_list"
       aria-expanded="false"
       aria-haspopup="listbox"
-      aria-owns="test-id_list"
       autocomplete="off"
       class="antd-input"
       id="test-id"
@@ -200,10 +196,8 @@ exports[`Select.Basic render renders data-attributes correctly 1`] = `
     </div>
     <input
       aria-autocomplete="list"
-      aria-controls="test-id_list"
       aria-expanded="false"
       aria-haspopup="listbox"
-      aria-owns="test-id_list"
       autocomplete="off"
       class="antd-input"
       id="test-id"
@@ -236,10 +230,8 @@ exports[`Select.Basic render renders disabled select correctly 1`] = `
     </div>
     <input
       aria-autocomplete="list"
-      aria-controls="test-id_list"
       aria-expanded="false"
       aria-haspopup="listbox"
-      aria-owns="test-id_list"
       autocomplete="off"
       class="antd-input"
       disabled=""
@@ -271,10 +263,8 @@ exports[`Select.Basic render renders role prop correctly 1`] = `
     </div>
     <input
       aria-autocomplete="list"
-      aria-controls="test-id_list"
       aria-expanded="false"
       aria-haspopup="listbox"
-      aria-owns="test-id_list"
       autocomplete="off"
       class="antd-input"
       id="test-id"
