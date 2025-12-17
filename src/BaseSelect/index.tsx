@@ -358,8 +358,11 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   // Not trigger `open` when `notFoundContent` is empty
   const emptyListContent = !notFoundContent && emptyOptions;
 
-  const [mergedOpen, triggerOpen] = useOpen(open, onPopupVisibleChange, (nextOpen) =>
-    disabled || emptyListContent ? false : nextOpen,
+  const [mergedOpen, triggerOpen] = useOpen(
+    defaultOpen || false,
+    open,
+    onPopupVisibleChange,
+    (nextOpen) => (disabled || emptyListContent ? false : nextOpen),
   );
 
   // ============================= Search =============================

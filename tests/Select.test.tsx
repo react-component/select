@@ -66,6 +66,16 @@ describe('Select.Basic', () => {
     expect(onPopupVisibleChange).toHaveBeenCalledWith(false);
   });
 
+  it('should defaultOpen work', () => {
+    const { container } = render(
+      <Select defaultOpen>
+        <Option value="1">One</Option>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
+    expectOpen(container);
+  });
+
   describe('render', () => {
     function genSelect(props?: Partial<SelectProps>) {
       return (
