@@ -39,6 +39,7 @@ export type TriggerOpenType = (
  * On client-side hydration, it syncs with the actual open state.
  */
 export default function useOpen(
+  defaultOpen: boolean,
   propOpen: boolean,
   onOpen: (nextOpen: boolean) => void,
   postOpen: (nextOpen: boolean) => boolean,
@@ -50,7 +51,7 @@ export default function useOpen(
     setRendered(true);
   }, []);
 
-  const [stateOpen, internalSetOpen] = useControlledState(false, propOpen);
+  const [stateOpen, internalSetOpen] = useControlledState(defaultOpen, propOpen);
 
   // During SSR, always return false for open state
   const ssrSafeOpen = rendered ? stateOpen : false;
