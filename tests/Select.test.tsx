@@ -2843,4 +2843,32 @@ describe('Select.Basic', () => {
       expect(select).toHaveClass('rc-select-focused');
     });
   });
+
+  it('should not pass extra props to the selected item display', () => {
+    const { container } = render(
+      <Select
+        value="1"
+        open
+        options={[
+          {
+            value: '1',
+            label: 'One',
+            className: 'my-option-class',
+            style: { color: 'red' },
+            title: 'my-title',
+            ['xxx' as any]: 'should-not-be-here',
+          },
+        ]}
+      />,
+    );
+
+    const selectedItem = container.querySelector('.rc-select-content-value');
+
+    expect(selectedItem).toBeTruthy();
+    expect(selectedItem).toHaveClass('my-option-class');
+    expect(selectedItem).toHaveStyle({ color: 'red' });
+    expect(selectedItem).toHaveAttribute('title', 'my-title');
+
+    expect(selectedItem).not.toHaveAttribute('xxx');
+  });
 });
