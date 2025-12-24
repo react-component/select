@@ -66,6 +66,16 @@ describe('Select.Basic', () => {
     expect(onPopupVisibleChange).toHaveBeenCalledWith(false);
   });
 
+  it('should defaultOpen work', () => {
+    const { container } = render(
+      <Select defaultOpen>
+        <Option value="1">One</Option>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
+    expectOpen(container);
+  });
+
   describe('render', () => {
     function genSelect(props?: Partial<SelectProps>) {
       return (
@@ -603,7 +613,7 @@ describe('Select.Basic', () => {
       </Select>,
     );
 
-    keyDown(container.querySelector('input'), 40);
+    keyDown(container.querySelector('input'), KeyCode.DOWN);
     expectOpen(container);
   });
 
@@ -2566,9 +2576,9 @@ describe('Select.Basic', () => {
     await waitFakeTimer();
     expectOpen(container, true);
 
-    keyDown(inputElem!, 40);
-    keyUp(inputElem!, 40);
-    keyDown(inputElem!, 13);
+    keyDown(inputElem!, KeyCode.DOWN);
+    keyUp(inputElem!, KeyCode.DOWN);
+    keyDown(inputElem!, KeyCode.ENTER);
 
     await waitFakeTimer();
     expect(onBlur).toHaveBeenCalledTimes(1);
@@ -2579,9 +2589,9 @@ describe('Select.Basic', () => {
     await waitFakeTimer();
     expectOpen(container, true);
 
-    keyDown(inputElem!, 40);
-    keyUp(inputElem!, 40);
-    keyDown(inputElem!, 13);
+    keyDown(inputElem!, KeyCode.DOWN);
+    keyUp(inputElem!, KeyCode.DOWN);
+    keyDown(inputElem!, KeyCode.ENTER);
 
     await waitFakeTimer();
     expect(onBlur).toHaveBeenCalledTimes(2);

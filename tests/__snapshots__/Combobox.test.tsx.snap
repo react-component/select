@@ -15,10 +15,8 @@ exports[`Select.Combobox renders controlled correctly 1`] = `
     </div>
     <input
       aria-autocomplete="list"
-      aria-controls="test-id_list"
       aria-expanded="false"
       aria-haspopup="listbox"
-      aria-owns="test-id_list"
       autocomplete="off"
       class="rc-select-input"
       id="test-id"
@@ -45,10 +43,8 @@ exports[`Select.Combobox renders correctly 1`] = `
     </div>
     <input
       aria-autocomplete="list"
-      aria-controls="test-id_list"
       aria-expanded="false"
       aria-haspopup="listbox"
-      aria-owns="test-id_list"
       autocomplete="off"
       class="rc-select-input"
       id="test-id"
