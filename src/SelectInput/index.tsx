@@ -147,7 +147,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
       }
 
       // Open dropdown when a valid open key is pressed
-      if (isValidateOpenKey(which)) {
+      if (!event.ctrlKey && !event.altKey && !event.metaKey && isValidateOpenKey(which)) {
         toggleOpen(true);
       }
     },
