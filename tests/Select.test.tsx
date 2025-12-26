@@ -1008,6 +1008,36 @@ describe('Select.Basic', () => {
     expectOpen(container, true);
   });
 
+  it('not open on browser hotkeys with modifier keys', () => {
+    const { container } = render(
+      <Select>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+
+    const inputEle = container.querySelector('input');
+
+    // Ctrl+key combinations (e.g., Ctrl+F for find, Ctrl+S for save)
+    keyDown(inputEle, KeyCode.F, { ctrlKey: true });
+    expectOpen(container, false);
+
+    keyDown(inputEle, KeyCode.S, { ctrlKey: true });
+    expectOpen(container, false);
+
+    // Alt+key combinations
+    keyDown(inputEle, KeyCode.F, { altKey: true });
+    expectOpen(container, false);
+
+    // Meta+key combinations (e.g., Cmd+key on Mac)
+    keyDown(inputEle, KeyCode.F, { metaKey: true });
+    expectOpen(container, false);
+
+    // Regular key without modifiers should still open
+    keyDown(inputEle, KeyCode.NUM_ONE);
+    expectOpen(container, true);
+  });
+
   it('close after select', () => {
     const { container } = render(
       <Select>
