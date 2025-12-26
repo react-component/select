@@ -136,12 +136,11 @@ describe('Select.Basic', () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    // [Legacy] Should not use `role` since it's meaningless
     it('renders role prop correctly', () => {
       const { container } = render(
         genSelect({
           role: 'button',
-        } as any),
+        }),
       );
       expect(container.firstChild).toMatchSnapshot();
     });

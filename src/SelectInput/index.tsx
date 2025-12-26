@@ -11,6 +11,7 @@ import { clsx } from 'clsx';
 import type { ComponentsConfig } from '../hooks/useComponents';
 import { getDOM } from '@rc-component/util/lib/Dom/findDOMNode';
 import { composeRef } from '@rc-component/util/lib/ref';
+import pickAttrs from '@rc-component/util/lib/pickAttrs';
 
 export interface SelectInputRef {
   focus: (options?: FocusOptions) => void;
@@ -208,6 +209,8 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
 
   // ===================== Render =====================
   const domProps = omit(restProps, DEFAULT_OMIT_PROPS as any);
+  const ariaProps = pickAttrs(domProps, { aria: true });
+  const ariaKeys = Object.keys(ariaProps) as (keyof typeof domProps)[];
 
   // Create context value with wrapped callbacks
   const contextValue = {
@@ -229,7 +232,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
   return (
     <SelectInputContext.Provider value={contextValue}>
       <div
-        {...domProps}
+        {...omit(domProps, ariaKeys)}
         // Style
         ref={rootRef}
         className={className}
