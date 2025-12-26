@@ -110,8 +110,12 @@ export function injectRunAllTimers(jest: Jest) {
   });
 }
 
-export function keyDown(element: HTMLElement, keyCode: number) {
-  const event = createEvent.keyDown(element, { keyCode });
+export function keyDown(
+  element: HTMLElement,
+  keyCode: number,
+  options?: Partial<KeyboardEvent>,
+) {
+  const event = createEvent.keyDown(element, { keyCode, ...options });
   Object.defineProperties(event, {
     which: { get: () => keyCode },
   });
