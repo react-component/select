@@ -45,8 +45,8 @@
     "*": "prettier --write --ignore-unknown"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
+    "react": ">=16.9.0",
+    "react-dom": ">=16.9.0"
   },
   "dependencies": {
     "@rc-component/overflow": "^1.0.0",
