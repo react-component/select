@@ -213,6 +213,34 @@ describe('Select.Accessibility', () => {
         }
       });
     });
+
+    it('should pass aria and role attributes to Input component', async () => {
+      const { container } = render(
+        <Select
+          role="group"
+          aria-required="true"
+          options={[
+            {
+              value: '123',
+            },
+            {
+              value: '1234',
+            },
+            {
+              value: '12345',
+            },
+          ]}
+        />,
+      );
+
+      const wrapper = container.querySelector('.rc-select');
+      expect(wrapper).not.toHaveAttribute('role');
+      expect(wrapper).not.toHaveAttribute('aria-required');
+
+      const input = container.querySelector('input');
+      expect(input).toHaveAttribute('role', 'group');
+      expect(input).toHaveAttribute('aria-required', 'true');
+    });
   });
 
   describe('Select Input attributes', () => {

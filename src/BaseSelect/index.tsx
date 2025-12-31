@@ -129,7 +129,11 @@ export interface BaseSelectPrivateProps {
 
 export type BaseSelectPropsWithoutPrivate = Omit<BaseSelectProps, keyof BaseSelectPrivateProps>;
 
-export interface BaseSelectProps extends BaseSelectPrivateProps, React.AriaAttributes {
+export interface BaseSelectProps
+  extends
+    BaseSelectPrivateProps,
+    React.AriaAttributes,
+    Pick<React.HTMLAttributes<HTMLElement>, 'role'> {
   // Style
   className?: string;
   style?: React.CSSProperties;
