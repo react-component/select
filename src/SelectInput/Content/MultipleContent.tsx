@@ -200,7 +200,7 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
       prefixCls={`${prefixCls}-content`}
       className={classNames?.content}
       style={styles?.content}
-      prefix={!displayValues.length && (!searchValue || !triggerOpen) ? <Placeholder /> : null}
+      prefix={!displayValues.length && !inputValue && <Placeholder />}
       data={displayValues}
       renderItem={renderItem}
       renderRest={renderRest}
