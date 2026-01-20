@@ -574,4 +574,14 @@ describe('Select.Tags', () => {
     });
     expect(onChange).not.toBeCalled();
   });
+
+  // https://github.com/ant-design/ant-design/issues/56587
+  it('should not display placeholder', () => {
+    const { container } = render(<Select mode="tags" placeholder="Select items" open={false} />);
+    expect(container.querySelector('.rc-select-placeholder')).toBeTruthy();
+    const input = container.querySelector<HTMLInputElement>('input');
+
+    fireEvent.change(input, { target: { value: '2' } });
+    expect(container.querySelector('.rc-select-placeholder')).toBeFalsy();
+  });
 });
