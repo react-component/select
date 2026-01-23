@@ -362,7 +362,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   // Not trigger `open` when `notFoundContent` is empty
   const emptyListContent = !notFoundContent && emptyOptions;
 
-  const [mergedOpen, triggerOpen] = useOpen(
+  const [mergedOpen, triggerOpen, lockOptions] = useOpen(
     defaultOpen || false,
     open,
     onPopupVisibleChange,
@@ -647,6 +647,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       showScrollBar,
       styles,
       classNames,
+      lockOptions,
     }),
     [
       props,
@@ -659,6 +660,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       showScrollBar,
       styles,
       classNames,
+      lockOptions,
     ],
   );
 
