@@ -34,7 +34,7 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
       const restProps: React.HTMLAttributes<HTMLDivElement> = {
         className: `${prefixCls}-content-value`,
         style: {
-          visibility: mergedSearchValue ? 'hidden' : 'visible',
+          visibility: mergedSearchValue ? 'hidden' : '',
         },
       };
 
