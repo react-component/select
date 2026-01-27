@@ -10,6 +10,7 @@ export interface BaseSelectContextProps extends BaseSelectProps {
   triggerOpen: boolean;
   multiple: boolean;
   toggleOpen: (open?: boolean) => void;
+  lockOptions: boolean;
 }
 
 export const BaseSelectContext = React.createContext<BaseSelectContextProps>(null);

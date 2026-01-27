@@ -45,6 +45,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     notFoundContent,
     onPopupScroll,
     showScrollBar,
+    lockOptions,
   } = useBaseProps();
   const {
     maxCount,
@@ -68,8 +69,8 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
 
   const memoFlattenOptions = useMemo(
     () => flattenOptions,
-    [open, flattenOptions],
-    (prev, next) => next[0] && prev[1] !== next[1],
+    [open, lockOptions],
+    (prev, next) => next[0] && !next[1],
   );
 
   // =========================== List ===========================

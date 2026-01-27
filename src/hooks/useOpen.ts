@@ -43,7 +43,7 @@ export default function useOpen(
   propOpen: boolean,
   onOpen: (nextOpen: boolean) => void,
   postOpen: (nextOpen: boolean) => boolean,
-): [boolean, TriggerOpenType] {
+): [open: boolean, toggleOpen: TriggerOpenType, lockOptions: boolean] {
   // SSR not support Portal which means we need delay `open` for the first time render
   const [rendered, setRendered] = useState(false);
 
@@ -52,6 +52,9 @@ export default function useOpen(
   }, []);
 
   const [stateOpen, internalSetOpen] = useControlledState(defaultOpen, propOpen);
+
+  // Lock for options update
+  const [lock, setLock] = useState(false);
 
   // During SSR, always return false for open state
   const ssrSafeOpen = rendered ? stateOpen : false;
@@ -70,9 +73,11 @@ export default function useOpen(
     const { cancelFun } = config;
 
     taskIdRef.current += 1;
+
     const id = taskIdRef.current;
 
     const nextOpenVal = typeof nextOpen === 'boolean' ? nextOpen : !mergedOpen;
+    setLock(!nextOpenVal);
 
     function triggerUpdate() {
       if (
@@ -82,6 +87,7 @@ export default function useOpen(
         !cancelFun?.()
       ) {
         triggerEvent(nextOpenVal);
+        setLock(false);
       }
     }
 
@@ -95,5 +101,5 @@ export default function useOpen(
     }
   });
 
-  return [mergedOpen, toggleOpen] as const;
+  return [mergedOpen, toggleOpen, lock];
 }
