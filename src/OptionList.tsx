@@ -61,6 +61,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     listHeight,
     listItemHeight,
     optionRender,
+    activeOptionFilter,
     classNames: contextClassNames,
     styles: contextStyles,
   } = React.useContext(SelectContext);
@@ -160,9 +161,12 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     if (!multiple && open && rawValues.size === 1) {
       const value: RawValueType = Array.from(rawValues)[0];
       // Scroll to the option closest to the searchValue if searching.
-      const index = memoFlattenOptions.findIndex(({ data }) =>
-        searchValue ? String(data.value).startsWith(searchValue) : data.value === value,
-      );
+      const index = memoFlattenOptions.findIndex(({ data }) => {
+        if (activeOptionFilter) {
+          return activeOptionFilter(searchValue, data);
+        }
+        return searchValue ? String(data.value).startsWith(searchValue) : data.value === value;
+      });
 
       if (index !== -1) {
         setActive(index);
