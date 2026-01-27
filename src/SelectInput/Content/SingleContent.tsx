@@ -33,9 +33,11 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
     const optionProps = React.useMemo(() => {
       const restProps: React.HTMLAttributes<HTMLDivElement> = {
         className: `${prefixCls}-content-value`,
-        style: {
-          visibility: mergedSearchValue ? 'hidden' : 'visible',
-        },
+        style: mergedSearchValue
+          ? {
+              visibility: 'hidden',
+            }
+          : {},
       };
 
       if (displayValue && selectContext?.flattenOptions) {
