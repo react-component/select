@@ -112,13 +112,9 @@ exports[`Select.Basic render renders aria-attributes correctly 1`] = `
 >
   <div
     class="antd-content"
+    title="2"
   >
-    <div
-      class="antd-content-value"
-      title="2"
-    >
-      2
-    </div>
+    2
     <input
       aria-autocomplete="list"
       aria-expanded="false"
@@ -147,13 +143,9 @@ exports[`Select.Basic render renders correctly 1`] = `
 >
   <div
     class="antd-content"
+    title="2"
   >
-    <div
-      class="antd-content-value"
-      title="2"
-    >
-      2
-    </div>
+    2
     <input
       aria-autocomplete="list"
       aria-expanded="false"
@@ -182,13 +174,9 @@ exports[`Select.Basic render renders data-attributes correctly 1`] = `
 >
   <div
     class="antd-content"
+    title="2"
   >
-    <div
-      class="antd-content-value"
-      title="2"
-    >
-      2
-    </div>
+    2
     <input
       aria-autocomplete="list"
       aria-expanded="false"
@@ -215,13 +203,9 @@ exports[`Select.Basic render renders disabled select correctly 1`] = `
 >
   <div
     class="antd-content"
+    title="2"
   >
-    <div
-      class="antd-content-value"
-      title="2"
-    >
-      2
-    </div>
+    2
     <input
       aria-autocomplete="list"
       aria-expanded="false"
@@ -246,13 +230,9 @@ exports[`Select.Basic render renders role prop correctly 1`] = `
 >
   <div
     class="antd-content"
+    title="2"
   >
-    <div
-      class="antd-content-value"
-      title="2"
-    >
-      2
-    </div>
+    2
     <input
       aria-autocomplete="list"
       aria-expanded="false"

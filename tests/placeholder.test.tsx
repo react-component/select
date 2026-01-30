@@ -1,6 +1,6 @@
 import React from 'react';
 import Select from '../src';
-import { toggleOpen } from './utils/common';
+import { toggleOpen, findSelection } from './utils/common';
 import { render } from '@testing-library/react';
 
 describe('Select placeholder', () => {
@@ -26,9 +26,9 @@ describe('Select placeholder', () => {
       <Select value={null} placeholder="bamboo" options={[{ value: null, label: 'light' }]} />,
     );
     expect(container.querySelector('.rc-select-placeholder')).toBeFalsy();
-    expect(container.querySelector('.rc-select-content-value').textContent).toBe('light');
+    expect(findSelection(container).textContent).toBe('light');
     toggleOpen(container);
-    expect(container.querySelector('.rc-select-content-value').textContent).toBe('light');
+    expect(findSelection(container).textContent).toBe('light');
   });
 
   it('should hide placeholder if force closed and showSearch with searchValue', () => {

@@ -2011,7 +2011,7 @@ describe('Select.Basic', () => {
     [undefined].forEach((value) => {
       it(`to ${value}`, () => {
         const { container, rerender } = render(<Select value="light" />);
-        expect(container.querySelector('.rc-select-content-value').textContent).toEqual('light');
+        expect(findSelection(container).textContent).toEqual('light');
 
         rerender(<Select value={value} />);
         expect(container.querySelector('.rc-select-content-value')).toBeFalsy();
@@ -2133,7 +2133,7 @@ describe('Select.Basic', () => {
         toggleOpen(container);
         selectItem(container, index);
         expect(onChange).toHaveBeenCalledWith(value, expect.anything());
-        expect(container.querySelector('.rc-select-content-value').textContent).toEqual(showValue);
+        expect(findSelection(container).textContent).toEqual(showValue);
       });
 
       expect(errorSpy).toHaveBeenCalledWith(warningMessage);
@@ -2399,9 +2399,7 @@ describe('Select.Basic', () => {
         <Select value="b" options={[{ label: 'bamboo', title: 'TitleBamboo', value: 'b' }]} />,
       );
 
-      expect(container.querySelector('.rc-select-content-value').getAttribute('title')).toEqual(
-        'TitleBamboo',
-      );
+      expect(findSelection(container).getAttribute('title')).toEqual('TitleBamboo');
     });
 
     it('multiple', () => {
@@ -2455,17 +2453,15 @@ describe('Select.Basic', () => {
   it('should support title', () => {
     const { container: container1 } = render(<Select defaultValue="lucy" options={[]} />);
     expect(container1.querySelector('.rc-select').getAttribute('title')).toBeFalsy();
-    expect(container1.querySelector('.rc-select-content-value').getAttribute('title')).toBe('lucy');
+    expect(findSelection(container1).getAttribute('title')).toBe('lucy');
     const { container: container2 } = render(<Select defaultValue="lucy" options={[]} title="" />);
     expect(container2.querySelector('.rc-select').getAttribute('title')).toBeFalsy();
-    expect(container2.querySelector('.rc-select-content-value').getAttribute('title')).toBe('');
+    expect(findSelection(container2).getAttribute('title')).toBe('');
     const { container: container3 } = render(
       <Select defaultValue="lucy" options={[]} title="title" />,
     );
     expect(container3.querySelector('.rc-select').getAttribute('title')).toBe('title');
-    expect(container3.querySelector('.rc-select-content-value').getAttribute('title')).toBe(
-      'title',
-    );
+    expect(findSelection(container3).getAttribute('title')).toBe('title');
   });
 
   it('scrollbar should be left position with rtl direction', () => {
