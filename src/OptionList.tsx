@@ -52,6 +52,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     flattenOptions,
     onActiveValue,
     defaultActiveFirstOption,
+    disableAutoScroll,
     onSelect,
     menuItemSelectedIcon,
     rawValues,
@@ -157,7 +158,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
      */
     let timeoutId: NodeJS.Timeout;
 
-    if (!multiple && open && rawValues.size === 1) {
+    if (!disableAutoScroll && !multiple && open && rawValues.size === 1) {
       const value: RawValueType = Array.from(rawValues)[0];
       // Scroll to the option closest to the searchValue if searching.
       const index = memoFlattenOptions.findIndex(({ data }) =>
