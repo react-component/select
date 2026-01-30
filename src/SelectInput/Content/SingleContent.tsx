@@ -86,7 +86,11 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
     // Render
     return (
       <div
-        className={clsx(`${prefixCls}-content`, classNames?.content)}
+        className={clsx(
+          `${prefixCls}-content`,
+          displayValue && `${prefixCls}-content-has-value`,
+          classNames?.content,
+        )}
         style={styles?.content}
         title={hasOptionStyle ? undefined : optionTitle}
       >
