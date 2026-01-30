@@ -29,39 +29,32 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
       return showSearch ? searchValue : '';
     }, [combobox, activeValue, inputChanged, triggerOpen, searchValue, showSearch]);
 
-    // Extract option props, excluding label and value, and handle className/style merging
-    const optionProps = React.useMemo(() => {
-      const restProps: React.HTMLAttributes<HTMLDivElement> = {
-        className: `${prefixCls}-content-value`,
-        style: mergedSearchValue
-          ? {
-              visibility: 'hidden',
-            }
-          : {},
-      };
+    const [optionClassName, optionStyle, optionTitle, hasOptionStyle] = React.useMemo(() => {
+      let className: string | undefined;
+      let style: React.CSSProperties | undefined;
+      let titleValue: string | undefined;
 
       if (displayValue && selectContext?.flattenOptions) {
         const option = selectContext.flattenOptions.find((opt) => opt.value === displayValue.value);
         if (option?.data) {
-          const { className, style } = option.data;
-          Object.assign(restProps, {
-            title: getTitle(option.data),
-            className: clsx(restProps.className, className),
-            style: { ...restProps.style, ...style },
-          });
+          className = option.data.className;
+          style = option.data.style;
+          titleValue = getTitle(option.data);
         }
       }
 
-      if (displayValue && !restProps.title) {
-        restProps.title = getTitle(displayValue);
+      if (displayValue && !titleValue) {
+        titleValue = getTitle(displayValue);
       }
 
       if (rootTitle !== undefined) {
-        restProps.title = rootTitle;
+        titleValue = rootTitle;
       }
 
-      return restProps;
-    }, [displayValue, selectContext?.flattenOptions, prefixCls, mergedSearchValue, rootTitle]);
+      const nextHasStyle = !!className || !!style;
+
+      return [className, style, titleValue, nextHasStyle] as const;
+    }, [displayValue, selectContext?.flattenOptions, rootTitle]);
 
     React.useEffect(() => {
       if (combobox) {
@@ -69,13 +62,35 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
       }
     }, [combobox, activeValue]);
 
+    // ========================== Render ==========================
+    // Render value
+    const renderValue = displayValue ? (
+      hasOptionStyle ? (
+        <div
+          className={clsx(`${prefixCls}-content-value`, optionClassName)}
+          style={{
+            ...(mergedSearchValue ? { visibility: 'hidden' } : {}),
+            ...optionStyle,
+          }}
+          title={optionTitle}
+        >
+          {displayValue.label}
+        </div>
+      ) : (
+        displayValue.label
+      )
+    ) : (
+      <Placeholder show={!mergedSearchValue} />
+    );
+
+    // Render
     return (
-      <div className={clsx(`${prefixCls}-content`, classNames?.content)} style={styles?.content}>
-        {displayValue ? (
-          <div {...optionProps}>{displayValue.label}</div>
-        ) : (
-          <Placeholder show={!mergedSearchValue} />
-        )}
+      <div
+        className={clsx(`${prefixCls}-content`, classNames?.content)}
+        style={styles?.content}
+        title={hasOptionStyle ? undefined : optionTitle}
+      >
+        {renderValue}
         <Input
           ref={ref}
           {...inputProps}

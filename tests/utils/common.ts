@@ -46,7 +46,8 @@ export function findSelection(wrapper: any, index: number = 0) {
     const itemNode = wrapper.querySelectorAll('.rc-select-selection-item')[index];
     const contentNode =
       itemNode?.querySelector('.rc-select-selection-item-content') ||
-      wrapper.querySelector('.rc-select-content-value');
+      wrapper.querySelector('.rc-select-content-value') ||
+      wrapper.querySelector('.rc-select-content');
 
     if (contentNode) {
       return contentNode;
@@ -110,11 +111,7 @@ export function injectRunAllTimers(jest: Jest) {
   });
 }
 
-export function keyDown(
-  element: HTMLElement,
-  keyCode: number,
-  options?: Partial<KeyboardEvent>,
-) {
+export function keyDown(element: HTMLElement, keyCode: number, options?: Partial<KeyboardEvent>) {
   const event = createEvent.keyDown(element, { keyCode, ...options });
   Object.defineProperties(event, {
     which: { get: () => keyCode },
