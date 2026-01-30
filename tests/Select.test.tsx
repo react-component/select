@@ -262,7 +262,7 @@ describe('Select.Basic', () => {
     expect(container.querySelector('.rc-select-content-has-search-value')).toBeTruthy();
   });
 
-  it('should add -content-value when option has style', () => {
+  it('should add -content-has-option-style when option has style', () => {
     const { container } = render(
       <Select defaultValue="1">
         <Option value="1" style={{ color: 'red' }}>
@@ -270,7 +270,7 @@ describe('Select.Basic', () => {
         </Option>
       </Select>,
     );
-    expect(container.querySelector('.rc-select-content-value')).toBeTruthy();
+    expect(container.querySelector('.rc-select-content-has-option-style')).toBeTruthy();
   });
 
   it('should default select the right option', () => {
