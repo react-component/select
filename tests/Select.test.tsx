@@ -255,6 +255,24 @@ describe('Select.Basic', () => {
     );
   });
 
+  it('should add -content-has-search-value className when searching', () => {
+    const { container } = render(<Select showSearch />);
+    const input = container.querySelector('input')!;
+    fireEvent.change(input, { target: { value: 'test' } });
+    expect(container.querySelector('.rc-select-content-has-search-value')).toBeTruthy();
+  });
+
+  it('should add -content-value when option has style', () => {
+    const { container } = render(
+      <Select defaultValue="1">
+        <Option value="1" style={{ color: 'red' }}>
+          One
+        </Option>
+      </Select>,
+    );
+    expect(container.querySelector('.rc-select-content-value')).toBeTruthy();
+  });
+
   it('should default select the right option', () => {
     const { container } = render(
       <Select defaultValue="2">
