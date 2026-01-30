@@ -122,6 +122,7 @@ export default () => (
 | dropdownRender | render custom dropdown menu | (menu: React.Node) => ReactNode | - |
 | loading | show loading icon in arrow | boolean | false |
 | virtual | Disable virtual scroll | boolean | true |
+| disableAutoScroll | Disable auto scroll to selected option | boolean | false |
 | direction | direction of dropdown | 'ltr' \| 'rtl' | 'ltr' |
 | optionRender | Custom rendering options | (oriOption: FlattenOptionData\<BaseOptionType\> , info: { index: number }) => React.ReactNode | - |
 | labelRender  | Custom rendering label   |  (props: LabelInValueType) => React.ReactNode   | - |
