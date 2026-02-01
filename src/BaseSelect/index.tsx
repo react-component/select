@@ -431,10 +431,26 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   };
 
   // Close will clean up single mode search text
+  // Use ref to avoid adding emptyListContent to dependencies
+  const emptyListContentRef = React.useRef(emptyListContent);
+  emptyListContentRef.current = emptyListContent;
+
+  const prevOpenRef = React.useRef(mergedOpen);
   React.useEffect(() => {
-    if (!mergedOpen && !multiple && mode !== 'combobox') {
+    // Only clean search value when dropdown actually closes (true -> false)
+    // Skip when emptyListContent is true - this means dropdown was forced closed
+    // due to no matching options and notFoundContent being null,
+    // user should still be able to continue typing
+    if (
+      prevOpenRef.current &&
+      !mergedOpen &&
+      !multiple &&
+      mode !== 'combobox' &&
+      !emptyListContentRef.current
+    ) {
       onInternalSearch('', false, false);
     }
+    prevOpenRef.current = mergedOpen;
   }, [mergedOpen]);
 
   // ============================ Disabled ============================
