@@ -1997,7 +1997,6 @@ describe('Select.Basic', () => {
     expect(container.querySelector('.rc-select-dropdown-empty')).toBeFalsy();
   });
 
-  // https://github.com/react-component/select/issues/XXX
   it('should allow typing when notFoundContent is null and no options match', () => {
     const onSearch = jest.fn();
     const { container } = render(
