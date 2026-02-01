@@ -76,6 +76,43 @@ describe('Select.Basic', () => {
     expectOpen(container);
   });
 
+  it('should not clear searchValue', () => {
+    const App: React.FC = () => {
+      const [options, setOptions] = React.useState<{ label: string; value: string }[]>([]);
+      const [isFetching, setIsFetching] = React.useState<boolean>(false);
+
+      function handleSearch() {
+        setIsFetching(true);
+        setTimeout(() => {
+          setOptions([]);
+          setIsFetching(false);
+        }, 1000);
+      }
+
+      return (
+        <Select
+          style={{ width: 300 }}
+          showSearch={{ filterOption: false, onSearch: handleSearch }}
+          placeholder="Type to search users..."
+          loading={isFetching}
+          options={options}
+          notFoundContent={isFetching ? 'Loading...' : null}
+        />
+      );
+    };
+    const { container } = render(<App />);
+    const searchInput = container.querySelector('input') as HTMLInputElement;
+    expect(searchInput).toBeTruthy();
+    expect(searchInput.value).toBe('');
+    fireEvent.change(searchInput, { target: { value: 'user query' } });
+    expect(searchInput.value).toBe('user query');
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
+    expect(searchInput.value).toBe('user query');
+    jest.useRealTimers();
+  });
+
   describe('render', () => {
     function genSelect(props?: Partial<SelectProps>) {
       return (
@@ -1105,6 +1142,7 @@ describe('Select.Basic', () => {
         );
       }
     }
+
     const { container } = render(<Controlled />);
     expectOpen(container);
     toggleOpen(container);
