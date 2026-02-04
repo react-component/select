@@ -21,6 +21,28 @@ describe('Select.Accessibility', () => {
     expect(container.querySelector('input')!.getAttribute('aria-label')).toEqual('light');
   });
 
+  // https://github.com/ant-design/ant-design/issues/56841
+  it('spacebar opens dropdown (ARIA combobox)', () => {
+    const { container } = render(
+      <Select
+        options={[
+          { label: 'Bamboo', value: 'bamboo' },
+          { label: 'Light', value: 'light' },
+        ]}
+      />,
+    );
+
+    const selector = container.querySelector('.rc-select') as HTMLElement;
+    expectOpen(container, false);
+
+    fireEvent.focus(container.querySelector('input')!);
+    keyDown(selector, 32, { key: ' ' });
+    act(() => {
+      jest.runAllTimers();
+    });
+    expectOpen(container);
+  });
+
   // https://github.com/ant-design/ant-design/issues/31850
   it('active index should keep', async () => {
     const onActive = jest.fn();
