@@ -1998,38 +1998,13 @@ describe('Select.Basic', () => {
   });
 
   describe('should allow typing when notFoundContent is null and no options match', () => {
-    it('single', () => {
+    it.each<{ mode: 'multiple' | undefined; label: string }>([
+      { mode: undefined, label: 'single' },
+      { mode: 'multiple', label: 'multiple' },
+    ])('$label', ({ mode }) => {
       const onSearch = jest.fn();
       const { container } = render(
-        <Select showSearch notFoundContent={null} onSearch={onSearch}>
-          <Option value="jack">Jack</Option>
-          <Option value="lucy">Lucy</Option>
-        </Select>,
-      );
-
-      const input = container.querySelector('input');
-
-      // Type 'j' - should match 'Jack'
-      fireEvent.change(input, { target: { value: 'j' } });
-      expect(onSearch).toHaveBeenLastCalledWith('j');
-      expect(input.value).toBe('j');
-      expect(container.querySelectorAll('.rc-select-item-option')).toHaveLength(1);
-
-      // Type 'x' - no match, but input should still work
-      fireEvent.change(input, { target: { value: 'x' } });
-      expect(onSearch).toHaveBeenLastCalledWith('x');
-      expect(input.value).toBe('x');
-
-      // Type more characters - should continue working
-      fireEvent.change(input, { target: { value: 'xyz' } });
-      expect(onSearch).toHaveBeenLastCalledWith('xyz');
-      expect(input.value).toBe('xyz');
-    });
-
-    it('multiple', () => {
-      const onSearch = jest.fn();
-      const { container } = render(
-        <Select mode="multiple" showSearch notFoundContent={null} onSearch={onSearch}>
+        <Select mode={mode} showSearch notFoundContent={null} onSearch={onSearch}>
           <Option value="jack">Jack</Option>
           <Option value="lucy">Lucy</Option>
         </Select>,
