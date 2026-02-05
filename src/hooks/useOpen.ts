@@ -43,7 +43,7 @@ export default function useOpen(
   propOpen: boolean,
   onOpen: (nextOpen: boolean) => void,
   postOpen: (nextOpen: boolean) => boolean,
-): [open: boolean, toggleOpen: TriggerOpenType, lockOptions: boolean] {
+): [rawOpen: boolean, open: boolean, toggleOpen: TriggerOpenType, lockOptions: boolean] {
   // SSR not support Portal which means we need delay `open` for the first time render
   const [rendered, setRendered] = useState(false);
 
@@ -101,5 +101,5 @@ export default function useOpen(
     }
   });
 
-  return [mergedOpen, toggleOpen, lock];
+  return [ssrSafeOpen, mergedOpen, toggleOpen, lock];
 }

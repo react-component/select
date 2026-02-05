@@ -362,7 +362,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   // Not trigger `open` when `notFoundContent` is empty
   const emptyListContent = !notFoundContent && emptyOptions;
 
-  const [mergedOpen, triggerOpen, lockOptions] = useOpen(
+  const [rawOpen, mergedOpen, triggerOpen, lockOptions] = useOpen(
     defaultOpen || false,
     open,
     onPopupVisibleChange,
@@ -430,12 +430,15 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     onSearch(searchText, { source: 'submit' });
   };
 
-  // Close will clean up single mode search text
+  // Clean up search value when the dropdown is closed.
+  // We use `rawOpen` here to avoid clearing the search input when the dropdown is
+  // programmatically closed due to `notFoundContent={null}` and no matching options.
+  // This allows the user to continue typing their search query.
   React.useEffect(() => {
-    if (!mergedOpen && !multiple && mode !== 'combobox') {
+    if (!rawOpen && !multiple && mode !== 'combobox') {
       onInternalSearch('', false, false);
     }
-  }, [mergedOpen]);
+  }, [rawOpen]);
 
   // ============================ Disabled ============================
   // Close dropdown & remove focus state when disabled change
