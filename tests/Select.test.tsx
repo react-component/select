@@ -1997,32 +1997,62 @@ describe('Select.Basic', () => {
     expect(container.querySelector('.rc-select-dropdown-empty')).toBeFalsy();
   });
 
-  it('should allow typing when notFoundContent is null and no options match', () => {
-    const onSearch = jest.fn();
-    const { container } = render(
-      <Select showSearch notFoundContent={null} onSearch={onSearch}>
-        <Option value="jack">Jack</Option>
-        <Option value="lucy">Lucy</Option>
-      </Select>,
-    );
+  describe('should allow typing when notFoundContent is null and no options match', () => {
+    it('single', () => {
+      const onSearch = jest.fn();
+      const { container } = render(
+        <Select showSearch notFoundContent={null} onSearch={onSearch}>
+          <Option value="jack">Jack</Option>
+          <Option value="lucy">Lucy</Option>
+        </Select>,
+      );
 
-    const input = container.querySelector('input');
+      const input = container.querySelector('input');
 
-    // Type 'j' - should match 'Jack'
-    fireEvent.change(input, { target: { value: 'j' } });
-    expect(onSearch).toHaveBeenLastCalledWith('j');
-    expect(input.value).toBe('j');
-    expect(container.querySelectorAll('.rc-select-item-option')).toHaveLength(1);
+      // Type 'j' - should match 'Jack'
+      fireEvent.change(input, { target: { value: 'j' } });
+      expect(onSearch).toHaveBeenLastCalledWith('j');
+      expect(input.value).toBe('j');
+      expect(container.querySelectorAll('.rc-select-item-option')).toHaveLength(1);
 
-    // Type 'x' - no match, but input should still work
-    fireEvent.change(input, { target: { value: 'x' } });
-    expect(onSearch).toHaveBeenLastCalledWith('x');
-    expect(input.value).toBe('x');
+      // Type 'x' - no match, but input should still work
+      fireEvent.change(input, { target: { value: 'x' } });
+      expect(onSearch).toHaveBeenLastCalledWith('x');
+      expect(input.value).toBe('x');
 
-    // Type more characters - should continue working
-    fireEvent.change(input, { target: { value: 'xyz' } });
-    expect(onSearch).toHaveBeenLastCalledWith('xyz');
-    expect(input.value).toBe('xyz');
+      // Type more characters - should continue working
+      fireEvent.change(input, { target: { value: 'xyz' } });
+      expect(onSearch).toHaveBeenLastCalledWith('xyz');
+      expect(input.value).toBe('xyz');
+    });
+
+    it('multiple', () => {
+      const onSearch = jest.fn();
+      const { container } = render(
+        <Select mode="multiple" showSearch notFoundContent={null} onSearch={onSearch}>
+          <Option value="jack">Jack</Option>
+          <Option value="lucy">Lucy</Option>
+        </Select>,
+      );
+
+      const input = container.querySelector('input');
+
+      // Type 'j' - should match 'Jack'
+      fireEvent.change(input, { target: { value: 'j' } });
+      expect(onSearch).toHaveBeenLastCalledWith('j');
+      expect(input.value).toBe('j');
+      expect(container.querySelectorAll('.rc-select-item-option')).toHaveLength(1);
+
+      // Type 'x' - no match, but input should still work
+      fireEvent.change(input, { target: { value: 'x' } });
+      expect(onSearch).toHaveBeenLastCalledWith('x');
+      expect(input.value).toBe('x');
+
+      // Type more characters - should continue working
+      fireEvent.change(input, { target: { value: 'xyz' } });
+      expect(onSearch).toHaveBeenLastCalledWith('xyz');
+      expect(input.value).toBe('xyz');
+    });
   });
 
   it('click outside to close select', () => {

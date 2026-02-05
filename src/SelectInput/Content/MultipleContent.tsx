@@ -36,6 +36,7 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
     disabled,
     showSearch,
     triggerOpen,
+    rawOpen,
     toggleOpen,
     autoClearSearchValue,
     tagRender: tagRenderFromContext,
@@ -50,8 +51,9 @@ export default React.forwardRef<HTMLInputElement, SharedContentProps>(function M
 
   // ===================== Search ======================
   // Apply autoClearSearchValue logic: when dropdown is closed and autoClearSearchValue is not false (default true), clear search value
+  // Use rawOpen to avoid clearing search when emptyListContent blocks open
   let computedSearchValue = searchValue;
-  if (!triggerOpen && mode === 'multiple' && autoClearSearchValue !== false) {
+  if (!rawOpen && mode === 'multiple' && autoClearSearchValue !== false) {
     computedSearchValue = '';
   }
 
