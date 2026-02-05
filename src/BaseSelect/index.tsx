@@ -362,7 +362,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   // Not trigger `open` when `notFoundContent` is empty
   const emptyListContent = !notFoundContent && emptyOptions;
 
-  const [mergedOpen, triggerOpen, lockOptions] = useOpen(
+  const [rawOpen, mergedOpen, triggerOpen, lockOptions] = useOpen(
     defaultOpen || false,
     open,
     onPopupVisibleChange,
@@ -432,10 +432,10 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
   // Close will clean up single mode search text
   React.useEffect(() => {
-    if (!mergedOpen && !multiple && mode !== 'combobox') {
+    if (!rawOpen && !multiple && mode !== 'combobox') {
       onInternalSearch('', false, false);
     }
-  }, [mergedOpen]);
+  }, [rawOpen]);
 
   // ============================ Disabled ============================
   // Close dropdown & remove focus state when disabled change
