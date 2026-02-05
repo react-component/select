@@ -463,9 +463,11 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     const { key } = event;
 
     const isEnterKey = key === 'Enter';
+    const isSpaceKey = key === ' ';
 
-    if (isEnterKey) {
-      // Do not submit form when type in the input
+    // Enter or Space opens dropdown (ARIA combobox: spacebar should open)
+    if (isEnterKey || isSpaceKey) {
+      // Do not submit form when type in the input; prevent Space from scrolling page
       if (mode !== 'combobox') {
         event.preventDefault();
       }
@@ -507,7 +509,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       }
     }
 
-    if (mergedOpen && (!isEnterKey || !keyLockRef.current)) {
+    if (mergedOpen && (!isEnterKey || !keyLockRef.current) && !isSpaceKey) {
       // Lock the Enter key after it is pressed to avoid repeated triggering of the onChange event.
       if (isEnterKey) {
         keyLockRef.current = true;
