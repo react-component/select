@@ -471,7 +471,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     // Enter or Space opens dropdown (ARIA combobox: spacebar should open)
     if (isEnterKey || isSpaceKey) {
       // Do not submit form when type in the input; prevent Space from scrolling page
-      if (mode !== 'combobox') {
+      if (isEnterKey && mode !== 'combobox') {
         event.preventDefault();
       }
 
