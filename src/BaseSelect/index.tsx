@@ -463,15 +463,16 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   // KeyDown
   const onInternalKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
     const clearLock = getClearLock();
-    const { key } = event;
+    const { key, target } = event;
 
     const isEnterKey = key === 'Enter';
     const isSpaceKey = key === ' ';
+    const isTypingInput = (target as HTMLElement)?.tagName === 'INPUT';
 
     // Enter or Space opens dropdown (ARIA combobox: spacebar should open)
     if (isEnterKey || isSpaceKey) {
       // Do not submit form when type in the input; prevent Space from scrolling page
-      if (isEnterKey && mode !== 'combobox') {
+      if (!isTypingInput && mode !== 'combobox') {
         event.preventDefault();
       }
 
