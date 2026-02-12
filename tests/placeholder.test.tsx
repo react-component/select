@@ -40,4 +40,11 @@ describe('Select placeholder', () => {
     });
     expect(container.querySelector('.rc-select-placeholder').textContent).toBe('placeholder');
   });
+
+  it('should have content-has-value class when value is empty string', () => {
+    const { container } = render(
+      <Select value="" placeholder="placeholder" options={[{ value: '', label: '' }]} />,
+    );
+    expect(container.querySelector('.rc-select-content-has-value')).toBeTruthy();
+  });
 });
