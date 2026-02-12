@@ -19,7 +19,6 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
 
     const combobox = mode === 'combobox';
     const displayValue = displayValues[0];
-    const hasDisplayValue = displayValue !== null && displayValue !== undefined;
 
     // Implement the same logic as the old SingleSelector
     const mergedSearchValue = React.useMemo(() => {
@@ -35,7 +34,7 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
       let style: React.CSSProperties | undefined;
       let titleValue: string | undefined;
 
-      if (hasDisplayValue && selectContext?.flattenOptions) {
+      if (displayValue && selectContext?.flattenOptions) {
         const option = selectContext.flattenOptions.find((opt) => opt.value === displayValue.value);
         if (option?.data) {
           className = option.data.className;
@@ -44,7 +43,7 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
         }
       }
 
-      if (hasDisplayValue && !titleValue) {
+      if (displayValue && !titleValue) {
         titleValue = getTitle(displayValue);
       }
 
@@ -65,7 +64,7 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
 
     // ========================== Render ==========================
     // Render value
-    const renderValue = hasDisplayValue ? (
+    const renderValue = displayValue ? (
       hasOptionStyle ? (
         <div
           className={clsx(`${prefixCls}-content-value`, optionClassName)}
@@ -89,7 +88,7 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
       <div
         className={clsx(
           `${prefixCls}-content`,
-          hasDisplayValue && `${prefixCls}-content-has-value`,
+          displayValue && `${prefixCls}-content-has-value`,
           mergedSearchValue && `${prefixCls}-content-has-search-value`,
           hasOptionStyle && `${prefixCls}-content-has-option-style`,
           classNames?.content,
