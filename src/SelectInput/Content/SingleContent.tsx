@@ -88,7 +88,7 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
       <div
         className={clsx(
           `${prefixCls}-content`,
-          displayValue && `${prefixCls}-content-has-value`,
+          displayValue && displayValue.label && `${prefixCls}-content-has-value`,
           mergedSearchValue && `${prefixCls}-content-has-search-value`,
           hasOptionStyle && `${prefixCls}-content-has-option-style`,
           classNames?.content,
