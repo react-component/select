@@ -63,12 +63,11 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
     }, [combobox, activeValue]);
 
     // ========================== Render ==========================
-    const showHasValueCls = !!(
+    const showHasValueCls =
       displayValue &&
       displayValue.label !== null &&
       displayValue.label !== undefined &&
-      String(displayValue.label).trim() !== ''
-    );
+      String(displayValue.label).trim() !== '';
 
     // Render value
     const renderValue = displayValue ? (
