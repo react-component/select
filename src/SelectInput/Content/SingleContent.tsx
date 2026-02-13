@@ -63,6 +63,12 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
     }, [combobox, activeValue]);
 
     // ========================== Render ==========================
+    const showHasValueCls =
+      displayValue &&
+      displayValue.label !== null &&
+      displayValue.label !== undefined &&
+      String(displayValue.label).trim() !== '';
+
     // Render value
     const renderValue = displayValue ? (
       hasOptionStyle ? (
@@ -88,11 +94,7 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
       <div
         className={clsx(
           `${prefixCls}-content`,
-          displayValue &&
-            displayValue.label !== null &&
-            displayValue.label !== undefined &&
-            displayValue.label !== '' &&
-            `${prefixCls}-content-has-value`,
+          showHasValueCls && `${prefixCls}-content-has-value`,
           mergedSearchValue && `${prefixCls}-content-has-search-value`,
           hasOptionStyle && `${prefixCls}-content-has-option-style`,
           classNames?.content,
