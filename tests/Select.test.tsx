@@ -286,10 +286,19 @@ describe('Select.Basic', () => {
     const { container } = render(
       <Select value={0}>
         <Option value={0}>0</Option>
-        <Option value="1">1</Option>
+        <Option value={1}>1</Option>
       </Select>,
     );
     expect(container.querySelector('.rc-select-content-has-value')).toBeTruthy();
+  });
+
+  it('should not add -content-has-value className when value is whitespace string', () => {
+    const { container } = render(
+      <Select value="  ">
+        <Option value="1">One</Option>
+      </Select>,
+    );
+    expect(container.querySelector('.rc-select-content-has-value')).toBeFalsy();
   });
 
   it('should default select the right option', () => {
