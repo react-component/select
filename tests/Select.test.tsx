@@ -282,6 +282,16 @@ describe('Select.Basic', () => {
     expect(container.querySelector('.rc-select-content-has-value')).toBeFalsy();
   });
 
+  it('should add -content-has-value className when value is number 0', () => {
+    const { container } = render(
+      <Select value={0}>
+        <Option value={0}>0</Option>
+        <Option value="1">1</Option>
+      </Select>,
+    );
+    expect(container.querySelector('.rc-select-content-has-value')).toBeTruthy();
+  });
+
   it('should default select the right option', () => {
     const { container } = render(
       <Select defaultValue="2">
