@@ -2985,4 +2985,64 @@ describe('Select.Basic', () => {
 
     expect(selectedItem).not.toHaveAttribute('xxx');
   });
+
+  describe('Space key behavior with showSearch', () => {
+    it('should not call preventDefault on space when showSearch is enabled', () => {
+      const { container } = render(
+        <Select showSearch options={[{ value: 'test', label: 'test' }]} />,
+      );
+
+      const input = container.querySelector('input');
+      input.focus();
+
+      const keyDownEvent = new KeyboardEvent('keydown', {
+        key: ' ',
+        code: 'Space',
+        bubbles: true,
+      });
+      const preventDefaultSpy = jest.spyOn(keyDownEvent, 'preventDefault');
+
+      input.dispatchEvent(keyDownEvent);
+
+      expect(preventDefaultSpy).not.toHaveBeenCalled();
+    });
+
+    it('should call preventDefault on space when showSearch is disabled', () => {
+      const { container } = render(<Select options={[{ value: 'test', label: 'test' }]} />);
+
+      const input = container.querySelector('input');
+      input.focus();
+
+      const keyDownEvent = new KeyboardEvent('keydown', {
+        key: ' ',
+        code: 'Space',
+        bubbles: true,
+      });
+      const preventDefaultSpy = jest.spyOn(keyDownEvent, 'preventDefault');
+
+      input.dispatchEvent(keyDownEvent);
+
+      expect(preventDefaultSpy).toHaveBeenCalled();
+    });
+
+    it('should not call preventDefault on space in combobox mode', () => {
+      const { container } = render(
+        <Select mode="combobox" options={[{ value: 'test', label: 'test' }]} />,
+      );
+
+      const input = container.querySelector('input');
+      input.focus();
+
+      const keyDownEvent = new KeyboardEvent('keydown', {
+        key: ' ',
+        code: 'Space',
+        bubbles: true,
+      });
+      const preventDefaultSpy = jest.spyOn(keyDownEvent, 'preventDefault');
+
+      input.dispatchEvent(keyDownEvent);
+
+      expect(preventDefaultSpy).not.toHaveBeenCalled();
+    });
+  });
 });
