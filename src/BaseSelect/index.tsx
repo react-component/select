@@ -135,7 +135,7 @@ export interface BaseSelectProps
     React.AriaAttributes,
     Pick<React.HTMLAttributes<HTMLElement>, 'role'> {
   // Style
-  className?: string;
+  className?: string | undefined;
   style?: React.CSSProperties;
   classNames?: Partial<Record<BaseSelectSemanticName, string>>;
   styles?: Partial<Record<BaseSelectSemanticName, React.CSSProperties>>;
@@ -203,7 +203,7 @@ export interface BaseSelectProps
   transitionName?: string;
 
   popupStyle?: React.CSSProperties;
-  popupClassName?: string;
+  popupClassName?: string | undefined;
   popupMatchSelectWidth?: boolean | number;
   popupRender?: (menu: React.ReactElement) => React.ReactElement;
   popupAlign?: AlignType;
