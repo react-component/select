@@ -3045,4 +3045,410 @@ describe('Select.Basic', () => {
       expect(preventDefaultSpy).not.toHaveBeenCalled();
     });
   });
+
+  describe('option style, className and title for selected item', () => {
+    it('should apply option style to selected item display', () => {
+      const { container } = render(
+        <Select
+          value="red"
+          options={[
+            {
+              value: 'red',
+              label: 'Red Color',
+              style: { color: 'red', fontWeight: 'bold' },
+            },
+            {
+              value: 'blue',
+              label: 'Blue Color',
+            },
+          ]}
+        />,
+      );
+
+      const selectedValue = container.querySelector('.rc-select-content-value');
+      expect(selectedValue).toBeTruthy();
+      expect(selectedValue).toHaveStyle({ color: 'red', fontWeight: 'bold' });
+    });
+
+    it('should apply option className to selected item display', () => {
+      const { container } = render(
+        <Select
+          value="styled"
+          options={[
+            {
+              value: 'styled',
+              label: 'Styled Option',
+              className: 'custom-option-class',
+            },
+          ]}
+        />,
+      );
+
+      const selectedValue = container.querySelector('.rc-select-content-value');
+      expect(selectedValue).toBeTruthy();
+      expect(selectedValue).toHaveClass('custom-option-class');
+    });
+
+    it('should apply option title to selected item display when has style', () => {
+      const { container } = render(
+        <Select
+          value="with-title"
+          options={[
+            {
+              value: 'with-title',
+              label: 'Option with Title',
+              title: 'Custom tooltip for this option',
+              style: { color: 'red' },
+            },
+          ]}
+        />,
+      );
+
+      const selectedValue = container.querySelector('.rc-select-content-value');
+      expect(selectedValue).toBeTruthy();
+      expect(selectedValue).toHaveAttribute('title', 'Custom tooltip for this option');
+    });
+
+    it('should apply option title to content element when no style or className', () => {
+      const { container } = render(
+        <Select
+          value="with-title"
+          options={[
+            {
+              value: 'with-title',
+              label: 'Option with Title',
+              title: 'Custom tooltip for this option',
+            },
+          ]}
+        />,
+      );
+
+      const contentElement = container.querySelector('.rc-select-content');
+      expect(contentElement).toBeTruthy();
+      expect(contentElement.getAttribute('title')).toBe('Custom tooltip for this option');
+    });
+
+    it('should use label as title when option has no title', () => {
+      const { container } = render(
+        <Select
+          value="no-title"
+          options={[
+            {
+              value: 'no-title',
+              label: 'Option Label',
+            },
+          ]}
+        />,
+      );
+
+      const contentElement = container.querySelector('.rc-select-content');
+      expect(contentElement).toBeTruthy();
+      expect(contentElement.getAttribute('title')).toBe('Option Label');
+    });
+
+    it('should use Select title prop over option title', () => {
+      const { container } = render(
+        <Select
+          value="with-title"
+          title="Root title override"
+          options={[
+            {
+              value: 'with-title',
+              label: 'Option with Title',
+              title: 'Option title (should be overridden)',
+              style: { color: 'red' },
+            },
+          ]}
+        />,
+      );
+
+      const selectedValue = container.querySelector('.rc-select-content-value');
+      expect(selectedValue).toBeTruthy();
+      expect(selectedValue).toHaveAttribute('title', 'Root title override');
+    });
+
+    it('should add content-has-option-style class when option has style or className', () => {
+      const { container: containerWithStyle } = render(
+        <Select
+          value="styled"
+          options={[
+            {
+              value: 'styled',
+              label: 'Styled',
+              style: { color: 'red' },
+            },
+          ]}
+        />,
+      );
+      expect(containerWithStyle.querySelector('.rc-select-content-has-option-style')).toBeTruthy();
+
+      const { container: containerWithClass } = render(
+        <Select
+          value="with-class"
+          options={[
+            {
+              value: 'with-class',
+              label: 'With Class',
+              className: 'custom-class',
+            },
+          ]}
+        />,
+      );
+      expect(containerWithClass.querySelector('.rc-select-content-has-option-style')).toBeTruthy();
+    });
+
+    it('should not add content-has-option-style class when option has no style or className', () => {
+      const { container } = render(
+        <Select
+          value="normal"
+          options={[
+            {
+              value: 'normal',
+              label: 'Normal Option',
+            },
+          ]}
+        />,
+      );
+      expect(container.querySelector('.rc-select-content-has-option-style')).toBeFalsy();
+    });
+
+    it('should render selected value in a div when option has style', () => {
+      const { container } = render(
+        <Select
+          value="styled"
+          options={[
+            {
+              value: 'styled',
+              label: 'Styled Option',
+              style: { color: 'red' },
+            },
+          ]}
+        />,
+      );
+
+      const selectedValue = container.querySelector('.rc-select-content-value');
+      expect(selectedValue).toBeTruthy();
+      expect(selectedValue.tagName).toBe('DIV');
+      expect(selectedValue.textContent).toBe('Styled Option');
+    });
+
+    it('should render selected value in a div even when option has no style or className', () => {
+      const { container } = render(
+        <Select
+          value="plain"
+          options={[
+            {
+              value: 'plain',
+              label: 'Plain Option',
+            },
+          ]}
+        />,
+      );
+
+      const selectedValue = container.querySelector('.rc-select-content-value');
+      expect(selectedValue).toBeTruthy();
+      expect(selectedValue.textContent).toBe('Plain Option');
+      expect(selectedValue.className).toBe('rc-select-content-value');
+    });
+
+    it('should work with Option children syntax', () => {
+      const { container } = render(
+        <Select value="option1">
+          <Option
+            value="option1"
+            style={{ color: 'orange' }}
+            className="custom-className"
+            title="Custom title"
+          >
+            Option 1
+          </Option>
+          <Option value="option2">Option 2</Option>
+        </Select>,
+      );
+
+      const selectedValue = container.querySelector('.rc-select-content-value');
+      expect(selectedValue).toBeTruthy();
+      expect(selectedValue).toHaveStyle({ color: 'orange' });
+      expect(selectedValue).toHaveClass('custom-className');
+      expect(selectedValue).toHaveAttribute('title', 'Custom title');
+    });
+
+    it('should update style when value changes', () => {
+      const { container, rerender } = render(
+        <Select
+          value="red"
+          options={[
+            {
+              value: 'red',
+              label: 'Red',
+              style: { color: 'red' },
+            },
+            {
+              value: 'blue',
+              label: 'Blue',
+              style: { color: 'blue' },
+            },
+          ]}
+        />,
+      );
+
+      let selectedValue = container.querySelector('.rc-select-content-value');
+      expect(selectedValue).toHaveStyle({ color: 'red' });
+
+      rerender(
+        <Select
+          value="blue"
+          options={[
+            {
+              value: 'red',
+              label: 'Red',
+              style: { color: 'red' },
+            },
+            {
+              value: 'blue',
+              label: 'Blue',
+              style: { color: 'blue' },
+            },
+          ]}
+        />,
+      );
+
+      selectedValue = container.querySelector('.rc-select-content-value');
+      expect(selectedValue).toHaveStyle({ color: 'blue' });
+    });
+
+    it('should work with combobox mode', () => {
+      const { container } = render(
+        <Select
+          mode="combobox"
+          value="styled"
+          options={[
+            {
+              value: 'styled',
+              label: 'Styled Option',
+              style: { color: 'purple' },
+              className: 'combobox-class',
+            },
+          ]}
+        />,
+      );
+
+      const selectedValue = container.querySelector('.rc-select-content-value');
+      expect(selectedValue).toBeTruthy();
+      expect(selectedValue).toHaveStyle({ color: 'purple' });
+      expect(selectedValue).toHaveClass('combobox-class');
+    });
+
+    it('should work with labelInValue', () => {
+      const { container } = render(
+        <Select
+          labelInValue
+          value={{ value: 'styled', label: 'Styled Option' }}
+          options={[
+            {
+              value: 'styled',
+              label: 'Styled Option',
+              style: { color: 'teal' },
+              className: 'label-in-value-class',
+            },
+          ]}
+        />,
+      );
+
+      const selectedValue = container.querySelector('.rc-select-content-value');
+      expect(selectedValue).toBeTruthy();
+      expect(selectedValue).toHaveStyle({ color: 'teal' });
+      expect(selectedValue).toHaveClass('label-in-value-class');
+    });
+
+    it('should hide value visibility when searching', () => {
+      const { container } = render(
+        <Select
+          showSearch
+          value="styled"
+          options={[
+            {
+              value: 'styled',
+              label: 'Styled Option',
+              style: { color: 'red' },
+            },
+          ]}
+        />,
+      );
+
+      const input = container.querySelector('input')!;
+      fireEvent.change(input, { target: { value: 'test' } });
+
+      const selectedValue = container.querySelector('.rc-select-content-value');
+      expect(selectedValue).toBeTruthy();
+      expect(selectedValue).toHaveStyle({ visibility: 'hidden' });
+    });
+
+    it('should handle both style and className together', () => {
+      const { container } = render(
+        <Select
+          value="combined"
+          options={[
+            {
+              value: 'combined',
+              label: 'Combined Option',
+              style: { color: 'red', fontSize: '16px' },
+              className: 'combined-class another-class',
+            },
+          ]}
+        />,
+      );
+
+      const selectedValue = container.querySelector('.rc-select-content-value');
+      expect(selectedValue).toBeTruthy();
+      expect(selectedValue).toHaveStyle({ color: 'red', fontSize: '16px' });
+      expect(selectedValue).toHaveClass('combined-class');
+      expect(selectedValue).toHaveClass('another-class');
+    });
+
+    it('should handle empty string title', () => {
+      const { container } = render(
+        <Select
+          value="empty-title"
+          options={[
+            {
+              value: 'empty-title',
+              label: 'Empty Title Option',
+              title: '',
+              style: { color: 'gray' },
+            },
+          ]}
+        />,
+      );
+
+      const selectedValue = container.querySelector('.rc-select-content-value');
+      expect(selectedValue).toBeTruthy();
+      expect(selectedValue).toHaveAttribute('title', '');
+    });
+
+    it('should handle number value with style', () => {
+      const { container } = render(
+        <Select
+          value={1}
+          options={[
+            {
+              value: 1,
+              label: 'One',
+              style: { color: 'blue' },
+            },
+            {
+              value: 2,
+              label: 'Two',
+              style: { color: 'green' },
+            },
+          ]}
+        />,
+      );
+
+      const selectedValue = container.querySelector('.rc-select-content-value');
+      expect(selectedValue).toBeTruthy();
+      expect(selectedValue).toHaveStyle({ color: 'blue' });
+      expect(selectedValue.textContent).toBe('One');
+    });
+  });
 });

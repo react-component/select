@@ -71,20 +71,16 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
 
     // Render value
     const renderValue = displayValue ? (
-      hasOptionStyle ? (
-        <div
-          className={clsx(`${prefixCls}-content-value`, optionClassName)}
-          style={{
-            ...(mergedSearchValue ? { visibility: 'hidden' } : {}),
-            ...optionStyle,
-          }}
-          title={optionTitle}
-        >
-          {displayValue.label}
-        </div>
-      ) : (
-        displayValue.label
-      )
+      <div
+        className={clsx(`${prefixCls}-content-value`, optionClassName)}
+        style={{
+          ...(mergedSearchValue ? { visibility: 'hidden' } : {}),
+          ...optionStyle,
+        }}
+        title={optionTitle}
+      >
+        {displayValue.label}
+      </div>
     ) : (
       <Placeholder show={!mergedSearchValue} />
     );
