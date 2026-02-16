@@ -164,6 +164,7 @@ export interface SelectProps<
     info: { index: number },
   ) => React.ReactNode;
   defaultActiveFirstOption?: boolean;
+  disableAutoScroll?: boolean;
   virtual?: boolean;
   direction?: 'ltr' | 'rtl';
   listHeight?: number;
@@ -214,6 +215,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       optionRender,
       children,
       defaultActiveFirstOption,
+      disableAutoScroll,
       menuItemSelectedIcon,
       virtual,
       direction,
@@ -675,6 +677,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
         flattenOptions: displayOptions,
         onActiveValue,
         defaultActiveFirstOption: mergedDefaultActiveFirstOption,
+        disableAutoScroll,
         onSelect: onInternalSelect,
         menuItemSelectedIcon,
         rawValues,
@@ -695,6 +698,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       displayOptions,
       onActiveValue,
       mergedDefaultActiveFirstOption,
+      disableAutoScroll,
       onInternalSelect,
       menuItemSelectedIcon,
       rawValues,

@@ -122,10 +122,7 @@ export default () => (
 | dropdownRender | render custom dropdown menu | (menu: React.Node) => ReactNode | - |
 | loading | show loading icon in arrow | boolean | false |
 | virtual | Disable virtual scroll | boolean | true |
-| direction | direction of dropdown | 'ltr' \| 'rtl' | 'ltr' |
-| optionRender | Custom rendering options | (oriOption: FlattenOptionData\<BaseOptionType\> , info: { index: number }) => React.ReactNode | - |
-| labelRender  | Custom rendering label   |  (props: LabelInValueType) => React.ReactNode   | - |
-| maxCount | The max number of items can be selected | number | - |
+| disableAutoScroll | Disable auto scroll to selected option — only applies to single-select mode; does not affect multi-select or searchable scenarios | boolean | false | | direction | direction of dropdown | 'ltr' \| 'rtl' | 'ltr' | | optionRender | Custom rendering options | (oriOption: FlattenOptionData\<BaseOptionType\> , info: { index: number }) => React.ReactNode | - | | labelRender | Custom rendering label | (props: LabelInValueType) => React.ReactNode | - | | maxCount | The max number of items can be selected | number | - |
 
 ### Methods
 
