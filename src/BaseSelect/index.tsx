@@ -468,6 +468,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     const isEnterKey = key === 'Enter';
     const isSpaceKey = key === ' ';
 
+    // Enter or Space opens dropdown (ARIA combobox: spacebar should open)
     if (isEnterKey || isSpaceKey) {
       // Do not submit form when type in the input; prevent Space from scrolling page
       const isCombobox = mode === 'combobox';
@@ -478,10 +479,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
       // We only manage open state here, close logic should handle by list component
       if (!mergedOpen) {
-        // Do not submit form when type in the input
-        if (mode !== 'combobox') {
-          event.preventDefault();
-        }
         triggerOpen(true);
       }
     }
