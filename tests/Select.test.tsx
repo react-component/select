@@ -3007,6 +3007,27 @@ describe('Select.Basic', () => {
       expect(preventDefaultSpy).not.toHaveBeenCalled();
     });
 
+    it('should allow typing space when search has value (React state updated via fireEvent)', () => {
+      const { container } = render(
+        <Select showSearch options={[{ value: 'test', label: 'test' }]} />,
+      );
+
+      const input = container.querySelector('input');
+      fireEvent.focus(input);
+      fireEvent.change(input, { target: { value: 'hello' } });
+
+      const keyDownEvent = new KeyboardEvent('keydown', {
+        key: ' ',
+        code: 'Space',
+        bubbles: true,
+      });
+      const preventDefaultSpy = jest.spyOn(keyDownEvent, 'preventDefault');
+
+      input.dispatchEvent(keyDownEvent);
+
+      expect(preventDefaultSpy).not.toHaveBeenCalled();
+    });
+
     it('should call preventDefault on space when showSearch is disabled', () => {
       const { container } = render(<Select options={[{ value: 'test', label: 'test' }]} />);
 
@@ -3036,6 +3057,48 @@ describe('Select.Basic', () => {
       const keyDownEvent = new KeyboardEvent('keydown', {
         key: ' ',
         code: 'Space',
+        bubbles: true,
+      });
+      const preventDefaultSpy = jest.spyOn(keyDownEvent, 'preventDefault');
+
+      input.dispatchEvent(keyDownEvent);
+
+      expect(preventDefaultSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Enter key behavior (preventDefault)', () => {
+    it('should call preventDefault on Enter when not combobox to avoid form submit', () => {
+      const { container } = render(
+        <Select showSearch options={[{ value: 'test', label: 'test' }]} />,
+      );
+
+      const input = container.querySelector('input');
+      input.focus();
+
+      const keyDownEvent = new KeyboardEvent('keydown', {
+        key: 'Enter',
+        code: 'Enter',
+        bubbles: true,
+      });
+      const preventDefaultSpy = jest.spyOn(keyDownEvent, 'preventDefault');
+
+      input.dispatchEvent(keyDownEvent);
+
+      expect(preventDefaultSpy).toHaveBeenCalled();
+    });
+
+    it('should not call preventDefault on Enter in combobox mode', () => {
+      const { container } = render(
+        <Select mode="combobox" options={[{ value: 'test', label: 'test' }]} />,
+      );
+
+      const input = container.querySelector('input');
+      input.focus();
+
+      const keyDownEvent = new KeyboardEvent('keydown', {
+        key: 'Enter',
+        code: 'Enter',
         bubbles: true,
       });
       const preventDefaultSpy = jest.spyOn(keyDownEvent, 'preventDefault');
