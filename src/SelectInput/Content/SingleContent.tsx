@@ -10,7 +10,7 @@ import { getTitle } from '../../utils/commonUtil';
 
 const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
   ({ inputProps }, ref) => {
-    const { prefixCls, searchValue, activeValue, displayValues, maxLength, mode } =
+    const { prefixCls, searchValue, activeValue, displayValues, maxLength, mode, components } =
       useSelectInputContext();
     const { triggerOpen, title: rootTitle, showSearch, classNames, styles } = useBaseProps();
     const selectContext = React.useContext(SelectContext);
@@ -70,25 +70,28 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
       String(displayValue.label).trim() !== '';
 
     // Render value
-    const renderValue = displayValue ? (
-      hasOptionStyle ? (
-        <div
-          className={clsx(`${prefixCls}-content-value`, optionClassName)}
-          style={{
-            ...(mergedSearchValue ? { visibility: 'hidden' } : {}),
-            ...optionStyle,
-          }}
-          title={optionTitle}
-        >
-          {displayValue.label}
-        </div>
+    // Only render value when not using custom input in combobox mode
+    const shouldRenderValue = !(combobox && components?.input);
+    const renderValue = shouldRenderValue ? (
+      displayValue ? (
+        hasOptionStyle ? (
+          <div
+            className={clsx(`${prefixCls}-content-value`, optionClassName)}
+            style={{
+              ...(mergedSearchValue ? { visibility: 'hidden' } : {}),
+              ...optionStyle,
+            }}
+            title={optionTitle}
+          >
+            {displayValue.label}
+          </div>
+        ) : (
+          displayValue.label
+        )
       ) : (
-        displayValue.label
+        <Placeholder show={!mergedSearchValue} />
       )
-    ) : (
-      <Placeholder show={!mergedSearchValue} />
-    );
-
+    ) : null;
     // Render
     return (
       <div
