@@ -295,7 +295,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
       return null;
     }
     const itemData = item.data || {};
-    const { value } = itemData;
+    const { value, disabled } = itemData;
     const { group } = item;
     const attrs = pickAttrs(itemData, true);
     const mergedLabel = getLabel(item);
@@ -306,6 +306,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
         key={index}
         {...getItemAriaProps(item, index)}
         aria-selected={isAriaSelected(value)}
+        aria-disabled={disabled}
       >
         {value}
       </div>
@@ -401,6 +402,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
               {...pickAttrs(passedProps)}
               {...(!virtual ? getItemAriaProps(item, itemIndex) : {})}
               aria-selected={virtual ? undefined : isAriaSelected(value)}
+              aria-disabled={mergedDisabled}
               className={optionClassName}
               title={optionTitle}
               onMouseMove={() => {

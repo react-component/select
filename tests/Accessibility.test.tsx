@@ -321,5 +321,31 @@ describe('Select.Accessibility', () => {
       expect(input).toHaveAttribute('aria-controls', 'select_list');
       expect(input).toHaveAttribute('aria-activedescendant', 'select_list_0');
     });
+
+    // https://github.com/ant-design/ant-design/issues/xxxxx
+    it('aria-disabled should be set on disabled options', () => {
+      const { container } = render(
+        <Select
+          open
+          options={[
+            { label: 'Option A', value: 'a' },
+            { label: 'Option B', value: 'b', disabled: true },
+            { label: 'Option C', value: 'c' },
+          ]}
+        />,
+      );
+
+      const optionItems = container.querySelectorAll('[role="option"]');
+      expect(optionItems).toHaveLength(3);
+
+      // First option should not be disabled
+      expect(optionItems[0]).not.toHaveAttribute('aria-disabled', 'true');
+
+      // Second option should be disabled
+      expect(optionItems[1]).toHaveAttribute('aria-disabled', 'true');
+
+      // Third option should not be disabled
+      expect(optionItems[2]).not.toHaveAttribute('aria-disabled', 'true');
+    });
   });
 });
