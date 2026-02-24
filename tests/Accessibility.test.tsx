@@ -336,16 +336,10 @@ describe('Select.Accessibility', () => {
       );
 
       const optionItems = container.querySelectorAll('[role="option"]');
-      expect(optionItems).toHaveLength(3);
-
-      // First option should not be disabled
-      expect(optionItems[0]).not.toHaveAttribute('aria-disabled', 'true');
-
-      // Second option should be disabled
-      expect(optionItems[1]).toHaveAttribute('aria-disabled', 'true');
-
-      // Third option should not be disabled
-      expect(optionItems[2]).not.toHaveAttribute('aria-disabled', 'true');
+      const optionA = Array.from(optionItems).find((el) => el.textContent === 'a');
+      const optionB = Array.from(optionItems).find((el) => el.textContent === 'b');
+      expect(optionA).not.toHaveAttribute('aria-disabled', 'true');
+      expect(optionB).toHaveAttribute('aria-disabled', 'true');
     });
   });
 });

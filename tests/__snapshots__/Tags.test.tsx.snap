@@ -125,6 +125,7 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
                 Manager
               </div>
               <div
+                aria-disabled="false"
                 class="rc-select-item rc-select-item-option rc-select-item-option-grouped rc-select-item-option-active rc-select-item-option-selected"
                 title="Jack"
               >
@@ -153,6 +154,7 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
                 Engineer
               </div>
               <div
+                aria-disabled="false"
                 class="rc-select-item rc-select-item-option rc-select-item-option-grouped"
                 title="yiminghe"
               >
@@ -173,6 +175,7 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
                 </span>
               </div>
               <div
+                aria-disabled="false"
                 class="rc-select-item rc-select-item-option rc-select-item-option-selected"
                 title="foo"
               >
