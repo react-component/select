@@ -712,5 +712,22 @@ describe('Select.Multiple', () => {
       toggleOpen(container);
       expect(container.querySelector('input')).toHaveValue('');
     });
+
+    it('should not close dropdown when mousedown on input in multiple mode (text selection)', () => {
+      const { container } = render(
+        <Select mode="multiple" showSearch options={[{ value: 'light' }]} />,
+      );
+
+      const input = container.querySelector('input') as HTMLInputElement;
+
+      // Open dropdown first
+      toggleOpen(container);
+      expectOpen(container, true);
+
+      // Start interaction from input (simulate starting text selection / cursor move)
+      fireEvent.mouseDown(input);
+
+      expectOpen(container, true);
+    });
   });
 });

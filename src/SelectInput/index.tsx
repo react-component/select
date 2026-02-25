@@ -180,13 +180,23 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
       // so we need to mark the event directly
       (event.nativeEvent as any)._ori_target = inputDOM;
 
+      const target = event.target as Node | null;
+      const isClickOnInput =
+        !!inputDOM && !!target && (target === inputDOM || inputDOM.contains(target));
+
       if (inputDOM && event.target !== inputDOM && !inputDOM.contains(event.target as Node)) {
         event.preventDefault();
       }
 
       // Check if we should prevent closing when clicking on selector
       // Don't close if: open && not multiple && (combobox mode || showSearch)
-      const shouldPreventClose = triggerOpen && !multiple && (mode === 'combobox' || showSearch);
+      const shouldPreventCloseOnSingle =
+        triggerOpen && !multiple && (mode === 'combobox' || showSearch);
+
+      // Don't close if: open && multiple && click on input
+      const shouldPreventCloseOnMultipleInput = triggerOpen && !!multiple && isClickOnInput;
+
+      const shouldPreventClose = shouldPreventCloseOnSingle || shouldPreventCloseOnMultipleInput;
 
       if (!(event.nativeEvent as any)._select_lazy) {
         inputRef.current?.focus();
