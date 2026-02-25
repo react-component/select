@@ -180,11 +180,12 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
       // so we need to mark the event directly
       (event.nativeEvent as any)._ori_target = inputDOM;
 
-      const target = event.target as Node | null;
-      const isClickOnInput =
-        !!inputDOM && !!target && (target === inputDOM || inputDOM.contains(target));
+      const target = event.target;
 
-      if (inputDOM && event.target !== inputDOM && !inputDOM.contains(event.target as Node)) {
+      const isClickOnInput =
+        inputDOM && target && (target === inputDOM || inputDOM.contains(target as Node));
+
+      if (inputDOM && !isClickOnInput) {
         event.preventDefault();
       }
 
