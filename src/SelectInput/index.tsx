@@ -180,10 +180,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
       // so we need to mark the event directly
       (event.nativeEvent as any)._ori_target = inputDOM;
 
-      const target = event.target;
-
-      const isClickOnInput =
-        inputDOM && target && (target === inputDOM || inputDOM.contains(target as Node));
+      const isClickOnInput = inputDOM === event.target || inputDOM?.contains(event.target as Node);
 
       if (inputDOM && !isClickOnInput) {
         event.preventDefault();
@@ -195,7 +192,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
         triggerOpen && !multiple && (mode === 'combobox' || showSearch);
 
       // Don't close if: open && multiple && click on input
-      const shouldPreventCloseOnMultipleInput = triggerOpen && !!multiple && isClickOnInput;
+      const shouldPreventCloseOnMultipleInput = triggerOpen && multiple && isClickOnInput;
 
       const shouldPreventClose = shouldPreventCloseOnSingle || shouldPreventCloseOnMultipleInput;
 
