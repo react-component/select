@@ -27,4 +27,25 @@ describe('Select.Custom', () => {
 
     expect(onPopupVisibleChange).toHaveBeenCalledWith(true);
   });
+
+  it('should not override raw input element event handlers', () => {
+    const onFocus = jest.fn();
+    const onBlur = jest.fn();
+
+    const { getByPlaceholderText } = render(
+      <Select
+        showSearch
+        options={[{ value: 'a', label: 'A' }]}
+        getRawInputElement={() => (
+          <input placeholder="focus me" onFocus={onFocus} onBlur={onBlur} />
+        )}
+      />,
+    );
+
+    fireEvent.focus(getByPlaceholderText('focus me'));
+    fireEvent.blur(getByPlaceholderText('focus me'));
+
+    expect(onFocus).toHaveBeenCalled();
+    expect(onBlur).toHaveBeenCalled();
+  });
 });

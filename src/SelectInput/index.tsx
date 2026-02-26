@@ -219,14 +219,29 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
   };
 
   if (RootComponent) {
+    const originProps = (RootComponent as any).props || {};
+    const mergedProps = { ...originProps, ...domProps };
+
+    Object.keys(originProps).forEach((key) => {
+      const originVal = originProps[key];
+      const domVal = domProps[key];
+
+      if (typeof originVal === 'function' && typeof domVal === 'function') {
+        mergedProps[key] = (...args: any[]) => {
+          domVal(...args);
+          originVal(...args);
+        };
+      }
+    });
+
     if (React.isValidElement<any>(RootComponent)) {
       return React.cloneElement(RootComponent, {
-        ...domProps,
+        ...mergedProps,
         ref: composeRef((RootComponent as any).ref, rootRef),
       });
     }
 
-    return <RootComponent {...domProps} ref={rootRef} />;
+    return <RootComponent {...mergedProps} ref={rootRef} />;
   }
 
   return (
