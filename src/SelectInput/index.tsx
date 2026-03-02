@@ -166,7 +166,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
         (inputRef.current || rootRef.current).blur?.();
       },
       // Use getDOM to handle nested nativeElement structure (e.g., when RootComponent is antd Input)
-      nativeElement: getDOM(rootRef.current),
+      nativeElement: getDOM(rootRef.current) as HTMLDivElement,
     };
   });
 
