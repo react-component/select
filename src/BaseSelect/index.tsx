@@ -208,6 +208,14 @@ export interface BaseSelectProps
   popupRender?: (menu: React.ReactElement) => React.ReactElement;
   popupAlign?: AlignType;
 
+  /**
+   * Get dynamic popup offset based on input element.
+   * Useful for positioning dropdown relative to cursor in multi-line textarea.
+   * @param inputElement - The input/textarea element
+   * @returns [x, y] offset array or null to use default positioning
+   */
+  getPopupOffset?: (inputElement: HTMLElement) => [number, number] | null;
+
   placement?: Placement;
   builtinPlacements?: BuildInPlacements;
   getPopupContainer?: RenderDOMFunc;
@@ -299,6 +307,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     popupMatchSelectWidth,
     popupRender,
     popupAlign,
+    getPopupOffset,
     placement,
     builtinPlacements,
     getPopupContainer,
@@ -789,6 +798,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       popupMatchSelectWidth={popupMatchSelectWidth}
       popupRender={popupRender}
       popupAlign={popupAlign}
+      getPopupOffset={getPopupOffset}
       placement={placement}
       builtinPlacements={builtinPlacements}
       getPopupContainer={getPopupContainer}

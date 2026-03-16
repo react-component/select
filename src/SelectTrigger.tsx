@@ -71,6 +71,8 @@ export interface SelectTriggerProps {
   popupRender?: (menu: React.ReactElement) => React.ReactElement;
   getPopupContainer?: RenderDOMFunc;
   popupAlign: AlignType;
+  /** Get dynamic popup offset based on input element for textarea cursor positioning */
+  getPopupOffset?: (inputElement: HTMLElement) => [number, number] | null;
   empty: boolean;
 
   onPopupVisibleChange?: (visible: boolean) => void;
@@ -100,6 +102,7 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
     popupMatchSelectWidth,
     popupRender,
     popupAlign,
+    getPopupOffset,
     getPopupContainer,
     empty,
     onPopupVisibleChange,
@@ -122,10 +125,33 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
     popupNode = popupRender(popupElement);
   }
 
-  const mergedBuiltinPlacements = React.useMemo(
-    () => builtinPlacements || getBuiltInPlacements(popupMatchSelectWidth),
-    [builtinPlacements, popupMatchSelectWidth],
-  );
+  const mergedBuiltinPlacements = React.useMemo(() => {
+    const base = builtinPlacements || getBuiltInPlacements(popupMatchSelectWidth);
+
+    if (!getPopupOffset) {
+      return base;
+    }
+
+    // Apply dynamic offset to placements
+    const dynamicPlacements: Record<string, AlignType> = {};
+    Object.keys(base).forEach((key) => {
+      const placement = base[key];
+      dynamicPlacements[key] = {
+        ...placement,
+        offset: (node: HTMLElement) => {
+          // Get the offset from getPopupOffset callback
+          const customOffset = getPopupOffset(node);
+          if (customOffset) {
+            return customOffset;
+          }
+          // Default offset from base placement
+          return placement.offset as [number, number];
+        },
+      };
+    });
+
+    return dynamicPlacements;
+  }, [builtinPlacements, popupMatchSelectWidth, getPopupOffset]);
 
   // ===================== Motion ======================
   const mergedTransitionName = animation ? `${popupPrefixCls}-${animation}` : transitionName;
