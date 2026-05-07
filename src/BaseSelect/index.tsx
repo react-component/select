@@ -395,7 +395,9 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     const cap = isValidCount(maxCount) ? maxCount - displayValues.length : undefined;
 
     let separatedList: string[] | null;
-    if (tokenize) {
+    if (isCompositing) {
+      separatedList = null;
+    } else if (tokenize) {
       const tokens = tokenize(searchText);
       const isUnchanged = Array.isArray(tokens) && tokens.length === 1 && tokens[0] === searchText;
       if (Array.isArray(tokens) && tokens.length > 0 && !isUnchanged) {
@@ -408,7 +410,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     }
 
     // Check if match the `tokenSeparators` or custom `tokenize`
-    const patchLabels: string[] = isCompositing ? null : separatedList;
+    const patchLabels = separatedList;
 
     // Ignore combobox since it's not split-able
     if (mode !== 'combobox' && patchLabels) {
