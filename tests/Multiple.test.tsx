@@ -80,6 +80,34 @@ describe('Select.Multiple', () => {
     expectOpen(container, false);
   });
 
+  it('tokenize prop on multiple only adds values that match options', () => {
+    const handleChange = jest.fn();
+    const tokenize = (input: string) => input.split(',').map((s) => s.trim());
+    const { container } = render(
+      <Select
+        mode="multiple"
+        optionLabelProp="children"
+        tokenize={tokenize}
+        onChange={handleChange}
+      >
+        <OptGroup key="group1">
+          <Option value="1">One</Option>
+        </OptGroup>
+        <OptGroup key="group2">
+          <Option value="2">Two</Option>
+        </OptGroup>
+      </Select>,
+    );
+    fireEvent.paste(container.querySelector('input'), {
+      clipboardData: { getData: () => 'One,Two,Unknown' },
+    });
+    fireEvent.change(container.querySelector('input'), {
+      target: { value: 'One,Two,Unknown' },
+    });
+    expect(handleChange).toHaveBeenCalledWith(['1', '2'], expect.anything());
+    expect(container.querySelector('input').value).toBe('');
+  });
+
   it('tokenize input when mode=tags and open=false', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
