@@ -67,6 +67,7 @@ const DEFAULT_OMIT_PROPS = [
   'activeValue',
   'onSelectorRemove',
   'focused',
+  'inputProps',
 ] as const;
 
 export default React.forwardRef<SelectInputRef, SelectInputProps>(function SelectInput(
