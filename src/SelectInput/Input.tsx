@@ -21,6 +21,8 @@ export interface InputProps {
   syncWidth?: boolean;
   /** autoComplete for input */
   autoComplete?: string;
+  /** Props passed to the internal input element */
+  inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
@@ -33,6 +35,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     value,
     className,
     autoComplete,
+    inputProps,
     ...restProps
   } = props;
   const {
@@ -164,6 +167,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     id,
     type: mode === 'combobox' ? 'text' : 'search',
     ...restProps,
+    ...inputProps,
     ref: inputRef as React.Ref<HTMLInputElement>,
     style: {
       ...styles?.input,

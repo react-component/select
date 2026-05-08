@@ -10,7 +10,12 @@ export interface SharedContentProps {
 }
 
 const SelectContent = React.forwardRef<HTMLInputElement>(function SelectContent(_, ref) {
-  const { multiple, onInputKeyDown, tabIndex } = useSelectInputContext();
+  const {
+    multiple,
+    onInputKeyDown,
+    tabIndex,
+    inputProps: userInputProps,
+  } = useSelectInputContext();
   const baseProps = useBaseProps();
   const { showSearch } = baseProps;
 
@@ -18,6 +23,7 @@ const SelectContent = React.forwardRef<HTMLInputElement>(function SelectContent(
 
   const sharedInputProps: SharedContentProps['inputProps'] = {
     ...ariaProps,
+    ...userInputProps,
     onKeyDown: onInputKeyDown,
     readOnly: !showSearch,
     tabIndex,

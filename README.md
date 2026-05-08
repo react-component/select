@@ -126,6 +126,7 @@ export default () => (
 | optionRender | Custom rendering options | (oriOption: FlattenOptionData\<BaseOptionType\> , info: { index: number }) => React.ReactNode | - |
 | labelRender  | Custom rendering label   |  (props: LabelInValueType) => React.ReactNode   | - |
 | maxCount | The max number of items can be selected | number | - |
+| inputProps | props passed to the internal input element | React.InputHTMLAttributes<HTMLInputElement> | - |
 
 ### Methods
 

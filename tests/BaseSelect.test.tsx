@@ -190,4 +190,24 @@ describe('BaseSelect', () => {
     expect(container.querySelector('.custom-root-element')).toBeTruthy();
     expect(container.querySelector('.rc-select')).toBeFalsy();
   });
+
+  it('should pass inputProps to internal input', () => {
+    const { container } = render(
+      <BaseSelect
+        prefixCls="rc-select"
+        showSearch
+        inputProps={{ spellCheck: false }}
+        OptionList={OptionList}
+        displayValues={[]}
+        emptyOptions
+        id="test"
+        onDisplayValuesChange={() => {}}
+        onSearch={() => {}}
+        searchValue=""
+      />,
+    );
+
+    const input = container.querySelector('input');
+    expect(input?.getAttribute('spellcheck')).toBe('false');
+  });
 });

@@ -130,8 +130,7 @@ export interface BaseSelectPrivateProps {
 export type BaseSelectPropsWithoutPrivate = Omit<BaseSelectProps, keyof BaseSelectPrivateProps>;
 
 export interface BaseSelectProps
-  extends
-    BaseSelectPrivateProps,
+  extends BaseSelectPrivateProps,
     React.AriaAttributes,
     Pick<React.HTMLAttributes<HTMLElement>, 'role'> {
   // Style
@@ -229,6 +228,10 @@ export interface BaseSelectProps
 
   // >>> Components
   components?: ComponentsConfig;
+
+  // >>> Input
+  /** Props passed to the internal input element */
+  inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
 }
 
 export const isMultiple = (mode: Mode) => mode === 'tags' || mode === 'multiple';

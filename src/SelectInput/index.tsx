@@ -48,6 +48,8 @@ export interface SelectInputProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   focused?: boolean;
   components: ComponentsConfig;
   children?: React.ReactElement;
+  /** Props passed to the internal input element */
+  inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
 }
 
 const DEFAULT_OMIT_PROPS = [
