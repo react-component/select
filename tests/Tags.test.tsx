@@ -82,9 +82,9 @@ describe('Select.Tags', () => {
     expectOpen(container, false);
   });
 
-  it('tokenize prop overrides tokenSeparators with quote-aware splitting', () => {
+  it('tokenSeparators function overrides string token split with quote-aware splitting', () => {
     const handleChange = jest.fn();
-    const tokenize = jest.fn((input: string) => {
+    const tokenSeparators = jest.fn((input: string) => {
       const tokens: string[] = [];
       const regex = /"([^"]*)"|([^,\n]+)/g;
       let m: RegExpExecArray | null = regex.exec(input);
@@ -95,33 +95,33 @@ describe('Select.Tags', () => {
       return tokens.filter(Boolean);
     });
     const { container } = render(
-      <Select mode="tags" tokenSeparators={[',']} tokenize={tokenize} onChange={handleChange}>
+      <Select mode="tags" tokenSeparators={tokenSeparators} onChange={handleChange}>
         <Option value="1">1</Option>
       </Select>,
     );
 
     fireEvent.change(container.querySelector('input'), { target: { value: '"a, b", c' } });
 
-    expect(tokenize).toHaveBeenCalled();
+    expect(tokenSeparators).toHaveBeenCalled();
     expect(handleChange).toHaveBeenCalledWith(['a, b', 'c'], expect.anything());
     expect(container.querySelector('input').value).toBe('');
   });
 
-  it('tokenize prop respects maxCount', () => {
+  it('tokenSeparators function respects maxCount', () => {
     const handleChange = jest.fn();
-    const tokenize = () => ['a', 'b', 'c', 'd', 'e'];
+    const tokenSeparators = () => ['a', 'b', 'c', 'd', 'e'];
     const { container } = render(
-      <Select mode="tags" maxCount={3} tokenize={tokenize} onChange={handleChange} />,
+      <Select mode="tags" maxCount={3} tokenSeparators={tokenSeparators} onChange={handleChange} />,
     );
     fireEvent.change(container.querySelector('input'), { target: { value: 'x' } });
     expect(handleChange).toHaveBeenCalledWith(['a', 'b', 'c'], expect.anything());
   });
 
-  it('tokenize prop ignored during composition', () => {
+  it('tokenSeparators function ignored during composition', () => {
     const handleChange = jest.fn();
-    const tokenize = (input: string) => input.split(',').map((s) => s.trim());
+    const tokenSeparators = (input: string) => input.split(',').map((s) => s.trim());
     const { container } = render(
-      <Select mode="tags" tokenize={tokenize} onChange={handleChange}>
+      <Select mode="tags" tokenSeparators={tokenSeparators} onChange={handleChange}>
         <Option value="1">1</Option>
       </Select>,
     );
@@ -134,11 +134,11 @@ describe('Select.Tags', () => {
     expect(handleChange).toHaveBeenCalledWith(['2', '3', '4'], expect.anything());
   });
 
-  it('tokenize prop returning [input] keeps typing', () => {
+  it('tokenSeparators function returning [input] keeps typing', () => {
     const handleChange = jest.fn();
-    const tokenize = (input: string) => [input];
+    const tokenSeparators = (input: string) => [input];
     const { container } = render(
-      <Select mode="tags" tokenize={tokenize} onChange={handleChange}>
+      <Select mode="tags" tokenSeparators={tokenSeparators} onChange={handleChange}>
         <Option value="1">1</Option>
       </Select>,
     );

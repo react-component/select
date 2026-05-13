@@ -80,14 +80,14 @@ describe('Select.Multiple', () => {
     expectOpen(container, false);
   });
 
-  it('tokenize prop on multiple only adds values that match options', () => {
+  it('tokenSeparators function on multiple only adds values that match options', () => {
     const handleChange = jest.fn();
-    const tokenize = (input: string) => input.split(',').map((s) => s.trim());
+    const tokenSeparators = (input: string) => input.split(',').map((s) => s.trim());
     const { container } = render(
       <Select
         mode="multiple"
         optionLabelProp="children"
-        tokenize={tokenize}
+        tokenSeparators={tokenSeparators}
         onChange={handleChange}
       >
         <OptGroup key="group1">
