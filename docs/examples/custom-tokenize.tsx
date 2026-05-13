@@ -2,7 +2,7 @@ import React from 'react';
 import Select from '@rc-component/select';
 import '../../assets/index.less';
 
-const tokenize = (input: string): string[] => {
+const tokenSeparators = (input: string): string[] => {
   const tokens: string[] = [];
   const regex = /"([^"]*)"|([^,\n]+)/g;
   let m: RegExpExecArray | null = regex.exec(input);
@@ -19,7 +19,7 @@ const Demo: React.FC = () => (
     <Select
       mode="tags"
       style={{ width: '100%' }}
-      tokenize={tokenize}
+      tokenSeparators={tokenSeparators}
       placeholder='Try paste: "San Francisco, CA", New York'
     />
   </>
