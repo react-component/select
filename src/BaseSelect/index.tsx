@@ -182,13 +182,7 @@ export interface BaseSelectProps
   maxTagPlaceholder?: React.ReactNode | ((omittedValues: DisplayValueType[]) => React.ReactNode);
 
   // >>> Search
-  tokenSeparators?: string[];
-  /**
-   * Custom tokenization. When provided, takes precedence over `tokenSeparators`.
-   * Receives the current input text and returns an array of tags. Return `[input]`
-   * (or any single-element array equal to input) to indicate "no split, keep typing".
-   */
-  tokenize?: (input: string) => string[];
+  tokenSeparators?: string[] | ((input: string) => string[]);
 
   // >>> Icons
   allowClear?: boolean | { clearIcon?: React.ReactNode };
@@ -288,7 +282,6 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     onSearch,
     onSearchSplit,
     tokenSeparators,
-    tokenize,
 
     // Icons
     allowClear,
@@ -379,10 +372,29 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   // ============================= Search =============================
   const tokenWithEnter = React.useMemo<boolean>(
     () =>
-      !!tokenize ||
+      typeof tokenSeparators === 'function' ||
       (tokenSeparators || []).some((tokenSeparator) => ['\n', '\r\n'].includes(tokenSeparator)),
-    [tokenize, tokenSeparators],
+    [tokenSeparators],
   );
+
+  const splitByTokenSeparators = React.useMemo<
+    (input: string, end?: number) => string[] | null
+  >(() => {
+    if (typeof tokenSeparators === 'function') {
+      return (input: string, end?: number) => {
+        const tokens = tokenSeparators(input);
+        const isUnchanged = Array.isArray(tokens) && tokens.length === 1 && tokens[0] === input;
+
+        if (!Array.isArray(tokens) || !tokens.length || isUnchanged) {
+          return null;
+        }
+
+        return typeof end !== 'undefined' ? tokens.slice(0, end) : tokens;
+      };
+    }
+
+    return (input: string, end?: number) => getSeparatedContent(input, tokenSeparators, end);
+  }, [tokenSeparators]);
 
   const onInternalSearch = (searchText: string, fromTyping: boolean, isCompositing: boolean) => {
     if (multiple && isValidCount(maxCount) && displayValues.length >= maxCount) {
@@ -393,24 +405,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     onActiveValueChange?.(null);
 
     const cap = isValidCount(maxCount) ? maxCount - displayValues.length : undefined;
-
-    let separatedList: string[] | null;
-    if (isCompositing) {
-      separatedList = null;
-    } else if (tokenize) {
-      const tokens = tokenize(searchText);
-      const isUnchanged = Array.isArray(tokens) && tokens.length === 1 && tokens[0] === searchText;
-      if (Array.isArray(tokens) && tokens.length > 0 && !isUnchanged) {
-        separatedList = typeof cap !== 'undefined' ? tokens.slice(0, cap) : tokens;
-      } else {
-        separatedList = null;
-      }
-    } else {
-      separatedList = getSeparatedContent(searchText, tokenSeparators, cap);
-    }
-
-    // Check if match the `tokenSeparators` or custom `tokenize`
-    const patchLabels = separatedList;
+    const patchLabels = isCompositing ? null : splitByTokenSeparators(searchText, cap);
 
     // Ignore combobox since it's not split-able
     if (mode !== 'combobox' && patchLabels) {
