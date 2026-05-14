@@ -182,7 +182,7 @@ export interface BaseSelectProps
   maxTagPlaceholder?: React.ReactNode | ((omittedValues: DisplayValueType[]) => React.ReactNode);
 
   // >>> Search
-  tokenSeparators?: string[];
+  tokenSeparators?: string[] | ((input: string) => string[]);
 
   // >>> Icons
   allowClear?: boolean | { clearIcon?: React.ReactNode };
@@ -371,9 +371,30 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
   // ============================= Search =============================
   const tokenWithEnter = React.useMemo<boolean>(
-    () => (tokenSeparators || []).some((tokenSeparator) => ['\n', '\r\n'].includes(tokenSeparator)),
+    () =>
+      typeof tokenSeparators === 'function' ||
+      (tokenSeparators || []).some((tokenSeparator) => ['\n', '\r\n'].includes(tokenSeparator)),
     [tokenSeparators],
   );
+
+  const splitByTokenSeparators = React.useMemo<
+    (input: string, end?: number) => string[] | null
+  >(() => {
+    if (typeof tokenSeparators === 'function') {
+      return (input: string, end?: number) => {
+        const tokens = tokenSeparators(input);
+        const isUnchanged = Array.isArray(tokens) && tokens.length === 1 && tokens[0] === input;
+
+        if (!Array.isArray(tokens) || !tokens.length || isUnchanged) {
+          return null;
+        }
+
+        return typeof end !== 'undefined' ? tokens.slice(0, end) : tokens;
+      };
+    }
+
+    return (input: string, end?: number) => getSeparatedContent(input, tokenSeparators, end);
+  }, [tokenSeparators]);
 
   const onInternalSearch = (searchText: string, fromTyping: boolean, isCompositing: boolean) => {
     if (multiple && isValidCount(maxCount) && displayValues.length >= maxCount) {
@@ -383,14 +404,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     let newSearchText = searchText;
     onActiveValueChange?.(null);
 
-    const separatedList = getSeparatedContent(
-      searchText,
-      tokenSeparators,
-      isValidCount(maxCount) ? maxCount - displayValues.length : undefined,
-    );
-
-    // Check if match the `tokenSeparators`
-    const patchLabels: string[] = isCompositing ? null : separatedList;
+    const cap = isValidCount(maxCount) ? maxCount - displayValues.length : undefined;
+    const patchLabels = isCompositing ? null : splitByTokenSeparators(searchText, cap);
 
     // Ignore combobox since it's not split-able
     if (mode !== 'combobox' && patchLabels) {

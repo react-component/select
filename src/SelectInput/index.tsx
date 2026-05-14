@@ -40,7 +40,7 @@ export interface SelectInputProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   onSelectorRemove?: (value: DisplayValueType) => void;
   maxLength?: number;
   autoFocus?: boolean;
-  /** Check if `tokenSeparators` contains `\n` or `\r\n` */
+  /** Check if tokenization should treat pasted line breaks as separators */
   tokenWithEnter?: boolean;
   // Add other props that need to be passed through
   className?: string;
