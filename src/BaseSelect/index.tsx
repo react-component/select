@@ -1,7 +1,7 @@
-import type { AlignType, BuildInPlacements } from '@rc-component/trigger/lib/interface';
+import type { AlignType, BuildInPlacements } from '@rc-component/trigger';
 import { clsx } from 'clsx';
-import { getDOM } from '@rc-component/util/lib/Dom/findDOMNode';
-import type { ScrollConfig, ScrollTo } from '@rc-component/virtual-list/lib/List';
+import { getDOM, useEvent } from '@rc-component/util';
+import type { ScrollConfig, ScrollTo } from '@rc-component/virtual-list';
 import * as React from 'react';
 import { useAllowClear } from '../hooks/useAllowClear';
 import { BaseSelectContext } from '../hooks/useBaseProps';
@@ -22,7 +22,6 @@ import SelectTrigger from '../SelectTrigger';
 import { getSeparatedContent, isValidCount } from '../utils/valueUtil';
 import Polite from './Polite';
 import useOpen, { macroTask } from '../hooks/useOpen';
-import { useEvent } from '@rc-component/util';
 import type { SelectInputRef } from '../SelectInput';
 import SelectInput from '../SelectInput';
 import type { ComponentsConfig } from '../hooks/useComponents';

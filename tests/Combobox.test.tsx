@@ -2,8 +2,7 @@
 
 import '@testing-library/jest-dom';
 import { createEvent, fireEvent, render } from '@testing-library/react';
-import KeyCode from '@rc-component/util/lib/KeyCode';
-import { resetWarned } from '@rc-component/util/lib/warning';
+import { KeyCode, resetWarned } from '@rc-component/util';
 import React, { act } from 'react';
 import type { SelectProps } from '../src';
 import Select, { Option } from '../src';

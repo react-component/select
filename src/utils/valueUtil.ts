@@ -1,5 +1,5 @@
 import type { BaseOptionType, DefaultOptionType } from '../Select';
-import warning from '@rc-component/util/lib/warning';
+import { warning } from '@rc-component/util';
 import type { RawValueType, FieldNames } from '../Select';
 import type { FlattenOptionData } from '../interface';
 
