@@ -4,14 +4,10 @@ import SelectContent from './Content';
 import SelectInputContext from './context';
 import type { DisplayValueType, Mode, RenderNode } from '../interface';
 import useBaseProps from '../hooks/useBaseProps';
-import { omit, useEvent } from '@rc-component/util';
-import KeyCode from '@rc-component/util/lib/KeyCode';
+import { composeRef, getDOM, KeyCode, omit, pickAttrs, useEvent } from '@rc-component/util';
 import { isValidateOpenKey } from '../utils/keyUtil';
 import { clsx } from 'clsx';
 import type { ComponentsConfig } from '../hooks/useComponents';
-import { getDOM } from '@rc-component/util/lib/Dom/findDOMNode';
-import { composeRef } from '@rc-component/util/lib/ref';
-import pickAttrs from '@rc-component/util/lib/pickAttrs';
 
 export interface SelectInputRef {
   focus: (options?: FocusOptions) => void;

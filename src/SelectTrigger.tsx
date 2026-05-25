@@ -1,5 +1,8 @@
-import Trigger, { type TriggerRef } from '@rc-component/trigger';
-import type { AlignType, BuildInPlacements } from '@rc-component/trigger/lib/interface';
+import Trigger, {
+  type AlignType,
+  type BuildInPlacements,
+  type TriggerRef,
+} from '@rc-component/trigger';
 import { clsx } from 'clsx';
 import * as React from 'react';
 import type { Placement, RenderDOMFunc } from './BaseSelect';

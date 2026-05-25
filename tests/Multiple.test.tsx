@@ -1,4 +1,4 @@
-import KeyCode from '@rc-component/util/lib/KeyCode';
+import { KeyCode } from '@rc-component/util';
 import React from 'react';
 import Select, { Option, OptGroup } from '../src';
 import focusTest from './shared/focusTest';

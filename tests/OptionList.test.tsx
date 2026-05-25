@@ -1,4 +1,4 @@
-import KeyCode from '@rc-component/util/lib/KeyCode';
+import { KeyCode, spyElementPrototypes } from '@rc-component/util';
 import React, { act } from 'react';
 import { BaseSelectContext } from '../src/hooks/useBaseProps';
 import type { RefOptionListProps } from '../src/OptionList';
@@ -8,7 +8,6 @@ import { fillFieldNames, flattenOptions } from '../src/utils/valueUtil';
 import { injectRunAllTimers } from './utils/common';
 import { createEvent, fireEvent, render, waitFor } from '@testing-library/react';
 import Select from '../src';
-import { spyElementPrototypes } from '@rc-component/util/lib/test/domHook';
 
 jest.mock('../src/utils/platformUtil');
 

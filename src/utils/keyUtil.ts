@@ -1,4 +1,4 @@
-import KeyCode from '@rc-component/util/lib/KeyCode';
+import { KeyCode } from '@rc-component/util';
 
 /** keyCode Judgment function */
 export function isValidateOpenKey(currentKeyCode: number): boolean {
