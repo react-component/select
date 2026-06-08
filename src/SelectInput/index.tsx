@@ -20,6 +20,7 @@ export interface SelectInputProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
   clearIcon?: React.ReactNode;
+  clearLabel?: string;
   removeIcon?: RenderNode;
   multiple?: boolean;
   displayValues: DisplayValueType[];
@@ -77,6 +78,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
     prefix,
     suffix,
     clearIcon,
+    clearLabel,
     children,
 
     // Data
@@ -283,17 +285,25 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
         </Affix>
         {/* Clear Icon */}
         {clearIcon && (
-          <Affix
+          <button
+            type="button"
+            aria-label={clearLabel}
             className={clsx(`${prefixCls}-clear`, classNames?.clear)}
             style={styles?.clear}
             onMouseDown={(e) => {
-              // Mark to tell not trigger open or focus
+              // Keep focus on the input and mark the native event so the root
+              // `onInternalMouseDown` handler does not open the dropdown.
+              // This must run on mousedown because the root handler fires
+              // before the button's onClick.
+              e.preventDefault();
               (e.nativeEvent as any)._select_lazy = true;
-              onClearMouseDown?.(e);
             }}
+            // Clearing happens on click so it works for both pointer and
+            // keyboard (Enter/Space) activation.
+            onClick={onClearMouseDown}
           >
             {clearIcon}
-          </Affix>
+          </button>
         )}
         {children}
       </div>

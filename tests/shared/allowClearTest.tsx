@@ -1,12 +1,27 @@
 import * as React from 'react';
 import Select, { Option } from '../../src';
-import { fireEvent, render } from '@testing-library/react';
+import { createEvent, fireEvent, render } from '@testing-library/react';
 
 export default function allowClearTest(mode: any, value: any) {
   describe('allowClear', () => {
     it('renders correctly', () => {
       const { container } = render(<Select mode={mode} value={value} allowClear />);
       expect(container.querySelector('.rc-select-clear')).toBeTruthy();
+    });
+
+    it('renders clear as a button', () => {
+      const { container } = render(<Select mode={mode} value={value} allowClear />);
+      const clear = container.querySelector('.rc-select-clear');
+      expect(clear.tagName).toBe('BUTTON');
+      expect(clear).toHaveAttribute('type', 'button');
+    });
+
+    it('prevents default on mousedown to keep focus on input', () => {
+      const { container } = render(<Select mode={mode} value={value} allowClear />);
+      const clear = container.querySelector('.rc-select-clear');
+      const mouseDownEvent = createEvent.mouseDown(clear);
+      fireEvent(clear, mouseDownEvent);
+      expect(mouseDownEvent.defaultPrevented).toBe(true);
     });
     it('clears value', () => {
       const onClear = jest.fn();
@@ -37,7 +52,7 @@ export default function allowClearTest(mode: any, value: any) {
 
       // enabled
       rerender(renderDemo(false));
-      fireEvent.mouseDown(container.querySelector('.rc-select-clear'));
+      fireEvent.click(container.querySelector('.rc-select-clear'));
       if (useArrayValue) {
         expect(onChange).toHaveBeenCalledWith([], []);
       } else {
