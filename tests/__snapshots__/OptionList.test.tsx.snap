@@ -44,6 +44,7 @@ exports[`OptionList renders correctly virtual 1`] = `
             group1
           </div>
           <div
+            aria-disabled="false"
             aria-label="value-1"
             class="rc-select-item rc-select-item-option rc-select-item-option-grouped rc-select-item-option-active rc-select-item-option-selected"
             title="1"
@@ -120,6 +121,7 @@ exports[`OptionList renders correctly without virtual 1`] = `
             group1
           </div>
           <div
+            aria-disabled="false"
             aria-label="value-1"
             aria-selected="true"
             class="rc-select-item rc-select-item-option rc-select-item-option-grouped rc-select-item-option-active rc-select-item-option-selected"

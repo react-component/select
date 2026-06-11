@@ -4,14 +4,10 @@ import SelectContent from './Content';
 import SelectInputContext from './context';
 import type { DisplayValueType, Mode, RenderNode } from '../interface';
 import useBaseProps from '../hooks/useBaseProps';
-import { omit, useEvent } from '@rc-component/util';
-import KeyCode from '@rc-component/util/lib/KeyCode';
+import { composeRef, getDOM, KeyCode, omit, pickAttrs, useEvent } from '@rc-component/util';
 import { isValidateOpenKey } from '../utils/keyUtil';
 import { clsx } from 'clsx';
 import type { ComponentsConfig } from '../hooks/useComponents';
-import { getDOM } from '@rc-component/util/lib/Dom/findDOMNode';
-import { composeRef } from '@rc-component/util/lib/ref';
-import pickAttrs from '@rc-component/util/lib/pickAttrs';
 
 export interface SelectInputRef {
   focus: (options?: FocusOptions) => void;
@@ -40,7 +36,7 @@ export interface SelectInputProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   onSelectorRemove?: (value: DisplayValueType) => void;
   maxLength?: number;
   autoFocus?: boolean;
-  /** Check if `tokenSeparators` contains `\n` or `\r\n` */
+  /** Check if tokenization should treat pasted line breaks as separators */
   tokenWithEnter?: boolean;
   // Add other props that need to be passed through
   className?: string;
@@ -165,7 +161,8 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
       blur: () => {
         (inputRef.current || rootRef.current).blur?.();
       },
-      nativeElement: rootRef.current,
+      // Use getDOM to handle nested nativeElement structure (e.g., when RootComponent is antd Input)
+      nativeElement: getDOM(rootRef.current) as HTMLDivElement,
     };
   });
 
@@ -180,13 +177,21 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
       // so we need to mark the event directly
       (event.nativeEvent as any)._ori_target = inputDOM;
 
-      if (inputDOM && event.target !== inputDOM && !inputDOM.contains(event.target as Node)) {
+      const isClickOnInput = inputDOM === event.target || inputDOM?.contains(event.target as Node);
+
+      if (inputDOM && !isClickOnInput) {
         event.preventDefault();
       }
 
       // Check if we should prevent closing when clicking on selector
       // Don't close if: open && not multiple && (combobox mode || showSearch)
-      const shouldPreventClose = triggerOpen && !multiple && (mode === 'combobox' || showSearch);
+      const shouldPreventCloseOnSingle =
+        triggerOpen && !multiple && (mode === 'combobox' || showSearch);
+
+      // Don't close if: open && multiple && click on input
+      const shouldPreventCloseOnMultipleInput = triggerOpen && multiple && isClickOnInput;
+
+      const shouldPreventClose = shouldPreventCloseOnSingle || shouldPreventCloseOnMultipleInput;
 
       if (!(event.nativeEvent as any)._select_lazy) {
         inputRef.current?.focus();
@@ -219,14 +224,29 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
   };
 
   if (RootComponent) {
+    const originProps = (RootComponent as any).props || {};
+    const mergedProps = { ...originProps, ...domProps };
+
+    Object.keys(originProps).forEach((key) => {
+      const originVal = originProps[key];
+      const domVal = domProps[key];
+
+      if (typeof originVal === 'function' && typeof domVal === 'function') {
+        mergedProps[key] = (...args: any[]) => {
+          domVal(...args);
+          originVal(...args);
+        };
+      }
+    });
+
     if (React.isValidElement<any>(RootComponent)) {
       return React.cloneElement(RootComponent, {
-        ...domProps,
+        ...mergedProps,
         ref: composeRef((RootComponent as any).ref, rootRef),
       });
     }
 
-    return <RootComponent {...domProps} ref={rootRef} />;
+    return <RootComponent {...mergedProps} ref={rootRef} />;
   }
 
   return (

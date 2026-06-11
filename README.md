@@ -83,7 +83,7 @@ export default () => (
 | dropdownAlign | additional align applied to dropdown | [AlignType](https://github.com/react-component/trigger/blob/728d7e92394aa4b3214650f743fc47e1382dfa68/src/interface.ts#L25-L80) | {} |
 | dropdownMenuStyle | additional style applied to dropdown menu | Object | React.CSSProperties |
 | notFoundContent | specify content to show when no result matches. | ReactNode | 'Not Found' |
-| tokenSeparators | separator used to tokenize on tag/multiple mode | string[]? |  |
+| tokenSeparators | separator used to tokenize on tag/multiple mode | `string[] \| ((input: string) => string[])` |  |
 | open | control select open | boolean |  |
 | defaultOpen | control select default open | boolean |  |
 | placeholder | select placeholder | React Node |  |

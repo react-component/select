@@ -1,5 +1,5 @@
 import * as React from 'react';
-import KeyCode from '@rc-component/util/lib/KeyCode';
+import { KeyCode } from '@rc-component/util';
 import Select from '../src';
 import { injectRunAllTimers, expectOpen, keyDown } from './utils/common';
 import { act, fireEvent, render } from '@testing-library/react';
@@ -19,6 +19,28 @@ describe('Select.Accessibility', () => {
     const MySelect = Select as any;
     const { container } = render(<MySelect aria-label="light" data-attr="bamboo" useless="2333" />);
     expect(container.querySelector('input')!.getAttribute('aria-label')).toEqual('light');
+  });
+
+  // https://github.com/ant-design/ant-design/issues/56841
+  it('spacebar opens dropdown (ARIA combobox)', () => {
+    const { container } = render(
+      <Select
+        options={[
+          { label: 'Bamboo', value: 'bamboo' },
+          { label: 'Light', value: 'light' },
+        ]}
+      />,
+    );
+
+    const selector = container.querySelector('.rc-select') as HTMLElement;
+    expectOpen(container, false);
+
+    fireEvent.focus(container.querySelector('input')!);
+    keyDown(selector, 32, { key: ' ' });
+    act(() => {
+      jest.runAllTimers();
+    });
+    expectOpen(container);
   });
 
   // https://github.com/ant-design/ant-design/issues/31850
@@ -298,6 +320,26 @@ describe('Select.Accessibility', () => {
       expect(input).toHaveAttribute('aria-autocomplete', 'list');
       expect(input).toHaveAttribute('aria-controls', 'select_list');
       expect(input).toHaveAttribute('aria-activedescendant', 'select_list_0');
+    });
+
+    // https://github.com/ant-design/ant-design/issues/xxxxx
+    it('aria-disabled should be set on disabled options', () => {
+      const { container } = render(
+        <Select
+          open
+          options={[
+            { label: 'Option A', value: 'a' },
+            { label: 'Option B', value: 'b', disabled: true },
+            { label: 'Option C', value: 'c' },
+          ]}
+        />,
+      );
+
+      const optionItems = container.querySelectorAll('[role="option"]');
+      const optionA = Array.from(optionItems).find((el) => el.textContent === 'a');
+      const optionB = Array.from(optionItems).find((el) => el.textContent === 'b');
+      expect(optionA).not.toHaveAttribute('aria-disabled', 'true');
+      expect(optionB).toHaveAttribute('aria-disabled', 'true');
     });
   });
 });

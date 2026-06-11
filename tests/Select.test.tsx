@@ -6,10 +6,8 @@ import {
   render as testingRender,
   act,
 } from '@testing-library/react';
-import KeyCode from '@rc-component/util/lib/KeyCode';
-import { spyElementPrototypes } from '@rc-component/util/lib/test/domHook';
-import { resetWarned } from '@rc-component/util/lib/warning';
-import type { ScrollConfig } from '@rc-component/virtual-list/lib/List';
+import { KeyCode, resetWarned, spyElementPrototypes } from '@rc-component/util';
+import type { ScrollConfig } from '@rc-component/virtual-list';
 import React, { StrictMode } from 'react';
 import type { SelectProps } from '../src';
 import Select, { OptGroup, Option, useBaseProps } from '../src';
@@ -271,6 +269,34 @@ describe('Select.Basic', () => {
       </Select>,
     );
     expect(container.querySelector('.rc-select-content-has-option-style')).toBeTruthy();
+  });
+
+  it('should not add -content-has-value className when value is empty string', () => {
+    const { container } = render(
+      <Select value="">
+        <Option value="1">One</Option>
+      </Select>,
+    );
+    expect(container.querySelector('.rc-select-content-has-value')).toBeFalsy();
+  });
+
+  it('should add -content-has-value className when value is number 0', () => {
+    const { container } = render(
+      <Select value={0}>
+        <Option value={0}>0</Option>
+        <Option value={1}>1</Option>
+      </Select>,
+    );
+    expect(container.querySelector('.rc-select-content-has-value')).toBeTruthy();
+  });
+
+  it('should not add -content-has-value className when value is whitespace string', () => {
+    const { container } = render(
+      <Select value="  ">
+        <Option value="1">One</Option>
+      </Select>,
+    );
+    expect(container.querySelector('.rc-select-content-has-value')).toBeFalsy();
   });
 
   it('should default select the right option', () => {
@@ -1997,6 +2023,39 @@ describe('Select.Basic', () => {
     expect(container.querySelector('.rc-select-dropdown-empty')).toBeFalsy();
   });
 
+  describe('should allow typing when notFoundContent is null and no options match', () => {
+    it.each<{ mode: 'multiple' | undefined; label: string }>([
+      { mode: undefined, label: 'single' },
+      { mode: 'multiple', label: 'multiple' },
+    ])('$label', ({ mode }) => {
+      const onSearch = jest.fn();
+      const { container } = render(
+        <Select mode={mode} showSearch notFoundContent={null} onSearch={onSearch}>
+          <Option value="jack">Jack</Option>
+          <Option value="lucy">Lucy</Option>
+        </Select>,
+      );
+
+      const input = container.querySelector('input');
+
+      // Type 'j' - should match 'Jack'
+      fireEvent.change(input, { target: { value: 'j' } });
+      expect(onSearch).toHaveBeenLastCalledWith('j');
+      expect(input.value).toBe('j');
+      expect(container.querySelectorAll('.rc-select-item-option')).toHaveLength(1);
+
+      // Type 'x' - no match, but input should still work
+      fireEvent.change(input, { target: { value: 'x' } });
+      expect(onSearch).toHaveBeenLastCalledWith('x');
+      expect(input.value).toBe('x');
+
+      // Type more characters - should continue working
+      fireEvent.change(input, { target: { value: 'xyz' } });
+      expect(onSearch).toHaveBeenLastCalledWith('xyz');
+      expect(input.value).toBe('xyz');
+    });
+  });
+
   it('click outside to close select', () => {
     jest.useFakeTimers();
 
@@ -2923,5 +2982,65 @@ describe('Select.Basic', () => {
     expect(selectedItem).toHaveAttribute('title', 'my-title');
 
     expect(selectedItem).not.toHaveAttribute('xxx');
+  });
+
+  describe('Space key behavior with showSearch', () => {
+    it('should not call preventDefault on space when showSearch is enabled', () => {
+      const { container } = render(
+        <Select showSearch options={[{ value: 'test', label: 'test' }]} />,
+      );
+
+      const input = container.querySelector('input');
+      input.focus();
+
+      const keyDownEvent = new KeyboardEvent('keydown', {
+        key: ' ',
+        code: 'Space',
+        bubbles: true,
+      });
+      const preventDefaultSpy = jest.spyOn(keyDownEvent, 'preventDefault');
+
+      input.dispatchEvent(keyDownEvent);
+
+      expect(preventDefaultSpy).not.toHaveBeenCalled();
+    });
+
+    it('should call preventDefault on space when showSearch is disabled', () => {
+      const { container } = render(<Select options={[{ value: 'test', label: 'test' }]} />);
+
+      const input = container.querySelector('input');
+      input.focus();
+
+      const keyDownEvent = new KeyboardEvent('keydown', {
+        key: ' ',
+        code: 'Space',
+        bubbles: true,
+      });
+      const preventDefaultSpy = jest.spyOn(keyDownEvent, 'preventDefault');
+
+      input.dispatchEvent(keyDownEvent);
+
+      expect(preventDefaultSpy).toHaveBeenCalled();
+    });
+
+    it('should not call preventDefault on space in combobox mode', () => {
+      const { container } = render(
+        <Select mode="combobox" options={[{ value: 'test', label: 'test' }]} />,
+      );
+
+      const input = container.querySelector('input');
+      input.focus();
+
+      const keyDownEvent = new KeyboardEvent('keydown', {
+        key: ' ',
+        code: 'Space',
+        bubbles: true,
+      });
+      const preventDefaultSpy = jest.spyOn(keyDownEvent, 'preventDefault');
+
+      input.dispatchEvent(keyDownEvent);
+
+      expect(preventDefaultSpy).not.toHaveBeenCalled();
+    });
   });
 });

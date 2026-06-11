@@ -1,11 +1,6 @@
 import { clsx } from 'clsx';
-import KeyCode from '@rc-component/util/lib/KeyCode';
-import useMemo from '@rc-component/util/lib/hooks/useMemo';
-import omit from '@rc-component/util/lib/omit';
-import pickAttrs from '@rc-component/util/lib/pickAttrs';
-import type { ListRef } from '@rc-component/virtual-list';
-import List from '@rc-component/virtual-list';
-import type { ScrollConfig } from '@rc-component/virtual-list/lib/List';
+import { KeyCode, omit, pickAttrs, useMemo } from '@rc-component/util';
+import List, { type ListRef, type ScrollConfig } from '@rc-component/virtual-list';
 import * as React from 'react';
 import { useEffect } from 'react';
 import type { BaseOptionType, RawValueType } from './Select';
@@ -296,7 +291,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
       return null;
     }
     const itemData = item.data || {};
-    const { value } = itemData;
+    const { value, disabled } = itemData;
     const { group } = item;
     const attrs = pickAttrs(itemData, true);
     const mergedLabel = getLabel(item);
@@ -307,6 +302,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
         key={index}
         {...getItemAriaProps(item, index)}
         aria-selected={isAriaSelected(value)}
+        aria-disabled={disabled}
       >
         {value}
       </div>
@@ -402,6 +398,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
               {...pickAttrs(passedProps)}
               {...(!virtual ? getItemAriaProps(item, itemIndex) : {})}
               aria-selected={virtual ? undefined : isAriaSelected(value)}
+              aria-disabled={mergedDisabled}
               className={optionClassName}
               title={optionTitle}
               onMouseMove={() => {

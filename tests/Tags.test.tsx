@@ -1,5 +1,5 @@
 import { createEvent, fireEvent, render } from '@testing-library/react';
-import KeyCode from '@rc-component/util/lib/KeyCode';
+import { KeyCode } from '@rc-component/util';
 import { clsx } from 'clsx';
 import * as React from 'react';
 import Select, { BaseSelect, OptGroup, Option } from '../src';
@@ -82,6 +82,71 @@ describe('Select.Tags', () => {
     expectOpen(container, false);
   });
 
+  it('tokenSeparators function overrides string token split with quote-aware splitting', () => {
+    const handleChange = jest.fn();
+    const tokenSeparators = jest.fn((input: string) => {
+      const tokens: string[] = [];
+      const regex = /"([^"]*)"|([^,\n]+)/g;
+      let m: RegExpExecArray | null = regex.exec(input);
+      while (m !== null) {
+        tokens.push((m[1] ?? m[2]).trim());
+        m = regex.exec(input);
+      }
+      return tokens.filter(Boolean);
+    });
+    const { container } = render(
+      <Select mode="tags" tokenSeparators={tokenSeparators} onChange={handleChange}>
+        <Option value="1">1</Option>
+      </Select>,
+    );
+
+    fireEvent.change(container.querySelector('input'), { target: { value: '"a, b", c' } });
+
+    expect(tokenSeparators).toHaveBeenCalled();
+    expect(handleChange).toHaveBeenCalledWith(['a, b', 'c'], expect.anything());
+    expect(container.querySelector('input').value).toBe('');
+  });
+
+  it('tokenSeparators function respects maxCount', () => {
+    const handleChange = jest.fn();
+    const tokenSeparators = () => ['a', 'b', 'c', 'd', 'e'];
+    const { container } = render(
+      <Select mode="tags" maxCount={3} tokenSeparators={tokenSeparators} onChange={handleChange} />,
+    );
+    fireEvent.change(container.querySelector('input'), { target: { value: 'x' } });
+    expect(handleChange).toHaveBeenCalledWith(['a', 'b', 'c'], expect.anything());
+  });
+
+  it('tokenSeparators function ignored during composition', () => {
+    const handleChange = jest.fn();
+    const tokenSeparators = (input: string) => input.split(',').map((s) => s.trim());
+    const { container } = render(
+      <Select mode="tags" tokenSeparators={tokenSeparators} onChange={handleChange}>
+        <Option value="1">1</Option>
+      </Select>,
+    );
+    fireEvent.compositionStart(container.querySelector('input'));
+    fireEvent.change(container.querySelector('input'), { target: { value: '2,3,4' } });
+    expect(handleChange).not.toHaveBeenCalled();
+    handleChange.mockReset();
+    fireEvent.compositionEnd(container.querySelector('input'));
+    fireEvent.change(container.querySelector('input'), { target: { value: '2,3,4' } });
+    expect(handleChange).toHaveBeenCalledWith(['2', '3', '4'], expect.anything());
+  });
+
+  it('tokenSeparators function returning [input] keeps typing', () => {
+    const handleChange = jest.fn();
+    const tokenSeparators = (input: string) => [input];
+    const { container } = render(
+      <Select mode="tags" tokenSeparators={tokenSeparators} onChange={handleChange}>
+        <Option value="1">1</Option>
+      </Select>,
+    );
+    fireEvent.change(container.querySelector('input'), { target: { value: 'hello' } });
+    expect(handleChange).not.toHaveBeenCalled();
+    expect(container.querySelector<HTMLInputElement>('input').value).toBe('hello');
+  });
+
   it('should not separate words when compositing but trigger after composition end', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
@@ -138,6 +203,29 @@ describe('Select.Tags', () => {
     expect(findSelection(container).textContent).toEqual('Star Kirby');
     expect(container.querySelector('input').value).toBe('');
     expectOpen(container, false);
+  });
+
+  it('should trigger onSelect once when pressing Enter to select option in tags mode (dropdown open)', () => {
+    const handleSelect = jest.fn();
+    const { container } = render(
+      <Select
+        mode="tags"
+        open
+        showSearch
+        onSelect={handleSelect}
+        options={[
+          { label: 'opt1', value: 'opt1' },
+          { label: 'opt2', value: 'opt2' },
+        ]}
+      />,
+    );
+    fireEvent.change(container.querySelector('input'), { target: { value: 'op' } });
+    jest.runAllTimers();
+    keyDown(container.querySelector('input'), KeyCode.DOWN);
+    keyDown(container.querySelector('input'), KeyCode.ENTER);
+    jest.runAllTimers();
+    expect(handleSelect).toHaveBeenCalledTimes(1);
+    expect(handleSelect).toHaveBeenCalledWith('opt1', expect.anything());
   });
 
   // Paste tests

@@ -1,7 +1,7 @@
-import type { AlignType, BuildInPlacements } from '@rc-component/trigger/lib/interface';
+import type { AlignType, BuildInPlacements } from '@rc-component/trigger';
 import { clsx } from 'clsx';
-import { getDOM } from '@rc-component/util/lib/Dom/findDOMNode';
-import type { ScrollConfig, ScrollTo } from '@rc-component/virtual-list/lib/List';
+import { getDOM, useEvent } from '@rc-component/util';
+import type { ScrollConfig, ScrollTo } from '@rc-component/virtual-list';
 import * as React from 'react';
 import { useAllowClear } from '../hooks/useAllowClear';
 import { BaseSelectContext } from '../hooks/useBaseProps';
@@ -22,7 +22,6 @@ import SelectTrigger from '../SelectTrigger';
 import { getSeparatedContent, isValidCount } from '../utils/valueUtil';
 import Polite from './Polite';
 import useOpen, { macroTask } from '../hooks/useOpen';
-import { useEvent } from '@rc-component/util';
 import type { SelectInputRef } from '../SelectInput';
 import SelectInput from '../SelectInput';
 import type { ComponentsConfig } from '../hooks/useComponents';
@@ -182,7 +181,7 @@ export interface BaseSelectProps
   maxTagPlaceholder?: React.ReactNode | ((omittedValues: DisplayValueType[]) => React.ReactNode);
 
   // >>> Search
-  tokenSeparators?: string[];
+  tokenSeparators?: string[] | ((input: string) => string[]);
 
   // >>> Icons
   allowClear?: boolean | { clearIcon?: React.ReactNode };
@@ -362,7 +361,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   // Not trigger `open` when `notFoundContent` is empty
   const emptyListContent = !notFoundContent && emptyOptions;
 
-  const [mergedOpen, triggerOpen, lockOptions] = useOpen(
+  const [rawOpen, mergedOpen, triggerOpen, lockOptions] = useOpen(
     defaultOpen || false,
     open,
     onPopupVisibleChange,
@@ -371,9 +370,30 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
   // ============================= Search =============================
   const tokenWithEnter = React.useMemo<boolean>(
-    () => (tokenSeparators || []).some((tokenSeparator) => ['\n', '\r\n'].includes(tokenSeparator)),
+    () =>
+      typeof tokenSeparators === 'function' ||
+      (tokenSeparators || []).some((tokenSeparator) => ['\n', '\r\n'].includes(tokenSeparator)),
     [tokenSeparators],
   );
+
+  const splitByTokenSeparators = React.useMemo<
+    (input: string, end?: number) => string[] | null
+  >(() => {
+    if (typeof tokenSeparators === 'function') {
+      return (input: string, end?: number) => {
+        const tokens = tokenSeparators(input);
+        const isUnchanged = Array.isArray(tokens) && tokens.length === 1 && tokens[0] === input;
+
+        if (!Array.isArray(tokens) || !tokens.length || isUnchanged) {
+          return null;
+        }
+
+        return typeof end !== 'undefined' ? tokens.slice(0, end) : tokens;
+      };
+    }
+
+    return (input: string, end?: number) => getSeparatedContent(input, tokenSeparators, end);
+  }, [tokenSeparators]);
 
   const onInternalSearch = (searchText: string, fromTyping: boolean, isCompositing: boolean) => {
     if (multiple && isValidCount(maxCount) && displayValues.length >= maxCount) {
@@ -383,14 +403,8 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     let newSearchText = searchText;
     onActiveValueChange?.(null);
 
-    const separatedList = getSeparatedContent(
-      searchText,
-      tokenSeparators,
-      isValidCount(maxCount) ? maxCount - displayValues.length : undefined,
-    );
-
-    // Check if match the `tokenSeparators`
-    const patchLabels: string[] = isCompositing ? null : separatedList;
+    const cap = isValidCount(maxCount) ? maxCount - displayValues.length : undefined;
+    const patchLabels = isCompositing ? null : splitByTokenSeparators(searchText, cap);
 
     // Ignore combobox since it's not split-able
     if (mode !== 'combobox' && patchLabels) {
@@ -430,12 +444,15 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     onSearch(searchText, { source: 'submit' });
   };
 
-  // Close will clean up single mode search text
+  // Clean up search value when the dropdown is closed.
+  // We use `rawOpen` here to avoid clearing the search input when the dropdown is
+  // programmatically closed due to `notFoundContent={null}` and no matching options.
+  // This allows the user to continue typing their search query.
   React.useEffect(() => {
-    if (!mergedOpen && !multiple && mode !== 'combobox') {
+    if (!rawOpen && !multiple && mode !== 'combobox') {
       onInternalSearch('', false, false);
     }
-  }, [mergedOpen]);
+  }, [rawOpen]);
 
   // ============================ Disabled ============================
   // Close dropdown & remove focus state when disabled change
@@ -463,10 +480,14 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     const { key } = event;
 
     const isEnterKey = key === 'Enter';
+    const isSpaceKey = key === ' ';
 
-    if (isEnterKey) {
-      // Do not submit form when type in the input
-      if (mode !== 'combobox') {
+    // Enter or Space opens dropdown (ARIA combobox: spacebar should open)
+    if (isEnterKey || isSpaceKey) {
+      // Do not submit form when type in the input; prevent Space from scrolling page
+      const isCombobox = mode === 'combobox';
+      const isEditable = isCombobox || showSearch;
+      if ((isSpaceKey && !isEditable) || (isEnterKey && !isCombobox)) {
         event.preventDefault();
       }
 
@@ -507,7 +528,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       }
     }
 
-    if (mergedOpen && (!isEnterKey || !keyLockRef.current)) {
+    if (mergedOpen && (!isEnterKey || !keyLockRef.current) && !isSpaceKey) {
       // Lock the Enter key after it is pressed to avoid repeated triggering of the onChange event.
       if (isEnterKey) {
         keyLockRef.current = true;
@@ -640,6 +661,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       notFoundContent,
       open: mergedOpen,
       triggerOpen: mergedOpen,
+      rawOpen,
       id,
       showSearch,
       multiple,
@@ -657,6 +679,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       showSearch,
       multiple,
       mergedOpen,
+      rawOpen,
       showScrollBar,
       styles,
       classNames,

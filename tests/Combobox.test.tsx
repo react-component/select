@@ -2,8 +2,7 @@
 
 import '@testing-library/jest-dom';
 import { createEvent, fireEvent, render } from '@testing-library/react';
-import KeyCode from '@rc-component/util/lib/KeyCode';
-import { resetWarned } from '@rc-component/util/lib/warning';
+import { KeyCode, resetWarned } from '@rc-component/util';
 import React, { act } from 'react';
 import type { SelectProps } from '../src';
 import Select, { Option } from '../src';
@@ -645,6 +644,31 @@ describe('Select.Combobox', () => {
       mouseDownEvent.preventDefault = preventDefault;
       fireEvent(selectorEle, mouseDownEvent);
       expect(preventDefault).not.toHaveBeenCalled();
+    });
+
+    // https://github.com/ant-design/ant-design/issues/56948
+    // https://github.com/ant-design/ant-design/issues/56932
+    it('should not render value in combobox mode with custom input', () => {
+      const CustomInput = (props: any) => <input {...props} />;
+
+      const { container } = render(
+        <Select
+          mode="combobox"
+          value="1"
+          placeholder="Input value"
+          getInputElement={() => <CustomInput />}
+        >
+          <Option value="1">One</Option>
+          <Option value="2">Two</Option>
+        </Select>,
+      );
+
+      // with custom input in combobox mode, renderValue should be null
+      // So we should only see the input element, not the rendered value div
+      expect(container.querySelector('.rc-select-content-value')).toBeFalsy();
+      expect(container.querySelector('.rc-select-placeholder')).toBeFalsy();
+      expect(container.querySelector('input')).toHaveValue('1');
+      expect(container.querySelector('input')).toHaveAttribute('placeholder', 'Input value');
     });
   });
 });
