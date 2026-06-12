@@ -108,6 +108,27 @@ describe('Select.Multiple', () => {
     expect(container.querySelector('input').value).toBe('');
   });
 
+  it('keeps popup open when clearing values', () => {
+    const onPopupVisibleChange = jest.fn();
+    const { container } = render(
+      <Select
+        mode="multiple"
+        defaultOpen
+        defaultValue={['1', '2']}
+        allowClear
+        onPopupVisibleChange={onPopupVisibleChange}
+      >
+        <Option value="1">One</Option>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
+
+    fireEvent.mouseDown(container.querySelector('.rc-select-clear'));
+
+    expectOpen(container, true);
+    expect(onPopupVisibleChange).not.toHaveBeenCalledWith(false);
+  });
+
   it('tokenize input when mode=tags and open=false', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();

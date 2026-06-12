@@ -200,8 +200,8 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
         if (!shouldPreventClose) {
           toggleOpen();
         }
-      } else if (triggerOpen) {
-        // Lazy should also close when click clear icon
+      } else if (triggerOpen && !multiple) {
+        // Lazy should also close when click clear icon in single select.
         toggleOpen(false);
       }
     }
