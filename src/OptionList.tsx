@@ -275,6 +275,12 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
 
   const getLabel = (item: Record<string, any>) => item.label;
 
+  // Skip group headers to match native <select> announcements with <optgroup>
+  const optionCount = memoFlattenOptions.filter((option) => !option.group).length;
+
+  const getOptionPosition = (index: number) =>
+    memoFlattenOptions.slice(0, index + 1).filter((option) => !option.group).length;
+
   function getItemAriaProps(item: FlattenOptionData<BaseOptionType>, index: number) {
     const { group } = item;
 
@@ -291,12 +297,13 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     }
     const itemData = item.data || {};
     const { value, disabled } = itemData;
-    const { group } = item;
     const attrs = pickAttrs(itemData, true);
     const mergedLabel = getLabel(item);
     return item ? (
       <div
-        aria-label={typeof mergedLabel === 'string' && !group ? mergedLabel : null}
+        aria-label={typeof mergedLabel === 'string' ? mergedLabel : null}
+        aria-setsize={optionCount}
+        aria-posinset={getOptionPosition(index)}
         {...attrs}
         key={index}
         {...getItemAriaProps(item, index)}
@@ -308,6 +315,57 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     ) : null;
   };
 
+  const getGroupItem = (index: number) => {
+    for (let i = index; i >= 0; i -= 1) {
+      const current = memoFlattenOptions[i];
+      if (current?.group) {
+        return current;
+      }
+    }
+    return null;
+  };
+
+  // Nest options inside `role="group"` wrappers
+  const renderHiddenItems = () => {
+    const segments: {
+      group: FlattenOptionData<BaseOptionType> | null;
+      indexes: number[];
+    }[] = [];
+
+    [activeIndex - 1, activeIndex, activeIndex + 1].forEach((index) => {
+      const item = memoFlattenOptions[index];
+      if (!item || item.group) {
+        return;
+      }
+
+      const groupItem = item.groupOption ? getGroupItem(index) : null;
+      const lastSegment = segments[segments.length - 1];
+
+      if (lastSegment && lastSegment.group === groupItem) {
+        lastSegment.indexes.push(index);
+      } else {
+        segments.push({ group: groupItem, indexes: [index] });
+      }
+    });
+
+    return segments.map(({ group, indexes }) => {
+      if (!group) {
+        return indexes.map(renderItem);
+      }
+
+      const groupLabel = getLabel(group);
+      return (
+        <div
+          key={group.key}
+          role="group"
+          aria-label={typeof groupLabel === 'string' ? groupLabel : null}
+        >
+          {indexes.map(renderItem)}
+        </div>
+      );
+    });
+  };
+
   const a11yProps = {
     role: 'listbox',
     id: `${id}_list`,
@@ -317,9 +375,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     <>
       {virtual && (
         <div {...a11yProps} style={{ height: 0, width: 0, overflow: 'hidden' }}>
-          {renderItem(activeIndex - 1)}
-          {renderItem(activeIndex)}
-          {renderItem(activeIndex + 1)}
+          {renderHiddenItems()}
         </div>
       )}
       <List<FlattenOptionData<BaseOptionType>>

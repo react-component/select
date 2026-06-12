@@ -13,7 +13,9 @@ exports[`Select.Basic does not filter when filterOption value is false 1`] = `
     >
       <div
         aria-label="1"
+        aria-posinset="1"
         aria-selected="false"
+        aria-setsize="2"
         id="test-id_list_0"
         role="option"
       >
@@ -21,7 +23,9 @@ exports[`Select.Basic does not filter when filterOption value is false 1`] = `
       </div>
       <div
         aria-label="2"
+        aria-posinset="2"
         aria-selected="false"
+        aria-setsize="2"
         id="test-id_list_1"
         role="option"
       >
@@ -409,7 +413,9 @@ exports[`Select.Basic should contain falsy children 1`] = `
     >
       <div
         aria-label="1"
+        aria-posinset="1"
         aria-selected="true"
+        aria-setsize="2"
         id="test-id_list_0"
         role="option"
       >
@@ -417,7 +423,9 @@ exports[`Select.Basic should contain falsy children 1`] = `
       </div>
       <div
         aria-label="2"
+        aria-posinset="2"
         aria-selected="false"
+        aria-setsize="2"
         id="test-id_list_1"
         role="option"
       >
@@ -508,7 +516,9 @@ exports[`Select.Basic should render custom dropdown correctly 1`] = `
       >
         <div
           aria-label="1"
+          aria-posinset="1"
           aria-selected="false"
+          aria-setsize="2"
           id="test-id_list_0"
           role="option"
         >
@@ -516,7 +526,9 @@ exports[`Select.Basic should render custom dropdown correctly 1`] = `
         </div>
         <div
           aria-label="2"
+          aria-posinset="2"
           aria-selected="false"
+          aria-setsize="2"
           id="test-id_list_1"
           role="option"
         >

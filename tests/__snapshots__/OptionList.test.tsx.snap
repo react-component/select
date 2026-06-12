@@ -8,23 +8,19 @@ exports[`OptionList renders correctly virtual 1`] = `
     style="height: 0px; width: 0px; overflow: hidden;"
   >
     <div
-      aria-selected="false"
-      id="undefined_list_0"
-      role="presentation"
-    />
-    <div
-      aria-label="value-1"
-      aria-selected="true"
-      id="undefined_list_1"
-      role="option"
+      role="group"
     >
-      1
+      <div
+        aria-label="value-1"
+        aria-posinset="1"
+        aria-selected="true"
+        aria-setsize="2"
+        id="undefined_list_1"
+        role="option"
+      >
+        1
+      </div>
     </div>
-    <div
-      aria-selected="false"
-      id="undefined_list_2"
-      role="presentation"
-    />
   </div>
   <div
     class="rc-virtual-list"

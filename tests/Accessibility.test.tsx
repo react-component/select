@@ -203,6 +203,105 @@ describe('Select.Accessibility', () => {
       });
     });
 
+    it('should have correct aria-posinset and aria-setsize in virtual mode', () => {
+      const { container } = render(
+        <Select
+          id="virtual-select"
+          open
+          options={[{ value: '1' }, { value: '2' }, { value: '3' }, { value: '4' }, { value: '5' }]}
+        />,
+      );
+
+      // The hidden accessibility container is the listbox itself in virtual mode
+      const getHiddenOptions = () =>
+        Array.from(document.querySelectorAll('#virtual-select_list div[role="option"]'));
+
+      // Active index is 0, so the hidden container renders options 0 and 1
+      let hiddenOptions = getHiddenOptions();
+      expect(hiddenOptions.map((option) => option.getAttribute('aria-posinset'))).toEqual([
+        '1',
+        '2',
+      ]);
+      hiddenOptions.forEach((option) => {
+        expect(option).toHaveAttribute('aria-setsize', '5');
+      });
+
+      // Move active option to the middle of the list
+      keyDown(container.querySelector('input')!, KeyCode.DOWN);
+      keyDown(container.querySelector('input')!, KeyCode.DOWN);
+
+      // Active index is 2, so the hidden container renders options 1, 2 and 3
+      hiddenOptions = getHiddenOptions();
+      expect(hiddenOptions.map((option) => option.getAttribute('aria-posinset'))).toEqual([
+        '2',
+        '3',
+        '4',
+      ]);
+      hiddenOptions.forEach((option) => {
+        expect(option).toHaveAttribute('aria-setsize', '5');
+      });
+    });
+
+    it('aria-posinset and aria-setsize should skip group headers like native optgroup', () => {
+      const { container } = render(
+        <Select
+          id="virtual-select"
+          open
+          options={[
+            {
+              label: 'First group',
+              options: [{ value: '1' }, { value: '2' }, { value: '3' }],
+            },
+            {
+              label: 'Second group',
+              options: [{ value: '4' }, { value: '5' }, { value: '6' }],
+            },
+          ]}
+        />,
+      );
+
+      const hiddenContainer = document.querySelector('#virtual-select_list');
+      const getHiddenOptions = () =>
+        Array.from(hiddenContainer.querySelectorAll('div[role="option"]'));
+      const getGroupWrappers = () =>
+        Array.from(hiddenContainer.querySelectorAll('div[role="group"]'));
+
+      // Active option is the first real option (flatten index 1), so the
+      // hidden container renders the first two options inside their group
+      let groupWrappers = getGroupWrappers();
+      expect(groupWrappers).toHaveLength(1);
+      expect(groupWrappers[0]).toHaveAttribute('aria-label', 'First group');
+
+      let hiddenOptions = getHiddenOptions();
+      expect(hiddenOptions.map((option) => option.getAttribute('aria-posinset'))).toEqual([
+        '1',
+        '2',
+      ]);
+      hiddenOptions.forEach((option) => {
+        expect(option).toHaveAttribute('aria-setsize', '6');
+        expect(option.parentElement).toBe(groupWrappers[0]);
+      });
+
+      // Move into the second group: positions keep counting across groups
+      keyDown(container.querySelector('input')!, KeyCode.DOWN);
+      keyDown(container.querySelector('input')!, KeyCode.DOWN);
+      keyDown(container.querySelector('input')!, KeyCode.DOWN);
+
+      groupWrappers = getGroupWrappers();
+      expect(groupWrappers).toHaveLength(1);
+      expect(groupWrappers[0]).toHaveAttribute('aria-label', 'Second group');
+
+      hiddenOptions = getHiddenOptions();
+      expect(hiddenOptions.map((option) => option.getAttribute('aria-posinset'))).toEqual([
+        '4',
+        '5',
+      ]);
+      hiddenOptions.forEach((option) => {
+        expect(option).toHaveAttribute('aria-setsize', '6');
+        expect(option.parentElement).toBe(groupWrappers[0]);
+      });
+    });
+
     it('should have correct aria and role attributes in virtual false', () => {
       render(
         <Select
