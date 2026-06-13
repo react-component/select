@@ -1,5 +1,4 @@
-import toNodeArray from '@rc-component/util/lib/Children/toArray';
-import warning, { noteOnce } from '@rc-component/util/lib/warning';
+import { noteOnce, toArray as toNodeArray, warning as warning } from '@rc-component/util';
 import * as React from 'react';
 import { isMultiple } from '../BaseSelect';
 import type {
