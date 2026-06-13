@@ -285,6 +285,9 @@ describe('Select.Accessibility', () => {
 
       const input = container.querySelector('input');
       expect(input).toHaveAttribute('role', 'combobox');
+      // https://github.com/ant-design/ant-design/issues/57904
+      expect(input).toHaveAttribute('type', 'text');
+      expect(input).not.toHaveAttribute('list');
       expect(input).toHaveAttribute('aria-expanded', 'false');
       expect(input).toHaveAttribute('aria-haspopup', 'listbox');
       expect(input).not.toHaveAttribute('aria-owns');

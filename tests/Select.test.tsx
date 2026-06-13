@@ -1424,14 +1424,16 @@ describe('Select.Basic', () => {
     expect(container.querySelector('.rc-select-item-empty').textContent).toEqual('Not Found');
   });
 
-  it('search input type', () => {
+  it('uses text input type and disables browser autocomplete for search', () => {
     const { container } = render(
       <Select showSearch open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
-    expect(container.querySelector('input').getAttribute('type')).toBe('search');
+    const input = container.querySelector('input');
+    expect(input.getAttribute('type')).toBe('text');
+    expect(input.getAttribute('autocomplete')).toBe('new-password');
   });
 
   it('warns on invalid children', () => {
