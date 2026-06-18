@@ -2275,6 +2275,23 @@ describe('Select.Basic', () => {
     expect(findSelection(container).textContent).toEqual('903');
   });
 
+  it('value should be used as label When value does not have a label attribute and historical options do not contain value', () => {
+    const wrapper = mount(<Select value={{value: 903, label: 'light'}} options={[]} />);
+    expect(findSelection(wrapper).text()).toEqual('light');
+
+    wrapper.setProps({ value: 903 });
+    expect(findSelection(wrapper).text()).toEqual('903');
+
+    wrapper.setProps({ options: [{ value: 903, label: 'Bamboo' }] });
+    expect(findSelection(wrapper).text()).toEqual('Bamboo');
+
+    wrapper.setProps({ value:{ value: 903, label: 'light' },options:[]});
+    expect(findSelection(wrapper).text()).toEqual('light');
+
+    wrapper.setProps({ value: 903, options:[]});
+    expect(findSelection(wrapper).text()).toEqual('Bamboo');
+  });
+
   // https://github.com/ant-design/ant-design/issues/24747
   // This can not test function called with jest spy, coverage only
   it('mouse enter to refresh', () => {
