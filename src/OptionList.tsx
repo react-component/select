@@ -1,11 +1,6 @@
 import { clsx } from 'clsx';
-import KeyCode from '@rc-component/util/lib/KeyCode';
-import useMemo from '@rc-component/util/lib/hooks/useMemo';
-import omit from '@rc-component/util/lib/omit';
-import pickAttrs from '@rc-component/util/lib/pickAttrs';
-import type { ListRef } from '@rc-component/virtual-list';
-import List from '@rc-component/virtual-list';
-import type { ScrollConfig } from '@rc-component/virtual-list/lib/List';
+import { KeyCode, omit, pickAttrs, useMemo } from '@rc-component/util';
+import List, { type ListRef, type ScrollConfig } from '@rc-component/virtual-list';
 import * as React from 'react';
 import { useEffect } from 'react';
 import type { BaseOptionType, RawValueType } from './Select';

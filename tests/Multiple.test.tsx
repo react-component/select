@@ -1,4 +1,4 @@
-import KeyCode from '@rc-component/util/lib/KeyCode';
+import { KeyCode } from '@rc-component/util';
 import React from 'react';
 import Select, { Option, OptGroup } from '../src';
 import focusTest from './shared/focusTest';
@@ -78,6 +78,55 @@ describe('Select.Multiple', () => {
 
     expect(container.querySelector('input').value).toBe('');
     expectOpen(container, false);
+  });
+
+  it('tokenSeparators function on multiple only adds values that match options', () => {
+    const handleChange = jest.fn();
+    const tokenSeparators = (input: string) => input.split(',').map((s) => s.trim());
+    const { container } = render(
+      <Select
+        mode="multiple"
+        optionLabelProp="children"
+        tokenSeparators={tokenSeparators}
+        onChange={handleChange}
+      >
+        <OptGroup key="group1">
+          <Option value="1">One</Option>
+        </OptGroup>
+        <OptGroup key="group2">
+          <Option value="2">Two</Option>
+        </OptGroup>
+      </Select>,
+    );
+    fireEvent.paste(container.querySelector('input'), {
+      clipboardData: { getData: () => 'One,Two,Unknown' },
+    });
+    fireEvent.change(container.querySelector('input'), {
+      target: { value: 'One,Two,Unknown' },
+    });
+    expect(handleChange).toHaveBeenCalledWith(['1', '2'], expect.anything());
+    expect(container.querySelector('input').value).toBe('');
+  });
+
+  it('keeps popup open when clearing values', () => {
+    const onPopupVisibleChange = jest.fn();
+    const { container } = render(
+      <Select
+        mode="multiple"
+        defaultOpen
+        defaultValue={['1', '2']}
+        allowClear
+        onPopupVisibleChange={onPopupVisibleChange}
+      >
+        <Option value="1">One</Option>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
+
+    fireEvent.mouseDown(container.querySelector('.rc-select-clear'));
+
+    expectOpen(container, true);
+    expect(onPopupVisibleChange).not.toHaveBeenCalledWith(false);
   });
 
   it('tokenize input when mode=tags and open=false', () => {

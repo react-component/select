@@ -6,10 +6,8 @@ import {
   render as testingRender,
   act,
 } from '@testing-library/react';
-import KeyCode from '@rc-component/util/lib/KeyCode';
-import { spyElementPrototypes } from '@rc-component/util/lib/test/domHook';
-import { resetWarned } from '@rc-component/util/lib/warning';
-import type { ScrollConfig } from '@rc-component/virtual-list/lib/List';
+import { KeyCode, resetWarned, spyElementPrototypes } from '@rc-component/util';
+import type { ScrollConfig } from '@rc-component/virtual-list';
 import React, { StrictMode } from 'react';
 import type { SelectProps } from '../src';
 import Select, { OptGroup, Option, useBaseProps } from '../src';
@@ -1426,14 +1424,16 @@ describe('Select.Basic', () => {
     expect(container.querySelector('.rc-select-item-empty').textContent).toEqual('Not Found');
   });
 
-  it('search input type', () => {
+  it('uses text input type and disables browser autocomplete for search', () => {
     const { container } = render(
       <Select showSearch open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
-    expect(container.querySelector('input').getAttribute('type')).toBe('search');
+    const input = container.querySelector('input');
+    expect(input.getAttribute('type')).toBe('text');
+    expect(input.getAttribute('autocomplete')).toBe('new-password');
   });
 
   it('warns on invalid children', () => {

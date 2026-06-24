@@ -1,5 +1,5 @@
 import * as React from 'react';
-import KeyCode from '@rc-component/util/lib/KeyCode';
+import { KeyCode } from '@rc-component/util';
 import Select from '../src';
 import { injectRunAllTimers, expectOpen, keyDown } from './utils/common';
 import { act, fireEvent, render } from '@testing-library/react';
@@ -285,6 +285,9 @@ describe('Select.Accessibility', () => {
 
       const input = container.querySelector('input');
       expect(input).toHaveAttribute('role', 'combobox');
+      // https://github.com/ant-design/ant-design/issues/57904
+      expect(input).toHaveAttribute('type', 'text');
+      expect(input).not.toHaveAttribute('list');
       expect(input).toHaveAttribute('aria-expanded', 'false');
       expect(input).toHaveAttribute('aria-haspopup', 'listbox');
       expect(input).not.toHaveAttribute('aria-owns');
