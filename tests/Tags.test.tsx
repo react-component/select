@@ -81,6 +81,32 @@ describe('Select.Tags', () => {
     expect(onChange).not.toHaveBeenCalled();
   });
 
+  // https://github.com/ant-design/ant-design/issues/30878
+  it('should not create tag when input matches disabled option even with custom filterOption', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <Select
+        mode="tags"
+        onChange={onChange}
+        open
+        options={[
+          { value: 'apple', label: 'Apple' },
+          { value: 'orange', label: 'Orange', disabled: true },
+        ]}
+        // Custom filterOption that hides the disabled option from dropdown
+        filterOption={() => false}
+      />,
+    );
+
+    fireEvent.change(container.querySelector('input'), { target: { value: 'orange' } });
+    fireEvent.keyDown(container.querySelector('input'), { key: 'Enter' });
+
+    jest.runAllTimers();
+    // Should not create tag or show temp option in dropdown
+    expect(findSelection(container).textContent).toBe('');
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
   it('tokenize input', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();
@@ -102,6 +128,28 @@ describe('Select.Tags', () => {
     expect(container.querySelector('input').value).toBe('');
 
     expectOpen(container, false);
+  });
+
+  // https://github.com/ant-design/ant-design/issues/30878
+  it('should not create tag when token matches disabled option with tokenSeparators', () => {
+    const handleChange = jest.fn();
+    const { container } = render(
+      <Select
+        mode="tags"
+        tokenSeparators={[',']}
+        onChange={handleChange}
+        options={[
+          { value: 'apple', label: 'Apple' },
+          { value: 'orange', label: 'Orange', disabled: true },
+        ]}
+      />,
+    );
+
+    fireEvent.change(container.querySelector('input'), { target: { value: 'apple,orange' } });
+
+    // Only 'apple' should be created, 'orange' is disabled and should be skipped
+    expect(handleChange).toHaveBeenCalledWith(['apple'], expect.anything());
+    expect(container.querySelector('input').value).toBe('');
   });
 
   it('should not separate words when compositing but trigger after composition end', () => {

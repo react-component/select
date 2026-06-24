@@ -442,6 +442,12 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       normalizedOptionFilterProp,
     );
 
+    // Check if value is a disabled option
+    const isDisabledOptionValue = React.useCallback(
+      (val: RawValueType) => !!valueOptions.get(val)?.disabled,
+      [valueOptions],
+    );
+
     // Fill options with search value if needed
     const filledSearchOptions = React.useMemo(() => {
       const hasItemMatchingSearch = (item: DefaultOptionType) => {
@@ -459,6 +465,10 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       }
       // ignore when search value equal select input value
       if (filteredOptions.some((item) => item[mergedFieldNames.value] === mergedSearchValue)) {
+        return filteredOptions;
+      }
+      // Skip creating temp tag option if it matches a disabled option value
+      if (isDisabledOptionValue(mergedSearchValue)) {
         return filteredOptions;
       }
       // Fill search value as option
@@ -631,8 +641,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
         // prevent empty tags from appearing when you click the Enter button
         if (formatted) {
           // Skip disabled options in tags mode
-          const option = valueOptions.get(formatted);
-          if (option?.disabled) {
+          if (isDisabledOptionValue(formatted)) {
             setSearchValue('');
             return;
           }
@@ -665,6 +674,11 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
             return opt?.value;
           })
           .filter((val) => val !== undefined);
+      }
+
+      // Filter out disabled option values in tags mode
+      if (mode === 'tags') {
+        patchValues = patchValues.filter((val) => !isDisabledOptionValue(val));
       }
 
       const newRawValues = Array.from(new Set<RawValueType>([...rawValues, ...patchValues]));
