@@ -440,9 +440,10 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       normalizedOptionFilterProp,
     );
 
-    // Check if value is a disabled option
+    // Check if value is a disabled option (compare string and numeric to support numeric option values)
     const isDisabledOptionValue = React.useCallback(
-      (val: RawValueType) => !!valueOptions.get(val)?.disabled,
+      (val: RawValueType) =>
+        valueOptions.get(String(val))?.disabled || valueOptions.get(Number(val))?.disabled,
       [valueOptions],
     );
 
