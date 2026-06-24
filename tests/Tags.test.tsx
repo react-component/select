@@ -59,6 +59,28 @@ describe('Select.Tags', () => {
     expect(onChange).toHaveBeenCalledWith(['foo'], [{}]);
   });
 
+  // https://github.com/ant-design/ant-design/issues/30878
+  it('should not create tag when input matches disabled option on blur', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <Select
+        mode="tags"
+        onChange={onChange}
+        options={[
+          { value: 'apple', label: 'Apple' },
+          { value: 'orange', label: 'Orange', disabled: true },
+        ]}
+      />,
+    );
+
+    fireEvent.change(container.querySelector('input'), { target: { value: 'orange' } });
+    fireEvent.blur(container.querySelector('input'));
+
+    jest.runAllTimers();
+    expect(findSelection(container).textContent).toBe('');
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
   it('tokenize input', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();

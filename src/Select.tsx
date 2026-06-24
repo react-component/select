@@ -630,6 +630,13 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
         const formatted = (searchText || '').trim();
         // prevent empty tags from appearing when you click the Enter button
         if (formatted) {
+          // Skip disabled options in tags mode
+          const option = valueOptions.get(formatted);
+          if (option?.disabled) {
+            setSearchValue('');
+            return;
+          }
+
           const newRawValues = Array.from(new Set<RawValueType>([...rawValues, formatted]));
           triggerChange(newRawValues);
           triggerSelect(formatted, true);
