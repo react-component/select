@@ -137,11 +137,7 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
   const isNumberPopupWidth = typeof popupMatchSelectWidth === 'number';
 
   const stretch = React.useMemo(() => {
-    if (isNumberPopupWidth) {
-      return null;
-    }
-
-    return popupMatchSelectWidth === false ? 'minWidth' : 'width';
+    return popupMatchSelectWidth === false || isNumberPopupWidth ? 'minWidth' : 'width';
   }, [popupMatchSelectWidth, isNumberPopupWidth]);
 
   let mergedPopupStyle = popupStyle;

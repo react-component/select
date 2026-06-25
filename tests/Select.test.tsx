@@ -1737,6 +1737,22 @@ describe('Select.Basic', () => {
       expect(container.querySelectorAll('.rc-select-item')).toHaveLength(options.length);
     });
 
+    it('dropdown menu width should not be smaller than trigger when popupMatchSelectWidth is a number', () => {
+      const { container } = render(
+        <Select style={{ width: 1000 }} popupMatchSelectWidth={500}>
+          <Option value={0}>0</Option>
+        </Select>,
+      );
+
+      toggleOpen(container);
+
+      expect(container.querySelector('.rc-select-dropdown')).toHaveStyle({
+        minWidth: '1000px',
+        width: '500px',
+      });
+      expect(global.triggerProps.stretch).toBe('minWidth');
+    });
+
     it('virtual false also no render virtual list', () => {
       const options = [];
       for (let i = 0; i < 99; i += 1) {
