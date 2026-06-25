@@ -69,21 +69,11 @@ describe('Select.Tags', () => {
         options={[
           { value: 'apple', label: 'Apple' },
           { value: 'orange', label: 'Orange', disabled: true },
-          { value: 123, label: '123', disabled: true },
         ]}
       />,
     );
 
-    // Test string disabled option
     fireEvent.change(container.querySelector('input'), { target: { value: 'orange' } });
-    fireEvent.blur(container.querySelector('input'));
-
-    jest.runAllTimers();
-    expect(findSelection(container).textContent).toBe('');
-    expect(onChange).not.toHaveBeenCalled();
-
-    // Test numeric disabled option (input as string "123")
-    fireEvent.change(container.querySelector('input'), { target: { value: '123' } });
     fireEvent.blur(container.querySelector('input'));
 
     jest.runAllTimers();

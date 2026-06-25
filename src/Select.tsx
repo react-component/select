@@ -440,13 +440,6 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       normalizedOptionFilterProp,
     );
 
-    // Check if value is a disabled option (compare string and numeric to support numeric option values)
-    const isDisabledOptionValue = React.useCallback(
-      (val: RawValueType) =>
-        valueOptions.get(String(val))?.disabled || valueOptions.get(Number(val))?.disabled,
-      [valueOptions],
-    );
-
     // Fill options with search value if needed
     const filledSearchOptions = React.useMemo(() => {
       const hasItemMatchingSearch = (item: DefaultOptionType) => {
@@ -467,7 +460,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
         return filteredOptions;
       }
       // Skip creating temp tag option if it matches a disabled option value
-      if (isDisabledOptionValue(mergedSearchValue)) {
+      if (valueOptions.get(mergedSearchValue)?.disabled) {
         return filteredOptions;
       }
       // Fill search value as option
@@ -479,6 +472,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       filteredOptions,
       mergedSearchValue,
       mergedFieldNames,
+      valueOptions,
     ]);
     const sorter = (inputOptions: DefaultOptionType[]) => {
       const sortedOptions = [...inputOptions].sort((a, b) =>
@@ -640,7 +634,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
         // prevent empty tags from appearing when you click the Enter button
         if (formatted) {
           // Skip disabled options in tags mode
-          if (isDisabledOptionValue(formatted)) {
+          if (valueOptions.get(formatted)?.disabled) {
             setSearchValue('');
             return;
           }
@@ -677,7 +671,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
 
       // Filter out disabled option values in tags mode
       if (mode === 'tags') {
-        patchValues = patchValues.filter((val) => !isDisabledOptionValue(val));
+        patchValues = patchValues.filter((val) => !valueOptions.get(val)?.disabled);
       }
 
       const newRawValues = Array.from(new Set<RawValueType>([...rawValues, ...patchValues]));
