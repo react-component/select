@@ -12,5 +12,6 @@
       "@@/*": [".dumi/tmp/*"],
       "@rc-component/select": ["src/index.ts"]
     }
-  }
+  },
+  "include": [".dumirc.ts", ".fatherrc.js", "src", "tests", "docs"]
 }
