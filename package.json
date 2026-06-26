@@ -38,8 +38,7 @@
     "prettier": "prettier --write --ignore-unknown .",
     "lint": "eslint src/ docs/ tests/ --ext .tsx,.ts,.jsx,.js",
     "test": "rc-test",
-    "tsc": "tsc --noEmit",
-    "now-build": "npm run build"
+    "tsc": "tsc --noEmit"
   },
   "lint-staged": {
     "*": "prettier --write --ignore-unknown"
