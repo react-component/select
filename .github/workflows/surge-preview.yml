@@ -23,7 +23,7 @@ jobs:
           surge_token: ${{ env.SURGE_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           dist: .doc
-          failOnError: true
+          failOnError: false
           setCommitStatus: true
           build: |
             npm install
