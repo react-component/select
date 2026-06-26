@@ -163,11 +163,11 @@ npm run compile
 ## Release
 
 ```bash
-npm publish
+npm run prepublishOnly
 ```
 
-The `prepublishOnly` script runs `npm run compile && rc-np` before publishing.
+The release flow is handled by `@rc-component/np` through the `rc-np` command after the package build.
 
 ## License
 
-`@rc-component/select` is released under the MIT license.
+@rc-component/select is released under the [MIT](./LICENSE.md) license.
