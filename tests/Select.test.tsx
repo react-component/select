@@ -1424,14 +1424,16 @@ describe('Select.Basic', () => {
     expect(container.querySelector('.rc-select-item-empty').textContent).toEqual('Not Found');
   });
 
-  it('search input type', () => {
+  it('uses text input type and disables browser autocomplete for search', () => {
     const { container } = render(
       <Select showSearch open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
-    expect(container.querySelector('input').getAttribute('type')).toBe('search');
+    const input = container.querySelector('input');
+    expect(input.getAttribute('type')).toBe('text');
+    expect(input.getAttribute('autocomplete')).toBe('new-password');
   });
 
   it('warns on invalid children', () => {
@@ -1733,6 +1735,22 @@ describe('Select.Basic', () => {
 
       // dropdownMatchSelectWidth is false means close virtual scroll
       expect(container.querySelectorAll('.rc-select-item')).toHaveLength(options.length);
+    });
+
+    it('dropdown menu width should not be smaller than trigger when popupMatchSelectWidth is a number', () => {
+      const { container } = render(
+        <Select style={{ width: 1000 }} popupMatchSelectWidth={500}>
+          <Option value={0}>0</Option>
+        </Select>,
+      );
+
+      toggleOpen(container);
+
+      expect(container.querySelector('.rc-select-dropdown')).toHaveStyle({
+        minWidth: '1000px',
+        width: '500px',
+      });
+      expect(global.triggerProps.stretch).toBe('minWidth');
     });
 
     it('virtual false also no render virtual list', () => {

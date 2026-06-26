@@ -161,7 +161,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   // Extract shared input props
   const sharedInputProps = {
     id,
-    type: mode === 'combobox' ? 'text' : 'search',
+    type: 'text',
     ...restProps,
     ref: inputRef as React.Ref<HTMLInputElement>,
     style: {
@@ -170,7 +170,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       '--select-input-width': widthCssVar,
     } as React.CSSProperties,
     autoFocus,
-    autoComplete: autoComplete || 'off',
+    autoComplete: autoComplete || 'new-password',
     className: inputCls,
     disabled,
     value: value || '',
