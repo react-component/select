@@ -257,6 +257,12 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     },
   }));
 
+  // Skip group headers to match native <select> announcements with <optgroup>
+  const optionPositions = React.useMemo(() => {
+    let count = 0;
+    return memoFlattenOptions.map((item) => (item.group ? count : (count += 1)));
+  }, [memoFlattenOptions]);
+
   // ========================== Render ==========================
   if (memoFlattenOptions.length === 0) {
     return (
@@ -274,12 +280,6 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
   const omitFieldNameList = Object.keys(fieldNames).map((key) => fieldNames[key]);
 
   const getLabel = (item: Record<string, any>) => item.label;
-
-  // Skip group headers to match native <select> announcements with <optgroup>
-  const optionCount = memoFlattenOptions.filter((option) => !option.group).length;
-
-  const getOptionPosition = (index: number) =>
-    memoFlattenOptions.slice(0, index + 1).filter((option) => !option.group).length;
 
   function getItemAriaProps(item: FlattenOptionData<BaseOptionType>, index: number) {
     const { group } = item;
@@ -302,8 +302,8 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     return item ? (
       <div
         aria-label={typeof mergedLabel === 'string' ? mergedLabel : null}
-        aria-setsize={optionCount}
-        aria-posinset={getOptionPosition(index)}
+        aria-setsize={optionPositions[optionPositions.length - 1] ?? 0}
+        aria-posinset={optionPositions[index]}
         {...attrs}
         key={index}
         {...getItemAriaProps(item, index)}
