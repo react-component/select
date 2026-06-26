@@ -38,7 +38,7 @@ export const useAllowClear = (
     return {
       allowClear: mergedAllowClear,
       clearIcon: mergedAllowClear ? allowClearConfig.clearIcon || clearIcon || '×' : null,
-      label: mergedAllowClear ? allowClearConfig.label : '',
+      label: mergedAllowClear ? (allowClearConfig.label ?? 'Clear') : '',
     };
   }, [allowClearConfig, clearIcon, disabled, displayValues.length, mergedSearchValue, mode]);
 };

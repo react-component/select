@@ -132,6 +132,7 @@ exports[`Select.Basic render renders aria-attributes correctly 1`] = `
     />
   </div>
   <button
+    aria-label="Clear"
     class="antd-clear"
     type="button"
   >
@@ -162,6 +163,7 @@ exports[`Select.Basic render renders correctly 1`] = `
     />
   </div>
   <button
+    aria-label="Clear"
     class="antd-clear"
     type="button"
   >
@@ -194,6 +196,7 @@ exports[`Select.Basic render renders data-attributes correctly 1`] = `
     />
   </div>
   <button
+    aria-label="Clear"
     class="antd-clear"
     type="button"
   >
@@ -251,6 +254,7 @@ exports[`Select.Basic render renders role prop correctly 1`] = `
     />
   </div>
   <button
+    aria-label="Clear"
     class="antd-clear"
     type="button"
   >
