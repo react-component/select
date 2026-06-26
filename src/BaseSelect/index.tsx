@@ -184,7 +184,7 @@ export interface BaseSelectProps
   tokenSeparators?: string[] | ((input: string) => string[]);
 
   // >>> Icons
-  allowClear?: boolean | { clearIcon?: React.ReactNode };
+  allowClear?: boolean | { clearIcon?: React.ReactNode; label?: string };
   prefix?: React.ReactNode;
   /** @deprecated Please use `suffix` instead. */
   suffixIcon?: RenderNode;
@@ -720,7 +720,11 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     onInternalSearch('', false, false);
   };
 
-  const { allowClear: mergedAllowClear, clearIcon: clearNode } = useAllowClear(
+  const {
+    allowClear: mergedAllowClear,
+    clearIcon: clearNode,
+    label: clearLabel,
+  } = useAllowClear(
     prefixCls,
     displayValues,
     allowClear,
@@ -762,6 +766,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       prefix={prefix}
       suffix={mergedSuffixIcon}
       clearIcon={clearNode}
+      clearLabel={clearLabel}
       // Type or mode
       multiple={multiple}
       mode={mode}

@@ -1424,14 +1424,16 @@ describe('Select.Basic', () => {
     expect(container.querySelector('.rc-select-item-empty').textContent).toEqual('Not Found');
   });
 
-  it('search input type', () => {
+  it('uses text input type and disables browser autocomplete for search', () => {
     const { container } = render(
       <Select showSearch open>
         <Option value="1">1</Option>
         <Option value="2">2</Option>
       </Select>,
     );
-    expect(container.querySelector('input').getAttribute('type')).toBe('search');
+    const input = container.querySelector('input');
+    expect(input.getAttribute('type')).toBe('text');
+    expect(input.getAttribute('autocomplete')).toBe('new-password');
   });
 
   it('warns on invalid children', () => {
@@ -1733,6 +1735,22 @@ describe('Select.Basic', () => {
 
       // dropdownMatchSelectWidth is false means close virtual scroll
       expect(container.querySelectorAll('.rc-select-item')).toHaveLength(options.length);
+    });
+
+    it('dropdown menu width should not be smaller than trigger when popupMatchSelectWidth is a number', () => {
+      const { container } = render(
+        <Select style={{ width: 1000 }} popupMatchSelectWidth={500}>
+          <Option value={0}>0</Option>
+        </Select>,
+      );
+
+      toggleOpen(container);
+
+      expect(container.querySelector('.rc-select-dropdown')).toHaveStyle({
+        minWidth: '1000px',
+        width: '500px',
+      });
+      expect(global.triggerProps.stretch).toBe('minWidth');
     });
 
     it('virtual false also no render virtual list', () => {
@@ -2508,7 +2526,7 @@ describe('Select.Basic', () => {
   it('should be focused when click clear button', () => {
     jest.useFakeTimers();
 
-    const mouseDownPreventDefault = jest.fn();
+    const clickPreventDefault = jest.fn();
     const { container } = render(
       <Select allowClear value="1">
         <Option value="1">1</Option>
@@ -2518,13 +2536,69 @@ describe('Select.Basic', () => {
 
     expect(container.querySelector('.rc-select-clear')).toBeTruthy();
 
-    const mouseDownEvent = createEvent.mouseDown(container.querySelector('.rc-select-clear'));
-    mouseDownEvent.preventDefault = mouseDownPreventDefault;
-    fireEvent(container.querySelector('.rc-select-clear'), mouseDownEvent);
+    const clickEvent = createEvent.click(container.querySelector('.rc-select-clear'));
+    clickEvent.preventDefault = clickPreventDefault;
+    fireEvent(container.querySelector('.rc-select-clear'), clickEvent);
     jest.runAllTimers();
 
     expect(container.querySelector('.rc-select').className).toContain('-focused');
     jest.useRealTimers();
+  });
+
+  it('renders clear as an accessible button with label', () => {
+    const { container } = render(
+      <Select allowClear={{ label: 'Clear all' }} value="1">
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+
+    const clear = container.querySelector('.rc-select-clear');
+    expect(clear.tagName).toBe('BUTTON');
+    expect(clear).toHaveAttribute('type', 'button');
+    expect(clear).toHaveAttribute('aria-label', 'Clear all');
+  });
+
+  it('clicking clear does not open the dropdown', () => {
+    const onPopupVisibleChange = jest.fn();
+    const { container } = render(
+      <Select value="1" allowClear onPopupVisibleChange={onPopupVisibleChange}>
+        <Option value="1">One</Option>
+        <Option value="2">Two</Option>
+      </Select>,
+    );
+
+    // mousedown should be prevented (keeps focus on input) and must not open
+    const mouseDownEvent = createEvent.mouseDown(container.querySelector('.rc-select-clear'));
+    fireEvent(container.querySelector('.rc-select-clear'), mouseDownEvent);
+    expect(mouseDownEvent.defaultPrevented).toBe(true);
+
+    fireEvent.click(container.querySelector('.rc-select-clear'));
+
+    expectOpen(container, false);
+    expect(onPopupVisibleChange).not.toHaveBeenCalledWith(true);
+  });
+
+  it('clears value via keyboard activation', () => {
+    const onChange = jest.fn();
+    const onClear = jest.fn();
+    const { container } = render(
+      <Select defaultValue="1" allowClear onChange={onChange} onClear={onClear}>
+        <Option value="1">1</Option>
+        <Option value="2">2</Option>
+      </Select>,
+    );
+
+    const clear = container.querySelector<HTMLButtonElement>('.rc-select-clear');
+
+    clear.focus();
+    expect(clear).toHaveFocus();
+    // Enter/Space on a native button dispatch a click event
+    fireEvent.click(clear);
+
+    expect(onChange).toHaveBeenCalledWith(undefined, undefined);
+    expect(onClear).toHaveBeenCalled();
+    expect(container.querySelector('input').value).toBe('');
   });
 
   it('should support title', () => {

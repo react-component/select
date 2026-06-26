@@ -459,6 +459,10 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       if (filteredOptions.some((item) => item[mergedFieldNames.value] === mergedSearchValue)) {
         return filteredOptions;
       }
+      // Skip creating temp tag option if it matches a disabled option value
+      if (valueOptions.get(mergedSearchValue)?.disabled) {
+        return filteredOptions;
+      }
       // Fill search value as option
       return [createTagOption(mergedSearchValue), ...filteredOptions];
     }, [
@@ -468,6 +472,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       filteredOptions,
       mergedSearchValue,
       mergedFieldNames,
+      valueOptions,
     ]);
     const sorter = (inputOptions: DefaultOptionType[]) => {
       const sortedOptions = [...inputOptions].sort((a, b) =>
@@ -628,6 +633,12 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
         const formatted = (searchText || '').trim();
         // prevent empty tags from appearing when you click the Enter button
         if (formatted) {
+          // Skip disabled options in tags mode
+          if (valueOptions.get(formatted)?.disabled) {
+            setSearchValue('');
+            return;
+          }
+
           const newRawValues = Array.from(new Set<RawValueType>([...rawValues, formatted]));
           triggerChange(newRawValues);
           triggerSelect(formatted, true);
@@ -656,6 +667,11 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
             return opt?.value;
           })
           .filter((val) => val !== undefined);
+      }
+
+      // Filter out disabled option values in tags mode
+      if (mode === 'tags') {
+        patchValues = patchValues.filter((val) => !valueOptions.get(val)?.disabled);
       }
 
       const newRawValues = Array.from(new Set<RawValueType>([...rawValues, ...patchValues]));

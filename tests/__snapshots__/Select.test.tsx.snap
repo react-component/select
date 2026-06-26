@@ -127,19 +127,21 @@ exports[`Select.Basic render renders aria-attributes correctly 1`] = `
       aria-haspopup="listbox"
       aria-label="some-label"
       aria-labelledby="test-id"
-      autocomplete="off"
+      autocomplete="new-password"
       class="antd-input"
       id="test-id"
       role="combobox"
-      type="search"
+      type="text"
       value=""
     />
   </div>
-  <div
+  <button
+    aria-label="Clear"
     class="antd-clear"
+    type="button"
   >
     ×
-  </div>
+  </button>
 </div>
 `;
 
@@ -156,19 +158,21 @@ exports[`Select.Basic render renders correctly 1`] = `
       aria-autocomplete="list"
       aria-expanded="false"
       aria-haspopup="listbox"
-      autocomplete="off"
+      autocomplete="new-password"
       class="antd-input"
       id="test-id"
       role="combobox"
-      type="search"
+      type="text"
       value=""
     />
   </div>
-  <div
+  <button
+    aria-label="Clear"
     class="antd-clear"
+    type="button"
   >
     ×
-  </div>
+  </button>
 </div>
 `;
 
@@ -187,19 +191,21 @@ exports[`Select.Basic render renders data-attributes correctly 1`] = `
       aria-autocomplete="list"
       aria-expanded="false"
       aria-haspopup="listbox"
-      autocomplete="off"
+      autocomplete="new-password"
       class="antd-input"
       id="test-id"
       role="combobox"
-      type="search"
+      type="text"
       value=""
     />
   </div>
-  <div
+  <button
+    aria-label="Clear"
     class="antd-clear"
+    type="button"
   >
     ×
-  </div>
+  </button>
 </div>
 `;
 
@@ -216,12 +222,12 @@ exports[`Select.Basic render renders disabled select correctly 1`] = `
       aria-autocomplete="list"
       aria-expanded="false"
       aria-haspopup="listbox"
-      autocomplete="off"
+      autocomplete="new-password"
       class="antd-input"
       disabled=""
       id="test-id"
       role="combobox"
-      type="search"
+      type="text"
       value=""
     />
   </div>
@@ -243,19 +249,21 @@ exports[`Select.Basic render renders role prop correctly 1`] = `
       aria-autocomplete="list"
       aria-expanded="false"
       aria-haspopup="listbox"
-      autocomplete="off"
+      autocomplete="new-password"
       class="antd-input"
       id="test-id"
       role="button"
-      type="search"
+      type="text"
       value=""
     />
   </div>
-  <div
+  <button
+    aria-label="Clear"
     class="antd-clear"
+    type="button"
   >
     ×
-  </div>
+  </button>
 </div>
 `;
 

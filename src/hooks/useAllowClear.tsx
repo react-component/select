@@ -5,12 +5,13 @@ import { useMemo } from 'react';
 export interface AllowClearConfig {
   allowClear: boolean;
   clearIcon: React.ReactNode;
+  label: string;
 }
 
 export const useAllowClear = (
   prefixCls: string,
   displayValues: DisplayValueType[],
-  allowClear?: boolean | { clearIcon?: React.ReactNode },
+  allowClear?: boolean | { clearIcon?: React.ReactNode; label?: string },
   clearIcon?: React.ReactNode,
   disabled: boolean = false,
   mergedSearchValue?: string,
@@ -37,6 +38,7 @@ export const useAllowClear = (
     return {
       allowClear: mergedAllowClear,
       clearIcon: mergedAllowClear ? allowClearConfig.clearIcon || clearIcon || '×' : null,
+      label: mergedAllowClear ? (allowClearConfig.label ?? 'Clear') : '',
     };
   }, [allowClearConfig, clearIcon, disabled, displayValues.length, mergedSearchValue, mode]);
 };
