@@ -131,11 +131,13 @@ exports[`Select.Basic render renders aria-attributes correctly 1`] = `
       value=""
     />
   </div>
-  <div
+  <button
+    aria-label="Clear"
     class="antd-clear"
+    type="button"
   >
     ×
-  </div>
+  </button>
 </div>
 `;
 
@@ -160,11 +162,13 @@ exports[`Select.Basic render renders correctly 1`] = `
       value=""
     />
   </div>
-  <div
+  <button
+    aria-label="Clear"
     class="antd-clear"
+    type="button"
   >
     ×
-  </div>
+  </button>
 </div>
 `;
 
@@ -191,11 +195,13 @@ exports[`Select.Basic render renders data-attributes correctly 1`] = `
       value=""
     />
   </div>
-  <div
+  <button
+    aria-label="Clear"
     class="antd-clear"
+    type="button"
   >
     ×
-  </div>
+  </button>
 </div>
 `;
 
@@ -247,11 +253,13 @@ exports[`Select.Basic render renders role prop correctly 1`] = `
       value=""
     />
   </div>
-  <div
+  <button
+    aria-label="Clear"
     class="antd-clear"
+    type="button"
   >
     ×
-  </div>
+  </button>
 </div>
 `;
 
