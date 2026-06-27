@@ -1,8 +1,8 @@
 <div align="center">
   <h1>@rc-component/select</h1>
-  <p><sub>Part of the Ant Design ecosystem.</sub></p>
+  <p><sub>Ant Design 生态的一部分。</sub></p>
   <img alt="Ant Design" height="32" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" />
-  <p>🎯 Composable Select component for React, with search, async-friendly option data, custom rendering, and virtual scrolling.</p>
+  <p>🔎 React 选择器组件，支持单选、多选、搜索、标签和自定义渲染。</p>
 
   <p>
     <a href="https://npmjs.org/package/@rc-component/select"><img alt="NPM version" src="https://img.shields.io/npm/v/@rc-component/select.svg?style=flat-square"></a>
@@ -14,12 +14,12 @@
   </p>
 </div>
 
-<p align="center">English | <a href="./README.zh-CN.md">简体中文</a></p>
+<p align="center"><a href="./README.md">English</a> | 简体中文</p>
 
 
-## Highlights
+## 特性
 
-| Area      | Support                                                    |
+| 范围 | 支持 |
 | --------- | ---------------------------------------------------------- |
 | Data      | `options` data, legacy `Option` children, grouped options  |
 | Modes     | Single select, `multiple`, `tags`, and `combobox`          |
@@ -27,13 +27,13 @@
 | Rendering | Custom option, label, selected item, clear, and menu icons |
 | Scale     | Virtual scrolling with configurable item height            |
 
-## Install
+## 安装
 
 ```bash
 npm install @rc-component/select
 ```
 
-## Usage
+## 使用
 
 ```tsx | pure
 import Select from '@rc-component/select';
@@ -51,7 +51,7 @@ export default () => (
 );
 ```
 
-## Examples
+## 示例
 
 ```bash
 npm install
@@ -66,7 +66,7 @@ Open <http://localhost:8000/> locally, or visit the online example: <https://sel
 
 Select also accepts public props from `BaseSelect`, except `showSearch`, which is redefined by Select.
 
-| Name | Description | Type | Default |
+| 名称 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | autoClearSearchValue | Deprecated. Use `showSearch.autoClearSearchValue` instead. | boolean | true |
 | backfill | Backfill the active option into the input. Only works in `combobox` mode. | boolean | false |
@@ -102,14 +102,14 @@ Select also accepts public props from `BaseSelect`, except `showSearch`, which i
 
 ### Methods
 
-| Name  | Description         | Parameters |
+| 名称  | 说明         | 参数 |
 | ----- | ------------------- | ---------- |
 | blur  | Remove focus.       | -          |
 | focus | Focus the selector. | -          |
 
 ### SearchConfig
 
-| Name | Description | Type | Default |
+| 名称 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | autoClearSearchValue | Clear search input after selecting or deselecting in multiple mode. | boolean | true |
 | filterOption | Filter options by search input. | boolean \| `FilterFunc<OptionType>` | - |
@@ -122,7 +122,7 @@ Select also accepts public props from `BaseSelect`, except `showSearch`, which i
 
 `Option` is a legacy placeholder component. Prefer the `options` prop for new usage.
 
-| Name      | Description         | Type                     | Default |
+| 名称 | 说明 | 类型 | 默认值 |
 | --------- | ------------------- | ------------------------ | ------- |
 | children  | Option label.       | ReactNode                | -       |
 | className | Option class name.  | string                   | -       |
@@ -134,7 +134,7 @@ Select also accepts public props from `BaseSelect`, except `showSearch`, which i
 
 `OptGroup` is a legacy placeholder component. Prefer nested `options` data for new usage.
 
-| Name      | Description        | Type      | Default |
+| 名称 | 说明 | 类型 | 默认值 |
 | --------- | ------------------ | --------- | ------- |
 | children  | Group options.     | ReactNode | -       |
 | className | Group class name.  | string    | -       |
@@ -142,7 +142,7 @@ Select also accepts public props from `BaseSelect`, except `showSearch`, which i
 | label     | Group label.       | ReactNode | -       |
 | title     | Group title.       | string    | -       |
 
-## Development
+## 本地开发
 
 ```bash
 npm install
@@ -153,7 +153,7 @@ npm run tsc
 npm run compile
 ```
 
-## Release
+## 发布
 
 ```bash
 npm run prepublishOnly
@@ -161,6 +161,6 @@ npm run prepublishOnly
 
 The release flow is handled by `@rc-component/np` through the `rc-np` command after the package build.
 
-## License
+## 许可证
 
 @rc-component/select is released under the [MIT](./LICENSE.md) license.
