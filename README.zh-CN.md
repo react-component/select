@@ -1,8 +1,7 @@
 <div align="center">
   <h1>@rc-component/select</h1>
-  <p><sub>Ant Design 生态的一部分。</sub></p>
-  <img alt="Ant Design" height="32" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" />
-  <p>🔎 React 选择器组件，支持单选、多选、搜索、标签和自定义渲染。</p>
+  <p><sub><img alt="Ant Design" height="14" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" style="vertical-align: -0.125em;" /> Ant Design 生态的一部分。</sub></p>
+  <p>🎯 React 选择器组件，支持单选、多选、搜索、标签和自定义渲染。</p>
 
   <p>
     <a href="https://npmjs.org/package/@rc-component/select"><img alt="NPM version" src="https://img.shields.io/npm/v/@rc-component/select.svg?style=flat-square"></a>
@@ -21,11 +20,11 @@
 
 | 范围 | 支持 |
 | --------- | ---------------------------------------------------------- |
-| Data      | `options` data, legacy `Option` children, grouped options  |
-| Modes     | Single select, `multiple`, `tags`, and `combobox`          |
-| Search    | Controlled search, custom filter, custom sort              |
-| Rendering | Custom option, label, selected item, clear, and menu icons |
-| Scale     | Virtual scrolling with configurable item height            |
+| 数据      | `options` 数据，旧版 `Option` 子项，分组选项  |
+| Modes     | 单选、`multiple`、`tags` 和 `combobox` 模式          |
+| 搜索    | 受控搜索、自定义过滤和自定义排序              |
+| Rendering | 自定义选项、标签、选中项、清除图标和菜单图标 |
+| Scale     | 支持可配置项高度的虚拟滚动            |
 
 ## 安装
 
@@ -58,87 +57,87 @@ npm install
 npm start
 ```
 
-Open <http://localhost:8000/> locally, or visit the online example: <https://select-react-component.vercel.app/>.
+本地打开 <http://localhost:8000/>，或访问在线示例：<https://select-react-component.vercel.app/>。
 
 ## API
 
 ### Select
 
-Select also accepts public props from `BaseSelect`, except `showSearch`, which is redefined by Select.
+Select 还接受来自 `BaseSelect` 的公共属性，但由 Select 重新定义的 `showSearch` 除外。
 
 | 名称 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| autoClearSearchValue | Deprecated. Use `showSearch.autoClearSearchValue` instead. | boolean | true |
-| backfill | Backfill the active option into the input. Only works in `combobox` mode. | boolean | false |
-| children | Legacy option children. Prefer `options` for new code. | ReactNode | - |
-| classNames | Semantic class names. | `Partial<Record<SemanticName, string>>` | - |
-| defaultActiveFirstOption | Whether the first option is active by default. | boolean | true |
-| defaultValue | Initial selected value. | `ValueType` \| null | - |
+| autoClearSearchValue | 已弃用。请改用 `showSearch.autoClearSearchValue`。 | boolean | true |
+| backfill | 将活动选项回填到输入中。仅适用于 `combobox` 模式。 | boolean | false |
+| children们 | 旧版选项子节点。新代码推荐使用 `options`。 | ReactNode | - |
+| classNames | 语义className。 | `Partial<Record<SemanticName, string>>` | - |
+| defaultActiveFirstOption | 默认情况下第一个选项是否处于活动状态。 | boolean | true |
+| defaultValue | 初始选中值。 | `ValueType` \| null | - |
 | direction | Dropdown direction. | `ltr` \| `rtl` | `ltr` |
-| fieldNames | Customize option field names. | `FieldNames` | - |
-| filterOption | Deprecated. Use `showSearch.filterOption` instead. | boolean \| `FilterFunc<OptionType>` | - |
-| filterSort | Deprecated. Use `showSearch.filterSort` instead. | `(optionA, optionB, info) => number` | - |
-| labelInValue | Return labeled value objects instead of raw values. | boolean | false |
-| labelRender | Custom selected label render. | `(props: LabelInValueType) => ReactNode` | - |
-| listHeight | Popup list height. | number | 200 |
-| listItemHeight | Popup list item height. | number | 20 |
-| maxCount | Maximum selected item count. | number | - |
-| menuItemSelectedIcon | Custom selected option icon. | `RenderNode` | - |
-| mode | Select mode. | `combobox` \| `multiple` \| `tags` | - |
-| onActive | Called when the active value changes. | `(value: ValueType) => void` | - |
-| onChange | Called when selected value changes. | `(value: ValueType, option?: OptionType \| OptionType[]) => void` | - |
-| onDeselect | Called when a value is deselected. | `(value, option) => void` | - |
-| onSearch | Deprecated. Use `showSearch.onSearch` instead. | `(value: string) => void` | - |
-| onSelect | Called when a value is selected. | `(value, option) => void` | - |
-| optionFilterProp | Deprecated. Use `showSearch.optionFilterProp` instead. | string \| string[] | - |
-| optionLabelProp | Option prop used as the selected label. | string | - |
-| optionRender | Custom option renderer. | `(oriOption, info: { index: number }) => ReactNode` | - |
-| options | Option data. | `OptionType[]` | - |
-| searchValue | Deprecated. Use `showSearch.searchValue` instead. | string | - |
-| showSearch | Enable search or configure search behavior. | boolean \| `SearchConfig<OptionType>` | - |
-| styles | Semantic styles. | `Partial<Record<SemanticName, CSSProperties>>` | - |
-| value | Controlled selected value. | `ValueType` \| null | - |
-| virtual | Disable virtual scrolling when set to `false`. | boolean | true |
+| fieldNames | 自定义选项字段名称。 | `FieldNames` | - |
+| filterOption | 已弃用。请改用 `showSearch.filterOption`。 | boolean \| `FilterFunc<OptionType>` | - |
+| filterSort | 已弃用。请改用 `showSearch.filterSort`。 | `(optionA, optionB, info) => number` | - |
+| labelInValue | 返回标记值对象而不是原始值。 | boolean | false |
+| labelRender | 自定义选定的标签渲染。 | `(props: LabelInValueType) => ReactNode` | - |
+| listHeight | 弹层列表高度。 | number | 200 |
+| listItemHeight | 弹层列表项的高度。 | number | 20 |
+| maxCount | 最大选定项目数。 | number | - |
+| menuItemSelectedIcon | 自定义选定的选项图标。 | `RenderNode` | - |
+| mode | 选择模式。 | `combobox` \| `multiple` \| `tags` | - |
+| onActive | 当活动值改变时调用。 | `(value: ValueType) => void` | - |
+| onChange | 当选定值更改时调用。 | `(value: ValueType, option?: OptionType \| OptionType[]) => void` | - |
+| onDeselect | 当取消选择某个值时调用。 | `(value, option) => void` | - |
+| onSearch | 已弃用。请改用 `showSearch.onSearch`。 | `(value: string) => void` | - |
+| onSelect | 选择值时调用。 | `(value, option) => void` | - |
+| optionFilterProp | 已废弃。请使用 `showSearch.optionFilterProp`。 | string \| string[] | - |
+| optionLabelProp | 用作所选标签的选项道具。 | string | - |
+| optionRender | 自定义选项渲染器。 | `(oriOption, info: { index: number }) => ReactNode` | - |
+| 选项 | 选项数据。 | `OptionType[]` | - |
+| searchValue | 已弃用。请改用 `showSearch.searchValue`。 | string | - |
+| showSearch | 启用搜索或配置搜索行为。 | boolean \| `SearchConfig<OptionType>` | - |
+| styles | 语义化样式。 | `Partial<Record<SemanticName, CSSProperties>>` | - |
+| 价值 | 受控选中值。 | `ValueType` \| null | - |
+| virtual | 设置为 `false` 时禁用虚拟滚动。 | boolean | true |
 
-### Methods
+### 方法
 
 | 名称  | 说明         | 参数 |
 | ----- | ------------------- | ---------- |
-| blur  | Remove focus.       | -          |
-| focus | Focus the selector. | -          |
+| 模糊  | 移除焦点。       | -          |
+| 重点 | 聚焦选择器。 | -          |
 
 ### SearchConfig
 
 | 名称 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| autoClearSearchValue | Clear search input after selecting or deselecting in multiple mode. | boolean | true |
-| filterOption | Filter options by search input. | boolean \| `FilterFunc<OptionType>` | - |
-| filterSort | Sort filtered options. | `(optionA, optionB, info: { searchValue: string }) => number` | - |
-| onSearch | Called when search input changes. | `(value: string) => void` | - |
-| optionFilterProp | Option prop used for filtering when `filterOption` is enabled. | string \| string[] | - |
-| searchValue | Controlled search input value. | string | - |
+| autoClearSearchValue | 在多种模式下选择或取消选择后清除搜索输入。 | boolean | true |
+| filterOption | 按搜索输入过滤选项。 | boolean \| `FilterFunc<OptionType>` | - |
+| filterSort | 对过滤的选项进行排序。 | `(optionA, optionB, info: { searchValue: string }) => number` | - |
+| onSearch | 当搜索输入更改时调用。 | `(value: string) => void` | - |
+| optionFilterProp | 启用 `filterOption` 时用于过滤的选项属性。 | string \| string[] | - |
+| searchValue | 受控搜索输入值。 | string | - |
 
 ### Option
 
-`Option` is a legacy placeholder component. Prefer the `options` prop for new usage.
+`Option` 是一个旧的占位符组件。对于新用途，更喜欢 `options` 属性。
 
 | 名称 | 说明 | 类型 | 默认值 |
 | --------- | ------------------- | ------------------------ | ------- |
-| children  | Option label.       | ReactNode                | -       |
-| className | Option class name.  | string                   | -       |
-| disabled  | Disable the option. | boolean                  | false   |
-| title     | Option title.       | string                   | -       |
-| value     | Option value.       | string \| number \| null | -       |
+| children们  | 选项标签。       | ReactNode                | -       |
+| className | 选项className称。  | string                   | -       |
+| disabled  | 禁用该选项。 | boolean                  | false   |
+| title     | 选项标题。       | string                   | -       |
+| 价值     | 选项值。       | 字符串\|数字\|无效的 | -       |
 
 ### OptGroup
 
-`OptGroup` is a legacy placeholder component. Prefer nested `options` data for new usage.
+`OptGroup` 是一个旧的占位符组件。优选嵌套 `options` 数据以供新用途。
 
 | 名称 | 说明 | 类型 | 默认值 |
 | --------- | ------------------ | --------- | ------- |
-| children  | Group options.     | ReactNode | -       |
-| className | Group class name.  | string    | -       |
-| disabled  | Disable the group. | boolean   | false   |
+| children们  | 组选项。     | ReactNode | -       |
+| className | 组className。  | string    | -       |
+| disabled  | 禁用该组。 | boolean   | false   |
 | label     | Group label.       | ReactNode | -       |
 | title     | Group title.       | string    | -       |
 
@@ -159,8 +158,8 @@ npm run compile
 npm run prepublishOnly
 ```
 
-The release flow is handled by `@rc-component/np` through the `rc-np` command after the package build.
+包构建完成后，发布流程由 `@rc-component/np` 通过 `rc-np` 命令处理。
 
 ## 许可证
 
-@rc-component/select is released under the [MIT](./LICENSE.md) license.
+@rc-component/select 基于 [MIT](./LICENSE.md) 许可证发布。
