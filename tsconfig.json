@@ -8,10 +8,22 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "paths": {
-      "@/*": ["src/*"],
-      "@@/*": [".dumi/tmp/*"],
-      "@rc-component/select": ["src/index.ts"]
-    }
+      "@/*": [
+        "src/*"
+      ],
+      "@@/*": [
+        ".dumi/tmp/*"
+      ],
+      "@rc-component/select": [
+        "src/index.ts"
+      ]
+    },
+    "ignoreDeprecations": "5.0"
   },
-  "include": [".dumirc.ts", "src", "tests", "docs"]
+  "include": [
+    ".dumirc.ts",
+    "src",
+    "tests",
+    "docs"
+  ]
 }

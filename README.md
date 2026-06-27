@@ -52,12 +52,14 @@ export default () => (
 
 ## Examples
 
+Run the local dumi site:
+
 ```bash
 npm install
 npm start
 ```
 
-Open <http://localhost:8000/> locally, or visit the online example: <https://select-react-component.vercel.app/>.
+Then open `http://localhost:8000`.
 
 ## API
 

@@ -27,7 +27,7 @@ jobs:
         with:
           surge_token: ${{ env.SURGE_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          dist: .doc
+          dist: docs-dist
           failOnError: false
           setCommitStatus: false
       - name: Skip Surge preview
