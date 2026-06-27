@@ -299,9 +299,9 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     const { value, disabled } = itemData;
     const attrs = pickAttrs(itemData, true);
     const mergedLabel = getLabel(item);
-    return item ? (
+    return (
       <div
-        aria-label={typeof mergedLabel === 'string' ? mergedLabel : null}
+        aria-label={isTitleType(mergedLabel) ? String(mergedLabel) : null}
         aria-setsize={optionPositions[optionPositions.length - 1] ?? 0}
         aria-posinset={optionPositions[index]}
         {...attrs}
@@ -312,7 +312,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
       >
         {value}
       </div>
-    ) : null;
+    );
   };
 
   const getGroupItem = (index: number) => {
@@ -322,6 +322,8 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
         return current;
       }
     }
+    // Unreachable: a grouped option always has a preceding group header
+    /* istanbul ignore next */
     return null;
   };
 
@@ -358,7 +360,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
         <div
           key={group.key}
           role="group"
-          aria-label={typeof groupLabel === 'string' ? groupLabel : null}
+          aria-label={isTitleType(groupLabel) ? String(groupLabel) : null}
         >
           {indexes.map(renderItem)}
         </div>

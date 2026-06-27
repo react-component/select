@@ -302,6 +302,47 @@ describe('Select.Accessibility', () => {
       });
     });
 
+    it('should split grouped and top-level options into separate segments', () => {
+      const { container } = render(
+        <Select
+          id="virtual-select"
+          open
+          options={[
+            {
+              label: 'Group',
+              options: [{ value: '1' }, { value: '2' }, { value: '3' }],
+            },
+            // Top-level option directly after a group, with no header between
+            { value: '4' },
+          ]}
+        />,
+      );
+
+      const hiddenContainer = document.querySelector('#virtual-select_list');
+
+      // Activate the last grouped option so the window spans the group
+      // boundary: options '2', '3' (grouped) and '4' (top-level)
+      keyDown(container.querySelector('input')!, KeyCode.DOWN);
+      keyDown(container.querySelector('input')!, KeyCode.DOWN);
+
+      // Grouped options stay wrapped; the top-level option renders bare
+      const groupWrappers = Array.from(hiddenContainer.querySelectorAll('div[role="group"]'));
+      expect(groupWrappers).toHaveLength(1);
+      expect(groupWrappers[0]).toHaveAttribute('aria-label', 'Group');
+      expect(
+        Array.from(groupWrappers[0].querySelectorAll('div[role="option"]')).map((option) =>
+          option.getAttribute('aria-posinset'),
+        ),
+      ).toEqual(['2', '3']);
+
+      const topLevelOption = Array.from(
+        hiddenContainer.querySelectorAll('div[role="option"]'),
+      ).find((option) => option.getAttribute('aria-posinset') === '4');
+      expect(topLevelOption).toBeTruthy();
+      expect(topLevelOption.parentElement).toBe(hiddenContainer);
+      expect(topLevelOption).toHaveAttribute('aria-setsize', '4');
+    });
+
     it('should have correct aria and role attributes in virtual false', () => {
       render(
         <Select
