@@ -164,4 +164,4 @@ The release flow is handled by `@rc-component/np` through the `rc-np` command af
 
 ## License
 
-@rc-component/select is released under the [MIT](./LICENSE.md) license.
+@rc-component/select is released under the [MIT](./LICENSE) license.
