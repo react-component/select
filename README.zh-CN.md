@@ -74,7 +74,7 @@ Select 还接受来自 `BaseSelect` 的公共属性，但由 Select 重新定义
 | classNames | 语义className。 | `Partial<Record<SemanticName, string>>` | - |
 | defaultActiveFirstOption | 默认情况下第一个选项是否处于活动状态。 | boolean | true |
 | defaultValue | 初始选中值。 | `ValueType` \| null | - |
-| direction | Dropdown direction. | `ltr` \| `rtl` | `ltr` |
+| direction | 下拉方向。 | `ltr` \| `rtl` | `ltr` |
 | fieldNames | 自定义选项字段名称。 | `FieldNames` | - |
 | filterOption | 已弃用。请改用 `showSearch.filterOption`。 | boolean \| `FilterFunc<OptionType>` | - |
 | filterSort | 已弃用。请改用 `showSearch.filterSort`。 | `(optionA, optionB, info) => number` | - |
