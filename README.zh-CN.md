@@ -15,16 +15,15 @@
 
 <p align="center"><a href="./README.md">English</a> | 简体中文</p>
 
-
 ## 特性
 
-| 范围 | 支持 |
-| --------- | ---------------------------------------------------------- |
-| 数据      | `options` 数据，旧版 `Option` 子项，分组选项  |
-| Modes     | 单选、`multiple`、`tags` 和 `combobox` 模式          |
-| 搜索    | 受控搜索、自定义过滤和自定义排序              |
-| Rendering | 自定义选项、标签、选中项、清除图标和菜单图标 |
-| Scale     | 支持可配置项高度的虚拟滚动            |
+| 范围 | 支持                                         |
+| ---- | -------------------------------------------- |
+| 数据 | `options` 数据，旧版 `Option` 子项，分组选项 |
+| 模式 | 单选、`multiple`、`tags` 和 `combobox` 模式  |
+| 搜索 | 受控搜索、自定义过滤和自定义排序             |
+| 渲染 | 自定义选项、标签、选中项、清除图标和菜单图标 |
+| 规模 | 支持可配置项高度的虚拟滚动                   |
 
 ## 安装
 
@@ -103,10 +102,10 @@ Select 还接受来自 `BaseSelect` 的公共属性，但由 Select 重新定义
 
 ### 方法
 
-| 名称  | 说明         | 参数 |
-| ----- | ------------------- | ---------- |
-| 模糊  | 移除焦点。       | -          |
-| 重点 | 聚焦选择器。 | -          |
+| 名称 | 说明         | 参数 |
+| ---- | ------------ | ---- |
+| 模糊 | 移除焦点。   | -    |
+| 重点 | 聚焦选择器。 | -    |
 
 ### SearchConfig
 
@@ -123,25 +122,25 @@ Select 还接受来自 `BaseSelect` 的公共属性，但由 Select 重新定义
 
 `Option` 是一个旧的占位符组件。对于新用途，更喜欢 `options` 属性。
 
-| 名称 | 说明 | 类型 | 默认值 |
-| --------- | ------------------- | ------------------------ | ------- |
-| children们  | 选项标签。       | ReactNode                | -       |
-| className | 选项className称。  | string                   | -       |
-| disabled  | 禁用该选项。 | boolean                  | false   |
-| title     | 选项标题。       | string                   | -       |
-| 价值     | 选项值。       | 字符串\|数字\|无效的 | -       |
+| 名称       | 说明              | 类型                 | 默认值 |
+| ---------- | ----------------- | -------------------- | ------ |
+| children们 | 选项标签。        | ReactNode            | -      |
+| className  | 选项className称。 | string               | -      |
+| disabled   | 禁用该选项。      | boolean              | false  |
+| title      | 选项标题。        | string               | -      |
+| 价值       | 选项值。          | 字符串\|数字\|无效的 | -      |
 
 ### OptGroup
 
 `OptGroup` 是一个旧的占位符组件。优选嵌套 `options` 数据以供新用途。
 
-| 名称 | 说明 | 类型 | 默认值 |
-| --------- | ------------------ | --------- | ------- |
-| children们  | 组选项。     | ReactNode | -       |
-| className | 组className。  | string    | -       |
-| disabled  | 禁用该组。 | boolean   | false   |
-| label     | Group label.       | ReactNode | -       |
-| title     | Group title.       | string    | -       |
+| 名称       | 说明          | 类型      | 默认值 |
+| ---------- | ------------- | --------- | ------ |
+| children们 | 组选项。      | ReactNode | -      |
+| className  | 组className。 | string    | -      |
+| disabled   | 禁用该组。    | boolean   | false  |
+| label      | Group label.  | ReactNode | -      |
+| title      | Group title.  | string    | -      |
 
 ## 本地开发
 
