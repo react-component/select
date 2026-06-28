@@ -41,4 +41,5 @@ tsconfig.test.json
 .dumi/tmp
 .dumi/tmp-test
 .dumi/tmp-production
+docs-dist
 .history
