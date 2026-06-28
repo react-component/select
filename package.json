@@ -20,13 +20,13 @@
     "es",
     "lib"
   ],
-  "homepage": "http://github.com/react-component/select",
+  "homepage": "https://react-component.github.io/select",
   "repository": {
     "type": "git",
-    "url": "git@github.com:react-component/select.git"
+    "url": "https://github.com/react-component/select.git"
   },
   "bugs": {
-    "url": "http://github.com/react-component/select/issues"
+    "url": "https://github.com/react-component/select/issues"
   },
   "license": "MIT",
   "scripts": {
@@ -79,5 +79,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "typescript": "^5.9.3"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
