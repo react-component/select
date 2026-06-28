@@ -71,7 +71,7 @@ Select 还接受来自 `BaseSelect` 的公共属性，但由 Select 重新定义
 | autoClearSearchValue | 已弃用。请改用 `showSearch.autoClearSearchValue`。 | boolean | true |
 | backfill | 将活动选项回填到输入中。仅适用于 `combobox` 模式。 | boolean | false |
 | children | 旧版选项子节点。新代码推荐使用 `options`。 | ReactNode | - |
-| classNames | 语义className。 | `Partial<Record<SemanticName, string>>` | - |
+| classNames | 语义 className。 | `Partial<Record<SemanticName, string>>` | - |
 | defaultActiveFirstOption | 默认情况下第一个选项是否处于活动状态。 | boolean | true |
 | defaultValue | 初始选中值。 | `ValueType` \| null | - |
 | direction | 下拉方向。 | `ltr` \| `rtl` | `ltr` |
@@ -122,25 +122,25 @@ Select 还接受来自 `BaseSelect` 的公共属性，但由 Select 重新定义
 
 `Option` 是一个旧的占位符组件。对于新用途，更喜欢 `options` 属性。
 
-| 名称      | 说明              | 类型                     | 默认值 |
-| --------- | ----------------- | ------------------------ | ------ |
-| children  | 选项标签。        | ReactNode                | -      |
-| className | 选项className称。 | string                   | -      |
-| disabled  | 禁用该选项。      | boolean                  | false  |
-| title     | 选项标题。        | string                   | -      |
-| value     | 选项值。          | string \| number \| null | -      |
+| 名称      | 说明             | 类型                     | 默认值 |
+| --------- | ---------------- | ------------------------ | ------ |
+| children  | 选项标签。       | ReactNode                | -      |
+| className | 选项 className。 | string                   | -      |
+| disabled  | 禁用该选项。     | boolean                  | false  |
+| title     | 选项标题。       | string                   | -      |
+| value     | 选项值。         | string \| number \| null | -      |
 
 ### OptGroup
 
 `OptGroup` 是一个旧的占位符组件。优选嵌套 `options` 数据以供新用途。
 
-| 名称      | 说明          | 类型      | 默认值 |
-| --------- | ------------- | --------- | ------ |
-| children  | 组选项。      | ReactNode | -      |
-| className | 组className。 | string    | -      |
-| disabled  | 禁用该组。    | boolean   | false  |
-| label     | Group label.  | ReactNode | -      |
-| title     | Group title.  | string    | -      |
+| 名称      | 说明             | 类型      | 默认值 |
+| --------- | ---------------- | --------- | ------ |
+| children  | 组选项。         | ReactNode | -      |
+| className | 分组 className。 | string    | -      |
+| disabled  | 禁用该组。       | boolean   | false  |
+| label     | Group label.     | ReactNode | -      |
+| title     | Group title.     | string    | -      |
 
 ## 本地开发
 
