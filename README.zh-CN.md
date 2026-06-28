@@ -70,7 +70,7 @@ Select 还接受来自 `BaseSelect` 的公共属性，但由 Select 重新定义
 | --- | --- | --- | --- |
 | autoClearSearchValue | 已弃用。请改用 `showSearch.autoClearSearchValue`。 | boolean | true |
 | backfill | 将活动选项回填到输入中。仅适用于 `combobox` 模式。 | boolean | false |
-| children们 | 旧版选项子节点。新代码推荐使用 `options`。 | ReactNode | - |
+| children | 旧版选项子节点。新代码推荐使用 `options`。 | ReactNode | - |
 | classNames | 语义className。 | `Partial<Record<SemanticName, string>>` | - |
 | defaultActiveFirstOption | 默认情况下第一个选项是否处于活动状态。 | boolean | true |
 | defaultValue | 初始选中值。 | `ValueType` \| null | - |
@@ -93,19 +93,19 @@ Select 还接受来自 `BaseSelect` 的公共属性，但由 Select 重新定义
 | optionFilterProp | 已废弃。请使用 `showSearch.optionFilterProp`。 | string \| string[] | - |
 | optionLabelProp | 用作所选标签的选项道具。 | string | - |
 | optionRender | 自定义选项渲染器。 | `(oriOption, info: { index: number }) => ReactNode` | - |
-| 选项 | 选项数据。 | `OptionType[]` | - |
+| options | 选项数据。 | `OptionType[]` | - |
 | searchValue | 已弃用。请改用 `showSearch.searchValue`。 | string | - |
 | showSearch | 启用搜索或配置搜索行为。 | boolean \| `SearchConfig<OptionType>` | - |
 | styles | 语义化样式。 | `Partial<Record<SemanticName, CSSProperties>>` | - |
-| 价值 | 受控选中值。 | `ValueType` \| null | - |
+| value | 受控选中值。 | `ValueType` \| null | - |
 | virtual | 设置为 `false` 时禁用虚拟滚动。 | boolean | true |
 
 ### 方法
 
-| 名称 | 说明         | 参数 |
-| ---- | ------------ | ---- |
-| 模糊 | 移除焦点。   | -    |
-| 重点 | 聚焦选择器。 | -    |
+| 名称  | 说明         | 参数 |
+| ----- | ------------ | ---- |
+| blur  | 移除焦点。   | -    |
+| focus | 聚焦选择器。 | -    |
 
 ### SearchConfig
 
@@ -122,25 +122,25 @@ Select 还接受来自 `BaseSelect` 的公共属性，但由 Select 重新定义
 
 `Option` 是一个旧的占位符组件。对于新用途，更喜欢 `options` 属性。
 
-| 名称       | 说明              | 类型                 | 默认值 |
-| ---------- | ----------------- | -------------------- | ------ |
-| children们 | 选项标签。        | ReactNode            | -      |
-| className  | 选项className称。 | string               | -      |
-| disabled   | 禁用该选项。      | boolean              | false  |
-| title      | 选项标题。        | string               | -      |
-| 价值       | 选项值。          | 字符串\|数字\|无效的 | -      |
+| 名称      | 说明              | 类型                     | 默认值 |
+| --------- | ----------------- | ------------------------ | ------ |
+| children  | 选项标签。        | ReactNode                | -      |
+| className | 选项className称。 | string                   | -      |
+| disabled  | 禁用该选项。      | boolean                  | false  |
+| title     | 选项标题。        | string                   | -      |
+| value     | 选项值。          | string \| number \| null | -      |
 
 ### OptGroup
 
 `OptGroup` 是一个旧的占位符组件。优选嵌套 `options` 数据以供新用途。
 
-| 名称       | 说明          | 类型      | 默认值 |
-| ---------- | ------------- | --------- | ------ |
-| children们 | 组选项。      | ReactNode | -      |
-| className  | 组className。 | string    | -      |
-| disabled   | 禁用该组。    | boolean   | false  |
-| label      | Group label.  | ReactNode | -      |
-| title      | Group title.  | string    | -      |
+| 名称      | 说明          | 类型      | 默认值 |
+| --------- | ------------- | --------- | ------ |
+| children  | 组选项。      | ReactNode | -      |
+| className | 组className。 | string    | -      |
+| disabled  | 禁用该组。    | boolean   | false  |
+| label     | Group label.  | ReactNode | -      |
+| title     | Group title.  | string    | -      |
 
 ## 本地开发
 
