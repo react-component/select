@@ -67,7 +67,7 @@
     "@umijs/fabric": "^4.0.1",
     "babel-jest": "^29.7.0",
     "dumi": "^2.4.35",
-    "eslint": "^8.57.1",
+    "eslint": "^10.6.0",
     "father": "^4.6.23",
     "husky": "^9.1.7",
     "jsonp": "^0.2.1",
