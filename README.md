@@ -1,195 +1,168 @@
-# @rc-component/select
+<div align="center">
+  <h1>@rc-component/select</h1>
+  <p><sub><img alt="Ant Design" height="14" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" style="vertical-align: -0.125em;" /> Part of the Ant Design ecosystem.</sub></p>
+  <p>🎯 Composable Select component for React, with search, async-friendly option data, custom rendering, and virtual scrolling.</p>
 
----
+  <p>
+    <a href="https://npmjs.org/package/@rc-component/select"><img alt="NPM version" src="https://img.shields.io/npm/v/@rc-component/select.svg?style=flat-square"></a>
+    <a href="https://npmjs.org/package/@rc-component/select"><img alt="npm downloads" src="https://img.shields.io/npm/dm/@rc-component/select.svg?style=flat-square"></a>
+    <a href="https://github.com/react-component/select/actions/workflows/test.yml"><img alt="build status" src="https://github.com/react-component/select/actions/workflows/test.yml/badge.svg"></a>
+    <a href="https://app.codecov.io/gh/react-component/select"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/react-component/select/master.svg?style=flat-square"></a>
+    <a href="https://bundlephobia.com/package/@rc-component/select"><img alt="bundle size" src="https://img.shields.io/bundlephobia/minzip/@rc-component/select?style=flat-square"></a>
+    <a href="https://github.com/umijs/dumi"><img alt="dumi" src="https://img.shields.io/badge/docs%20by-dumi-blue?style=flat-square"></a>
+  </p>
+</div>
 
-React Select Component.
+<p align="center">English | <a href="./README.zh-CN.md">简体中文</a></p>
 
-<!-- prettier-ignore -->
-[![NPM version][npm-image]][npm-url]
-[![npm download][download-image]][download-url]
-[![build status][github-actions-image]][github-actions-url]
-[![Codecov][codecov-image]][codecov-url]
-[![bundle size][bundlephobia-image]][bundlephobia-url]
-[![dumi][dumi-image]][dumi-url]
+## Highlights
 
-[npm-image]: https://img.shields.io/npm/v/@rc-component/select.svg?style=flat-square
-[npm-url]: http://npmjs.org/package/@rc-component/select
-[github-actions-image]: https://github.com/react-component/select/actions/workflows/test.yml/badge.svg
-[github-actions-url]: https://github.com/react-component/select/actions/workflows/test.yml
-[codecov-image]: https://img.shields.io/codecov/c/github/react-component/select/master.svg?style=flat-square
-[codecov-url]: https://app.codecov.io/gh/react-component/select
-[david-url]: https://david-dm.org/react-component/select
-[david-image]: https://david-dm.org/react-component/select/status.svg?style=flat-square
-[david-dev-url]: https://david-dm.org/react-component/select?type=dev
-[david-dev-image]: https://david-dm.org/react-component/select/dev-status.svg?style=flat-square
-[download-image]: https://img.shields.io/npm/dm/@rc-component/select.svg?style=flat-square
-[download-url]: https://npmjs.org/package/@rc-component/select
-[bundlephobia-url]: https://bundlephobia.com/package/@rc-component/select
-[bundlephobia-image]: https://badgen.net/bundlephobia/minzip/@rc-component/select
-[dumi-url]: https://github.com/umijs/dumi
-[dumi-image]: https://img.shields.io/badge/docs%20by-dumi-blue?style=flat-square
+| Area      | Support                                                    |
+| --------- | ---------------------------------------------------------- |
+| Data      | `options` data, legacy `Option` children, grouped options  |
+| Modes     | Single select, `multiple`, `tags`, and `combobox`          |
+| Search    | Controlled search, custom filter, custom sort              |
+| Rendering | Custom option, label, selected item, clear, and menu icons |
+| Scale     | Virtual scrolling with configurable item height            |
 
-## Screenshots
+## Install
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/d13eUZlgdJ/tupian.png" />
-
-## Feature
-
-- support IE11+,Chrome,Firefox,Safari
-
-### Keyboard
-
-- Open select (focus input || focus and click)
-- KeyDown/KeyUp/Enter to navigate menu
-
-## install
-
-[![@rc-component/select](https://nodei.co/npm/@rc-component/select.png)](https://npmjs.org/package/@rc-component/select)
+```bash
+npm install @rc-component/select
+```
 
 ## Usage
 
-### basic use
-
-```jsx | pure
-import Select, { Option } from '@rc-component/select';
+```tsx | pure
+import Select from '@rc-component/select';
 import '@rc-component/select/assets/index.css';
 
 export default () => (
-  <Select>
-    <Option value="jack">jack</Option>
-    <Option value="lucy">lucy</Option>
-    <Option value="yiminghe">yiminghe</Option>
-  </Select>
+  <Select
+    placeholder="Select a user"
+    options={[
+      { value: 'jack', label: 'Jack' },
+      { value: 'lucy', label: 'Lucy' },
+      { value: 'yiminghe', label: 'Yiminghe' },
+    ]}
+  />
 );
 ```
 
-## API
+## Examples
 
-### Select props
+Run the local dumi site:
 
-<!-- prettier-ignore -->
-| name | description | type | default |
-| --- | --- | --- | --- |
-| id | html id to set on the component wrapper | String | '' |
-| className | additional css class of root dom node | String | '' |
-| data-\* | html data attributes to set on the component wrapper | String | '' |
-| prefixCls | prefix class | String | '' |
-| animation | dropdown animation name. only support slide-up now | String | '' |
-| transitionName | dropdown css animation name | String | '' |
-| choiceTransitionName | css animation name for selected items at multiple mode | String | '' |
-| dropdownMatchSelectWidth | whether dropdown's width is same with select | boolean | true |
-| dropdownClassName | additional className applied to dropdown | String | - |
-| dropdownStyle | additional style applied to dropdown | React.CSSProperties | {} |
-| dropdownAlign | additional align applied to dropdown | [AlignType](https://github.com/react-component/trigger/blob/728d7e92394aa4b3214650f743fc47e1382dfa68/src/interface.ts#L25-L80) | {} |
-| dropdownMenuStyle | additional style applied to dropdown menu | Object | React.CSSProperties |
-| notFoundContent | specify content to show when no result matches. | ReactNode | 'Not Found' |
-| tokenSeparators | separator used to tokenize on tag/multiple mode | `string[] \| ((input: string) => string[])` |  |
-| open | control select open | boolean |  |
-| defaultOpen | control select default open | boolean |  |
-| placeholder | select placeholder | React Node |  |
-| showSearch | whether show search input in single mode | boolean \| Object | true |
-| allowClear | whether allowClear | boolean | { clearIcon?: ReactNode } | false |
-| tags | when tagging is enabled the user can select from pre-existing options or create a new tag by picking the first choice, which is what the user has typed into the search box so far. | boolean | false |
-| tagRender | render custom tags. | (props: CustomTagProps) => ReactNode | - |
-| maxTagTextLength | max tag text length to show | number | - |
-| maxTagCount | max tag count to show | number | - |
-| maxTagPlaceholder | placeholder for omitted values | ReactNode/function(omittedValues) | - |
-| combobox | enable combobox mode(can not set multiple at the same time) | boolean | false |
-| multiple | whether multiple select | boolean | false |
-| disabled | whether disabled select | boolean | false |
-| optionLabelProp | render option value or option children as content of select | String: 'value'/'children' | 'value' |
-| defaultValue | initial selected option(s) | String \| String[] | - |
-| value | current selected option(s) | String \| String[] \| {key:String, label:React.Node} \| {key:String, label:React.Node}[] | - |
-| labelInValue | whether to embed label in value, see above value type. Not support `combobox` mode | boolean | false |
-| backfill | whether backfill select option to search input (Only works in single and combobox mode) | boolean | false |
-| onChange | called when select an option or input value change(combobox) | function(value, option:Option \| Option[]) | - |
-| onBlur | called when blur | function | - |
-| onFocus | called when focus | function | - |
-| onPopupScroll | called when menu is scrolled | function | - |
-| onSelect | called when a option is selected. param is option's value and option instance | Function(value, option:Option) | - |
-| onDeselect | called when a option is deselected. param is option's value. only called for multiple or tags | Function(value, option:Option) | - |
-| onInputKeyDown | called when key down on input | Function(event) | - |
-| defaultActiveFirstOption | whether active first option by default | boolean | true |
-| getPopupContainer | container which popup select menu rendered into | function(trigger:Node):Node | function(){return document.body;} |
-| getInputElement | customize input element | function(): Element | - |
-| showAction | actions trigger the dropdown to show | String[]? | - |
-| autoFocus | focus select after mount | boolean | - |
-| prefix | specify the select prefix icon or text | ReactNode | - |
-| suffixIcon | specify the select arrow icon | ReactNode | - |
-| clearIcon | specify the clear icon | ReactNode | - |
-| removeIcon | specify the remove icon | ReactNode | - |
-| menuItemSelectedIcon | specify the item selected icon | ReactNode \| (props: MenuItemProps) => ReactNode | - |
-| dropdownRender | render custom dropdown menu | (menu: React.Node) => ReactNode | - |
-| loading | show loading icon in arrow | boolean | false |
-| virtual | Disable virtual scroll | boolean | true |
-| direction | direction of dropdown | 'ltr' \| 'rtl' | 'ltr' |
-| optionRender | Custom rendering options | (oriOption: FlattenOptionData\<BaseOptionType\> , info: { index: number }) => React.ReactNode | - |
-| labelRender  | Custom rendering label   |  (props: LabelInValueType) => React.ReactNode   | - |
-| maxCount | The max number of items can be selected | number | - |
-
-### Methods
-
-| name  | description               | parameters | return |
-| ----- | ------------------------- | ---------- | ------ |
-| focus | focus select programmably | -          | -      |
-| blur  | blur select programmably  | -          | -      |
-
-### showSearch
-
-| name | description | type | default |
-| --- | --- | --- | --- |
-| autoClearSearchValue | auto clear search input value when multiple select is selected/deselected | boolean | true |
-| filterOption | whether filter options by input value. default filter by option's optionFilterProp prop's value | boolean\| (inputValue: string, option: Option) => boolean | true |
-| filterSort | Sort function for search options sorting, see [Array.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)'s compareFunction. | Function(optionA:Option, optionB: Option) | - |
-| optionFilterProp | which prop value of option will be used for filter if filterOption is true | String | 'value' |
-| searchValue | The current input "search" text | string | - |
-| onSearch | called when input changed | function | - |
-
-### Option props
-
-| name | description | type | default |
-| --- | --- | --- | --- |
-| className | additional class to option | String | '' |
-| disabled | no effect for click or keydown for this item | boolean | false |
-| key | if react want you to set key, then key is same as value, you can omit value | String/number | - |
-| value | default filter by this attribute. if react want you to set key, then key is same as value, you can omit value | String/number | - |
-| title | if you are not satisfied with auto-generated `title` which is show while hovering on selected value, you can customize it with this property | String | - |
-
-### OptGroup props
-
-| name | description | type | default |
-| --- | --- | --- | --- |
-| label | group label | String/React.Element | - |
-| key | - | String | - |
-| value | default filter by this attribute. if react want you to set key, then key is same as value, you can omit value | String | - |
-| className | same as `Option props` | String | '' |
-| title | same as `Option props` | String | - |
-
-## Development
-
-```
+```bash
 npm install
 npm start
 ```
 
-## Example
+Then open `http://localhost:8000`.
 
-local example: http://localhost:9001/
+## API
 
-online example: https://select-react-component.vercel.app/
+### Select
 
-## Test Case
+Select also accepts public props from `BaseSelect`, except `showSearch`, which is redefined by Select.
 
-```
+| Name | Description | Type | Default |
+| --- | --- | --- | --- |
+| autoClearSearchValue | Deprecated. Use `showSearch.autoClearSearchValue` instead. | boolean | true |
+| backfill | Backfill the active option into the input. Only works in `combobox` mode. | boolean | false |
+| children | Legacy option children. Prefer `options` for new code. | ReactNode | - |
+| classNames | Semantic class names. | `Partial<Record<SemanticName, string>>` | - |
+| defaultActiveFirstOption | Whether the first option is active by default. | boolean | true |
+| defaultValue | Initial selected value. | `ValueType` \| null | - |
+| direction | Dropdown direction. | `ltr` \| `rtl` | `ltr` |
+| fieldNames | Customize option field names. | `FieldNames` | - |
+| filterOption | Deprecated. Use `showSearch.filterOption` instead. | boolean \| `FilterFunc<OptionType>` | - |
+| filterSort | Deprecated. Use `showSearch.filterSort` instead. | `(optionA, optionB, info) => number` | - |
+| labelInValue | Return labeled value objects instead of raw values. | boolean | false |
+| labelRender | Custom selected label render. | `(props: LabelInValueType) => ReactNode` | - |
+| listHeight | Popup list height. | number | 200 |
+| listItemHeight | Popup list item height. | number | 20 |
+| maxCount | Maximum selected item count. | number | - |
+| menuItemSelectedIcon | Custom selected option icon. | `RenderNode` | - |
+| mode | Select mode. | `combobox` \| `multiple` \| `tags` | - |
+| onActive | Called when the active value changes. | `(value: ValueType) => void` | - |
+| onChange | Called when selected value changes. | `(value: ValueType, option?: OptionType \| OptionType[]) => void` | - |
+| onDeselect | Called when a value is deselected. | `(value, option) => void` | - |
+| onSearch | Deprecated. Use `showSearch.onSearch` instead. | `(value: string) => void` | - |
+| onSelect | Called when a value is selected. | `(value, option) => void` | - |
+| optionFilterProp | Deprecated. Use `showSearch.optionFilterProp` instead. | string \| string[] | - |
+| optionLabelProp | Option prop used as the selected label. | string | - |
+| optionRender | Custom option renderer. | `(oriOption, info: { index: number }) => ReactNode` | - |
+| options | Option data. | `OptionType[]` | - |
+| searchValue | Deprecated. Use `showSearch.searchValue` instead. | string | - |
+| showSearch | Enable search or configure search behavior. | boolean \| `SearchConfig<OptionType>` | - |
+| styles | Semantic styles. | `Partial<Record<SemanticName, CSSProperties>>` | - |
+| value | Controlled selected value. | `ValueType` \| null | - |
+| virtual | Disable virtual scrolling when set to `false`. | boolean | true |
+
+### Methods
+
+| Name  | Description         | Parameters |
+| ----- | ------------------- | ---------- |
+| blur  | Remove focus.       | -          |
+| focus | Focus the selector. | -          |
+
+### SearchConfig
+
+| Name | Description | Type | Default |
+| --- | --- | --- | --- |
+| autoClearSearchValue | Clear search input after selecting or deselecting in multiple mode. | boolean | true |
+| filterOption | Filter options by search input. | boolean \| `FilterFunc<OptionType>` | - |
+| filterSort | Sort filtered options. | `(optionA, optionB, info: { searchValue: string }) => number` | - |
+| onSearch | Called when search input changes. | `(value: string) => void` | - |
+| optionFilterProp | Option prop used for filtering when `filterOption` is enabled. | string \| string[] | - |
+| searchValue | Controlled search input value. | string | - |
+
+### Option
+
+`Option` is a legacy placeholder component. Prefer the `options` prop for new usage.
+
+| Name      | Description         | Type                     | Default |
+| --------- | ------------------- | ------------------------ | ------- |
+| children  | Option label.       | ReactNode                | -       |
+| className | Option class name.  | string                   | -       |
+| disabled  | Disable the option. | boolean                  | false   |
+| title     | Option title.       | string                   | -       |
+| value     | Option value.       | string \| number \| null | -       |
+
+### OptGroup
+
+`OptGroup` is a legacy placeholder component. Prefer nested `options` data for new usage.
+
+| Name      | Description        | Type      | Default |
+| --------- | ------------------ | --------- | ------- |
+| children  | Group options.     | ReactNode | -       |
+| className | Group class name.  | string    | -       |
+| disabled  | Disable the group. | boolean   | false   |
+| label     | Group label.       | ReactNode | -       |
+| title     | Group title.       | string    | -       |
+
+## Development
+
+```bash
+npm install
+npm start
 npm test
+npm run lint
+npm run tsc
+npm run compile
 ```
 
-## Coverage
+The dumi site runs at `http://localhost:8000` by default.
 
+## Release
+
+```bash
+npm run prepublishOnly
 ```
-npm run coverage
-```
+
+The release flow is handled by `@rc-component/np` through the `rc-np` command after the package build.
 
 ## License
 
-@rc-component/select is released under the MIT license.
+@rc-component/select is released under the [MIT](./LICENSE) license.

@@ -11,6 +11,8 @@
       "@/*": ["src/*"],
       "@@/*": [".dumi/tmp/*"],
       "@rc-component/select": ["src/index.ts"]
-    }
-  }
+    },
+    "ignoreDeprecations": "5.0"
+  },
+  "include": [".dumirc.ts", ".fatherrc.ts", "src", "tests", "docs"]
 }
