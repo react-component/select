@@ -490,6 +490,10 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
     const isEnterKey = key === 'Enter';
 
+    // The Enter key that confirms an IME composition should not select the active
+    // option, the same way the Selector skips the tags-mode submit while composing.
+    const isComposingEnter = isEnterKey && event.nativeEvent.isComposing;
+
     if (isEnterKey) {
       // Do not submit form when type in the input
       if (mode !== 'combobox') {
@@ -533,7 +537,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       }
     }
 
-    if (mergedOpen && (!isEnterKey || !keyLockRef.current)) {
+    if (mergedOpen && (!isEnterKey || !keyLockRef.current) && !isComposingEnter) {
       // Lock the Enter key after it is pressed to avoid repeated triggering of the onChange event.
       if (isEnterKey) {
         keyLockRef.current = true;
