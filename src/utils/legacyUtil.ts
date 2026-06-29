@@ -3,12 +3,12 @@ import { toArray } from '@rc-component/util';
 import type { BaseOptionType, DefaultOptionType } from '../Select';
 
 function convertNodeToOption<OptionType extends BaseOptionType = DefaultOptionType>(
-  node: React.ReactElement,
+  node: React.ReactElement<any>,
 ): OptionType {
   const {
     key,
     props: { children, value, ...restProps },
-  } = node as React.ReactElement;
+  } = node as React.ReactElement<any>;
 
   return { key, value: value !== undefined ? value : key, children, ...restProps };
 }
@@ -18,7 +18,7 @@ export function convertChildrenToData<OptionType extends BaseOptionType = Defaul
   optionOnly: boolean = false,
 ): OptionType[] {
   return toArray(nodes)
-    .map((node: React.ReactElement, index: number): OptionType | null => {
+    .map((node: React.ReactElement<any>, index: number): OptionType | null => {
       if (!React.isValidElement(node) || !node.type) {
         return null;
       }
@@ -27,7 +27,7 @@ export function convertChildrenToData<OptionType extends BaseOptionType = Defaul
         type: { isSelectOptGroup },
         key,
         props: { children, ...restProps },
-      } = node as React.ReactElement & { type: { isSelectOptGroup?: boolean } };
+      } = node as React.ReactElement<any> & { type: { isSelectOptGroup?: boolean } };
 
       if (optionOnly || !isSelectOptGroup) {
         return convertNodeToOption(node);
