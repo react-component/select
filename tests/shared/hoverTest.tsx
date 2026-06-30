@@ -1,7 +1,6 @@
-import { fireEvent } from '@testing-library/dom';
 import * as React from 'react';
 import Select, { Option } from '../../src';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
 export default function hoverTest(mode: any) {
   it('triggers mouseEnter and mouseLeave', () => {

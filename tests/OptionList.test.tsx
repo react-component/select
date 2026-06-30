@@ -1,4 +1,3 @@
-import { createEvent, fireEvent } from '@testing-library/dom';
 import { KeyCode, spyElementPrototypes } from '@rc-component/util';
 import React, { act } from 'react';
 import { BaseSelectContext } from '../src/hooks/useBaseProps';
@@ -7,7 +6,7 @@ import OptionList from '../src/OptionList';
 import SelectContext from '../src/SelectContext';
 import { fillFieldNames, flattenOptions } from '../src/utils/valueUtil';
 import { injectRunAllTimers } from './utils/common';
-import { render, waitFor } from '@testing-library/react';
+import { createEvent, fireEvent, render, waitFor } from '@testing-library/react';
 import Select from '../src';
 
 jest.mock('../src/utils/platformUtil');

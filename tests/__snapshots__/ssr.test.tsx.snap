@@ -1,3 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Select.SSR should work 1`] = `"<div class="rc-select rc-select-single"><div class="rc-select-content"><div class="rc-select-placeholder" style="visibility:visible"></div><input id="test-id" type="text" readonly="" autoComplete="new-password" class="rc-select-input" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-autocomplete="list" value=""/></div></div>"`;
+exports[`Select.SSR should work 1`] = `"<div class="rc-select rc-select-single"><div class="rc-select-content"><div class="rc-select-placeholder" style="visibility:visible"></div><input id="test-id" type="text" readOnly="" autoComplete="new-password" class="rc-select-input" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-autocomplete="list" value=""/></div></div>"`;

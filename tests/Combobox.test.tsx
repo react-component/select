@@ -1,8 +1,7 @@
-import { createEvent, fireEvent } from '@testing-library/dom';
 /* eslint-disable max-classes-per-file */
 
 import '@testing-library/jest-dom';
-import { render } from '@testing-library/react';
+import { createEvent, fireEvent, render } from '@testing-library/react';
 import { KeyCode, resetWarned } from '@rc-component/util';
 import React, { act } from 'react';
 import type { SelectProps } from '../src';

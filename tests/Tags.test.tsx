@@ -1,5 +1,4 @@
-import { createEvent, fireEvent } from '@testing-library/dom';
-import { render } from '@testing-library/react';
+import { createEvent, fireEvent, render } from '@testing-library/react';
 import { KeyCode } from '@rc-component/util';
 import { clsx } from 'clsx';
 import * as React from 'react';

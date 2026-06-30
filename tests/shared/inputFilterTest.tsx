@@ -1,8 +1,7 @@
-import { fireEvent } from '@testing-library/dom';
 import * as React from 'react';
 import Option from '../../src/Option';
 import Select from '../../src/Select';
-import { act, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 
 export default function inputFilterTest(mode: any) {
   it('should keep input filter after select when autoClearSearchValue is false', () => {

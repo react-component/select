@@ -1,8 +1,7 @@
-import { fireEvent } from '@testing-library/dom';
 import * as React from 'react';
 import Select from '../src';
 import { injectRunAllTimers, waitFakeTimer } from './utils/common';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
 describe('Select.Custom', () => {
   injectRunAllTimers(jest);

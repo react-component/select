@@ -1,9 +1,8 @@
-import { fireEvent } from '@testing-library/dom';
 import * as React from 'react';
 import { KeyCode } from '@rc-component/util';
 import Select from '../src';
 import { injectRunAllTimers, expectOpen, keyDown } from './utils/common';
-import { act, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 
 describe('Select.Accessibility', () => {
   injectRunAllTimers(jest);
