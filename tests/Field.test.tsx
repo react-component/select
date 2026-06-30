@@ -1,8 +1,9 @@
+import { fireEvent } from '@testing-library/dom';
 import React, { act } from 'react';
 import Select from '../src';
 import type { SelectProps } from '../src';
 import { injectRunAllTimers } from './utils/common';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 describe('Select.Field', () => {
   injectRunAllTimers(jest);

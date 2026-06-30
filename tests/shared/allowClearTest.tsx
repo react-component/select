@@ -1,6 +1,7 @@
+import { createEvent, fireEvent } from '@testing-library/dom';
 import * as React from 'react';
 import Select, { Option } from '../../src';
-import { createEvent, fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 export default function allowClearTest(mode: any, value: any) {
   describe('allowClear', () => {

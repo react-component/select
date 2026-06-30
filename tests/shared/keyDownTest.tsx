@@ -1,7 +1,8 @@
+import { fireEvent } from '@testing-library/dom';
 import * as React from 'react';
 import Option from '../../src/Option';
 import Select from '../../src/Select';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 export default function keyDownTest(mode: any) {
   it('triggers keyDown', () => {

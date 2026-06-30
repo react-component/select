@@ -1,8 +1,9 @@
+import { fireEvent, createEvent } from '@testing-library/dom';
 import React from 'react';
 import Option from '../../src/Option';
 import Select from '../../src/Select';
 import { injectRunAllTimers } from '../utils/common';
-import { type RenderResult, render, fireEvent, createEvent, act } from '@testing-library/react';
+import { type RenderResult, render, act } from '@testing-library/react';
 
 export default function blurTest(mode: any) {
   describe(`blur of ${mode}`, () => {

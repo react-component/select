@@ -1,4 +1,5 @@
-import { createEvent, fireEvent, render } from '@testing-library/react';
+import { createEvent, fireEvent } from '@testing-library/dom';
+import { render } from '@testing-library/react';
 import React from 'react';
 import Select from '../src';
 import { injectRunAllTimers } from './utils/common';

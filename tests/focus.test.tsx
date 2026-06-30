@@ -1,6 +1,7 @@
+import { fireEvent } from '@testing-library/dom';
 import React, { useState, act } from 'react';
 import Select from '../src';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 describe('Select.Focus', () => {
   beforeEach(() => {

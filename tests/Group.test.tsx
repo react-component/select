@@ -1,6 +1,7 @@
+import { fireEvent } from '@testing-library/dom';
 import * as React from 'react';
 import Select, { OptGroup, Option } from '../src';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 describe('Select.Group', () => {
   it('group name support search', () => {

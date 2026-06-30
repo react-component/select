@@ -1,3 +1,4 @@
+import { fireEvent } from '@testing-library/dom';
 import { KeyCode } from '@rc-component/util';
 import React from 'react';
 import Select, { Option, OptGroup } from '../src';
@@ -19,7 +20,7 @@ import {
   keyUp,
 } from './utils/common';
 import allowClearTest from './shared/allowClearTest';
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 
 describe('Select.Multiple', () => {
   injectRunAllTimers(jest);

@@ -1,11 +1,6 @@
+import { createEvent, fireEvent } from '@testing-library/dom';
 import type { LabelInValueType } from '@/Select';
-import {
-  createEvent,
-  fireEvent,
-  render,
-  render as testingRender,
-  act,
-} from '@testing-library/react';
+import { render, render as testingRender, act } from '@testing-library/react';
 import { KeyCode, resetWarned, spyElementPrototypes } from '@rc-component/util';
 import type { ScrollConfig } from '@rc-component/virtual-list';
 import React, { StrictMode } from 'react';

@@ -1,5 +1,5 @@
+import { createEvent, fireEvent } from '@testing-library/dom';
 import { act } from 'react';
-import { createEvent, fireEvent } from '@testing-library/react';
 
 export function expectOpen(wrapper: any, open: boolean = true) {
   if (wrapper instanceof HTMLElement) {

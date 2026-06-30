@@ -1,5 +1,6 @@
+import { fireEvent } from '@testing-library/dom';
 import type { OptionListProps, RefOptionListProps } from '../src/OptionList';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { forwardRef, act } from 'react';
 import BaseSelect from '../src/BaseSelect';
 import { waitFakeTimer } from './utils/common';
