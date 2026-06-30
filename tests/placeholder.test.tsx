@@ -15,6 +15,19 @@ describe('Select placeholder', () => {
     });
   });
 
+  it('should not force placeholder visible when select is hidden', () => {
+    const { container } = render(<Select style={{ visibility: 'hidden' }} placeholder="bamboo" />);
+    const placeholder = container.querySelector<HTMLElement>('.rc-select-placeholder')!;
+
+    expect(container.querySelector('.rc-select')).toHaveStyle({
+      visibility: 'hidden',
+    });
+    expect(placeholder).not.toHaveAttribute(
+      'style',
+      expect.stringContaining('visibility: visible'),
+    );
+  });
+
   it('when value is null', () => {
     const { container } = render(<Select value={null} placeholder="bamboo" />);
     expect(container.querySelector('.rc-select-placeholder')).toBeTruthy();

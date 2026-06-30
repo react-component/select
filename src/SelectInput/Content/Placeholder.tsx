@@ -20,7 +20,7 @@ export default function Placeholder(props: PlaceholderProps) {
     <div
       className={clsx(`${prefixCls}-placeholder`, classNames?.placeholder)}
       style={{
-        visibility: show ? 'visible' : 'hidden',
+        ...(show ? {} : { visibility: 'hidden' }),
         ...styles?.placeholder,
       }}
     >
