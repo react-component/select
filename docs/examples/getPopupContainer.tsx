@@ -1,7 +1,7 @@
-import 'rc-dialog/assets/index.css';
+import '@rc-component/dialog/assets/index.css';
 import '../../assets/index.less';
 
-import Dialog from 'rc-dialog';
+import Dialog from '@rc-component/dialog';
 import Select, { type SelectProps } from '@rc-component/select';
 import React from 'react';
 
