@@ -8,7 +8,7 @@ function convertNodeToOption<OptionType extends BaseOptionType = DefaultOptionTy
   const {
     key,
     props: { children, value, ...restProps },
-  } = node as React.ReactElement<any>;
+  } = node;
 
   return { key, value: value !== undefined ? value : key, children, ...restProps };
 }
