@@ -171,9 +171,9 @@ export interface BaseSelectProps
 
   // >>> Customize Input
   /** @private Internal usage. Do not use in your production. */
-  getInputElement?: () => React.JSX.Element;
+  getInputElement?: () => React.ReactElement;
   /** @private Internal usage. Do not use in your production. */
-  getRawInputElement?: () => React.JSX.Element;
+  getRawInputElement?: () => React.ReactElement;
 
   // >>> Selector
   maxTagTextLength?: number;
