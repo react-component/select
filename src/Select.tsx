@@ -539,7 +539,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
     const mergedDefaultActiveFirstOption =
       defaultActiveFirstOption !== undefined ? defaultActiveFirstOption : mode !== 'combobox';
 
-    const activeEventRef = React.useRef<Promise<void>>();
+    const activeEventRef = React.useRef<Promise<void> | undefined>(undefined);
 
     const onActiveValue: OnActiveValue = React.useCallback(
       (active, index, { source = 'keyboard' } = {}) => {

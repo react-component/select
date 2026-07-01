@@ -5,7 +5,7 @@ import * as React from 'react';
  * but redirect to real function.
  */
 export default function useRefFunc<T extends (...args: any[]) => any>(callback: T): T {
-  const funcRef = React.useRef<T>();
+  const funcRef = React.useRef<T>(callback);
   funcRef.current = callback;
 
   const cacheFn = React.useCallback((...args: any[]) => {
