@@ -9,7 +9,6 @@ exports[`Select.Combobox renders controlled correctly 1`] = `
   >
     <div
       class="rc-select-placeholder"
-      style="visibility: visible;"
     >
       Search
     </div>
@@ -37,7 +36,6 @@ exports[`Select.Combobox renders correctly 1`] = `
   >
     <div
       class="rc-select-placeholder"
-      style="visibility: visible;"
     >
       Search
     </div>
