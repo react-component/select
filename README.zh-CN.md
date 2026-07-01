@@ -54,7 +54,7 @@ export default () => (
 运行本地 dumi 站点：
 
 ```bash
-ut install
+npm install
 npm start
 ```
 
@@ -145,7 +145,7 @@ Select 还接受来自 `BaseSelect` 的公共属性，但由 Select 重新定义
 ## 本地开发
 
 ```bash
-ut install
+npm install
 npm start
 npm test
 npm run lint

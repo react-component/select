@@ -54,7 +54,7 @@ export default () => (
 Run the local dumi site:
 
 ```bash
-ut install
+npm install
 npm start
 ```
 
@@ -145,7 +145,7 @@ Select also accepts public props from `BaseSelect`, except `showSearch`, which i
 ## Development
 
 ```bash
-ut install
+npm install
 npm start
 npm test
 npm run lint
