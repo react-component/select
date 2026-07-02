@@ -17,29 +17,6 @@ const compat = new FlatCompat({
 
 const legacyConfig = require('./.eslintrc.js');
 
-function supportRule(ruleName) {
-  if (ruleName.startsWith('@babel/')) {
-    return false;
-  }
-  if (ruleName.startsWith('@typescript-eslint/')) {
-    return Boolean(tsEslintPlugin.rules[ruleName.replace('@typescript-eslint/', '')]);
-  }
-  return true;
-}
-
-function dropUnsupportedRules(config) {
-  if (!config.rules) {
-    return config;
-  }
-
-  return {
-    ...config,
-    rules: Object.fromEntries(
-      Object.entries(config.rules).filter(([ruleName]) => supportRule(ruleName)),
-    ),
-  };
-}
-
 export default [
   {
     ignores: [
@@ -56,7 +33,26 @@ export default [
       'src/index.d.ts',
     ],
   },
-  ...compat.config(legacyConfig).map(dropUnsupportedRules),
+  ...compat.config(legacyConfig).map((config) => ({
+    ...config,
+    ...(config.rules
+      ? {
+          rules: Object.fromEntries(
+            Object.entries(config.rules).filter(([ruleName]) => {
+              if (ruleName.startsWith('@babel/')) {
+                return false;
+              }
+
+              if (ruleName.startsWith('@typescript-eslint/')) {
+                return Boolean(tsEslintPlugin.rules[ruleName.replace('@typescript-eslint/', '')]);
+              }
+
+              return true;
+            }),
+          ),
+        }
+      : {}),
+  })),
   {
     rules: {
       '@typescript-eslint/no-empty-object-type': 'off',
