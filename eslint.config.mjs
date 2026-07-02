@@ -1,23 +1,13 @@
-import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
-import tsEslintPlugin from '@typescript-eslint/eslint-plugin';
-import { createRequire } from 'node:module';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { defineConfig } from 'eslint/config';
+import prettier from 'eslint-config-prettier';
+import jest from 'eslint-plugin-jest';
+import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const require = createRequire(import.meta.url);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
-
-const legacyConfig = require('./.eslintrc.js');
-
-export default [
+export default defineConfig([
   {
     ignores: [
       'node_modules/',
@@ -29,35 +19,57 @@ export default [
       '.dumi/',
       '.doc/',
       '.vercel/',
-      '.eslintrc.js',
       'src/index.d.ts',
     ],
   },
-  ...compat.config(legacyConfig).map((config) => ({
-    ...config,
-    ...(config.rules
-      ? {
-          rules: Object.fromEntries(
-            Object.entries(config.rules).filter(([ruleName]) => {
-              if (ruleName.startsWith('@babel/')) {
-                return false;
-              }
-
-              if (ruleName.startsWith('@typescript-eslint/')) {
-                return Boolean(tsEslintPlugin.rules[ruleName.replace('@typescript-eslint/', '')]);
-              }
-
-              return true;
-            }),
-          ),
-        }
-      : {}),
-  })),
   {
+    files: ['**/*.{js,jsx,ts,tsx}'],
+    extends: [
+      js.configs.recommended,
+      ...tseslint.configs.recommended,
+      react.configs.flat.recommended,
+      react.configs.flat['jsx-runtime'],
+      prettier,
+    ],
+    plugins: {
+      'react-hooks': reactHooks,
+    },
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
     rules: {
       '@typescript-eslint/no-empty-object-type': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unsafe-function-type': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
+      'no-extra-boolean-cast': 'off',
+      'no-undef': 'off',
+      'react/display-name': 'off',
+      'react/no-unknown-property': 'off',
+      'react/prop-types': 'off',
+      'react-hooks/exhaustive-deps': 'warn',
+      'react-hooks/rules-of-hooks': 'error',
     },
   },
-];
+  {
+    files: ['tests/**/*.{js,jsx,ts,tsx}', '**/*.{test,spec}.{js,jsx,ts,tsx}'],
+    extends: [jest.configs['flat/recommended']],
+    rules: {
+      'jest/expect-expect': 'off',
+      'jest/no-alias-methods': 'off',
+      'jest/no-conditional-expect': 'off',
+      'jest/no-export': 'off',
+      'jest/no-standalone-expect': 'off',
+      'jest/valid-expect': 'off',
+      'jest/valid-title': 'off',
+    },
+  },
+]);
