@@ -16,50 +16,28 @@ const compat = new FlatCompat({
 });
 
 const legacyConfig = require('./.eslintrc.js');
-const recommendedTsRulesConfig = tsEslintPlugin.configs.recommended;
-const recommendedTsRulesObject = Array.isArray(recommendedTsRulesConfig)
-  ? recommendedTsRulesConfig.reduce((rules, config) => ({ ...rules, ...(config.rules || {}) }), {})
-  : recommendedTsRulesConfig?.rules || {};
-const recommendedTsRules = new Set(Object.keys(recommendedTsRulesObject));
 
-function hasCurrentTsRule(ruleName) {
-  const tsRuleName = ruleName.replace('@typescript-eslint/', '');
-  return Boolean(tsEslintPlugin.rules[tsRuleName]);
+function supportRule(ruleName) {
+  if (ruleName.startsWith('@babel/')) {
+    return false;
+  }
+  if (ruleName.startsWith('@typescript-eslint/')) {
+    return Boolean(tsEslintPlugin.rules[ruleName.replace('@typescript-eslint/', '')]);
+  }
+  return true;
 }
-const localTsRules = new Set(
-  Object.keys(legacyConfig.rules || {}).filter(
-    (ruleName) => ruleName.startsWith('@typescript-eslint/') && hasCurrentTsRule(ruleName),
-  ),
-);
 
-const noopRule = {
-  meta: { type: 'problem', docs: {}, schema: [] },
-  create: () => ({}),
-};
-
-function normalizeConfig(config) {
-  const next = { ...config };
-
-  if (next.plugins?.['@typescript-eslint']) {
-    next.plugins = { ...next.plugins };
-    delete next.plugins['@typescript-eslint'];
+function dropUnsupportedRules(config) {
+  if (!config.rules) {
+    return config;
   }
 
-  if (next.rules) {
-    next.rules = Object.fromEntries(
-      Object.entries(next.rules).filter(([ruleName]) => {
-        if (ruleName.startsWith('@babel/')) {
-          return false;
-        }
-        if (!ruleName.startsWith('@typescript-eslint/')) {
-          return true;
-        }
-        return recommendedTsRules.has(ruleName) || localTsRules.has(ruleName);
-      }),
-    );
-  }
-
-  return next;
+  return {
+    ...config,
+    rules: Object.fromEntries(
+      Object.entries(config.rules).filter(([ruleName]) => supportRule(ruleName)),
+    ),
+  };
 }
 
 export default [
@@ -78,18 +56,7 @@ export default [
       'src/index.d.ts',
     ],
   },
-  {
-    plugins: {
-      '@typescript-eslint': {
-        ...tsEslintPlugin,
-        rules: {
-          ...tsEslintPlugin.rules,
-          'consistent-type-exports': noopRule,
-        },
-      },
-    },
-  },
-  ...compat.config(legacyConfig).map(normalizeConfig),
+  ...compat.config(legacyConfig).map(dropUnsupportedRules),
   {
     rules: {
       '@typescript-eslint/no-empty-object-type': 'off',
