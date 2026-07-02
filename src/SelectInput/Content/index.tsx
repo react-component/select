@@ -9,7 +9,8 @@ export interface SharedContentProps {
   inputProps: React.InputHTMLAttributes<HTMLInputElement>;
 }
 
-function SelectContent(_props: unknown, ref: React.ForwardedRef<HTMLInputElement>) {
+// eslint-disable-next-line @typescript-eslint/no-shadow
+const SelectContent = React.forwardRef<HTMLInputElement>(function SelectContent(_, ref) {
   const { multiple, onInputKeyDown, tabIndex } = useSelectInputContext();
   const baseProps = useBaseProps();
   const { showSearch } = baseProps;
@@ -28,6 +29,6 @@ function SelectContent(_props: unknown, ref: React.ForwardedRef<HTMLInputElement
   }
 
   return <SingleContent ref={ref} inputProps={sharedInputProps} />;
-}
+});
 
-export default React.forwardRef<HTMLInputElement>(SelectContent);
+export default SelectContent;
