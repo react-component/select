@@ -116,19 +116,19 @@ function warningProps(props: SelectProps) {
         return false;
       }
       if (type.isSelectOptGroup) {
-        const allChildrenValid = toNodeArray(node.props.children).every(
-          (subNode: React.ReactElement) => {
-            if (
-              !React.isValidElement(subNode) ||
-              !node.type ||
-              (subNode.type as { isSelectOption?: boolean }).isSelectOption
-            ) {
-              return true;
-            }
-            invalidateChildType = subNode.type;
-            return false;
-          },
-        );
+        const allChildrenValid = toNodeArray(
+          (node as React.ReactElement<any>).props.children,
+        ).every((subNode: React.ReactElement) => {
+          if (
+            !React.isValidElement(subNode) ||
+            !node.type ||
+            (subNode.type as { isSelectOption?: boolean }).isSelectOption
+          ) {
+            return true;
+          }
+          invalidateChildType = subNode.type;
+          return false;
+        });
 
         if (allChildrenValid) {
           return false;
