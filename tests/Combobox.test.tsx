@@ -287,14 +287,10 @@ describe('Select.Combobox', () => {
       const Test = () => {
         const [options, setOptions] = React.useState([]);
         const onSearch = (value: string) => {
-          let res = [];
-
-          if (!value || value.indexOf('@') >= 0) {
-            res = [];
-          } else {
-            const email = `${value}@gmail.com`;
-            res = [{ value: email, label: email }];
-          }
+          const res =
+            !value || value.indexOf('@') >= 0
+              ? []
+              : [{ value: `${value}@gmail.com`, label: `${value}@gmail.com` }];
           setOptions(res);
         };
         return (
