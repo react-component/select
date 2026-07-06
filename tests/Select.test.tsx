@@ -2727,7 +2727,6 @@ describe('Select.Basic', () => {
   });
 
   it('release Enter key lock after customize input calls blur()', async () => {
-    let inputElem: HTMLInputElement | null = null;
     const onBlur = jest.fn();
     const Demo: React.FC = () => {
       const ref = React.useRef<HTMLInputElement>(null);
@@ -2747,7 +2746,7 @@ describe('Select.Basic', () => {
       );
     };
     const { container } = render(<Demo />);
-    inputElem = container.querySelector('input');
+    const inputElem = container.querySelector('input');
     toggleOpen(container);
     await waitFakeTimer();
     expectOpen(container, true);
