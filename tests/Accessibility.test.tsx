@@ -193,7 +193,7 @@ describe('Select.Accessibility', () => {
         }
       });
 
-      const rcVirtual = document.querySelector('.rc-virtual-list-holder-inner');
+      const rcVirtual = document.querySelector('.rc-select-dropdown-list-holder-inner');
       expect(rcVirtual).not.toHaveAttribute('role');
       const rcOptionItem = rcVirtual.querySelectorAll('.rc-select-item-option');
 

@@ -106,16 +106,16 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
         />
       </div>
       <div
-        class="rc-virtual-list"
+        class="rc-select-dropdown-list"
         style="position: relative;"
       >
         <div
-          class="rc-virtual-list-holder"
+          class="rc-select-dropdown-list-holder"
           style="max-height: 200px; overflow-y: auto;"
         >
           <div>
             <div
-              class="rc-virtual-list-holder-inner"
+              class="rc-select-dropdown-list-holder-inner"
               style="display: flex; flex-direction: column;"
             >
               <div
