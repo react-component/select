@@ -180,9 +180,9 @@ describe('Select.Basic', () => {
       );
 
       // these generate the same snapshots
-      expect(containerFirst.querySelector('.rc-virtual-list')).toMatchSnapshot();
-      expect(containerSecond.querySelector('.rc-virtual-list')).toMatchSnapshot();
-      expect(containerThird.querySelector('.rc-virtual-list')).toMatchSnapshot();
+      expect(containerFirst.querySelector('.rc-select-dropdown-list')).toMatchSnapshot();
+      expect(containerSecond.querySelector('.rc-select-dropdown-list')).toMatchSnapshot();
+      expect(containerThird.querySelector('.rc-select-dropdown-list')).toMatchSnapshot();
     });
   });
 
@@ -2619,7 +2619,7 @@ describe('Select.Basic', () => {
     const options = new Array(10).fill(null).map((_, value) => ({ value }));
 
     const { container } = testingRender(<Select open direction="rtl" options={options} />);
-    expect(container.querySelector('.rc-virtual-list-rtl')).toBeTruthy();
+    expect(container.querySelector('.rc-select-dropdown-list-rtl')).toBeTruthy();
   });
 
   it('Should optionRender work', () => {
@@ -2720,7 +2720,7 @@ describe('Select.Basic', () => {
       />,
     );
     const element = container.querySelectorAll<HTMLDivElement>(
-      'div.rc-virtual-list-holder-inner .rc-select-item',
+      'div.rc-select-dropdown-list-holder-inner .rc-select-item',
     );
     expect(element[0]).not.toHaveClass('rc-select-item-option-disabled');
     expect(element[1]).toHaveClass('rc-select-item-option-disabled');
@@ -2811,7 +2811,7 @@ describe('Select.Basic', () => {
     const prefix = container.querySelector('.rc-select-prefix');
     const suffix = container.querySelector('.rc-select-suffix');
     const item = container.querySelector('.rc-select-item-option');
-    const list = container.querySelector('.rc-virtual-list');
+    const list = container.querySelector('.rc-select-dropdown-list');
     const input = container.querySelector('input');
     expect(prefix).toHaveClass(customClassNames.prefix);
     expect(prefix).toHaveStyle(customStyle.prefix);
