@@ -381,6 +381,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
         </div>
       )}
       <List<FlattenOptionData<BaseOptionType>>
+        prefixCls={`${prefixCls}-dropdown-list`}
         itemKey="key"
         ref={listRef}
         data={memoFlattenOptions}
