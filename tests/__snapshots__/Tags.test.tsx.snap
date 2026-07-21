@@ -87,23 +87,20 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
         style="height: 0px; width: 0px; overflow: hidden;"
       >
         <div
-          aria-selected="false"
-          id="test-id_list_0"
-          role="presentation"
-        />
-        <div
-          aria-label="Jack"
-          aria-selected="true"
-          id="test-id_list_1"
-          role="option"
+          aria-label="Manager"
+          role="group"
         >
-          jack
+          <div
+            aria-label="Jack"
+            aria-posinset="1"
+            aria-selected="true"
+            aria-setsize="3"
+            id="test-id_list_1"
+            role="option"
+          >
+            jack
+          </div>
         </div>
-        <div
-          aria-selected="false"
-          id="test-id_list_2"
-          role="presentation"
-        />
       </div>
       <div
         class="rc-select-dropdown-list"
