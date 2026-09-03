@@ -385,6 +385,12 @@ describe('Select.Basic', () => {
     expect(container6.querySelector('.custom-clear-icon')).toBeFalsy();
   });
 
+  it('should render numeric clear icon', () => {
+    const { container } = render(<Select allowClear clearIcon={0} value="1" />);
+
+    expect(container.querySelector('.rc-select-clear')).toHaveTextContent('0');
+  });
+
   it('should direction rtl', () => {
     const Hooker = () => {
       const { direction } = useBaseProps();
