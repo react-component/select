@@ -29,7 +29,7 @@
  * - `combobox` mode not support `optionLabelProp`
  */
 
-import { useControlledState, useId, warning } from '@rc-component/util';
+import { isNonNullable, useControlledState, useId, warning } from '@rc-component/util';
 import * as React from 'react';
 import type {
   BaseSelectProps,
@@ -51,7 +51,7 @@ import useFilterOptions from './hooks/useFilterOptions';
 import useOptions from './hooks/useOptions';
 import useRefFunc from './hooks/useRefFunc';
 import type { FlattenOptionData } from './interface';
-import { hasValue, isComboNoValue, toArray } from './utils/commonUtil';
+import { isComboNoValue, toArray } from './utils/commonUtil';
 import { fillFieldNames, flattenOptions, injectPropsWithOption } from './utils/valueUtil';
 import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
 import useSearchConfig from './hooks/useSearchConfig';
@@ -392,7 +392,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
     React.useEffect(() => {
       if (mode === 'combobox') {
         const strValue = mergedValues[0]?.value;
-        setSearchValue(hasValue(strValue) ? String(strValue) : '');
+        setSearchValue(isNonNullable(strValue) ? String(strValue) : '');
       }
     }, [mergedValues]);
 

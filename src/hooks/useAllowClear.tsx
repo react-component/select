@@ -1,5 +1,6 @@
 import type { DisplayValueType, Mode } from '../interface';
 import type React from 'react';
+import { isReactRenderable } from '@rc-component/util';
 import { useMemo } from 'react';
 
 export interface AllowClearConfig {
@@ -37,7 +38,13 @@ export const useAllowClear = (
 
     return {
       allowClear: mergedAllowClear,
-      clearIcon: mergedAllowClear ? allowClearConfig.clearIcon || clearIcon || '×' : null,
+      clearIcon: mergedAllowClear
+        ? isReactRenderable(allowClearConfig.clearIcon)
+          ? allowClearConfig.clearIcon
+          : isReactRenderable(clearIcon)
+            ? clearIcon
+            : '×'
+        : null,
       label: mergedAllowClear ? (allowClearConfig.label ?? 'Clear') : '',
     };
   }, [allowClearConfig, clearIcon, disabled, displayValues.length, mergedSearchValue, mode]);

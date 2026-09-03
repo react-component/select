@@ -4,7 +4,15 @@ import SelectContent from './Content';
 import SelectInputContext from './context';
 import type { DisplayValueType, Mode, RenderNode } from '../interface';
 import useBaseProps from '../hooks/useBaseProps';
-import { composeRef, getDOM, KeyCode, omit, pickAttrs, useEvent } from '@rc-component/util';
+import {
+  composeRef,
+  getDOM,
+  isReactRenderable,
+  KeyCode,
+  omit,
+  pickAttrs,
+  useEvent,
+} from '@rc-component/util';
 import { isValidateOpenKey } from '../utils/keyUtil';
 import { clsx } from 'clsx';
 import type { ComponentsConfig } from '../hooks/useComponents';
@@ -298,7 +306,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
           {suffix}
         </Affix>
         {/* Clear Icon */}
-        {clearIcon && (
+        {isReactRenderable(clearIcon) && (
           <button
             type="button"
             aria-label={clearLabel}

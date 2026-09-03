@@ -13,10 +13,6 @@ export const isClient =
 /** Is client side and not jsdom */
 export const isBrowserClient = process.env.NODE_ENV !== 'test' && isClient;
 
-export function hasValue(value) {
-  return value !== undefined && value !== null;
-}
-
 /** combo mode no value judgment function */
 export function isComboNoValue(value) {
   return !value && value !== 0;

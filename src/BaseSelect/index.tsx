@@ -1,6 +1,6 @@
 import type { AlignType, BuildInPlacements } from '@rc-component/trigger';
 import { clsx } from 'clsx';
-import { getDOM, useEvent } from '@rc-component/util';
+import { getDOM, isNonNullable, useEvent } from '@rc-component/util';
 import type { ScrollConfig, ScrollTo } from '@rc-component/virtual-list';
 import * as React from 'react';
 import { useAllowClear } from '../hooks/useAllowClear';
@@ -744,7 +744,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     [`${prefixCls}-multiple`]: multiple,
     [`${prefixCls}-single`]: !multiple,
     [`${prefixCls}-allow-clear`]: mergedAllowClear,
-    [`${prefixCls}-show-arrow`]: mergedSuffixIcon !== undefined && mergedSuffixIcon !== null,
+    [`${prefixCls}-show-arrow`]: isNonNullable(mergedSuffixIcon),
     [`${prefixCls}-disabled`]: disabled,
     [`${prefixCls}-loading`]: loading,
     [`${prefixCls}-open`]: mergedOpen,

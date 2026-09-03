@@ -50,7 +50,7 @@
   "dependencies": {
     "@rc-component/overflow": "^1.0.0",
     "@rc-component/trigger": "^3.0.0",
-    "@rc-component/util": "^1.11.1",
+    "@rc-component/util": "^1.13.0",
     "@rc-component/virtual-list": "^1.2.0",
     "clsx": "^2.1.1"
   },
