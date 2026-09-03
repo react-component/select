@@ -1,3 +1,4 @@
+import { isReactRenderable } from '@rc-component/util';
 import * as React from 'react';
 
 export interface AffixProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -8,7 +9,7 @@ export interface AffixProps extends React.HTMLAttributes<HTMLDivElement> {
 export default function Affix(props: AffixProps) {
   const { children, ...restProps } = props;
 
-  if (!children) {
+  if (!isReactRenderable(children)) {
     return null;
   }
 

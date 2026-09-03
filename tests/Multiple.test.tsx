@@ -431,6 +431,28 @@ describe('Select.Multiple', () => {
     expect(container.querySelector('.rc-select-suffix')).toBeTruthy();
   });
 
+  it('should render numeric affixes', () => {
+    const { container } = render(<Select mode="multiple" value={['']} prefix={0} suffix={0} />);
+
+    expect(container.querySelector('.rc-select-prefix').textContent).toBe('0');
+    expect(container.querySelector('.rc-select-suffix').textContent).toBe('0');
+    expect(container.querySelector('.rc-select')).toHaveClass('rc-select-show-arrow');
+  });
+
+  it.each([
+    ['false', false],
+    ['empty string', ''],
+    ['null', null],
+    ['undefined', undefined],
+  ])('should hide non-renderable %s affixes', (_, affix) => {
+    const { container } = render(
+      <Select mode="multiple" value={['']} prefix={affix} suffix={affix} />,
+    );
+
+    expect(container.querySelector('.rc-select-prefix')).toBeFalsy();
+    expect(container.querySelector('.rc-select-suffix')).toBeFalsy();
+  });
+
   it('show static prefix', () => {
     render(
       <Select mode="multiple" value={['']} prefix="Foobar">
