@@ -37,7 +37,12 @@ export interface SelectInputProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   activeValue?: string;
   mode?: Mode;
   autoClearSearchValue?: boolean;
-  onSearch?: (searchText: string, fromTyping: boolean, isCompositing: boolean) => void;
+  onSearch?: (
+    searchText: string,
+    fromTyping: boolean,
+    isCompositing: boolean,
+    isCompositionEnd?: boolean,
+  ) => void;
   onSearchSubmit?: (searchText: string) => void;
   onInputBlur?: () => void;
   onClearMouseDown?: React.MouseEventHandler<HTMLElement>;

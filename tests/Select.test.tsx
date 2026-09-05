@@ -740,6 +740,88 @@ describe('Select.Basic', () => {
     expect(handleSearch).toHaveBeenCalledWith('');
   });
 
+  it('reports input composition state to search events', () => {
+    const handleSearch = jest.fn();
+    const Test = () => {
+      const [searchValue, setSearchValue] = React.useState('');
+
+      return (
+        <Select
+          showSearch={{
+            searchValue,
+            onSearch: (...args) => {
+              setSearchValue(args[0]);
+              handleSearch(...args);
+            },
+          }}
+        >
+          <Option value="中文">中文</Option>
+        </Select>
+      );
+    };
+    const { container } = render(<Test />);
+    const input = container.querySelector('input');
+
+    fireEvent.compositionStart(input);
+    fireEvent.change(input, { target: { value: 'ㄓ' } });
+    fireEvent.change(input, { target: { value: '中文' } });
+
+    expect(input).toHaveValue('中文');
+    expect(handleSearch).toHaveBeenNthCalledWith(1, 'ㄓ', { isComposing: true });
+    expect(handleSearch).toHaveBeenNthCalledWith(2, '中文', { isComposing: true });
+
+    fireEvent.compositionEnd(input);
+
+    expect(handleSearch).toHaveBeenCalledTimes(3);
+    expect(handleSearch).toHaveBeenNthCalledWith(3, '中文', { isComposing: false });
+
+    // Browsers may dispatch a final input event after compositionend. Do not duplicate it.
+    fireEvent.change(input, { target: { value: '中文' } });
+    expect(handleSearch).toHaveBeenCalledTimes(3);
+
+    fireEvent.change(input, { target: { value: '中文a' } });
+    expect(handleSearch).toHaveBeenNthCalledWith(4, '中文a');
+  });
+
+  it('reports completed combobox composition without duplicating change', () => {
+    const handleSearch = jest.fn();
+    const handleChange = jest.fn();
+    const { container } = render(
+      <Select mode="combobox" onSearch={handleSearch} onChange={handleChange} />,
+    );
+    const input = container.querySelector('input');
+
+    fireEvent.compositionStart(input);
+    fireEvent.change(input, { target: { value: '中文' } });
+
+    expect(handleSearch).toHaveBeenNthCalledWith(1, '中文', { isComposing: true });
+    expect(handleChange).toHaveBeenCalledTimes(1);
+    expect(handleChange).toHaveBeenCalledWith('中文', {});
+
+    fireEvent.compositionEnd(input);
+
+    expect(handleSearch).toHaveBeenNthCalledWith(2, '中文', { isComposing: false });
+    expect(handleChange).toHaveBeenCalledTimes(1);
+  });
+
+  it('commits combobox composition text when compositionend is the first value event', () => {
+    const handleSearch = jest.fn();
+    const handleChange = jest.fn();
+    const { container } = render(
+      <Select mode="combobox" onSearch={handleSearch} onChange={handleChange} />,
+    );
+    const input = container.querySelector('input');
+
+    fireEvent.compositionStart(input);
+    input.value = '中文';
+    fireEvent.compositionEnd(input);
+
+    expect(handleSearch).toHaveBeenCalledTimes(1);
+    expect(handleSearch).toHaveBeenCalledWith('中文', { isComposing: false });
+    expect(handleChange).toHaveBeenCalledTimes(1);
+    expect(handleChange).toHaveBeenCalledWith('中文', {});
+  });
+
   it('not fires search event when user select', () => {
     const handleSearch = jest.fn();
     const { container } = render(
