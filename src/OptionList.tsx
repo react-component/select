@@ -10,6 +10,7 @@ import useBaseProps from './hooks/useBaseProps';
 import type { FlattenOptionData } from './interface';
 import { isPlatformMac } from './utils/platformUtil';
 import { isValidCount } from './utils/valueUtil';
+import { toArray } from './utils/commonUtil';
 
 // export interface OptionListProps<OptionsType extends object[]> {
 export type OptionListProps = Record<string, never>;
@@ -22,6 +23,10 @@ export interface RefOptionListProps {
 
 function isTitleType(content: any) {
   return typeof content === 'string' || typeof content === 'number';
+}
+
+function includes(test: React.ReactNode, search: string) {
+  return toArray(test).join('').toUpperCase().includes(search.toUpperCase());
 }
 
 /**
@@ -56,6 +61,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     listHeight,
     listItemHeight,
     optionRender,
+    optionFilterProp,
     classNames: contextClassNames,
     styles: contextStyles,
   } = React.useContext(SelectContext);
@@ -155,9 +161,13 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     if (!multiple && open && rawValues.size === 1) {
       const value: RawValueType = Array.from(rawValues)[0];
       // Scroll to the option closest to the searchValue if searching.
-      const index = memoFlattenOptions.findIndex(({ data }) =>
-        searchValue ? String(data.value).startsWith(searchValue) : data.value === value,
-      );
+      const index = memoFlattenOptions.findIndex(({ data }) => {
+        if (searchValue) {
+          const matchValue = optionFilterProp ? data[optionFilterProp] : data.value;
+          return includes(matchValue, searchValue);
+        }
+        return data.value === value;
+      });
 
       if (index !== -1) {
         setActive(index);
@@ -173,7 +183,7 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
     }
 
     return () => clearTimeout(timeoutId);
-  }, [open, searchValue]);
+  }, [open, searchValue, optionFilterProp]);
 
   // ========================== Values ==========================
   const onSelectValue = (value: RawValueType) => {
