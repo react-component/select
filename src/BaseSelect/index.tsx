@@ -460,6 +460,9 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   React.useEffect(() => {
     // After onBlur is triggered, the focused does not need to be reset
     if (disabled) {
+      // A disabled input may not emit the keyup/blur event that releases this lock.
+      // Clear it here so a later interaction cannot inherit a stale Enter state.
+      keyLockRef.current = false;
       triggerOpen(false);
       setFocused(false);
     }
