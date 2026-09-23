@@ -700,6 +700,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
         childrenAsData,
         maxCount,
         optionRender,
+        filterSort,
         classNames,
         styles,
       };
@@ -720,6 +721,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       listItemHeight,
       childrenAsData,
       optionRender,
+      filterSort,
       classNames,
       styles,
     ]);
