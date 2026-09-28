@@ -1,5 +1,5 @@
 import { clsx } from 'clsx';
-import { KeyCode, omit, pickAttrs, useMemo } from '@rc-component/util';
+import { isReactRenderable, KeyCode, omit, pickAttrs, useMemo } from '@rc-component/util';
 import List, { type ListRef, type ScrollConfig } from '@rc-component/virtual-list';
 import * as React from 'react';
 import { useEffect } from 'react';
@@ -446,10 +446,12 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
           const mergedLabel = getLabel(item);
 
           const iconVisible =
-            !menuItemSelectedIcon || typeof menuItemSelectedIcon === 'function' || selected;
+            !isReactRenderable(menuItemSelectedIcon) ||
+            typeof menuItemSelectedIcon === 'function' ||
+            selected;
 
           // https://github.com/ant-design/ant-design/issues/34145
-          const content = typeof mergedLabel === 'number' ? mergedLabel : mergedLabel || value;
+          const content = isReactRenderable(mergedLabel) ? mergedLabel : value;
           // https://github.com/ant-design/ant-design/issues/26717
           let optionTitle = isTitleType(content) ? content.toString() : undefined;
           if (title !== undefined) {

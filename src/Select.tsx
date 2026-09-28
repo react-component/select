@@ -369,10 +369,7 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       // https://github.com/ant-design/ant-design/issues/25057
       if (!mode && mergedValues.length === 1) {
         const firstValue = mergedValues[0];
-        if (
-          firstValue.value === null &&
-          (firstValue.label === null || firstValue.label === undefined)
-        ) {
+        if (firstValue.value === null && !isNonNullable(firstValue.label)) {
           return [];
         }
       }

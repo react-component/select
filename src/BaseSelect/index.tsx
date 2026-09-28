@@ -1,6 +1,6 @@
 import type { AlignType, BuildInPlacements } from '@rc-component/trigger';
 import { clsx } from 'clsx';
-import { getDOM, isNonNullable, useEvent } from '@rc-component/util';
+import { getDOM, isNonNullable, isReactRenderable, useEvent } from '@rc-component/util';
 import type { ScrollConfig, ScrollTo } from '@rc-component/virtual-list';
 import * as React from 'react';
 import { useAllowClear } from '../hooks/useAllowClear';
@@ -360,7 +360,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
   // ============================== Open ==============================
   // Not trigger `open` when `notFoundContent` is empty
-  const emptyListContent = !notFoundContent && emptyOptions;
+  const emptyListContent = !isReactRenderable(notFoundContent) && emptyOptions;
 
   const [rawOpen, mergedOpen, triggerOpen, lockOptions] = useOpen(
     defaultOpen || false,
