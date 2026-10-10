@@ -443,6 +443,10 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
     // Fill options with search value if needed
     const filledSearchOptions = React.useMemo(() => {
       const hasItemMatchingSearch = (item: DefaultOptionType) => {
+        // Ignore when the search value equals an existing option value.
+        if (item?.[mergedFieldNames.value] === mergedSearchValue) {
+          return true;
+        }
         if (normalizedOptionFilterProp.length) {
           return normalizedOptionFilterProp.some((prop) => item?.[prop] === mergedSearchValue);
         }
@@ -451,12 +455,12 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
       if (
         mode !== 'tags' ||
         !mergedSearchValue ||
-        filteredOptions.some((item) => hasItemMatchingSearch(item))
+        filteredOptions.some(
+          (item) =>
+            hasItemMatchingSearch(item) ||
+            item[mergedFieldNames.options]?.some(hasItemMatchingSearch),
+        )
       ) {
-        return filteredOptions;
-      }
-      // ignore when search value equal select input value
-      if (filteredOptions.some((item) => item[mergedFieldNames.value] === mergedSearchValue)) {
         return filteredOptions;
       }
       // Skip creating temp tag option if it matches a disabled option value
