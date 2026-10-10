@@ -730,7 +730,7 @@ describe('Select.Tags', () => {
     fireEvent.change(input, {
       target: { value: 'test' },
     });
-    expect(onChange).not.toBeCalled();
+    expect(onChange).not.toHaveBeenCalled();
   });
 
   // https://github.com/ant-design/ant-design/issues/56587
