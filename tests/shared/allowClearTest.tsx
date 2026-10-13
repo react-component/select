@@ -59,7 +59,7 @@ export default function allowClearTest(mode: any, value: any) {
       } else {
         expect(onChange).toHaveBeenCalledWith(undefined, undefined);
       }
-      expect(onDeselect).not.toBeCalled();
+      expect(onDeselect).not.toHaveBeenCalled();
       expect(container.querySelector('input').value).toEqual('');
       expect(onClear).toHaveBeenCalled();
     });
@@ -100,7 +100,7 @@ export default function allowClearTest(mode: any, value: any) {
         } else {
           expect(onChange).toHaveBeenCalledWith(undefined, undefined);
         }
-        expect(onDeselect).not.toBeCalled();
+        expect(onDeselect).not.toHaveBeenCalled();
         expect(container.querySelector('input').value).toEqual('');
         expect(onClear).toHaveBeenCalled();
       });
