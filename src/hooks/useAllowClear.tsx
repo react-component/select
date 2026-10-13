@@ -1,9 +1,13 @@
 import type { DisplayValueType, Mode } from '../interface';
 import type React from 'react';
-import { isReactRenderable } from '@rc-component/util';
+import {
+  type AllowClearConfig,
+  isReactRenderable,
+  useAllowClear as useClearConfig,
+} from '@rc-component/util';
 import { useMemo } from 'react';
 
-export interface AllowClearConfig {
+interface ClearInfo extends AllowClearConfig {
   allowClear: boolean;
   clearIcon: React.ReactNode;
   label: string;
@@ -12,31 +16,23 @@ export interface AllowClearConfig {
 export const useAllowClear = (
   prefixCls: string,
   displayValues: DisplayValueType[],
-  allowClear?: boolean | { clearIcon?: React.ReactNode; label?: string },
+  allowClear?: boolean | AllowClearConfig,
   clearIcon?: React.ReactNode,
   disabled: boolean = false,
   mergedSearchValue?: string,
   mode?: Mode,
-): AllowClearConfig => {
-  // Convert boolean to object first
-  const allowClearConfig = useMemo<Partial<AllowClearConfig>>(() => {
-    if (typeof allowClear === 'boolean') {
-      return { allowClear };
-    }
-    if (allowClear && typeof allowClear === 'object') {
-      return allowClear;
-    }
-    return { allowClear: false };
-  }, [allowClear]);
+): ClearInfo => {
+  const allowClearConfig = useClearConfig(allowClear);
 
   return useMemo(() => {
     const mergedAllowClear =
       !disabled &&
-      allowClearConfig.allowClear !== false &&
+      !allowClearConfig.disabled &&
       (displayValues.length || mergedSearchValue) &&
       !(mode === 'combobox' && mergedSearchValue === '');
 
     return {
+      ...allowClearConfig,
       allowClear: mergedAllowClear,
       clearIcon: mergedAllowClear
         ? isReactRenderable(allowClearConfig.clearIcon)

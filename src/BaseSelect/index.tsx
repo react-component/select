@@ -1,6 +1,6 @@
 import type { AlignType, BuildInPlacements } from '@rc-component/trigger';
 import { clsx } from 'clsx';
-import { getDOM, isNonNullable, useEvent } from '@rc-component/util';
+import { type AllowClearConfig, getDOM, isNonNullable, useEvent } from '@rc-component/util';
 import type { ScrollConfig, ScrollTo } from '@rc-component/virtual-list';
 import * as React from 'react';
 import { useAllowClear } from '../hooks/useAllowClear';
@@ -185,7 +185,7 @@ export interface BaseSelectProps
   tokenSeparators?: string[] | ((input: string) => string[]);
 
   // >>> Icons
-  allowClear?: boolean | { clearIcon?: React.ReactNode; label?: string };
+  allowClear?: boolean | AllowClearConfig;
   prefix?: React.ReactNode;
   /** @deprecated Please use `suffix` instead. */
   suffixIcon?: RenderNode;
@@ -725,6 +725,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     allowClear: mergedAllowClear,
     clearIcon: clearNode,
     label: clearLabel,
+    tabIndex: clearTabIndex,
   } = useAllowClear(
     prefixCls,
     displayValues,
@@ -768,6 +769,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       suffix={mergedSuffixIcon}
       clearIcon={clearNode}
       clearLabel={clearLabel}
+      clearTabIndex={clearTabIndex}
       // Type or mode
       multiple={multiple}
       mode={mode}
