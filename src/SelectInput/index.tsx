@@ -29,6 +29,7 @@ export interface SelectInputProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   suffix?: React.ReactNode;
   clearIcon?: React.ReactNode;
   clearLabel?: string;
+  clearTabIndex?: number;
   removeIcon?: RenderNode;
   multiple?: boolean;
   displayValues: DisplayValueType[];
@@ -89,6 +90,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
     suffix,
     clearIcon,
     clearLabel,
+    clearTabIndex,
     children,
 
     // Data
@@ -310,6 +312,7 @@ export default React.forwardRef<SelectInputRef, SelectInputProps>(function Selec
           <button
             type="button"
             aria-label={clearLabel}
+            tabIndex={clearTabIndex}
             className={clsx(`${prefixCls}-clear`, classNames?.clear)}
             style={styles?.clear}
             onMouseDown={(e) => {
