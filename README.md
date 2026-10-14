@@ -89,7 +89,7 @@ Select also accepts public props from `BaseSelect`, except `showSearch`, which i
 | onActive | Called when the active value changes. | `(value: ValueType) => void` | - |
 | onChange | Called when selected value changes. | `(value: ValueType, option?: OptionType \| OptionType[]) => void` | - |
 | onDeselect | Called when a value is deselected. | `(value, option) => void` | - |
-| onSearch | Deprecated. Use `showSearch.onSearch` instead. | `(value: string) => void` | - |
+| onSearch | Deprecated. Use `showSearch.onSearch` instead. Composition events include `info.isComposing`. | `(value: string, info?: { isComposing: boolean }) => void` | - |
 | onSelect | Called when a value is selected. | `(value, option) => void` | - |
 | optionFilterProp | Deprecated. Use `showSearch.optionFilterProp` instead. | string \| string[] | - |
 | optionLabelProp | Option prop used as the selected label. | string | - |
@@ -115,7 +115,7 @@ Select also accepts public props from `BaseSelect`, except `showSearch`, which i
 | autoClearSearchValue | Clear search input after selecting or deselecting in multiple mode. | boolean | true |
 | filterOption | Filter options by search input. | boolean \| `FilterFunc<OptionType>` | - |
 | filterSort | Sort filtered options. | `(optionA, optionB, info: { searchValue: string }) => number` | - |
-| onSearch | Called when search input changes. | `(value: string) => void` | - |
+| onSearch | Called when search input changes. Composition events include `info.isComposing`. | `(value: string, info?: { isComposing: boolean }) => void` | - |
 | optionFilterProp | Option prop used for filtering when `filterOption` is enabled. | string \| string[] | - |
 | searchValue | Controlled search input value. | string | - |
 

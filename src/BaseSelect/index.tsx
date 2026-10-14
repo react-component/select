@@ -113,6 +113,10 @@ export interface BaseSelectPrivateProps {
         | 'effect' // Code logic trigger
         | 'submit' // tag mode only
         | 'blur'; // Not trigger event
+      /** Only provided for input method composition events. */
+      isComposing?: boolean;
+      /** Internal marker for the final composition event. */
+      isCompositionEnd?: boolean;
     },
   ) => void;
   /** Trigger when search text match the `tokenSeparators`. Will provide split content */
@@ -396,7 +400,12 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
     return (input: string, end?: number) => getSeparatedContent(input, tokenSeparators, end);
   }, [tokenSeparators]);
 
-  const onInternalSearch = (searchText: string, fromTyping: boolean, isCompositing: boolean) => {
+  const onInternalSearch = (
+    searchText: string,
+    fromTyping: boolean,
+    isCompositing: boolean,
+    isCompositionEnd?: boolean,
+  ) => {
     if (multiple && isValidCount(maxCount) && displayValues.length >= maxCount) {
       return;
     }
@@ -420,9 +429,11 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       ret = false;
     }
 
-    if (onSearch && mergedSearchValue !== newSearchText) {
+    if (onSearch && (mergedSearchValue !== newSearchText || isCompositionEnd)) {
       onSearch(newSearchText, {
         source: fromTyping ? 'typing' : 'effect',
+        isComposing: isCompositing || isCompositionEnd ? isCompositing : undefined,
+        isCompositionEnd,
       });
     }
 
