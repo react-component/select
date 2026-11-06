@@ -628,6 +628,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
     // We should give focus back to selector if clicked item is not focusable
     if (popupElement?.contains(target as HTMLElement) && triggerOpen) {
+      (event.nativeEvent as any)._ori_target = target;
       // Tell `open` not to close since it's safe in the popup
       triggerOpen(true);
     }
