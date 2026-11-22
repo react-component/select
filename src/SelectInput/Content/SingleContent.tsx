@@ -12,7 +12,14 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
   ({ inputProps }, ref) => {
     const { prefixCls, searchValue, activeValue, displayValues, maxLength, mode, components } =
       useSelectInputContext();
-    const { triggerOpen, title: rootTitle, showSearch, classNames, styles } = useBaseProps();
+    const {
+      triggerOpen,
+      title: rootTitle,
+      showSearch,
+      readOnlyValue,
+      classNames,
+      styles,
+    } = useBaseProps();
     const selectContext = React.useContext(SelectContext);
 
     const [inputChanged, setInputChanged] = React.useState(false);
@@ -109,7 +116,8 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
         <Input
           ref={ref}
           {...inputProps}
-          value={mergedSearchValue}
+          value={readOnlyValue ?? mergedSearchValue}
+          style={readOnlyValue !== undefined ? { opacity: 0 } : undefined}
           maxLength={mode === 'combobox' ? maxLength : undefined}
           onChange={(e) => {
             setInputChanged(true);

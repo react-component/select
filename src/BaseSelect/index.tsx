@@ -656,6 +656,17 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
   }
 
   // ============================ Context =============================
+  // The built-in select-only input can expose a text label as its native value.
+  const label = displayValues.length === 1 ? displayValues[0].label : undefined;
+  const readOnlyValue =
+    !mode &&
+    !showSearch &&
+    !mergedComponents.root &&
+    !mergedComponents.input &&
+    (typeof label === 'string' || typeof label === 'number')
+      ? String(label)
+      : undefined;
+
   const baseSelectContext = React.useMemo<BaseSelectContextProps>(
     () => ({
       ...props,
@@ -663,6 +674,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       open: mergedOpen,
       triggerOpen: mergedOpen,
       rawOpen,
+      readOnlyValue,
       id,
       showSearch,
       multiple,
@@ -681,6 +693,7 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
       multiple,
       mergedOpen,
       rawOpen,
+      readOnlyValue,
       showScrollBar,
       styles,
       classNames,
@@ -826,7 +839,10 @@ const BaseSelect = React.forwardRef<BaseSelectRef, BaseSelectProps>((props, ref)
 
   return (
     <BaseSelectContext.Provider value={baseSelectContext}>
-      <Polite visible={focused && !mergedOpen} values={displayValues} />
+      <Polite
+        visible={focused && !mergedOpen && readOnlyValue === undefined}
+        values={displayValues}
+      />
       {renderNode}
     </BaseSelectContext.Provider>
   );

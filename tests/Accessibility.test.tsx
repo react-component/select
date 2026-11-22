@@ -21,6 +21,49 @@ describe('Select.Accessibility', () => {
     expect(container.querySelector('input')!.getAttribute('aria-label')).toEqual('light');
   });
 
+  // https://github.com/ant-design/ant-design/issues/52987
+  it('exposes the selected label as the value of a select-only combobox', () => {
+    const options = [
+      { value: 'lucy', label: 'Lucy' },
+      { value: 'zero', label: 0 },
+    ];
+    const { getByRole, container, rerender } = render(
+      <Select aria-label="Person" value="lucy" options={options} />,
+    );
+    const input = getByRole('combobox', { name: 'Person' });
+    fireEvent.focus(input);
+
+    expect(input).toHaveValue('Lucy');
+    expect(container.querySelector('[aria-live="polite"]')).toBeNull();
+
+    rerender(<Select aria-label="Person" value="zero" options={options} />);
+    expect(input).toHaveValue('0');
+
+    rerender(<Select aria-label="Person" value={null} options={options} />);
+    expect(input).toHaveValue('');
+  });
+
+  it('keeps the search input independent of the selected label', () => {
+    const { getByRole } = render(
+      <Select showSearch defaultValue="lucy" options={[{ value: 'lucy', label: 'Lucy' }]} />,
+    );
+    const input = getByRole('combobox');
+    expect(input).toHaveValue('');
+    fireEvent.change(input, { target: { value: 'lu' } });
+    expect(input).toHaveValue('lu');
+  });
+
+  it('keeps the live region for a non-text selection label', () => {
+    const { getByRole, container } = render(
+      <Select defaultValue="lucy" options={[{ value: 'lucy', label: <b>Lucy</b> }]} />,
+    );
+    const input = getByRole('combobox');
+    fireEvent.focus(input);
+
+    expect(input).toHaveValue('');
+    expect(container.querySelector('[aria-live="polite"]')).toHaveTextContent('lucy');
+  });
+
   // https://github.com/ant-design/ant-design/issues/56841
   it('spacebar opens dropdown (ARIA combobox)', () => {
     const { container } = render(
