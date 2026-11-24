@@ -80,13 +80,12 @@ export default function useOpen(
     setLock(!nextOpenVal);
 
     function triggerUpdate() {
-      if (
-        // Always check if id is match
-        id === taskIdRef.current &&
+      // Always check if id is match
+      if (id === taskIdRef.current) {
         // Check if need to cancel
-        !cancelFun?.()
-      ) {
-        triggerEvent(nextOpenVal);
+        if (!cancelFun?.()) {
+          triggerEvent(nextOpenVal);
+        }
         setLock(false);
       }
     }
