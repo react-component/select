@@ -1,5 +1,9 @@
 import { KeyCode } from '@rc-component/util';
 
+export function getNextActiveIndex(activeIndex: number, offset: number): number {
+  return activeIndex === -1 && offset < 0 ? -1 : activeIndex + offset;
+}
+
 /** keyCode Judgment function */
 export function isValidateOpenKey(currentKeyCode: number): boolean {
   return (
