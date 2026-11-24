@@ -8,6 +8,7 @@ import SelectContext from './SelectContext';
 import TransBtn from './TransBtn';
 import useBaseProps from './hooks/useBaseProps';
 import type { FlattenOptionData } from './interface';
+import { getNextActiveIndex } from './utils/keyUtil';
 import { isPlatformMac } from './utils/platformUtil';
 import { isValidCount } from './utils/valueUtil';
 
@@ -211,7 +212,10 @@ const OptionList: React.ForwardRefRenderFunction<RefOptionListProps, {}> = (_, r
           }
 
           if (offset !== 0) {
-            const nextActiveIndex = getEnabledActiveIndex(activeIndex + offset, offset);
+            const nextActiveIndex = getEnabledActiveIndex(
+              getNextActiveIndex(activeIndex, offset),
+              offset,
+            );
             scrollIntoView(nextActiveIndex);
             setActive(nextActiveIndex, true);
           }
