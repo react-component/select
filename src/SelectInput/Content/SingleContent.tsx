@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { isNonNullable } from '@rc-component/util';
 import { clsx } from 'clsx';
 import Input from '../Input';
 import { useSelectInputContext } from '../context';
@@ -64,10 +65,7 @@ const SingleContent = React.forwardRef<HTMLInputElement, SharedContentProps>(
 
     // ========================== Render ==========================
     const showHasValueCls =
-      displayValue &&
-      displayValue.label !== null &&
-      displayValue.label !== undefined &&
-      String(displayValue.label).trim() !== '';
+      displayValue && isNonNullable(displayValue.label) && String(displayValue.label).trim() !== '';
 
     // Render value
     // Only render value when not using custom input in combobox mode
