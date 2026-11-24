@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Select.Combobox renders controlled correctly 1`] = `
 <div
@@ -16,7 +16,7 @@ exports[`Select.Combobox renders controlled correctly 1`] = `
       aria-autocomplete="list"
       aria-expanded="false"
       aria-haspopup="listbox"
-      autocomplete="new-password"
+      autocomplete="off"
       class="rc-select-input"
       id="test-id"
       role="combobox"
@@ -43,7 +43,7 @@ exports[`Select.Combobox renders correctly 1`] = `
       aria-autocomplete="list"
       aria-expanded="false"
       aria-haspopup="listbox"
-      autocomplete="new-password"
+      autocomplete="off"
       class="rc-select-input"
       id="test-id"
       role="combobox"

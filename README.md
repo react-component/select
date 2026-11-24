@@ -68,7 +68,7 @@ Select also accepts public props from `BaseSelect`, except `showSearch`, which i
 
 | Name | Description | Type | Default |
 | --- | --- | --- | --- |
-| autoComplete | Browser autocomplete hint for the search input. | string | `new-password` |
+| autoComplete | Browser autocomplete hint for the search input. | string | `off` |
 | autoClearSearchValue | Deprecated. Use `showSearch.autoClearSearchValue` instead. | boolean | true |
 | backfill | Backfill the active option into the input. Only works in `combobox` mode. | boolean | false |
 | children | Legacy option children. Prefer `options` for new code. | ReactNode | - |

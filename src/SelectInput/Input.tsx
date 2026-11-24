@@ -171,7 +171,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       '--select-input-width': widthCssVar,
     } as React.CSSProperties,
     autoFocus,
-    autoComplete: autoComplete ?? contextAutoComplete ?? 'new-password',
+    autoComplete: autoComplete ?? contextAutoComplete ?? 'off',
     className: inputCls,
     disabled,
     value: value || '',
