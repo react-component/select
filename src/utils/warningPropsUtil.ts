@@ -74,7 +74,11 @@ function warningProps(props: SelectProps) {
 
   // Customize `getInputElement` should not use `allowClear` & `placeholder`
   noteOnce(
-    mode !== 'combobox' || !getInputElement || !allowClear || !placeholder,
+    mode !== 'combobox' ||
+      !getInputElement ||
+      !allowClear ||
+      (typeof allowClear === 'object' && allowClear.disabled) ||
+      !placeholder,
     'Customize `getInputElement` should customize clear and placeholder logic instead of configuring `allowClear` and `placeholder`.',
   );
 
