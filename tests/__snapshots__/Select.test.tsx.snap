@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Select.Basic does not filter when filterOption value is false 1`] = `
 <div
@@ -127,7 +127,7 @@ exports[`Select.Basic render renders aria-attributes correctly 1`] = `
       aria-haspopup="listbox"
       aria-label="some-label"
       aria-labelledby="test-id"
-      autocomplete="new-password"
+      autocomplete="off"
       class="antd-input"
       id="test-id"
       role="combobox"
@@ -158,7 +158,7 @@ exports[`Select.Basic render renders correctly 1`] = `
       aria-autocomplete="list"
       aria-expanded="false"
       aria-haspopup="listbox"
-      autocomplete="new-password"
+      autocomplete="off"
       class="antd-input"
       id="test-id"
       role="combobox"
@@ -191,7 +191,7 @@ exports[`Select.Basic render renders data-attributes correctly 1`] = `
       aria-autocomplete="list"
       aria-expanded="false"
       aria-haspopup="listbox"
-      autocomplete="new-password"
+      autocomplete="off"
       class="antd-input"
       id="test-id"
       role="combobox"
@@ -222,7 +222,7 @@ exports[`Select.Basic render renders disabled select correctly 1`] = `
       aria-autocomplete="list"
       aria-expanded="false"
       aria-haspopup="listbox"
-      autocomplete="new-password"
+      autocomplete="off"
       class="antd-input"
       disabled=""
       id="test-id"
@@ -249,7 +249,7 @@ exports[`Select.Basic render renders role prop correctly 1`] = `
       aria-autocomplete="list"
       aria-expanded="false"
       aria-haspopup="listbox"
-      autocomplete="new-password"
+      autocomplete="off"
       class="antd-input"
       id="test-id"
       role="button"

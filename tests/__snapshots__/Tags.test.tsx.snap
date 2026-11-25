@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Select.Tags OptGroup renders correctly 1`] = `
 <div>
@@ -65,7 +65,7 @@ exports[`Select.Tags OptGroup renders correctly 1`] = `
           aria-expanded="true"
           aria-haspopup="listbox"
           aria-owns="test-id_list"
-          autocomplete="new-password"
+          autocomplete="off"
           class="rc-select-input"
           id="test-id"
           role="combobox"
