@@ -9,6 +9,7 @@ import type { BaseSelectProps } from '../BaseSelect';
 export interface BaseSelectContextProps extends BaseSelectProps {
   triggerOpen: boolean;
   rawOpen: boolean;
+  readOnlyValue?: string;
   multiple: boolean;
   toggleOpen: (open?: boolean) => void;
   lockOptions: boolean;
