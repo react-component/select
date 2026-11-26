@@ -19,11 +19,11 @@ export default function removeSelectedTest(mode: any) {
       );
       removeSelection(container);
 
-      expect(handleDeselect).toBeCalledWith(
+      expect(handleDeselect).toHaveBeenCalledWith(
         '1',
         expect.objectContaining({ value: '1', testprop: 'deselect' }),
       );
-      expect(handleChange).toBeCalledWith(['2'], expect.anything());
+      expect(handleChange).toHaveBeenCalledWith(['2'], expect.anything());
     });
 
     it('noop if select is disabled', () => {
