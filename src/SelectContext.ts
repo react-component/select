@@ -37,6 +37,7 @@ export interface SelectContextProps {
   listItemHeight?: number;
   childrenAsData?: boolean;
   maxCount?: number;
+  filterSort?: SelectProps['filterSort'];
 }
 
 const SelectContext = React.createContext<SelectContextProps>(null);
