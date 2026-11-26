@@ -2790,6 +2790,60 @@ describe('Select.Basic', () => {
     expect(inputElem.value).toEqual('bb');
   });
 
+  it('should clear the Enter key lock when disabled interrupts keyup', async () => {
+    const onChange = jest.fn();
+    let enableSelect: () => void;
+    const options = [
+      { value: 1, label: 'Gianfranco Pistoni' },
+      { value: 2, label: 'Gianni Brugola' },
+      { value: 3, label: 'Edoardo Bulloni' },
+    ];
+
+    const Demo: React.FC = () => {
+      const [value, setValue] = React.useState<number | null>(null);
+      const [disabled, setDisabled] = React.useState(false);
+      enableSelect = () => setDisabled(false);
+
+      return (
+        <Select
+          showSearch
+          value={value}
+          disabled={disabled}
+          optionFilterProp="label"
+          onChange={(nextValue) => {
+            onChange(nextValue);
+            setValue(nextValue);
+            setDisabled(true);
+          }}
+          options={options}
+        />
+      );
+    };
+
+    const { container } = render(<Demo />);
+    const input = container.querySelector('input')!;
+    const searchAndPressEnter = async (searchValue: string) => {
+      fireEvent.change(input, { target: { value: searchValue } });
+      await waitFakeTimer(0, 1);
+      // The selection disables the input before the browser can emit keyup.
+      keyDown(input, KeyCode.ENTER);
+    };
+
+    toggleOpen(container);
+    selectItem(container, 2);
+    act(() => enableSelect());
+
+    toggleOpen(container);
+    await searchAndPressEnter('Brugola');
+    expect(input).toBeDisabled();
+    act(() => enableSelect());
+
+    toggleOpen(container);
+    await searchAndPressEnter('Pistoni');
+
+    expect(onChange.mock.calls.map(([value]) => value)).toEqual([3, 2, 1]);
+  });
+
   it('support classnames and styles for select', () => {
     const customClassNames = {
       prefix: 'custom-prefix',
