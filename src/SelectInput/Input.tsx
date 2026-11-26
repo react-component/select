@@ -128,10 +128,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     compositionStatusRef.current = false;
 
     // Trigger search when input method composition ends, similar to original Selector
-    if (mode !== 'combobox') {
-      const { value: nextVal } = event.currentTarget;
-      onSearch?.(nextVal, true, false);
-    }
+    const { value: nextVal } = event.currentTarget;
+    onSearch?.(nextVal, true, false, true);
   };
 
   // Handle paste events to track pasted content
