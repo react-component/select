@@ -621,6 +621,125 @@ describe('Select.Tags', () => {
       expect(container.querySelectorAll('.rc-select-item')).toHaveLength(5);
     });
 
+    // https://github.com/react-component/select/issues/795
+    it.each([
+      {
+        name: 'options',
+        props: { options: [{ label: 'Group', options: [{ label: 'g1v1', value: 'g1v1' }] }] },
+        value: 'g1v1',
+      },
+      {
+        name: 'children',
+        props: {
+          children: (
+            <OptGroup label="Group">
+              <Option value="g1v1">g1v1</Option>
+            </OptGroup>
+          ),
+        },
+        value: 'g1v1',
+      },
+      {
+        name: 'fieldNames',
+        props: {
+          fieldNames: { label: 'text', value: 'code', options: 'items' },
+          options: [{ text: 'Group', items: [{ text: 'g1v1', code: 'g1v1' }] }],
+        },
+        value: 'g1v1',
+      },
+      {
+        name: 'label match',
+        props: {
+          showSearch: { optionFilterProp: 'label' },
+          options: [{ label: 'Group', options: [{ label: 'g1v1', value: 'key' }] }],
+        },
+        value: 'key',
+      },
+      {
+        name: 'multiple filter fields',
+        props: {
+          showSearch: { optionFilterProp: ['label', 'description'] },
+          options: [
+            { label: 'Group', options: [{ label: 'Label', value: 'key', description: 'g1v1' }] },
+          ],
+        },
+        value: 'key',
+      },
+      {
+        name: 'value match with a different filter field',
+        props: {
+          showSearch: { optionFilterProp: 'label' },
+          options: [{ label: 'Group', options: [{ label: 'g1v1-label', value: 'g1v1' }] }],
+        },
+        value: 'g1v1',
+      },
+    ])('does not add a search tag matching grouped $name', ({ props, value }) => {
+      const onChange = jest.fn();
+      const { container } = render(<Select mode="tags" open {...props} onChange={onChange} />);
+
+      fireEvent.change(container.querySelector('input'), { target: { value: 'g1v1' } });
+      expect(container.querySelectorAll('.rc-select-item-option')).toHaveLength(1);
+      expect(container.querySelector('.rc-select-item-group').textContent).toBe('Group');
+
+      keyDown(container.querySelector('input'), KeyCode.ENTER);
+      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChange).toHaveBeenCalledWith([value], expect.anything());
+    });
+
+    it.each([
+      { searchValue: 'Display', optionFilterProp: undefined, labels: ['Display', 'Display'] },
+      { searchValue: 'Group', optionFilterProp: undefined, labels: ['Group', 'Display'] },
+      { searchValue: 'Group', optionFilterProp: 'label', labels: ['Display'] },
+      { searchValue: 'novel', optionFilterProp: undefined, labels: ['novel'] },
+      {
+        searchValue: 'display-key',
+        optionFilterProp: undefined,
+        labels: ['display-key', 'Display'],
+      },
+    ])(
+      'preserves grouped search $searchValue with filter $optionFilterProp',
+      ({ searchValue, optionFilterProp, labels }) => {
+        const { container } = render(
+          <Select
+            mode="tags"
+            open
+            showSearch={{ optionFilterProp }}
+            options={[{ label: 'Group', options: [{ label: 'Display', value: 'Display-key' }] }]}
+          />,
+        );
+
+        fireEvent.change(container.querySelector('input'), { target: { value: searchValue } });
+        expect(
+          Array.from(container.querySelectorAll('.rc-select-item-option-content')).map(
+            (option) => option.textContent,
+          ),
+        ).toEqual(labels);
+      },
+    );
+
+    it.each([false, true])('respects a filtered-out grouped value with disabled=%s', (disabled) => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <Select
+          mode="tags"
+          open
+          showSearch={{ filterOption: () => false }}
+          options={[{ label: 'Group', options: [{ value: 'g1v1', disabled }] }]}
+          onChange={onChange}
+        />,
+      );
+
+      fireEvent.change(container.querySelector('input'), { target: { value: 'g1v1' } });
+      expect(container.querySelectorAll('.rc-select-item-option')).toHaveLength(disabled ? 0 : 1);
+
+      keyDown(container.querySelector('input'), KeyCode.ENTER);
+      if (disabled) {
+        expect(onChange).not.toHaveBeenCalled();
+      } else {
+        expect(onChange).toHaveBeenCalledWith(['g1v1'], expect.anything());
+      }
+    });
+
     it('should work fine when filterOption function exists', () => {
       const LegacyOption = Select.Option as any; // Compatible to legacy usage
 
