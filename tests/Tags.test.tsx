@@ -246,6 +246,25 @@ describe('Select.Tags', () => {
     expectOpen(container, false);
   });
 
+  it('should not trigger onSelect for values already selected when separating tokens', () => {
+    const handleChange = jest.fn();
+    const handleSelect = jest.fn();
+    const { container } = render(
+      <Select
+        mode="tags"
+        defaultValue={['1']}
+        tokenSeparators={[',']}
+        onChange={handleChange}
+        onSelect={handleSelect}
+      />,
+    );
+
+    fireEvent.change(container.querySelector('input'), { target: { value: '1,2,3,' } });
+
+    expect(handleChange).toHaveBeenCalledWith(['1', '2', '3'], expect.anything());
+    expect(handleSelect.mock.calls.map(([value]) => value)).toEqual(['2', '3']);
+  });
+
   it('should work when menu is closed', () => {
     const handleChange = jest.fn();
     const handleSelect = jest.fn();

@@ -673,8 +673,11 @@ const Select = React.forwardRef<BaseSelectRef, SelectProps<any, DefaultOptionTyp
 
       const newRawValues = Array.from(new Set<RawValueType>([...rawValues, ...patchValues]));
       triggerChange(newRawValues);
+      // Only newly added values are "selected"; keep `onSelect` silent for existing ones
       newRawValues.forEach((newRawValue) => {
-        triggerSelect(newRawValue, true);
+        if (!rawValues.has(newRawValue)) {
+          triggerSelect(newRawValue, true);
+        }
       });
     };
 
